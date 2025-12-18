@@ -13,538 +13,864 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
 
-<div class="main-content app-content">
-    <div class="container-fluid page-container">
-	<!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-3">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <h1 class="page-title fw-medium fs-18 mb-0">Application Details</h1>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Application Details</li>
-                </ol>
-            </div>
-        </div>
-        <!-- End::page-header -->
+<jsp:include page="../includes/_header.jsp"></jsp:include>
 
 
-        <div class="row">
-            <!-- Main Content Column -->
-            <div class="col-lg-8">
-                <!-- Case Summary Card -->
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="bi bi-file-text me-2"></i>Case Summary
-                        </h5>
-                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
-                                data-bs-target="#caseSummaryCollapse" aria-expanded="true">
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="collapse show" id="caseSummaryCollapse">
-                        <div class="card-body">
-                            <!-- Parcel Attributes Section -->
-                            <div class="mb-4">
-                                <h6 class="section-title">
-                                    <i class="bi bi-geo-alt me-2"></i>Parcel Attributes
-                                </h6>
-                                <div class="row g-3">
-                                    <input type="hidden" id="cs_main_business_process_id" value="${business_process_id}">
-                                    <input type="hidden" id="cs_main_business_process_name" value="${business_process_name}">
-                                    <input type="hidden" id="cs_main_business_process_sub_id" value="${business_process_sub_id}">
-                                    <input type="hidden" id="cs_main_business_process_sub_name" value="${business_process_sub_name}">
-                                    <input type="hidden" id="cs_main_client_number" value="${phone_number}">
-                                    
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted small mb-1">Date Created</label>
-                                        <div class="info-badge">${created_date}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted small mb-1">Last Modified</label>
-                                        <div class="info-badge">${modified_date}</div>
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Case Number</label>
-                                        <div class="info-badge">${case_number}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Regional Number</label>
-                                        <div class="info-badge">${regional_number}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Locality</label>
-                                        <div class="info-badge">${locality}</div>
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">District</label>
-                                        <div class="info-badge">${district}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Region</label>
-                                        <div class="info-badge">${region}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Land Size (Acres)</label>
-                                        <div class="info-badge">${size_of_land}</div>
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">GLPIN</label>
-                                        <div class="info-badge">${glpin}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">New Transaction Ready</label>
-                                        <div class="info-badge ${need_for_new_transaction == 'Yes' ? 'bg-success text-white' : ''}">
-                                            ${need_for_new_transaction}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Transaction Details Section -->
-                            <div>
-                                <h6 class="section-title">
-                                    <i class="bi bi-receipt me-2"></i>Transaction Details
-                                </h6>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Transaction Number</label>
-                                        <div class="info-badge">${transaction_number}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Applicant Name</label>
-                                        <div class="info-badge">${ar_name}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Nature of Instrument</label>
-                                        <div class="info-badge">${nature_of_instrument}</div>
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Document Date</label>
-                                        <div class="info-badge">${date_of_document}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Registration Date</label>
-                                        <div class="info-badge">${date_of_registration}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Type of Interest</label>
-                                        <div class="info-badge">${type_of_interest}</div>
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Type of Use</label>
-                                        <div class="info-badge">${type_of_use}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Term</label>
-                                        <div class="info-badge">${term}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Commencement Date</label>
-                                        <div class="info-badge">${commencement_date}</div>
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Assessed Value</label>
-                                        <div class="info-badge">${assessed_value}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Stamp Duty Payable</label>
-                                        <div class="info-badge">${stamp_duty_payable}</div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label text-muted small mb-1">Certificate Number</label>
-                                        <div class="info-badge">${certificate_number}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<%
+	//int application_stage = (Integer) request.getAttribute("application_stage");
+%>
 
-            <!-- Sidebar Column -->
-            <div class="col-lg-4">
-                <!-- Accordion for Sidebar Sections -->
-                <div class="accordion" id="sidebarAccordion">
-                    <!-- Related Jobs -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseJobs" aria-expanded="true">
-                                <i class="bi bi-briefcase me-2"></i>
-                                Related Jobs
-                            </button>
-                        </h2>
-                        <div id="collapseJobs" class="accordion-collapse collapse show" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="d-grid gap-2 mb-3">
-                                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                                            data-bs-toggle="modal" data-bs-target="#addExtraBillModal">
-                                        <i class="bi bi-plus-circle"></i>
-                                        Add Extra Bill
-                                    </button>
-                                </div>
-                                <!-- Jobs table can be added here if needed -->
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Parties -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseParties">
-                                <i class="bi bi-people me-2"></i>
-                                Parties
-                                <span class="badge bg-primary ms-2">${parties.size()}</span>
-                            </button>
-                        </h2>
-                        <div id="collapseParties" class="accordion-collapse collapse" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Gender</th>
-                                                <th>Contact</th>
-                                                <th>Role</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${parties}" var="parties_row">
-                                                <tr>
-                                                    <td class="fw-medium">${parties_row.ar_name}</td>
-                                                    <td>
-                                                        <span class="badge bg-light text-dark">
-                                                            ${parties_row.ar_gender}
-                                                        </span>
-                                                    </td>
-                                                    <td>${parties_row.ar_cell_phone}</td>
-                                                    <td>
-                                                        <span class="badge bg-info">
-                                                            ${parties_row.type_of_party}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Bills & Payments -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseBills">
-                                <i class="bi bi-cash-coin me-2"></i>
-                                Bills & Payments
-                            </button>
-                        </h2>
-                        <div id="collapseBills" class="accordion-collapse collapse" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Action</th>
-                                                <th>Mode</th>
-                                                <th>Amount</th>
-                                                <th>Receipt</th>
-                                                <th>Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${payment_invoice}" var="payment_bill_row">
-                                                <tr>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline-primary"
-                                                                data-bs-toggle="modal" data-bs-target="#viewBillModal"
-                                                                data-egcr_id="${payment_bill_row.payment_slip_number}"
-                                                                data-ref_number="${payment_bill_row.ref_number}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-light text-dark">
-                                                            ${payment_bill_row.payment_mode}
-                                                        </span>
-                                                    </td>
-                                                    <td class="fw-medium">${payment_bill_row.bill_amount}</td>
-                                                    <td>${payment_bill_row.payment_slip_number}</td>
-                                                    <td>${payment_bill_row.payment_date}</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Application Minutes -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseMinutes">
-                                <i class="bi bi-journal-text me-2"></i>
-                                Application Minutes
-                            </button>
-                        </h2>
-                        <div id="collapseMinutes" class="accordion-collapse collapse" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Description</th>
-                                                <th>From</th>
-                                                <th>To</th>
-                                                <th>Date</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${application_munites}" var="application_munites_row">
-                                                <tr>
-                                                    <td>${application_munites_row.am_description}</td>
-                                                    <td>${application_munites_row.ar_name}</td>
-                                                    <td>${application_munites_row.am_to_officer}</td>
-                                                    <td>${application_munites_row.am_activity_date}</td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline-info"
-                                                                data-bs-toggle="modal" data-bs-target="#viewMinutesModal"
-                                                                data-target-id="${application_munites_row.am_id}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Documents -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseDocuments">
-                                <i class="bi bi-files me-2"></i>
-                                Application Documents
-                            </button>
-                        </h2>
-                        <div id="collapseDocuments" class="accordion-collapse collapse" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_scanned_documents">
-                                        <i class="bi bi-eye"></i> Load Docs
-                                    </button>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Document Name</th>
-                                                <th>Type</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${casescanneddocuments}" var="casescanneddocuments_row">
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center gap-2">
-                                                            <div class="document-icon">
-                                                                <i class="bi bi-file-earmark"></i>
-                                                            </div>
-                                                            <span>${casescanneddocuments_row.document_name}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-light text-dark">
-                                                            ${casescanneddocuments_row.document_type}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <form action="open_pdffile" method="post">
-                                                            <input type="hidden" name="document_path" 
-                                                                   value="${casescanneddocuments_row.document_file}">
-                                                            <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                                <i class="bi bi-folder2-open"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="container-fluid">
+	<!-- Breadcrumbs-->
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="index.jsp">Application
+				Processing</a></li>
+		<li class="breadcrumb-item active">Entire Processing</li>
 
-                    <!-- Public Documents -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapsePublicDocs">
-                                <i class="bi bi-globe me-2"></i>
-                                Public Documents
-                            </button>
-                        </h2>
-                        <div id="collapsePublicDocs" class="accordion-collapse collapse" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_scanned_documents_public">
-                                        <i class="bi bi-eye"></i> Load Docs
-                                    </button>
-                                    <button class="btn btn-sm btn-primary" id="btn_add_public_document"
-                                            data-bs-toggle="modal" data-bs-target="#publicFileUploadModal">
-                                        <i class="bi bi-plus"></i> Add
-                                    </button>
-                                </div>
-                                <!-- Similar document table structure as above -->
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Queries -->
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseQueries">
-                                <i class="bi bi-question-circle me-2"></i>
-                                Queries
-                                <span class="badge bg-danger ms-2">${case_query.size()}</span>
-                            </button>
-                        </h2>
-                        <div id="collapseQueries" class="accordion-collapse collapse" 
-                             data-bs-parent="#sidebarAccordion">
-                            <div class="accordion-body">
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Job #</th>
-                                                <th>Reason</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${case_query}" var="case_query_row">
-                                                <tr>
-                                                    <td class="fw-medium">${case_query_row.job_number}</td>
-                                                    <td>${case_query_row.reasons}</td>
-                                                    <td>${case_query_row.created_date}</td>
-                                                    <td>
-                                                        <span class="status-badge ${case_query_row.status == 1 ? 'bg-warning text-dark' : 'bg-success text-white'}">
-                                                            ${case_query_row.status == 1 ? 'Pending' : 'Resolved'}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-sm ${case_query_row.status == 1 ? 'btn-warning' : 'btn-outline-info'}"
-                                                                data-bs-toggle="modal" data-bs-target="#newQueryModal"
-                                                                data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"
-                                                                data-id="${case_query_row.qid}"
-                                                                data-job_number="${case_query_row.job_number}"
-                                                                data-reasons="${case_query_row.reasons}"
-                                                                data-remarks="${case_query_row.remarks}"
-                                                                data-status="${case_query_row.status}">
-                                                            <i class="bi ${case_query_row.status == 1 ? 'bi-pencil' : 'bi-eye'}"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+	</ol>
+
+
+
+
+
+
+
+
+	<div class="row">
+
+
+
+		<div class="col-lg-8">
+			<!-- Example Bar Chart Card-->
+			<div class="card mb-3">
+
+				<div class="card-header">
+					<h4 class='float-left'>
+						<i class="fas fa-stamp"></i>${case_number} - ${ar_name}
+					</h4>
+					<button type="button" onclick="javascript:history.go(-1)"
+							class="btn btn-primary btn-icon-split float-right">
+							<span class="icon text-white-50"> <i
+								class="fas fa-angle-double-left"></i></span><span class="text">Back</span>
+						</button>
+				</div>
+				<div class="card-body">
+
+
+					<div class="card">
+						<h5 class="card-header" role="tab" id="headingThree">
+							<a class="collapsed d-block" data-toggle="collapse"
+								data-parent="#accordion" href="#collapsemaincase"
+								aria-expanded="false" aria-controls="collapseThree"> <i
+								class="fa fa-chevron-down pull-right"></i> <i
+								class="fas fa-file-alt"></i>Summary of the case
+							</a>
+						</h5>
+						<div id="collapsemaincase" class="collapse show" role="tabpanel"
+							aria-labelledby="headingThree">
+							<div class="card-body">
+
+
+								<div class="col-lg-12">
+									<!-- Example Pie Chart Card-->
+									<div class="card mb-3">
+										<div class="card-header">Parcel Attributes</div>
+										<div class="card-body">
+											<!--  The Form starts here -->
+
+											<div class="form-group">
+
+												<input type="hidden" id="cs_main_business_process_id"
+													value="${business_process_id}"> <input
+													type="hidden" id="cs_main_business_process_name"
+													value="${business_process_name}"> <input
+													type="hidden" id="cs_main_business_process_sub_id"
+													value="${business_process_sub_id}"> <input
+													type="hidden" id="cs_main_business_process_sub_name"
+													value="${business_process_sub_name}"> <input
+													type="hidden" id="cs_main_client_number"
+													value="${phone_number}">
+													
+											   <div class="form-row">
+									              <div class="col-md-6">
+									                <label for="search_value">Date Created </label>
+													   <input  readonly class="form-control" type="text"  value="${created_date}" >       													
+									              </div>
+									              <div class="col-md-6">
+									                <label for="search_value">Last Modified Date</label>
+									                <input  readonly class="form-control"    type="text" aria-describedby="nameHelp"  value="${modified_date}" >
+									              </div>				             
+									            </div>
+
+
+												<div class="form-row">
+													<div class="col-md-4">
+														<label for="search_value">Case Number</label> <input
+															readonly class="form-control" id="cs_main_case_number"
+															name="cs_main_case_number" type="text"
+															value="${case_number}">
+
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Regional Number</label> <input
+															readonly class="form-control" type="text"															
+															value="${regional_number}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Locality</label> <input readonly
+															class="form-control" id="cs_main_locality" type="text"
+															value="${locality}">
+													</div>
+
+												</div>
+
+
+												<div class="form-row">
+													<div class="col-md-4">
+														<label for="search_value">District</label> <input readonly
+															class="form-control" type="text"
+															value="${district}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Region</label> <input readonly
+															class="form-control" type="text"
+															value="${region}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Size of Land - Acre(s)</label> <input
+															readonly class="form-control" id="cs_main_size_of_land"
+															type="text" value="${size_of_land}">
+													</div>
+
+												</div>
+
+
+												<div class="form-row">
+
+
+													<div class="col-md-4">
+
+
+														<label for="bl_job_purpose">GLPIN</label> <input readonly
+															class="form-control" id="txt_glpin" name="txt_glpin"
+															type="text" value="${glpin}">
+													</div>
+
+
+
+													<div class="col-md-4">
+														<label for="search_value">New Transaction Ready</label> <input
+															readonly class="form-control"
+															id="cs_main_need_for_new_transaction"
+															type="text"
+															value="${need_for_new_transaction}">
+
+													</div>
+
+
+
+												</div>
+
+
+
+
+
+
+
+
+
+
+											</div>
+
+
+
+
+
+
+											<!-- The form Ends Hers -->
+
+										</div>
+
+									</div>
+									<!--   Here is the end of right table -->
+
+								</div>
+
+
+
+
+
+
+
+								<div class="col-lg-12">
+									<!-- Example Pie Chart Card-->
+									<div class="card mb-3">
+										<div class="card-header">Transaction Details</div>
+										<div class="card-body">
+											<!--  The Form starts here -->
+
+
+
+											<div class="form-group">
+
+
+
+
+												<div class="form-row">
+
+
+													<div class="col-md-4">
+														<label for="search_value">Transaction Number</label> <input
+															readonly class="form-control" id="cs_main_ar_name"
+															name="cs_main_ar_name" type="text"
+															 value="${transaction_number}">
+
+													</div>
+
+
+													<div class="col-md-4">
+														<label for="search_value">Applicant Name</label> <input
+															readonly class="form-control" id="cs_main_ar_name"
+															name="cs_main_ar_name" type="text"
+															value="${ar_name}">
+
+													</div>
+
+
+
+
+
+
+													<div class="col-md-4">
+														<label for="search_value">Nature of Instrument</label> <input
+															readonly class="form-control" type="text"
+															
+															value="${nature_of_instrument}">
+													</div>
+
+												</div>
+
+
+
+												<div class="form-row">
+													<div class="col-md-4">
+														<label for="search_value">Date of Document</label> <input
+															readonly class="form-control" type="text"
+															value="${date_of_document}">
+													</div>
+
+													<div class="col-md-4">
+														<label for="search_value">Date of Registration</label> <input
+															readonly class="form-control" type="text"
+															value="${date_of_registration}" required>
+
+													</div>
+
+
+													<div class="col-md-4">
+														<label for="search_value">Type of Interest</label> <input
+															readonly class="form-control" type="text"
+															 value="${type_of_interest}">
+													</div>
+
+												</div>
+
+
+												<div class="form-row">
+													<div class="col-md-4">
+														<label for="search_value">Type of Use</label> <input
+															readonly class="form-control" type="text"
+															 value="${type_of_use}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Term</label> <input readonly
+															class="form-control" type="text"
+															 value="${term}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Commencement Date</label> <input
+															readonly class="form-control" type="text"
+															 value="${commencement_date}">
+													</div>
+
+												</div>
+
+
+												<div class="form-row">
+													<div class="col-md-4">
+														<label for="search_value">Assessed Value</label> <input
+															readonly class="form-control" type="text"
+															 value="${assessed_value}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Stamp Duty Payable</label> <input
+															readonly class="form-control" type="text"
+															 value="${stamp_duty_payable}">
+													</div>
+													<div class="col-md-4">
+														<label for="search_value">Certificate Number</label> <input
+															readonly class="form-control" type="text"
+															 value="${certificate_number}">
+													</div>
+
+												</div>
+
+											</div>
+
+
+
+
+
+
+											<!-- The form Ends Hers -->
+
+										</div>
+
+									</div>
+									<!--   Here is the end of right table -->
+
+								</div>
+
+
+
+								<!--    </div>
+				      
+				       -->
+
+
+
+
+
+							</div>
+						</div>
+					</div>
+
+
+
+
+
+					<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</div>
+
+			</div>
+
+
+
+
+
+
+		</div>
+
+
+
+
+		<!--   Here is the right Table -->
+		<div class="col-lg-4">
+			<!-- Example Pie Chart Card-->
+
+
+
+
+			<div id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="card">
+					<h5 class="card-header" role="tab" id="headingOne">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="#collapsejobs" aria-expanded="true"
+							aria-controls="collapseOne" class="d-block"> <i
+							class="fa fa-chevron-down pull-right"></i> <i
+							class="fas fa-info-circle"></i>Jobs Related to Case
+						</a>
+					</h5>
+
+					<div id="collapsejobs" class="collapse show" role="tabpanel"
+						aria-labelledby="headingOne">
+						<div class="card-body">
+
+							<button data-action="edit" class="btn btn-info btn-icon-split"
+								data-title="Delete" data-toggle="modal"
+								data-target="#addNewserviceBillModalonCase"
+								data-target-id="${proprietorship_section.ps_id}"
+								data-whatever="edit" data-backdrop="static"
+								data-keyboard="false">
+								<span class="icon text-white-50"> <i
+									class="fas fa-pencil-alt"></i></span><span class="text">Add Extra Bill</span>
+							</button>
+
+
+							<%-- <button data-action="edit" class="btn btn-info btn-icon-split"
+								data-title="Delete" data-toggle="modal"
+								data-target="#afterPaymentModalonCase"
+								data-target-id="${proprietorship_section.ps_id}"
+								data-whatever="edit" data-backdrop="static"
+								data-keyboard="false">
+								<span class="icon text-white-50"> <i
+									class="fas fa-pencil-alt"></i></span><span class="text">Acknowledge</span>
+							</button> --%>
+
+
+
+							<%-- <div class="table-responsive">
+								<table class="table table-bordered table-hover table-sm "
+									data-group-by="true" data-group-by-field="job_number"
+									id="lrd_scanned_documents_dataTable">
+									<thead class="table-success">
+										<tr>
+											<th>Transaction Number</th>
+											<th>Applicant Name</th>
+											<!--  <th>Current Status</th> -->
+
+										</tr>
+									</thead>
+
+									<tbody>
+										<c:forEach items="${case_details}" var="case_row">
+											<tr>
+												<td>${case_row.transaction_number}</td>
+												<td>${case_row.ar_name}</td>
+												 <td>${job_row.current_application_status}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div> --%>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card">
+					<h5 class="card-header" role="tab" id="headingThree">
+						<a class="collapsed d-block" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseparties"
+							aria-expanded="false" aria-controls="collapseFive"> <i
+							class="fa fa-chevron-down pull-right"></i> <i class="fa fa-users"></i>Parties
+						</a>
+					</h5>
+					<div id="collapseparties" class="collapse" role="tabpanel"
+						aria-labelledby="headingThree">
+						<div class="card-body">
+
+
+							<!-- <button type="button" class="btn btn-primary"
+								id="lrd_btn_add_coordinate" data-placement="top"
+								data-toggle="modal" data-target="#addeditparty"
+								data-toggle="tooltip" title="Add New Party">
+								<i class="fa fa-plus-circle"></i>
+							</button>
+ -->
+							<div class="table-responsive">
+								<table class="table table-bordered  table-hover table-sm"
+									id="lrd_scanned_documents_dataTable">
+
+									<thead>
+										<tr>
+
+											<th>Name</th>
+											<th>Gender</th>
+											<th>Contact</th>
+											<th>Role</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<c:forEach items="${parties}" var="parties_row">
+											<tr>
+												<td>${parties_row.ar_name}</td>
+												<td>${parties_row.ar_gender}</td>
+												<td>${parties_row.ar_cell_phone}</td>
+												<td>${parties_row.type_of_party}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card">
+		        <h5 class="card-header" role="tab" id="headingThree">
+		            <a class="collapsed d-block" data-toggle="collapse" data-parent="#accordion" href="#collapsebills" aria-expanded="false" aria-controls="collapseFour">
+		                <i class="fa fa-chevron-down pull-right"></i> <i class="fas fa-money-bill-alt"></i>Bill and  Payments
+		            </a>
+		        </h5>
+		        <div id="collapsebills" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+		            <div class="card-body">
+		              
+		              
+		              
+		                <div  class="table-responsive">
+				           <table class="table table-bordered  table-hover table-sm" id="bill_payment_dataTable">
+				           
+				              <thead>
+				                <tr>
+				                	 <th>Action</th>
+					                 <th>Payment Mode</th>
+					                 <th>Amount</th>
+					                 <th>Receipt Number</th>
+					                 <th>Payment Date</th>
+					                 <th>Payment Amount</th>
+				                 </tr>
+				              </thead>
+				              
+				                <tbody>
+							     <c:forEach items="${payment_invoice}" var="payment_bill_row">
+					                <tr>
+					                	<td><button 
+							      					id="viewBillModalBtn"  
+							      					data-toggle="modal" 
+							      					data-target="#viewBillModal"  
+							    					
+							    					data-egcr_id= "${payment_bill_row.payment_slip_number}"
+							    					data-ref_number= "${payment_bill_row.ref_number}"
+							      					class="btn btn-success"  
+							      					title="View Bill Details" >
+								    			View
+								    		</button>  
+					                    </td>
+					                    <td>${payment_bill_row.payment_mode}</td>
+					                    <td>${payment_bill_row.bill_amount}</td>
+					                    <td>${payment_bill_row.payment_slip_number}</td>
+					                    <td>${payment_bill_row.payment_date}</td>
+					                    <td>${payment_bill_row.payment_amount}</td>
+					                    
+					                 </tr>
+					             </c:forEach>
+				  				</tbody>
+				    
+				            
+				            </table>
+				          </div>
+		            </div>
+		        </div>
+		    </div>
+				<br>
+				<div class="card">
+					<h5 class="card-header" role="tab" id="headingTwo">
+						<a class="collapsed d-block" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseminutes"
+							aria-expanded="false" aria-controls="collapseTwo"> <i
+							class="fa fa-chevron-down pull-right"></i> <i
+							class="fas fa-clipboard"></i>Minutes On Application
+						</a>
+					</h5>
+					<div id="collapseminutes" class="collapse" role="tabpanel"
+						aria-labelledby="headingTwo">
+						<div class="card-body">
+
+							<!-- <button type="button" class="btn btn-primary"
+								id="lrd_btn_add_coordinate" data-placement="top"
+								data-toggle="modal" data-target="#addMinutesModal"
+								data-toggle="tooltip" title="Add Minutes" data-backdrop="static"
+								data-keyboard="false">
+								<i class="fa fa-plus-circle"></i>
+							</button> -->
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover table-sm"
+									id="lrd_scanned_documents_dataTable">
+
+									<thead>
+										<tr>
+
+											<th>Description</th>
+											<th>From</th>
+											<th>To</th>
+											<th>Date</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<c:forEach items="${application_munites}"
+											var="application_munites_row">
+											<tr>
+												<td>${application_munites_row.am_description}</td>
+												<td>${application_munites_row.ar_name}</td>
+												<td>${application_munites_row.am_to_officer}</td>
+												<td>${application_munites_row.am_activity_date}</td>
+												<td><p data-placement="top" data-toggle="tooltip"
+														title="View">
+														<button class="btn btn-info btn-icon-split"
+															data-title="Delete" data-toggle="modal"
+															data-target="#addMinutesModal"
+															data-target-id="${application_munites_row.am_id}">
+															<span class="icon text-white-50"> <i
+																class="fas fa-info-circle"></i></span><span class="text">View</span>
+														</button>
+													</p></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="card">
+					<h5 class="card-header" role="tab" id="headingThree">
+						<a class="collapsed d-block" data-toggle="collapse"
+							data-parent="#accordion" href="#collapsedocs"
+							aria-expanded="false" aria-controls="collapseThree"> <i
+							class="fa fa-chevron-down pull-right"></i> <i
+							class="fas fa-file-alt"></i>Documents On Application
+						</a>
+					</h5>
+					<div id="collapsedocs" class="collapse" role="tabpanel"
+						aria-labelledby="headingThree">
+						<div class="card-body">
+
+
+							<button type="button" class="btn btn-primary"
+								id="btn_load_scanned_documents" data-placement="top"
+								data-toggle="tooltip" title="Load Docs">
+								<i class="fa fa-eye"></i>
+							</button>
+
+							<!-- <button type="button" class="btn btn-primary"
+								id="lrd_btn_add_coordinate" data-placement="top"
+								data-toggle="modal" data-target="#fileUploadModal"
+								data-toggle="tooltip" title="Upload New Documents"
+								data-backdrop="static" data-keyboard="false">
+								<i class="fa fa-plus-circle"></i>
+							</button> -->
+							<div class="table-responsive">
+								<table class="table table-bordered  table-hover table-sm"
+									id="lc_main_scanned_documents_dataTable" width="100%"
+									cellspacing="0">
+
+									<thead>
+										<tr>
+
+											<th>Document Name</th>
+											<th>Document Type</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<c:forEach items="${casescanneddocuments}"
+											var="casescanneddocuments_row">
+											<tr>
+												<td>${casescanneddocuments_row.document_name}</td>
+												<td>${casescanneddocuments_row.document_type}</td>
+
+												<td>
+													<form action="open_pdffile" method="post">
+														<input type="hidden" name="document_path"
+															id="document_path"
+															value="${casescanneddocuments_row.document_file}">
+														<button type="submit" name="save"
+															class="btn btn-info btn-icon-split">
+															<span class="icon text-white-50"> <i
+																class="fas fa-folder-open"></i></span><span class="text">Opn</span>
+														</button>
+													</form>
+												</td>
+
+											</tr>
+										</c:forEach>
+									</tbody>
+
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div class="card">
+		        <h5 class="card-header" role="tab" id="headingThree">
+		            <a class="collapsed d-block" data-toggle="collapse" data-parent="#accordion" href="#collapsepudocs" aria-expanded="false" aria-controls="collapseThree">
+		                <i class="fa fa-chevron-down pull-right"></i> <i class="fas fa-file-alt"></i>Public Documents
+		            </a>
+		        </h5>
+		        <div id="collapsepudocs" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+		            <div class="card-body">
+		               
+		               
+		         		<button type="button" class="btn btn-primary" id="btn_load_scanned_documents_public" data-placement="top"  title="Load Docs">
+				            <i class="fas fa-eye"></i>
+				        </button>
+				        
+				        <button type="button" class="btn btn-primary" id="btn_add_public_document" data-toggle="modal" data-target="#publicFileUploadModal" title="Add Public Documents">
+				            <i class="fa fa-plus-circle"></i>
+				        </button>  
+					        
+					        
+		                <div  class="table-responsive">
+				           <table class="table table-bordered table-hover table-sm data-table" id="lc_public_documents_dataTable" width="100%" class="display" cellspacing="0">
+				           
+				              <thead>
+				                <tr>
+				
+				                 <th>Document Name</th>
+				                 <th>Document Type</th>
+				               </tr>
+				              </thead>
+				              
+				                <tbody>				
+							    <c:forEach items="${casescanneddocuments_public}" var="casescanneddocuments_public_row">
+				                <tr>
+				                    <td>${casescanneddocuments_row.document_name}</td>
+				                    <td>${casescanneddocuments_row.document_type}</td>
+					                    <td>
+											<form action="registration_application_progress_details" method="post">
+												<input type="hidden" name="document_path" id="document_path" value="${casescanneddocuments_row.document_file}">
+													<button type="submit" name="save" class="btn btn-info btn-icon-split" >
+													<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Open</span>
+													</button>
+											</form>
+										</td>
+	
+				                    </tr>
+			           			 </c:forEach>
+				  				</tbody>
+				    
+				            
+				            </table>
+				          </div>
+		            </div>
+		        </div>
+		    </div>
+		    <br>
+
+
+
+
+				<div class="card">
+					<h5 class="card-header" role="tab" id="headingThree">
+						<a class="collapsed d-block" data-toggle="collapse"
+							data-parent="#accordion" href="#collapsequeries"
+							aria-expanded="false" aria-controls="collapseFour"> <i
+							class="fa fa-chevron-down pull-right"></i> <i
+							class="fas fa-money-bill-alt"></i>Queries
+						</a>
+					</h5>
+					<div id="collapsequeries" class="collapse" role="tabpanel"
+						aria-labelledby="headingThree">
+						<div class="card-body">
+
+							<!-- <button type="button" class="btn btn-primary"
+								id="lrd_btn_add_querys" data-placement="top" data-toggle="modal"
+								data-target="#newQueryModal" data-toggle="tooltip"
+								title="Add Query" data-backdrop="static" data-keyboard="false">
+								<i class="fa fa-plus-circle"></i>
+							</button> -->
+
+							<div class="table-responsive">
+								<table class="table table-bordered  table-hover table-sm"
+									id="lrd_scanned_documents_dataTable">
+
+									<thead>
+										<tr>
+											<th>job_number</th>
+											<th>reasons</th>
+											<th>remarks</th>
+											<th>created_date</th>
+											<th>Action</th>
+
+										</tr>
+									</thead>
+
+									<tbody>
+										<c:forEach items="${case_query}" var="case_query_row">
+											<tr>
+												<td>${case_query_row.job_number}</td>
+												<td>${case_query_row.reasons}</td>
+												<td>${case_query_row.remarks}</td>
+												<td>${case_query_row.created_date}</td>
+
+
+												<td>
+													<button type="button" id="editQueryModal"  data-toggle="modal" 
+										      					data-target="#newQueryModal"  data-action="edit"  
+										      					class="btn btn-icon-split  ${case_query_row.status == 1 ? 'btn-danger' : 'btn-info'}"  title="Edit Query" 
+										      					
+										      					data-id="${case_query_row.qid}" 
+										                    	data-job_number="${case_query_row.am_description}" 
+										                    	data-reasons="${case_query_row.reasons}" 
+										                    	data-remarks="${case_query_row.remarks}" 
+										                    	data-status="${case_query_row.status}" 
+										                    	data-created_by="${case_query_row.created_by}" 
+										                    	data-created_date="${case_query_row.created_date}" 
+										                    	data-modified_by="${case_query_row.modified_by}" 
+										                    	data-modified_date="${case_query_row.modified_date}" 
+
+								                    	
+										      					
+										      					>
+													    			<span class="icon text-white-50"> 
+													    			
+													    			
+													    			${case_query_row.status == 1 ? '<i class="fas fa-pencil-alt"></i></span><span class="text">Edit</span>' : '<i class="fas fa-eye"></i></span><span class="text">View</span>'}
+													    			
+													    			
+													    		</button> 
+												</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
 
 	</div>
 
+
+
+
 </div>
 
-<script>
-    // Initialize tooltips
-	document.addEventListener('DOMContentLoaded', function() {
-		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-			return new bootstrap.Tooltip(tooltipTriggerEl);
-		});
-		
-		// Accordion state persistence
-		const accordionItems = document.querySelectorAll('.accordion-item');
-		accordionItems.forEach(item => {
-			const button = item.querySelector('.accordion-button');
-			button.addEventListener('click', function() {
-				const targetId = this.getAttribute('data-bs-target');
-				localStorage.setItem('activeAccordion', targetId);
-			});
-		});
-		
-		// Restore accordion state
-		const activeAccordion = localStorage.getItem('activeAccordion');
-		if (activeAccordion) {
-			const activeButton = document.querySelector(`[data-bs-target="${activeAccordion}"]`);
-			if (activeButton) {
-				const bsCollapse = new bootstrap.Collapse(activeAccordion.replace('#', ''));
-				bsCollapse.show();
-			}
-		}
-	});
-	
-	// Query modal data population
-	document.querySelectorAll('[data-bs-target="#newQueryModal"]').forEach(button => {
-		button.addEventListener('click', function() {
-			const modal = document.querySelector('#newQueryModal');
-			const action = this.getAttribute('data-action');
-			const isEdit = action === 'edit';
-			
-			// Populate modal fields
-			modal.querySelector('#queryId').value = this.getAttribute('data-id');
-			modal.querySelector('#jobNumber').value = this.getAttribute('data-job_number');
-			modal.querySelector('#queryReasons').value = this.getAttribute('data-reasons');
-			modal.querySelector('#queryRemarks').value = this.getAttribute('data-remarks');
-			modal.querySelector('#queryStatus').value = this.getAttribute('data-status');
-			
-			// Set modal title and button text
-			modal.querySelector('.modal-title').textContent = 
-				isEdit ? 'Edit Query' : 'View Query';
-			modal.querySelector('#saveQueryBtn').textContent = 
-				isEdit ? 'Update Query' : 'Close';
-			
-			// Disable fields for view mode
-			const inputs = modal.querySelectorAll('input, textarea, select');
-			inputs.forEach(input => {
-				input.disabled = !isEdit;
-			});
-		});
-	});
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  Service Bill============================= -->
+
+
+
+
+
+
+
+
+<jsp:include page="../includes/_footer.jsp"></jsp:include>
 

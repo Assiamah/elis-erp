@@ -363,10 +363,10 @@
                                             <div class="text-dark w-100">
                                                 <div class="fw-medium d-flex justify-content-between">Unit Monitoring Dashboard</div>
                                                 <div class="fs-12 op-8 mb-1">
-                                                    <strong>Refresh Button</strong> <span class="text-warning">(Yellow)</span> - Click to load/update the top 10 officers with their application counts.
+                                                    <strong>Refresh Button</strong> <span class="text-muted">(Yellow)</span> - Click to load/update the top 10 officers with their application counts.
                                                 </div>
                                                 <div class="fs-12 op-8 mb-1">
-                                                    <strong>View All Button</strong> <span class="text-info">(Blue)</span> - Click to open detailed view showing all officers in a modal.
+                                                    <strong>View All Button</strong> <span class="text-muted">(Blue)</span> - Click to open detailed view showing all officers in a modal.
                                                 </div>
                                                 <div class="fs-12 op-8">
                                                     This dashboard shows officer performance metrics for the <strong>${unit_name}</strong> unit.

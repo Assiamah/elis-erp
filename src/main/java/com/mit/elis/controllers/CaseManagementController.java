@@ -11317,8 +11317,7 @@ request.setAttribute("rq_id",rq_id);
 				System.out.println(web_service_response);
 			}
 
-					model.addAttribute("content", "../pages/client_application/front_office_view_application.jsp"); 
-					return "layouts/app";
+					model.addAttribute("content", "../pages/client_application/front_office_view_application.jsp"); return "layouts/app";
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
