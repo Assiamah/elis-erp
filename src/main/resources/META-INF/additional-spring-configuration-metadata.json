@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "app.config.webServiceUrl",
+    "type": "java.lang.String",
+    "description": "URL for the web service endpoint"
+  },
+  {
+    "name": "app.config.webServiceAPIKey",
+    "type": "java.lang.String",
+    "description": "API key for web service authentication"
+  },
+  {
+    "name": "app.config.appFolderPath",
+    "type": "java.lang.String",
+    "description": "Path to the application folder for file uploads"
+  },
+  {
+    "name": "app.config.webServiceUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.webServiceUrl'"
+  },
+  {
+    "name": "AES_ALGORITHM",
+    "type": "java.lang.String",
+    "description": "A description for 'AES_ALGORITHM'"
+  },
+  {
+    "name": "AES_TRANSFORMATION",
+    "type": "java.lang.String",
+    "description": "A description for 'AES_TRANSFORMATION'"
+  },
+  {
+    "name": "AES_SECRET_KEY",
+    "type": "java.lang.String",
+    "description": "A description for 'AES_SECRET_KEY'"
+  }
+]}

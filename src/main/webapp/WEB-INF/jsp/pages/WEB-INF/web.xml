@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>lc-elis</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  
+    <env-entry>
+    <env-entry-name>web_service_url_ser</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+
+    	<!--  <env-entry-value>http://10.4.1.47:8080/gelis_online_service_live/rest/</env-entry-value> -->
+ 		<!--       <env-entry-value>http://10.4.1.53:8080/gelis_online_service_live/rest/</env-entry-value>   -->  
+
+    	<!--  <env-entry-value>http://41.66.204.146:9293/gelis_online_service_live/rest/</env-entry-value>-->
+
+  <!-- <env-entry-value>http://10.4.18.21:8080/gelis_online_service_live/rest/</env-entry-value>   -->
+    <!--   <env-entry-value>http://10.4.1.47:8080/gelis_online_service_live/rest/</env-entry-value>    -->
+ <!--  <env-entry-value>http://10.4.1.53:8080/gelis_online_service_live/rest/</env-entry-value>  -->
+ <env-entry-value>http://localhost:8080/gelis_online_service_live/rest/</env-entry-value> 
+
+
+  </env-entry>
+  
+  
+  <env-entry>
+    <env-entry-name>srs_web_service_url_ser</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>http://140.238.73.17:8080/stampdutybackend/api/</env-entry-value>
+     <!-- <env-entry-value>http://localhost:8080/gelis_online_service_live/rest/</env-entry-value> -->
+  </env-entry>
+  
+  
+  
+  <env-entry>
+    <env-entry-name>payment_callbackUrl</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>http://41.66.204.146:9293/gelis_online_service_live/rest/payment_service/lc_payment_confirmation_for_bill_from_checkout</env-entry-value>
+  </env-entry>
+  
+  
+  
+  <env-entry>
+    <env-entry-name>payment_cancellationUrl</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>http://localhost:8080/gelis_online_service_live/rest/payment_service/lc_payment_confirmation_for_bill_from_checkout</env-entry-value>
+  </env-entry>
+  
+  
+  <env-entry>
+    <env-entry-name>payment_returnUrl</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>http://localhost:8080/lcelis</env-entry-value>
+  </env-entry>
+  
+  
+   <env-entry>
+    <env-entry-name>payment_api_initiate_url</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>http://140.238.98.255:8080/lcapi/api/Payment/InitiatePayment</env-entry-value>
+  </env-entry>
+  
+  
+  
+   <env-entry>
+    <env-entry-name>case_upload_location</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+
+    <env-entry-value>/Users/johnassiamah/elis/documents/case_docs/</env-entry-value>
+  </env-entry>
+  
+  
+  
+   <env-entry>
+    <env-entry-name>public_docs_upload_location</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+
+    <env-entry-value>/Users/johnassiamah/elis/documents/web_docs/</env-entry-value>
+
+  </env-entry>
+  
+  
+  
+   <env-entry>
+    <env-entry-name>softfile_location</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>/Users/johnassiamah/elis/softfiles/</env-entry-value>
+  </env-entry>
+  
+  <env-entry>
+    <env-entry-name>batching_files_location</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>/Users/johnassiamah/elis/softfiles/</env-entry-value>
+
+  </env-entry>
+  
+  
+  
+   <env-entry>
+    <env-entry-name>publicaton_files_location</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>/Users/johnassiamah/elis/documents/publications/</env-entry-value>
+  </env-entry>
+
+    <env-entry>
+    <env-entry-name>tempfile_location</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>/Users/johnassiamah/elis/documents/temp_upload/</env-entry-value>
+  </env-entry>
+  
+  <env-entry>
+    <env-entry-name>lrd_jacket_raw_path</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>/Users/johnassiamah/elis/documents/temp_upload/C:\special_project\pvlmd\maps\garro</env-entry-value>
+  </env-entry>
+  <env-entry>
+     <env-entry-name>lrd_jacket_pdf_path</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>C:\special_project\pvlmd\maps\garro</env-entry-value>
+  </env-entry>
+  
+  <env-entry>
+    <env-entry-name>lrd_jacket_pdf_path_final_app</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>C:\\gelisscans\\scanpdf\\</env-entry-value>
+  </env-entry>
+  
+  <env-entry>
+    <env-entry-name>lrd_geotiff_path</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>/Users/judeyamoah/Documents/lrd_maps</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>cro_geotiff_path</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>C:\\gelisscans\\scanpdf\\</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>garro_geotiff_path</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>C:\\gelisscans\\scanpdf\\</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>garro_vforms_path_raw</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>Z:\jackets\pvlmd\garro\vforms\raw\</env-entry-value>
+  </env-entry>
+  <env-entry>
+    <env-entry-name>garro_vforms_path_pdf</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>Z:\jackets\pvlmd\garro\vforms\pdf\</env-entry-value>
+  </env-entry>
+  
+
+    <env-entry>
+    <env-entry-name>geoserver_url</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>http://10.4.1.47:2020/geoserver/</env-entry-value>
+  </env-entry>
+  
+  
+  <env-entry>
+    <env-entry-name>geoserver_user</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>admin</env-entry-value>
+  </env-entry>
+  
+  
+    <env-entry>
+    <env-entry-name>geoserver_password</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>geoserver</env-entry-value>
+  </env-entry>
+  
+    <env-entry>
+    <env-entry-name>geoserver_workspace_name</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>csau_geospatial</env-entry-value>
+  </env-entry>
+  
+  
+  	<error-page>
+	    <!-- Missing login -->
+	    <error-code>401</error-code>
+	    <location>/404.jsp?error=Error+401&amp;message=Sorry!+Your+request+has+not+been+applied+because+it+lacks+valid+authentication+credentials+for+the+target+resource</location>
+	</error-page>
+	<error-page>
+	    <!-- Forbidden directory listing -->
+	    <error-code>403</error-code>
+	    <location>/404.jsp?error=Error+403&amp;message=Sorry!+You+are+not+allowed+to+access+this+page</location>
+	</error-page>
+	<error-page>
+	    <!-- Missing resource -->
+	    <error-code>404</error-code>
+	    <location>/404.jsp?error=Error+404&amp;message=Sorry!+The+page+you+opened+does+not+exist</location>
+	</error-page>
+	<error-page>
+	    <!-- Uncaught exception -->
+	    <error-code>500</error-code>
+	    <location>/404.jsp?error=Error+500&amp;message=Sorry!+The+server+encountered+an+unexpected+condition+that+prevented+it+from+fulfilling+the+request</location>
+	</error-page>
+	<error-page>
+	    <!-- Unsupported servlet method -->
+	    <error-code>503</error-code>
+	    <location>/404.jsp?error=Error+503&amp;message=Sorry!The+server+is+temporarily+unable+to+handle+the+request</location>
+	</error-page>
+	
+	<error-page>
+	    <!-- Unsupported servlet method -->
+	    <error-code>204</error-code>
+	    <location>/404.jsp?error=Error+204&amp;message=Sorry!The+server+is+temporarily+unable+to+handle+the+request</location>
+	</error-page>
+  
+  
+  <session-config>
+    <session-timeout>-1</session-timeout>
+  </session-config>
+  <!-- <listener>
+    <listener-class>com.class_common.sessiontracker</listener-class>
+  </listener>  -->
+</web-app>

@@ -1,0 +1,741 @@
+concurrence process
+
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Preparation of Certificate
+Final Approval
+             
+
+application_for_deed_registration_on_family_land
+
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Preparation  Certificate
+Final Approval
+Final Approval of Parcel
+
+
+application_for_deed_registration_with_concurrence
+
+Coordinate Entry
+Record Verification
+Preparation Concurrence Certificate
+Preparation Deed certificate
+Final Approval
+Final Approval of Parcel
+
+
+application_for_deed_registration_with_consent
+
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Preparation  Certificate
+Final Approval
+Final Approval of Parcel
+
+application_for_deed_registration
+
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Preparation  Certificate
+Final Approval
+Final Approval of Parcel
+
+
+application_for_pvlmd_plotting
+
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Preparation  Certificate
+Final Approval
+
+
+application_for_regularization_to_title_registration
+
+Coordinate Entry
+Record Verification
+Preparation of Offer Letter and Payment
+Preparation of Lease
+Execution of Lease, Sealing and Indexing
+Stamping of Lease Document
+Link Application to Mother File
+Preparation of Certificate and Register
+Signing of Certificte and Register
+Final Approval and Activation
+
+
+application_lease_preparation_process
+Coordinate Entry
+Record Verification
+Ground Rent
+Preparation of Lease
+Final Approval
+
+
+application_pvlmd_consent_process_part
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Check Ground Rent Payment
+Preparation of Certificate
+Assessment and Payment of Consent Fees
+Final Approval
+
+application_pvlmd_consent_process
+
+Coordinate Entry
+Record Verification
+Vetting and Approval
+Check Ground Rent Payment
+Link Application to Mother File
+Preparation of Certificate
+Assessment and Payment of Consent Fees
+Final Approval
+
+
+certificate_search_progress_details
+
+Record Verification
+Search Report Preparation
+Quality Control
+
+
+
+
+
+certified_true_copy_process
+
+Vetting and Approval
+
+
+financial_document_application
+
+
+
+
+
+APPLICATION FOR REGIONAL NUMBER
+client_application/registration_application_progress_details.jsp
+
+
+
+APPLICATION FOR PLAN APPROVAL
+client_application/plan_approval_application.jsp
+
+
+1-Quality Control at EX (Generate polygon and GLPIN)_Quality Control at EX (Generate polygon and GLPIN)
+2-Quality Control at Cartographic and GIS Section_Quality Control at Cartographic and GIS Section
+3-Signature by the Regional Head_Signature by the Regional Head
+4-Generate Barcode on Plan_Generate Barcode on Plan
+
+
+
+APPLICATION FOR FIRST REGISTRATION (STOOL)
+client_application/registration_application_progress_details.jsp
+
+
+
+APPLICATION FOR FIRST REGISTRATION (FAMILY)
+client_application/registration_application_progress_details.jsp
+
+APPLICATION FOR FIRST REGISTRATION
+client_application/registration_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Approval/Vetting/Approve for Publication_Approval/Vetting/Approve for Publication
+4-Parcel Plan Preparation_Parcel Plan Preparation
+5-Final Approval after Publication_Final Approval after Publication
+6-Preparation  Certificate and Land Register_Entering of Root of Title
+7-Final Approval of Parcel_Final Approval of Parcel
+
+
+
+APPLICATION FOR PART TRANSFER
+client_application/part_transfer_progress_details.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Approval/Vetting_Approval/Vetting
+4-Parcel Plan Preparation_Parcel Plan Preparation
+5-Link Application to Mother File_Link Application to Mother File
+6-Entering of Root of Title_Entering of Root of Title
+7-Final Approval of Registration_Fnmal Approval of Registration
+
+
+
+APPLICATION FOR WHOLE TRANFER
+client_application/part_transfer_progress_details.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Approval/Vetting_Approval/Vetting
+3-Entering of Root of Title_Entering of Root of Title
+4-Certificate and Land Register Preparation_Certificate and Land Register Preparation
+5-Final Approval_Final Approval
+
+
+APPLICATION FOR DEED REGISTRATION
+client_application/application_for_deed_registration.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Approval/Vetting_Approval/Vetting
+3-Preparation  Certificate_Entering of Root of Title
+4-Final Approval_Final Approval
+
+
+APPLICATION FOR DEED REGISTRATION WITH CONSENT
+client_application/application_for_deed_registration_with_consent.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Approval/Vetting_Approval/Vetting
+3-Preparation  Certificate_Entering of Root of Title
+4-Final Approval_Final Approval
+5-Final Approval of Parcel_Final Approval of Parcel
+
+
+APPLICATION FOR DEED REGISTRATION WITH CONCURRENCE
+client_application/application_for_deed_registration_with_concurrence.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Approval/Vetting_Approval/Vetting
+3-Preparation Concurrence Certificate_Preparation Concurrence Certificate
+4-Preparation Deed Certificate_Preparation Deed Certificate
+5-Final Approval_Final Approval
+6-Final Approval of Parcel_Final Approval of Parcel
+
+
+
+APPLICATION FOR DEED REGISTRATION ON FAMILY LAND
+client_application/application_for_deed_registration_on_family_land.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Approval/Vetting_Approval/Vetting
+3-Preparation  Certificate_Entering of Root of Title
+4-Final Approval_Final Approval
+5-Final Approval of Parcel_Final Approval of Parcel
+
+APPLICATION FOR MORTGAGES
+client_application/mortgage_application.jsp
+
+
+1-Vetting_Vetting
+2-Link Application to Mother File_Link Application to Mother File
+3-Final Approval of Registration_Fnmal Approval of Registration
+
+
+
+APPLICATION FOR DISCHARGE
+client_application/discharge_application.jsp
+
+1-Vetting_Vetting
+2-Link Application to Mother File_Link Application to Mother File
+3-Final Approval of Registration_Fnmal Approval of Registration
+
+
+
+
+APPLICATION FOR CAVEAT OR RESTRICTION
+client_application/registration_application_progress_details.jsp
+
+APPLICATION FOR OBJECTION
+client_application/registration_application_progress_details.jsp
+
+APPLICATION FOR SUBSTITUTED CERTIFICATE
+client_application/registration_application_progress_details.jsp
+
+APPLICATION FOR STAMPING(NON LANDED DOCUMENTS)
+client_application/light_document_application.jsp
+
+1-Assessment_Assessment
+2-Embossment after Payment_Embossment after Payment
+
+
+
+APPLICATION FOR STAMPING(FINANCIAL DOCUMENTS)
+client_application/light_document_application.jsp
+
+1-Assessment_Assessment
+2-Embossment after Payment_Embossment after Payment
+
+
+
+
+APPLICATION FOR STAMPING(LANDED INSPECTION CASES)
+client_application/landed_inspection_application.jsp
+
+1-Inspection_Inspection
+2-Assessment_Assessment
+3-Embossment after Payment_Embossment after Payment
+
+
+APPLICATION FOR STAMPING(LANDED NON INSPECTION CASES)
+client_application/landed_non_inspection_application.jsp
+
+1-Assessment_Assessment 
+2-Embossment after Payment_Search Report Preparation
+
+
+
+APPLICATION FOR CONCURRENCE
+client_application/application_concurrence_process.jsp
+
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+
+3-Preparation of Certificate_Preparation of Certificate
+4-Final Approval_Final Approval
+
+
+
+APPLICATION FOR CONSENT TO ASSIGN OR SUBLET (WHOLE SITE)
+client_application/application_pvlmd_consent_process.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Check Ground Rent Payment_Check Ground Rent Payment
+4-Link Application to Mother File_Link Application to Mother File
+5-Preparation of Certificate_Preparation of Certificate
+6-Assessment and Payment of Consent Fees_Assessment and Payment of Consent Fees
+7-Final Approval_Final Approval
+
+
+
+APPLICATION FOR CONSENT TO ASSIGN OR SUBLET (PORTION OR PART)
+client_application/application_pvlmd_consent_process_part.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Check Ground Rent Payment_Check Ground Rent Payment
+4-Preparation of Certificate_Preparation of Certificate
+5-Assessment and Payment of Consent Fees_Assessment and Payment of Consent Fees
+6-Final Approval_Final Approval
+
+client_application/general_application_without_major_process.jsp
+
+1-Vetting/Approval_Vetting/Approval 
+2-Final Approval_Final Approval
+
+
+
+APPLICATION FOR CONSENT TO ASSIGN (JUDICIAL SALE)
+client_application/application_pvlmd_consent_process.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Check Ground Rent Payment_Check Ground Rent Payment
+4-Link Application to Mother File_Link Application to Mother File
+5-Preparation of Certificate_Preparation of Certificate
+6-Assessment and Payment of Consent Fees_Assessment and Payment of Consent Fees
+7-Final Approval_Final Approval
+
+
+
+APPLICATION FOR CONSENT TO MORTGAGE
+client_application/application_pvlmd_consent_process.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Check Ground Rent Payment_Check Ground Rent Payment
+4-Link Application to Mother File_Link Application to Mother File
+5-Preparation of Certificate_Preparation of Certificate
+6-Assessment and Payment of Consent Fees_Assessment and Payment of Consent Fees
+7-Final Approval_Final Approval
+
+
+
+APPLICATION FOR CONSENT TO VEST (VESTING ASSENT)
+client_application/application_pvlmd_consent_process.jsp
+
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Check Ground Rent Payment_Check Ground Rent Payment
+4-Link Application to Mother File_Link Application to Mother File
+5-Preparation of Certificate_Preparation of Certificate
+6-Assessment and Payment of Consent Fees_Assessment and Payment of Consent Fees
+7-Final Approval_Final Approval
+
+
+
+
+
+APPLICATION FOR REGULARIZATION
+client_application/application_lease_preparation_process.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Ground Rent_Ground Rent
+4-Preparation of Lease_Preparation of Lease
+5-Final Approval_Final Approval
+
+
+
+
+
+APPLICATION FOR LEASE
+client_application/application_lease_preparation_process.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Ground Rent_Ground Rent
+4-Preparation of Lease_Preparation of Lease
+5-Final Approval_Final Approval
+
+
+
+APPLICATION FOR CERTIFIED TRUE COPY
+client_application/certified_true_copy_process.jsp
+
+
+
+1-Upload file at CSAU Back Office_Upload file at CSAU Back Office
+1-Vetting/Approval_Vetting/Approval 
+2-Final Approval_Final Approval
+3-Batch To Cabinet_Batch To Cabinet
+4-Collection_Collection Process
+
+
+
+APPLICATION FOR ASSESSMENT AND PAYMENT OF GROUND RENT
+client_application/registration_application_progress_details.jsp
+
+
+
+
+APPLICATION FOR RE PRINT OF TITLE OR APPROVED PLAN
+client_application/registration_application_progress_details.jsp
+
+
+
+APPLICATION FOR APPROVAL OF TITLE PLAN
+client_application/registration_application_progress_details.jsp
+
+
+
+APPLICATION FOR REGIONAL NUMBER FOR OFFICIAL SURVEYS
+client_application/registration_application_progress_details.jsp
+
+
+
+APPLICATION FOR TITLE SEARCH(PERMIT)
+client_application/search_application_progress_details.jsp
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR OFFICIAL SEARCH (CONSOLIDATED)
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR OFFICIAL SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR LRD SITE PLAN SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR CERTIFICATE SEARCH
+client_application/certificate_search_progress_details.jsp
+
+
+1-Record Verification_Record Verification
+2-Search Report Preparation_Search Report Preparation
+3-Quality Control_Signing
+
+
+
+APPLICATION FOR LRD SITE PLAN SEARCH
+client_application/search_application_progress_details.jsp
+
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR OFFICIAL SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR ADMINISTRATIVE SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR TITLE SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR PERMIT SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR SMD SITE PLAN SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR PVLMD OFFICIAL SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR PVLMD PERMIT SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR PVLMD POLICE SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR PVLMD ADMINISTRATIVE SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR LRD PERMIT SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR LRD ADMINISTRATIVE SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR LRD POLICE SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR LRD SITE PLAN SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR LRD CERTIFICATE SEARCH
+client_application/certificate_search_progress_details.jsp
+
+
+1-Record Verification_Record Verification
+2-Search Report Preparation_Search Report Preparation
+3-Quality Control_Signing
+
+
+
+APPLICATION FOR SMD SITE PLAN SEARCH
+client_application/search_application_progress_details.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+3-Search Report Preparation_Search Report Preparation
+4-Quality Control_Signing
+
+
+APPLICATION FOR SUPPLEMENTARY LODGEMENT
+client_application/general_application_without_major_process.jsp
+
+
+APPLICATION FOR REGULARIZATION UP TO TITLE REGISTRATION
+client_application/application_for_regularization_to_title_registration.jsp
+
+
+
+1-Record Verification_Record Verification 
+2-Vetting and Approval_Vetting and Approval
+3-Preparation of Offer Letter and Payment_Preparation of Offer Letter and Payment
+4-Preparation of Lease_Preparation of Lease
+5-Execution of Lease, Sealing and Indexing_Execution of Lease, Sealing and Indexing
+6-Stamping of Lease Document_Stamping of Lease Document
+7-Link Application to Mother File_Link Application to Mother File
+8-Preparation of Certificate and Register_Preparation of Certificate and Register
+9-Signing of Certificte and Register_Signing of Certificte and Register
+10-Final Approval and Activation_Final Approval and Activation
+
+
+APPLICATION FOR PVLMD PLOTTING
+client_application/application_for_pvlmd_plotting.jsp
+
+
+1-Coordinate Entry_Coordinate Entry
+2-Record Verification_Record Verification
+2-Vetting and Approval_Vetting and Approval
+3-Final Approval_Final Approval
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Steps only
+
+1-ps_quality_control_examination-Quality Control at EX (Generate polygon and GLPIN)_Quality Control at EX (Generate polygon and GLPIN)
+2-ps_quality_control_cartographic-Quality Control at Cartographic and GIS Section_Quality Control at Cartographic and GIS Section
+3-ps_sign_by_regional_head-Signature by the Regional Head_Signature by the Regional Head
+4-ps_generate_barcode_for_plan_approval-Generate Barcode on Plan_Generate Barcode on Plan
+5-ps_coordinte_entry-Coordinate Entry
+6-ps_record_verification-Record Verification_Record Verification
+7-ps_quality_control_examination-Approval/Vetting/Approve for Publication_Approval/Vetting/Approve for Publication
+8-ps_quality_control_examination-Parcel Plan Preparation_Parcel Plan Preparation
+9-ps_quality_control_examination-Final Approval after Publication_Final Approval after Publication
+10-ps_quality_control_examination-Preparation  Certificate and Land Register_Entering of Root of Title
+11-ps_quality_control_examination-Approval/Vetting_Approval/Vetting
+12-ps_quality_control_examination-Link Application to Mother File_Link Application to Mother File
+13-ps_quality_control_examination-Entering of Root of Title_Entering of Root of Title
+1-ps_quality_control_examination-Final Approval of Registration_Fnmal Approval of Registration
+15-ps_quality_control_examination-Certificate and Land Register Preparation_Certificate and Land Register Preparation
+16-ps_quality_control_examination-Final Approval_Final Approval
+17-ps_quality_control_examination-Final Approval of Parcel_Final Approval of Parcel
+18-ps_quality_control_examination-Preparation Concurrence Certificate_Preparation Concurrence Certificate
+19-ps_quality_control_examination-Preparation Deed Certificate_Preparation Deed Certificate
+20-ps_quality_control_examination-Final Approval_Final Approval - Deed Registration
+21-ps_quality_control_examination-Final Approval-Mortgage
+22-ps_quality_control_examination-Final Approval-Discharge
+23-ps_quality_control_examination-Assessment_Assessment
+24-ps_quality_control_examination-Embossment after Payment_Embossment after Payment
+25-ps_quality_control_examination-Inspection_Inspection
+26-ps_quality_control_examination-Embossment after Payment_Embossment after Payment
+27-ps_quality_control_examination-Preparation of Concurrence Certificate_Preparation of Concurrence Certificate
+28-ps_quality_control_examination-Final Approval-Concurrence_Final Approval
+29-ps_quality_control_examination-Check Ground Rent Payment_Check Ground Rent Payment
+30-ps_quality_control_examination-Link Application to Mother File-PVLMD_Link Application to Mother File
+31-ps_quality_control_examination-Preparation of Consent Certificate_Preparation of Certificate
+32-ps_quality_control_examination-Assessment and Payment of Consent Fees_Assessment and Payment of Consent Fees
+33-ps_quality_control_examination-Final Approval-Consent_Final Approval
+34-ps_quality_control_examination-Preparation of Lease_Preparation of Lease
+35-ps_quality_control_examination-Search Report Preparation_Search Report Preparation
+36-ps_quality_control_examination-Quality Control_Signing
+37-ps_quality_control_examination-Vetting and Approval_Vetting and Approval
+38-ps_quality_control_examination-Preparation of Offer Letter and Payment_Preparation of Offer Letter and Payment
+39-ps_quality_control_examination-Preparation of Lease_Preparation of Lease
+40-ps_quality_control_examination-Execution of Lease, Sealing and Indexing_Execution of Lease, Sealing and Indexing
+41-ps_quality_control_examination-Stamping of Lease Document_Stamping of Lease Document

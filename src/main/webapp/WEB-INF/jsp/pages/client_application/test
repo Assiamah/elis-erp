@@ -1,0 +1,989 @@
+
+
+
+DELETE FROM csau.lc_application_mile_stone WHERE business_process_id=3 AND business_process_sub_id=3;
+DELETE FROM csau.lc_application_mile_stone_baby_steps WHERE business_process_id=3 AND business_process_sub_id=3;
+
+DELETE FROM csau.lc_application_mile_stone WHERE business_process_id=3 AND business_process_sub_id=5;
+DELETE FROM csau.lc_application_mile_stone_baby_steps WHERE business_process_id=3 AND business_process_sub_id=5;
+
+
+DELETE FROM csau.lc_application_mile_stone WHERE business_process_id=3 AND business_process_sub_id=6;
+DELETE FROM csau.lc_application_mile_stone_baby_steps WHERE business_process_id=3 AND business_process_sub_id=6;
+
+
+DELETE FROM csau.lc_application_mile_stone WHERE business_process_id=3 AND business_process_sub_id=8;
+DELETE FROM csau.lc_application_mile_stone_baby_steps WHERE business_process_id=3 AND business_process_sub_id=8;
+
+
+DELETE FROM csau.lc_application_mile_stone WHERE business_process_id=300 AND business_process_sub_id=300;
+DELETE FROM csau.lc_application_mile_stone_baby_steps WHERE business_process_id=300 AND business_process_sub_id=300;
+
+
+--8	"APPLICATION FOR MORTGAGES"	0	3
+--7	"APPLICATION FOR DEED REGISTRATION"	0	3
+--6	"APPLICATION FOR WHOLE TRANFER"	0	3
+--5	"APPLICATION FOR PART TRANSFER"	0	3
+--3	"APPLICATION FOR FIRST REGISTRATION"	0	3
+
+
+
+
+--FIRST REGISTRATION
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Quality Control and Coordinate Entry', 'Pending', 'false', 3, 3, 1, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Records Verification (FRRV)', 'Pending', 'false', 3, 3, 2, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Approval/Vetting', 'Pending', 'false', 3, 3, 3, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+-- Inspection
+--Title Plan
+
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Approval after Publication', 'Pending', 'false', 3, 3, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+			
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Preparation of Certificate and Register', 'Pending', 'false', 3, 3, 5, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+			
+-- INSERT INTO csau.lc_application_mile_stone(
+-- 	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+-- 	VALUES ('Prepartion of Register and Land Certificate', 'Pendingd', 'false', 3, 3, 6, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+-- 		    ,0);
+			
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Final Vetting of Application and Approval', 'Pending', 'false', 3, 3, 6, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+		
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Final Plotting', 'Pending', 'false', 3, 3, 7, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+			
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Binding and Final Preparations of Certificate', 'Pending', 'false', 3, 3, 8, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+			
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Completion and Collection of Application', 'Pending', 'false', 3, 3, 9, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+			
+
+
+
+-- First Registration  baby Steps
+
+--1. Coordinate Entry
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check for Payments','check_for_payment', 'Pending', 'false', 1, 1, 3, 3, 1,1,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check/Review Documents','check_review_documents', 'Pending', 'false', 2, 1, 3, 3, 1,2,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Add/Edit Parties','add_edit_parties', 'Pending', 'false', 3, 1, 3, 3, 1,3,1);
+
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Further Entry (Enter Details)','further_entry', 'Pending', 'false', 4, 1, 3, 3, 1,4,1);
+
+
+
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Upload Coordinate and Save','upload_coordinate', 'Pending', 'false', 5, 1, 3, 3, 1,5,1);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Visualise and Confirm', 'visualise_and_confirm','Pending', 'false', 6, 1, 3, 3, 1,6,1);
+	
+--1. Records Verification (FRRV)
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Records Information', 'send_to_frrv','Pending', 'false', 1, 1, 3, 3, 2,7,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Verify Records Information','verify_frrv', 'Pending', 'false', 2, 1, 3, 3, 2,8,2);
+	
+	--3. 3. Approval/Vetting
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Documents', 'review_documents','Pending', 'false', 1, 1, 3, 3, 3,9,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Records Information','review_records_verification', 'Pending', 'false', 2, 1, 3, 3, 3,10,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Inspection of Site (IF applicable)', 'inspection_of_site','Pending', 'false', 5, 1, 3, 3, 3,11,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Publication', 'sent_for_publication','Pending', 'false', 3, 1, 3, 3, 3,12,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Title Plan Preparation', 'send_for_title_plan_preparation','Pending', 'false', 4, 1, 3, 3, 3,13,3);
+	
+
+--1. 4. Final Approval after Publication
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check for Objection', 'check_for_objection','Pending', 'false', 1, 1, 3, 3, 4,14,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Parcel Details', 'view_parcel_and_transaction','Pending', 'false', 2, 1, 3, 3, 4,15,3);
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate interest Number', 'generate_interest_number','Pending', 'false', 3, 1, 3, 3, 4,16,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate sub Interest Number','generate_sub_interest_number', 'Pending', 'false', 4, 1, 3, 3, 4,17,3);
+	
+	
+	--3. 5. Root of Title Entry and Indexing
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter root of Title', 'enter_root_of_title','Pending', 'false', 1, 1, 3, 3, 5,18,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate Certificate Number','generate_certificate_number', 'Pending', 'false', 2, 1, 3, 3, 5,19,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate Volume and Folio', 'generate_volume_and_folio','Pending', 'false', 3, 1, 3, 3, 5,20,3);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Enter Memorials','enter_memorial', 'Pending', 'false', 4, 1, 3, 3, 5,21,3);
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Enter Reservation','enter_reservation', 'Pending', 'false', 5, 1, 3, 3, 5,22,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Certificate','compose_certificate', 'Pending', 'false', 4, 1, 3, 3, 5,21,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Register','enter_root_of_title', 'Pending', 'false', 5, 1, 3, 3, 5,22,3);
+	
+	
+	
+--1. 6. Preview Certificate and Land Certificate 
+-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('View Certificate', 'compose_certificate','Pending', 'false', 1, 1, 3, 3, 7,26,4);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('View Register', 'view_register','Pending', 'false', 2, 1, 3, 3, 6,25,3);
+	
+	
+	
+--7. Final Vetting of Application and Approval
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Certificate Details', 'compose_certificate','Pending', 'false', 1, 1, 3, 3, 6,23,4);
+	
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Root of Title Details','enter_root_of_title', 'Pending', 'false', 2, 1, 3, 3, 6,24,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Parcel Details','view_parcel_and_transaction_registrar', 'Pending', 'false', 3, 1, 3, 3, 6,25,4);
+	
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Certificate)','confirm_otp_for_approval_certificate', 'Pending', 'false', 4, 1, 3, 3, 6,26,4);
+		
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Register)', 'confirm_otp_for_approval_register','Pending', 'false', 5, 1, 3, 3, 6,27,4);
+	
+	
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Certificate','view_certificate', 'Pending', 'false', 6, 1, 3, 3, 6,28,4);
+		
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Register', 'view_register','Pending', 'false', 7, 1, 3, 3, 6,29,4);
+	
+	
+	
+	
+	
+    --1.Final Plotting
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View and Confirm Parcel and Transaction', 'view_parcel_and_transaction','Pending', 'false', 1, 1, 3, 3, 7,30,3);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES (' Parcel and Transaction', 'confirm_parcel_and_transaction','Pending', 'false', 2, 1, 3, 3, 7,28,3);
+	
+	
+	-- 9. Binding and Final Preparations of Certificate 
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Certificate ', 'preview_certificate', 'Pending', 'false', 1, 1, 3, 3, 8,31,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Bind Certificate and Other Documents','bind_certificate_and_other_documents', 'Pending', 'false', 2, 1, 3, 3, 8,32,2);
+	
+--10. Completion and Collection of Application
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Cabinet and Send a message to Client', 'send_a_message_to_client','Pending', 'false', 3, 1, 3, 3, 9,33,1);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter Details for Collector and Archive Application', 'enter_details_for_collection_and_print_collection','Pending', 'false', 4, 1, 3, 3, 9,34,1);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Archive Application', 'archive_application', 'Pending', 'false', 5, 1, 3, 3, 9,33,1);
+
+
+
+-- Whole Transfer  baby Steps
+
+--1. Coordinate Entry
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check for Payments','check_for_payment', 'Pending', 'false', 1, 1, 3, 6, 1,1,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check/Review Documents','check_review_documents', 'Pending', 'false', 2, 1, 3, 6, 1,2,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check availability of Mother File','check_availability_of_mother_file', 'Pending', 'false', 3, 1, 3, 6, 1,2,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Add/Edit Parties','add_edit_parties', 'Pending', 'false', 4, 1, 3, 6, 1,3,1);
+
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Further Entry (Enter Details)','further_entry', 'Pending', 'false', 5, 1, 3, 6, 1,4,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Upload Coordinate and Save','upload_coordinate', 'Pending', 'false', 6, 1, 3, 6, 1,5,1);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Visualise and Confirm', 'visualise_and_confirm','Pending', 'false', 7, 1, 3, 6, 1,7,1);
+	
+
+--1. Records Verification
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Records Information', 'send_to_frrv','Pending', 'false', 1, 1, 3, 6, 2,8,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Verify Records Information','review_records_verification', 'Pending', 'false', 2, 1, 3, 6, 2,9,2);
+	
+
+
+	--3. 3. Approval/Vetting
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Documents', 'review_documents','Pending', 'false', 1, 1, 3, 6, 3,10,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Records Information','review_records_verification', 'Pending', 'false', 2, 1, 3, 6, 3,11,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Title Plan Preparation', 'send_for_title_plan_preparation','Pending', 'false', 3, 1, 3, 6, 3,12,3);
+	
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check availability of Mother File', 'check_availability_of_mother_file','Pending', 'false', 4, 1, 3, 6, 3,13,3);
+	
+
+
+    --1. 4. Link to Mother File
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Parcel Details', 'view_parcel_and_transaction','Pending', 'false', 1, 1, 3, 6, 4,14,3);
+	
+		
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check interest and Sub Interest on Mother File','check_interest_and_sub_interest_mother_file', 'Pending', 'false', 2, 1, 3, 6, 4,15,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Link to Mother File','link_to_mother_file', 'Pending', 'false', 3, 1, 3, 6, 4,16,3);
+	
+	
+
+	--3. 5. Root of Title Entry and Indexing
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter root of Title', 'enter_root_of_title','Pending', 'false', 4, 1, 3, 6, 4,17,3);
+	
+-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('Enter Memorials','enter_memorial', 'Pending', 'false', 2, 1, 3, 6, 4,16,3);
+-- 	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('Enter Reservation','enter_reservation', 'Pending', 'false', 3, 1, 3, 6, 4,17,3);
+	
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate Certificate Number','generate_certificate_number', 'Pending', 'false', 5, 1, 3, 6, 4,18,3);
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate Volume and Folio', 'generate_volume_and_folio','Pending', 'false', 6, 1, 3, 6, 4,19,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Certificate','compose_certificate', 'Pending', 'false', 7, 1, 3, 6, 4,20,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Register','view_register', 'Pending', 'false', 8, 1, 3, 6, 4,21,3);
+	
+	
+	
+--1. 6. Preview Certificate and Land Certificate 
+--     INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('View Certificate', 'view_certificate','Pending', 'false', 1, 1, 3, 6, 5,19,3);
+	
+-- 	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('View Register', 'view_register','Pending', 'false', 2, 1, 3, 6, 5,20,3);
+	
+	
+	
+--7. Final Vetting of Application and Approval
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Certificate','compose_certificate', 'Pending', 'false', 1, 1, 3, 6, 5,22,4);
+	
+	
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Root of Title Details','enter_root_of_title', 'Pending', 'false', 1, 1, 3, 6, 5,23,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Parcel Details','view_parcel_and_transaction', 'Pending', 'false', 2, 1, 3, 6, 5,24,4);
+	
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Certificate)','confirm_otp_for_approval_certificate', 'Pending', 'false', 3, 1, 3, 6, 5,25,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Register)', 'confirm_otp_for_approval_register','Pending', 'false', 5, 1, 3, 6, 5,26,4);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Encumbrance)', 'confirm_otp_for_approval_encumbrance','Pending', 'false', 5, 1, 3, 6, 5,27,4);
+	
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Certificate','view_certificate', 'Pending', 'false', 3, 1, 3, 6, 5,28,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Register', 'view_register','Pending', 'false', 5, 1, 3, 6, 5,29,4);
+	
+   
+   
+   
+   --1.Final Plotting
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View and Confirm Parcel and Transaction', 'view_parcel_and_transaction','Pending', 'false', 1, 1, 3, 6, 6,30,3);
+	
+-- 	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('Confirm Parcel and Transaction', 'confirm_parcel_and_transaction','Pending', 'false', 2, 1, 3, 6, 7,28,3);
+	
+	
+	
+	-- 9. Binding and Final Preparations of Certificate 
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Certificate ', 'preview_certificate', 'Pending', 'false', 1, 1, 3, 6, 7,31,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Bind Certificate and Other Documents','bind_certificate_and_other_documents', 'Pending', 'false', 2, 1, 3, 6, 7,32,2);
+	
+--10. Completion and Collection of Application
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Cabinet and Send a message to Client', 'send_a_message_to_client','Pending', 'false', 3, 1, 3, 6, 8,33,1);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter Details for Collector and Archive Application', 'enter_details_for_collection_and_print_collection','Pending', 'false', 4, 1, 3, 6, 8,34,1);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Archive Application', 'archive_application', 'Pending', 'false', 5, 1, 3, 6, 10,33,1);
+	
+	
+
+
+--Part Transafer
+--Main Steps
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Quality Control and Coordinate Entry', 'Pending', 'false', 3, 5, 1, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Records Verification', 'Pending', 'false', 3, 5, 2, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Approval/Vetting', 'Pending', 'false', 3, 5, 3, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+-- INSERT INTO csau.lc_application_mile_stone(
+-- 	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+-- 	VALUES ('Link to Mother File', 'Pending', 'false', 3, 5, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+-- 		    ,0);		
+-- INSERT INTO csau.lc_application_mile_stone(
+-- 	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+-- 	VALUES ('Prepare Register/Certificate', 'Pending', 'false', 3, 5, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+-- 		    ,0);	
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Preparation of Register and Land Certificate', 'Pendingd', 'false', 3, 5, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);		
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Final Approval/Signing', 'Pending', 'false', 3, 5, 5, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Final Plotting', 'Pending', 'false', 3, 5, 6, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Binding of Certificate', 'Pending', 'false', 3, 5, 7, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Completion and Collection of Application', 'Pending', 'false', 3, 5, 8, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+			
+
+
+
+
+-- Part Transfer  baby Steps
+
+--1. Coordinate Entry
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check for Payments','check_for_payment', 'Pending', 'false', 1, 1, 3, 5, 1,1,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check/Review Documents','check_review_documents', 'Pending', 'false', 2, 1, 3, 5, 1,2,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check availability of Mother File','check_availability_of_mother_file', 'Pending', 'false', 3, 1, 3, 5, 1,3,1);
+
+
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Add/Edit Parties','add_edit_parties', 'Pending', 'false', 4, 1, 3, 5, 1,4,1);
+
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Further Entry (Enter Details)','further_entry', 'Pending', 'false', 5, 1, 3, 5, 1,5,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Upload Coordinate and Save','upload_coordinate', 'Pending', 'false', 6, 1, 3, 5, 1,6,1);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Visualise and Confirm', 'visualise_and_confirm','Pending', 'false', 7, 1, 3, 5, 1,7,1);
+	
+
+--1. Records Verification
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Records Information', 'send_to_frrv','Pending', 'false', 1, 1, 3, 5, 2,8,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Verify Records Information','review_records_verification', 'Pending', 'false', 2, 1, 3, 5, 2,9,2);
+	
+
+
+	--3. 3. Approval/Vetting
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Documents', 'review_documents','Pending', 'false', 1, 1, 3, 5, 3,10,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Records Information','review_records_verification', 'Pending', 'false', 2, 1, 3, 5, 3,11,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Title Plan Preparation', 'send_for_title_plan_preparation','Pending', 'false', 3, 1, 3, 5, 3,12,3);
+	
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check availability of Mother File', 'check_availability_of_mother_file','Pending', 'false', 4, 1, 3, 5, 3,13,3);
+	
+
+    --1. 4. Link to Mother File
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Parcel Details', 'view_parcel_and_transaction','Pending', 'false', 1, 1, 3, 5, 4,14,3);
+	
+	
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check interest and Sub Interest on Mother File','check_interest_and_sub_interest_mother_file', 'Pending', 'false', 2, 1, 3, 5, 4,15,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Link to Mother File','link_to_mother_file', 'Pending', 'false', 3, 1, 3, 5, 4,16,3);
+	
+	
+
+	--3. 5. Root of Title Entry and Indexing
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter root of Title', 'enter_root_of_title','Pending', 'false', 4, 1, 3, 5, 4,17,3);
+	
+-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('Enter Memorials','enter_memorial', 'Pending', 'false', 2, 1, 3, 5, 4,16,3);
+-- 	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('Enter Reservation','enter_reservation', 'Pending', 'false', 3, 1, 3, 5, 4,17,3);
+	
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate Certificate Number','generate_certificate_number', 'Pending', 'false', 5, 1, 3, 5, 4,18,3);
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate Volume and Folio', 'generate_volume_and_folio','Pending', 'false', 6, 1, 3, 5, 4,19,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Certificate','compose_certificate', 'Pending', 'false', 7, 1, 3, 5, 4,20,3);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Register','view_register', 'Pending', 'false', 8, 1, 3, 5, 4,21,3);
+	
+	
+	
+-- --1. 6. Preview Certificate and Land Certificate 
+-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('View Certificate', 'view_certificate','Pending', 'false', 1, 1, 3, 5, 5,19,3);
+	
+-- 	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('View Register', 'view_register','Pending', 'false', 2, 1, 3, 5, 5,20,3);
+	
+	
+	
+--7. Final Vetting of Application and Approval
+   INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Certificate Details','compose_certificate', 'Pending', 'false', 1, 1, 3, 5, 5,22,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Root of Title Details','enter_root_of_title', 'Pending', 'false', 2, 1, 3, 5, 5,23,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check Parcel Details','view_parcel_and_transaction', 'Pending', 'false', 3, 1, 3, 5, 5,24,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Certificate)','confirm_otp_for_approval_certificate', 'Pending', 'false', 4, 1, 3, 5, 5,25,4);
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Register)', 'confirm_otp_for_approval_register','Pending', 'false', 5, 1, 3, 5, 5,26,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Encumbrance)', 'confirm_otp_for_approval_encumbrance','Pending', 'false', 5, 1, 3, 5, 5,27,4);
+	
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Certificate','view_certificate', 'Pending', 'false', 6, 1, 3, 5, 5,28,4);
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View Register', 'view_register','Pending', 'false', 7, 1, 3, 5, 5,29,4);
+	
+	
+	
+	
+    --1.Final Plotting
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('View and Confirm Parcel and Transaction', 'view_parcel_and_transaction','Pending', 'false', 1, 1, 3, 5, 6,30,3);
+	
+-- 	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+-- 	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+-- 	VALUES ('Confirm Parcel and Transaction', 'confirm_parcel_and_transaction','Pending', 'false', 2, 1, 3, 5, 7,28,3);
+	
+	
+	-- 9. Binding and Final Preparations of Certificate 
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Certificate ', 'preview_certificate', 'Pending', 'false', 1, 1, 3, 5, 7,31,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Bind Certificate and Other Documents','bind_certificate_and_other_documents', 'Pending', 'false', 2, 1, 3, 5, 7,32,2);
+	
+--10. Completion and Collection of Application
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Cabinet and Send a message to Client', 'send_a_message_to_client','Pending', 'false', 3, 1, 3, 5, 8,33,1);
+	
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter Details for Collector and Archive Application', 'enter_details_for_collection_and_print_collection','Pending', 'false', 4, 1, 3, 5, 8,34,1);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Archive Application', 'archive_application', 'Pending', 'false', 5, 1, 3, 5, 10,33,1);
+
+
+--Mortgage
+--Main Steps
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Quality Control and Coordinate Entry', 'Pending', 'false', 3, 8, 1, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Records Verification', 'Pending', 'false', 3, 8, 2, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Approval/Vetting', 'Pending', 'false', 3, 8, 3, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+-- INSERT INTO csau.lc_application_mile_stone(
+-- 	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+-- 	VALUES ('Link to Mother File', 'Pending', 'false', 3, 8, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+-- 		    ,0);		
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Prepare Certificate', 'Pending', 'false', 3, 8, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);	
+-- INSERT INTO csau.lc_application_mile_stone(
+-- 	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+-- 	VALUES ('Preview Certificate', 'Pendingd', 'false', 3, 8, 6, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+-- 		    ,0);	
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Final Approval/Signing', 'Pending', 'false', 3, 8, 5, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Completion and Collection of Application', 'Pending', 'false', 3, 8, 6, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+
+
+
+-- Mortgage  baby Steps
+
+--1. Coordinate Entry
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check for Payments','check_for_payment', 'Pending', 'false', 1, 1, 3, 8, 1,1,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check/Review Documents','check_review_documents', 'Pending', 'false', 2, 1, 3, 8, 1,2,1);
+
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check availability of Mother File','check_availability_of_mother_file', 'Pending', 'false', 3, 1, 3, 8, 1,3,1);
+
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Add/Edit Parties','add_edit_parties', 'Pending', 'false', 4, 1, 3, 8, 1,4,1);
+
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Further Entry (Enter Details)','further_entry', 'Pending', 'false', 5, 1, 3, 8, 1,5,1);
+
+
+--1. Records Verification
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Send for Records Information', 'send_to_frrv','Pending', 'false', 1, 1, 3, 8, 2,6,2);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Verify Records Information','verify_frrv', 'Pending', 'false', 2, 1, 3, 8, 2,7,2);
+	
+
+
+	--3. 3. Approval/Vetting
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Documents', 'review_documents','Pending', 'false', 1, 1, 3, 8, 3,8,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Records Information','review_records_verification', 'Pending', 'false', 2, 1, 3, 8, 3,9,3);
+	
+    -- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Check availability of Mother File', 'check_availability_of_mother_file','Pending', 'false', 3, 1, 3, 8, 3,9,3);
+	
+
+    --1. 4. Link to Mother File
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Link to Mother File','link_to_mother_file', 'Pending', 'false', 1, 1, 3, 8, 4,10,3);
+	
+	--3. 5. Root of Title Entry and Indexing
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter Mortgage Transaction','enter_mortgage_transaction', 'Pending', 'false', 2, 1, 3, 8, 4,11,3);
+	
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Verify Transaction on Mother','verify_transaction_on_mother', 'Pending', 'false', 3, 1, 3, 8, 4,12,3);
+	
+
+
+
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Memo','compose_mmemo', 'Pending', 'false', 2, 1, 3, 8, 4,13,3);
+	
+	
+	
+--1. 6. Preview Certificate and Land Certificate 
+
+
+
+--7. Final Vetting of Application and Approval
+   INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Memo', 'preview_memo','Pending', 'false', 1, 1, 3, 8, 5,14,3);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Mortgage)','confirm_otp_for_approval_certificate', 'Pending', 'false', 1, 1, 3, 8, 5,15,4);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Approval (Encumbrance)','confirm_otp_for_approval_encumbrance', 'Pending', 'false', 1, 1, 3, 8, 5,16,4);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Enter OTP for Approval (Mortgage)','confirm_otp_for_approval_mortgage', 'Pending', 'false', 2, 1, 3, 8, 7,15,4);
+	
+	
+	-- 9. Binding and Final Preparations of Certificate 
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Preview Memo', 'preview_memo', 'Pending', 'false', 1, 1, 3, 8, 6,17,2);
+	
+--10. Completion and Collection of Application
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Cabinet and Send a message to Client', 'send_a_message_to_client','Pending', 'false', 2, 1, 3, 8, 6,18,1);
+	
+	INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Enter Details for Collector and Archive Application', 'enter_details_for_collection_and_print_collection','Pending', 'false', 3, 1, 3, 8, 6,19,1);
+	
+	-- INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	--  bs_description, bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	-- VALUES ('Archive Application', 'archive_application', 'Pending', 'false', 4, 1, 3, 8, 8,19,1);
+	
+
+
+
+
+--Title Plan
+--Title Plan Steps
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Review Request', 'Pending', 'false', 300, 300, 1, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Assign Reference Numbers', 'Pending', 'false', 300, 300, 2, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Composition of Plan', 'Pending', 'false', 300, 300, 3, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Vetting of Prepared Plan', 'Pending', 'false', 300, 300, 4, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Final Approval/Signing', 'Pending', 'false', 300, 300, 5, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+INSERT INTO csau.lc_application_mile_stone(
+	milestone_description, mile_stone_status, mile_stone_option, business_process_id, business_process_sub_id, priority_value, working_day_required, milestone_text_message, milestone_remaining)
+	VALUES ('Send/Batch to LRD', 'Pending', 'false', 300, 300, 6, 2, 'Dear Applicant, your [TYPE OF APPLICATION] with job number [JOB NUMBER] is undergoing vetting/approval, Thank You   [DATE]'
+		    ,0);
+
+
+
+
+-- Title Plan  baby Steps
+
+--1. Coordinate Entry
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Instructions with Request','review_instruction_with_request', 'Pending', 'false', 1, 1, 300, 300, 1,1,1);
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check/Review Documents','check_review_documents', 'Pending', 'false', 2, 1, 300, 300, 1,2,1);
+
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Records Infomation','review_records_information', 'Pending', 'false', 3, 1, 300, 300, 1,3,1);
+
+
+
+
+
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Generate SMD Numbers','generate_smd_number', 'Pending', 'false', 1, 1, 300, 300, 2,4,1);
+
+
+
+  INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Plan Details','review_plan_details', 'Pending', 'false', 1, 1, 300, 300, 3,5,1);
+
+  INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Upload PDF Plan','upload_pdf_plan', 'Pending', 'false', 2, 1, 300, 300, 3,6,1);
+
+   
+
+INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Plan Details','review_plan_details', 'Pending', 'false', 4, 1, 300, 300, 4,7,1);
+
+   INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Check/Review Documents','check_review_documents', 'Pending', 'false', 2, 1, 300, 300, 4,8,1);
+
+   
+
+   
+   INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Review Plan Details','review_plan_details', 'Pending', 'false', 4, 1, 300, 300, 5,9,1);
+
+  INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Request and Enter OTP for Final Signing','plot_transaction_to_smd_layer', 'Pending', 'false', 4, 1, 300, 300, 5,10,1);
+
+  INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Upload Final PDF Plan','upload_final_pdf_plan', 'Pending', 'false', 4, 1, 300, 300, 5,11,1);
+
+
+
+
+    INSERT INTO csau.lc_application_mile_stone_baby_steps(
+	 bs_description,bs_description_key, bs_status, bs_option, bs_priority_value, bs_working_day_required, business_process_id, business_process_sub_id, ms_id,bs_process_priority_level,bs_access_level)
+	VALUES ('Complete Request and forward to Approval Officer','complete_request_forward_to_approval_officer', 'Pending', 'false', 5, 1, 300, 300, 6,12,1);
+

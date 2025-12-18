@@ -1,0 +1,2013 @@
+$(document)
+		.ready(
+				function() {
+
+					var datatable = $("#job_casemgtdetailsdataTableCS")
+							.DataTable({
+								// responsive: true,
+
+								stateSave : true,
+								"createdRow" : function(row, data, dataIndex) {
+									if (data[0] == "1") {
+										$(row).addClass('tr-completed-work');
+									}
+								},
+
+							/*
+							 * columns: [ { // Responsive control column data:
+							 * null, defaultContent: '', className: 'control',
+							 * orderable: false },
+							 *  ],
+							 */
+							}); 
+					
+					let queries_datatable = $("#tbl_responded_queries_result")
+					.DataTable({
+						dom: 'Bfrtip',						
+				        buttons: [
+				        	'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+				        ]
+					});
+
+
+					$(".btnLoadUnitApplications").click(function(event) {
+						
+						var inbox_type = $(this).data('id');
+
+						var inc_1 = $('#inc_1').val();
+						var com_3 = $('#com_3').val();
+						var que_2 = $('#que_2').val();
+						var awa_4 = $('#awa_4').val();
+
+						datatable.search("").draw();
+						datatable.state.clear();
+						datatable.clear();
+
+						//console.log(inc_1, com_3, que_2, awa_4)
+
+						switch (inbox_type) {
+							case 1:
+								if(inc_1 > 500) {
+
+									$('#adv_inbox_type').val(inbox_type);
+
+									if(inbox_type == 1){
+										$('#adv_status').val('Incoming Files');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 2) {
+										$('#adv_status').val('Queried');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 3) {
+										$('#adv_status').val('Completed Within Unit');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 4) {
+										$('#adv_status').val('Awaiting Payment');
+										$('.exclude_all').removeClass('d-none');
+									} else {
+										$('#adv_status').val('All');
+									}
+
+									$("#incoming_advanced_search").modal('show');
+
+									datatable.search("").draw();
+									datatable.state.clear();
+									datatable.clear();
+
+									return;
+
+								} else {
+
+									LoadUnitApplications(inbox_type)
+								}
+
+							case 3:
+								if(com_3 > 500) {
+
+									$('#adv_inbox_type').val(inbox_type);
+
+									if(inbox_type == 1){
+										$('#adv_status').val('Incoming Files');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 2) {
+										$('#adv_status').val('Queried');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 3) {
+										$('#adv_status').val('Completed Within Unit');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 4) {
+										$('#adv_status').val('Awaiting Payment');
+										$('.exclude_all').removeClass('d-none');
+									} else {
+										$('#adv_status').val('All');
+									}
+
+									$("#incoming_advanced_search").modal('show');
+
+									return;
+
+								} else {
+
+									LoadUnitApplications(inbox_type)
+								}
+
+							case 2:
+								if(que_2 > 500) {
+
+									$('#adv_inbox_type').val(inbox_type);
+
+									if(inbox_type == 1){
+										$('#adv_status').val('Incoming Files');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 2) {
+										$('#adv_status').val('Queried');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 3) {
+										$('#adv_status').val('Completed Within Unit');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 4) {
+										$('#adv_status').val('Awaiting Payment');
+										$('.exclude_all').removeClass('d-none');
+									} else {
+										$('#adv_status').val('All');
+									}
+
+									$("#incoming_advanced_search").modal('show');
+
+									return;
+
+								} else {
+
+									LoadUnitApplications(inbox_type)
+								}
+
+							case 4:
+								if(awa_4 > 500) {
+
+									$('#adv_inbox_type').val(inbox_type);
+
+									if(inbox_type == 1){
+										$('#adv_status').val('Incoming Files');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 2) {
+										$('#adv_status').val('Queried');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 3) {
+										$('#adv_status').val('Completed Within Unit');
+										$('.exclude_all').removeClass('d-none');
+									} else if(inbox_type == 4) {
+										$('#adv_status').val('Awaiting Payment');
+										$('.exclude_all').removeClass('d-none');
+									} else {
+										$('#adv_status').val('All');
+									}
+
+									$("#incoming_advanced_search").modal('show');
+
+									return;
+
+								} else {
+
+									LoadUnitApplications(inbox_type)
+								}
+						}
+		
+					})
+
+					$('.exclude_job_search').addClass('d-none');
+					//$('.include_job_search').removeClass('d-none');
+
+					$('input[name="adv_search_type"]').on('click', function() {
+						
+
+						var adv_search_type = $('input[name="adv_search_type"]:checked').val();
+						//console.log(adv_search_type)
+
+						if(adv_search_type == 'f_job_number') {
+							$('.exclude_job_search').addClass('d-none');
+							$('.include_job_search').removeClass('d-none');
+						} else if(adv_search_type == 'f_app_type') {
+							$('.exclude_app_type').addClass('d-none');
+							$('.include_app_type').removeClass('d-none');
+						} else if(adv_search_type == 'f_job_purpose') {
+							$('.exclude_job_purpose').addClass('d-none');
+							$('.include_job_purpose').removeClass('d-none');
+						} else if(adv_search_type == 'f_date_range') {
+							$('.exclude_date_range').addClass('d-none');
+							$('.include_date_range').removeClass('d-none');
+						} else if(adv_search_type == 'f_limit') {
+							$('.exclude_limit').addClass('d-none');
+							$('.include_limit').removeClass('d-none');
+						}
+					});
+				
+
+					$('#btn_load_adv_filter').on('click', function(e) {
+
+						var adv_search_type = $('input[name="adv_search_type"]:checked').val();
+						var inbox_type = $('#adv_inbox_type').val();
+						//var adv_filter;
+						//console.log(inbox_type)
+
+						var adv_job_number = $('#adv_job_number').val()
+						var adv_application_type = $('#adv_application_type').val()
+						var adv_limit = $('#adv_limit').val()
+						var adv_from_date = $('#adv_from_date').val()
+						var adv_to_date = $('#adv_to_date').val()
+						var enq_search_type = "job_number";
+						var adv_job_purpose = $('#adv_job_purpose').val()
+						var adv_sorting = $('#adv_sorting').val()
+
+						if(adv_search_type == 'f_job_number') {
+
+							inbox_type = '0';
+
+							if(!adv_job_number) {
+								$.notify({
+									message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter a job number</span>',
+								}, { type : 'danger' , z_index: 9999  });
+
+								alert('Please enter a job number');
+
+								return;
+							}
+
+						} else if(adv_search_type == 'f_app_type') {
+							//console.log(adv_application_type,adv_limit,adv_sorting )
+							if(adv_application_type == 0 || !adv_limit || !adv_sorting || adv_limit > 1000) {
+								$.notify({
+									message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please all the field are required with the exception of job purpose</span>',
+								}, { type : 'danger' , z_index: 9999  });
+
+								alert('Please all the field are required with the exception of job purpose');
+
+								return;
+							}
+							
+						} else if(adv_search_type == 'f_job_purpose') {
+
+							if(adv_job_purpose == '0' || !adv_limit || adv_limit > 1000) {
+								$.notify({
+									message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please all the field are required</span>',
+								}, { type : 'danger' , z_index: 9999  });
+
+								alert('Please all the field are required');
+
+								return;
+							}
+							
+						} else if(adv_search_type == 'f_date_range') {
+							if(!adv_from_date || !adv_limit || !adv_to_date|| adv_limit > 1000) {
+								$.notify({
+									message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please all the field are required</span>',
+								}, { type : 'danger' , z_index: 9999  });
+
+								alert('Please all the field are required');
+
+								return;
+							}
+							
+						} else if(adv_search_type == 'f_limit') {
+							if(!adv_limit || !adv_sorting || adv_limit > 1000) {
+								$.notify({
+									message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please all the field are required</span>',
+								}, { type : 'danger' , z_index: 9999  });
+
+								alert('Please all the field are required');
+
+								return;
+							} 
+						} 
+
+						$.ajax({
+							type : "POST",
+							url : "Case_Management_Serv",
+							data : {
+								request_type : 'load_incoming_app_for_unit_using_adv_filter',
+								//adv_filter : adv_filter,
+								adv_job_number: adv_job_number,
+								adv_application_type: adv_application_type,
+								adv_from_date: adv_from_date == '' ? '12-12-2000' : adv_from_date,
+								adv_to_date: adv_to_date == '' ? '12-12-2000' : adv_to_date,
+								adv_limit: adv_limit == '' ? 0 : adv_limit,
+								enq_search_type: enq_search_type,
+								inbox_type: inbox_type + '_false',
+								adv_job_purpose : adv_job_purpose,
+								adv_sorting : adv_sorting,
+								adv_search_type : adv_search_type
+							},
+
+							success : function(
+								jobdetails) {
+									
+									if(!jobdetails){
+										return;
+									}
+
+									$('#incoming_advanced_search').modal('hide');
+							
+							// console.log(jobdetails);
+							var json_p = JSON
+							.parse(jobdetails);
+
+
+					/*
+					 * $('th:nth-child(7)').show();
+					 * $('th:nth-child(8)').show();
+					 */
+
+					datatable.column(0)
+							.visible(false);
+					// datatable.column(1).visible(false);
+
+					
+					datatable.column(0).visible(false);
+					//datatable.column(1).visible(false);
+
+					datatable.search("")
+							.draw();
+					datatable.state.clear();
+					datatable.clear();
+
+					$("#body-dg-1")
+							.removeClass(
+									'bg-dark');
+					$("#number-text-1")
+							.removeClass(
+									'text-white');
+					$("#number-text-1")
+							.addClass(
+									'text-gray-800');
+					$("#body-dg-2")
+							.removeClass(
+									'bg-dark');
+					$("#number-text-2")
+							.removeClass(
+									'text-white');
+					$("#number-text-2")
+							.addClass(
+									'text-gray-800');
+					$("#body-dg-3")
+							.removeClass(
+									'bg-dark');
+					$("#number-text-3")
+							.removeClass(
+									'text-white');
+					$("#number-text-3")
+							.addClass(
+									'text-gray-800');
+					$("#body-dg-4")
+							.removeClass(
+									'bg-dark');
+					$("#number-text-4")
+							.removeClass(
+									'text-white');
+					$("#number-text-4")
+							.addClass(
+									'text-gray-800');
+
+											$(json_p.data)
+											.each(
+													function() {
+
+														datatable.row
+																.add([
+
+																	this.job_worked_on_status,
+
+																	'<input type="checkbox"/>',
+																	this.created_date,
+																	this.job_number,
+																	this.ar_name,
+																	this.business_process_sub_name,
+																	this.job_status,
+																	this.job_forwarded_by,
+																	this.locality,
+																	this.smd_type_of_plotting,
+
+																	'<button  class="btn btn-info btn-icon-split"  data-title="Add to List"  id="btnAddToBatchlist-'
+																			+ this.job_number
+																			+ '" data-job_number="'
+																			+ this.job_number
+																			+ '" data-ar_name="'
+																			+ this.ar_name
+																			+ '" data-business_process_sub_name="'
+																			+ this.business_process_sub_name
+																			+ '" data-application_stage="'
+																			+ this.application_stage
+																			+ '" data-application_stage_name="'
+																			+ this.application_stage_name
+																			+ '" data-application_stage_baby_step="'
+																			+ this.application_stage_baby_step
+																			+ '" data-application_stage_name_baby_step="'
+																			+ this.application_stage_name_baby_step
+																			+ '" data-target="#askForPurposeOfBatchingCS" data-toggle="modal" >'
+																			+ ' <span class="icon text-white-50"> <i class="fas fa-list"></i></span><span class="text">Add to Batch</span>'
+																			+ ' </button>',
+
+																	'<form action="front_office_view_application" method="post">'
+																			+ '<input type="hidden" name="case_number" id="case_number" value="'
+																			+ this.transaction_number
+																			+ '">'
+																			+ '<input type="hidden" name="search_text" id="search_text" value="'
+																			+ this.case_number
+																			+ '">'
+																			+ '<input type="hidden" name="job_number" id="job_number" value="'
+																			+ this.job_number
+																			+ '">'
+																			+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+																			+ this.business_process_sub_name
+																			+ '">'
+
+																			+ '	<button type="submit" name="save" class="btn btn-primary btn-icon-split" >'
+
+																			+ '	<span class="icon text-white-50"> <i class="fas fa-eye"></i></span><span class="text">View</span>'
+																			+ '	</button></form>',
+
+																			'<form action="registration_application_progress_details" method="post">'
+																			+ '<input type="hidden" name="case_number" id="case_number" value="'
+																			+ this.transaction_number
+																			+ '">'
+																			+ '<input type="hidden" name="transaction_number" id="transaction_number" value="'
+																			+ this.transaction_number
+																			+ '">'
+																			+ '<input type="hidden" name="job_number" id="job_number" value="'
+																			+ this.job_number
+																			+ '">'
+																			+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+																			+ this.business_process_sub_name
+																			+ '">'
+
+																			+ '	<button type="submit" name="save" class="btn btn-danger btn-icon-split btn-to-be-disabled to_hide_on_level_1" >'
+
+																			+ '	<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Work</span>'
+																			+ '	</button></form>'
+
+																		])
+																.draw(
+																		false);
+														datatable
+																.column(
+																		2)
+																.data()
+																.sort();
+
+													});
+
+											switch (inbox_type) {
+												case '1':
+
+													$(".btn-to-be-disabled").prop('disabled',true);
+													datatable.column(11).visible(true);
+
+													$("#body-dg-1")
+															.addClass(
+																	'bg-dark');
+													$("#number-text-1")
+															.removeClass(
+																	'text-gray-800');
+													$("#number-text-1")
+															.addClass(
+																	'text-white');
+
+													break;
+												case '2':
+
+													$(
+															".btn-to-be-disabled")
+															.prop(
+																	'disabled',
+																	false);
+
+													$("#body-dg-2")
+															.addClass(
+																	'bg-dark');
+													$("#number-text-2")
+															.removeClass(
+																	'text-gray-800');
+													$("#number-text-2")
+															.addClass(
+																	'text-white');
+													datatable.column(11).visible(true);
+
+													break;
+												case '3':
+													$(
+															".btn-to-be-disabled")
+															.prop(
+																	'disabled',
+																	false);
+
+													$("#body-dg-3")
+															.addClass(
+																	'bg-dark');
+													$("#number-text-3")
+															.removeClass(
+																	'text-gray-800');
+													$("#number-text-3")
+															.addClass(
+																	'text-white');
+													datatable.column(11).visible(true);
+													break;
+												case '4':
+													$(
+															".btn-to-be-disabled")
+															.prop(
+																	'disabled',
+																	true);
+													datatable
+															.column(11)
+															.visible(
+																	false);
+
+													$("#body-dg-4")
+															.addClass(
+																	'bg-dark');
+													$("#number-text-4")
+															.removeClass(
+																	'text-gray-800');
+													$("#number-text-4")
+															.addClass(
+																	'text-white');
+													break;
+												default:
+													// code block
+												}
+
+												if (localStorage
+														.getItem('user_level') < 2) {
+													// $('th:nth-child(8),
+													// th:nth-child(8)').hide();
+													// $('.to_hide_on_level_1').hide();
+													datatable
+															.column(11)
+															.visible(
+																	false);
+
+												}
+
+						}
+
+						})
+					})
+
+
+						// $(".btnLoadUnitApplications")
+						// 	.click(
+						// 			function(event) {
+							function LoadUnitApplications(inbox_type){
+										//var inbox_type = $(this).data('id');
+
+										if(inbox_type == 1){
+											document.getElementById('inbox_text').innerHTML = "Sent By"
+										// } else if(inbox_type == 4) {
+										// 	document.getElementById('inbox_text').innerHTML = "Sent To"
+										} else {
+											document.getElementById('inbox_text').innerHTML = "Sent To"
+										}
+		
+										if(inbox_type == 1){
+											document.getElementById('reminder_text').innerHTML = "Type of Plotting"
+										} else {
+											document.getElementById('reminder_text').innerHTML = "Reminder"
+										}
+									
+										
+										$.ajax({
+													type : "POST",
+													url : "Case_Management_Serv",
+													data : {
+														request_type : 'load_certificate_signing_applications_at_unit_by_inbox_type',
+														inbox_type : inbox_type + '_false',
+													},
+
+													success : function(
+															jobdetails) {
+
+																if(!jobdetails) {
+																	return;
+																}
+														
+														// console.log(jobdetails);
+														var json_p = JSON
+																.parse(jobdetails);
+
+
+														/*
+														 * $('th:nth-child(7)').show();
+														 * $('th:nth-child(8)').show();
+														 */
+
+														datatable.column(0)
+																.visible(false);
+														// datatable.column(1).visible(false);
+
+														
+														datatable.column(0).visible(false);
+														//datatable.column(1).visible(false);
+
+														datatable.search("")
+																.draw();
+														datatable.state.clear();
+														datatable.clear();
+
+														$("#body-dg-1")
+																.removeClass(
+																		'bg-dark');
+														$("#number-text-1")
+																.removeClass(
+																		'text-white');
+														$("#number-text-1")
+																.addClass(
+																		'text-gray-800');
+														$("#body-dg-2")
+																.removeClass(
+																		'bg-dark');
+														$("#number-text-2")
+																.removeClass(
+																		'text-white');
+														$("#number-text-2")
+																.addClass(
+																		'text-gray-800');
+														$("#body-dg-3")
+																.removeClass(
+																		'bg-dark');
+														$("#number-text-3")
+																.removeClass(
+																		'text-white');
+														$("#number-text-3")
+																.addClass(
+																		'text-gray-800');
+														$("#body-dg-4")
+																.removeClass(
+																		'bg-dark');
+														$("#number-text-4")
+																.removeClass(
+																		'text-white');
+														$("#number-text-4")
+																.addClass(
+																		'text-gray-800');
+
+														$(json_p.data)
+																.each(
+																		function() {
+
+																			var startDate = this.job_datesend;
+																				startDate = new Date(startDate.replace(/-/g, "/"));
+																				var endDate = "", noOfDaysToAdd = 10, count = 0;
+																				while(count < noOfDaysToAdd){
+																					endDate = new Date(startDate.setDate(startDate.getDate() + 1));
+																					if(endDate.getDay() != 0 && endDate.getDay() != 6){
+																					//Date.getDay() gives weekday starting from 0(Sunday) to 6(Saturday)
+																					count++;
+																					}
+																				}
+																				
+																				var nxt_date = '';
+																				
+																				var datex = new Date(endDate);
+																				let day = (datex.getDate());
+																				let month = ((datex.getMonth()+1));
+																				let year = datex.getFullYear();
+																			
+																				nxt_date = `${month}/${day}/${year}`;
+																				
+																				var today = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+																				var date1 = new Date(today);
+																				var date2 = new Date(nxt_date);
+																				var diffDays = parseInt((date2 - date1) / (1000 * 60 * 60 * 24), 10);
+																				reminder = diffDays;
+																				
+																				if(reminder <= 0) {
+																					var Str = reminder.toString();;
+																					var newStr = Str.replace('-','');
+																					
+																					display_reminder = `<label class="badge badge-danger">${newStr} Day(s) Passed</label>`
+																				} else {
+																					display_reminder = `<label class="badge badge-success">${reminder} Day(s) Left</label>`   
+																				}
+
+																			datatable.row
+																					.add([
+
+																						this.job_worked_on_status,
+	
+																						'<input type="checkbox"/>',
+																						this.created_date,
+																						this.job_number,
+																						this.ar_name,
+																						this.business_process_sub_name,
+																						this.job_status,
+																						inbox_type == 1 ? this.job_forwarded_by : this.job_recieved_by,
+																						this.locality,
+																						inbox_type == 1 ? this.smd_type_of_plotting : display_reminder,
+	
+																						'<button  class="btn btn-info btn-icon-split"  data-title="Add to List"  id="btnAddToBatchlist-'
+																								+ this.job_number
+																								+ '" data-job_number="'
+																								+ this.job_number
+																								+ '" data-ar_name="'
+																								+ this.ar_name
+																								+ '" data-business_process_sub_name="'
+																								+ this.business_process_sub_name
+																								+ '" data-application_stage="'
+																								+ this.application_stage
+																								+ '" data-application_stage_name="'
+																								+ this.application_stage_name
+																								+ '" data-application_stage_baby_step="'
+																								+ this.application_stage_baby_step
+																								+ '" data-application_stage_name_baby_step="'
+																								+ this.application_stage_name_baby_step
+																								+ '" data-target="#askForPurposeOfBatchingCS" data-toggle="modal" >'
+																								+ ' <span class="icon text-white-50"> <i class="fas fa-list"></i></span><span class="text">Add to Batch</span>'
+																								+ ' </button>',
+	
+																						'<form action="front_office_view_application" method="post">'
+																								+ '<input type="hidden" name="case_number" id="case_number" value="'
+																								+ this.transaction_number
+																								+ '">'
+																								+ '<input type="hidden" name="search_text" id="search_text" value="'
+																								+ this.case_number
+																								+ '">'
+																								+ '<input type="hidden" name="job_number" id="job_number" value="'
+																								+ this.job_number
+																								+ '">'
+																								+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+																								+ this.business_process_sub_name
+																								+ '">'
+	
+																								+ '	<button type="submit" name="save" class="btn btn-primary btn-icon-split" >'
+	
+																								+ '	<span class="icon text-white-50"> <i class="fas fa-eye"></i></span><span class="text">View</span>'
+																								+ '	</button></form>',
+	
+																								'<form action="registration_application_progress_details" method="post">'
+																								+ '<input type="hidden" name="case_number" id="case_number" value="'
+																								+ this.transaction_number
+																								+ '">'
+																								+ '<input type="hidden" name="transaction_number" id="transaction_number" value="'
+																								+ this.transaction_number
+																								+ '">'
+																								+ '<input type="hidden" name="job_number" id="job_number" value="'
+																								+ this.job_number
+																								+ '">'
+																								+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+																								+ this.business_process_sub_name
+																								+ '">'
+	
+																								+ '	<button type="submit" name="save" class="btn btn-danger btn-icon-split btn-to-be-disabled to_hide_on_level_1" >'
+	
+																								+ '	<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Work</span>'
+																								+ '	</button></form>'
+
+																							])
+																					.draw(
+																							false);
+																			datatable
+																					.column(
+																							2)
+																					.data()
+																					.sort();
+
+																		});
+
+														switch (inbox_type) {
+														case 1:
+
+															$(".btn-to-be-disabled").prop('disabled',true);
+															datatable.column(11).visible(true);
+
+															$("#body-dg-1")
+																	.addClass(
+																			'bg-dark');
+															$("#number-text-1")
+																	.removeClass(
+																			'text-gray-800');
+															$("#number-text-1")
+																	.addClass(
+																			'text-white');
+
+															break;
+														case 2:
+
+															$(
+																	".btn-to-be-disabled")
+																	.prop(
+																			'disabled',
+																			false);
+
+															$("#body-dg-2")
+																	.addClass(
+																			'bg-dark');
+															$("#number-text-2")
+																	.removeClass(
+																			'text-gray-800');
+															$("#number-text-2")
+																	.addClass(
+																			'text-white');
+															datatable.column(11).visible(true);
+
+															break;
+														case 3:
+															$(
+																	".btn-to-be-disabled")
+																	.prop(
+																			'disabled',
+																			false);
+
+															$("#body-dg-3")
+																	.addClass(
+																			'bg-dark');
+															$("#number-text-3")
+																	.removeClass(
+																			'text-gray-800');
+															$("#number-text-3")
+																	.addClass(
+																			'text-white');
+															datatable.column(11).visible(true);
+															break;
+														case 4:
+															$(
+																	".btn-to-be-disabled")
+																	.prop(
+																			'disabled',
+																			true);
+															datatable
+																	.column(11)
+																	.visible(
+																			false);
+
+															$("#body-dg-4")
+																	.addClass(
+																			'bg-dark');
+															$("#number-text-4")
+																	.removeClass(
+																			'text-gray-800');
+															$("#number-text-4")
+																	.addClass(
+																			'text-white');
+															break;
+														default:
+															// code block
+														}
+
+														if (localStorage
+																.getItem('user_level') < 2) {
+															// $('th:nth-child(8),
+															// th:nth-child(8)').hide();
+															// $('.to_hide_on_level_1').hide();
+															datatable
+																	.column(11)
+																	.visible(
+																			false);
+
+														}
+
+													}
+
+												});
+
+									};
+
+
+					$("#btn_load_resolved_queries").on("click", function(e){
+						e.preventDefault();
+						//load applications
+						$.ajax({
+							type : "POST",
+							url : "Case_Management_Serv",
+							data : {
+								request_type : 'load_responded_queried_applications_at_unit',
+							},
+
+							success : function(jobdetails) {
+								queries_datatable.search("").draw();
+								queries_datatable.state.clear().draw();
+								queries_datatable.clear().draw(true);
+								console.log(jobdetails);
+								try{
+									var json_p = JSON.parse(jobdetails);
+									$(json_p.data).each(function() {
+										
+										queries_datatable.row.add([
+											'<input type="checkbox"/>',
+											this.job_number,
+											this.ar_name,
+											this.business_process_sub_name,
+											this.locality,
+											this.modified_by,
+											
+
+											'<button  class="btn btn-info btn-icon-split"  data-title="Add to List"  id="btnAddToBatchlist-'
+													+ this.job_number
+													+ '" data-job_number="'
+													+ this.job_number
+													+ '" data-ar_name="'
+													+ this.ar_name
+													+ '" data-business_process_sub_name="'
+													+ this.business_process_sub_name
+													+ '" data-target="#askForPurposeOfBatchingCS" data-toggle="modal" >'
+													+ ' <span class="icon text-white-50"> <i class="fas fa-list"></i></span><span class="text">Add to Batch</span>'
+													+ ' </button>',
+													
+													'<button type="button" id="editQueryModal"  data-toggle="modal" '
+													+ ' data-target="#newQueryModal"  data-action="edit"  '
+													+ ' class="btn btn-icon-split btn-info"  title="View/Edit Query" '
+													+ ' data-id=" ' + this.qid +'" '
+													+ ' data-job_number=" ' + this.job_number +'"' 
+													+ ' data-reasons=" ' + this.reasons +'" '
+													+ ' data-remarks=" ' + this.remarks +'"' 
+													+ ' data-status=" ' + this.status +'" '
+													+ ' data-query_response=" ' + this.query_response +'" '
+													+ ' data-created_by=" ' + this.created_by +'" '
+													+ ' data-created_date=" ' + this.created_date +'"' 
+													+ ' data-modified_by=" ' + this.modified_by +'" '
+													+ ' data-modified_date=" ' + this.modified_date +'" '
+													+ ' data-general_reason=" ' + this.query_general_reason +'"'
+													+ ' data-attachment_required=" ' + this.attachment_required +'"><span class="icon text-white-50"> <i class="fas fa-edit"></i></span><span class="text">View/Edit</span></button>', 
+
+
+													
+
+
+											'<form action="registration_application_progress_details" method="post">'
+												+ '<input type="hidden" name="case_number" id="case_number" value="'
+												+ this.transaction_number
+												+ '">'
+												+ '<input type="hidden" name="transaction_number" id="transaction_number" value="'
+												+ this.transaction_number
+												+ '">'
+												+ '<input type="hidden" name="job_number" id="job_number" value="'
+												+ this.job_number
+												+ '">'
+												+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+												+ this.business_process_sub_name
+												+ '">'
+			
+												+ '	<button type="submit" name="save" class="btn btn-danger btn-icon-split btn-to-be-disabled to_hide_on_level_1" >'
+			
+												+ '	<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Work</span>'
+												+ '	</button></form>'
+
+											]).draw(false);
+														
+
+									});
+									$("#respondedQueriesModal").modal({backdrop: 'static', keyboard: false});
+									
+								}catch(e){
+									console.log(e);
+								}
+								
+							}
+
+						});
+						
+						//
+					});
+
+					$('#incoming_advanced_search').on('hidden.bs.modal', function(e){
+						$('#adv_inbox_type').val('')
+					})
+
+					
+					$('#incoming_advanced_search').on('shown.bs.modal', function(e){
+
+						function CallA(){
+
+							var inbox_type = $('#adv_inbox_type').val() == '' ? '5' : $('#adv_inbox_type').val();
+							//console.log(inbox_type)
+							if(inbox_type == '5'){
+								$('#adv_status').val('All');
+								$('.exclude_all').addClass('d-none')
+								//$("#adv_filter_type_1").prop("checked", true);
+								document.getElementById('adv_filter_type_1').click();
+							}
+
+							$.ajax({
+								type : "POST",
+								url : "Case_Management_Serv",
+								data : {
+									request_type : 'load_sub_process_application_type_for_adv_filter',
+									inbox_type : inbox_type == '5' ? '1' : inbox_type +  '_false',
+								},
+	
+								success : function(jobdetails) {
+									//console.log(jobdetails)
+
+									if(!jobdetails){
+										return;
+									}
+
+									var json_p = JSON.parse(jobdetails);
+	
+									var select = $("#adv_application_type");
+									select.empty();
+									select
+											.append(new Option(
+													"-- Select --",
+													0));
+	
+									$(json_p).each(function() {
+														
+										select.append('<option value="'
+												+ this.business_process_sub_id
+												+ '">'
+												+ this.business_process_sub_name
+												+ '</option>');
+									});
+								}
+	
+							})
+
+							CallB()
+						}
+
+						function CallB(){
+							
+							$.ajax({
+								type: "POST",
+								url: "app_modal_fills_serv",
+								data: {
+									   request_type: 'tags_for_batching_jobs_list'},
+								cache: false,
+								beforeSend: function () {
+								   // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+								},
+								success: function(jobdetails) {
+								   
+									
+									   //console.log(jobdetails);
+									   var json_p = JSON.parse(jobdetails);
+									   var options = $("#adv_job_purpose");
+		   
+									   options.empty();
+									   options.append(new Option("-- Select --", 0));
+		
+									
+									   $(json_p).each(function () {
+		   
+											 $('#adv_job_purpose').append('<option value="' + this.tfb_description +'">' + this.tfb_description + '</option>');
+											
+										  });  
+									}
+								});
+						}
+
+						CallA()
+
+					})
+
+
+					// $('#btn_load_adv_filter').on('click', function(e) {
+
+					// 	var adv_filter;
+
+					// 	var adv_job_number = $('#adv_job_number').val()
+					// 	var adv_application_type = $('#adv_application_type').val()
+					// 	var adv_limit = $('#adv_limit').val()
+					// 	var adv_from_date = $('#adv_from_date').val()
+					// 	var adv_to_date = $('#adv_to_date').val()
+					// 	var selected_rbtn = $("input[name='rbtn_search_type']:checked");
+					// 	var enq_search_type = "";
+
+					// 	var inbox_type = $(this).data('id');
+
+					// 	if(adv_job_number != ""){
+					// 		//$('#adv_job_number').css('border-color', 'green');
+					// 		if (selected_rbtn.length > 0) {
+					// 			enq_search_type = selected_rbtn.val();
+					// 			//console.log("selected " + enq_search_type);
+					// 		}
+
+					// 		if (enq_search_type.length <= 0){
+					// 			$.notify({
+					// 				message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please select the type of field for your search</span>',
+					// 			}, { type : 'danger' , z_index: 9999  });
+
+					// 			alert('Please select the type of field for your search');
+
+					// 			return;
+								
+					// 		}
+
+					// 		adv_limit = 1000;
+					// 	}
+
+					// 	if(!adv_limit){
+					// 		$.notify({
+					// 			message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter the limit.</span>',
+					// 		}, { type : 'danger' , z_index: 9999  });
+
+					// 		alert('Please enter the limit.');
+
+					// 		return;
+							
+					// 	}
+
+					// 	// if(adv_job_number || adv_application_type == "0" || !adv_from_date || !adv_to_date) {
+					// 	// 	adv_filter = "adv_filter_1"
+						
+					// 	// } else if(!adv_job_number || adv_application_type == "0" || !adv_from_date || !adv_to_date){
+					// 	// 	adv_filter = "adv_filter_2"
+
+					// 	// 	if(adv_limit > 1000){
+					// 	// 		$.notify({
+					// 	// 			message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Limit should not be more than 1000.</span>',
+					// 	// 		}, { type : 'danger' , z_index: 9999  });
+	
+					// 	// 		return;
+					// 	// 	}
+
+					// 	// } else if(!adv_job_number || adv_application_type != "0" || adv_from_date || adv_to_date){
+					// 	// 	adv_filter = "adv_filter_5"
+
+					// 	// 	if(adv_limit > 1000){
+					// 	// 		$.notify({
+					// 	// 			message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Limit should not be more than 1000.</span>',
+					// 	// 		}, { type : 'danger' , z_index: 9999  });
+	
+					// 	// 		return;
+					// 	// 	}
+
+					// 	// } else if(!adv_job_number || adv_application_type != "0" || !adv_from_date || !adv_to_date){
+					// 	// 	adv_filter = "adv_filter_6"
+
+					// 	// 	if(adv_limit > 1000){
+					// 	// 		$.notify({
+					// 	// 			message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Limit should not be more than 1000.</span>',
+					// 	// 		}, { type : 'danger' , z_index: 9999  });
+	
+					// 	// 		return;
+					// 	// 	}
+					// 	// } else if(!adv_job_number || adv_application_type != "0" || adv_from_date || adv_to_date){
+					// 	// 	adv_filter = "adv_filter_7"
+
+					// 	// 	if(adv_limit > 1000){
+					// 	// 		$.notify({
+					// 	// 			message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Limit should not be more than 1000.</span>',
+					// 	// 		}, { type : 'danger' , z_index: 9999  });
+	
+					// 	// 		return;
+					// 	// 	}
+					// 	// }
+
+					// 	if(adv_application_type != "0" || !adv_from_date || !adv_to_date){
+					// 		adv_filter = "adv_filter_6"
+
+					// 		if(adv_limit > 1000){
+					// 			$.notify({
+					// 				message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Limit should not be more than 1000.</span>',
+					// 			}, { type : 'danger' , z_index: 9999  });
+
+					// 			alert('Limit should not be more than 1000.');
+	
+					// 			return;
+					// 		}
+					// 	} else if(adv_application_type == "0" || !adv_from_date || !adv_to_date){
+					// 		adv_filter = "adv_filter_6"
+
+					// 		if(adv_limit > 1000){
+					// 			$.notify({
+					// 				message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Limit should not be more than 1000.</span>',
+					// 			}, { type : 'danger' , z_index: 9999  });
+
+					// 			alert('Limit should not be more than 1000.');
+	
+					// 			return;
+					// 		}
+					// 	}
+
+					// 	//console.log(adv_filter, adv_job_number, adv_application_type, adv_from_date, adv_to_date,adv_limit );
+
+					// 	$.ajax({
+					// 		type : "POST",
+					// 		url : "Case_Management_Serv",
+					// 		data : {
+					// 			request_type : 'load_incoming_app_for_unit_using_adv_filter',
+					// 			adv_filter : adv_filter,
+					// 			adv_job_number: adv_job_number,
+					// 			adv_application_type: adv_application_type,
+					// 			adv_from_date: adv_from_date == '' ? '12-12-2000' : adv_from_date,
+					// 			adv_to_date: adv_to_date == '' ? '12-12-2000' : adv_to_date,
+					// 			adv_limit: adv_limit,
+					// 			enq_search_type: enq_search_type,
+					// 			inbox_type: inbox_type + '_false',
+					// 		},
+
+					// 		success : function(
+					// 			jobdetails) {
+							
+					// 		// console.log(jobdetails);
+					// 		var json_p = JSON
+					// 				.parse(jobdetails);
+
+
+					// 		/*
+					// 		 * $('th:nth-child(7)').show();
+					// 		 * $('th:nth-child(8)').show();
+					// 		 */
+
+					// 		datatable.column(0)
+					// 				.visible(false);
+					// 		// datatable.column(1).visible(false);
+
+							
+					// 		datatable.column(0).visible(false);
+					// 		//datatable.column(1).visible(false);
+
+					// 		datatable.search("")
+					// 				.draw();
+					// 		datatable.state.clear();
+					// 		datatable.clear();
+
+					// 		$("#body-dg-1")
+					// 				.removeClass(
+					// 						'bg-dark');
+					// 		$("#number-text-1")
+					// 				.removeClass(
+					// 						'text-white');
+					// 		$("#number-text-1")
+					// 				.addClass(
+					// 						'text-gray-800');
+					// 		$("#body-dg-2")
+					// 				.removeClass(
+					// 						'bg-dark');
+					// 		$("#number-text-2")
+					// 				.removeClass(
+					// 						'text-white');
+					// 		$("#number-text-2")
+					// 				.addClass(
+					// 						'text-gray-800');
+					// 		$("#body-dg-3")
+					// 				.removeClass(
+					// 						'bg-dark');
+					// 		$("#number-text-3")
+					// 				.removeClass(
+					// 						'text-white');
+					// 		$("#number-text-3")
+					// 				.addClass(
+					// 						'text-gray-800');
+					// 		$("#body-dg-4")
+					// 				.removeClass(
+					// 						'bg-dark');
+					// 		$("#number-text-4")
+					// 				.removeClass(
+					// 						'text-white');
+					// 		$("#number-text-4")
+					// 				.addClass(
+					// 						'text-gray-800');
+
+					// 		$(json_p.data)
+					// 				.each(
+					// 						function() {
+
+					// 							datatable.row
+					// 									.add([
+
+					// 										this.job_worked_on_status,
+
+					// 										'<input type="checkbox"/>',
+					// 										this.created_date,
+					// 										this.job_number,
+					// 										this.ar_name,
+					// 										this.business_process_sub_name,
+					// 										this.job_status,
+					// 										this.job_forwarded_by,
+					// 										this.locality,
+					// 										this.smd_type_of_plotting,
+
+					// 										'<button  class="btn btn-info btn-icon-split"  data-title="Add to List"  id="btnAddToBatchlist-'
+					// 												+ this.job_number
+					// 												+ '" data-job_number="'
+					// 												+ this.job_number
+					// 												+ '" data-ar_name="'
+					// 												+ this.ar_name
+					// 												+ '" data-business_process_sub_name="'
+					// 												+ this.business_process_sub_name
+					// 												+ '" data-application_stage="'
+					// 												+ this.application_stage
+					// 												+ '" data-application_stage_name="'
+					// 												+ this.application_stage_name
+					// 												+ '" data-application_stage_baby_step="'
+					// 												+ this.application_stage_baby_step
+					// 												+ '" data-application_stage_name_baby_step="'
+					// 												+ this.application_stage_name_baby_step
+					// 												+ '" data-target="#askForPurposeOfBatchingCS" data-toggle="modal" >'
+					// 												+ ' <span class="icon text-white-50"> <i class="fas fa-list"></i></span><span class="text">Add to Batch</span>'
+					// 												+ ' </button>',
+
+					// 										'<form action="front_office_view_application" method="post">'
+					// 												+ '<input type="hidden" name="case_number" id="case_number" value="'
+					// 												+ this.transaction_number
+					// 												+ '">'
+					// 												+ '<input type="hidden" name="search_text" id="search_text" value="'
+					// 												+ this.case_number
+					// 												+ '">'
+					// 												+ '<input type="hidden" name="job_number" id="job_number" value="'
+					// 												+ this.job_number
+					// 												+ '">'
+					// 												+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+					// 												+ this.business_process_sub_name
+					// 												+ '">'
+
+					// 												+ '	<button type="submit" name="save" class="btn btn-primary btn-icon-split" >'
+
+					// 												+ '	<span class="icon text-white-50"> <i class="fas fa-eye"></i></span><span class="text">View</span>'
+					// 												+ '	</button></form>',
+
+					// 												'<form action="registration_application_progress_details" method="post">'
+					// 												+ '<input type="hidden" name="case_number" id="case_number" value="'
+					// 												+ this.transaction_number
+					// 												+ '">'
+					// 												+ '<input type="hidden" name="transaction_number" id="transaction_number" value="'
+					// 												+ this.transaction_number
+					// 												+ '">'
+					// 												+ '<input type="hidden" name="job_number" id="job_number" value="'
+					// 												+ this.job_number
+					// 												+ '">'
+					// 												+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="'
+					// 												+ this.business_process_sub_name
+					// 												+ '">'
+
+					// 												+ '	<button type="submit" name="save" class="btn btn-danger btn-icon-split btn-to-be-disabled to_hide_on_level_1" >'
+
+					// 												+ '	<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Work</span>'
+					// 												+ '	</button></form>'
+
+					// 											])
+					// 									.draw(
+					// 											false);
+					// 							datatable
+					// 									.column(
+					// 											2)
+					// 									.data()
+					// 									.sort();
+
+					// 						});
+
+					// 		switch (inbox_type) {
+					// 		case 1:
+
+					// 			$(".btn-to-be-disabled").prop('disabled',true);
+					// 			datatable.column(11).visible(true);
+
+					// 			$("#body-dg-1")
+					// 					.addClass(
+					// 							'bg-dark');
+					// 			$("#number-text-1")
+					// 					.removeClass(
+					// 							'text-gray-800');
+					// 			$("#number-text-1")
+					// 					.addClass(
+					// 							'text-white');
+
+					// 			break;
+					// 		case 2:
+
+					// 			$(
+					// 					".btn-to-be-disabled")
+					// 					.prop(
+					// 							'disabled',
+					// 							false);
+
+					// 			$("#body-dg-2")
+					// 					.addClass(
+					// 							'bg-dark');
+					// 			$("#number-text-2")
+					// 					.removeClass(
+					// 							'text-gray-800');
+					// 			$("#number-text-2")
+					// 					.addClass(
+					// 							'text-white');
+					// 			datatable.column(11).visible(true);
+
+					// 			break;
+					// 		case 3:
+					// 			$(
+					// 					".btn-to-be-disabled")
+					// 					.prop(
+					// 							'disabled',
+					// 							false);
+
+					// 			$("#body-dg-3")
+					// 					.addClass(
+					// 							'bg-dark');
+					// 			$("#number-text-3")
+					// 					.removeClass(
+					// 							'text-gray-800');
+					// 			$("#number-text-3")
+					// 					.addClass(
+					// 							'text-white');
+					// 			datatable.column(11).visible(true);
+					// 			break;
+					// 		case 4:
+					// 			$(
+					// 					".btn-to-be-disabled")
+					// 					.prop(
+					// 							'disabled',
+					// 							true);
+					// 			datatable
+					// 					.column(11)
+					// 					.visible(
+					// 							false);
+
+					// 			$("#body-dg-4")
+					// 					.addClass(
+					// 							'bg-dark');
+					// 			$("#number-text-4")
+					// 					.removeClass(
+					// 							'text-gray-800');
+					// 			$("#number-text-4")
+					// 					.addClass(
+					// 							'text-white');
+					// 			break;
+					// 		default:
+					// 			// code block
+					// 		}
+
+					// 		if (localStorage
+					// 				.getItem('user_level') < 2) {
+					// 			// $('th:nth-child(8),
+					// 			// th:nth-child(8)').hide();
+					// 			// $('.to_hide_on_level_1').hide();
+					// 			datatable
+					// 					.column(11)
+					// 					.visible(
+					// 							false);
+
+					// 		}
+
+					// 	}
+
+					// 	})
+					// })
+
+					$('#rbtn_search_type1').on('click', function(e){
+
+					})
+
+
+					$('#btnAddAlltoBatchlistCS').on('click', function(e) {
+						var job_purpose =$("#txt_general_job_purpose").val();
+			  
+						var remarks_notes = $(
+							"#txt_general_remarks_notes")
+							.val();
+
+							if(!job_purpose || !remarks_notes) {
+							
+								$
+							.notify(
+									{
+										message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Purpose and remarks field are required!! </span>',
+									}, {
+										type : 'danger' , z_index: 9999 
+									});
+								return;
+							}
+								if(job_purpose){
+								  var confirmText = "Are you sure you want to add these application to the list?";
+								  if(confirm(confirmText)) {
+									 
+									  
+									  $("#job_casemgtdetailsdataTableCS input[type=checkbox]:checked").each(function () {
+										  var row = $(this).closest("tr")[0];
+										  var job_number = row.cells[2].innerHTML;
+											 var ar_name =  row.cells[3].innerHTML;
+											 var business_process_sub_name =row.cells[4].innerHTML;
+											 addJobToBatchlistCS(job_number,ar_name,business_process_sub_name,job_purpose,remarks_notes);
+									  });
+									  
+									  $(
+										'#viewBatchlistModalCS #lbl_batch_type')
+										.val('cert_signing');
+									  prepareBatchlistModalCS();
+									}
+								}else{
+									
+									$.notify({
+									  message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Purpose of batching required ! </span>',
+								  }, {
+									  type: 'danger'
+								  });
+								}
+								
+						 }); 
+
+
+						 window.addJobToBatchlistCS = function addJobToBatchlistCS(job_number,ar_name,business_process_sub_name,job_purpose,remarks_notes){
+							var obj = {
+								   'Job Number': job_number,
+								   'Applicant Name ': ar_name,
+								   'Application Type' : business_process_sub_name,
+								   'Batching Purpose' : job_purpose,
+								   'Remarks/Notes' : remarks_notes
+							   };
+
+							  // console.log(obj)
+					   
+						   var existing = localStorage.getItem('batchlistdataCS');
+							   existing = existing ? JSON.parse(existing) : {};
+							   existing[job_number] = obj;
+							   localStorage.setItem('batchlistdataCS', JSON.stringify(existing));
+									   prepareBatchlistModalCS();
+					   }
+					   
+						   window.removeJobFromBatchlistCS = function removeJobFromBatchlistCS(job_number){
+								// alert(job_number)
+							   var existing = localStorage.getItem('batchlistdataCS');
+							   //console.log(existing)
+							   existing = existing ? JSON.parse(existing) : []
+							   delete existing[job_number];
+							   localStorage.setItem('batchlistdataCS', JSON.stringify(existing));
+							   prepareBatchlistModalCS();
+						   }
+						 
+						   
+						   window.prepareBatchlistModalCS = function prepareBatchlistModalCS(){
+
+							//console.log(localStorage.getItem('batchlistdataCS'))
+							   
+							   var existing = localStorage.getItem('batchlistdataCS');
+
+							   console.log(existing)
+
+							   if(!existing) {
+
+								$.notify({
+									message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Batch list is empty! </span>',
+								}, {
+									type: 'danger'
+								});
+								 
+								return;
+							   }
+								  if(existing !== (existing.length < 3) ){	 
+									  existing = existing ? JSON.parse(existing) : "No Application in batch list";
+										  var wholeArray = null;
+									   var wholeArray = Object.keys(existing).map(key => existing[key]);
+									   function constructTable(selector,list) { 
+											// Getting the all column names
+										   var cols = Headers(list, selector); 
+										   // Traversing the JSON data
+										   for (var i = 0; i < list.length; i++) { 
+											   var row = $('<tr/>'); 
+											   for (var colIndex = 0; colIndex < cols.length; colIndex++) 
+											   { 
+												   var val = list[i][cols[colIndex]]; 
+												   // If there is any key, which is matching
+												   // with the column name
+												   if (val == null) val = ""; 
+												   row.append($('<td/>').html(val)); 
+												   if(colIndex == cols.length - 1){
+													   row.append('<td><button type="button" onclick="removeJobFromBatchlistCS(\'' + list[i][cols[colIndex -4]] +'\')" class="btn btn-danger" >Remove</button></td>');
+												   }
+											   } 
+											   // Adding each row to the table
+											   $(selector).append(row); 
+										   } 
+									   } 
+								   
+									   function Headers(list, selector) { 
+										   $(selector).empty();
+										   var columns = []; 
+										   var header = $('<tr/>'); 
+										   for (var i = 0; i < list.length; i++) { 
+											   var row = list[i]; 
+											   for (var k in row) { 
+												   if ($.inArray(k, columns) == -1) { 
+													   columns.push(k); 
+													   // Creating the header
+													   header.append($('<th/>').html(k)); 
+												   } 
+											   } 
+										   } 
+										   // Appending the header to the table
+										   $(selector).append(header); 
+										   return columns; 
+									   }	
+									   
+									   constructTable('#batchlistdataCSTable',wholeArray);
+									   $('#viewBatchlistModalCS').modal('show');
+									   $('#viewBatchlistModalCS').modal('handleUpdate')
+					   
+									   
+									  
+								  }else{
+									  
+									 $('#viewBatchlistModalCS').modal('toggle');
+									alert("No batchlist created");
+								  }
+						   }
+
+						   $('#btnViewBatchlistCS').on('click', function(e) {
+
+							$(
+								'#viewBatchlistModalCS #lbl_batch_type')
+								.val('cert_signing');
+        
+							prepareBatchlistModalCS();
+							  
+					   });
+
+
+					
+					   $('#btn_clear_all_batchlist_cs')
+					   .on(
+							   'click',
+							   function(e) {
+
+								   var confirmText = "Are you sure you want to remove all applications from list? Note that this cannot be undone";
+								   if (confirm(confirmText)) {
+
+									   localStorage
+											   .removeItem('batchlistdataCS');
+											   //prepareBatchlistModalCS();
+											   $('#viewBatchlistModalCS').modal('toggle');
+								   }
+
+							   });
+
+
+							   $('#askForPurposeOfBatchingCS').on('show.bs.modal', function(e) {
+								$('#askForPurposeOfBatchingCS #bl_job_number_new').val($(e.relatedTarget).data('job_number'));
+								$('#askForPurposeOfBatchingCS #bl_ar_name_new').val($(e.relatedTarget).data('ar_name'));
+								$('#askForPurposeOfBatchingCS #bl_business_process_sub_name_new').val($(e.relatedTarget).data('business_process_sub_name'));
+								$('#askForPurposeOfBatchingCS #bl_application_stage').val($(e.relatedTarget).data('application_stage'));
+								$('#askForPurposeOfBatchingCS #bl_application_stage_name').val($(e.relatedTarget).data('application_stage_name'));
+								$('#askForPurposeOfBatchingCS #bl_application_stage_baby_step').val($(e.relatedTarget).data('application_stage_baby_step'));
+								$('#askForPurposeOfBatchingCS #bl_application_stage_name_baby_step').val($(e.relatedTarget).data('application_stage_name_baby_step'));
+				
+				
+				
+								// console.log($(e.relatedTarget).data('application_stage_name'));
+								// console.log($(e.relatedTarget).data('application_stage_baby_step'));
+								// console.log($(e.relatedTarget).data('application_stage_name_baby_step'));
+				
+								 
+								$.ajax({
+									 type: "POST",
+									 url: "app_modal_fills_serv",
+									 data: {
+											request_type: 'tags_for_batching_jobs_list'},
+									 cache: false,
+									 beforeSend: function () {
+										// $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+									 },
+									 success: function(jobdetails) {
+										
+										 
+											console.log(jobdetails);
+											var json_p = JSON.parse(jobdetails);
+											var options = $("#bl_job_purpose_new");
+											var adv_options = $("#adv_job_purpose");
+				
+										   // var options = $("#selector");
+											options.empty();
+											options.append(new Option("-- Select --", 0));
+				
+											adv_options.empty();
+											adv_options.append(new Option("-- Select --", 0));
+										 
+											$(json_p).each(function () {
+											  
+											//	console.log(select_id);
+										   //	console.log(this.business_process_id);
+											  
+										  //   if (main_service_id ==this.business_process_id){
+												  $('#askForPurposeOfBatchingCS #bl_job_purpose_new').append('<option value="' + this.tfb_description +'">' + this.tfb_description + '</option>');
+				
+												  $('#askForPurposeOfBatchingCS #adv_job_purpose').append('<option value="' + this.tfb_description +'">' + this.tfb_description + '</option>');
+													 
+										  //  }
+											  
+											
+											   });  
+									 }
+									 });
+								  
+						   });
+
+
+						   $('#btnaddjobtolistFinalCS').on('click', function(e) {
+							//console.log('Add to batchlist');
+							$('#askForPurposeOfBatchingCS').modal('hide');
+							   var job_number = $("#askForPurposeOfBatchingCS #bl_job_number_new").val();
+							   //var send_by_id = $("#modified_by_id").val();
+							   //var send_by =$("#modified_by").val();
+							   var ar_name = $("#askForPurposeOfBatchingCS #bl_ar_name_new").val();
+							   var business_process_sub_name =$("#askForPurposeOfBatchingCS #bl_business_process_sub_name_new").val();
+							   var job_purpose =$("#askForPurposeOfBatchingCS #bl_job_purpose_new").val();
+							var remarks_notes =$("#askForPurposeOfBatchingCS #bl_remarks_notes").val(); 
+			
+							   console.log("job_num: " + job_number);
+							   console.log("ar_name: " + ar_name);
+							   console.log("business_process_sub_name: " + business_process_sub_name);
+							   console.log("job_purpose: " + job_purpose);
+							console.log("remarks_notes: " + remarks_notes);
+							   
+							if(job_purpose == 'KEEP –IN-VIEW' || !remarks_notes) {
+								alert('Add remarks or notes to continue!!')
+								return;
+							}
+			
+							   if(job_purpose){
+								   addJobToBatchlistCS(job_number,ar_name,business_process_sub_name,job_purpose,remarks_notes);
+								   $(
+									'#viewBatchlistModalCS #lbl_batch_type')
+									.val('cert_signing');
+								   prepareBatchlistModalCS();
+							   }else{
+								   $.notify({
+									message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold"> Purpose of Bacthing Required </span>',
+								}, {
+									type: 'danger'
+								});
+							   }
+						  
+					   }); 
+
+
+
+					   $("#btn_process_batchlist_cs")
+							.click(
+									function(event) {
+
+										// alert(JSON.stringify(table));
+										let
+										request_type = "";
+										var list_of_application_new = JSON
+												.stringify(table)
+																		
+
+										if ($('#batch_type').val() === 'Unit') {
+
+											request_type = 'process_batch_list_unit';
+											var userid_1 = $("#unit_to_send_to")
+													.val(); // $(
+											// "#user_to_send_to
+											// option:selected"
+											// ).text();
+											var send_to_id = $(
+													'#listofunitsbatching option')
+													.filter(
+															function() {
+																return this.value == userid_1;
+															}).data('id');
+											var send_to_name = $(
+													'#listofunitsbatching option')
+													.filter(
+															function() {
+																return this.value == userid_1;
+															}).data('name');
+
+										} else {
+											request_type = 'process_batch_list_new';
+											var userid_1 = $("#user_to_send_to")
+													.val(); // $(
+											// "#user_to_send_to
+											// option:selected"
+											// ).text();
+											var send_to_id = $(
+													'#listofusersbatching option')
+													.filter(
+															function() {
+																return this.value == userid_1;
+															}).data('id');
+											var send_to_name = $(
+													'#listofusersbatching option')
+													.filter(
+															function() {
+																return this.value == userid_1;
+															}).data('name');
+
+										}
+
+										
+										request_type = 'process_batch_list_for_certificate_signing';
+										
+
+										//console.log(request_type);
+
+										var table = storeTblValues();
+										list_of_application_new = JSON
+												.stringify(table);
+										console.log(list_of_application_new);
+
+										/*
+										 * console.log("request_type: " +
+										 * request_type); console.log("userid_1 " +
+										 * userid_1); console.log("sender " +
+										 * send_to_name); console.log("sender " +
+										 * send_to_id);
+										 */
+
+										function storeTblValues() {
+											var TableData = new Array();
+
+											$('#batchlistdataCSTable tr')
+													.each(
+															function(row, tr) {
+																TableData[row] = {
+																	"job_number" : $(
+																			tr)
+																			.find(
+																					'td:eq(0)')
+																			.text()
+																			.trim(),
+																	"ar_name" : $(
+																			tr)
+																			.find(
+																					'td:eq(1)')
+																			.text()
+																			.trim(),
+																	"job_purpose" : $(
+																			tr)
+																			.find(
+																					'td:eq(3)')
+																			.text()
+																			.trim(),
+																	"business_process_sub_name" : $(
+																			tr)
+																			.find(
+																					'td:eq(2)')
+																			.text()
+																			.trim(),
+																	"remarks_notes" : $(
+																		tr)
+																		.find(
+																				'td:eq(4)')
+																		.text()
+																		.trim(),
+																// "send_to_name"
+																// :
+																// send_to_name,
+																// "send_to_id"
+																// : send_to_id
+																}
+															});
+											TableData.shift(); // first row
+											// will be empty
+											// - so remove
+											return TableData;
+										}
+
+										$
+												.ajax({
+													type : "POST",
+													url : "Case_Management_Serv",
+													data : {
+														request_type : request_type,
+														division : localStorage
+																.getItem('division'),
+														list_of_application : list_of_application_new,
+														send_to_name : send_to_name,
+														send_to_id : send_to_id,
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt="" width="24"
+														// height="24">');
+													},
+													success : function(response) {
+														console.log(response)
+
+														var json_p = JSON
+																.parse(response);
+
+														$('#request_type')
+																.val(
+																		'request_to_generate_batch_list');
+														$(
+																'#list_of_application')
+																.val(
+																		list_of_application_new);
+														$('#batch_number')
+																.val(
+																		json_p.batch_number);
+
+														$('#modified_by')
+																.val(
+																		$(
+																				"#user_to_send_to")
+																				.val());
+														// var userid_1 = $(
+														// "#user_to_send_to"
+														// ).val();
+
+														// $('#modified_by').val(localStorage.getItem('fullname'));
+														$('#modified_by_id')
+																.val(
+																		localStorage
+																				.getItem('userid'));
+														// $('#downloadForm').submit();
+
+														if(json_p.success == true) {
+
+														$
+																.ajax({
+																	type : "POST",
+																	url : "GenerateCaseReports",
+																	target : '_blank',
+																	data : {
+																		request_type : 'request_to_generate_batch_list',
+																		list_of_application : list_of_application_new,
+																		batch_number : json_p.batch_number,
+																		modified_by : localStorage
+																				.getItem('fullname'),
+																		modified_by_id : localStorage
+																				.getItem('userid'),
+																		send_to_name : send_to_name,
+																		send_to_id : send_to_id
+																	},
+																	cache : false,
+																	xhrFields : {
+																		responseType : 'blob'
+																	},
+																	beforeSend : function() {
+																		// $('#district').html('<img
+																		// src="img/loading.gif"
+																		// alt=""
+																		// width="24"
+																		// height="24">');
+																		// console.log("before
+																		// ajax");
+
+																	},
+																	success : function(
+																			data) {
+																		console
+																				.log(data)
+
+																		$(
+																				'#elisDocumentPreview')
+																				.modal(
+																						{
+																							backdrop : 'static',
+																						});
+
+																		var blob = new Blob(
+																				[ data ],
+																				{
+																					type : "application/pdf"
+																				});
+																		var objectUrl = URL
+																				.createObjectURL(blob);
+																		// window.open(objectUrl);
+																		console
+																				.log("success ajax");
+
+																		$(
+																				'#elisdovumentpreviewblobfile')
+																				.attr(
+																						'src',
+																						objectUrl);
+
+																	},
+																	complete : function() {
+																		console
+																				.log("Completed ajax");
+																		$(
+																				'#viewBatchlistModal')
+																				.modal(
+																						'hide');
+																		console
+																				.log("Completed 3 ajax");
+																		// Clear
+																		// Local
+																		// storage
+																		// Bactlist
+																		localStorage
+																				.setItem(
+																						'batchlistdataCS',
+																						'');
+																		// prepareBatchlistModal();
+
+																	}
+																});
+
+															}
+
+															else {
+
+																$.notify({
+																	message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold"> Oops! Action can not be done. The select officer has '+json_p.user_count+' case(s).</span>',
+																}, {
+																	type: 'danger'
+																});
+
+																alert('Oops! Action can not be done. The select officer has '+json_p.user_count+' case(s).')
+															}
+
+													}
+												});
+
+									});
+
+
+
+									
+
+});

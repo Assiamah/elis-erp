@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script>
+		$(document).ready(function(){
+		  $("button").click(function(){
+		    $.ajax({
+		    	url: "https://txtconnect.net/sms/api?action=check-balance&api_key=Z0NDS2hyQWdNSE9kcmtzanhEaWE=&response=json", 
+			    success: function(result){
+		     	//console.log(result)
+		      $("h1").html(
+		    	` <br>
+		    	Balance: ${result.balance}<br>
+		    	User : ${result.user}
+		    	`
+		      );
+		    }});
+		  });
+		});
+		</script>
+	</head>
+	<body>
+		<div id="div1"><h2>Let get SMS BALANCE from TXT Ghana</h2></div>
+
+		<button>Get External Content</button>
+		<h1></h1>
+	</body>
+</html>
