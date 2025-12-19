@@ -2154,6 +2154,240 @@
     </div>
 </div>
 
+<div class="modal fade effect-scale modal-blur" id="viewQueryModal" tabindex="-1" aria-labelledby="viewQueryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <div>
+                        <h5 class="modal-title mb-0" id="viewQueryModalLabel">
+                            <i class="bi bi-question-circle me-2"></i>Query Details
+                        </h5>
+                        <p class="mb-0 small opacity-75">Viewing query information</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Query Header Info -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-md bg-warning text-white rounded-circle me-3">
+                                <i class="bi bi-file-text fs-20"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1" id="queryCaseTitle">
+                                    <span id="queryCaseNumberDisplay"></span> - Query
+                                </h6>
+                                <p class="text-muted mb-0 small">
+                                    <i class="bi bi-calendar me-1"></i>
+                                    Created: <span id="queryCreatedDateDisplay"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="d-flex flex-column align-items-end">
+                            <span class="badge fs-6 px-3 py-2 mb-1" id="queryStatusBadge">
+                                <i class="bi bi-circle-fill me-1"></i>
+                                <span id="queryStatusText"></span>
+                            </span>
+                            <!-- <small class="text-muted">ID: <span id="queryIdDisplay"></span></small> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Query Content -->
+                <div class="row">
+                    <!-- Left Column - Query Details -->
+                    <div class="col-lg-7">
+                        <!-- General Reason Card -->
+                        <div class="card border mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>General Issue
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="bg-light rounded p-3">
+                                    <p class="mb-0 text-dark" id="queryGeneralReasonDisplay"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Query Details Card -->
+                        <div class="card border mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="bi bi-chat-left-text me-2"></i>Query Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <!-- Reasons -->
+                                <div class="mb-4">
+                                    <label class="form-label small fw-medium text-muted mb-2">
+                                        <i class="bi bi-chat-quote me-1"></i>Reasons for Applicant
+                                    </label>
+                                    <div class="bg-light rounded p-3">
+                                        <p class="mb-0 text-dark" id="queryReasonsDisplay"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Remarks -->
+                                <div class="mb-4">
+                                    <label class="form-label small fw-medium text-muted mb-2">
+                                        <i class="bi bi-lightbulb me-1"></i>Remarks & Recommendations
+                                    </label>
+                                    <div class="bg-light rounded p-3">
+                                        <p class="mb-0 text-dark" id="queryRemarksDisplay"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="bi bi-chat-square-quote me-2"></i>Query Response
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="bg-light rounded p-3">
+                                    <p class="mb-0 text-dark" id="queryResponseDisplay"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Side Info -->
+                    <div class="col-lg-5">
+                        <!-- Quick Info Card -->
+                        <div class="card border mb-4">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="bi bi-info-circle me-2"></i>Quick Information
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <!-- Job Number -->
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-muted mb-1">
+                                        <i class="bi bi-briefcase me-1"></i>Job Number
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control bg-light" 
+                                               id="queryJobNumberDisplay" readonly>
+                                        <button class="btn btn-outline-dark" type="button"
+                                                onclick="copyToClipboard('queryJobNumberDisplay')">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Case Number -->
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-muted mb-1">
+                                        <i class="bi bi-file-text me-1"></i>Case Number
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control bg-light" 
+                                               id="queryCaseNumberDisplay" readonly>
+                                        <button class="btn btn-outline-dark" type="button"
+                                                onclick="copyToClipboard('queryCaseNumberDisplay')">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Attachment Required -->
+                                <div class="mb-3">
+                                    <label class="form-label small fw-medium text-muted mb-1">
+                                        <i class="bi bi-paperclip me-1"></i>Attachment Required
+                                    </label>
+                                    <div class="d-flex align-items-center">
+                                        <div id="attachmentIcon" class="me-2"></div>
+                                        <span id="attachmentText" class="fw-medium"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Audit Info -->
+                                <div class="border-top pt-3 mt-3">
+                                    <small class="text-muted d-block mb-1">
+                                        <i class="bi bi-person-plus me-1"></i>
+                                        Created by: <span id="queryCreatedByDisplay" class="fw-medium"></span>
+                                    </small>
+                                    <small class="text-muted d-block mb-1">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        Created: <span id="queryCreatedDateDisplay2" class="fw-medium"></span>
+                                    </small>
+                                    <small class="text-muted d-block mb-1">
+                                        <i class="bi bi-person-check me-1"></i>
+                                        Modified by: <span id="queryModifiedByDisplay" class="fw-medium"></span>
+                                    </small>
+                                    <small class="text-muted d-block">
+                                        <i class="bi bi-calendar2-event me-1"></i>
+                                        Modified: <span id="queryModifiedDateDisplay" class="fw-medium"></span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Timeline -->
+                        <div class="card border">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="bi bi-clock-history me-2"></i>Status Timeline
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="timeline-simple">
+                                    <!-- Created -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker bg-primary"></div>
+                                        <div class="timeline-content">
+                                            <small class="d-block fw-medium">Query Created</small>
+                                            <small class="text-muted" id="timelineCreated"></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modified (if exists) -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker bg-info"></div>
+                                        <div class="timeline-content">
+                                            <small class="d-block fw-medium">Last Modified</small>
+                                            <small class="text-muted" id="timelineModified"></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker" id="timelineStatusMarker"></div>
+                                        <div class="timeline-content">
+                                            <small class="d-block fw-medium">Current Status</small>
+                                            <small class="text-muted" id="timelineStatus"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade effect-scale modal-blur" id="officerModal" tabindex="-1" aria-labelledby="officerModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
@@ -2470,3 +2704,438 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="addMinutesModal" tabindex="-1" aria-labelledby="addMinutesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <div>
+                    <h5 class="modal-title mb-0" id="addMinutesModalLabel">
+                        <i class="bi bi-journal-text me-2"></i>Add Minutes
+                    </h5>
+                    <p class="mb-0 small opacity-75">Record minutes for case ${case_number}</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="form_add_minutes" novalidate>
+                    <input type="hidden" id="am_id" name="am_id" value="0">
+                    
+                    <!-- Two Column Layout -->
+                    <div class="row g-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-6">
+                            <!-- Case Number -->
+                            <div class="form-floating">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="am_case_number" 
+                                       name="am_case_number" 
+                                       value="${case_number}" 
+                                       readonly 
+                                       placeholder="Case Number">
+                                <label for="am_case_number" class="form-label">
+                                    <i class="bi bi-file-text me-1"></i>Case Number
+                                </label>
+                            </div>
+                            
+                            <!-- Job Number -->
+                            <div class="form-floating mt-3">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="am_job_number" 
+                                       name="am_job_number" 
+                                       value="${job_number}" 
+                                       readonly 
+                                       placeholder="Job Number">
+                                <label for="am_job_number" class="form-label">
+                                    <i class="bi bi-briefcase me-1"></i>Job Number
+                                </label>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="mt-3">
+                                <label for="am_description" class="form-label fw-medium">
+                                    <i class="bi bi-chat-text me-1"></i>Description
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" 
+                                          id="am_description" 
+                                          name="am_description" 
+                                          rows="4" 
+                                          placeholder="Enter minute details..."
+                                          required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter a description for the minutes.
+                                </div>
+                                <div class="form-text">
+                                    Provide detailed information about the minute entry
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6">
+                            <!-- From Officer -->
+                            <div class="form-floating">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="am_from_officer" 
+                                       name="am_from_officer" 
+                                       value="${fullname}" 
+                                       readonly 
+                                       placeholder="From Officer">
+                                <label for="am_from_officer" class="form-label">
+                                    <i class="bi bi-person me-1"></i>From Officer
+                                </label>
+                            </div>
+                            
+                            <!-- To Officer -->
+                            <div class="mt-3">
+                                <label for="am_to_officer" class="form-label fw-medium">
+                                    <i class="bi bi-person-plus me-1"></i>To Officer
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="am_to_officer" 
+                                           name="am_to_officer" 
+                                           list="listofusers"
+                                           placeholder="Search or select officer..."
+                                           autocomplete="off"
+                                           required>
+                                    <datalist id="listofusers">
+                                        <c:forEach items="${userlist}" var="user">
+                                            <option data-value="${user.userid}" value="${user.fullname}"></option>
+                                        </c:forEach>
+                                    </datalist>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please select an officer.
+                                </div>
+                                <div class="form-text">
+                                    Type to search from available officers
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Fields (Optional - you can add more if needed) -->
+                            <div class="mt-4">
+                                <div class="alert alert-light border">
+                                    <h6 class="alert-heading mb-2">
+                                        <i class="bi bi-info-circle me-1"></i>Information
+                                    </h6>
+                                    <p class="mb-0 small">
+                                        Minutes will be recorded in the system and visible to assigned officers.
+                                        Make sure all information is accurate before saving.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer mt-4 pt-3 border-top">
+                        <div class="d-flex justify-content-between w-100">
+                            <button type="button" 
+                                    class="btn btn-outline-secondary d-flex align-items-center gap-2" 
+                                    data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle"></i>
+                                Cancel
+                            </button>
+                            <div class="d-flex gap-2">
+                                <button type="reset" 
+                                        class="btn btn-outline-warning d-flex align-items-center gap-2"
+                                        id="btn_reset_minutes">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                    Reset
+                                </button>
+                                <button type="submit" 
+                                        class="btn btn-primary d-flex align-items-center gap-2" 
+                                        id="btn_add_minutes">
+                                    <i class="bi bi-save"></i>
+                                    Save Minutes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="addMinutesModal" tabindex="-1" aria-labelledby="addMinutesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <div>
+                    <h5 class="modal-title mb-0" id="addMinutesModalLabel">
+                        <i class="bi bi-journal-text me-2"></i>Add Minutes
+                    </h5>
+                    <p class="mb-0 small opacity-75">Record minutes for case ${case_number}</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="form_add_minutes" novalidate>
+                    <input type="hidden" id="am_id" name="am_id" value="0">
+                    
+                    <!-- Two Column Layout -->
+                    <div class="row g-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-6">
+                            <!-- Case Number -->
+                            <div class="form-floating">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="am_case_number" 
+                                       name="am_case_number" 
+                                       value="${case_number}" 
+                                       readonly 
+                                       placeholder="Case Number">
+                                <label for="am_case_number" class="form-label">
+                                    <i class="bi bi-file-text me-1"></i>Case Number
+                                </label>
+                            </div>
+                            
+                            <!-- Job Number -->
+                            <div class="form-floating mt-3">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="am_job_number" 
+                                       name="am_job_number" 
+                                       value="${job_number}" 
+                                       readonly 
+                                       placeholder="Job Number">
+                                <label for="am_job_number" class="form-label">
+                                    <i class="bi bi-briefcase me-1"></i>Job Number
+                                </label>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="mt-3">
+                                <label for="am_description" class="form-label fw-medium">
+                                    <i class="bi bi-chat-text me-1"></i>Description
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" 
+                                          id="am_description" 
+                                          name="am_description" 
+                                          rows="4" 
+                                          placeholder="Enter minute details..."
+                                          required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter a description for the minutes.
+                                </div>
+                                <div class="form-text">
+                                    Provide detailed information about the minute entry
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6">
+                            <!-- From Officer -->
+                            <div class="form-floating">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="am_from_officer" 
+                                       name="am_from_officer" 
+                                       value="${fullname}" 
+                                       readonly 
+                                       placeholder="From Officer">
+                                <label for="am_from_officer" class="form-label">
+                                    <i class="bi bi-person me-1"></i>From Officer
+                                </label>
+                            </div>
+                            
+                            <!-- To Officer -->
+                            <div class="mt-3">
+                                <label for="am_to_officer" class="form-label fw-medium">
+                                    <i class="bi bi-person-plus me-1"></i>To Officer
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="am_to_officer" 
+                                           name="am_to_officer" 
+                                           list="listofusers"
+                                           placeholder="Search or select officer..."
+                                           autocomplete="off"
+                                           required>
+                                    <datalist id="listofusers">
+                                        <c:forEach items="${userlist}" var="user">
+                                            <option data-value="${user.userid}" value="${user.fullname}"></option>
+                                        </c:forEach>
+                                    </datalist>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please select an officer.
+                                </div>
+                                <div class="form-text">
+                                    Type to search from available officers
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Fields (Optional - you can add more if needed) -->
+                            <div class="mt-4">
+                                <div class="alert alert-light border">
+                                    <h6 class="alert-heading mb-2">
+                                        <i class="bi bi-info-circle me-1"></i>Information
+                                    </h6>
+                                    <p class="mb-0 small">
+                                        Minutes will be recorded in the system and visible to assigned officers.
+                                        Make sure all information is accurate before saving.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer mt-4 pt-3 border-top">
+                        <div class="d-flex justify-content-between w-100">
+                            <button type="button" 
+                                    class="btn btn-outline-secondary d-flex align-items-center gap-2" 
+                                    data-bs-dismiss="modal">
+                                <i class="bi bi-x-circle"></i>
+                                Cancel
+                            </button>
+                            <div class="d-flex gap-2">
+                                <button type="reset" 
+                                        class="btn btn-outline-warning d-flex align-items-center gap-2"
+                                        id="btn_reset_minutes">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                    Reset
+                                </button>
+                                <button type="submit" 
+                                        class="btn btn-primary d-flex align-items-center gap-2" 
+                                        id="btn_add_minutes">
+                                    <i class="bi bi-save"></i>
+                                    Save Minutes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Minutes Modal -->
+<div class="modal fade effect-scale modal-blur" id="viewMinutesModal" tabindex="-1" aria-labelledby="viewMinutesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <div>
+                    <h5 class="modal-title mb-0" id="viewMinutesModalLabel">
+                        <i class="bi bi-journal-text me-2"></i>View Minute Details
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                
+                <div class="d-flex align-items-center mb-3">
+                    <div class="me-3">
+                        <div class="avatar avatar-lg bg-primary text-white rounded-circle">
+                            <i class="bi bi-journal-text fs-4"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h6 class="mb-1" id="minuteTitle">Minute Entry</h6>
+                        <p class="text-muted mb-0 small">
+                            <i class="bi bi-calendar-event me-1"></i>
+                            Created on: <span id="minuteDate" class="fw-medium"></span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Minute Description -->
+                <div class="border-start border-3 border-primary ps-3 py-2 mb-4">
+                    <h6 class="text-muted mb-2">
+                        <i class="bi bi-chat-square-text me-1"></i>Description
+                    </h6>
+                    <p class="mb-0" id="minuteDescription"></p>
+                </div>
+                
+                <!-- Minute Participants -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted small">
+                                    <i class="bi bi-person-up me-1"></i>From Officer
+                                </h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm bg-primary text-white rounded-circle me-2">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0" id="minuteFromOfficer"></h6>
+                                        <small class="text-muted">Sender</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted small">
+                                    <i class="bi bi-person-down me-1"></i>To Officer
+                                </h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm bg-success text-white rounded-circle me-2">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0" id="minuteToOfficer"></h6>
+                                        <small class="text-muted">Recipient</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="generateEGCRModal" tabindex="-1" aria-labelledby="generateEGCRModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="pdfPreviewModalLabel">EGCR Receipt</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+		  <div class="preview-container" style="height: 800px;">
+			<!-- PDF will be shown here -->
+			<iframe src="" id="egcrblobinnerfile" width="100%" height="100%"></iframe>
+		  </div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+			<i class="bi bi-x-circle me-1"></i> Close
+		  </button>
+		</div>
+	  </div>
+	</div>
+  </div>

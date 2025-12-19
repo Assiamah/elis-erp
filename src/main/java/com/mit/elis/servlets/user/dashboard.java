@@ -24,6 +24,23 @@ public class dashboard {
 	@RequestMapping("/dashboard")
 	@PostMapping
 	public String doPost(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			//
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
 		// HttpSession session = request.getSession();
 
 		try {

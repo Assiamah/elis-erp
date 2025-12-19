@@ -443,7 +443,7 @@ function updateOfficerCard(officersData, unitName) {
                         <span class="avatar avatar-xs avatar-rounded bg-warning text-white">
                             <i class="ri-user-line"></i>
                         </span>
-                        <span class="top-country-name small">${officer.name}</span>
+                        <span class="small">${officer.name}</span>
                     </div>
                     <div>
                         ${officer.total}

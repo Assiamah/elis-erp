@@ -846,7 +846,7 @@ public class AppController {
 					//		model.addAttribute("content", "../pages/mainpage/main_dashboard.jsp"); return "layouts/app";
 					
 
-			//   model.addAttribute("content", "../pages/mainpage/main_dashboard.jsp");
+			//model.addAttribute("content", "../pages/mainpage/main_dashboard.jsp");
         	// 		return "layouts/app";
 
 			return "redirect:/dashboard";

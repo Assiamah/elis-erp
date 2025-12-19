@@ -2252,3 +2252,288 @@ function showAlert(message, type = 'info') {
     
     $('#alert-display-space-query').html(alertHtml);
 }
+
+$(document).on('click', '.view-minute-btn', function(event) {
+    event.preventDefault();
+    
+    const button = $(this);
+    const modal = $('#viewMinutesModal');
+    
+    // Get data from button attributes
+    const minuteData = {
+        id: button.data('minute-id'),
+        description: button.data('minute-description'),
+        fromOfficer: button.data('minute-from'),
+        toOfficer: button.data('minute-to'),
+        date: button.data('minute-date'),
+        caseNumber: button.data('minute-case-number'),
+        jobNumber: button.data('minute-job-number'),
+        status: button.data('minute-status')
+    };
+    
+    // Populate basic data immediately
+    modal.find('#minuteDescription').text(minuteData.description);
+    modal.find('#minuteFromOfficer').text(minuteData.fromOfficer);
+    modal.find('#minuteToOfficer').text(minuteData.toOfficer);
+    modal.find('#minuteDate').text(minuteData.date);
+    modal.find('#minuteActivityDate').text(minuteData.date);
+    modal.find('#minuteCaseNumber').text(minuteData.caseNumber);
+    modal.find('#minuteJobNumber').text(minuteData.jobNumber);
+    modal.find('#minuteStatus').text(minuteData.status.charAt(0).toUpperCase() + minuteData.status.slice(1));
+    
+});
+
+$('#btn_load_scanned_documents').on('click', function(e) { 
+	   
+    var table_docs = $('#lc_scanned_documents_dataTable');
+    table_docs.find("tbody tr").remove(); 	
+    
+    var table_docs_mains = $('#lc_main_scanned_documents_dataTable');
+    table_docs_mains.find("tbody tr").remove(); 
+
+    var case_number = $("#cs_main_case_number").val();
+
+    $.ajax({
+        type: "POST",
+        url: "LoadLRDJackets",
+        data: {
+        request_type: 'load_case_scanned_document_new',
+        case_number:case_number},
+        cache: false,
+        beforeSend: function () {},
+        success: function(serviceresponse) {
+            if(!serviceresponse){
+                return;
+            }
+            try{
+                var json_p = JSON.parse(serviceresponse);              
+                
+                $(json_p).each(function () {
+                        
+                    table_docs.append("<tr><td>" + this.doc_description + "</td><td>" +this.document_extention + "</td>"
+                        +  '<td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td>'
+                        + "</tr>");
+
+                    table_docs_mains.append('<tr><td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' +this.document_extention + '</td>' 
+                        + "</tr>");
+
+                });
+
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }); 
+});
+
+$('#btn_load_scanned_documents_public').on('click', function(e) { 
+		   
+    var table_docs_mains = $('#lc_public_documents_dataTable');
+    table_docs_mains.find("tbody tr").remove(); 
+
+ 	var case_number = $("#cs_main_case_number").val();
+
+	 $.ajax({
+        type: "POST",
+        url: "LoadLRDJackets",
+        data: {
+        request_type: 'load_case_scanned_document_public_new',
+        case_number:case_number},
+        cache: false,
+        beforeSend: function () {},
+        success: function(serviceresponse) {
+            if(!serviceresponse){
+                return;
+            }
+            try{
+                var json_p = JSON.parse(serviceresponse);
+                                
+                $(json_p).each(function () {
+                    table_docs_mains.append('<tr><td> <a class="link-post" href="' + this.doc_uuid + '">' + this.doc_description+ '</a></td><td>' +this.doc_extension + '</td>' 
+                    + "</tr>");
+                });
+            }catch(e){
+                console.log(e)
+            }
+        }
+    }); 
+});
+
+$('#generateEGCRModal').on('shown.bs.modal', function(e) {
+
+    var bill_number_ref = $(e.relatedTarget).data('ref_number')
+
+    $.ajax({
+        type : "POST",
+        url : "payment_serv_egcr",
+        data : {
+            request_type : 'generate_egcr',
+            ref_number : bill_number_ref,
+            receipt_number : bill_number_ref
+        },
+        cache : false,
+        xhrFields : {
+            responseType : 'blob'
+        },
+        success : function(jobdetails) {
+            
+
+            try {
+                var blob = new Blob([ jobdetails ], {type : "application/pdf"});
+                var objectUrl = URL.createObjectURL(blob);
+                ///window.open(objectUrl);
+                //$("#egcrReceipt").modal('show');
+                // $('#egcrblobinnerfile').attr('src',objectUrl);
+
+                if (/Mobi|Android/i.test(navigator.userAgent)) {
+                    $('#generateEGCRModal').modal('hide');
+                    window.open(objectUrl, '_blank');
+                } else {
+                    $('#egcrblobinnerfile').attr('src', objectUrl);
+                }
+            } catch (error) {
+
+                swal.fire({
+                    title: 'Error Alert',
+                    text: 'Ops! An error occurred. Try agin or contact support team for help.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            }
+        }
+    });
+});
+
+$('#viewQueryModal').on('show.bs.modal', function(event) {
+    const button = $(event.relatedTarget);
+    
+    // Get all data from button attributes
+    const queryData = {
+        id: button.data('id'),
+        job_number: button.data('job_number'),
+        case_number: button.data('case_number'),
+        reasons: button.data('reasons'),
+        remarks: button.data('remarks'),
+        general_reason: button.data('general_reason'),
+        status: parseInt(button.data('status')),
+        created_by: button.data('created_by'),
+        created_date: button.data('created_date'),
+        modified_by: button.data('modified_by'),
+        modified_date: button.data('modified_date'),
+        attachment_required: parseInt(button.data('attachment_required'))
+    };
+    
+    // Populate all fields
+    populateQueryData(queryData);
+});
+
+// Populate query data function
+function populateQueryData(data) {
+    // Basic info
+    $('#queryIdDisplay').text(data.id);
+    $('#queryCaseNumberDisplay').text(data.case_number);
+    $('#queryCaseTitle').text(`${data.case_number} - Query`);
+    
+    // Job and Case numbers
+    $('#queryJobNumberDisplay').val(data.job_number);
+    $('#queryCaseNumberDisplay').val(data.case_number);
+    
+    // Query content
+    $('#queryGeneralReasonDisplay').text(data.general_reason || 'No general reason provided');
+    $('#queryReasonsDisplay').text(data.reasons || 'No reasons specified');
+    $('#queryRemarksDisplay').text(data.remarks || 'No remarks provided');
+    $('#queryResponseDisplay').text(data.query_response || 'No query response provided');
+    
+    // Status
+    const isActive = data.status === 1;
+    const statusText = isActive ? 'Active' : 'Resolved';
+    const statusClass = isActive ? 'bg-danger text-white' : 'bg-success text-white';
+    
+    $('#queryStatusText').text(statusText);
+    $('#queryStatusBadge').removeClass().addClass(`badge fs-13 px-3 py-2 mb-1 ${statusClass}`);
+    
+    // Timeline status
+    $('#timelineStatus').text(statusText);
+    $('#timelineStatusMarker').removeClass().addClass(`timeline-marker ${isActive ? 'bg-danger' : 'bg-success'}`);
+    
+    // Dates
+    const createdDate = formatDate(data.created_date);
+    const modifiedDate = formatDate(data.modified_date);
+    
+    $('#queryCreatedDateDisplay').text(createdDate);
+    $('#queryCreatedDateDisplay2').text(createdDate);
+    $('#queryModifiedDateDisplay').text(modifiedDate || 'Never');
+    
+    $('#timelineCreated').text(createdDate);
+    $('#timelineModified').text(modifiedDate || 'Never modified');
+    
+    // Users
+    $('#queryCreatedByDisplay').text(data.created_by || 'Unknown');
+    $('#queryModifiedByDisplay').text(data.modified_by || 'Not modified');
+    
+    // Attachment requirement
+    const needsAttachment = data.attachment_required === 1;
+    if (needsAttachment) {
+        $('#attachmentIcon').html('<i class="bi bi-check-circle-fill text-success fs-5"></i>');
+        $('#attachmentText').text('Yes').addClass('text-success');
+    } else {
+        $('#attachmentIcon').html('<i class="bi bi-x-circle-fill text-secondary fs-5"></i>');
+        $('#attachmentText').text('No').addClass('text-muted');
+    }
+}
+
+// Copy to clipboard function
+window.copyToClipboard = function(elementId) {
+    const element = document.getElementById(elementId);
+    if (element && element.value) {
+        navigator.clipboard.writeText(element.value).then(function() {
+            showToast('Copied to clipboard!', 'success');
+        }).catch(function() {
+            showToast('Failed to copy', 'error');
+        });
+    }
+};
+
+// Format date function
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    } catch (e) {
+        return dateString;
+    }
+}
+
+// Show toast notification
+function showToast(message, type) {
+    const toast = $(`
+        <div class="toast align-items-center text-white bg-${type} border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `);
+    
+    $('#toastContainer').append(toast);
+    const bsToast = new bootstrap.Toast(toast[0]);
+    bsToast.show();
+    
+    toast.on('hidden.bs.toast', function() {
+        $(this).remove();
+    });
+}
+
+// Initialize toast container if not exists
+if (!$('#toastContainer').length) {
+    $('body').append(`
+        <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    `);
+}

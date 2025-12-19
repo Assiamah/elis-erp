@@ -1,591 +1,979 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="ws.casemgt.Ws_client_application" %>
-<%@ page import="ws.users.Ws_users" %>
-<%@ page import="org.codehaus.jettison.json.*" %>
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.google.gson.GsonBuilder" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="ws.casemgt.Ws_client_application"%>
+<%@ page import="ws.users.Ws_users"%>
+<%@ page import="org.codehaus.jettison.json.*"%>
+<%@ page import="com.google.gson.Gson"%>
+<%@ page import="com.google.gson.GsonBuilder"%>
 
-<%@ page import="org.codehaus.jettison.json.JSONArray" %>
-<%@ page import="org.codehaus.jettison.json.JSONException" %>
-<%@ page import="org.codehaus.jettison.json.JSONObject" %>
+<%@ page import="org.codehaus.jettison.json.JSONArray"%>
+<%@ page import="org.codehaus.jettison.json.JSONException"%>
+<%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
-<jsp:include page="../includes/_header.jsp"></jsp:include>
-  
-<div class="container-fluid">
-    <!-- Breadcrumbs-->
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.jsp">Application Processing</a></li>
-        <li class="breadcrumb-item active">Case Details</li>
-    </ol>
+<style>
+    .table th, .table td {
+        font-size: 12px;
+		/* font-size: 0.75rem; */
+    }
 
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- Main Case Card -->
-            <div class="card">
-                <div class="card-header bg-info d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">
-                        <i class="fas fa-file-alt mr-2"></i>${case_number} - ${ar_name}
-                    </h6>
-                    <button type="button" onclick="javascript:history.go(-1)"
-                        class="btn btn-light btn-icon-split">
-                        <span class="icon text-dark"> 
-                            <i class="fas fa-arrow-left"></i>
-                        </span>
-                        <span class="text">Back</span>
-                    </button>
-                </div>
-                
-                <div class="card-body">
-                    <!-- Case Summary Section -->
-             <div class="card mb-4">
-                        <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsemaincase">
-                            <h5 class="mb-0">
-                                <i class="fas fa-file-alt mr-2"></i>Case Summary
-                            </h5>
+    /* Process Timeline Styles */
+    .process-timeline {
+        position: relative;
+    }
+    
+    .process-step-card {
+        position: relative;
+        padding: 1.5rem;
+        background: #fff;
+        border-radius: 0.75rem;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    /* .process-step-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+    } */
+    
+    .process-step-card[data-status="completed"] {
+        border-left: 4px solid #198754;
+        background: rgba(25, 135, 84, 0.02);
+    }
+    
+    .process-step-card[data-status="ongoing"] {
+        border-left: 4px solid #ffc107;
+        background: rgba(255, 193, 7, 0.02);
+    }
+    
+    .process-step-card[data-status="pending"] {
+        border-left: 4px solid #f36060;
+        background: rgba(243, 96, 96, 0.02);
+    }
+    
+    .timeline-connector {
+        position: absolute;
+        left: 2rem;
+        bottom: -1.5rem;
+        width: 2px;
+        height: 1.5rem;
+        background: linear-gradient(to bottom, #dee2e6, #6c757d);
+    }
+    
+    /* Avatar Styles */
+    .avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .avatar-sm {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .avatar-md {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .avatar-lg {
+        width: 64px;
+        height: 64px;
+    }
+    
+    /* Step Details */
+    .step-details {
+        border-left: 2px dashed #dee2e6;
+        padding-left: 2rem;
+        margin-left: 2rem;
+    }
+    
+    
+    /* Step Actions */
+    .step-actions .btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Badge Styles */
+    .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 500;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .process-step-card {
+            padding: 1rem;
+        }
+        
+        .step-details {
+            padding-left: 1rem;
+            margin-left: 1rem;
+        }
+        
+        .step-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            margin-bottom: 1rem;
+        }
+        
+        .step-quick-actions {
+            width: 100%;
+            margin-top: 1rem;
+            text-align: right;
+        }
+        
+        .step-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .step-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+    
+    /* Status Indicator Animation */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .process-step-card[data-status="ongoing"] .step-number .avatar {
+        animation: pulse 2s infinite;
+    }
+    
+    /* Progress Bar Alternative (Optional) */
+    .progress-indicator {
+        position: relative;
+        height: 4px;
+        background: #e9ecef;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    
+    .progress-indicator::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        background: #0d6efd;
+        width: var(--progress-width, 0%);
+        transition: width 0.5s ease;
+    }
+</style>
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <h1 class="page-title fw-medium fs-18 mb-0">Application Details</h1>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Application Details</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-primary fs-6">${job_number}</span>
+                            <h2 class="h4 mb-0">${ar_name}</h2>
                         </div>
+                    </div>
+                    <div>
+                        <button onclick="javascript:history.go(-1)" 
+                                class="btn btn-outline-primary d-flex align-items-center gap-2">
+                            <i class="bi bi-arrow-left"></i>
+                            <span>Back to List</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <div id="collapsemaincase" class="collapse-show">
-    <div class="card-body">
-      
-      <!-- Hidden fields -->
-      <input type="hidden" id="cs_main_business_process_id" value="${business_process_id}">
-      <input type="hidden" id="cs_main_business_process_name" value="${business_process_name}">
-      <input type="hidden" id="cs_main_business_process_sub_id" value="${business_process_sub_id}">
-      <input type="hidden" id="cs_main_business_process_sub_name" value="${business_process_sub_name}">
-      <input type="hidden" id="cs_main_client_number" value="${phone_number}">
-      <input type="hidden" id="cs_main_case_number" value="${case_number}">
-
-      <!-- Parcel Info -->
-      <h6 class="text-uppercase text-muted mt-2 mb-3 border-bottom pb-1">Parcel Information</h6>
-      <div class="row">
-        <div class="col-md-6"><strong>Date Created:</strong> ${created_date}</div>
-        <div class="col-md-6"><strong>Last Modified:</strong> ${modified_date}</div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-md-4"><strong>Case Number:</strong> ${case_number}</div>
-        <div class="col-md-4"><strong>Regional Number:</strong> ${regional_number}</div>
-        <div class="col-md-4"><strong>Locality:</strong> ${locality}</div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-md-4"><strong>District:</strong> ${district}</div>
-        <div class="col-md-4"><strong>Region:</strong> ${region}</div>
-        <div class="col-md-4"><strong>Size of Land (Acres):</strong> ${size_of_land}</div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-md-4"><strong>GLPIN:</strong> ${glpin}</div>
-      </div>
-
-      <!-- Transaction Details -->
-      <h6 class="text-uppercase text-muted mt-4 mb-3 border-bottom pb-1">Transaction Details</h6>
-      <div class="row">
-        <div class="col-md-4"><strong>Transaction Number:</strong> ${transaction_number}</div>
-        <div class="col-md-4"><strong>Applicant Name:</strong> ${ar_name}</div>
-        <div class="col-md-4"><strong>Nature of Instrument:</strong> ${nature_of_instrument}</div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-md-4"><strong>Date of Document:</strong> ${date_of_document}</div>
-        <div class="col-md-4"><strong>Date of Registration:</strong> ${date_of_registration}</div>
-        <div class="col-md-4"><strong>Type of Interest:</strong> ${type_of_interest}</div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-md-4"><strong>Type of Use:</strong> ${type_of_use}</div>
-        <div class="col-md-4"><strong>Term:</strong> ${term}</div>
-        <div class="col-md-4"><strong>Commencement Date:</strong> ${commencement_date}</div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-md-4"><strong>Assessed Value:</strong> ${assessed_value}</div>
-        <div class="col-md-4"><strong>Stamp Duty Payable:</strong> ${stamp_duty_payable}</div>
-        <div class="col-md-4"><strong>Certificate Number:</strong> ${certificate_number}</div>
-      </div>
-      
-    </div>
-  </div>
-</div>
-
-                   <!-- Process Status and Actions Card -->
-                    <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <i class="fas fa-tasks mr-2"></i>Process Status & Actions
-                            </h5>
-                            <div class="action-buttons">
-                                <!-- <button class="btn btn-info btn-icon-split btn-sm mr-2" data-toggle="modal" data-target="#reviewApplicationModal">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-eye"></i>
-                                    </span>
-                                    <span class="text">Review Application</span>
-                                </button> -->
-                                <!-- <button class="btn btn-warning btn-icon-split btn-sm" id="continueNextProcess">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                    <span class="text">Continue</span>
-                                </button> -->
-                                 <button class="btn btn-success btn-icon-split btn-sm" data-job_number="${job_number}" data-ar_name="${ar_name}"
-				data-business_process_sub_name="${business_process_sub_name}" data-toggle="modal" data-target="#askForPurposeOfBatching" >
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                    <span class="text">Add to batch List</span>
-                                </button>
-                                 <!-- <button class="btn btn-primary btn-icon-split btn-sm" data-job_number="${job_number}" data-ar_name="${ar_name}" data-req_id="${rq_id}"
-				                                data-business_process_sub_name="${business_process_sub_name}" data-toggle="modal" data-target="#askArchiveRequest" >
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </span>
-                                    <span class="text">Complete Request</span>
-                                </button> -->
-
+        <div class="row">
+            <!-- Main Content Column -->
+            <div class="col-lg-8">
+                <!-- Case Summary Card -->
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-md bg-primary text-white rounded-circle me-3">
+                                <i class="bi bi-file-text fs-15"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-semibold">Case Summary</h5>
                             </div>
                         </div>
-                        <div id="collapseprocess" class="collapse show">
-                            <div class="card-body">
-                                <!-- Actions to be Taken -->
-                                <div class="col-md-12 mb-4">
-                                    <div class="section-title">Actions to be Taken</div>
-                                    <ul class="mt-2 ps-3">
-                                    <c:forEach var="babyStep" items="${active_digital_workflow_step_list}">
-                                        <li class="d-flex flex-column mb-4">
-                                            <!-- Baby Step Description and Status -->
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-grow-1">
-                                                    <c:choose>
-                                                        <c:when test="${babyStep.bse_status == 'Pending'}">
-                                                            <span class="badge badge-danger">${babyStep.bse_status}</span>
-                                                        </c:when>
-                                                        <c:when test="${babyStep.bse_status == 'Ongoing'}">
-                                                            <span class="badge badge-warning">${babyStep.bse_status}</span>
-                                                        </c:when>
-                                                        <c:when test="${babyStep.bse_status == 'Completed'}">
-                                                            <span class="badge badge-success">${babyStep.bse_status}</span>
-                                                        </c:when>
-                                                    </c:choose>
-                                                    <span class="ms-2">${babyStep.bse_description}</span>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#caseSummaryCollapse" aria-expanded="true">
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="collapse" id="caseSummaryCollapse">
+                        <div class="card-body">
+                            <!-- Parcel Attributes Section -->
+							<div class="card">
+								<div class="card-header justify-content-between">
+									<div class="card-title text-primary">
+										<i class="bi bi-geo-alt me-2"></i>Parcel Attributes
+									</div>
+								</div>
+								<div class="card-body">
+									<div class="row g-3">
+										<input type="hidden" id="cs_main_business_process_id" value="${business_process_id}">
+										<input type="hidden" id="cs_main_business_process_name" value="${business_process_name}">
+										<input type="hidden" id="cs_main_business_process_sub_id" value="${business_process_sub_id}">
+										<input type="hidden" id="cs_main_business_process_sub_name" value="${business_process_sub_name}">
+										<input type="hidden" id="cs_main_client_number" value="${phone_number}">
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Date Created</label>
+											<div class="fw-medium text-dark">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Last Modified</label>
+											<div class="fw-medium text-dark">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
+										</div>
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Case Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Regional Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Locality</label>
+											<div class="fw-medium text-dark">${empty fn:trim(locality) || locality == '0' ? '--' : fn:trim(locality)}</div>
+										</div>
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">District</label>
+											<div class="fw-medium text-dark">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Region</label>
+											<div class="fw-medium text-dark">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Land Size (Acres)</label>
+											<div class="fw-medium text-dark">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
+										</div>
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">GLPIN</label>
+											<div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">New Transaction Ready</label>
+											<div class="fw-medium text-dark ${empty fn:trim(need_for_new_transaction) == 'Yes' ? 'bg-success text-white' : ''}">
+												${empty fn:trim(need_for_new_transaction) ? '--' : fn:trim(need_for_new_transaction)}
+											</div>
+										</div>
+									</div>
+								</div>
+							 </div>
+                            
+                            <!-- Transaction Details Section -->
+							<div class="card">
+								<div class="card-header justify-content-between">
+									<div class="card-title text-primary">
+										<i class="bi bi-receipt me-2"></i>Transaction Details
+									</div>
+								</div>
+								<div class="card-body">
+									<div class="row g-3">
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Transaction Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Applicant Name</label>
+											<div class="fw-medium text-dark">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Nature of Instrument</label>
+											<div class="fw-medium text-dark">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
+										</div>
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Document Date</label>
+											<div class="fw-medium text-dark">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Registration Date</label>
+											<div class="fw-medium text-dark">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Type of Interest</label>
+											<div class="fw-medium text-dark">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
+										</div>
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Type of Use</label>
+											<div class="fw-medium text-dark">${empty fn:trim(type_of_use) || type_of_use == '0' ? '--' : fn:trim(type_of_use)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Term</label>
+											<div class="fw-medium text-dark">${empty fn:trim(term) || term == '0' ? '--' : fn:trim(term)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Commencement Date</label>
+											<div class="fw-medium text-dark">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+										</div>
+										
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Assessed Value</label>
+											<div class="fw-medium text-dark">${empty fn:trim(assessed_value) || assessed_value == '0' ? '--' : fn:trim(assessed_value)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Stamp Duty Payable</label>
+											<div class="fw-medium text-dark">${empty fn:trim(stamp_duty_payable) || stamp_duty_payable == '0' ? '--' : fn:trim(stamp_duty_payable)}</div>
+										</div>
+										<div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Certificate Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+										</div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Process Status and Actions Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-primary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-md bg-primary text-white rounded-circle me-3">
+                                    <i class="bi bi-clipboard-check fs-15"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0 fw-semibold">Process Status & Actions</h5>
+                                    <p class="mb-0 small opacity-75">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        ${job_number} - ${ar_name}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="action-buttons">
+                                <!-- Primary Action Button -->
+                                <button class="btn btn-warning label-btn"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#askForPurposeOfBatching"
+                                        data-job_number="${job_number}" 
+                                        data-ar_name="${ar_name}"
+                                        data-business_process_sub_name="${business_process_sub_name}">
+                                    <i class="bi bi-plus-circle label-btn-icon"></i>
+                                    Add to Batch
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Process Steps List -->
+                    <div class="card-body p-4">
+                        <!-- Process Steps Timeline -->
+                        <div class="process-timeline">
+                            <c:forEach var="babyStep" items="${active_digital_workflow_step_list}" varStatus="loop">
+                                <!-- Process Step Card -->
+                                <div class="process-step-card mb-4" 
+                                    data-status="${babyStep.bse_status.toLowerCase()}">
+                                    
+                                    <!-- Step Header -->
+                                    <div class="step-header d-flex align-items-center mb-3">
+                                        <!-- Step Number -->
+                                        <div class="step-number me-3">
+                                            <div class="avatar avatar-md rounded-circle 
+                                                ${babyStep.bse_status == 'Completed' ? 'bg-success text-white' : 
+                                                babyStep.bse_status == 'Ongoing' ? 'bg-warning text-dark' : 
+                                                'bg-danger text-white'}">
+                                                <span>${loop.index + 1}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step Info -->
+                                        <div class="step-info flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1 fw-semibold">
+                                                        ${babyStep.bse_description}
+                                                    </h6>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <!-- Status Badge -->
+                                                        <span class="badge 
+                                                            ${babyStep.bse_status == 'Completed' ? 'bg-success' : 
+                                                            babyStep.bse_status == 'Ongoing' ? 'bg-warning text-dark' : 
+                                                            'bg-danger'}">
+                                                            <i class="bi 
+                                                                ${babyStep.bse_status == 'Completed' ? 'bi-check-circle' : 
+                                                                babyStep.bse_status == 'Ongoing' ? 'bi-clock' : 
+                                                                'bi-exclamation-circle'} me-1"></i>
+                                                            ${babyStep.bse_status}
+                                                        </span>
+                                                        
+                                                        <!-- Timeline Info -->
+                                                        <small class="text-muted">
+                                                            <i class="bi bi-calendar me-1"></i>
+                                                            Started: ${babyStep.start_date}
+                                                        </small>
+                                                    </div>
                                                 </div>
                                                 
-                                                <!-- Action Buttons -->
-                                                <div class="btn-group ms-3">
-                                                    <button 
-                                                        class="btn btn-warning btn-sm text-white" 
-                                                        data-toggle="modal" 
-                                                        data-target="#${babyStep.bse_description_key}"
-                                                        data-bs-id="${babyStep.bse_id}" 
-                                                        data-bse-id="${babyStep.bse_id}" 
-                                                        data-bs-desc="${babyStep.bse_description}" 
-                                                        data-bs-username="${babyStep.username}" 
-                                                        data-bs-date="${babyStep.date}" 
-                                                        data-bs-time="${babyStep.time}"
-                                                    >
-                                                        View Details
+                                                <!-- Quick Actions -->
+                                                <div class="step-quick-actions">
+                                                    <button class="btn btn-sm btn-outline-info" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#${babyStep.bse_description_key}"
+                                                            data-bs-id="${babyStep.bse_id}" 
+                                                            data-bse-id="${babyStep.bse_id}" 
+                                                            data-bs-desc="${babyStep.bse_description}" 
+                                                            data-bs-username="${babyStep.username}" 
+                                                            data-bs-date="${babyStep.date}" 
+                                                            data-bs-time="${babyStep.time}">
+                                                        <i class="bi bi-eye"></i> Details
                                                     </button>
-                                                    <button 
-                                                        class="btn btn-success btn-sm text-white" 
-                                                        onclick="reviewStep(`${babyStep.bse_id}`,`${job_number}`)" 
-                                                        <c:if test="${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed'}">disabled</c:if>
-                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Step Details -->
+                                    <div class="step-details ps-5 ms-2">
+                                        
+                                        
+                                        <!-- Action Buttons -->
+                                        <div class="row mt-4">
+                                            <div class="col-8">
+                                                <!-- Approve Button -->
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-success"
+                                                        onclick="reviewStep('${babyStep.bse_id}','${job_number}')"
+                                                        ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
+                                                        <i class="bi bi-check-circle"></i>
                                                         Approve
                                                     </button>
-                                                    <button 
-                                                        class="btn btn-primary btn-sm text-white" 
-                                                        data-toggle="modal" 
+                                                
+                                                    <!-- Send Request Button -->
+                                                    <button class="btn btn-sm btn-primary"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#askForPurposeOfSendingRequest"
                                                         data-job_number="${job_number}" 
                                                         data-ar_name="${ar_name}" 
                                                         data-business_process_sub_name="${business_process_sub_name}" 
                                                         data-locality="${locality}" 
-                                                        data-target="#askForPurposeOfSendingRequest" 
-                                                        data-bs-desc="${babyStep.bse_description}" 
+                                                        data-bs-desc="${babyStep.bse_description}"
                                                         id="btnAddRequest"
-                                                        <c:if test="${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed'}">disabled</c:if>
-                                                    >
+                                                        ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
+                                                        <i class="bi bi-send"></i>
                                                         Send Request
                                                     </button>
-                                                    <button 
-                                                        class="btn btn-danger btn-sm text-white" 
-                                                        data-toggle="modal" 
-                                                        data-job_number="${job_number}" 
-                                                        data-ar_name="${ar_name}" 
-                                                        data-business_process_sub_name="${business_process_sub_name}" 
-                                                        data-locality="${locality}" 
-                                                        data-target="#newQueryModal" 
-                                                        <c:if test="${babyStep.bs_status == 'Pending' || babyStep.bs_status == 'Completed'}">disabled</c:if>
-                                                    >
+                                                
+                                                    <!-- Query Button -->
+                                                    <button class="btn btn-sm btn-warning"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#newQueryModal"
+                                                            data-job_number="${job_number}" 
+                                                            data-ar_name="${ar_name}" 
+                                                            data-business_process_sub_name="${business_process_sub_name}" 
+                                                            data-locality="${locality}"
+                                                            ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
+                                                        <i class="bi bi-question-circle"></i>
                                                         Query
                                                     </button>
                                                 </div>
                                             </div>
-                                            
-                                            <!-- Additional Details -->
-                                            <div class="text-muted ms-4 mt-1">
-                                                <small>
-                                                    <!-- <strong>Username:</strong> <c:out value="${babyStep.username}" default="N/A" /> |
-                                                    <strong>Date:</strong> <c:out value="${babyStep.date}" default="N/A" /> | -->
-                                                    <strong>Status:</strong> <c:out value="${babyStep.bse_status}" default="Not Approved" /> |
-                                                    <strong>Start Date:</strong> <c:out value="${babyStep.start_date}" default="Not Sent" /> |
-                                                    <strong>Approved By:</strong> <c:out value="${babyStep.completed_by}" default="N/A" /> |
-                                                    <strong>Approved Date:</strong> <c:out value="${babyStep.complete_by_date}" default="Not Sent" />
-                                                </small>
-                                            </div>
 
-                                        
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                            <!-- Approval Information -->
+                                            <div class="col-4">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar avatar-sm bg-light rounded-circle me-2">
+                                                                <i class="bi bi-person text-muted"></i>
+                                                            </div>
+                                                            <div>
+                                                                <small class="text-muted d-block">Approved By</small>
+                                                                <span class="fw-medium text-dark">
+                                                                    ${babyStep.completed_by != null ? babyStep.completed_by : 'Pending'}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar avatar-sm bg-light rounded-circle me-2">
+                                                                <i class="bi bi-calendar-check text-muted"></i>
+                                                            </div>
+                                                            <div>
+                                                                <small class="text-muted d-block">Approval Date</small>
+                                                                <span class="fw-medium text-dark">
+                                                                    ${babyStep.complete_by_date != null ? babyStep.complete_by_date : 'Not approved'}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Timeline Connector (except for last item) -->
+                                    <c:if test="${!loop.last}">
+                                        <div class="timeline-connector"></div>
+                                    </c:if>
                                 </div>
-                                <!-- Process Status List -->
-                               
+                            </c:forEach>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <c:if test="${empty active_digital_workflow_step_list}">
+                            <div class="text-center py-5">
+                                <div class="mb-3">
+                                    <i class="bi bi-clipboard-x display-4 text-muted"></i>
+                                </div>
+                                <h6 class="text-muted mb-2">No Process Steps Found</h6>
+                                <p class="text-muted small">No active process steps are available for this application.</p>
+                            </div>
+                        </c:if>
+                        
+                        <!-- Process Summary -->
+                        <div class="row mt-4 pt-3 border-top">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-md bg-success text-white rounded-circle me-3">
+                                        <i class="bi bi-check-all"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Completed</h6>
+                                        <p class="mb-0 fw-bold">
+                                            <c:set var="completedCount" value="0" />
+                                            <c:forEach var="step" items="${active_digital_workflow_step_list}">
+                                                <c:if test="${step.bse_status == 'Completed'}">
+                                                    <c:set var="completedCount" value="${completedCount + 1}" />
+                                                </c:if>
+                                            </c:forEach>
+                                            ${completedCount}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-md bg-warning text-dark rounded-circle me-3">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">In Progress</h6>
+                                        <p class="mb-0 fw-bold">
+                                            <c:set var="ongoingCount" value="0" />
+                                            <c:forEach var="step" items="${active_digital_workflow_step_list}">
+                                                <c:if test="${step.bse_status == 'Ongoing'}">
+                                                    <c:set var="ongoingCount" value="${ongoingCount + 1}" />
+                                                </c:if>
+                                            </c:forEach>
+                                            ${ongoingCount}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-md bg-danger text-white rounded-circle me-3">
+                                        <i class="bi bi-hourglass"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Pending</h6>
+                                        <p class="mb-0 fw-bold">
+                                            <c:set var="pendingCount" value="0" />
+                                            <c:forEach var="step" items="${active_digital_workflow_step_list}">
+                                                <c:if test="${step.bse_status == 'Pending'}">
+                                                    <c:set var="pendingCount" value="${pendingCount + 1}" />
+                                                </c:if>
+                                            </c:forEach>
+                                            ${pendingCount}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Right Sidebar -->
-        <div class="col-lg-4">
-            <div id="accordion">
-                <!-- Map (Parcel) -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsejobs">
-                        <h5 class="mb-0">
-                            <i class="fas fa-map mr-2"></i>Map (Parcel)
-                        </h5>
-                    </div>
-                    <div id="collapsejobs" class="collapse show">
-                        <div class="card-body">
-                            <div id="parcelMap"></div>
+            <!-- Sidebar Column -->
+            <div class="col-lg-4">
+                <!-- Accordion for Sidebar Sections -->
+                <div class="accordion shadow-sm" id="sidebarAccordion">
+                    <!-- Map Section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseMap" aria-expanded="true">
+                                <i class="bi bi-map me-2"></i>
+                                Map
+                            </button>
+                        </h2>
+                        <div id="collapseMap" class="accordion-collapse collapse show" data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div id="parcelMap" style="height: 300px;"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Parties Involved -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapseparties">
-                        <h5 class="mb-0">
-                            <i class="fas fa-users mr-2"></i>Parties Involved
-                        </h5>
+                    <!-- Related Jobs -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseJobs" aria-expanded="false">
+                                <i class="bi bi-briefcase me-2"></i>
+                                Related Jobs
+                            </button>
+                        </h2>
+                        <div id="collapseJobs" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div  class="table-responsive">
+									<table class="table table-bordered table-hover table-sm">
+										<thead>
+											<tr>
+												<th>Job Number</th>
+												<th>Application Type</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${job_details}" var="job_row">
+												<tr>
+													<td>${job_row.job_number}</td>
+													<td>${job_row.business_process_sub_name}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="collapseparties" class="collapse">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Gender</th>
-                                            <th>Contact</th>
-                                            <th>Role</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${parties}" var="parties_row">
+
+                    <!-- Parties -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseParties">
+                                <i class="bi bi-people me-2"></i>
+                                Parties
+                                <span class="badge bg-primary ms-2">${parties.size()}</span>
+                            </button>
+                        </h2>
+                        <div id="collapseParties" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
                                             <tr>
-                                                <td>${parties_row.ar_name}</td>
-                                                <td>${parties_row.ar_gender}</td>
-                                                <td>${parties_row.ar_cell_phone}</td>
-                                                <td>${parties_row.type_of_party}</td>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Contact</th>
+                                                <th>Role</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${parties}" var="parties_row">
+                                                <tr>
+                                                    <td class="fw-medium">${parties_row.ar_name}</td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark">
+                                                            ${parties_row.ar_gender}
+                                                        </span>
+                                                    </td>
+                                                    <td>${parties_row.ar_cell_phone}</td>
+                                                    <td>
+                                                        <span class="badge bg-info">
+                                                            ${parties_row.type_of_party}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Bills and Payments -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsebills">
-                        <h5 class="mb-0">
-                            <i class="fas fa-receipt mr-2"></i>Bills & Payments
-                        </h5>
-                    </div>
-                    <div id="collapsebills" class="collapse">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Action</th>
-                                            <th>Payment Mode</th>
-                                            <th>Amount</th>
-                                            <th>Receipt #</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${payment_invoice}" var="payment_bill_row">
+                    <!-- Bills & Payments -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseBills">
+                                <i class="bi bi-cash-coin me-2"></i>
+                                Bills & Payments
+                            </button>
+                        </h2>
+                        <div id="collapseBills" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <button class="btn btn-sm btn-success" 
-                                                        data-toggle="modal" 
-                                                        data-target="#viewBillModal"
-                                                        data-egcr_id="${payment_bill_row.payment_slip_number}"
-                                                        data-ref_number="${payment_bill_row.ref_number}">
-                                                        View
-                                                    </button>
-                                                </td>
-                                                <td>${payment_bill_row.payment_mode}</td>
-                                                <td>${payment_bill_row.bill_amount}</td>
-                                                <td>${payment_bill_row.payment_slip_number}</td>
-                                                <td>${payment_bill_row.payment_date}</td>
+                                                <th>Action</th>
+                                                <th>Mode</th>
+                                                <th>Amount</th>
+                                                <th>Receipt</th>
+                                                <th>Date</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case Minutes -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapseminutes">
-                        <h5 class="mb-0">
-                            <i class="fas fa-clipboard-list mr-2"></i>Case Minutes
-                        </h5>
-                    </div>
-                    <div id="collapseminutes" class="collapse">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Description</th>
-                                            <th>From</th>
-                                            <th>To</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${application_munites}" var="application_munites_row">
-                                            <tr>
-                                                <td>${application_munites_row.am_description}</td>
-                                                <td>${application_munites_row.ar_name}</td>
-                                                <td>${application_munites_row.am_to_officer}</td>
-                                                <td>${application_munites_row.am_activity_date}</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-info" 
-                                                        data-toggle="modal"
-                                                        data-target="#addMinutesModal"
-                                                        data-target-id="${application_munites_row.am_id}">
-                                                        <i class="fas fa-eye"></i> View
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case Documents -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsedocs">
-                        <h5 class="mb-0">
-                            <i class="fas fa-file-contract mr-2"></i>Case Documents
-                        </h5>
-                    </div>
-                    <div id="collapsedocs" class="collapse">
-                        <div class="card-body">
-                            <div class="action-buttons mb-3">
-                                <button class="btn btn-primary btn-sm mr-2" id="btn_load_scanned_documents">
-                                    <i class="fas fa-sync-alt mr-1"></i> Refresh
-                                </button>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Document Name</th>
-                                            <th>Type</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${casescanneddocuments}" var="casescanneddocuments_row">
-                                            <tr>
-                                                <td>${casescanneddocuments_row.document_name}</td>
-                                                <td>${casescanneddocuments_row.document_type}</td>
-                                                <td>
-                                                    <form action="open_pdffile" method="post">
-                                                        <input type="hidden" name="document_path" value="${casescanneddocuments_row.document_file}">
-                                                        <button type="submit" class="btn btn-sm btn-success">
-                                                            <i class="fas fa-file-download mr-1"></i> Download
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${payment_invoice}" var="payment_bill_row">
+                                                <tr>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-primary"
+                                                                data-bs-toggle="modal" 
+																data-bs-target="#generateEGCRModal"
+                                                                data-egcr_id="${payment_bill_row.payment_slip_number}"
+                                                                data-ref_number="${payment_bill_row.ref_number}">
+                                                            <i class="bi bi-eye"></i>
                                                         </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark">
+                                                            ${payment_bill_row.payment_mode}
+                                                        </span>
+                                                    </td>
+                                                    <td class="fw-medium">${payment_bill_row.bill_amount}</td>
+                                                    <td>${payment_bill_row.payment_slip_number}</td>
+                                                    <td>${payment_bill_row.payment_date}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Public Documents -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsepudocs">
-                        <h5 class="mb-0">
-                            <i class="fas fa-file-alt mr-2"></i>Public Documents
-                        </h5>
-                    </div>
-                    <div id="collapsepudocs" class="collapse">
-                        <div class="card-body">
-                            <div class="action-buttons mb-3">
-                                <button class="btn btn-primary btn-sm mr-2" id="btn_load_scanned_documents_public">
-                                    <i class="fas fa-sync-alt mr-1"></i> Refresh
-                                </button>
-                                <button class="btn btn-success btn-sm" id="btn_add_public_document" data-toggle="modal" data-target="#publicFileUploadModal">
-                                    <i class="fas fa-plus mr-1"></i> Add Document
-                                </button>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Document Name</th>
-                                            <th>Type</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${casescanneddocuments_public}" var="casescanneddocuments_row">
+                    <!-- Application Minutes -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseMinutes">
+                                <i class="bi bi-journal-text me-2"></i>
+                                Application Minutes
+                            </button>
+                        </h2>
+                        <div id="collapseMinutes" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
                                             <tr>
-                                                <td>${casescanneddocuments_row.document_name}</td>
-                                                <td>${casescanneddocuments_row.document_type}</td>
-                                                <td>
-                                                    <form action="registration_application_progress_details" method="post">
-                                                        <input type="hidden" name="document_path" value="${casescanneddocuments_row.document_file}">
-                                                        <button type="submit" class="btn btn-sm btn-success">
-                                                            <i class="fas fa-file-download mr-1"></i> Download
+                                                <th>Description</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${application_munites}" var="application_munites_row">
+                                                <tr>
+                                                    <td class="fs-15">${application_munites_row.am_description}</td>
+                                                    <td class="fs-12">${application_munites_row.ar_name}</td>
+                                                    <td class="fs-12">${application_munites_row.am_to_officer}</td>
+                                                    <td class="fs-12">${application_munites_row.am_activity_date}</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-info text-dark view-minute-btn"
+															data-bs-toggle="modal" 
+															data-bs-target="#viewMinutesModal"
+															data-minute-id="${application_munites_row.am_id}"
+															data-minute-description="${application_munites_row.am_description}"
+															data-minute-from="${application_munites_row.ar_name}"
+															data-minute-to="${application_munites_row.am_to_officer}"
+															data-minute-date="${application_munites_row.am_activity_date}"
+															data-minute-case-number="${case_number}"
+															data-minute-job-number="${job_number}"
+															data-minute-status="${application_munites_row.status || 'active'}">
+                                                            <i class="bi bi-eye"></i>
                                                         </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Case Queries -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsequeries">
-                        <h5 class="mb-0">
-                            <i class="fas fa-question-circle mr-2"></i>Case Queries
-                        </h5>
-                    </div>
-                    <div id="collapsequeries" class="collapse">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Job #</th>
-                                            <th>Reasons</th>
-                                            <th>Remarks</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${case_query}" var="case_query_row">
+                    <!-- Documents -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseDocuments">
+                                <i class="bi bi-files me-2"></i>
+                                Application Documents
+                            </button>
+                        </h2>
+                        <div id="collapseDocuments" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_scanned_documents">
+                                        <i class="bi bi-eye"></i> Load Docs
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" id="btn_add_public_document"
+                                            data-bs-toggle="modal" data-bs-target="#publicFileUploadModal">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="lc_main_scanned_documents_dataTable">
+                                        <thead>
                                             <tr>
-                                                <td>${case_query_row.job_number}</td>
-                                                <td>${case_query_row.reasons}</td>
-                                                <td>${case_query_row.remarks}</td>
-                                                <td>${case_query_row.created_date}</td>
-                                                <td>
-                                                    <button class="btn btn-sm ${case_query_row.status == 1 ? 'btn-warning' : 'btn-info'}" 
-                                                        data-toggle="modal" 
-                                                        data-target="#newQueryModal"
-                                                        data-id="${case_query_row.qid}"
-                                                        data-job_number="${case_query_row.am_description}"
-                                                        data-reasons="${case_query_row.reasons}"
-                                                        data-remarks="${case_query_row.remarks}"
-                                                        data-status="${case_query_row.status}">
-                                                        ${case_query_row.status == 1 ? '<i class="fas fa-edit mr-1"></i> Edit' : '<i class="fas fa-eye mr-1"></i> View'}
-                                                    </button>
-                                                </td>
+                                                <th>Document Name</th>
+                                                <th>Type</th>
+                                                <!-- <th>Action</th> -->
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                 <!-- Case Queries -->
-                <div class="card mb-3">
-                    <div class="card-header accordion-toggle" data-toggle="collapse" data-target="#collapsecasesteps">
-                        <h5 class="mb-0">
-                            <i class="fas fa-question-circle mr-2"></i>Case Steps
-                        </h5>
-                    </div>
-                    <div id="collapsecasesteps" class="collapse">
-                        <div class="card-body">
-                           
-
-  <ul class="process-list">
-                                      
-                       
-        
-                                   <c:forEach items="${baby_step_milestone_list}" var="milestone">
-    <div class="milestone">
-        <h5>${milestone.milestone_description} (Status: ${milestone.mile_stone_status})</h5>
-        <ul>
-            <c:forEach items="${milestone.baby_steps}" var="process">
-                <li>
-                    <i class="fas ${process.bse_status == 'Completed' ? 'fa-check-circle text-success' : process.bse_status == 'Ongoing' ? 'fa-spinner text-warning' : 'fa-times-circle text-danger'}"></i>
-                    <div>
-                        <div class="process-item">${process.bse_description}</div>
-                        <div class="process-details">
-                            <span>Performed by: ${process.completed_by != null ? process.completed_by : 'Pending'}</span>
-                            <span>Date: 
-                                <c:choose>
-                                    <c:when test="${process.complete_by_date != null}">
-                                        <fmt:parseDate value="${process.complete_by_date}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" />
-                                        <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd" />
-                                    </c:when>
-                                    <c:otherwise>N/A</c:otherwise>
-                                </c:choose>
-                            </span>
-                            <span>Time: 
-                                <c:choose>
-                                    <c:when test="${process.complete_by_date != null}">
-                                        <fmt:parseDate value="${process.complete_by_date}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" />
-                                        <fmt:formatDate value="${parsedDate}" pattern="HH:mm:ss" />
-                                    </c:when>
-                                    <c:otherwise>N/A</c:otherwise>
-                                </c:choose>
-                            </span>
+                    <!-- Public Documents -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapsePublicDocs">
+                                <i class="bi bi-globe me-2"></i>
+                                Public Documents
+                            </button>
+                        </h2>
+                        <div id="collapsePublicDocs" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_scanned_documents_public">
+                                        <i class="bi bi-eye"></i> Load Docs
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" id="btn_add_public_document"
+                                            data-bs-toggle="modal" data-bs-target="#publicFileUploadModal">
+                                        <i class="bi bi-plus"></i> Add
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="lc_public_documents_dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Document Name</th>
+                                                <th>Type</th>
+                                                <!-- <th>Action</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </li>
-            </c:forEach>
-        </ul>
-    </div>
-</c:forEach>
 
-
-                                    </ul>
-
+                    <!-- Queries -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseQueries">
+                                <i class="bi bi-question-circle me-2"></i>
+                                Queries
+                                <span class="badge bg-danger ms-2">${case_query.size()}</span>
+                            </button>
+                        </h2>
+                        <div id="collapseQueries" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Reason</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${case_query}" var="case_query_row">
+                                                <tr>
+                                                    <td>${case_query_row.reasons}</td>
+                                                    <td>${case_query_row.created_date}</td>
+                                                    <td>
+                                                        <span class="badge ${case_query_row.status == 1 ? 'bg-danger text-dark' : 'bg-success text-white'}">
+                                                            ${case_query_row.status == 1 ? 'Pending' : 'Resolved'}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-sm ${case_query_row.status == 1 ? 'btn-warning' : 'btn-outline-info'}"
+                                                                data-bs-toggle="modal" data-bs-target="#viewQueryModal"
+                                                                data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"
+                                                                data-id="${case_query_row.qid}"
+                                                                data-job_number="${case_query_row.job_number}"
+																data-case_number="${case_query_row.case_number}"
+                                                                data-reasons="${case_query_row.reasons}"
+                                                                data-remarks="${case_query_row.remarks}"
+																data-general_reason="${case_query_row.query_general_reason}"
+																data-query_response="${case_query_row.query_response}"
+                                                                data-status="${case_query_row.status}"
+																data-created_by="${case_query_row.created_by}"
+																data-created_date="${case_query_row.created_date}"
+																data-modified_by="${case_query_row.modified_by}"
+																data-modified_date="${case_query_row.modified_date}"
+																data-attachment_required="${case_query_row.attachment_required}">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger"
+                                                                data-bs-toggle="modal" data-bs-target="#newQueryModal"
+                                                                data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"
+                                                                data-id="${case_query_row.qid}"
+                                                                data-job_number="${case_query_row.job_number}"
+                                                                data-reasons="${case_query_row.reasons}"
+                                                                data-remarks="${case_query_row.remarks}"
+                                                                data-status="${case_query_row.status}">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -594,12 +982,11 @@
     </div>
 </div>
 
-
 <script>
     // Define EPSG:2136 projection
- //   proj4.defs('EPSG:2136', '+proj=utm +zone=36 +south +ellps=clrk80 +units=m +no_defs');
+    //   proj4.defs('EPSG:2136', '+proj=utm +zone=36 +south +ellps=clrk80 +units=m +no_defs');
 
-  function editStep(stepId) {
+    function editStep(stepId) {
         alert('Editing step with ID: '+stepId);
     }
 
@@ -659,138 +1046,126 @@
         }
     }
 
-
-      // Initialize the map when the DOM is fully loaded
+    // Initialize the map when the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function() {
         // Placeholder coordinates (longitude, latitude) for the parcel
         // In a real implementation, these should be dynamically fetched based on GLPIN or other parcel data
-     var parcel_lrd_dataSource = new ol.source.TileWMS({
-	url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-	params : {
-		'LAYERS' : 'csau_geospatial:lc_spatial_objects',
-		'TILED' : true
-	},
+        var parcel_lrd_dataSource = new ol.source.TileWMS({
+            url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+            params : {
+                'LAYERS' : 'csau_geospatial:lc_spatial_objects',
+                'TILED' : true
+            },
+            serverType : 'geoserver',
+            transition : 0
+        }) 
 
-	serverType : 'geoserver',
-	transition : 0
-})
+        var lrd_parcels_dataLayer = new ol.layer.Tile({
+            title : 'LRD Parcels Layer',
+            source : parcel_lrd_dataSource
 
-var lrd_parcels_dataLayer = new ol.layer.Tile({
-	title : 'LRD Parcels Layer',
-	source : parcel_lrd_dataSource
-
-})
-
-
-var lrd_certificate_region_dataSource = new ol.source.TileWMS({
-	url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-	params : {
-		'LAYERS' : 'csau_geospatial:lrd_certificate_region',
-		'TILED' : true
-	},
-
-	serverType : 'geoserver',
-	transition : 0
-})
-
-var lrd_certificate_region_dataLayer = new ol.layer.Tile({
-	title : 'LRD Certificate Region',
-	visible : false,
-	source : lrd_certificate_region_dataSource
-
-})
+        })
 
 
-	var lcfrs_grid_lrd_dataSource = new ol.source.TileWMS({
-					url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-					params : {
-						'LAYERS' : 'csau_geospatial:gng_grid',
-						'TILED' : true
-					},
-		
-					serverType : 'geoserver',
-					transition : 0
-				})
-				
-				var lcfrs_grid_lrd_dataLayer = new ol.layer.Tile({
-					title : 'Grid',
-					visible : false,
-					source : lcfrs_grid_lrd_dataSource
-				
-				})
-				
-				var lcfrs_registration_district_dataSource = new ol.source.TileWMS({
-					url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-					params : {
-						'LAYERS' : 'csau_geospatial:district',
-						'TILED' : true
-					},
-				
-					serverType : 'geoserver',
-					transition : 0
-				})
-				
-				var lcfrs_registration_district_dataLayer = new ol.layer.Tile({
-					title : 'Registration District',
-					visible : false,
-					source : lcfrs_registration_district_dataSource
-				
-				})
+        var lrd_certificate_region_dataSource = new ol.source.TileWMS({
+            url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+            params : {
+                'LAYERS' : 'csau_geospatial:lrd_certificate_region',
+                'TILED' : true
+            },
+
+            serverType : 'geoserver',
+            transition : 0
+        })
+
+        var lrd_certificate_region_dataLayer = new ol.layer.Tile({
+            title : 'LRD Certificate Region',
+            visible : false,
+            source : lrd_certificate_region_dataSource
+
+        })
+
+
+        var lcfrs_grid_lrd_dataSource = new ol.source.TileWMS({
+            url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+            params : {
+                'LAYERS' : 'csau_geospatial:gng_grid',
+                'TILED' : true
+            },
+            
+            serverType : 'geoserver',
+            transition : 0
+        })
+                    
+        var lcfrs_grid_lrd_dataLayer = new ol.layer.Tile({
+            title : 'Grid',
+            visible : false,
+            source : lcfrs_grid_lrd_dataSource
+        })
+                    
+        var lcfrs_registration_district_dataSource = new ol.source.TileWMS({
+            url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+            params : {
+                'LAYERS' : 'csau_geospatial:district',
+                'TILED' : true
+            },
+                    
+            serverType : 'geoserver',
+            transition : 0
+        })
+                    
+        var lcfrs_registration_district_dataLayer = new ol.layer.Tile({
+            title : 'Registration District',
+            visible : false,
+            source : lcfrs_registration_district_dataSource
+        })
 
         var googleLayerHybrid = new ol.layer.Tile({
-	title : "Google Satellite & Roads",
-	// 'type': 'base',
-	visible : false,
-	'opacity' : 1.000000,
-	source : new ol.source.XYZ({
-		attributions : [ new ol.Attribution({
-			html : '<a href=""></a>'
-		}) ],
-		url : 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga'
-	}),
-});
-
-		
+            title : "Google Satellite & Roads",
+            // 'type': 'base',
+            visible : false,
+            opacity : 1.000000,
+            source : new ol.source.XYZ({
+                attributions : [ new ol.Attribution({
+                    html : '<a href=""></a>'
+                }) ],
+                url : 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga'
+            }),
+        });  
 
         var projObj = new ol.proj.Projection({
-	// code: 'EPSG:3857',
-	code : 'EPSG:2136',
-	extent : [ 80935.4497355444, 1209.0295731349593, 1711780.3060929566,
-			2358523.124783509 ],
-	units : 'ft',
-	axisOrientation : 'enu',
-	global : false,
-	// worldExtent: [-199,32,322,0],
-	worldExtent : [ -3.79, 1.4, 2.1, 11.16 ],
-	getPointResolution : function(r) {
-		return r;
-	},
-// worldExtent: [-118905.86588345, -1185221.57235827,
-// 2011055.53818079,
-// 2360318.82691170]
-// extent: [32000000,5900000,33000000,6000000]
-// extent: [32502277,5970203,32513486,5971984]
-});
+            // code: 'EPSG:3857',
+            code : 'EPSG:2136',
+            extent : [ 80935.4497355444, 1209.0295731349593, 1711780.3060929566,
+                    2358523.124783509 ],
+            units : 'ft',
+            axisOrientation : 'enu',
+            global : false,
+            // worldExtent: [-199,32,322,0],
+            worldExtent : [ -3.79, 1.4, 2.1, 11.16 ],
+            getPointResolution : function(r) {
+                return r;
+            },
+            // worldExtent: [-118905.86588345, -1185221.57235827,
+            // 2011055.53818079,
+            // 2360318.82691170]
+            // extent: [32000000,5900000,33000000,6000000]
+            // extent: [32502277,5970203,32513486,5971984]
+        });
 
-ol.proj.setProj4(proj4);
-proj4
-		.defs(
-				"EPSG:2136",
-				'+proj=tmerc +lat_0=4.666666666666667 +lon_0=-1 +k=0.99975 +x_0=274319.7391633579 +y_0=0 +a=6378300 +b=6356751.689189189 +towgs84=-199,32,322,0,0,0,0 +to_meter=0.3047997101815088 +no_defs');
+        ol.proj.setProj4(proj4);
+        proj4 .defs( "EPSG:2136",'+proj=tmerc +lat_0=4.666666666666667 +lon_0=-1 +k=0.99975 +x_0=274319.7391633579 +y_0=0 +a=6378300 +b=6356751.689189189 +towgs84=-199,32,322,0,0,0,0 +to_meter=0.3047997101815088 +no_defs');
 
 
-    const wktPolygon = '${parcel_wkt}';
+        const wktPolygon = '${parcel_wkt}';
 
-          console.log('wktPolygon')
-   console.log(wktPolygon)
+        // console.log('wktPolygon')
+        // console.log(wktPolygon)
 
-     // Parse WKT to OpenLayers geometry
+        // Parse WKT to OpenLayers geometry
                
-
-              //   vectorLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
+        //   vectorLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
              
-                
-
         // Initialize OpenLayers map
         const map = new ol.Map({
             target: 'parcelMap',
@@ -801,7 +1176,7 @@ proj4
 					new ol.control.MousePosition(),
 					new ol.control.ZoomToExtent(), new ol.control.FullScreen()
 			]),
-	renderer : 'canvas',
+	        renderer : 'canvas',
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
@@ -814,35 +1189,83 @@ proj4
                 zoom: 12
             })
         });
-       // Add the polygon to the map
-                // const vectorSource = new ol.source.Vector({
-                //     features: [polygonFeature]
-                // });
 
-                const vectorLayer = new ol.layer.Vector({
-                    source: new ol.source.Vector(),
-                    style: new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: '#ff0000',
-                            width: 2
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(255, 0, 0, 0.2)'
-                        })
-                    })
+        // Add the polygon to the map
+        // const vectorSource = new ol.source.Vector({
+        //     features: [polygonFeature]
+        // });
+
+        const vectorLayer = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 2
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(255, 0, 0, 0.2)'
+                })
+            })
+        });
+
+        map.addLayer(googleLayerHybrid);
+        map.addLayer(lcfrs_registration_district_dataLayer);
+        map.addLayer(lrd_parcels_dataLayer);
+        map.addLayer(vectorLayer);
+
+        // console.log("wktPolygon")
+        // console.log(wktPolygon)
+        vectorLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
+        map.getView().fit(vectorLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
+
+        // Export payments button
+        $('#exportPayments').on('click', function() {
+            Swal.fire({
+                title: 'Export Payment Records',
+                text: 'Select export format',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Excel',
+                cancelButtonText: 'PDF',
+                showDenyButton: true,
+                denyButtonText: 'CSV'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    exportPayments('excel');
+                } else if (result.isDenied) {
+                    exportPayments('csv');
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    exportPayments('pdf');
+                }
+            });
+        });
+        
+        // Export payments function
+        function exportPayments(format) {
+            // Show loading
+            Swal.fire({
+                title: 'Exporting...',
+                text: 'Please wait while we prepare your export',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Simulate export process
+            setTimeout(() => {
+                Swal.fire({
+                    title: 'Export Complete!',
+                    text: `Payment records exported as ${format.toUpperCase()}`,
+                    icon: 'success',
+                    confirmButtonColor: '#198754'
                 });
-
-                map.addLayer(googleLayerHybrid);
-                map.addLayer(lcfrs_registration_district_dataLayer);
-                map.addLayer(lrd_parcels_dataLayer);
-                map.addLayer(vectorLayer);
-
-console.log("wktPolygon")
-console.log(wktPolygon)
-                vectorLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
-                map.getView().fit(vectorLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
+            }, 1500);
+        }
 
     });
+
+    
 </script>
 
-<jsp:include page="../includes/_footer.jsp"></jsp:include>
+<jsp:include page="../../components/_gated_workflow_modal.jsp"></jsp:include>

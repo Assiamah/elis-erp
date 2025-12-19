@@ -2,7 +2,7 @@ class InactivityTimer {
     constructor(config = {}) {
         // Configuration
         this.config = {
-            warningTime: 600,      // 10 minutes warning
+            warningTime: 100,      // 1 minute warning
             logoutTime: 900,      // 15 minutes total until logout
             checkInterval: 1000,
             events: ['mousemove', 'keydown', 'click', 'scroll', 'touchstart', 'mousedown'],
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (isAuthenticated) {
         window.sessionTimer = new InactivityTimer({
-            warningTime: 600,    // 10 minutes
+            warningTime: 100,    // 1 minute
             logoutTime: 900,     // 15 minutes
             extendOnButtonClick: true,
             buttonExtensionMinutes: 15

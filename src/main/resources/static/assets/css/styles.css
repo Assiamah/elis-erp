@@ -25088,10 +25088,6 @@ a.link-underline-dark {
     border-radius: 0.75rem;
 }
 
-#sendMessageModal .modal-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
 #sendMessageModal .avatar {
     width: 40px;
     height: 40px;
