@@ -23,7 +23,7 @@
                         <i class="bi bi-credit-card fs-5"></i>
                     </div>
                     <div>
-                        <h5 class="modal-title mb-0" id="checkForPaymentLabel">
+                        <h5 class="modal-title text-white mb-0" id="checkForPaymentLabel">
                             Payment Records
                         </h5>
                         <p class="mb-0 small opacity-75">

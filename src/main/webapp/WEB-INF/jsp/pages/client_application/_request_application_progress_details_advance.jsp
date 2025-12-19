@@ -934,11 +934,11 @@
                                                     <td>${case_query_row.reasons}</td>
                                                     <td>${case_query_row.created_date}</td>
                                                     <td>
-                                                        <span class="badge ${case_query_row.status == 1 ? 'bg-danger text-dark' : 'bg-success text-white'}">
+                                                        <span class="badge ${case_query_row.status == 1 ? 'bg-danger text-white' : 'bg-success text-white'}">
                                                             ${case_query_row.status == 1 ? 'Pending' : 'Resolved'}
                                                         </span>
                                                     </td>
-                                                    <td>
+                                                    <td class="d-flex gap-1">
                                                         <button class="btn btn-sm ${case_query_row.status == 1 ? 'btn-warning' : 'btn-outline-info'}"
                                                                 data-bs-toggle="modal" data-bs-target="#viewQueryModal"
                                                                 data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"

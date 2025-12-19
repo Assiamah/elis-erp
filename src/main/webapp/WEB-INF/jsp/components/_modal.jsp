@@ -2161,7 +2161,7 @@
             <div class="modal-header bg-primary text-white">
                 <div class="d-flex align-items-center w-100">
                     <div>
-                        <h5 class="modal-title mb-0" id="viewQueryModalLabel">
+                        <h5 class="modal-title text-white mb-0" id="viewQueryModalLabel">
                             <i class="bi bi-question-circle me-2"></i>Query Details
                         </h5>
                         <p class="mb-0 small opacity-75">Viewing query information</p>
@@ -2652,7 +2652,7 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
                 <div>
-                    <h5 class="modal-title mb-1">
+                    <h5 class="modal-title text-white mb-1">
                         <i class="bi bi-chat-text-fill me-2"></i>Query Responses
                     </h5>
                     <p class="mb-0 small opacity-75">Responses on compliance application notice</p>
@@ -2710,7 +2710,7 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
                 <div>
-                    <h5 class="modal-title mb-0" id="addMinutesModalLabel">
+                    <h5 class="modal-title text-white mb-0" id="addMinutesModalLabel">
                         <i class="bi bi-journal-text me-2"></i>Add Minutes
                     </h5>
                     <p class="mb-0 small opacity-75">Record minutes for case ${case_number}</p>
@@ -2873,7 +2873,7 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
                 <div>
-                    <h5 class="modal-title mb-0" id="addMinutesModalLabel">
+                    <h5 class="modal-title text-white mb-0" id="addMinutesModalLabel">
                         <i class="bi bi-journal-text me-2"></i>Add Minutes
                     </h5>
                     <p class="mb-0 small opacity-75">Record minutes for case ${case_number}</p>
@@ -3037,7 +3037,7 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
                 <div>
-                    <h5 class="modal-title mb-0" id="viewMinutesModalLabel">
+                    <h5 class="modal-title text-white mb-0" id="viewMinutesModalLabel">
                         <i class="bi bi-journal-text me-2"></i>View Minute Details
                     </h5>
                 </div>
