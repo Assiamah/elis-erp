@@ -2314,7 +2314,7 @@ $('#btn_load_scanned_documents').on('click', function(e) {
                         +  '<td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td>'
                         + "</tr>");
 
-                    table_docs_mains.append('<tr><td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' +this.document_extention + '</td>' 
+                    table_docs_mains.append('<tr><td> <a class="link-post text-secondary" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' +this.document_extention + '</td>' 
                         + "</tr>");
 
                 });
@@ -2349,7 +2349,7 @@ $('#btn_load_scanned_documents_public').on('click', function(e) {
                 var json_p = JSON.parse(serviceresponse);
                                 
                 $(json_p).each(function () {
-                    table_docs_mains.append('<tr><td> <a class="link-post" href="' + this.doc_uuid + '">' + this.doc_description+ '</a></td><td>' +this.doc_extension + '</td>' 
+                    table_docs_mains.append('<tr><td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description+ '</a></td><td>.pdf</td>' 
                     + "</tr>");
                 });
             }catch(e){
@@ -2537,3 +2537,654 @@ if (!$('#toastContainer').length) {
         <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     `);
 }
+
+$(document).ready(function() {
+    // Configuration for both modals
+    const modalConfig = {
+        'public': {
+            modalId: '#publicFileUploadModal',
+            fileInputName: 'samplePublicFile',
+            containerId: '#fileContainer',
+            addButtonId: '#addFile',
+            uploadButtonId: '#btn_upload_public_case_file',
+            clearButtonId: '#btnClearForm',
+            documentTypeId: '#file_type_pu',
+            caseNumberId: '#public_file_upload_case_number',
+            progressId: '#uploadProgress',
+            progressBarId: '#uploadProgressBar',
+            statusId: '#uploadStatus',
+            spinnerId: '#uploadSpinner',
+            endpoint: 'document_upload_multiple_public_new',
+            maxFiles: 5
+        },
+        'application': {
+            modalId: '#fileUploadModal',
+            fileInputName: 'sampleApplicationFile',
+            containerId: '#apFileContainer',
+            addButtonId: '#apAddFile',
+            uploadButtonId: '#btn_upload_application_case_file',
+            clearButtonId: '#apBtnClearForm',
+            documentTypeId: '#file_type_au',
+            caseNumberId: '#application_file_upload_case_number',
+            progressId: '#fileUploadProgress',
+            progressBarId: '#fileUploadProgressBar',
+            statusId: '#fileUploadStatus',
+            spinnerId: '#apUploadSpinner',
+            endpoint: 'document_upload_mutiple_new',
+            maxFiles: 5
+        }
+    };
+
+    // State management for each modal
+    const modalState = {};
+
+    // Initialize modals
+    $.each(modalConfig, function(modalType, config) {
+        modalState[modalType] = {
+            fileCount: 1
+        };
+
+        // Initialize modal - clear all added file inputs when modal closes
+        $(config.modalId).on('show.bs.modal', function() {
+            resetForm(modalType);
+            updateUploadButton(modalType);
+        });
+
+        // Also reset when modal is hidden (when user clicks close button)
+        $(config.modalId).on('hidden.bs.modal', function() {
+            resetForm(modalType);
+        });
+
+        // Add more files functionality
+        $(config.addButtonId).on('click', function(e) {
+            e.preventDefault();
+            addFileInput(modalType);
+        });
+
+        // Remove file functionality - using event delegation
+        $(config.containerId).on('click', '.remove-file-btn', function() {
+            const card = $(this).closest('.file-upload-card');
+            const container = card.closest('.file-upload-container');
+            const allCards = container.find('.file-upload-card');
+            
+            // Don't remove if it's the first card
+            if (allCards.length > 1) {
+                card.remove();
+                modalState[modalType].fileCount--;
+                updateFileNumbers(modalType);
+                updateUploadButton(modalType);
+            }
+        });
+
+        // File input change handler - using event delegation
+        $(config.containerId).on('change', '.file-input', function() {
+            handleFileChange(modalType, this);
+        });
+
+        // Preview button click handler - using event delegation
+        $(config.containerId).on('click', '.preview-btn:not([disabled])', function(e) {
+            e.preventDefault();
+            const card = $(this).closest('.file-upload-card');
+            const fileInput = card.find('.file-input')[0];
+            
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                previewFile(fileInput.files[0]);
+            }
+        });
+
+        // Upload button click handler
+        $(config.uploadButtonId).on('click', function() {
+            uploadDocuments(modalType);
+        });
+
+        // Clear form button
+        $(config.clearButtonId).on('click', function() {
+            resetForm(modalType);
+        });
+
+        // Document type change handler
+        $(config.documentTypeId).on('change', function() {
+            updateUploadButton(modalType);
+        });
+    });
+
+    // Add file input to specific modal
+    function addFileInput(modalType) {
+        const config = modalConfig[modalType];
+        const state = modalState[modalType];
+        
+        if (state.fileCount >= config.maxFiles) {
+            showToast(`Maximum ${config.maxFiles} files allowed`, 'warning');
+            return;
+        }
+        
+        const newFileInput = createFileInput(modalType, state.fileCount + 1);
+        $(config.containerId).append(newFileInput);
+        state.fileCount++;
+        updateFileNumbers(modalType);
+    }
+
+    // Handle file change event
+    function handleFileChange(modalType, inputElement) {
+        const file = inputElement.files[0];
+        const card = $(inputElement).closest('.file-upload-card');
+        const previewBtn = card.find('.preview-btn');
+        const fileInfo = card.find('.file-info');
+        const removeBtn = card.find('.remove-file-btn');
+        const fileName = card.find('.file-name');
+        const fileSize = card.find('.file-size');
+        
+        if (file) {
+            // Validate file size (10MB = 10 * 1024 * 1024 bytes)
+            const maxSize = 10 * 1024 * 1024;
+            if (file.size > maxSize) {
+                showToast('File size must be less than 10MB', 'danger');
+                $(inputElement).val('');
+                resetFileCard(card);
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'image/jpeg',
+                'image/jpg',
+                'image/png'
+            ];
+            
+            if (!validTypes.includes(file.type)) {
+                showToast('Invalid file type. Please upload PDF, DOC, DOCX, JPG, or PNG files.', 'danger');
+                $(inputElement).val('');
+                resetFileCard(card);
+                return;
+            }
+            
+            // Update UI
+            fileName.text(file.name);
+            fileSize.text(formatFileSize(file.size));
+            fileInfo.removeClass('d-none');
+            previewBtn.prop('disabled', false);
+            removeBtn.removeClass('d-none');
+            
+            // Store the file reference on the preview button
+            previewBtn.data('file', file);
+        } else {
+            resetFileCard(card);
+        }
+        
+        updateUploadButton(modalType);
+    }
+
+    // Reset file card UI
+    function resetFileCard(card) {
+        card.find('.file-info').addClass('d-none');
+        card.find('.preview-btn').prop('disabled', true).removeData('file');
+        card.find('.file-name').text('');
+        card.find('.file-size').text('');
+    }
+
+    // Create new file input
+    function createFileInput(modalType, fileNumber) {
+        const config = modalConfig[modalType];
+        return `
+            <div class="file-upload-card mb-3">
+                <div class="card border">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-md bg-light rounded-circle me-3">
+                                <span class="text-primary">${fileNumber}</span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 fw-semibold">Document ${fileNumber}</h6>
+                                <p class="text-muted small mb-2">Select document file</p>
+                                <div class="input-group">
+                                    <input type="file" 
+                                           class="form-control file-input" 
+                                           name="${config.fileInputName}[]"
+                                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                           data-max-size="10">
+                                    <button class="btn btn-outline-secondary preview-btn" type="button" disabled>
+                                        <i class="bi bi-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger remove-file-btn ms-2 mt-5 ${modalState[modalType].fileCount > 1 ? '' : 'd-none'}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- File Info -->
+                        <div class="file-info mt-2 d-none">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <span class="file-name"></span>
+                                    (<span class="file-size"></span>)
+                                </small>
+                                <span class="badge bg-success file-status">
+                                    <i class="bi bi-check-circle me-1"></i>Ready
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Update file numbers
+    function updateFileNumbers(modalType) {
+        const config = modalConfig[modalType];
+        $(config.containerId).find('.file-upload-card').each(function(index) {
+            const fileNumber = index + 1;
+            $(this).find('.avatar span').text(fileNumber);
+            $(this).find('h6').text(`Document ${fileNumber}`);
+            
+            // Show/hide remove button (don't show on first card)
+            const removeBtn = $(this).find('.remove-file-btn');
+            if (fileNumber === 1) {
+                removeBtn.addClass('d-none');
+            } else {
+                removeBtn.removeClass('d-none');
+            }
+        });
+    }
+
+    // Update upload button state
+    function updateUploadButton(modalType) {
+        const config = modalConfig[modalType];
+        const documentType = $(config.documentTypeId).val();
+        const hasFiles = $(config.containerId).find('.file-input').filter(function() {
+            return $(this).val() !== '';
+        }).length > 0;
+        
+        const uploadBtn = $(config.uploadButtonId);
+        if (documentType && hasFiles) {
+            uploadBtn.prop('disabled', false);
+        } else {
+            uploadBtn.prop('disabled', true);
+        }
+    }
+
+    // Upload documents function
+    function uploadDocuments(modalType) {
+        const config = modalConfig[modalType];
+        const documentType = $(config.documentTypeId).val();
+        const caseNumber = $(config.caseNumberId).val();
+        const files = $(config.containerId).find('.file-input').filter(function() {
+            return $(this).val() !== '';
+        });
+        
+        if (!documentType) {
+            showToast('Please select a document type', 'danger');
+            return;
+        }
+        
+        if (files.length === 0) {
+            showToast('Please select at least one file', 'danger');
+            return;
+        }
+        
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('case_number', caseNumber);
+        formData.append('file_name', documentType);
+        
+        // Add files
+        files.each(function(index, input) {
+            const file = input.files[0];
+            formData.append(config.fileInputName, file);
+        });
+        
+        // Show upload progress
+        $(config.progressId).removeClass('d-none');
+        $(config.uploadButtonId).prop('disabled', true);
+        $(config.spinnerId).removeClass('d-none');
+        
+        // Simulate upload progress
+        simulateUploadProgress(modalType);
+        
+        // Submit via AJAX
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: config.endpoint,
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function(response) {
+                // console.log(response);
+                if (response) {
+                    showToast('Documents uploaded successfully!', 'success');
+                    
+                    // Close modal after success
+                    setTimeout(() => {
+                        $(config.modalId).modal('hide');
+                        resetForm(modalType);
+                        
+                        // Refresh documents list if needed
+                        if (modalType === 'public' && typeof refreshPublicDocuments === 'function') {
+                            refreshPublicDocuments();
+                        } else if (modalType === 'application' && typeof refreshApplicationDocuments === 'function') {
+                            refreshApplicationDocuments();
+                        }
+                    }, 1500);
+                } else {
+                    showToast(response.message || 'Upload failed', 'danger');
+                    resetUploadState(modalType);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Upload error:', error);
+                showToast('Upload failed. Please try again.', 'danger');
+                resetUploadState(modalType);
+            }
+        });
+    }
+
+    // Simulate upload progress
+    function simulateUploadProgress(modalType) {
+        const config = modalConfig[modalType];
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 5;
+            if (progress <= 90) {
+                $(config.progressBarId).css('width', progress + '%');
+                $(config.statusId).text(`Uploading... ${progress}%`);
+            } else {
+                clearInterval(interval);
+                $(config.progressBarId).css('width', '100%');
+                $(config.statusId).text('Processing files...');
+            }
+        }, 200);
+    }
+
+    // Reset upload state
+    function resetUploadState(modalType) {
+        const config = modalConfig[modalType];
+        $(config.progressId).addClass('d-none');
+        $(config.progressBarId).css('width', '0%');
+        $(config.uploadButtonId).prop('disabled', false);
+        $(config.spinnerId).addClass('d-none');
+    }
+
+    // Reset form - COMPLETELY resets the modal
+    function resetForm(modalType) {
+        const config = modalConfig[modalType];
+        const state = modalState[modalType];
+        
+        // Reset document type
+        $(config.documentTypeId).val('');
+        
+        // Remove ALL file cards except the first one
+        const container = $(config.containerId);
+        const firstCard = container.find('.file-upload-card').first();
+        
+        // Clear all cards
+        container.find('.file-upload-card').remove();
+        
+        // Add back only the first card with default state
+        container.append(`
+            <div class="file-upload-card mb-3">
+                <div class="card border">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-md bg-light rounded-circle me-3">
+                                <i class="bi bi-file-earmark-arrow-up text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 fw-semibold">Select Document</h6>
+                                <p class="text-muted small mb-2">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+                                <div class="input-group">
+                                    <input type="file" 
+                                           class="form-control file-input" 
+                                           name="${config.fileInputName}"
+                                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                           data-max-size="10">
+                                    <button class="btn btn-outline-secondary preview-btn" type="button" disabled>
+                                        <i class="bi bi-eye"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger remove-file-btn ms-2 mt-5 d-none">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- File Info -->
+                        <div class="file-info mt-2 d-none">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <span class="file-name"></span>
+                                    (<span class="file-size"></span>)
+                                </small>
+                                <span class="badge bg-success file-status">
+                                    <i class="bi bi-check-circle me-1"></i>Ready
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+        
+        // Reset state
+        state.fileCount = 1;
+        updateUploadButton(modalType);
+        resetUploadState(modalType);
+    }
+
+    // Preview file function - FIXED VERSION
+    function previewFile(file) {
+        // Create preview modal if it doesn't exist
+        if (!$('#previewModal').length) {
+            $('body').append(`
+                <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="previewModalLabel">Document Preview</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="previewLoading" class="text-center p-5">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2">Loading preview...</p>
+                                </div>
+                                <div id="previewError" class="d-none text-center p-5">
+                                    <i class="bi bi-exclamation-triangle text-warning fs-1"></i>
+                                    <p class="mt-2">Preview not available for this file type</p>
+                                </div>
+                                <div id="previewContent" class="d-none"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+        
+        const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
+        const previewContent = $('#previewContent');
+        const previewLoading = $('#previewLoading');
+        const previewError = $('#previewError');
+        
+        // Reset preview modal
+        previewContent.addClass('d-none').empty();
+        previewError.addClass('d-none');
+        previewLoading.removeClass('d-none');
+        
+        // Show modal
+        previewModal.show();
+        
+        // Check file type and show appropriate preview
+        if (file.type === 'application/pdf') {
+            // For PDF files
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewLoading.addClass('d-none');
+                previewContent.removeClass('d-none').html(`
+                    <div class="pdf-preview-container" style="height: 600px;">
+                        <iframe src="${e.target.result}" 
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0"
+                                title="PDF Preview"></iframe>
+                    </div>
+                `);
+            };
+            reader.onerror = function() {
+                previewLoading.addClass('d-none');
+                previewError.removeClass('d-none');
+            };
+            reader.readAsDataURL(file);
+        } else if (file.type.startsWith('image/')) {
+            // For image files
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewLoading.addClass('d-none');
+                previewContent.removeClass('d-none').html(`
+                    <div class="text-center">
+                        <img src="${e.target.result}" 
+                             class="img-fluid rounded" 
+                             alt="Document Preview"
+                             style="max-height: 500px;">
+                    </div>
+                `);
+            };
+            reader.onerror = function() {
+                previewLoading.addClass('d-none');
+                previewError.removeClass('d-none');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // For unsupported preview types (Word documents, etc.)
+            setTimeout(function() {
+                previewLoading.addClass('d-none');
+                previewError.removeClass('d-none');
+                previewError.html(`
+                    <div class="text-center p-4">
+                        <i class="bi bi-file-earmark-text text-primary fs-1"></i>
+                        <h5 class="mt-3">${file.name}</h5>
+                        <p class="text-muted">${formatFileSize(file.size)}</p>
+                        <p class="text-muted mb-0">Preview not available for this file type.</p>
+                        <p class="text-muted">You can download the file to view it.</p>
+                    </div>
+                `);
+            }, 500);
+        }
+    }
+
+    // Format file size
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Show toast notification
+    function showToast(message, type) {
+        const toast = $(`
+            <div class="toast align-items-center text-white bg-${type} border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `);
+        
+        $('#toastContainer').append(toast);
+        const bsToast = new bootstrap.Toast(toast[0]);
+        bsToast.show();
+        
+        toast.on('hidden.bs.toast', function() {
+            $(this).remove();
+        });
+    }
+
+    // Initialize toast container if not exists
+    if (!$('#toastContainer').length) {
+        $('body').append(`
+            <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+        `);
+    }
+
+    // Copy to clipboard function (for case number)
+    // window.copyToClipboard = function(elementId) {
+    //     const element = document.getElementById(elementId);
+    //     const text = element.value;
+        
+    //     navigator.clipboard.writeText(text).then(function() {
+    //         showToast('Copied to clipboard!', 'success');
+    //     }).catch(function(err) {
+    //         console.error('Failed to copy: ', err);
+    //         showToast('Failed to copy', 'danger');
+    //     });
+    // };
+});
+
+$('#lc_public_documents_dataTable, #lc_main_scanned_documents_dataTable').on('click', '.link-post', function (e) {
+    e.preventDefault();
+
+    $('#previewModal').modal('show');
+
+    const previewContent = $('#previewContent');
+    const previewLoading = $('#previewLoading');
+    const previewError = $('#previewError');
+
+    previewContent.addClass('d-none');
+    previewError.addClass('d-none');
+    previewLoading.removeClass('d-none');
+
+    const file_to_open = e.currentTarget.getAttribute('href');
+
+    if (!file_to_open) {
+        console.error('File path is empty');
+        previewLoading.addClass('d-none');
+        previewError.removeClass('d-none').text('Invalid file path');
+        return;
+    }
+
+    const file_path = file_to_open.replace(/^file:\/\//, '');
+
+    $.ajax({
+        type: "POST",
+        url: "open_pdffile",
+        data: {
+            request_type: 'request_to_generate_batch_list',
+            file_to_open: file_path
+        },
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (jobdetails) {
+
+            const blob = new Blob([jobdetails], {
+                type: "application/pdf"
+            });
+
+            const objectUrl = URL.createObjectURL(blob);
+
+            previewLoading.addClass('d-none');
+            previewContent.removeClass('d-none').html(`
+                <div class="pdf-preview-container" style="height: 800px;">
+                    <iframe src="${objectUrl}" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+            `);
+        },
+        error: function () {
+            previewLoading.addClass('d-none');
+            previewError.removeClass('d-none').text('Failed to load document');
+        }
+    });
+});

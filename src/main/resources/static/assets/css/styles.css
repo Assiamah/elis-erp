@@ -25347,27 +25347,34 @@ a.link-underline-dark {
   z-index: 1030;
   backdrop-filter: blur(3px) !important;
   -webkit-backdrop-filter: blur(3px) !important;
-  background: var(--swal2-backdrop);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 #newApplicationModal.modal {
   z-index: 1030;
   backdrop-filter: blur(3px) !important;
   -webkit-backdrop-filter: blur(3px) !important;
-  background: var(--swal2-backdrop);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 #completedapplicationsModal.modal {
   z-index: 1030;
   backdrop-filter: blur(3px) !important;
   -webkit-backdrop-filter: blur(3px) !important;
-  background: var(--swal2-backdrop);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 #viewresponseModal.modal {
   z-index: 1030;
   backdrop-filter: blur(3px) !important;
   -webkit-backdrop-filter: blur(3px) !important;
-  background: var(--swal2-backdrop);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+#previewModal.modal {
+  z-index: 1030;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  background: rgba(0, 0, 0, 0.06);
 }
 

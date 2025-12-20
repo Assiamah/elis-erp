@@ -177,14 +177,17 @@ public class document_upload_public {
     public String document_upload_multiple_public_new(HttpSession session,  Model model,
                                     HttpServletRequest request, 
                                     HttpServletResponse response,
-                                    @RequestParam(value = "sampleFile", required = false) MultipartFile[] files) 
+                                    @RequestParam(value = "samplePublicFile", required = false) MultipartFile[] files) 
                                     throws IOException, ServletException {
+
+										//System.out.println("files: " + files.length);
 
         // Check if session is valid
         if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
             request.setAttribute("login", "sessionout");
              model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
         }
+
 
         // Get additional parameters
         String caseNumber = request.getParameter("case_number");

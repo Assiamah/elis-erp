@@ -2581,7 +2581,7 @@
 </div>
 
 <!-- Applications Modal (General) -->
-<div class="modal fade" id="applicationsModal" tabindex="-1" aria-labelledby="applicationsModalLabel" aria-hidden="true">
+<div class="modal fade" id="applicationsModal" tabindex="-1" aria-labelledby="applicationsModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -2647,7 +2647,7 @@
 </div>
 
 <!-- View Responses Modal -->
-<div class="modal fade" id="viewresponseModal" tabindex="-1" aria-labelledby="viewresponseModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewresponseModal" tabindex="-1" aria-labelledby="viewresponseModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
@@ -2705,7 +2705,7 @@
     </div>
 </div>
 
-<div class="modal fade effect-scale modal-blur" id="addMinutesModal" tabindex="-1" aria-labelledby="addMinutesModalLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="addMinutesModal" tabindex="-1" aria-labelledby="addMinutesModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
@@ -2868,7 +2868,7 @@
     </div>
 </div>
 
-<div class="modal fade effect-scale modal-blur" id="addMinutesModal" tabindex="-1" aria-labelledby="addMinutesModalLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="addMinutesModal" tabindex="-1" aria-labelledby="addMinutesModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
@@ -3032,7 +3032,7 @@
 </div>
 
 <!-- View Minutes Modal -->
-<div class="modal fade effect-scale modal-blur" id="viewMinutesModal" tabindex="-1" aria-labelledby="viewMinutesModalLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="viewMinutesModal" tabindex="-1" aria-labelledby="viewMinutesModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
@@ -3118,7 +3118,7 @@
     </div>
 </div>
 
-<div class="modal fade effect-scale modal-blur" id="generateEGCRModal" tabindex="-1" aria-labelledby="generateEGCRModalLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="generateEGCRModal" tabindex="-1" aria-labelledby="generateEGCRModalLabel" aria-hidden="true" data-bs-backdrop="static">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 	  <div class="modal-content">
 		<div class="modal-header">
@@ -3139,3 +3139,458 @@
 	  </div>
 	</div>
   </div>
+
+  <!-- Upload Public Document Modal -->
+<div class="modal fade effect-scale modal-blur" id="publicFileUploadModal" tabindex="-1" aria-labelledby="publicFileUploadModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+                        <i class="bi bi-cloud-upload fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white mb-1" id="publicFileUploadModalLabel">
+                            Upload Public Document
+                        </h5>
+                        <p class="mb-0 small opacity-75">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Upload documents accessible to authorized users
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Upload Progress Indicator -->
+                <div id="uploadProgress" class="d-none mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                            <span class="visually-hidden">Uploading...</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted" id="uploadStatus">Uploading document...</small>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     id="uploadProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Type Selection -->
+                <div class="mb-4">
+                    <label for="file_type_pu" class="form-label fw-semibold">
+                        <i class="bi bi-file-earmark-text me-1"></i>
+                        Document Type
+                        <span class="text-danger">*</span>
+                    </label>
+                    <select name="file_name_pu" data-trigger id="file_type_pu" class="form-select" required>
+                        <option value="" selected disabled>-- Select document type --</option>
+                        <optgroup label="Personal Documents">
+                            <option value="Birth Certificate">Birth Certificate</option>
+                            <option value="Identification Card">Identification Card</option>
+                            <option value="Statutory Declaration">Statutory Declaration</option>
+                        </optgroup>
+                        <optgroup label="Legal Documents">
+                            <option value="Acknowledge Slip">Acknowledge Slip</option>
+                            <option value="Consent Letter">Consent Letter</option>
+                            <option value="Headlease">Headlease</option>
+                            <option value="Indenture">Indenture</option>
+                            <option value="Plotted Indenture">Plotted Indenture</option>
+                            <option value="Power of Attorney">Power of Attorney</option>
+                            <option value="Letters of Administration">Letters of Administration</option>
+                            <option value="Judgement">Judgement</option>
+                        </optgroup>
+                        <optgroup label="Company Documents">
+                            <option value="Company Certificate">Company Certificate</option>
+                        </optgroup>
+                        <optgroup label="Property Documents">
+                            <option value="Site Plan">Site Plan</option>
+                            <option value="Hatched Site Plan">Hatched Site Plan</option>
+                        </optgroup>
+                        <optgroup label="Financial Documents">
+                            <option value="Receipts">Receipts</option>
+                        </optgroup>
+                        <optgroup label="Other Documents">
+                            <option value="Others">Other Documents</option>
+                        </optgroup>
+                    </select>
+                    <div class="form-text">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Select the type of document you are uploading
+                    </div>
+                </div>
+
+                <!-- File Upload Area -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-paperclip me-1"></i>
+                            Document File(s)
+                            <span class="text-danger">*</span>
+                        </label>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="addFile">
+                            <i class="bi bi-plus-circle me-1"></i>Add More Files
+                        </button>
+                    </div>
+                    
+                    <!-- File Upload Container -->
+                    <div class="file-upload-container" id="fileContainer">
+                        <!-- Initial File Upload -->
+                        <div class="file-upload-card mb-3">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-md bg-light rounded-circle me-3">
+                                            <i class="bi bi-file-earmark-arrow-up text-primary"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-semibold">Select Document</h6>
+                                            <p class="text-muted small mb-2">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+                                            <div class="input-group">
+                                                <input type="file" 
+                                                       class="form-control file-input" 
+                                                       name="samplePublicFile"
+                                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                                       data-max-size="10">
+                                                <button class="btn btn-outline-secondary preview-btn" type="button" disabled>
+                                                    <i class="bi bi-eye"></i> Preview
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger remove-file-btn ms-2 mt-5 d-none">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- File Info -->
+                                    <div class="file-info mt-2 d-none">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <span class="file-name"></span>
+                                                (<span class="file-size"></span>)
+                                            </small>
+                                            <span class="badge bg-success file-status">
+                                                <i class="bi bi-check-circle me-1"></i>Ready
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Information -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="bi bi-info-circle me-2"></i>Case Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-file-text me-1"></i>Case Number
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" 
+                                           class="form-control bg-light" 
+                                           id="public_file_upload_case_number" 
+                                           value="${case_number}" 
+                                           readonly>
+                                    <button class="btn btn-outline-secondary" type="button" 
+                                            onclick="copyToClipboard('public_file_upload_case_number')">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-person me-1"></i>Applicant Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control bg-light" 
+                                       value="${ar_name}" 
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Button -->
+                <div class="text-center">
+                    <button type="button" 
+                            id="btn_upload_public_case_file" 
+                            class="btn btn-primary btn-lg px-5"
+                            disabled>
+                        <i class="bi bi-cloud-upload me-2"></i>
+                        Upload Public Document
+                        <span class="spinner-border spinner-border-sm ms-2 d-none" id="uploadSpinner" role="status"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Cancel
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-info" id="btnClearForm">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Clear Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade effect-scale modal-blur" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center py-5" id="previewLoading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading preview...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading document preview...</p>
+                </div>
+                <div id="previewContent" class="d-none"></div>
+                <div class="text-center py-5 d-none" id="previewError">
+                    <i class="bi bi-file-earmark-x display-4 text-danger mb-3"></i>
+                    <h6 class="text-danger mb-2">Preview Not Available</h6>
+                    <p class="text-muted">This file type cannot be previewed in the browser.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+                        <i class="bi bi-cloud-upload fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white mb-1" id="fileUploadModalLabel">
+                            Upload Application Document
+                        </h5>
+                        <p class="mb-0 small opacity-75">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Upload documents accessible to authorized users
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Upload Progress Indicator -->
+                <div id="fileUploadProgress" class="d-none mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                            <span class="visually-hidden">Uploading...</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <small class="text-muted" id="fileUploadStatus">Uploading document...</small>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     id="fileUploadProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Type Selection -->
+                <div class="mb-4">
+                    <label for="file_type_au" class="form-label fw-semibold">
+                        <i class="bi bi-file-earmark-text me-1"></i>
+                        Document Type
+                        <span class="text-danger">*</span>
+                    </label>
+                    <select name="file_type_au" data-trigger id="file_type_au" class="form-select" required>
+                        <option value="" selected disabled>-- Select document type --</option>
+                        <optgroup label="Personal Documents">
+                            <option value="Birth Certificate">Birth Certificate</option>
+                            <option value="Identification Card">Identification Card</option>
+                            <option value="Statutory Declaration">Statutory Declaration</option>
+                        </optgroup>
+                        <optgroup label="Legal Documents">
+                            <option value="Acknowledge Slip">Acknowledge Slip</option>
+                            <option value="Consent Letter">Consent Letter</option>
+                            <option value="Headlease">Headlease</option>
+                            <option value="Indenture">Indenture</option>
+                            <option value="Plotted Indenture">Plotted Indenture</option>
+                            <option value="Power of Attorney">Power of Attorney</option>
+                            <option value="Letters of Administration">Letters of Administration</option>
+                            <option value="Judgement">Judgement</option>
+                        </optgroup>
+                        <optgroup label="Company Documents">
+                            <option value="Company Certificate">Company Certificate</option>
+                        </optgroup>
+                        <optgroup label="Property Documents">
+                            <option value="Site Plan">Site Plan</option>
+                            <option value="Hatched Site Plan">Hatched Site Plan</option>
+                        </optgroup>
+                        <optgroup label="Financial Documents">
+                            <option value="Receipts">Receipts</option>
+                        </optgroup>
+                        <optgroup label="Other Documents">
+                            <option value="Others">Other Documents</option>
+                        </optgroup>
+                    </select>
+                    <div class="form-text">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Select the type of document you are uploading
+                    </div>
+                </div>
+
+                <!-- File Upload Area -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-paperclip me-1"></i>
+                            Document File(s)
+                            <span class="text-danger">*</span>
+                        </label>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="apAddFile">
+                            <i class="bi bi-plus-circle me-1"></i>Add More Files
+                        </button>
+                    </div>
+                    
+                    <!-- File Upload Container -->
+                    <div class="file-upload-container" id="apFileContainer">
+                        <!-- Initial File Upload -->
+                        <div class="file-upload-card mb-3">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-md bg-light rounded-circle me-3">
+                                            <i class="bi bi-file-earmark-arrow-up text-primary"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-semibold">Select Document</h6>
+                                            <p class="text-muted small mb-2">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+                                            <div class="input-group">
+                                                <input type="file" 
+                                                       class="form-control file-input" 
+                                                       name="sampleApplicationFile"
+                                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                                       data-max-size="10">
+                                                <button class="btn btn-outline-secondary preview-btn" type="button" disabled>
+                                                    <i class="bi bi-eye"></i> Preview
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger remove-file-btn ms-2 mt-5 d-none">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- File Info -->
+                                    <div class="file-info mt-2 d-none">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <span class="file-name"></span>
+                                                (<span class="file-size"></span>)
+                                            </small>
+                                            <span class="badge bg-success file-status">
+                                                <i class="bi bi-check-circle me-1"></i>Ready
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Information -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="bi bi-info-circle me-2"></i>Case Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-file-text me-1"></i>Case Number
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" 
+                                           class="form-control bg-light" 
+                                           id="application_file_upload_case_number" 
+                                           value="${case_number}" 
+                                           readonly>
+                                    <button class="btn btn-outline-secondary" type="button" 
+                                            onclick="copyToClipboard('application_file_upload_case_number')">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-person me-1"></i>Applicant Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control bg-light" 
+                                       value="${ar_name}" 
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Button -->
+                <div class="text-center">
+                    <button type="button" 
+                            id="btn_upload_application_case_file" 
+                            class="btn btn-primary btn-lg px-5"
+                            disabled>
+                        <i class="bi bi-cloud-upload me-2"></i>
+                        Upload Application Document
+                        <span class="spinner-border spinner-border-sm ms-2 d-none" id="apUploadSpinner" role="status"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Cancel
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-info" id="apBtnClearForm">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Clear Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

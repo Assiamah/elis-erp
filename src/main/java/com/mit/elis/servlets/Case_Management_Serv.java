@@ -6122,14 +6122,14 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				System.out.println("Edit: " + input);
+				//System.out.println("Edit: " + input);
 
 				// System.out.println(ar_client_id);
 				web_service_response = casemgt_cl
 						.select_address_register_edit_general(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 					System.out.println(web_service_response);
 				}

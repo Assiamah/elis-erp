@@ -116,3 +116,5 @@ ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrfamaps.js'>
 ${page_name == "unit_case_management_revised" ? "<script src='js-pages/unit_case_management_revised.js'></script>" : ""}
 
 ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name=="certificate_signing_module") ? "<script src='js-pages/compliance.js'></script> " : ""}
+
+${page_name == "application_review_details_advanced" ? "<script src='js-pages/gated_workflow.js'></script>" : ""}

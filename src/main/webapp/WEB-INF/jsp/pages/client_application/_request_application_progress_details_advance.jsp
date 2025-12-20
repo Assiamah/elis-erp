@@ -31,6 +31,7 @@
         border-radius: 0.75rem;
         border: 1px solid #e9ecef;
         transition: all 0.3s ease;
+        background: rgba(0, 0, 0, 0.06);
     }
     
     /* .process-step-card:hover {
@@ -171,6 +172,56 @@
         width: var(--progress-width, 0%);
         transition: width 0.5s ease;
     }
+
+    .bg-pink {
+  background-color: #e83e8c !important;
+  color: white !important;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-lg {
+  width: 56px;
+  height: 56px;
+}
+
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.avatar-xs {
+  width: 28px;
+  height: 28px;
+}
+
+.bg-light-primary {
+  background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.bg-light-success {
+  background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.bg-light-warning {
+  background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.bg-light-info {
+  background-color: rgba(13, 202, 240, 0.1) !important;
+}
+
+.contact-info {
+  font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
 </style>
 <div class="main-content app-content">
     <div class="container-fluid page-container">
@@ -192,7 +243,7 @@
                     <div>
                         <div class="d-flex align-items-center gap-3">
                             <span class="badge bg-primary fs-6">${job_number}</span>
-                            <h2 class="h4 mb-0">${ar_name}</h2>
+                            <div class="h5 mb-0">${ar_name}</div>
                         </div>
                     </div>
                     <div>
@@ -206,6 +257,16 @@
             </div>
         </div>
 
+        <input class="form-control" type="hidden" id="cs_main_case_number" name="cs_main_case_number" value="${case_number}">
+		<input class="form-control" type="hidden" id="cs_main_job_number" name="cs_main_job_number" value="${job_number}">
+        <input class="form-control" type="hidden" id="cs_main_business_process_id" value="${business_process_id}">
+        <input class="form-control" type="hidden" id="cs_main_business_process_name" value="${business_process_name}">
+        <input class="form-control" type="hidden" id="cs_main_business_process_sub_id" value="${business_process_sub_id}">
+        <input class="form-control" type="hidden" id="cs_main_business_process_sub_name" value="${business_process_sub_name}">
+        <input class="form-control" type="hidden" id="cs_main_client_number" value="${phone_number}">
+        <input class="form-control" type="hidden" id="cs_main_case_number" value="${case_number}">
+        <input class="form-control" type="hidden" id="cs_main_transaction_number"  name="cs_main_transaction_number" value="${transaction_number}" >
+
         <div class="row">
             <!-- Main Content Column -->
             <div class="col-lg-8">
@@ -217,7 +278,7 @@
                                 <i class="bi bi-file-text fs-15"></i>
                             </div>
                             <div>
-                                <h5 class="mb-0 fw-semibold">Case Summary</h5>
+                                <h6 class="mb-0 fw-medium">Case Summary</h6>
                             </div>
                         </div>
                         <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
@@ -368,7 +429,7 @@
                                     <i class="bi bi-clipboard-check fs-15"></i>
                                 </div>
                                 <div>
-                                    <h5 class="mb-0 fw-semibold">Process Status & Actions</h5>
+                                    <h6 class="mb-2 fw-medium">Process Status & Actions</h6>
                                     <p class="mb-0 small opacity-75">
                                         <i class="bi bi-info-circle me-1"></i>
                                         ${job_number} - ${ar_name}
@@ -434,7 +495,7 @@
                                                         <!-- Timeline Info -->
                                                         <small class="text-muted">
                                                             <i class="bi bi-calendar me-1"></i>
-                                                            Started: ${babyStep.start_date}
+                                                            Started: ${empty fn:trim(babyStep.start_date) ? '--' : fn:trim(babyStep.start_date)}
                                                         </small>
                                                     </div>
                                                 </div>
@@ -449,7 +510,8 @@
                                                             data-bs-desc="${babyStep.bse_description}" 
                                                             data-bs-username="${babyStep.username}" 
                                                             data-bs-date="${babyStep.date}" 
-                                                            data-bs-time="${babyStep.time}">
+                                                            data-bs-time="${babyStep.time}"
+                                                            ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
                                                         <i class="bi bi-eye"></i> Details
                                                     </button>
                                                 </div>
@@ -463,7 +525,7 @@
                                         
                                         <!-- Action Buttons -->
                                         <div class="row mt-4">
-                                            <div class="col-8">
+                                            <div class="col-7">
                                                 <!-- Approve Button -->
                                                 <div class="btn-group">
                                                     <button class="btn btn-sm btn-success"
@@ -504,7 +566,7 @@
                                             </div>
 
                                             <!-- Approval Information -->
-                                            <div class="col-4">
+                                            <div class="col-5">
                                                 <div class="d-flex justify-content-between">
                                                     <div>
                                                         <div class="d-flex align-items-center">
@@ -513,9 +575,9 @@
                                                             </div>
                                                             <div>
                                                                 <small class="text-muted d-block">Approved By</small>
-                                                                <span class="fw-medium text-dark">
-                                                                    ${babyStep.completed_by != null ? babyStep.completed_by : 'Pending'}
-                                                                </span>
+                                                                <small class="fw-medium text-dark">
+                                                                    ${empty fn:trim(babyStep.completed_by) || babyStep.completed_by == 'null, null' ? 'Pending' : fn:trim(babyStep.completed_by)}
+                                                                </small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -526,9 +588,9 @@
                                                             </div>
                                                             <div>
                                                                 <small class="text-muted d-block">Approval Date</small>
-                                                                <span class="fw-medium text-dark">
-                                                                    ${babyStep.complete_by_date != null ? babyStep.complete_by_date : 'Not approved'}
-                                                                </span>
+                                                                <small class="fw-medium text-dark">
+                                                                    ${empty fn:trim(babyStep.complete_by_date) ? 'Not approved' : fn:trim(babyStep.complete_by_date)}
+                                                                </small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -844,7 +906,7 @@
                                         <i class="bi bi-eye"></i> Load Docs
                                     </button>
                                     <button class="btn btn-sm btn-primary" id="btn_add_public_document"
-                                            data-bs-toggle="modal" data-bs-target="#publicFileUploadModal">
+                                            data-bs-toggle="modal" data-bs-target="#fileUploadModal">
                                         <i class="bi bi-plus"></i> Add
                                     </button>
                                 </div>
@@ -959,12 +1021,20 @@
                                                         </button>
                                                         <button class="btn btn-sm btn-outline-danger"
                                                                 data-bs-toggle="modal" data-bs-target="#newQueryModal"
-                                                                data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"
+                                                                data-action="edit"
                                                                 data-id="${case_query_row.qid}"
                                                                 data-job_number="${case_query_row.job_number}"
+																data-case_number="${case_query_row.case_number}"
                                                                 data-reasons="${case_query_row.reasons}"
                                                                 data-remarks="${case_query_row.remarks}"
-                                                                data-status="${case_query_row.status}">
+																data-general_reason="${case_query_row.query_general_reason}"
+																data-query_response="${case_query_row.query_response}"
+                                                                data-status="${case_query_row.status}"
+																data-created_by="${case_query_row.created_by}"
+																data-created_date="${case_query_row.created_date}"
+																data-modified_by="${case_query_row.modified_by}"
+																data-modified_date="${case_query_row.modified_date}"
+																data-attachment_required="${case_query_row.attachment_required}">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                     </td>
@@ -973,6 +1043,60 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Case Steps -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseCaseSteps">
+                                <i class="bi bi-list me-2"></i>
+                                Case Steps
+                            </button>
+                        </h2>
+                        <div id="collapseCaseSteps" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <ul class="process-list">
+                                    <c:forEach items="${baby_step_milestone_list}" var="milestone">
+                                        <div class="milestone">
+                                            <h6>${milestone.milestone_description} (Status: ${milestone.mile_stone_status})</h6>
+                                            <ul>
+                                                <c:forEach items="${milestone.baby_steps}" var="process">
+                                                    <li>
+                                                        <i class="fas ${process.bse_status == 'Completed' ? 'fa-check-circle text-success' : process.bse_status == 'Ongoing' ? 'fa-spinner text-warning' : 'fa-times-circle text-danger'}"></i>
+                                                        <div>
+                                                            <div class="process-item">${process.bse_description}</div>
+                                                            <div class="process-details">
+                                                                <span>Performed by: ${process.completed_by != null ? process.completed_by : 'Pending'}</span>
+                                                                <span>Date: 
+                                                                    <c:choose>
+                                                                        <c:when test="${process.complete_by_date != null}">
+                                                                            <fmt:parseDate value="${process.complete_by_date}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" />
+                                                                            <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd" />
+                                                                        </c:when>
+                                                                        <c:otherwise>N/A</c:otherwise>
+                                                                    </c:choose>
+                                                                </span>
+                                                                <span>Time: 
+                                                                    <c:choose>
+                                                                        <c:when test="${process.complete_by_date != null}">
+                                                                            <fmt:parseDate value="${process.complete_by_date}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" />
+                                                                            <fmt:formatDate value="${parsedDate}" pattern="HH:mm:ss" />
+                                                                        </c:when>
+                                                                        <c:otherwise>N/A</c:otherwise>
+                                                                    </c:choose>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </c:forEach>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -999,51 +1123,86 @@
         }
     }
 
-    function reviewStep(bse_id,job_number) {
-        const confirmation = confirm('Are you sure you want to approve the step?');
-        if (confirmation) {
-            
-           // var bs_id = stepId;
-            var bse_id = bse_id;
-            
-            var job_number = job_number;
-
-            if(!bse_id || !job_number){
-                alert('Sorry! An error occurred, try again.');
-                return;
-            }
-
-            $.ajax({
-                type : "POST",
-                url : "Case_Management_Serv",
-                data : {
-                    request_type : 'select_review_baby_steps_check_for_completion',
-                    //bs_id: parseInt(bs_id),
-                    bse_id: parseInt(bse_id),
-                    
-                    job_number: job_number
-                },
-                cache: false,
-                success: function(response) {
-
-                    console.log(response)
-                   
-                    var json_result = JSON.parse(response);
-                    
-                    
-                   if (json_result.success){
-                    alert(json_result.msg)
-                    location.reload()
-                   }else{
-                    alert(json_result.msg)
-                   }
-
-               
-
+    function reviewStep(bse_id, job_number) {
+        Swal.fire({
+            title: 'Confirm Approval',
+            text: 'Are you sure you want to approve this step?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (!bse_id || !job_number) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Sorry! An error occurred, try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
                 }
-            })
 
-        }
+                // Show loading state
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we approve the step',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_review_baby_steps_check_for_completion',
+                        bse_id: parseInt(bse_id),
+                        job_number: job_number
+                    },
+                    cache: false,
+                    success: function(response) {
+                        console.log(response);
+                        var json_result = JSON.parse(response);
+                        
+                        Swal.close();
+                        
+                        if (json_result.success) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: json_result.msg,
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                timer: 2000,
+                                timerProgressBar: true,
+                                willClose: () => {
+                                    location.reload();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Failed!',
+                                text: json_result.msg,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred while processing your request.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
     }
 
     // Initialize the map when the DOM is fully loaded
@@ -1217,51 +1376,7 @@
         // console.log(wktPolygon)
         vectorLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
         map.getView().fit(vectorLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
-
-        // Export payments button
-        $('#exportPayments').on('click', function() {
-            Swal.fire({
-                title: 'Export Payment Records',
-                text: 'Select export format',
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Excel',
-                cancelButtonText: 'PDF',
-                showDenyButton: true,
-                denyButtonText: 'CSV'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    exportPayments('excel');
-                } else if (result.isDenied) {
-                    exportPayments('csv');
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    exportPayments('pdf');
-                }
-            });
-        });
         
-        // Export payments function
-        function exportPayments(format) {
-            // Show loading
-            Swal.fire({
-                title: 'Exporting...',
-                text: 'Please wait while we prepare your export',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            
-            // Simulate export process
-            setTimeout(() => {
-                Swal.fire({
-                    title: 'Export Complete!',
-                    text: `Payment records exported as ${format.toUpperCase()}`,
-                    icon: 'success',
-                    confirmButtonColor: '#198754'
-                });
-            }, 1500);
-        }
 
     });
 
