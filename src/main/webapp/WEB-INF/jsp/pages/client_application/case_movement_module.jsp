@@ -10,331 +10,249 @@
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-  
-
-  <% 
+<jsp:useBean id="now" class="java.util.Date" />
 
 
-	  
-%>
+ <!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
-  
-  
-
-
-    <div class="container-fluid">
-      <!-- Breadcrumbs-->
-      <ol class="breadcrumb ">
-        <li class="breadcrumb-item">
-          <a href="#">Staff Case Management</a>
-        </li>
-        <li class="breadcrumb-item active">All applications batched to ${fullname}</li>
-        
-      </ol>
-          
-           
-       <!--      <div class="row">
-        <div class="panel-body-map">
-                <div id="map" style="height:380px;"></div>
-                
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+              <div>
+                <h1 class="page-title fw-medium fs-18 mb-1">Staff Case Management</h1>
+                <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage and monitor application workflows</p>
               </div>
-              
-              
-                </div>
-        -->
-         <%-- <div class="row">
-          <!--   Here is the right Table -->
-        <div class="col">
-          <!-- Example Pie Chart Card-->
-          <div class="card mb-3">
-            <div class="card-header bg-dark text-white">
-              <i class="fas fa-users"></i>LC Officers list</div>
-            <div class="card-body">
-               <!--  The Form starts here -->
-              <form action="${pageContext.request.contextPath}/processing_after_payment"  method="post">
-
-		      
-          
-          
-            <div class="form-group">
-          <label for="main_service">Officers</label>
-                
-                    <input class="form-control" id="user_to_send_to"  name="user_to_send_to"  type="text" aria-describedby="nameHelp" list="listofusers"  class="autocomplat" placeholder="Enter Username" required >
-                <datalist id="listofusers">
-                  <c:forEach items="${userlist}" var="user">
-                    <option data-value="${user.userid}" value="${user.fullname}"></option>
-          </c:forEach>
-          
-               </datalist>
-                
-                
-              
- 
-			
-          </div>
-          
-          
-        </form>
-        
-        
-        
-        
-      
-            
-            <!-- The form Ends Hers -->
-            
-          </div>
-         
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Staff Case Management</li>
+                </ol>
+            </div>
         </div>
-      <!--   Here is the end of right table -->
-  
-      </div>
-      
-      
-        <!--   Here is the right Table -->
-        <div class="col">
-          <!-- Example Pie Chart Card-->
-          <div class="card mb-3">
-            <div class="card-header bg-dark text-white">
-              <i class="fas fa-search"></i> Search By Job Number</div>
-            <div class="card-body">
-               <!--  The Form starts here -->
-              <form action="${pageContext.request.contextPath}/download_pdf"  method="post">
+        <!-- End::page-header -->
 
-		          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <label for="job_number">Job Number</label>
-                <input class="form-control" id="job_number"  name="job_number"  type="text" aria-describedby="nameHelp" placeholder="Enter Job Number" required >
-              </div>
-              <div class="col-md-6">
-              <label for="search_btn">-</label>
-                <input type="button" id="btnjob_numbersearch" class="btn btn-primary btn-block" value="Search" />  
-               
+            <!-- Start::row-1 -->
+            <div class="row">
+                <div class="col-xl-3">
+                    <!-- <div class="card border-0 shadow-sm">
+                      <div class="card-body">
+                          <div class="">
+                              <div>
+                                  <h5 class="card-title mb-1">Quick Actions</h5>
+                                  <p class="card-text text-muted small mb-0">Manage your application workflow</p>
+                              </div>
+                              <div class="d-flex flex-wrap gap-2">
+                                  <button class="btn btn-success w-100" id="btnViewCompetedQueriedList">
+                                      <i class="fas fa-eye me-2"></i>
+                                      View Completed/Queried
+                                  </button>
+                                  
+                                  <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">
+                                      <i class="fas fa-exclamation-triangle me-2"></i>
+                                      Overdue Applications
+                                  </button>
+                                  
+                                  <button class="btn btn-warning w-100" id="btnViewRequestAppList">
+                                      <i class="fas fa-clock me-2"></i>
+                                      Request Applications 
+                                      <span class="badge bg-danger ms-2">${applicationCount}</span>
+                                  </button>
+                                  
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
+                  <div class="card custom-card bg-info-transparent border-0 shadow-none">
+                      <div class="card-body">
+                          <div class="d-flex align-items-start gap-3 flex-wrap">
+                              <div class="lh-1">
+                                  <span class="avatar avatar-lg avatar-rounded bg-info svg-white">
+                                      <i class="ri-download-2-line fs-5"></i>
+                                  </span>
+                              </div>
+                              <div>
+                                  <span class="d-block mb-1">
+                                      Request Applications
+                                  </span>
+                                  <div class="d-flex align-items-center gap-2">
+                                      <h5 class="fw-semibold mb-0">${applicationCount}</h5>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-xl-9">
+                    <div class="card custom-card">
+                        <div class="card-header justify-content-between">
+                            <div> 
+                              <h5 class="card-title mb-0">My Applications</h5>
+                              <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Applications assigned to you</p>
+                            </div> 
+                            <div class="d-flex flex-wrap gap-2">
+                            
+                              <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">
+                                  <i class="ri-error-warning-line fs-13"></i>
+                                  Overdue Applications
+                              </button>
+                              
+                              <!-- Additional Action Buttons -->
+                              <div class="dropdown">
+                                  <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                      <i class="fas fa-ellipsis-v me-2"></i>
+                                      More
+                                  </button>
+                                  <ul class="dropdown-menu" style="min-width: 250px;">
+                                      <li>
+                                          <a class="dropdown-item small" href="#" data-bs-toggle="modal" data-bs-target="#appsReceivedMonthModal">
+                                              <i class="fas fa-inbox me-2"></i>
+                                              This Month's Received
+                                          </a>
+                                      </li>
+                                      <li>
+                                          <a class="dropdown-item small" href="#" data-bs-toggle="modal" data-bs-target="#appsCompletedMonthModal">
+                                              <i class="fas fa-check-circle me-2"></i>
+                                              This Month's Completed
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </div>
+                          </div>
+                        <div class="card-body p-3 position-relative" id="todo-content">
+                            <div class="table-responsive">
+                              <table class="table table-hover align-middle mb-0" id="applicationTable">
+                                  <thead class="bg-light">
+                                      <tr>
+                                          <!-- <th class="ps-4" width="40">
+                                              <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="selectAll">
+                                              </div>
+                                          </th> -->
+                                          <th>Job Details</th>
+                                          <th>Applicant</th>
+                                          <th>Type</th>
+                                          <th>Status</th>
+                                          <th>Timeline</th>
+                                          <th class="text-center">Actions</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <c:forEach items="${applicationlist}" var="appfiles" varStatus="loop">
+                                        <fmt:parseDate value="${appfiles.job_datesend}" pattern="yyyy-MM-dd" var="jobSentDate" />
+                                        <c:set var="daysDiff" value="${(now.time - jobSentDate.time) / (1000 * 60 * 60 * 24)}" />
+                                        <tr class="${appfiles.objections > 0 ? 'table-warning' : ''}" 
+                                            ${appfiles.objections > 0 ? "data-bs-toggle='tooltip' data-bs-placement='left' title='Application has pending Objections'" : ""}>
+                                            
+                                            <!-- Checkbox -->
+                                            <!-- <td class="ps-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="${appfiles.job_number}">
+                                                </div>
+                                            </td> -->
+                                            
+                                            <!-- Job Details -->
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    <span class="fw-bold text-primary small">${appfiles.job_number}</span>
+                                                    <small class="text-muted">Created: ${appfiles.created_date}</small>
+                                                </div>
+                                            </td>
+                                            
+                                            <!-- Applicant -->
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-xs bg-light bg-opacity-10 rounded-circle me-2">
+                                                        <i class="ri-user-line text-muted"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-medium small" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${appfiles.ar_name}">${fn:substring(appfiles.ar_name, 0, 20)}${fn:length(appfiles.ar_name) > 20 ? '...' : ''}</div>
+                                                        <small class="text-muted small">Sent by: ${appfiles.job_forwarded_by}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            
+                                            <!-- Application Type -->
+                                            <td>
+                                                <span class="small">
+                                                    ${appfiles.business_process_sub_name}
+                                                </span>
+                                            </td>
+                                            
+                                            <!-- Status -->
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    <span class="small" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${appfiles.current_application_status}">
+                                                        ${fn:substring(appfiles.current_application_status, 0, 20)}${fn:length(appfiles.current_application_status) > 20 ? '...' : ''}
+                                                    </span>
+                                                    ${appfiles.objections > 0 ? 
+                                                        '<small class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>Has Objections</small>' : ''}
+                                                </div>
+                                            </td>
+                                            
+                                            <!-- Timeline -->
+                                            <td>
+                                               <div class="d-flex flex-column">
+                                                <small>
+                                                    <i class="fas fa-calendar-alt me-1 text-muted"></i>
+                                                    Received: ${appfiles.job_datesend}
+                                                </small>
+
+                                                <small>
+                                                    <i class="fas fa-history me-1 text-muted"></i>
+                                                    Days: <fmt:formatNumber value="${daysDiff}" maxFractionDigits="0" />
+                                                </small>
+                                              </div>
+                                            </td>
+                                            
+                                            <!-- Actions -->
+                                            <td class="text-center">
+                                                <form action="registration_application_progress_details" method="post" class="d-inline">
+                                                    <input type="hidden" name="case_number" value="${appfiles.case_number}">
+                                                    <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
+                                                    <input type="hidden" name="job_number" value="${appfiles.job_number}">
+                                                    <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
+                                                    <button type="submit" class="btn btn-warning label-btn">
+                                                        <i class="ri-folder-open-line label-btn-icon me-2"></i>
+                                                        Work
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                      </c:forEach>
+                                  </tbody>
+                              </table>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-          </div>
-        </form>
-            
-            <!-- The form Ends Hers -->
-            
-          </div>
-         
-        </div>
-      <!--   Here is the end of right table -->
-  
-      </div>
-      
-      
-       
-      
-      
-      
-    </div> --%>
-    
-<!--          </div> -->
-         
-         
-         
-         
-             
-     
-     
-         <div class="row">
-     <div class="col-lg-12">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3">
-            <div class="card-header bg-dark text-white">
-            <%--   <button class="btn btn-info btn-icon-split" id="btnViewApplicationsList">
-              	<span class="icon text-white-50"> <i class="fas fa-list"></i></span>
-              	<span class="text"> (Click to load) Total Application in account <span class="badge text-danger"> ${applicationlistcount}</span></span>
-              </button> --%>
-              <span class="col-auto float-right ">
-              	<button class="btn btn-success btn-icon-split float-right "  id="btnViewCompetedQueriedList">
-					<span class="icon text-white-50"> <i class="fas fa-eye"></i></span>
-					<span class="text">View Completed/Queried List</span>
-				</button>
-				 
-				<a href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#appsPassedDueModal" class="btn btn-danger btn-icon-split float-right mr-3 "  >
-					<span class="icon text-white-50"> <i class="fas fa-exclamation-triangle "></i></span>
-					<span class="text">Current Overdue Applications</span>
-				</a>
-        <input type="hidden" id="trans_unit_name" value="${unit_name} "/>
-        <!-- <button class="btn btn-warning btn-icon-split float-right ml-3 mr-2"  id="btnViewTransitionalCaseList">
-          <span class="icon text-white-50"> <i class="fas fa-map"></i></span>
-          <span class="text">Transitional Plotting Applications <span class="text-danger"><b>[ ${applicationCount} ]</b></span></span>
-        </button> -->
-        <button class="btn btn-warning btn-icon-split float-right ml-3 mr-2"  id="btnViewRequestAppList">
-          <span class="icon text-white-50"> <i class="fas fa-clock"></i></span>
-          <span class="text">Request Applications <span class="text-danger"><b>[ ${applicationCount} ]</b></span></span>
-        </button>
-			  </span>
-				
-				
-				
-              
-              </div>
-              
-            <div class="card-body">
-             <!--<div class="row">
-            	<div class="col-sm-6 form-row">
-            		<div class="col-sm-6">
-            			<label for="search_btn">Purpose</label> 
-            			<input type="text" class="form-control col" id="txt_general_job_purpose"  value="" placeholder="Purpose for Bactching" /> 
-	            	</div>
-	            	<div class="col-sm-6">
-	            	<label for="search_btn">&nbsp;</label> 
-	            		<button class="btn btn-primary btn-icon-split"  id="btnAddAlltoBatchlist">
-							<span class="icon text-white-50"> <i class="fas fa-plus"></i></span><span class="text">Add All to Batch List</span>
-						</button>
-	            	</div>
-            	</div>
-            	<div class="col-sm-6">
-            	 &nbsp;
-            	</div>
-            	
-            </div><br><br> -->
-         	    
-            
-				
-				
-				
-             <!--  Here is where the fee list comes -->
-             
-             <div class="table-responsive">
-           <table class="table table-bordered table-hover " id="job_batchedtouserlistdataTable" width="100%" cellspacing="0">
-           
-              <thead>
-                <tr>
-                 
-                 
-                <th><input type="checkbox" id="selectAll"/></th> 
-                <th>Created Date</th>
-                 <th>Job Number</th>
-                 <th>Applicant Name</th>
-                 <th>Application Type</th>
-               <!--   <th style="display:none">Status</th> -->
-                 <!-- <th>Created On</th>  -->
-                
-                 <th>Status</th>
-                 <th>Date Received</th>
-                 <th>Sent By</th>
-                
-                 <!-- <th >Add to BatchList</th> -->
-                  <th>Work</th>
-                 
-                 
-                 
-                 
-                 <!-- 	<th data-field="customer.name" data-align="center" data-sortable="true">customer</th>
-                    <th data-field="type" data-align="center" data-sortable="true">type</th>
-                    <th data-field="description" data-align="center" data-sortable="true">description</th>
-                    <th data-field="cutter" data-align="center" data-sortable="true">cutter</th> 
-                    <th data-field="valid_s" data-align="center" data-sortable="true">valid</th>
-                  -->
-                 
-                 </tr>
-              </thead>
-              
-                <tbody>
-    
-            		
-                   <c:forEach items="${applicationlist}" var="appfiles">
-                <tr ${appfiles.objections > 0 ? "class='bg-danger text-white red-tooltip' title='Application has pending Objections'  data-toggle='tooltip' data-placement='left' ":""}>
-                    
-                    <td><input type="checkbox" /><%-- ${appfiles.index + 1} --%></td>
-                    <td >${appfiles.created_date}</td>
-                     <td >${appfiles.job_number}</td>
+            <!--End::row-1 -->
 
-                    <td    data-toggle="tooltip" data-placement="top" title="${fn:length(appfiles.ar_name) >20 ? appfiles.ar_name : ''}"> ${fn:substring(appfiles.ar_name, 0, 20)}
-                    	${fn:length(appfiles.ar_name) >20 ? "..." : ""}
-                    </td>
-                    
-                     <td >${appfiles.business_process_sub_name}</td>
-                    <%--  <td >${appfiles.created_date}</td> --%>
-                     
-                    <td data-toggle="tooltip" data-placement="top"  title="${fn:length(appfiles.current_application_status) >20 ? appfiles.current_application_status : ''}">${fn:substring(appfiles.current_application_status, 0, 20)} 
-                    	${fn:length(appfiles.current_application_status) >20 ? "..." : ""}
-                    </td>
-                    
-                      <td >${appfiles.job_datesend}</td>
-                      
-                        <td >${appfiles.job_forwarded_by}</td>
-                    
-                <%--     <td>
-                    	<button 
-                    		class="btn btn-info btn-icon-split" 
-                    		data-title="Delete" 
-                    		id="btnAddToBatchlist-${appfiles.job_number}" 
-                    		data-job_number="${appfiles.job_number}" 
-                    		data-ar_name="${appfiles.ar_name}"  
-                    		data-business_process_sub_name="${appfiles.business_process_sub_name}" 
-                    		data-target="#askForPurposeOfBatching" data-toggle="modal" >
-                    		<span class="icon text-white-50"> <i class="fas fa-list"></i></span>
-                    		<span class="text">Add to Batch</span>
-                    	</button>
-                    	
-                    	
-                    </td> --%>
-                
-                
-               <%--     <td><form  action="${pageContext.request.contextPath}/registration_application_progress_details" method="post"><input type="hidden" name="case_number" id="case_number" value="${appfiles.case_number}"> <input type="hidden" name="job_number" id="job_number" value="${appfiles.job_number}"><input type="submit" name="save" class="btn btn-info btn-icon-split" value="Work"/></form></td>
-                    
-                      <td><form  action="${pageContext.request.contextPath}/registration_application_progress_details"  target="_blank"><input type="hidden" name="case_number" id="case_number" value="${appfiles.case_number}"> <input type="hidden" name="job_number" id="job_number" value="${appfiles.job_number}"><input type="submit" name="save" class="btn btn-info btn-icon-split" value="Work"/></form></td>
-                    
-                 	 --%>
-                    
-                    <td>
-						<form action="registration_application_progress_details" method="post">
-							<input type="hidden" name="case_number" value="${appfiles.case_number}">
-							<input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
-							<input type="hidden" name="job_number" id="job_number" value="${appfiles.job_number}">
-							<input type="hidden" name="business_process_sub_name"  value="${appfiles.business_process_sub_name}">
-							
-								<button type="submit" name="save" class="btn btn-info btn-icon-split" >
-								<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Work</span>
-								</button>
-						</form>
-						
-					</td>
-                     
-                    
-                    </tr>
-            </c:forEach> 
-            
-            
-             </tbody>
-            
-            
-            </table>
-          </div>
-             
-              <!--  End Of Table -->
-            </div>
-            
-          </div>
-          
-     
-     
-    
-       
-    
-   
-        
-      </div>
-     </div>
-     
-    
-    
+    </div>
+</div>
+<!-- End::app-content -->
 
-     
-     
+<script>
+  $(document).ready(function() {
+	  var datatable = $("#applicationTable").DataTable( {
+		  stateSave: true, 
+		  dom: 'Bfrtip',						
+      buttons: [
+        'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+		});
+
+    // Reinitialize tooltips after a brief delay
+    setTimeout(function() {
+      window.initializeTooltips();
+    }, 50);
+  });
+</script>
      
 
  
- 
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
-  

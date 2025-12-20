@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="ws.users.Ws_users"%>
+<%@ page import="ws.casemgt.Ws_client_application"%>
+<%@ page import="org.codehaus.jettison.json.*"%>
+<%@ page import="com.google.gson.Gson"%>
+<%@ page import="com.google.gson.GsonBuilder"%>
+
+<%@ page import="org.codehaus.jettison.json.JSONArray"%>
+<%@ page import="org.codehaus.jettison.json.JSONException"%>
+<%@ page import="org.codehaus.jettison.json.JSONObject"%>
+<jsp:useBean id="now" class="java.util.Date" />
 
 
 <!-- Remove style="display: block;" from modal -->
@@ -3593,4 +3604,97 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Past due application modal Section============================= -->
+<div class="modal fade effect-scale modal-blur" id="appsPassedDueModal" tabindex="-1" aria-labelledby="appsPassedDueModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-danger text-light">
+        <h5 class="modal-title" id="appsPassedDueModalLabel">Applications Passed Due Dates</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="report_dashboard_apps_past_due_date_by_user_table" class="table table-striped table-hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Application Type</th>
+              <th>Applicant Name</th>
+              <th>Date Received</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="appsReceivedMonthModal" tabindex="-1" aria-labelledby="appsReceivedMonthModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-warning text-light">
+        <h5 class="modal-title" id="appsReceivedMonthModalLabel">Applications Received This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="report_dashboard_apps_rec_month_by_user_table" class="table table-striped table-hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Application Type</th>
+              <th>Applicant Name</th>
+              <th>Date Received</th>
+              <th>Sent By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="appsCompletedMonthModal" tabindex="-1" aria-labelledby="appsCompletedMonthModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title text-white" id="appsCompletedMonthModalLabel">Applications Completed This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="report_dashboard_apps_comp_month_by_user_table" class="table table-striped table-hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Application Type</th>
+              <th>Applicant Name</th>
+              <th>Date Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close</button>
+      </div>
+    </div>
+  </div>
 </div>

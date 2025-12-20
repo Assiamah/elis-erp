@@ -7,7 +7,7 @@
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-6 col-sm-8 col-12">
                 <div class="card custom-card border-0 shadow-none my-4">
-                    <div class="card-body p-4">
+                    <div class="card-body p-5">
                         <!-- <div class="text-center mb-5">
                             <img src="${pageContext.request.contextPath}/assets/images/NewLogo.jpg" width="100" alt="logo">
                         </div> -->
@@ -41,9 +41,7 @@
                                         </div>
                                     </div>
                                     <div class="form-check mt-3">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            Did not recieve a code ?<a href="#" class="text-primary ms-2 d-inline-block fw-medium">Resend</a>
-                                        </label>
+                                        Did not recieve a code ?<a href="#" class="text-primary ms-2 d-inline-block fw-medium">Resend</a>
                                     </div>
                                 </div>
                                 <div class="col-xl-12 d-grid mt-3">

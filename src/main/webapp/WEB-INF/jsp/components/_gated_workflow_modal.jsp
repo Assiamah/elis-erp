@@ -1405,7 +1405,7 @@
   </div>
 </div>
 
-<div class="modal fade map-modal" id="upload_coordinate" tabindex="-1" aria-labelledby="uploadCoordinateLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur map-modal" id="upload_coordinate" tabindex="-1" aria-labelledby="uploadCoordinateLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg">
       <!-- Modal Header -->
@@ -1416,7 +1416,7 @@
           </div>
           <div class="flex-grow-1">
             <h5 class="modal-title text-white mb-1" id="uploadCoordinateLabel">
-              <i class="bi bi-map me-2"></i>Noting of Parcel
+              Noting of Parcel
             </h5>
             <p class="mb-0 small opacity-75">
               <i class="bi bi-info-circle me-1"></i>
@@ -1439,17 +1439,17 @@
               </h6>
             </div>
             <div class="card-body">
-              <div class="mb-3">
+              <div class="mb-0">
                 <label for="lc_bl_wkt_polygon" class="form-label fw-semibold">
                   <i class="bi bi-code-slash me-2"></i>WKT Polygon
                 </label>
                 <div class="input-group">
                   <textarea class="form-control font-monospace" id="lc_bl_wkt_polygon" 
                             name="lc_bl_wkt_polygon" rows="3" 
-                            placeholder="POLYGON((...))">${parcel_wkt}</textarea>
+                            placeholder="POLYGON((...))" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
                   <button class="btn btn-outline-secondary" type="button" 
                           data-bs-toggle="tooltip" data-bs-placement="top" 
-                          title="Copy to clipboard" onclick="copyWktToClipboard()">
+                          title="Copy to clipboard" onclick="copyWktToClipboard('lc_bl_wkt_polygon')">
                     <i class="bi bi-clipboard"></i>
                   </button>
                 </div>
@@ -1494,13 +1494,13 @@
 
                 <!-- Scale Controls -->
                 <div class="d-flex align-items-center ms-auto">
-                  <label class="form-label me-2 mb-0 fw-semibold">
+                  <label class="form-label me-2 mb-0 fw-medium">
                     <i class="bi bi-zoom-in me-1"></i>Scale:
                   </label>
-                  <div class="input-group input-group-sm" style="width: 180px;">
+                  <div class="input-group input-group-sm" style="width: 200px;">
                     <input type="text" class="form-control" id="lc_scale_value_e" 
                            placeholder="Custom scale">
-                    <select class="form-select" id="lc_scale_value" style="width: 100px;">
+                    <select class="form-select" data-trigger id="lc_scale_value" style="width: 100px;">
                       <option value="500">500</option>
                       <option value="1107">1107</option>
                       <option value="1250">1250</option>
@@ -1564,7 +1564,6 @@
               <div class="d-flex flex-wrap gap-2 mb-4">
                 <button type="button" class="btn btn-primary btn-sm" 
                         id="lc_btn_add_coordinate"
-                        data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot"
                         data-bs-placement="top" data-bs-title="Add Coordinate">
                   <i class="bi bi-plus-circle me-1"></i> Add Coordinate
                 </button>
@@ -1577,7 +1576,7 @@
                 </button>
 
                 <button type="button" class="btn btn-info btn-sm" 
-                        id="lc_btn_visualise_coordinate"
+                        id="lc_btn_visualise_coordinate_gf"
                         data-bs-placement="top" data-bs-title="Visualize Polygon">
                   <i class="bi bi-eye me-1"></i> Visualize
                 </button>
@@ -1627,70 +1626,6 @@
                     </tr>
                   </tbody>
                 </table>
-              </div>
-
-              <!-- Statistics -->
-              <div class="row g-3 mt-3">
-                <div class="col-md-3">
-                  <div class="card border">
-                    <div class="card-body py-2">
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-sm bg-light-primary rounded-circle me-3">
-                          <i class="bi bi-geo"></i>
-                        </div>
-                        <div>
-                          <h6 class="mb-0" id="totalCoordinates">0</h6>
-                          <small class="text-muted">Total Points</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="card border">
-                    <div class="card-body py-2">
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-sm bg-light-success rounded-circle me-3">
-                          <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div>
-                          <h6 class="mb-0" id="validCoordinates">0</h6>
-                          <small class="text-muted">Valid</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="card border">
-                    <div class="card-body py-2">
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-sm bg-light-warning rounded-circle me-3">
-                          <i class="bi bi-exclamation-circle"></i>
-                        </div>
-                        <div>
-                          <h6 class="mb-0" id="invalidCoordinates">0</h6>
-                          <small class="text-muted">Invalid</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="card border">
-                    <div class="card-body py-2">
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-sm bg-light-info rounded-circle me-3">
-                          <i class="bi bi-polygon"></i>
-                        </div>
-                        <div>
-                          <h6 class="mb-0" id="polygonStatus">No</h6>
-                          <small class="text-muted">Polygon Formed</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

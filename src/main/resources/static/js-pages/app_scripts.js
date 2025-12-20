@@ -2494,6 +2494,18 @@ window.copyToClipboard = function(elementId) {
     }
 };
 
+// Copy WKT to clipboard
+window.copyWktToClipboard = function (elementId) {
+    const wktTextarea = document.getElementById(elementId);
+    if (wktTextarea && wktTextarea.value) {
+        navigator.clipboard.writeText(wktTextarea.value).then(() => {
+            showToast('Copied to clipboard!', 'success');
+        }).catch(function() {
+            showToast('Failed to copy', 'error');
+        });
+    }
+}
+
 // Format date function
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
@@ -3188,3 +3200,511 @@ $('#lc_public_documents_dataTable, #lc_main_scanned_documents_dataTable').on('cl
         }
     });
 });
+
+$('#appsPassedDueModal').on('shown.bs.modal', function (e) {
+  // Destroy existing DataTable instance if it exists
+  const table = $('#report_dashboard_apps_past_due_date_by_user_table').DataTable();
+  if (table) {
+    table.destroy();
+  }
+  
+  // Clear the table body
+  $('#report_dashboard_apps_past_due_date_by_user_table tbody').empty();
+  
+  // Make AJAX request
+  $.ajax({
+    type: "POST",
+    url: "Case_Management_Serv",
+    data: {
+      request_type: 'report_dashboard_apps_past_due_date_by_user',
+    },
+    cache: false,
+    success: function(data) {
+        if(!data){
+            initializePassedDueAppsTable([]);
+            return;
+        }
+      try {
+        const jsonData = JSON.parse(data);
+        initializePassedDueAppsTable(jsonData);
+      } catch(e) {
+        console.error("Error parsing data:", e);
+        // Initialize empty table if there's an error
+        initializePassedDueAppsTable([]);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error("AJAX error:", error);
+      // Initialize empty table if there's an error
+      initializePassedDueAppsTable([]);
+    }
+  });
+});
+
+// Modal hidden event to clean up DataTable
+$('#appsPassedDueModal').on('hidden.bs.modal', function (e) {
+  const table = $('#report_dashboard_apps_past_due_date_by_user_table').DataTable();
+  if (table) {
+    table.destroy();
+  }
+  $('#report_dashboard_apps_past_due_date_by_user_table tbody').empty();
+});
+
+// Modified initializePassedDueAppsTable function with your column structure
+function initializePassedDueAppsTable(data) {
+  // Adjust the columns to match your data structure
+  const table = $('#report_dashboard_apps_past_due_date_by_user_table').DataTable({
+    data: data,
+    destroy: true,
+    responsive: true,
+    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+         '<"row"<"col-sm-12"tr>>' +
+         '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>' +
+         '<"row"<"col-sm-12"B>>',
+    buttons: [
+      {
+        extend: 'excel',
+        text: '<i class="ri-file-excel-line me-1"></i>Excel',
+        className: 'btn btn-outline-primary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3] // Adjust column indices as needed
+        }
+      },
+      {
+        extend: 'print',
+        text: '<i class="ri-printer-line me-1"></i>Print',
+        className: 'btn btn-outline-secondary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3] // Adjust column indices as needed
+        }
+      }
+    ],
+    columns: [
+      { 
+        data: 'job_number',
+        title: 'Job Number',
+        render: function(data, type, row) {
+          return `<span class="fw-medium text-primary small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'business_process_sub_name',
+        title: 'Application Type',
+        render: function(data, type, row) {
+          return `<span class="text-muted small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'ar_name',
+        title: 'Applicant Name',
+        render: function(data, type, row) {
+          return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-light rounded-circle me-2">
+                <i class="ri-user-line text-muted"></i>
+              </div>
+              <div>
+                <div class="fw-medium small">${data}</div>
+              </div>
+            </div>
+          `;
+        }
+      },
+      { 
+        data: 'modified_date',
+        title: 'Date Received',
+        render: function(data, type, row) {
+          return `<span class="small">${data}</span>`;
+        }
+      },
+      { 
+        data: null,
+        title: 'Action',
+        orderable: false,
+        searchable: false,
+        render: function(data, type, row) {
+          return `
+            <form action="registration_application_progress_details" method="post" class="d-inline">
+              <input type="hidden" name="case_number" value="${row.case_number}">
+              <input type="hidden" name="transaction_number" value="${row.transaction_number}">
+              <input type="hidden" name="job_number" value="${row.job_number}">
+              <input type="hidden" name="business_process_sub_name" value="${row.business_process_sub_name}">
+              <button type="submit" name="save" class="btn btn-info btn-sm">
+                <i class="fas fa-folder-open me-1"></i>
+                <span class="text">Work</span>
+              </button>
+            </form>
+          `;
+        }
+      }
+    ],
+    order: [[3, 'desc']], // Sort by modified_date descending
+    pageLength: 10,
+    language: {
+      emptyTable: "No past due applications found",
+      info: "Showing _START_ to _END_ of _TOTAL_ entries",
+      infoEmpty: "Showing 0 to 0 of 0 entries",
+      infoFiltered: "(filtered from _MAX_ total entries)",
+      lengthMenu: "Show _MENU_ entries",
+      loadingRecords: "Loading...",
+      processing: "Processing...",
+      search: "",
+      searchPlaceholder: "Search applications...",
+      zeroRecords: "No matching records found",
+      paginate: {
+        first: '<i class="ri-arrow-left-s-line"></i>',
+        last: '<i class="ri-arrow-right-s-line"></i>',
+        next: '<i class="ri-arrow-right-s-line"></i>',
+        previous: '<i class="ri-arrow-left-s-line"></i>'
+      }
+    },
+    initComplete: function() {
+      // Add custom search input if needed
+      $('.dataTables_filter input').attr('placeholder', 'Search applications...');
+    },
+    drawCallback: function() {
+      // Update any dynamic content after table draw
+      // You can add additional callbacks here if needed
+    }
+  });
+  
+  return table;
+}
+
+$('#appsReceivedMonthModal').on('shown.bs.modal', function (e) {
+  // Destroy existing DataTable instance if it exists
+  const existingTable = $('#report_dashboard_apps_rec_month_by_user_table').DataTable();
+  if (existingTable) {
+    existingTable.destroy();
+  }
+  
+  // Clear the table body
+  $('#report_dashboard_apps_rec_month_by_user_table tbody').empty();
+  
+  // Make AJAX request
+  $.ajax({
+    type: "POST",
+    url: "Case_Management_Serv",
+    data: {
+      request_type: 'report_dashboard_apps_rec_month_by_user',
+    },
+    cache: false,
+    success: function(data) {
+        if(!data){
+            initializeReceivedMonthAppsTable([]);
+            return;
+        }
+      try {
+        const jsonData = JSON.parse(data);
+        initializeReceivedMonthAppsTable(jsonData);
+      } catch(e) {
+        console.error("Error parsing data:", e);
+        // Initialize empty table if there's an error
+        initializeReceivedMonthAppsTable([]);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error("AJAX error:", error);
+      // Initialize empty table if there's an error
+      initializeReceivedMonthAppsTable([]);
+    }
+  });
+});
+
+// Modal hidden event to clean up DataTable
+$('#appsReceivedMonthModal').on('hidden.bs.modal', function (e) {
+  const table = $('#report_dashboard_apps_rec_month_by_user_table').DataTable();
+  if (table) {
+    table.destroy();
+  }
+  $('#report_dashboard_apps_rec_month_by_user_table tbody').empty();
+});
+
+// DataTable initialization function
+function initializeReceivedMonthAppsTable(data) {
+  const table = $('#report_dashboard_apps_rec_month_by_user_table').DataTable({
+    data: data,
+    destroy: true,
+    responsive: true,
+    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+         '<"row"<"col-sm-12"tr>>' +
+         '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>' +
+         '<"row"<"col-sm-12"B>>',
+    buttons: [
+      {
+        extend: 'excel',
+        text: '<i class="ri-file-excel-line me-1"></i>Excel',
+        className: 'btn btn-outline-primary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4]
+        }
+      },
+      {
+        extend: 'print',
+        text: '<i class="ri-printer-line me-1"></i>Print',
+        className: 'btn btn-outline-secondary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4]
+        }
+      },
+    //   {
+    //     extend: 'colvis',
+    //     text: '<i class="ri-eye-line me-1"></i>Columns',
+    //     className: 'btn btn-outline-info btn-sm'
+    //   }
+    ],
+    columns: [
+      { 
+        data: 'job_number',
+        title: 'Job Number',
+        render: function(data, type, row) {
+          return `<span class="fw-medium text-primary small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'business_process_sub_name',
+        title: 'Application Type',
+        render: function(data, type, row) {
+          return `<span class="text-muted small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'ar_name',
+        title: 'Applicant Name',
+        render: function(data, type, row) {
+          return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-light rounded-circle me-2">
+                <i class="ri-user-line text-muted"></i>
+              </div>
+              <div>
+                <div class="fw-medium small">${data}</div>
+              </div>
+            </div>
+          `;
+        }
+      },
+      { 
+        data: 'date_created',
+        title: 'Date Received',
+        render: function(data, type, row) {
+          // Format date if needed
+          return `<span class="small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'sender_name',
+        title: 'Sent By',
+        render: function(data, type, row) {
+          return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-info bg-opacity-10 rounded-circle me-2">
+                <i class="ri-send-plane-line text-info"></i>
+              </div>
+              <div>
+                <div class="small">${data}</div>
+              </div>
+            </div>
+          `;
+        }
+      }
+    ],
+    order: [[3, 'desc']], // Sort by date_created descending
+    pageLength: 10,
+    language: {
+      emptyTable: "No applications received this month",
+      info: "Showing _START_ to _END_ of _TOTAL_ entries",
+      infoEmpty: "Showing 0 to 0 of 0 entries",
+      infoFiltered: "(filtered from _MAX_ total entries)",
+      lengthMenu: "Show _MENU_ entries",
+      loadingRecords: "Loading...",
+      processing: "Processing...",
+      search: "",
+      searchPlaceholder: "Search applications...",
+      zeroRecords: "No matching records found",
+      paginate: {
+        first: '<i class="ri-arrow-left-s-line"></i>',
+        last: '<i class="ri-arrow-right-s-line"></i>',
+        next: '<i class="ri-arrow-right-s-line"></i>',
+        previous: '<i class="ri-arrow-left-s-line"></i>'
+      }
+    },
+    initComplete: function() {
+      // Add custom search input styling
+      $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Search applications...');
+      $('.dataTables_length select').addClass('form-control form-control-sm');
+    },
+    drawCallback: function() {
+      // Add any post-draw operations here
+    }
+  });
+  
+  return table;
+}
+
+$('#appsCompletedMonthModal').on('shown.bs.modal', function (e) {
+  // Destroy existing DataTable instance if it exists
+  const existingTable = $('#report_dashboard_apps_comp_month_by_user_table').DataTable();
+  if (existingTable) {
+    existingTable.destroy();
+  }
+  
+  // Clear the table body
+  $('#report_dashboard_apps_comp_month_by_user_table tbody').empty();
+  
+  // Make AJAX request
+  $.ajax({
+    type: "POST",
+    url: "Case_Management_Serv",
+    data: {
+      request_type: 'report_dashboard_apps_comp_month_by_user',
+    },
+    cache: false,
+    success: function(data) {
+        if(!data){
+            initializeCompletedMonthAppsTable([]);
+            return;
+        }
+      try {
+        const jsonData = JSON.parse(data);
+        initializeCompletedMonthAppsTable(jsonData);
+      } catch(e) {
+        console.error("Error parsing data:", e);
+        // Initialize empty table if there's an error
+        initializeCompletedMonthAppsTable([]);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error("AJAX error:", error);
+      // Initialize empty table if there's an error
+      initializeCompletedMonthAppsTable([]);
+    }
+  });
+});
+
+// Modal hidden event to clean up DataTable
+$('#appsCompletedMonthModal').on('hidden.bs.modal', function (e) {
+  const table = $('#report_dashboard_apps_comp_month_by_user_table').DataTable();
+  if (table) {
+    table.destroy();
+  }
+  $('#report_dashboard_apps_comp_month_by_user_table tbody').empty();
+});
+
+// DataTable initialization function
+function initializeCompletedMonthAppsTable(data) {
+  const table = $('#report_dashboard_apps_comp_month_by_user_table').DataTable({
+    data: data,
+    destroy: true,
+    responsive: true,
+    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+         '<"row"<"col-sm-12"tr>>' +
+         '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>' +
+         '<"row"<"col-sm-12"B>>',
+    buttons: [
+      {
+        extend: 'excel',
+        text: '<i class="ri-file-excel-line me-1"></i>Excel',
+        className: 'btn btn-outline-primary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3]
+        }
+      },
+      {
+        extend: 'print',
+        text: '<i class="ri-printer-line me-1"></i>Print',
+        className: 'btn btn-outline-secondary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3]
+        }
+      },
+    //   {
+    //     extend: 'colvis',
+    //     text: '<i class="ri-eye-line me-1"></i>Columns',
+    //     className: 'btn btn-outline-info btn-sm'
+    //   }
+    ],
+    columns: [
+      { 
+        data: 'job_number',
+        title: 'Job Number',
+        render: function(data, type, row) {
+          return `<span class="fw-medium text-primary small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'business_process_sub_name',
+        title: 'Application Type',
+        render: function(data, type, row) {
+          return `<span class="text-muted small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'ar_name',
+        title: 'Applicant Name',
+        render: function(data, type, row) {
+          return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-light bg-opacity-10 rounded-circle me-2">
+                <i class="ri-user-line text-muted"></i>
+              </div>
+              <div>
+                <div class="fw-medium small">${data}</div>
+              </div>
+            </div>
+          `;
+        }
+      },
+      { 
+        data: 'created_date',
+        title: 'Date Completed',
+        render: function(data, type, row) {
+          return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-light rounded-circle me-2">
+                <i class="ri-calendar-check-line text-muted"></i>
+              </div>
+              <div>
+                <div class="fw-medium small">${data}</div>
+              </div>
+            </div>
+          `;
+        }
+      }
+    ],
+    order: [[3, 'desc']], // Sort by created_date descending
+    pageLength: 10,
+    language: {
+      emptyTable: "No applications completed this month",
+      info: "Showing _START_ to _END_ of _TOTAL_ entries",
+      infoEmpty: "Showing 0 to 0 of 0 entries",
+      infoFiltered: "(filtered from _MAX_ total entries)",
+      lengthMenu: "Show _MENU_ entries",
+      loadingRecords: "Loading...",
+      processing: "Processing...",
+      search: "",
+      searchPlaceholder: "Search completed applications...",
+      zeroRecords: "No matching records found",
+      paginate: {
+        first: '<i class="ri-arrow-left-s-line"></i>',
+        last: '<i class="ri-arrow-right-s-line"></i>',
+        next: '<i class="ri-arrow-right-s-line"></i>',
+        previous: '<i class="ri-arrow-left-s-line"></i>'
+      }
+    },
+    initComplete: function() {
+      // Add custom search input styling
+      $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Search completed applications...');
+      $('.dataTables_length select').addClass('form-control form-control-sm');
+    },
+    drawCallback: function() {
+      // Update statistics or add additional styling
+    //   const total = table.data().count();
+    //   if (total > 0) {
+    //     $('.dataTables_info').prepend(`<span class="badge bg-success me-2">${total} completed</span>`);
+    //   }
+    }
+  });
+  
+  return table;
+}

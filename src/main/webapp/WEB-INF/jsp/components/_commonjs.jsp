@@ -112,6 +112,7 @@ ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrsmaps.js'><
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/smdfrtpmaps.js'></script>" : ""}
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/pvlmd_spatial.js'></script>" : ""}
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrfamaps.js'></script>" : ""}
+${(page_name == "case_processing" || page_name == "application_review_details_advanced") ? "<script src='js-pages/js-map/lcmaps.js'></script>" : ""}
 
 ${page_name == "unit_case_management_revised" ? "<script src='js-pages/unit_case_management_revised.js'></script>" : ""}
 
