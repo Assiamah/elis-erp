@@ -278,7 +278,7 @@
                             <div class="mb-4">
                                 <button type="submit" 
                                         id="btn-login" 
-                                        class="btn btn-primary btn-lg w-100 fw-semibold py-3">
+                                        class="btn btn-primary btn-lg w-100 ">
                                     <span class="login-text">
                                         <i class="ri-login-box-line me-2"></i>
                                         Sign In
@@ -330,7 +330,7 @@
                 <!-- Footer -->
                 <div class="text-center mt-5">
                     <p class="text-muted fs-12 mb-0">
-                        © 2024 Enterprise Land Information System. All rights reserved.
+                        © 2024 Lands Commission. All rights reserved.
                         <a href="#" class="text-muted text-decoration-underline ms-1">Privacy Policy</a>
                     </p>
                 </div>
