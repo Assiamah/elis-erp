@@ -185,6 +185,9 @@ class InactivityTimer {
         
         // Optional: Play sound notification
         this.playNotificationSound();
+
+        // Optional: Browser notification (if permitted)
+        this.showBrowserNotification();
     }
     
     showBootstrapModal() {
@@ -454,6 +457,23 @@ class InactivityTimer {
             setTimeout(() => oscillator.stop(), 200);
         } catch (e) {
             // Audio not supported
+        }
+    }
+
+    showBrowserNotification() {
+        // Request permission and show notification
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification("Session Expiring Soon", {
+                body: "Your session will expire in 5 minutes. Click to stay active.",
+                icon: "/notification-icon.png",
+                requireInteraction: true
+            });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    this.showBrowserNotification();
+                }
+            });
         }
     }
     

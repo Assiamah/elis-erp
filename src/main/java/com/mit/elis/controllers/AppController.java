@@ -859,7 +859,7 @@ public class AppController {
 					request.setAttribute("login", "failed");
 					// System.out.println("If Not success");
 				  model.addAttribute("content", "../auth/login.jsp");
-        return "layouts/guest";
+        			return "layouts/guest";
 
 					// RequestDispatcher view =
 					// request.getRequestDispatcher("main_dashboard.jsp"); return "layouts/app";
@@ -870,7 +870,7 @@ public class AppController {
 				request.setAttribute("login", "failedverificationcode");
 
 			  model.addAttribute("content", "../auth/login.jsp");
-        return "layouts/guest";
+        		return "layouts/guest";
 
 			}
 
@@ -901,12 +901,15 @@ public class AppController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
+			
 		}
 
 		// ['success'] = true; // #15
 		// ['msg'] = 'User authenticated!'; // #16
 		// doGet(request, response);
-		return "";
+		model.addAttribute("content", "../auth/login.jsp");
+        return "layouts/guest";
 	}
 
 

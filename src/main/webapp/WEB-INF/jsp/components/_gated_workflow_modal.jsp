@@ -1651,3 +1651,210 @@
     </div>
   </div>
 </div>
+
+<div class="modal map-modal fade effect-scale modal-blur" id="visualise_and_confirm" tabindex="-1" aria-labelledby="visualise_and_confirm_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+                    <i class="bi bi-geo-alt fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="modal-title text-white mb-1" id="uploadCoordinateLabel">
+                    Visualise and Confirm
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- WKT Polygon Input Section -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title mb-3">
+                            <i class="fas fa-draw-polygon text-primary me-2"></i>
+                            Polygon Definition
+                        </h6>
+                        <div class="mb-3">
+                            <label for="lc_bl_wkt_polygon" class="form-label fw-medium">WKT Polygon</label>
+                            <div class="input-group">
+                                <input class="form-control" id="lc_bl_wkt_polygon" name="lc_bl_wkt_polygon" 
+                                       type="text" value="${parcel_wkt}" placeholder="Enter WKT polygon">
+                                <button class="btn btn-outline-secondary" type="button" id="btn_copy_wkt" onclick="copyWktToClipboard('lc_bl_wkt_polygon')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <small class="form-text text-muted mt-1">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Well-Known Text representation of the polygon (e.g., POLYGON((x y, x y, ...)))
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map Controls Section -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <h6 class="card-title mb-3">
+                            <i class="fas fa-sliders-h text-primary me-2"></i>
+                            Map Controls
+                        </h6>
+                        
+                        <!-- Primary Action Buttons -->
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <button type="button" class="btn btn-primary" id="lc_btn_visualise_wkt" 
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Visualise Polygon from WKT">
+                                <i class="fas fa-map me-2"></i>
+                                Visualise Polygon
+                            </button>
+                            
+                            <button type="button" class="btn btn-outline-primary" id="lc_btn_visualise_search" 
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Search and Visualise">
+                                <i class="fas fa-search me-2"></i>
+                                Search
+                            </button>
+                            
+                            <button type="button" class="btn btn-outline-secondary" id="lc_btnprintmap" 
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Print Map View">
+                                <i class="fas fa-print me-2"></i>
+                                Print
+                            </button>
+                        </div>
+                        
+                        <!-- Scale Controls -->
+                        <div class="row g-3 align-items-center mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Map Scale</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-ruler-combined"></i>
+                                    </span>
+                                    <select class="form-select" name="lc_scale_value" id="lc_scale_value">
+                                        <option value="500">1:500</option>
+                                        <option value="1107">1:1,107</option>
+                                        <option value="1250">1:1,250</option>
+                                        <option value="2140">1:2,140</option>
+                                        <option value="2215">1:2,215</option>
+                                        <option value="2500">1:2,500</option>
+                                        <option value="2670">1:2,670</option>
+                                        <option value="2825">1:2,825</option>
+                                        <option value="5000" selected>1:5,000</option>
+                                        <option value="10000">1:10,000</option>
+                                        <option value="15000">1:15,000</option>
+                                        <option value="20000">1:20,000</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium">Custom Scale</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">1:</span>
+                                    <input type="number" class="form-control" id="lc_scale_value_e" 
+                                           name="lc_scale_value_e" placeholder="Enter custom scale">
+                                    <div class="input-group-text">
+                                        <div class="form-check form-check-inline m-0">
+                                            <input class="form-check-input" type="checkbox" checked id="lc_lockmapscale">
+                                            <label class="form-check-label small ms-1" for="lc_lockmapscale">
+                                                Lock
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline-primary" type="button" id="lc_btn_scale_zoom">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Zoom Controls -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <label class="form-label fw-medium me-3">Zoom Tools:</label>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-secondary" id="btn_zoom_full"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Fit to Extent">
+                                        <i class="fas fa-expand-arrows-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="btn_zoom_out"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Zoom Out">
+                                        <i class="fas fa-search-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="btn_zoom_in"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Zoom In">
+                                        <i class="fas fa-search-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <span class="badge bg-info" id="mapStatus">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        Ready
+                                    </span>
+                                </div>
+                                <button type="button" class="btn btn-outline-info btn-sm" id="btn_map_info">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map Visualization Section -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                            <h6 class="card-title mb-0">
+                                <i class="fas fa-globe-americas text-primary me-2"></i>
+                                Map Visualization
+                            </h6>
+                            <div class="small text-muted">
+                                <i class="fas fa-mouse-pointer me-1"></i>
+                                Click and drag to navigate
+                            </div>
+                        </div>
+                        
+                        <div class="map-container" id="lc-map_" style="height: 400px;">
+                            <!-- Loading placeholder -->
+                            <!-- <div class="h-100 w-100 d-flex flex-column align-items-center justify-content-center bg-light">
+                                <i class="fas fa-map-marked-alt fa-3x text-muted mb-3"></i>
+                                <p class="text-muted mb-1">Map visualization will appear here</p>
+                                <small class="text-muted">Click "Visualise Polygon" to load the map</small>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-exclamation-circle me-1"></i>
+                        Verify polygon before proceeding
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <!-- <button type="button" class="btn btn-success" id="btn_confirm_visualisation">
+                            <i class="fas fa-check me-1"></i>
+                            Confirm & Proceed
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
