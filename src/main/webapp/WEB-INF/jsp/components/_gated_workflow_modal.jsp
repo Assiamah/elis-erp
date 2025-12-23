@@ -12,6 +12,8 @@
 <%@ page import="org.codehaus.jettison.json.JSONException"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
+<jsp:useBean id="now" class="java.util.Date" />
+
 <!-- Check For Payment Modal -->
 <div class="modal fade effect-scale modal-blur" id="check_for_payment" tabindex="-1" aria-labelledby="checkForPaymentLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -1857,4 +1859,183 @@
             
         </div>
     </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="send_to_frrv" tabindex="-1" aria-labelledby="sendToFrrvLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <div class="d-flex align-items-center w-100">
+          <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+            <i class="bi bi-send fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title text-white mb-1" id="sendToFrrvLabel">
+              Send to FRRV
+            </h5>
+            <p class="mb-0 small opacity-75">
+              <i class="bi bi-info-circle me-1"></i>
+              Forward case for final review and verification
+            </p>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body p-4">
+        <!-- Job Number Input -->
+        <div class="mb-4">
+          <label for="send_ffrv_job_number" class="form-label fw-semibold">
+            <i class="bi bi-file-earmark-text me-2"></i>Job Number
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="bi bi-hash"></i>
+            </span>
+            <input type="text" class="form-control bg-light" 
+                   id="send_ffrv_job_number" value="${job_number}" 
+                   readonly>
+            <button class="btn btn-outline-secondary" type="button" 
+                    onclick="copyToClipboard('send_ffrv_job_number')"
+                    data-bs-toggle="tooltip" data-bs-placement="top" 
+                    title="Copy to clipboard">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-grid gap-2 mb-4">
+          <button class="btn btn-primary btn-lg" id="btn_send_to_frrv">
+            <i class="bi bi-send me-2"></i>Send to FRRV
+          </button>
+          
+          <div class="text-center">
+            <a href="#" class="text-decoration-none" 
+               data-bs-toggle="modal" data-bs-target="#fileUploadModal">
+              <i class="bi bi-upload me-1"></i>
+              Upload Existing Records Information
+            </a>
+          </div>
+        </div>
+
+        <!-- Department Status -->
+        <div class="card border">
+          <div class="card-header bg-light">
+            <h6 class="mb-0 fw-semibold">
+              <i class="bi bi-building me-2"></i>Division Status
+            </h6>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+              <!-- LRD Status -->
+              <li class="list-group-item py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm text-primary bg-light-primary rounded-circle me-3">
+                      <i class="bi bi-file-check"></i>
+                    </div>
+                    <div>
+                      <span class="fw-semibold">LRD</span>
+                      <small class="text-muted d-block">Land Registry Division</small>
+                    </div>
+                  </div>
+                  <div>
+                    <h5 class="mb-0" id="send_lrd_badge_ffrv_v">
+                      <span class="badge bg-success">Completed</span>
+                    </h5>
+                  </div>
+                </div>
+              </li>
+              
+              <!-- SMD Status -->
+              <li class="list-group-item py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm text-warning bg-light-warning rounded-circle me-3">
+                      <i class="bi bi-clipboard-check"></i>
+                    </div>
+                    <div>
+                      <span class="fw-semibold">SMD</span>
+                      <small class="text-muted d-block">Survey & Mapping Division</small>
+                    </div>
+                  </div>
+                  <div>
+                    <h5 class="mb-0" id="send_smd_badge_ffrv_v">
+                      <span class="badge bg-warning">Pending</span>
+                    </h5>
+                  </div>
+                </div>
+              </li>
+              
+              <!-- PVLMD Status -->
+              <li class="list-group-item py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm text-info bg-light-info rounded-circle me-3">
+                      <i class="bi bi-file-earmark-check"></i>
+                    </div>
+                    <div>
+                      <span class="fw-semibold">PVLMD</span>
+                      <small class="text-muted d-block">Public & Vested Land Management Division</small>
+                    </div>
+                  </div>
+                  <div>
+                    <h5 class="mb-0" id="send_pvlmd_badge_ffrv_v">
+                      <span class="badge bg-secondary">Not Started</span>
+                    </h5>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- <div class="card-footer bg-light py-2">
+            <small class="text-muted">
+              <i class="bi bi-info-circle me-1"></i>
+              All departments must be completed before sending to FRRV
+            </small>
+          </div> -->
+        </div>
+
+        <!-- Additional Information -->
+        <div class="alert alert-info mt-4">
+          <div class="d-flex">
+            <div class="me-3">
+              <i class="bi bi-clock-history fs-4"></i>
+            </div>
+            <div>
+              <h6 class="alert-heading mb-2">Processing Timeline</h6>
+              <p class="mb-0 small">
+                • FRRV review typically takes 3-5 working days<br>
+                • Ensure all documents are properly uploaded<br>
+                • Case will be locked for editing during FRRV review
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light">
+        <div class="d-flex justify-content-between w-100 align-items-center">
+          <div class="text-start">
+            <small class="text-muted">
+              <i class="bi bi-calendar me-1"></i>
+              <span id="currentDate">${now}</span>
+            </small>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              <i class="bi bi-x-circle me-1"></i>Close
+            </button>
+          </div>
+        </div>
+        
+        <!-- Hidden fields -->
+        <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+      </div>
+    </div>
+  </div>
 </div>

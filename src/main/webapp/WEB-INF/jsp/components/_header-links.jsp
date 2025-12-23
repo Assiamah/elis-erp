@@ -54,7 +54,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
 <!-- intl-tel-input css -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/intl-tel-input/build/css/intlTelInput.min.css">
+<!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/intl-tel-input/build/css/intlTelInput.min.css"> -->
 
 <!-- Tagify CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/@yaireo/tagify/dist/tagify.css">

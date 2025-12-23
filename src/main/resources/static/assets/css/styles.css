@@ -24682,7 +24682,6 @@ input.form-control.otp-input {
   width: 50px !important;
   height: 50px !important;
   font-size: 1rem !important;
-  margin-right: 0.5rem !important;
   text-align: center !important;
   border-color: var(--input-border) !important;
   font-weight: var(--default-font-weight) !important;
@@ -24705,19 +24704,19 @@ input.form-control.otp-input {
 }
 
 /* Wizard Steps */
-.wizard-steps {
+.wizard-steps, .wizard-steps-on-case {
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
 }
 
-.wizard-steps .step {
+.wizard-steps .step, .wizard-steps-on-case .step {
     text-align: center;
     position: relative;
     flex: 1;
 }
 
-.wizard-steps .step:not(:last-child)::after {
+.wizard-steps .step:not(:last-child)::after, .wizard-steps-on-case .step:not(:last-child)::after {
     content: '';
     position: absolute;
     top: 24px;
@@ -24728,23 +24727,23 @@ input.form-control.otp-input {
     z-index: 1;
 }
 
-.wizard-steps .step.active::after {
+.wizard-steps .step.active::after, .wizard-steps-on-case .step.active::after {
     background: rgb(var(--primary-rgb)) !important;
 }
 
-.wizard-steps .step.active .step-icon {
+.wizard-steps .step.active .step-icon, .wizard-steps-on-case .step.active .step-icon {
     background: rgb(var(--primary-rgb)) !important;
     color: var(--custom-white);
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(77, 68, 181, 0.3);
 }
 
-.wizard-steps .step.completed .step-icon {
+.wizard-steps .step.completed .step-icon, .wizard-steps-on-case .step.completed .step-icon {
     background: rgb(var(--primary-rgb)) !important;
     color: var(--custom-white);
 }
 
-.wizard-steps .step.completed::after {
+.wizard-steps .step.completed::after, .wizard-steps-on-case .step.completed::after {
     background: rgb(var(--primary-rgb)) !important;
 }
 
@@ -24779,12 +24778,12 @@ input.form-control.otp-input {
 }
 
 /* Step Content */
-.step-content {
+.step-content, .step-content-on-case {
     display: none;
     animation: fadeIn 0.3s ease;
 }
 
-.step-content.active {
+.step-content.active, .step-content-on-case.active {
     display: block;
 }
 

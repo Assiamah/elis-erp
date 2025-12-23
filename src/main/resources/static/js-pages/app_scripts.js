@@ -380,7 +380,15 @@ function initWizard() {
     document.getElementById('btnCompleteProcess').addEventListener('click', function() {
         if (validateStep(currentStep)) {
             // Complete the process
-            alert('Process completed successfully!');
+            //alert('Process completed successfully!');
+
+            swal.fire({
+                title: 'Success Alert',
+                text: 'Process completed successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
             $('#NotoncaseafterPaymentModalonCase').modal('hide');
         }
     });
@@ -408,26 +416,37 @@ function validateStep(step) {
 }
 
 function validateChecklist() {
-    const checkboxes = document.querySelectorAll('#tbl_not_on_case_after_payment_ap_checklist_dataTable input[type="checkbox"]:required');
-    let isValid = true;
+    // const checkboxes = document.querySelectorAll('#tbl_not_on_case_after_payment_ap_checklist_dataTable input[type="checkbox"]:required');
+    // let isValid = true;
     
-    checkboxes.forEach(cb => {
-        if (!cb.checked) {
-            isValid = false;
-            cb.parentElement.classList.add('text-danger');
-        }
-    });
-    
-    if (!isValid) {
+    // checkboxes.forEach(cb => {
+    //     if (!cb.checked) {
+    //         isValid = false;
+    //         cb.parentElement.classList.add('text-danger');
+    //     }
+    // });
+
+    var lenghtOfUnchecked = $('#tbl_not_on_case_after_payment_ap_checklist_dataTable').find("input:checkbox:not(:checked)").length;
+    if (lenghtOfUnchecked > 0) {
         Swal.fire({
             title: 'Validation Required',
             text: 'Please complete all required checklist items',
             icon: 'warning',
             confirmButtonText: 'OK'
         });
+        return false;
     }
     
-    return isValid;
+    // if (!isValid) {
+    //     Swal.fire({
+    //         title: 'Validation Required',
+    //         text: 'Please complete all required checklist items',
+    //         icon: 'warning',
+    //         confirmButtonText: 'OK'
+    //     });
+    // }
+    
+    return true;
 }
 
 function validateConfirmation() {
@@ -483,6 +502,196 @@ function updateStepDisplay() {
         btnNext.textContent = 'Finish';
     } else {
         btnNext.innerHTML = 'Next Step <i class="fas fa-chevron-right ms-2"></i>';
+    }
+}
+
+// Wizard functionality for onCase modal
+let currentStepOnCase = 1;
+const totalStepsOnCase = 5;
+
+// Initialize wizard when modal opens
+$(document).on('shown.bs.modal', '#afterPaymentModalonCase', function() {
+    initWizardOnCase();
+});
+
+function initWizardOnCase() {
+    currentStepOnCase = 1;
+    updateStepDisplayOnCase();
+    
+    // Next button click
+    $('#btnNextSteponCase').off('click').on('click', function() {
+        if (validateStepOnCase(currentStepOnCase)) {
+            if (currentStepOnCase < totalStepsOnCase) {
+                currentStepOnCase++;
+                updateStepDisplayOnCase();
+            }
+        }
+    });
+    
+    // Previous button click
+    $('#btnPrevSteponCase').off('click').on('click', function() {
+        if (currentStepOnCase > 1) {
+            currentStepOnCase--;
+            updateStepDisplayOnCase();
+        }
+    });
+    
+    // Step click navigation
+    $('.wizard-steps .step').off('click').on('click', function() {
+        const stepNum = parseInt($(this).data('step'));
+        if (stepNum <= currentStepOnCase) {
+            currentStepOnCase = stepNum;
+            updateStepDisplayOnCase();
+        }
+    });
+    
+    // Complete Process button
+    $('#btnCompleteProcessonCase').off('click').on('click', function() {
+        if (validateStepOnCase(currentStepOnCase)) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Process completed successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                $('#afterPaymentModalonCase').modal('hide');
+            });
+        }
+    });
+    
+    // File upload functionality
+    $('#btnSelectFileonCase').off('click').on('click', function() {
+        $('#fileUploadFormatCSAUonCase').click();
+    });
+    
+    $('#fileUploadFormatCSAUonCase').off('change').on('change', function(e) {
+        handleFileSelectOnCase(e);
+    });
+    
+    $('#btnRemoveFileonCase').off('click').on('click', function() {
+        $('#fileUploadFormatCSAUonCase').val('');
+        $('#fileInfoonCase').hide();
+    });
+    
+    $('#btnViewFileonCase').off('click').on('click', function() {
+        const file = $('#fileUploadFormatCSAUonCase')[0].files[0];
+        if (file) {
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL, '_blank');
+        }
+    });
+}
+
+function handleFileSelectOnCase(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // Check file type
+    if (file.type !== 'application/pdf') {
+        $('#fileValidationErroronCase').text('Please select a PDF file').show();
+        return;
+    }
+    
+    // Check file size (10MB limit)
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxSize) {
+        $('#sizeErroronCase').show();
+        $('#fileValidationErroronCase').text('File size exceeds 10MB limit').show();
+        return;
+    }
+    
+    $('#sizeErroronCase').hide();
+    $('#fileValidationErroronCase').hide();
+    
+    // Update file info
+    const fileName = file.name;
+    const fileSize = (file.size / 1024).toFixed(2); // Convert to KB
+    
+    $('#fileNameonCase').text(fileName);
+    $('#fileSizeonCase').text(fileSize + ' KB');
+    $('#fileInfoonCase').show();
+}
+
+function validateStepOnCase(step) {
+    switch(step) {
+        case 1:
+            return validateChecklistOnCase();
+        case 2:
+            return true;
+        case 3:
+            return validateConfirmationOnCase();
+        case 4:
+            return validateFileUploadOnCase();
+        case 5:
+            return true;
+        default:
+            return true;
+    }
+}
+
+function validateChecklistOnCase() {
+    const uncheckedCount = $('#tbl_on_case_ap_checklist_dataTable').find("input:checkbox:not(:checked)").length;
+    if (uncheckedCount > 0) {
+        Swal.fire({
+            title: 'Validation Required',
+            text: 'Please complete all required checklist items',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
+    return true;
+}
+
+function validateConfirmationOnCase() {
+    // Add specific validation for confirmation step if needed
+    return true;
+}
+
+function validateFileUploadOnCase() {
+    const fileInput = $('#fileUploadFormatCSAUonCase')[0];
+    if (!fileInput.files.length) {
+        Swal.fire({
+            title: 'File Required',
+            text: 'Please upload the required document',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
+    return true;
+}
+
+function updateStepDisplayOnCase() {
+    // Update step indicators
+    $('.wizard-steps-on-case .step').each(function(index) {
+        const stepNum = index + 1;
+        $(this).removeClass('active completed');
+        
+        if (stepNum < currentStepOnCase) {
+            $(this).addClass('completed');
+        } else if (stepNum === currentStepOnCase) {
+            $(this).addClass('active');
+        }
+    });
+    
+    // Update content visibility
+    $('.step-content-on-case').removeClass('active');
+    $('#step-' + currentStepOnCase + '-content-on-case').addClass('active');
+    
+    // Update button visibility
+    if (currentStepOnCase > 1) {
+        $('#btnPrevSteponCase').show();
+    } else {
+        $('#btnPrevSteponCase').hide();
+    }
+    
+    if (currentStepOnCase < totalStepsOnCase) {
+        $('#btnNextSteponCase').show().html('Next Step <i class="fas fa-chevron-right ms-2"></i>');
+        $('#btnCompleteProcessonCase').hide();
+    } else {
+        $('#btnNextSteponCase').hide();
+        $('#btnCompleteProcessonCase').show();
     }
 }
 
@@ -636,7 +845,7 @@ $('#sub_service_on_case').change(function(){
 					var json_p = JSON.parse(jobdetails);
 					
 					$(json_p).each(function () {
-						table.append("<tr><td>" + this.business_process_checklist_name + "</td><td>" +   '<div class="custom-control custom-checkbox"> <input type="checkbox" class="select-item checkbox" name="select-item" value="1002" /></div>' + "</td>"
+						table.append("<tr><td>" + this.business_process_checklist_name + "</td><td>" +   '<div class="text-center custom-checkbox"> <input type="checkbox" class="select-item checkbox form-check-input form-checked-warning" name="select-item" value="1002" /></div>' + "</td>"
 						//	  +  '<td><p data-placement="top" data-toggle="tooltip" title="Transaction Details"><button class="btn btn-info btn-icon-split" data-title="Delete" data-toggle="modal" data-target="#modalrecordinformation" data-target-id="' + this.ms_id + '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Add to List</span></button></p></td>'
 						+ "</tr>");
 					});

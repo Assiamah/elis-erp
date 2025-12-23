@@ -237,7 +237,7 @@
                                                             <th>Account Type</th>
                                                             <th>Phone</th>
                                                             <th>Address</th>
-                                                            <th class="text-center">New Bill</th>
+                                                            <th class="text-center">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>

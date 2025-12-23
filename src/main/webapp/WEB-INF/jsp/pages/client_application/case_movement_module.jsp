@@ -136,6 +136,7 @@
                                           <th>Job Details</th>
                                           <th>Applicant</th>
                                           <th>Type</th>
+                                          <th>Job Category</th>
                                           <th>Status</th>
                                           <th>Timeline</th>
                                           <th class="text-center">Actions</th>
@@ -182,6 +183,13 @@
                                                     ${appfiles.business_process_sub_name}
                                                 </span>
                                             </td>
+
+                                            <!-- Job Category -->
+                                            <td>
+                                                <span class="small">
+                                                    ${appfiles.request_category}
+                                                </span>
+                                            </td>
                                             
                                             <!-- Status -->
                                             <td>
@@ -211,7 +219,7 @@
                                             
                                             <!-- Actions -->
                                             <td class="text-center">
-                                                <form action="registration_application_progress_details" method="post" class="d-inline">
+                                                <form action="request_application_progress_details_advance" method="post" class="d-inline">
                                                     <input type="hidden" name="case_number" value="${appfiles.case_number}">
                                                     <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
                                                     <input type="hidden" name="job_number" value="${appfiles.job_number}">

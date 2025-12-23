@@ -155,7 +155,7 @@ public class document_upload {
 	@PostMapping
 	public String document_upload_mutiple_new(HttpSession session, Model model, HttpServletRequest request, 
 						HttpServletResponse response,
-						@RequestParam(value = "sampleApplicationFile", required = false) MultipartFile[] files) 
+						@RequestParam(value = "sampleApplicationFile", required = true) MultipartFile[] files) 
 						throws IOException, ServletException {
 
 		// Check if session is valid

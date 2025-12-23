@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 import com.mit.elis.class_common.Ws_url_config;
 
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -52,11 +52,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-		maxFileSize = 1024 * 1024 * 10, // 10 MB
-		maxRequestSize = 1024 * 1024 * 15 // 15 MB
-)
-
 @RestController
 public class Case_Management_Serv_Upload {
 
@@ -72,15 +67,14 @@ public class Case_Management_Serv_Upload {
     
     @RequestMapping("/Case_Management_Serv_Upload")
     @PostMapping
-    public String doPost(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "sampleFile", required = false) MultipartFile file) {
+    public String doPost(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "sampleFile", required = false) MultipartFile file) {
         // TODO Auto-generated method stub
 
         if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
             // Session is expired
             request.setAttribute("login", "sessionout");
             // System.out.println("If Not success");
-             model.addAttribute("content", "../auth/login.jsp");
-             return "layouts/guest";
+            return "index.jsp";
 
         }
         // HttpSession session = request.getSession();
@@ -108,9 +102,9 @@ public class Case_Management_Serv_Upload {
                     .getAttribute("web_chairman_regional_land_commission");
             billgeneration_cl.web_office_region = (String) session.getAttribute("web_office_region");
 
-            if (request_type.equals("process_online_select_acknowledgement_not_on_case")) {
+            System.out.println(request_type);
 
-                System.out.print(request);
+            if (request_type.equals("process_online_select_acknowledgement_not_on_case")) {
 
                 String main_service_id = request.getParameter("main_service_id");
                 String main_service_sub_id = request.getParameter("main_service_sub_id");

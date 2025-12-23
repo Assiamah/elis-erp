@@ -61,7 +61,7 @@
 
     .floating-input:focus + .floating-label,
     .floating-input:not(:placeholder-shown) + .floating-label {
-        top: 8px;
+        top: 2px;
         left: 10px;
         font-size: 12px;
         color: #059669;
@@ -284,7 +284,7 @@
                                         Sign In
                                     </span>
                                     <span class="loading-text d-none">
-                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        <span class="mdi mdi-spin mdi-loading me-1" role="status"></span>
                                         Authenticating...
                                     </span>
                                 </button>
@@ -508,13 +508,13 @@
         });
         
         // Input validation styling
-        $('.floating-input').on('blur', function() {
-            if (this.value) {
-                $(this).addClass('is-valid');
-            } else {
-                $(this).removeClass('is-valid');
-            }
-        });
+        // $('.floating-input').on('blur', function() {
+        //     if (this.value) {
+        //         $(this).addClass('is-valid');
+        //     } else {
+        //         $(this).removeClass('is-valid');
+        //     }
+        // });
         
         // Auto-hide alerts after 5 seconds
         setTimeout(() => {

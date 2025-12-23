@@ -34,7 +34,7 @@
 <script src="${pageContext.request.contextPath}/assets/libs/@tarekraafat/autocomplete.js/dist/autoComplete.min.js"></script>
 
 <!-- intl-tel-input JS -->
-<script src="${pageContext.request.contextPath}/assets/libs/intl-tel-input/build/js/intlTelInput.min.js"></script>
+<!-- <script src="${pageContext.request.contextPath}/assets/libs/intl-tel-input/build/js/intlTelInput.min.js"></script> -->
 
 <!-- Color Picker JS -->
 <script src="${pageContext.request.contextPath}/assets/libs/@simonwep/pickr/dist/pickr.es5.min.js"></script>
@@ -101,7 +101,7 @@ ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name==
 <script src="${pageContext.request.contextPath}/js-pages/csau_online.js"></script>
 <script src="${pageContext.request.contextPath}/js-pages/app_scripts.js"></script>
 <script src="${pageContext.request.contextPath}/js-pages/global.js"></script>
-<script src="${pageContext.request.contextPath}/js-pages/all_functions.js"></script>
+<!-- <script src="${pageContext.request.contextPath}/js-pages/all_functions.js"></script> -->
 <script src="${pageContext.request.contextPath}/js-pages/inactivity_check.js"></script>
 
 <script src="${pageContext.request.contextPath}/assets/libs/jsw/jquery.smartWizard.js" type="text/javascript"></script>
@@ -119,3 +119,5 @@ ${page_name == "unit_case_management_revised" ? "<script src='js-pages/unit_case
 ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name=="certificate_signing_module") ? "<script src='js-pages/compliance.js'></script> " : ""}
 
 ${page_name == "application_review_details_advanced" ? "<script src='js-pages/gated_workflow.js'></script>" : ""}
+
+${page_name == "page_enquiry_backoffice" ? "<script src='js-pages/enquiry_backoffice.js'></script>" : ""}

@@ -69,11 +69,11 @@
     }
     
     .timer-display {
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #10b981;
         background: white;
-        padding: 12px 24px;
+        padding: 5px 30px;
         border-radius: 50px;
         display: inline-block;
         border: 2px solid #e6f7f0;
@@ -249,38 +249,21 @@
 <div class="verification-container">
     <div class="verification-card">
         <!-- Header -->
-        <div class="verification-header">
-            <div class="verification-logo">
+        <div class="verification-header mb-0">
+            <!-- <div class="verification-logo">
                 <i class="ri-shield-check-line fs-24"></i>
-            </div>
-            <h1 class="h3 fw-bold mb-0">Two-Factor Verification</h1>
+            </div> -->
+            <h1 class="h4 text-white fw-bold mb-0"><i class="ri-shield-check-line fs-24 me-2"></i>Two-Factor Verification</h1>
             <!-- <p class="mb-0 opacity-90">Enhanced account security</p> -->
         </div>
         
         <!-- Body -->
         <div class="verification-body mt-0">
-            <!-- Security Status -->
-            <!-- <div class="d-flex align-items-center justify-content-between mb-4">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="badge bg-success bg-opacity-10 text-success py-2 px-3 rounded-pill">
-                        <i class="ri-shield-check-line me-1"></i>
-                        Secure Verification
-                    </div>
-                </div>
-                <div id="timer" class="timer-display">10:00</div>
-            </div> -->
             
             <!-- Title -->
             <!-- <div class="text-center mb-4">
                 <h2 class="h4 fw-bold text-dark mb-2">Verify Your Identity</h2>
                 <p class="text-muted mb-0">Enter the 6-digit code sent to your registered contact methods</p>
-            </div> -->
-            
-            <!-- Auto-generated OTP Display -->
-            <!-- <div class="otp-display">
-                <p class="text-muted mb-2 fs-14">Your verification code is:</p>
-                <div class="otp-code">${otp_code}</div>
-                <p class="text-muted mt-2 fs-12 mb-0">This code will expire in <span id="timer-text">10:00</span></p>
             </div> -->
             
             <!-- Contact Information -->
@@ -309,6 +292,17 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Security Status -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="badge bg-success bg-opacity-10 text-success py-2 px-3 rounded-pill">
+                        <i class="ri-shield-check-line me-1"></i>
+                        Secure Verification
+                    </div>
+                </div>
+                <div id="timer" class="timer-display">10:00</div>
+            </div>
             
             <!-- Security Note -->
             <div class="security-note">
@@ -327,7 +321,7 @@
                 <div class="mb-4">
                     <label class="form-label fw-semibold mb-1">Enter 6-digit verification code:</label>
                     <div class="otp-input-group">
-                        <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-input" id="vc_1" name="vc_1" maxlength="1" onkeyup="clickEvent(this,'vc_2')">
+                        <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-input" id="vc_1" name="vc_1" maxlength="1" onkeyup="clickEvent(this,'vc_2')" autofocus>
                         <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-input" id="vc_2" name="vc_2" maxlength="1" onkeyup="clickEvent(this,'vc_3')">
                         <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-input" id="vc_3" name="vc_3" maxlength="1" onkeyup="clickEvent(this,'vc_4')">
                         <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-input" id="vc_4" name="vc_4" maxlength="1" onkeyup="clickEvent(this,'vc_5')">
@@ -353,7 +347,7 @@
                             Verify & Continue
                         </span>
                         <span class="loading-text d-none">
-                            <span class="loading-spinner me-2"></span>
+                            <span class="mdi mdi-spin mdi-loading me-1" role="status"></span>
                             Verifying...
                         </span>
                     </button>

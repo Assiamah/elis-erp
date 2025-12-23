@@ -587,7 +587,7 @@
                                         <p class="text-muted">Supported format: PDF only</p>
                                     </div> -->
                                     
-                                   <form id="id_formatCSAU_" class="needs-validation" novalidate>
+                                   <form method="POST" enctype="multipart/form-data" id="id_formatCSAU_" class="needs-validation" novalidate>
                                         <div class="mb-3">
                                             <div class="file-upload-area border-dashed rounded p-4 text-center mb-3">
                                                 <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
@@ -597,7 +597,7 @@
                                                 <input type="file" 
                                                     class="form-control d-none" 
                                                     id="fileUploadFormatCSAU" 
-                                                    name="UploadFileFile" 
+                                                    name="sampleFile" 
                                                     accept="application/pdf"
                                                     required>
                                                 
@@ -696,185 +696,620 @@
 </div>
 
 
-<div class="modal fade effect-scale modal-blur" id="addNewserviceBillModalonCase" tabindex="-1" aria-labelledby="addNewserviceBillModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade effect-scale modal-blur" id="addNewserviceBillModalonCase" tabindex="-1" aria-labelledby="addNewserviceBillModalLabel" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addNewserviceBillModal">
-            <i class="fas fa-file-invoice me-2"></i>
-            New Service Bill
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content border-0 shadow">
+      <!-- Modal Header -->
+      <div class="modal-header bg-gradient-primary text-white rounded-top">
+        <div class="d-flex align-items-center w-100">
+          <div class="flex-grow-1">
+            <h5 class="modal-title fw-semibold mb-0" id="addNewserviceBillModalLabel">
+              <i class="fas fa-file-invoice me-2"></i>New Service Bill
+            </h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
       </div>
-      <div class="modal-body">
-        <form id="from_add_valuation">
-          <input id="action_on_form_valuation" type="hidden">
-          
-          <div class="row g-3">
-            <!-- Main Service Selection -->
-            <div class="col-md-6">
-              <label for="main_service_on_case" class="form-label">Main Service</label>
-              <select name="main_service_on_case" id="main_service_on_case" class="form-select" data-live-search="true">
-                <!-- Options will be populated dynamically -->
-              </select>
-            </div>
-            
-            <!-- Sub Service Selection -->
-            <div class="col-md-6">
-              <label for="sub_service_on_case" class="form-label">Sub Service</label>
-              <select name="sub_service_on_case" id="sub_service_on_case" class="form-select" data-live-search="true">
-                <option value="-1">Select Sub Service</option>
-              </select>
-            </div>
-          </div>
-          
-          <!-- Registration Number Section -->
-          <div id="oncasereg-no-div" class="d-none mt-3">
-            <div class="card border-0">
-              <div class="card-body p-3 bg-light rounded">
-                <h6 class="card-title mb-3">Surveyor Information</h6>
-                <div class="row g-3">
-                  <div class="col-md-4">
-                    <label for="new_bill_application_ls_number_oncase" class="form-label">Surveyor's Number</label>
-                    <input class="form-control" id="new_bill_application_ls_number_oncase" name="ls_number" type="text" value="${licensed_surveyor_number}" readonly>
-                  </div>
-                  <div class="col-md-8">
-                    <label for="new_bill_application_surveyors_name_oncase" class="form-label">Surveyor's Name</label>
-                    <input class="form-control" id="new_bill_application_surveyors_name_oncase" name="new_bill_application_surveyors_name_oncase" type="text" readonly>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="new_bill_application_surveyors_status_oncase" class="form-label">Surveyor's Status</label>
-                    <input class="form-control" id="new_bill_application_surveyors_status_oncase" name="new_bill_application_surveyors_status_oncase" type="text" readonly>
-                  </div>
-                  <div class="col-md-6 d-flex align-items-end">
-                    <button type="button" class="btn btn-primary" id="lc_btn_check_status_of_lincense_surveyor_oncase" data-bs-toggle="tooltip" title="Search for Surveyor">
-                      <i class="fas fa-search me-1"></i> Check Status
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Checklist Section -->
-          <div class="mt-4">
-            <div class="card">
-              <div class="card-header">
-                <i class="fas fa-list-check me-2"></i>Check List
-              </div>
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table table-hover mb-0" id="on_case_checlist_table_billdataTable">
-                    <thead class="table-light">
-                      <tr>
-                        <th width="80%">Description</th>
-                        <th width="20%" class="text-center">Option</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <!-- Checklist items will be populated here -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Client and Case Information -->
-          <div class="row g-3 mt-3">
-            <div class="col-md-6">
-              <label for="on_application_client_name" class="form-label">Client Name</label>
-              <input class="form-control" id="on_application_client_name" name="on_application_client_name" type="text" value="${ar_name}" readonly>
-            </div>
-            <div class="col-md-6">
-              <label for="new_bill_case_number" class="form-label">Transaction Number</label>
-              <input class="form-control" id="new_bill_case_number_on_case" name="new_bill_case_number" type="text" value="${case_number}" readonly>
-            </div>
-          </div>
 
-          <div class="row g-3 mt-3">
-            <div class="col-md-6">
-              <label for="on_application_client_name" class="form-label">Office Region</label>
-              <select name="new_bill_application_office_region_on_case" id="new_bill_application_office_region_on_case" class="form-control input-sm" data-style="btn-info" data-live-search="true">
-                <option value="-1">Select Office Region</option>
-                <c:forEach items="${officeregionlist}" var="officeregion">
-                  <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
-                </c:forEach>
-              </select>
-            </div>
+      <!-- Modal Body -->
+      <div class="modal-body p-4">
+        <!-- Service Selection Section -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-light py-3">
+            <h6 class="mb-0 fw-semibold"><i class="fas fa-cog me-2 text-primary"></i>Service Selection</h6>
           </div>
-          
-          <!-- Land Size Section -->
-          <div id="oncasereglandsize-no-div" class="mt-3">
+          <div class="card-body">
+            <form id="from_add_valuation">
+              <input id="action_on_form_valuation" type="hidden">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="main_service_on_case" class="form-label fw-medium">Main Service <span class="text-danger">*</span></label>
+                  <select name="main_service_on_case" id="main_service_on_case" class="form-select form-select-sm" data-style="btn-info" data-live-search="true">
+                    <!-- Options will be populated dynamically -->
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="sub_service_on_case" class="form-label fw-medium">Sub Service <span class="text-danger">*</span></label>
+                  <select name="sub_service_on_case" id="sub_service_on_case" class="form-select form-select-sm" data-style="btn-info" data-live-search="true">
+                    <option value="-1">Select Sub Service</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Surveyor Information Section -->
+        <div class="card border-0 shadow-sm mb-4" id="oncasereg-no-div" style="display: none;">
+          <div class="card-header bg-light py-3">
+            <h6 class="mb-0 fw-semibold"><i class="fas fa-user-tie me-2 text-warning"></i>Surveyor Information</h6>
+          </div>
+          <div class="card-body">
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="new_bill_land_size_on_case" class="form-label">Land Size (Acre(s))</label>
-                <input class="form-control" id="new_bill_land_size_on_case" name="new_bill_land_size_on_case" type="text" placeholder="Enter land Size" required>
+                <label for="new_bill_application_ls_number_oncase" class="form-label fw-medium">Surveyor's Number</label>
+                <div class="input-group">
+                  <input class="form-control" id="new_bill_application_ls_number_oncase" name="ls_number" type="text" value="${licensed_surveyor_number}" readonly>
+                  <button type="button" class="btn btn-primary" id="lc_btn_check_status_of_lincense_surveyor_oncase" data-bs-toggle="tooltip" title="Search Surveyor">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
               </div>
               <div class="col-md-6">
-                <label for="new_bill_locality_on_case_1" class="form-label">Locality</label>
-                <input class="form-control" id="new_bill_locality_on_case_1" name="new_bill_locality_on_case_1" type="text" placeholder="Enter locality" required>
+                <label for="new_bill_application_surveyors_name_oncase" class="form-label fw-medium">Surveyor's Name</label>
+                <input class="form-control" id="new_bill_application_surveyors_name_oncase" name="new_bill_application_surveyors_name_oncase" type="text" readonly>
+              </div>
+              <div class="col-md-6">
+                <label for="new_bill_application_surveyors_status_oncase" class="form-label fw-medium">Surveyor's Status</label>
+                <input class="form-control" id="new_bill_application_surveyors_status_oncase" name="new_bill_application_surveyors_status_oncase" type="text" readonly>
               </div>
             </div>
           </div>
-          
-          <!-- Stamping Section -->
-          <div id="oncasestp-no-div" style="display: none" class="mt-3">
+        </div>
+
+        <!-- Checklist Section -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-semibold"><i class="fas fa-tasks me-2 text-success"></i>Service Checklist</h6>
+            <span class="badge bg-primary">${main_service_desc}</span>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="on_case_checlist_table_billdataTable">
+                <thead class="table-light">
+                  <tr>
+                    <th class="py-3 px-4 fw-medium">Description</th>
+                    <th class="py-3 px-4 fw-medium text-center">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Checklist items will be populated here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Client and Case Information -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-light py-3">
+            <h6 class="mb-0 fw-semibold"><i class="fas fa-user me-2 text-info"></i>Client Information</h6>
+          </div>
+          <div class="card-body">
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="new_number_of_copies_on_case" class="form-label">Number of Copies</label>
-                <input class="form-control" id="new_number_of_copies_on_case" name="new_number_of_copies_on_case" type="number" placeholder="Enter No of Copies" required>
+                <label for="on_application_client_name" class="form-label fw-medium">Client Name</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <input class="form-control" id="on_application_client_name" name="on_application_client_name" type="text" value="${ar_name}" readonly>
+                </div>
               </div>
               <div class="col-md-6">
-                <label for="new_bill_type_of_use_on_case" class="form-label">Type of Use</label>
-                <select name="type_of_use" id="new_bill_type_of_use_on_case" class="form-select" data-live-search="true">
+                <label for="new_bill_case_number_on_case" class="form-label fw-medium">Transaction Number</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                  <input class="form-control" id="new_bill_case_number_on_case" name="new_bill_case_number" type="text" value="${case_number}" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Details Section -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-light py-3">
+            <h6 class="mb-0 fw-semibold"><i class="fas fa-info-circle me-2 text-secondary"></i>Additional Details</h6>
+          </div>
+          <div class="card-body">
+            <!-- Office Region -->
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="new_bill_application_office_region_on_case" class="form-label fw-medium">Office Region</label>
+                <select name="new_bill_application_office_region_on_case" id="new_bill_application_office_region_on_case" class="form-select form-select-sm" data-style="btn-info" data-live-search="true">
+                  <option value="-1">Select Office Region</option>
+                  <c:forEach items="${officeregionlist}" var="officeregion">
+                    <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
+
+            <!-- Land Size & Locality -->
+            <div class="row g-3 mt-2" id="oncasereglandsize-no-div" style="display: none;">
+              <div class="col-md-6">
+                <label for="new_bill_land_size_on_case" class="form-label fw-medium">Land Size (Acres)</label>
+                <div class="input-group">
+                  <input class="form-control" id="new_bill_land_size_on_case" name="new_bill_land_size_on_case" type="text" placeholder="Enter land size">
+                  <span class="input-group-text">acres</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="new_bill_locality_on_case_1" class="form-label fw-medium">Locality</label>
+                <input class="form-control" id="new_bill_locality_on_case_1" name="new_bill_locality_on_case_1" type="text" placeholder="Enter locality">
+              </div>
+            </div>
+
+            <!-- Stamping Details -->
+            <div class="row g-3 mt-2" id="oncasestp-no-div" style="display: none;">
+              <div class="col-md-6">
+                <label for="new_number_of_copies_on_case" class="form-label fw-medium">Number of Copies</label>
+                <input class="form-control" id="new_number_of_copies_on_case" name="new_number_of_copies_on_case" type="number" placeholder="Enter No of Copies" min="1">
+              </div>
+              <div class="col-md-6">
+                <label for="new_bill_type_of_use_on_case" class="form-label fw-medium">Type of Use</label>
+                <select name="type_of_use" id="new_bill_type_of_use_on_case" class="form-select form-select-sm" data-live-search="true">
                   <option value="-1">Select Type of Use</option>
                 </select>
               </div>
               <div class="col-md-6">
-                <label for="new_type_of_revenue_item_on_case" class="form-label">Nature of Instrument</label>
-                <select name="new_type_of_revenue_item_on_case" id="new_type_of_revenue_item_on_case" class="form-select" data-live-search="true">
+                <label for="new_type_of_revenue_item_on_case" class="form-label fw-medium">Nature of Instrument</label>
+                <select name="new_type_of_revenue_item_on_case" id="new_type_of_revenue_item_on_case" class="form-select form-select-sm" data-live-search="true">
                   <option value="-1">Select Nature of Interest</option>
-                  
                 </select>
               </div>
             </div>
-          </div>
-          
-          <!-- Registration Forms Section -->
-          <div id="oncasefreg-no-div" style="display: none" class="mt-3">
-            <div class="row g-3">
+
+            <!-- Registration Forms -->
+            <div class="row g-3 mt-2" id="oncasefreg-no-div" style="display: none;">
               <div class="col-md-6">
-                <label for="new_bill_registration_forms_on_case" class="form-label">Forms</label>
-                <select name="new_bill_registration_forms_on_case" id="new_bill_registration_forms_on_case" class="form-select" data-live-search="true">
+                <label for="new_bill_registration_forms_on_case" class="form-label fw-medium">Forms</label>
+                <select name="new_bill_registration_forms_on_case" id="new_bill_registration_forms_on_case" class="form-select form-select-sm" data-live-search="true">
                   <option value="-1">Select Registration Forms</option>
                 </select>
               </div>
             </div>
-          </div>
-          
-          <!-- Publication Type Section -->
-          <div id="oncasefpublication-no-div" style="display: none" class="mt-3">
-            <div class="row g-3">
+
+            <!-- Publication Type -->
+            <div class="row g-3 mt-2" id="oncasefpublication-no-div" style="display: none;">
               <div class="col-md-6">
-                <label for="new_bill_publication_type_on_case" class="form-label">Publication Type</label>
-                <select name="new_bill_publication_type_on_case" id="new_bill_publication_type_on_case" class="form-select">
+                <label for="new_bill_publication_type_on_case" class="form-label fw-medium">Publication Type</label>
+                <select name="new_bill_publication_type_on_case" id="new_bill_publication_type_on_case" class="form-select form-select-sm">
                   <option value="normal_publication">Normal Publication</option>
                   <option value="special_publication">Special Publication</option>
                 </select>
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
-          
-          <!-- Modal Footer -->
-          <div class="modal-footer mt-4">
-            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="btn_save_to_generate_on_application" class="btn btn-primary">Generate Bill</button>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light rounded-bottom p-3">
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+              <i class="fas fa-times me-2"></i>Close
+            </button>
           </div>
+          <div>
+            <button type="button" class="btn btn-primary px-4" id="btn_save_to_generate_on_application">
+              <i class="fas fa-arrow-right me-2"></i>Generate Bill
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="afterPaymentModalonCase" tabindex="-1" aria-labelledby="afterPaymentModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-gradient-primary text-white rounded-top-3">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title fw-semibold mb-0" id="afterPaymentModalLabel">
+                            After Payment - Case Processing
+                        </h5>
+                        <small class="text-muted">Complete the post-payment workflow</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Hidden Inputs -->
+            <div class="d-none">
+                <input type="hidden" id="txt_on_case_ap_main_service_id" name="txt_on_case_ap_main_service_id">
+                <input type="hidden" id="txt_on_case_ap_main_service_sub_id" name="main_service_sub_id">
+                <input type="hidden" id="txt_on_case_ap_jn_id" name="txt_on_case_ap_jn_id" value="jn_id">
+                <input type="hidden" id="txt_on_case_ap_userid" name="txt_on_case_ap_userid" value="${userid}">
+                <input type="hidden" id="txt_on_case_ap_user_fullname" name="user_fullname" value="${fullname}">
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-3">
+                <!-- Summary Card -->
+                <div class="card border-0 shadow-sm rounded-0 mb-3">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold"><i class="fas fa-info-circle me-2 text-primary"></i>Application Summary</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium text-muted">Ref Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-hashtag"></i></span>
+                                    <input type="text" class="form-control bg-light" id="txt_on_case_ap_job_number" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium text-muted">Case Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-folder"></i></span>
+                                    <input type="text" class="form-control bg-light" id="txt_on_case_ap_case_number" value="${case_number}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium text-muted">Main Service</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-cog"></i></span>
+                                    <input type="text" class="form-control bg-light" id="txt_on_case_ap_main_service_desc" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium text-muted">Sub Service</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-cogs"></i></span>
+                                    <input type="text" class="form-control bg-light" id="txt_on_case_ap_main_service_sub_desc" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium text-muted">Client Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control bg-light" id="txt_on_case_ap_client_name" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium text-muted">Transaction Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-exchange-alt"></i></span>
+                                    <input type="text" class="form-control bg-light" id="txt_on_case_ap_transaction_number" value="${transaction_number}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wizard Steps -->
+                <div class="card border-0 shadow-sm rounded-0">
+                    <div class="card-header bg-transparent border-bottom py-3">
+                        <div class="wizard-steps-on-case">
+                            <div class="step active" data-step="1">
+                                <div class="step-icon">1</div>
+                                <div class="step-label">Checklist</div>
+                            </div>
+                            <div class="step" data-step="2">
+                                <div class="step-icon">2</div>
+                                <div class="step-label">Bills</div>
+                            </div>
+                            <div class="step" data-step="3">
+                                <div class="step-icon">3</div>
+                                <div class="step-label">Confirmation</div>
+                            </div>
+                            <div class="step" data-step="4">
+                                <div class="step-icon">4</div>
+                                <div class="step-label">Upload</div>
+                            </div>
+                            <div class="step" data-step="5">
+                                <div class="step-icon">5</div>
+                                <div class="step-label">Acknowledgement</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Step 1: Checklist -->
+                        <div class="step-content-on-case active" id="step-1-content-on-case">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0 fw-semibold"><i class="fas fa-clipboard-check me-2 text-warning"></i>Service Checklist</h6>
+                                <span class="badge bg-primary">${main_service_desc}</span>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered" id="tbl_on_case_ap_checklist_dataTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="fw-medium py-3">Description</th>
+                                            <th class="fw-medium py-3 text-center">Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Bills Details -->
+                        <div class="step-content-on-case" id="step-2-content-on-case">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0 fw-semibold"><i class="fas fa-money-bill-wave me-2 text-warning"></i>Bill & Payment Details</h6>
+                                <button class="btn btn-warning" id="btnPrintEgcr2">
+                                    <i class="fas fa-print me-2"></i>Print eGCR
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="tbl_on_case_ap_bills_payments_dataTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="fw-medium">Bill Number</th>
+                                            <th class="fw-medium">Description</th>
+                                            <th class="fw-medium text-end">Amount</th>
+                                            <th class="fw-medium text-end">Paid</th>
+                                            <th class="fw-medium">Payment Mode</th>
+                                            <th class="fw-medium">Division</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Details Confirmation -->
+                        <div class="step-content-on-case" id="step-3-content-on-case">
+                            <h6 class="mb-4 fw-semibold"><i class="fas fa-check-double me-2 text-warning"></i>Details Confirmation</h6>
+                            
+                            <!-- Client Information -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-light py-3">
+                                    <h6 class="mb-0 fw-semibold"><i class="fas fa-user me-2"></i>Client Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-medium">Client Name</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                <input type="text" class="form-control" id="txt_on_case_ap_ar_name" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conditional Sections -->
+                            <div id="additional-details-section">
+                                <!-- Party Information (Conditional) -->
+                                <div class="card border-0 shadow-sm mb-4" id="oncaseparty-no-div" style="display: none;">
+                                    <div class="card-header bg-light py-3">
+                                        <h6 class="mb-0 fw-semibold"><i class="fas fa-users me-2"></i>Party Information</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Gender</label>
+                                                <select name="txt_on_case_ap_ar_gender" id="txt_on_case_ap_bl_cbo_ar_gender" class="form-select">
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Phone Number</label>
+                                                <input type="text" class="form-control" id="txt_on_case_ap_ar_cell_phone" placeholder="Enter Phone Number">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-medium">ID Type</label>
+                                                <select name="cbo_on_case_ap_ar_id_type" id="cbo_on_case_ap_ar_id_type" class="form-select">
+                                                    <option value="National ID">National ID</option>
+                                                    <option value="Drivers License">Drivers License</option>
+                                                    <option value="NHIS">NHIS</option>
+                                                    <option value="Passport">Passport</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-medium">ID Number</label>
+                                                <input type="text" class="form-control" id="txt_on_case_ap_ar_id_number" placeholder="Enter ID Number">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fw-medium">Type of Party</label>
+                                                <select name="cbo_on_case_ap_type_of_party" id="cbo_on_case_ap_type_of_party" class="form-select">
+                                                    <option value="Applicant">Applicant</option>
+                                                    <option value="Motgagor">Mortgagor</option>
+                                                    <option value="Grantor">Grantor</option>
+                                                    <option value="Objector">Objector</option>
+                                                    <option value="Depositor">Depositor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Plan Approval Details (Conditional) -->
+                                <div class="card border-0 shadow-sm mb-4" id="oncasepaap-no-div" style="display: none;">
+                                    <div class="card-header bg-light py-3">
+                                        <h6 class="mb-0 fw-semibold"><i class="fas fa-map me-2"></i>Plan Approval Details</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Land Size (Acres)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fas fa-ruler-combined"></i></span>
+                                                    <input type="text" class="form-control" id="txt_on_case_ap_land_size" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Locality</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                                    <input type="text" class="form-control" id="new_ap_locality_oncase" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="display: none;">
+                                                <label class="form-label fw-medium">Surveyor's Name</label>
+                                                <input type="text" class="form-control" id="new_ap_application_surveyors_name_oncase" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Registration Details (Conditional) -->
+                                <div class="card border-0 shadow-sm mb-4" id="oncaseregap-no-div" style="display: none;">
+                                    <div class="card-header bg-light py-3">
+                                        <h6 class="mb-0 fw-semibold"><i class="fas fa-file-contract me-2"></i>Registration Details</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Application Type</label>
+                                                <select name="txt_not_on_case_ap_application_type" id="txt_not_on_case_ap_application_type" class="form-select">
+                                                    <option value="Individual">Individual</option>
+                                                    <option value="Joint">Joint</option>
+                                                    <option value="Company">Company</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stamping Details (Conditional) -->
+                                <div class="card border-0 shadow-sm mb-4" id="oncasestpap-no-div" style="display: none;">
+                                    <div class="card-header bg-light py-3">
+                                        <h6 class="mb-0 fw-semibold"><i class="fas fa-file-signature me-2"></i>Instrument Details</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Nature of Instrument</label>
+                                                <input type="text" class="form-control" id="txt_on_case_ap_type_of_instrument" readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-medium">Type of Use</label>
+                                                <input type="text" class="form-control" id="txt_on_case_ap_type_of_use" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: File Upload -->
+                        <div class="step-content-on-case" id="step-4-content-on-case">
+                            <h6 class="mb-4 fw-semibold"><i class="fas fa-upload me-2 text-warning"></i>File Upload</h6>
+                            
+                            <div class="card border-dashed border-2">
+                                <div class="card-body text-center p-5">
+                                    <form method="POST" enctype="multipart/form-data" id="id_formatCSAU" class="needs-validation" novalidate>
+                                        <div class="mb-3">
+                                            <div class="file-upload-area border-dashed rounded p-4 text-center mb-3">
+                                                <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
+                                                <h6 class="fw-semibold">Upload PDF Document</h6>
+                                                <p class="text-muted small mb-3">Maximum file size: 10MB • Accepted format: PDF only</p>
+                                                
+                                                <input type="file" 
+                                                    class="form-control d-none" 
+                                                    id="fileUploadFormatCSAUonCase" 
+                                                    name="fileUploadFormatCSAUonCase" 
+                                                    accept="application/pdf"
+                                                    required>
+                                                
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <button type="button" class="btn btn-outline-primary mb-3" id="btnSelectFileonCase">
+                                                        <i class="fas fa-folder-open me-2"></i>Select PDF File
+                                                    </button>
+                                                    
+                                                    <div class="file-info text-center" id="fileInfoonCase" style="display: none;">
+                                                        <div class="d-flex align-items-center justify-content-center mb-2">
+                                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                                            <span class="fw-medium" id="fileNameonCase"></span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <div class="file-size-badge bg-light rounded-pill px-3 py-1 me-3">
+                                                                <i class="fas fa-weight-hanging me-1 text-muted"></i>
+                                                                <span id="fileSizeonCase">0 KB</span>
+                                                            </div>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger me-2" id="btnRemoveFileonCase">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-sm btn-outline-info" id="btnViewFileonCase">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="progress mt-2" style="height: 4px; width: 200px; display: none;" id="fileSizeProgressonCase">
+                                                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                                        </div>
+                                                        <div class="alert alert-danger mt-2 py-1 px-3" id="sizeErroronCase" style="display: none;">
+                                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                                            <small>File exceeds 10MB limit</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="invalid-feedback" id="fileValidationErroronCase">Please upload a valid PDF file (max 10MB).</div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Acknowledgement -->
+                        <div class="step-content-on-case" id="step-5-content-on-case">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0 fw-semibold"><i class="fas fa-file-alt me-2 text-warning"></i>Acknowledgement Slip</h6>
+                                <button type="button" class="btn btn-primary" id="btn_on_case_ap_generate_acknowledgement">
+                                    <i class="fas fa-download me-2"></i>Generate Acknowledgement
+                                </button>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-body p-2">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe src="" id="oncaseakblobfile" class="embed-responsive-item" width="100%" height="500"></iframe>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-light">
+                                    <small class="text-muted">Acknowledgement slip will be generated after completing all previous steps.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom-3">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-primary me-2" id="btnPrevSteponCase">
+                            <i class="fas fa-chevron-left me-2"></i>Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btnNextSteponCase">
+                            Next Step <i class="fas fa-chevron-right ms-2"></i>
+                        </button>
+                        <button type="button" class="btn btn-success ms-2" id="btnCompleteProcessonCase" style="display: none;">
+                            <i class="fas fa-check me-2"></i>Complete Process
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade effect-scale modal-blur" id="viewBatchlistModal" tabindex="-1" aria-labelledby="viewBatchlistModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -3697,4 +4132,703 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="linkaccounttoJobsModal" tabindex="-1" aria-labelledby="linkAccountModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-gradient-primary text-white rounded-top">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title fw-semibold mb-0" id="linkAccountModalLabel">
+                            <i class="fas fa-link me-2"></i>Link Job to Account
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <form method="post" class="needs-validation" novalidate>
+                    <!-- Account Details Section -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-user-circle me-2 text-primary"></i>Account Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="lja_applicant_name" class="form-label fw-medium">Applicant Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="lja_applicant_name" placeholder="Enter applicant name" required>
+                                        <div class="invalid-feedback">
+                                            Please enter applicant name.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lja_applicant_id" class="form-label fw-medium">Applicant E-mail/Phone <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        <input type="text" class="form-control" id="lja_applicant_id" placeholder="Enter email or phone number" required>
+                                        <div class="invalid-feedback">
+                                            Please enter applicant email or phone number.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Details Section -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-briefcase me-2 text-success"></i>Job Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <!-- Job Search -->
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-8">
+                                    <label for="lja_job_number" class="form-label fw-medium">Job Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" id="lja_job_number" placeholder="Enter job number">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button type="button" id="btn_lja_search_for_job_number_details" class="btn btn-primary w-100">
+                                        <i class="fas fa-search me-2"></i>Search Job
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Job Results -->
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="lja_job_number_result" class="form-label fw-medium">Job Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                        <input type="text" class="form-control bg-light" id="lja_job_number_result" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lja_case_number" class="form-label fw-medium">Case Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                                        <input type="text" class="form-control bg-light" id="lja_case_number" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lja_transaction_number" class="form-label fw-medium">Transaction Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
+                                        <input type="text" class="form-control bg-light" id="lja_transaction_number" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lja_ar_name" class="form-label fw-medium">Transaction Applicant Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-check"></i></span>
+                                        <input type="text" class="form-control bg-light" id="lja_ar_name" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Validation Status -->
+                            <div class="alert alert-info mt-4 d-none" id="jobValidationStatus">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-info-circle me-3"></i>
+                                    <div>
+                                        <small class="fw-medium">Job details loaded successfully</small>
+                                        <p class="mb-0 small">Please verify the information before linking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom p-3">
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" id="btn_save_link_job_to_account" class="btn btn-primary px-4">
+                            <i class="fas fa-link me-2"></i>Link Job
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="generateTransitionalBillModal" tabindex="-1" aria-labelledby="transitionalBillModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-gradient-primary text-white rounded-top">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title fw-semibold mb-0" id="transitionalBillModalLabel">
+                            <i class="fas fa-file-invoice-dollar me-2"></i>Generate Transitional Bill
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <form method="post" class="needs-validation" novalidate>
+                    <!-- Job & Case Details -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-file-alt me-2 text-primary"></i>Application Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="tb_job_number" class="form-label fw-medium">Job Number <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                        <input type="text" class="form-control bg-light" id="tb_job_number" placeholder="Enter job number" readonly required>
+                                        <div class="invalid-feedback">
+                                            Please enter job number.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tb_case_number" class="form-label fw-medium">Case Number <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                                        <input type="text" class="form-control bg-light" id="tb_case_number" placeholder="Enter case number" readonly required>
+                                        <div class="invalid-feedback">
+                                            Please enter case number.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Applicant & Bill Type -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-user-tie me-2 text-success"></i>Applicant & Bill Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="tb_applicant_name" class="form-label fw-medium">Applicant Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="tb_applicant_name" placeholder="Enter applicant name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tb_bill_type" class="form-label fw-medium">Bill Type <span class="text-danger">*</span></label>
+                                    <select class="form-select" data-trigger id="tb_bill_type" name="tb_bill_type" required>
+                                        <option value="" selected disabled>Select Bill Type</option>
+                                        <option value="Supplementary Lodgement">Supplementary Lodgement</option>
+                                        <option value="Normal Publication">Normal Publication</option>
+                                        <option value="Special Publication">Special Publication</option>
+                                        <option value="Official Cadastral Plan Preparation">Official Cadastral Plan Preparation</option>
+                                        <option value="Title Search (Registration)">Title Search (Registration)</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a bill type.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bill Amount & Client Details -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-money-bill-wave me-2 text-warning"></i>Bill Amount & Client Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="tb_bill_amount" class="form-label fw-medium">Bill Amount <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                        <input type="text" class="form-control" id="tb_bill_amount" name="tb_bill_amount" placeholder="0.00" required>
+                                        <div class="invalid-feedback">
+                                            Please enter bill amount.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="tb_created_for_id" class="form-label fw-medium">Client E-mail/Phone <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        <input type="text" class="form-control" id="tb_created_for_id" name="tb_created_for_id" placeholder="Enter email or phone" required>
+                                        <div class="invalid-feedback">
+                                            Please enter client email or phone.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button type="button" id="btn_generate_transitional_bill" class="btn btn-primary w-100">
+                                        <i class="fas fa-file-invoice me-2"></i>Generate Bill
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bill Preview -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-file-pdf me-2 text-danger"></i>Bill Preview</h6>
+                            <small class="text-muted">PDF will appear here after generation</small>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="" id="transitionalbillblobfile" class="embed-responsive-item" width="100%" height="300"></iframe>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    The generated bill will appear in the preview area above.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom p-3">
+                <!-- <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" id="btnClearForm">
+                            <i class="fas fa-redo me-2"></i>Clear Form
+                        </button>
+                    </div>
+                </div> -->
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="generateManualBillModal" tabindex="-1" aria-labelledby="manualBillModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-gradient-primary text-white rounded-top">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title fw-semibold mb-0" id="manualBillModalLabel">
+                            <i class="fas fa-file-invoice me-2"></i>Generate Manual Bill
+                        </h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <form method="post" id="generateManualBillModalForm" class="needs-validation" novalidate>
+                    <!-- Client Information -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-user-circle me-2 text-primary"></i>Client Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="new_bill_application_client_name_mb" class="form-label fw-medium">Client Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input type="text" class="form-control" id="new_bill_application_client_name_mb" name="new_bill_application_client_name_mb" placeholder="Enter Client Name" required readonly>
+                                        <div class="invalid-feedback">
+                                            Please enter client name.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="new_bill_application_client_id_mb" class="form-label fw-medium">Client Reference <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                        <input type="text" class="form-control" id="new_bill_application_client_id_mb" name="new_bill_application_client_id_mb" placeholder="Enter Client email/phone" required readonly>
+                                        <div class="invalid-feedback">
+                                            Please enter client reference.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Selection -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-cog me-2 text-success"></i>Service Selection</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="mbm_main_service_cp" class="form-label fw-medium">Service Type <span class="text-danger">*</span></label>
+                                    <select name="mbm_main_service_cp" id="mbm_main_service_cp" class="form-select form-select-sm" data-live-search="true" required>
+                                        <option value="" selected disabled>Select Main Service</option>
+                                        <c:forEach items="${main_services}" var="main_service">
+                                            <c:if test="${main_service.business_process_on_case == 'No'}"> 
+                                                <option value="${main_service.business_process_id}-${main_service.business_process_name}">${main_service.business_process_name}</option> 
+                                            </c:if>  
+                                        </c:forEach>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a service type.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="mbm_sub_service_cp" class="form-label fw-medium">Sub Service</label>
+                                    <select name="mbm_sub_service_cp" id="mbm_sub_service_cp" class="form-select form-select-sm">
+                                        <option value="" selected disabled>Select Sub Service</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bill Details -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-money-bill-wave me-2 text-warning"></i>Bill Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="mbm_bill_amount" class="form-label fw-medium">Bill Amount <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                        <input type="text" class="form-control" id="mbm_bill_amount" name="mbm_bill_amount" placeholder="0.00" required>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid bill amount.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="mbm_bill_description" class="form-label fw-medium">Description</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                        <input type="text" class="form-control" id="mbm_bill_description" name="mbm_bill_description" placeholder="Enter bill description">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Generate Button -->
+                            <div class="row g-3 mt-3">
+                                <div class="col-12">
+                                    <button type="button" id="btn_generate_manual_bill" class="btn btn-primary w-100 py-3">
+                                        <i class="fas fa-file-invoice me-2"></i>Generate Manual Bill
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bill Preview -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-semibold"><i class="fas fa-file-pdf me-2 text-danger"></i>Bill Preview</h6>
+                            <small class="text-muted">PDF will appear here after generation</small>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe src="" id="manualbillblobfile" class="embed-responsive-item" width="100%" height="300"></iframe>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    The generated bill will appear in the preview area above.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom p-3">
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" id="btnClearManualBillForm">
+                            <i class="fas fa-redo me-2"></i>Clear Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="cabinetModal" tabindex="-1" aria-labelledby="cabinetModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header rounded-top">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title fw-semibold mb-0" id="cabinetModalLabel">
+                            <i class="fas fa-history me-2"></i>Application Tracking History
+                        </h5>
+                        <small class="opacity-75">View complete application tracking and cabinet details</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <div class="row g-4">
+                    <!-- Left Column: Tracking History -->
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow">
+                            <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="fas fa-stream me-2 text-primary"></i>Tracking History
+                                </h6>
+                                <span class="badge bg-primary" id="historyCount">0 entries</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="py-3 px-4 fw-medium">
+                                                    <i class="fas fa-comment me-2"></i>Comments
+                                                </th>
+                                                <th class="py-3 px-4 fw-medium">
+                                                    <i class="fas fa-building me-2"></i>Division/Unit
+                                                </th>
+                                                <th class="py-3 px-4 fw-medium">
+                                                    <i class="fas fa-user-tie me-2"></i>Officer
+                                                </th>
+                                                <th class="py-3 px-4 fw-medium">
+                                                    <i class="fas fa-calendar me-2"></i>Date
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cabinet-tracking">
+                                            <!-- Tracking data will be populated here -->
+                                            <tr id="noTrackingData" class="d-none">
+                                                <td colspan="4" class="text-center py-5">
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                                        <h6 class="fw-semibold mb-2">No tracking history found</h6>
+                                                        <p class="text-muted small">No tracking entries available for this application</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light py-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="text-muted small">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Shows all tracking activities for this application
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="btnExportHistory">
+                                        <i class="fas fa-download me-2"></i>Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Application Details -->
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow">
+                            <div class="card-header bg-light py-3">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="fas fa-info-circle me-2 text-success"></i>Application Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="cabinetDetailsForm">
+                                    <!-- Applicant Information Section -->
+                                    <div class="mb-4">
+                                        <h6 class="fw-semibold mb-3 text-primary">
+                                            <i class="fas fa-user-circle me-2"></i>Applicant Information
+                                        </h6>
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label for="enq_applicant_name" class="form-label fw-medium">
+                                                    Applicant Name
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light">
+                                                        <i class="fas fa-user"></i>
+                                                    </span>
+                                                    <textarea readonly class="form-control bg-light" 
+                                                              id="enq_applicant_name" rows="2"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="enq_applicant_type" class="form-label fw-medium">
+                                                    Application Type
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light">
+                                                        <i class="fas fa-file-alt"></i>
+                                                    </span>
+                                                    <input type="text" readonly class="form-control bg-light" 
+                                                           id="enq_applicant_type">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cabinet Information Section -->
+                                    <div class="mb-4">
+                                        <h6 class="fw-semibold mb-3 text-success">
+                                            <i class="fas fa-archive me-2"></i>Cabinet Information
+                                        </h6>
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label for="enq_cabinet_name" class="form-label fw-medium">
+                                                    Cabinet/File Reference
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light">
+                                                        <i class="fas fa-hashtag"></i>
+                                                    </span>
+                                                    <input type="text" readonly class="form-control bg-light" 
+                                                           id="enq_cabinet_name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status Information Section -->
+                                    <div class="mb-4">
+                                        <h6 class="fw-semibold mb-3 text-warning">
+                                            <i class="fas fa-tasks me-2"></i>Status Information
+                                        </h6>
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label for="enq_job_purpose" class="form-label fw-medium">
+                                                    Job Purpose
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light">
+                                                        <i class="fas fa-bullseye"></i>
+                                                    </span>
+                                                    <textarea readonly class="form-control bg-light" 
+                                                              id="enq_job_purpose" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="enq_job_status" class="form-label fw-medium">
+                                                    Job Status
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light">
+                                                        <i class="fas fa-spinner"></i>
+                                                    </span>
+                                                    <textarea readonly class="form-control bg-light" 
+                                                              id="enq_job_status" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="enq_current_application_status" class="form-label fw-medium">
+                                                    Current Application Status
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-light">
+                                                        <i class="fas fa-flag"></i>
+                                                    </span>
+                                                    <textarea readonly class="form-control bg-light" 
+                                                              id="enq_current_application_status" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Stats -->
+                                    <div class="card border-dashed border-2 mt-4">
+                                        <div class="card-body p-3">
+                                            <h6 class="fw-semibold mb-3">
+                                                <i class="fas fa-chart-bar me-2"></i>Quick Stats
+                                            </h6>
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <div class="d-flex flex-column align-items-center p-2 bg-light rounded">
+                                                        <span class="text-muted small">Tracking Entries</span>
+                                                        <small class="fw-bold" id="trackingEntriesCount">0</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="d-flex flex-column align-items-center p-2 bg-light rounded">
+                                                        <span class="text-muted small">Last Update</span>
+                                                        <small class="fw-bold" id="lastUpdateDate">-</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer bg-light py-3">
+                                <div class="text-muted small">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Last refreshed: <span id="lastRefreshTime">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom p-3">
+                <!-- <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-primary me-2" id="btnRefreshCabinet">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btnPrintHistory">
+                            <i class="fas fa-print me-2"></i>Print History
+                        </button>
+                    </div>
+                </div> -->
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

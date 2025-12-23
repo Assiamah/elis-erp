@@ -59,7 +59,30 @@
     <!-- include commonjs.jsp"-->
     <jsp:include page="../components/_commonjs.jsp"></jsp:include>
 
-    
+    <script>
+        window.logout = function() {
+
+            event.preventDefault();
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will be logged out of your session.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, log me out",
+                cancelButtonText: "Cancel",
+                customClass: {
+                    cancelButton: "btn btn-outline-dark",
+                    confirmButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '${pageContext.request.contextPath}/Logout';
+                }
+            });
+        }
+    </script>
     
 </body>
 

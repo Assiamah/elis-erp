@@ -76,8 +76,8 @@ public class two_factor_verification extends HttpServlet {
 
 		// code
 		try {
-System.out.println(userName);
-System.out.println(password);
+// System.out.println(userName);
+// System.out.println(password);
 			web_service_response = vas_cl.select_user_for_two_factor_verification(
 					cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), userName, password);
