@@ -355,8 +355,8 @@
 											<div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
 										</div>
 										<div class="col-md-4">
-											<label class="form-label text-muted small mb-1">New Transaction Ready</label>
-											<div class="fw-medium text-dark ${empty fn:trim(need_for_new_transaction) == 'Yes' ? 'bg-success text-white' : ''}">
+											<label class="form-label text-muted small mb-1">New Transaction Ready</label><br>
+											<div class="fw-medium text-dark ${empty fn:trim(need_for_new_transaction) == 'Yes' ? 'badge bg-success text-white' : ''}">
 												${empty fn:trim(need_for_new_transaction) ? '--' : fn:trim(need_for_new_transaction)}
 											</div>
 										</div>

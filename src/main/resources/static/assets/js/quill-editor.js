@@ -21,19 +21,12 @@
         ['image', 'video'],
         ['clean']                                         // remove formatting button
     ];
-    const quill = new Quill('#editor', {
+
+    const quill = new Quill('#lc_search_report_summary_details', {
         modules: {
             toolbar: toolbarOptions
         },
         theme: 'snow'
-    });
-
-    /* quill bubble editor */
-    const quill2 = new Quill('#editor1', {
-        modules: {
-            toolbar: undefined
-        },
-        theme: 'bubble'
     });
 
 })();

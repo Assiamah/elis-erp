@@ -83,6 +83,12 @@
 <!-- Grid JS -->
 <script src="${pageContext.request.contextPath}/assets/libs/gridjs/dist/gridjs.umd.js"></script>
 
+<!-- Quill Editor JS -->
+<script src="${pageContext.request.contextPath}/assets/libs/quill/dist/quill.js"></script>
+
+<!-- Internal Quill JS -->
+<script src="${pageContext.request.contextPath}/assets/js/quill-editor.js"></script>
+
 <!-- Echarts-->
 ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name == "account-reports") || (page_name=="compliance_no_login") ? "<script src='assets/libs/echarts/dist/echarts.min.js'></script> " : ""}
 

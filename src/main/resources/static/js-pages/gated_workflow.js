@@ -5074,5 +5074,3508 @@ document.addEventListener('DOMContentLoaded', function() {
         window.loadGatedWorkFlowDocuments('encumbrance');
     });
     
+    $('#btn_compose_register_description').on('click', function(e) {
+        e.preventDefault();
         
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_transaction_number").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+        
+        // Validation
+        if (!job_number || !case_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Job Number and Case Number are required to compose register description</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Compose Register Description?',
+            html: `<div class="text-start">
+                    <!--<div class="mb-3">
+                        <i class="fas fa-file-contract text-primary"></i>
+                    </div>-->
+                    <h5 class="mb-3">Confirm Composition</h5>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Process:</strong> ${business_process_sub_name || 'Not specified'}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        This will generate a register description based on the case details.
+                        Existing content will be replaced.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-file-signature me-1"></i>Compose Description',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 500,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                const composeBtn = $(this);
+                const originalText = composeBtn.html();
+                composeBtn.prop('disabled', true);
+                composeBtn.html('<span class="mdi mdi-loading mdi-spin me-1" role="status"></span>Composing...');
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                    data: {
+                        request_type: 'request_to_compose_register_description',
+                        job_number: job_number,
+                        case_number: case_number,
+                        business_process_sub_name: business_process_sub_name,
+                        cert_type: 'consent_certificate'
+                    },
+                    cache: false,
+                    beforeSend: function() {
+                        // Optional: Show additional loading indicator
+                    },
+                    success: function(response) {
+                        //console.log('Composition response:', response);
+                        
+                        // Update the textarea with the composed description
+                        $("#lc_description_of_land_lrd").val(response);
+                        
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success!',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-check-circle text-success fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Description Composed</h5>
+                                    <p class="text-muted">
+                                        Register description has been successfully composed
+                                    </p>
+                                    <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                        <i class="fas fa-check me-2"></i>
+                                        <strong>Details:</strong> Generated for ${job_number}
+                                    </div>
+                                </div>`,
+                            icon: 'success',
+                            confirmButtonText: 'View Description',
+                            confirmButtonColor: '#198754',
+                            showCancelButton: true,
+                            cancelButtonText: 'Continue Editing',
+                            width: 500
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Scroll to the description textarea and focus on it
+                                const textarea = $('#lc_description_of_land_lrd');
+                                textarea.focus();
+                                $('html, body').animate({
+                                    scrollTop: textarea.offset().top - 100
+                                }, 500);
+                            }
+                        });
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Composition Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Unable to Compose Description</h5>
+                                    <p class="text-danger small">${error || 'Server error occurred'}</p>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Please try again or contact system administrator
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    },
+                    complete: function() {
+                        // Reset button state
+                        composeBtn.prop('disabled', false);
+                        composeBtn.html(originalText);
+                    }
+                });
+            }
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+R) for composition
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + R
+        if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+            e.preventDefault();
+            $('#btn_compose_register_description').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const composeBtn = $('#btn_compose_register_description');
+        const originalTitle = composeBtn.attr('title') || 'Compose Register Description';
+        composeBtn.attr('data-bs-toggle', 'tooltip');
+        composeBtn.attr('data-bs-placement', 'top');
+        composeBtn.attr('title', `${originalTitle} (Ctrl+Shift+R)`);
+        
+        // Initialize tooltip
+        if (composeBtn.length) {
+            new bootstrap.Tooltip(composeBtn[0]);
+        }
+    });
+
+    $('#lc_btn_save_register_description').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const search_report = $("#lc_description_of_land_lrd").val();
+        
+        // Validation
+        if (!search_report || search_report.trim() === '') {
+            Swal.fire({
+                title: 'Empty Description',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Register description cannot be empty</p>
+                        <p class="text-muted small mt-2">Please enter a description or use the compose feature</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                // Focus on the description textarea
+                $("#lc_description_of_land_lrd").focus();
+            });
+            return;
+        }
+        
+        if (!job_number || !case_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                        </div>
+                        <p>Job Number and Case Number are required</p>
+                        <p class="text-muted small mt-2">Please ensure all required fields are filled</p>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Calculate description length for preview
+        const descriptionLength = search_report.length;
+        const wordCount = search_report.trim().split(/\s+/).length;
+        
+        // Show confirmation dialog with preview
+        Swal.fire({
+            title: 'Save Register Description?',
+            html: `<div class="text-start">
+                    <!--<div class="mb-3">
+                        <i class="fas fa-save text-primary fa-3x"></i>
+                    </div>-->
+                    <h5 class="mb-3">Confirm Save</h5>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Record Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Length:</strong> ${descriptionLength} characters, ${wordCount} words</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-eye me-2 mt-1"></i>
+                            <div>
+                                <strong>Description Preview:</strong>
+                                <div class="mt-2 border rounded bg-light p-2" style="max-height: 150px; overflow-y: auto; font-size: 0.85rem;">
+                                    ${search_report.length > 300 ? 
+                                        search_report.substring(0, 300) + '...' : 
+                                        search_report}
+                                </div>
+                                ${search_report.length > 300 ? 
+                                    '<small class="text-muted d-block mt-1">Showing first 300 characters</small>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted small mt-3">
+                        This will save the register description to the database. 
+                        Once saved, it will be used for official records.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i>Save Description',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'online_select_update_resgister_description',
+                            search_report: search_report,
+                            case_number: case_number,
+                            job_number: job_number
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Save response:', response);
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Success!',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Description Saved</h5>
+                            <p class="text-muted">Register description has been saved successfully</p>
+                            
+                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check me-2"></i>
+                                    <div>
+                                        <strong>${response}</strong>
+                                        <div class="small text-muted mt-1">
+                                            Saved for ${job_number} • ${new Date().toLocaleTimeString()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`,
+                    icon: 'success',
+                    confirmButtonText: 'Continue',
+                    confirmButtonColor: '#198754',
+                    showCancelButton: true,
+                    cancelButtonText: 'View Description',
+                    width: 500
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Focus on the description textarea
+                        $("#lc_description_of_land_lrd").focus();
+                        $('html, body').animate({
+                            scrollTop: $("#lc_description_of_land_lrd").offset().top - 100
+                        }, 500);
+                    }
+                });
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled - do nothing or show cancellation message
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Save operation was cancelled',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Save Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Unable to Save Description</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+S) for saving
+    $(document).on('keydown', function(e) {
+        // Ctrl + S
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            const isInTextarea = $(e.target).is('textarea') || $(e.target).is('input[type="text"]');
+            if (!isInTextarea || $(e.target).attr('id') === 'lc_description_of_land_lrd') {
+                $('#lc_btn_save_register_description').click();
+            }
+        }
+    });
+
+    // Optional: Add auto-save reminder for long descriptions
+    let lastSaveTime = null;
+    $('#lc_description_of_land_lrd').on('input', function() {
+        const currentLength = $(this).val().length;
+        const now = new Date();
+        
+        // Show reminder after 1000 characters without saving
+        if (currentLength > 1000 && (!lastSaveTime || (now - lastSaveTime) > 300000)) { // 5 minutes
+            const saveBtn = $('#lc_btn_save_register_description');
+            if (!saveBtn.hasClass('btn-danger')) {
+                saveBtn.removeClass('btn-primary').addClass('btn-danger');
+                saveBtn.html('<i class="fas fa-exclamation-triangle me-1"></i>Save Required');
+                
+                // Add pulse animation
+                saveBtn.css('animation', 'pulse 1s infinite');
+            }
+        }
+    });
+
+    // Reset button style after save
+    function resetSaveButton() {
+        const saveBtn = $('#lc_btn_save_register_description');
+        saveBtn.removeClass('btn-danger').addClass('btn-primary');
+        saveBtn.html('<i class="fas fa-save me-1"></i>Save Description');
+        saveBtn.css('animation', '');
+        lastSaveTime = new Date();
+    }
+
+    // Optional: Add CSS for pulse animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    $('#lc_btn_activate_final_register, #lc_btn_activate_final_register_').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_transaction_number").val();
+        
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_register',
+                job_number: job_number,
+                case_number: case_number
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                // Show loading indicator
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                // Create file object from blob
+                const file = new File([pdfBlob], `Register_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+
+                // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+                hideLoadingIndicator();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to generate PDF document. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
+    // Function to open PDF modal
+    function openPDFModal(file, fileURL) {
+        // Create modal HTML
+        const modalHTML = `
+            <div class="modal fade effect-fade modal-blur" id="pdfViewerModal" tabindex="-1" aria-labelledby="pdfViewerModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between">
+                            <h6 class="modal-title" id="pdfViewerModalLabel">
+                                <i class="fas fa-file-pdf me-2"></i>
+                                ${file.name}
+                            </h6>
+                            <div>
+                                <span class="badge bg-light text-dark ms-2">${formatFileSize(file.size)}</span>
+                                <button type="button" class="btn btn-sm btn-outline-light me-2" id="btnDownloadPDF">
+                                    <i class="fas fa-download me-1"></i>Download
+                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <div class="modal-body p-0" style="min-height: 70vh;">
+                            <div id="pdfViewerContainer">
+                                <!--<div id="pdfLoading" class="d-flex flex-column align-items-center justify-content-center h-100 p-5">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Loading PDF...</span>
+                                    </div>
+                                    <p class="text-muted">Loading PDF document...</p>
+                                </div>-->
+                                <div id="pdfViewer" style="display: none;">
+                                    <div class="pdf-toolbar bg-light p-2 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <button class="btn btn-sm btn-outline-dark me-2" id="btnPrevPage">
+                                                    <i class="fas fa-chevron-left"></i>
+                                                </button>
+                                                <span class="mx-2">
+                                                    Page: <span id="currentPage">1</span> / <span id="totalPages">0</span>
+                                                </span>
+                                                <button class="btn btn-sm btn-outline-dark ms-2" id="btnNextPage">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                    <span class="input-group-text">Zoom</span>
+                                                    <select class="form-select" id="zoomSelect">
+                                                        <option value="0.5">50%</option>
+                                                        <option value="0.75">75%</option>
+                                                        <option value="1" selected>100%</option>
+                                                        <option value="1.25">125%</option>
+                                                        <option value="1.5">150%</option>
+                                                        <option value="2">200%</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pdf-container p-3">
+                                        <canvas id="pdfCanvas" class="mx-auto d-block shadow-sm"></canvas>
+                                    </div>
+                                </div>
+                                <div id="pdfError" class="d-none text-center p-5">
+                                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                                    <h5>Unable to load PDF</h5>
+                                    <p class="text-muted">There was an error loading the PDF document.</p>
+                                    <button class="btn btn-primary" onclick="location.reload()">
+                                        <i class="fas fa-redo me-2"></i>Try Again
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <div class="text-muted small">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Use arrow keys to navigate between pages
+                            </div>
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to body if not exists
+        if (!document.getElementById('pdfViewerModal')) {
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        } else {
+            // Remove existing modal
+            const existingModal = document.getElementById('pdfViewerModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+        
+        // Get modal instance
+        const modal = new bootstrap.Modal(document.getElementById('pdfViewerModal'));
+        
+        // Show modal
+        modal.show();
+        
+        // Initialize PDF.js when modal is shown
+        document.getElementById('pdfViewerModal').addEventListener('shown.bs.modal', function() {
+            initializePDFViewer(fileURL);
+        });
+        
+        // Clean up object URL when modal is closed
+        document.getElementById('pdfViewerModal').addEventListener('hidden.bs.modal', function() {
+            URL.revokeObjectURL(fileURL);
+            this.remove();
+        });
+        
+        // Download button handler
+        document.getElementById('pdfViewerModal').addEventListener('click', function(e) {
+            if (e.target.id === 'btnDownloadPDF' || e.target.closest('#btnDownloadPDF')) {
+                downloadPDF(file);
+            }
+        });
+    }
+
+    // Function to initialize PDF.js viewer
+    function initializePDFViewer(fileURL) {
+        // Check if PDF.js is loaded
+        if (typeof pdfjsLib === 'undefined') {
+            // Load PDF.js dynamically
+            loadPDFJS().then(() => {
+                renderPDF(fileURL);
+            }).catch(error => {
+                console.error('Failed to load PDF.js:', error);
+                showPDFError();
+            });
+        } else {
+            renderPDF(fileURL);
+        }
+    }
+
+    // Function to load PDF.js library dynamically
+    function loadPDFJS() {
+        return new Promise((resolve, reject) => {
+            if (typeof pdfjsLib !== 'undefined') {
+                resolve();
+                return;
+            }
+            
+            // Create script element
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            script.integrity = 'sha512-9o9W6Vg9Q9W6XjP0lL8y4E5qX1G8M8q2+5Q6J5q5v5z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z';
+            script.crossOrigin = 'anonymous';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+            
+            // Also load the worker
+            const workerScript = document.createElement('script');
+            workerScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            workerScript.integrity = 'sha512-9o9W6Vg9Q9W6XjP0lL8y4E5qX1G8M8q2+5Q6J5q5v5z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z';
+            workerScript.crossOrigin = 'anonymous';
+            document.head.appendChild(workerScript);
+        });
+    }
+
+    // Function to render PDF using PDF.js
+    async function renderPDF(fileURL) {
+        try {
+            const pdfContainer = document.getElementById('pdfViewerContainer');
+            //const pdfLoading = document.getElementById('pdfLoading');
+            const pdfViewer = document.getElementById('pdfViewer');
+            const pdfCanvas = document.getElementById('pdfCanvas');
+            const currentPageSpan = document.getElementById('currentPage');
+            const totalPagesSpan = document.getElementById('totalPages');
+            const zoomSelect = document.getElementById('zoomSelect');
+            
+            // Set PDF.js worker path
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+            
+            // Load the PDF
+            const loadingTask = pdfjsLib.getDocument(fileURL);
+            const pdf = await loadingTask.promise;
+            
+            // Get total pages
+            const totalPages = pdf.numPages;
+            totalPagesSpan.textContent = totalPages;
+            
+            // Set initial page
+            let currentPage = 1;
+            let scale = parseFloat(zoomSelect.value);
+            
+            // Function to render a specific page
+            async function renderPage(pageNum) {
+                try {
+                    //pdfLoading.style.display = 'flex';
+                    pdfViewer.style.display = 'none';
+                    
+                    const page = await pdf.getPage(pageNum);
+                    
+                    // Get viewport
+                    const viewport = page.getViewport({ scale: scale });
+                    
+                    // Set canvas dimensions
+                    const canvas = pdfCanvas;
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    // Render PDF page
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    
+                    await page.render(renderContext).promise;
+                    
+                    // Update UI
+                    currentPageSpan.textContent = currentPage;
+                    //pdfLoading.style.display = 'none';
+                    pdfViewer.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Error rendering page:', error);
+                    showPDFError();
+                }
+            }
+            
+            // Render first page
+            await renderPage(currentPage);
+            
+            // Navigation handlers
+            document.getElementById('btnPrevPage').addEventListener('click', async () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    await renderPage(currentPage);
+                }
+            });
+            
+            document.getElementById('btnNextPage').addEventListener('click', async () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    await renderPage(currentPage);
+                }
+            });
+            
+            // Zoom handler
+            zoomSelect.addEventListener('change', async () => {
+                scale = parseFloat(zoomSelect.value);
+                await renderPage(currentPage);
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', async (e) => {
+                if (document.getElementById('pdfViewerModal').classList.contains('show')) {
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                            if (currentPage > 1) {
+                                currentPage--;
+                                await renderPage(currentPage);
+                            }
+                            break;
+                        case 'ArrowRight':
+                            if (currentPage < totalPages) {
+                                currentPage++;
+                                await renderPage(currentPage);
+                            }
+                            break;
+                        case '+':
+                        case '=':
+                            e.preventDefault();
+                            if (scale < 3) {
+                                scale += 0.25;
+                                zoomSelect.value = scale.toFixed(2);
+                                await renderPage(currentPage);
+                            }
+                            break;
+                        case '-':
+                            e.preventDefault();
+                            if (scale > 0.25) {
+                                scale -= 0.25;
+                                zoomSelect.value = scale.toFixed(2);
+                                await renderPage(currentPage);
+                            }
+                            break;
+                    }
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error loading PDF:', error);
+            showPDFError();
+        }
+    }
+
+    // Function to download PDF
+    function downloadPDF(file) {
+        const downloadURL = URL.createObjectURL(file);
+        const a = document.createElement('a');
+        a.href = downloadURL;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(downloadURL);
+        
+        // Show success message
+        Swal.fire({
+            title: 'Download Started',
+            text: `Downloading ${file.name}`,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    // Helper function to format file size
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Helper function to show loading indicator
+    function showLoadingIndicator() {
+        // You can customize this based on your UI
+        Swal.fire({
+            title: 'Generating PDF',
+            text: 'Please wait while we generate the register document...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+
+    // Helper function to hide loading indicator
+    function hideLoadingIndicator() {
+        Swal.close();
+    }
+
+    // Helper function to show PDF error
+    function showPDFError() {
+        //const pdfLoading = document.getElementById('pdfLoading');
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pdfError = document.getElementById('pdfError');
+        
+        //if (pdfLoading) pdfLoading.style.display = 'none';
+        if (pdfViewer) pdfViewer.style.display = 'none';
+        if (pdfError) {
+            pdfError.classList.remove('d-none');
+            pdfError.classList.add('d-flex', 'flex-column', 'align-items-center', 'justify-content-center');
+        }
+    }
+
+    // Add CSS for PDF viewer
+    const pdfViewerCSS = `
+        #pdfCanvas {
+            max-width: 100%;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        
+        .pdf-container {
+            overflow: auto;
+            max-height: calc(70vh - 100px);
+            background: beige;
+        }
+        
+        .pdf-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        #btnViewFile:hover {
+            transform: translateY(-1px);
+            transition: transform 0.2s;
+        }
+        
+        #pdfViewerModal .modal-dialog {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        
+        .modal {
+            background: rgba(0, 0, 0, 0.42) !important;
+        }
+        
+        #pdfViewerModal .modal-body {
+            min-height: 70vh;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            #pdfViewerModal .modal-dialog {
+                max-width: 95%;
+                margin: 0.5rem;
+            }
+            
+            .pdf-toolbar {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .pdf-toolbar > div {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    `;
+
+    // Add CSS to document
+    if (!document.getElementById('pdf-viewer-css')) {
+        const style = document.createElement('style');
+        style.id = 'pdf-viewer-css';
+        style.textContent = pdfViewerCSS;
+        document.head.appendChild(style);
+    }
+
+    $('#btn_compose_certificate_template').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_transaction_number").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+        
+        // Validation
+        if (!job_number || !case_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Job Number and Case Number are required to compose certificate template</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Compose Concurrence Certificate?',
+            html: `<div class="text-start">
+                    <h6 class="mb-3">Confirm Template Composition</h6>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                        <div class="d-flex">
+                            <i class="fas fa-file-certificate me-2 mt-1"></i>
+                            <div>
+                                <strong>Certificate Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Process:</strong> ${business_process_sub_name || 'Not specified'}</li>
+                                    <li><strong>Type:</strong> Concurrence Certificate</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        This will generate a concurrence certificate template based on the case details.
+                        Existing content in the editor will be replaced.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-file-signature me-1"></i>Compose Certificate',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 500,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state on button
+                const composeBtn = $(this);
+                const originalText = composeBtn.html();
+                composeBtn.prop('disabled', true);
+                composeBtn.html('<span class="mdi mdi-loading mdi-spin me-1" role="status"></span>Composing...');
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                    data: {
+                        request_type: 'request_to_compose_certificate_template',
+                        job_number: job_number,
+                        case_number: case_number,
+                        business_process_sub_name: business_process_sub_name,
+                        cert_type: 'concurrence_certificate'
+                    },
+                    cache: false,
+                    beforeSend: function() {
+                        // Optional: Show additional loading indicator
+                    },
+                    success: function(response) {
+                        // Get Quill instance - try multiple approaches
+                        let quillInstance;
+                        
+                        // Method 1: Check if Quill instance is attached to the container
+                        const quillContainer = document.getElementById('lc_search_report_summary_details');
+                        if (quillContainer && quillContainer.__quill) {
+                            quillInstance = quillContainer.__quill;
+                        }
+                        // Method 2: Try to get it from the editor element
+                        else {
+                            const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+                            if (quillEditor && quillEditor.parentNode && quillEditor.parentNode.__quill) {
+                                quillInstance = quillEditor.parentNode.__quill;
+                            }
+                        }
+
+                        // Method 3: Direct DOM update if Quill instance not found
+                        if (!quillInstance) {
+                            // Fallback: Direct HTML update
+                            const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+                            if (quillEditor) {
+                                quillEditor.innerHTML = `<ol><li>${response}</li></ol>`;
+                                
+                                // Show success message (continue with your success Swal.fire code)
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-file-contract text-success fa-3x"></i>
+                                            </div>
+                                            <h5 class="mb-2">Certificate Template Composed</h5>
+                                            <p class="text-muted">
+                                                Concurrence certificate template has been successfully generated
+                                            </p>
+                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                <i class="fas fa-check me-2"></i>
+                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'View Template',
+                                    confirmButtonColor: '#198754',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue Editing',
+                                    width: 500
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Focus on the Quill editor
+                                        const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+                                        if (quillEditor) {
+                                            quillEditor.focus();
+                                            
+                                            // Optional: Scroll to the editor if needed
+                                            $('html, body').animate({
+                                                scrollTop: $(quillEditor).offset().top - 100
+                                            }, 500);
+                                        }
+                                    }
+                                });
+
+                                return; // Exit early
+                            }
+                        }
+                        
+                        // Update Quill editor with the composed template
+                        if (quillInstance && typeof quillInstance.setContents === 'function') {
+                            try {
+                                // Convert HTML to Delta format for Quill
+                                const delta = quillInstance.clipboard.convert({
+                                    html: `<ol><li>${response}</li></ol>`
+                                });
+                                quillInstance.setContents(delta, 'silent');
+                            
+                                // Show success message
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-file-contract text-success fa-3x"></i>
+                                            </div>
+                                            <h5 class="mb-2">Certificate Template Composed</h5>
+                                            <p class="text-muted">
+                                                Concurrence certificate template has been successfully generated
+                                            </p>
+                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                <i class="fas fa-check me-2"></i>
+                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'View Template',
+                                    confirmButtonColor: '#198754',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue Editing',
+                                    width: 500
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Focus on the Quill editor
+                                        const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+                                        if (quillEditor) {
+                                            quillEditor.focus();
+                                            
+                                            // Optional: Scroll to the editor if needed
+                                            $('html, body').animate({
+                                                scrollTop: $(quillEditor).offset().top - 100
+                                            }, 500);
+                                        }
+                                    }
+                                });
+
+                            } catch (error) {
+                                console.error('Error updating Quill:', error);
+                                // Fallback to direct HTML update
+                                const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+                                if (quillEditor) {
+                                    quillEditor.innerHTML = `<ol><li>${response}</li></ol>`;
+                                }
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-file-contract text-success fa-3x"></i>
+                                            </div>
+                                            <h5 class="mb-2">Certificate Template Composed</h5>
+                                            <p class="text-muted">
+                                                Concurrence certificate template has been successfully generated
+                                            </p>
+                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                <i class="fas fa-check me-2"></i>
+                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'View Template',
+                                    confirmButtonColor: '#198754',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue Editing',
+                                    width: 500
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Focus on the Quill editor
+                                        const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+                                        if (quillEditor) {
+                                            quillEditor.focus();
+                                            
+                                            // Optional: Scroll to the editor if needed
+                                            $('html, body').animate({
+                                                scrollTop: $(quillEditor).offset().top - 100
+                                            }, 500);
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            // Fallback: If Quill instance not found, show error
+                            Swal.fire({
+                                title: 'Editor Error',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-edit text-warning fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Unable to Update Editor</h5>
+                                        <p class="text-muted">
+                                            Template was generated but could not be inserted into the editor
+                                        </p>
+                                        <div class="alert alert-warning mt-3">
+                                            <pre class="mb-0" style="max-height: 150px; overflow: auto;">${response}</pre>
+                                        </div>
+                                    </div>`,
+                                icon: 'warning',
+                                confirmButtonText: 'Copy Content',
+                                confirmButtonColor: '#ffc107',
+                                showCancelButton: true,
+                                cancelButtonText: 'Close'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Copy to clipboard
+                                    navigator.clipboard.writeText(response);
+                                    Swal.fire({
+                                        title: 'Copied!',
+                                        text: 'Content copied to clipboard',
+                                        icon: 'success',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                }
+                            });
+                        }
+                        
+                        console.log('Certificate template composed:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Composition Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Unable to Compose Certificate</h5>
+                                    <p class="text-danger small">${error || 'Server error occurred'}</p>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Please try again or contact system administrator
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    },
+                    complete: function() {
+                        // Reset button state
+                        composeBtn.prop('disabled', false);
+                        composeBtn.html(originalText);
+                    }
+                });
+            }
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+C) for certificate composition
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + C
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            $('#btn_compose_certificate_template').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const composeBtn = $('#btn_compose_certificate_template');
+        if (composeBtn.length) {
+            const originalTitle = composeBtn.attr('title') || 'Compose Certificate Template';
+            composeBtn.attr('data-bs-toggle', 'tooltip');
+            composeBtn.attr('data-bs-placement', 'top');
+            composeBtn.attr('title', `${originalTitle} (Ctrl+Shift+C)`);
+            
+            // Initialize tooltip
+            new bootstrap.Tooltip(composeBtn[0]);
+        }
+    });
+
+    $('#lc_btn_save_search_report').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        
+        // Get content from Quill editor
+        let search_report = '';
+        const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+        if (quillEditor) {
+            search_report = quillEditor.innerHTML;
+        } else {
+            // Fallback to textarea if Quill not found
+            search_report = $("#lc_search_report_summary_details").val() || '';
+        }
+        
+        // Clean up Quill's empty paragraph
+        if (search_report === '<p><br></p>') {
+            search_report = '';
+        }
+        
+        // Validation
+        if (!search_report || search_report.trim() === '') {
+            Swal.fire({
+                title: 'Empty Report',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Search report cannot be empty</p>
+                        <p class="text-muted small mt-2">Please add some content to the report before saving</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                // Focus on the Quill editor
+                if (quillEditor) {
+                    quillEditor.focus();
+                } else {
+                    $("#lc_search_report_summary_details").focus();
+                }
+            });
+            return;
+        }
+        
+        if (!job_number || !case_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                        </div>
+                        <p>Job Number and Case Number are required</p>
+                        <p class="text-muted small mt-2">Please ensure all required fields are filled</p>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Calculate report stats for preview
+        const reportLength = search_report.length;
+        const reportPlainText = search_report.replace(/<[^>]*>/g, ' '); // Strip HTML tags
+        const wordCount = reportPlainText.trim().split(/\s+/).filter(word => word.length > 0).length;
+        
+        // Show confirmation dialog with preview
+        Swal.fire({
+            title: 'Save Search Report?',
+            html: `<div class="text-start">
+                    <h5 class="mb-3">Confirm Save</h5>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Report Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Content:</strong> ${reportLength} characters, ${wordCount} words</li>
+                                    <li><strong>Format:</strong> ${quillEditor ? 'Rich Text' : 'Plain Text'}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-eye me-2 mt-1"></i>
+                            <div>
+                                <strong>Report Preview:</strong>
+                                <div class="mt-2 border rounded bg-light p-2" style="max-height: 150px; overflow-y: auto; font-size: 0.85rem;">
+                                    ${reportPlainText.length > 300 ? 
+                                        reportPlainText.substring(0, 300) + '...' : 
+                                        reportPlainText}
+                                </div>
+                                ${reportPlainText.length > 300 ? 
+                                    '<small class="text-muted d-block mt-1">Showing first 300 characters (plain text)</small>' : 
+                                    '<small class="text-muted d-block mt-1">Full content preview (HTML stripped)</small>'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Note:</strong> This will update the search report permanently in the database
+                    </div>
+                    
+                    <p class="text-muted small mt-3">
+                        Once saved, this report will be used for official records and cannot be undone.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i>Save Report',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'online_select_update_search_summary',
+                            search_report: search_report,
+                            case_number: case_number,
+                            job_number: job_number
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Save response:', response);
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Success!',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Report Saved</h5>
+                            <p class="text-muted">Search report has been saved successfully</p>
+                            
+                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check me-2"></i>
+                                    <div>
+                                        <strong>${response}</strong>
+                                        <div class="small text-muted mt-1">
+                                            Saved for ${job_number} • ${new Date().toLocaleTimeString()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`,
+                    icon: 'success',
+                    confirmButtonText: 'Continue',
+                    confirmButtonColor: '#198754',
+                    showCancelButton: true,
+                    cancelButtonText: 'View Report',
+                    width: 500
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Focus on the Quill editor or textarea
+                        if (quillEditor) {
+                            quillEditor.focus();
+                            $('html, body').animate({
+                                scrollTop: $(quillEditor).offset().top - 100
+                            }, 500);
+                        } else {
+                            $("#lc_search_report_summary_details").focus();
+                            $('html, body').animate({
+                                scrollTop: $("#lc_search_report_summary_details").offset().top - 100
+                            }, 500);
+                        }
+                    }
+                });
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled - show brief message
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Save operation was cancelled',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Save Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Unable to Save Report</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+S) for saving
+    $(document).on('keydown', function(e) {
+        // Ctrl + S
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            $('#lc_btn_save_search_report').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const saveBtn = $('#lc_btn_save_search_report');
+        if (saveBtn.length) {
+            const originalTitle = saveBtn.attr('title') || 'Save Search Report';
+            saveBtn.attr('data-bs-toggle', 'tooltip');
+            saveBtn.attr('data-bs-placement', 'top');
+            saveBtn.attr('title', `${originalTitle} (Ctrl+S)`);
+            
+            // Initialize tooltip
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                new bootstrap.Tooltip(saveBtn[0]);
+            }
+        }
+    });
+
+    $('#lc_btn_activate_final_certificate, #lc_btn_activate_final_certificate_').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var registration_district_number = $("#txt_lc_registration_district_number").val();
+        var registration_section_number = $("#txt_lc_registration_section_number").val();
+        var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text() == "Land Certificate" ? "LAND CERTIFICATE" : $('#lc_txt_type_of_certificate').find(":selected").text();
+        
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_certificate',
+                job_number:job_number,
+                case_number:case_number,
+                transaction_number:transaction_number,
+                cert_type:'LEASEHOLD',
+                registration_district_number:registration_district_number,
+                registration_section_number:registration_section_number,
+                type_of_certificate: type_of_certificate.trim() 
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                // Show loading indicator
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                // Create file object from blob
+                const file = new File([pdfBlob], `Certificate_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+
+                // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+                hideLoadingIndicator();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to generate PDF document. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
+    $("#compose_certificate").on('shown.bs.modal', function(e) {
+        var bs_id = $(e.relatedTarget).data("bs-id");
+        var bs_desc = $(e.relatedTarget).data("bs-desc");
+
+        // console.log(bs_id)
+
+        if(parseInt(bs_id) == 23 || bs_desc == 'Check Certificate Details' || parseInt(bs_id) == 20){
+         
+          $("#cert_type_for_reg").removeClass('d-none');
+        } else {
+          $("#cert_type_for_reg").addClass('d-none');
+        }
+
+    })
+
+    $('#btn_save_lrd_certificate_update_details').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const certificate_number = $("#lc_txt_certificate_number_").val();
+        const certificate_type = $("#lc_txt_type_of_certificate_").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        
+        // Validation
+        const errors = [];
+        
+        if (!certificate_number || certificate_number.trim() === '') {
+            errors.push('Certificate Number is required');
+        }
+        
+        if (!certificate_type || certificate_type.trim() === '') {
+            errors.push('Certificate Type is required');
+        }
+        
+        if (!job_number || !case_number || !transaction_number) {
+            errors.push('Case information is incomplete');
+        }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Please complete the following:</h5>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning text-start mt-3">
+                            <ul class="mb-0">
+                                ${errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                // Focus on first missing field
+                if (!certificate_number || certificate_number.trim() === '') {
+                    $("#lc_txt_certificate_number_").focus();
+                } else if (!certificate_type || certificate_type.trim() === '') {
+                    $("#lc_txt_type_of_certificate_").focus();
+                }
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Update Certificate Details?',
+            html: `<div class="text-start">
+                    <h5 class="mb-3">Confirm Certificate Update</h5>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-file-certificate me-2 mt-1"></i>
+                            <div>
+                                <strong>Certificate Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Transaction:</strong> ${transaction_number}</li>
+                                    <li><strong>Certificate No:</strong> ${certificate_number}</li>
+                                    <li><strong>Certificate Type:</strong> ${certificate_type}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-sync-alt me-2 mt-1"></i>
+                            <div>
+                                <strong>Update Action:</strong>
+                                <p class="mb-0 mt-2">This will update the certificate details in the system.</p>
+                                <ul class="small mt-1 mb-0">
+                                    <li>Certificate number will be updated</li>
+                                    <li>Certificate type will be recorded</li>
+                                    <li>Changes will be permanent</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted small mt-3">
+                        Once updated, these details will be associated with the case record.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i>Update Certificate',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_update_title_plan_certificate_details',
+                            case_number: case_number,
+                            job_number: job_number,
+                            transaction_number: transaction_number,
+                            certificate_number: certificate_number,
+                            certificate_type: certificate_type
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Update response:', response);
+                
+                // Check if response indicates success
+                const isSuccess = typeof response === 'string' && 
+                                (response.toLowerCase().includes('success') || 
+                                response.toLowerCase().includes('saved') ||
+                                response.toLowerCase().includes('updated') ||
+                                response.toLowerCase().includes('recorded'));
+                
+                // Show success message
+                Swal.fire({
+                    title: isSuccess ? 'Success!' : 'Update Complete',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="${isSuccess ? 'fas fa-check-circle text-success' : 'fas fa-info-circle text-info'} fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">${isSuccess ? 'Certificate Updated' : 'Update Processed'}</h5>
+                            <p class="text-muted">Certificate details have been ${isSuccess ? 'successfully updated' : 'processed'}</p>
+                            
+                            <div class="${isSuccess ? 'alert alert-success bg-success bg-opacity-10 border-success' : 'alert alert-info bg-info bg-opacity-10 border-info'} mt-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas ${isSuccess ? 'fa-check' : 'fa-info-circle'} me-2"></i>
+                                    <div>
+                                        <strong>${response}</strong>
+                                        <div class="small text-muted mt-1">
+                                            Updated for ${job_number} • ${new Date().toLocaleTimeString()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`,
+                    icon: isSuccess ? 'success' : 'info',
+                    confirmButtonText: 'Continue',
+                    confirmButtonColor: isSuccess ? '#198754' : '#0dcaf0',
+                    showCancelButton: true,
+                    cancelButtonText: 'Review Details',
+                    width: 500
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Focus back on the certificate number field
+                        $("#lc_txt_certificate_number_").focus();
+                        $('html, body').animate({
+                            scrollTop: $("#lc_txt_certificate_number_").offset().top - 100
+                        }, 500);
+                    }
+                });
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled - show brief message
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Certificate update was cancelled',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Update Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Unable to Update Certificate</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    $('#lc_generate_otp_for_approval_for_certificate_and_register').click(function(event) {
+        event.preventDefault();
+        
+        // Collect data
+        const case_number = $("#cs_main_case_number").val();
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        const send_by_id = localStorage.getItem('userid');
+        const send_by_name = localStorage.getItem('fullname');
+        
+        // Validation
+        if (!case_number || !job_number || !transaction_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Case information is incomplete</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <ul class="mb-0 text-start">
+                                ${!case_number ? '<li>Case Number is required</li>' : ''}
+                                ${!job_number ? '<li>Job Number is required</li>' : ''}
+                                ${!transaction_number ? '<li>Transaction Number is required</li>' : ''}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show initial confirmation
+        Swal.fire({
+            title: 'Generate OTP?',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-shield-alt text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-2">Secure Verification Required</h5>
+                    <p class="text-muted">You are about to generate a one-time password for certificate approval</p>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div class="text-start">
+                                <strong>Transaction Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job:</strong> ${job_number}</li>
+                                    <li><strong>Case:</strong> ${case_number}</li>
+                                    <li><strong>Transaction:</strong> ${transaction_number}</li>
+                                    <li><strong>Action:</strong> Certificate & register Approval</li>
+                                    <!--<li><strong>Requested By:</strong> ${send_by_name || 'Current User'}</li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Security Notice:</strong> OTP will be required to complete the approval
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-key me-1"></i>Generate OTP',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            width: 550,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'online_select_verification_code_create',
+                            case_number: case_number,
+                            job_number: job_number,
+                            transaction_number: transaction_number,
+                            type_of_transaction: 'approval_of_certificate_transaction'
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const otpResponse = result.value;
+                // console.log('OTP Generation Response:', otpResponse);
+
+                $("#confirm_otp_for_approval_certificate").modal('hide');
+                
+                // Try to extract OTP from response if it's in the response
+                let extractedOTP = '';
+                const otpMatch = otpResponse.match(/\b\d{6}\b/); // Look for 6-digit number
+                if (otpMatch) {
+                    extractedOTP = otpMatch[0];
+                }
+
+                const parsedOTPResponse = JSON.parse(otpResponse);
+
+                if(parsedOTPResponse.success == false) {
+
+                    Swal.fire({
+                        title: 'Generation Failed',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <h6 class="mb-2">Unable to generate otp</h6>
+                                <p class="text-danger small">This transaction has already been approved.</p>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    Please try again or contact system administrator
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Retry',
+                        confirmButtonColor: '#dc3545'
+                    });
+
+                    return;
+                }
+                
+                // Show OTP entry dialog
+                Swal.fire({
+                    title: 'Enter Verification Code',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-mobile-alt text-primary fa-3x"></i>
+                            </div>
+                            <h6 class="mb-2">Secure Authentication</h6>
+                            <p class="text-muted">Enter the 6-digit verification code to approve the certificate & register</p>
+                            
+                            <div class="alert alert-success bg-success bg-opacity-10 border-success mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <div class="text-center">
+                                        <strong>OTP Generated Successfully</strong>
+                                        <div class="small text-muted">
+                                            Verification code has been created
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="otp-input-container" style="max-width: 300px; margin: 0 auto;">
+                                    <input type="text" 
+                                        id="swalOTPInput" 
+                                        class="form-control form-control-lg text-center fs-2 fw-bold" 
+                                        placeholder="- - - - - -" 
+                                        maxlength="6" 
+                                        inputmode="numeric"
+                                        pattern="\d{6}"
+                                        style="letter-spacing: 10px; padding: 15px;">
+                                    <div class="form-text mt-2">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the 6-digit code received
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info bg-info bg-opacity-10 border-info small">
+                                <i class="fas fa-clock me-2"></i>
+                                <strong>Time-sensitive:</strong> OTP is valid for a limited time only
+                            </div>
+                        </div>`,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check-circle me-1"></i>Verify & Approve',
+                    cancelButtonText: '<i class="fas fa-redo me-1"></i>Resend OTP',
+                    confirmButtonColor: '#198754',
+                    cancelButtonColor: '#0dcaf0',
+                    width: 500,
+                    reverseButtons: true,
+                    preConfirm: () => {
+                        const otpValue = document.getElementById('swalOTPInput').value;
+
+                        if (!otpValue || otpValue.length !== 6 || !/^\d{6}$/.test(otpValue)) {
+                            Swal.showValidationMessage('Please enter a valid 6-digit code');
+                            return false;
+                        }
+                        
+                        return otpValue;
+                    }
+                }).then((otpResult) => {
+                    if (otpResult.isConfirmed) {
+                        const enteredOTP = otpResult.value;
+                        
+                        // Show verifying message
+                        Swal.fire({
+                            title: 'Verifying...',
+                            text: 'Please wait while we verify your code',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        
+                        // Verify OTP via AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: "Case_Management_Serv", // Adjust URL as needed
+                            data: {
+                                request_type: 'online_select_verification_code_final_approval',
+                                case_number: case_number,
+                                job_number: job_number,
+                                transaction_number: transaction_number,
+                                full_code: enteredOTP,
+                                type_of_transaction: 'approval_of_certificate_transaction',
+                                ta_id: parsedOTPResponse.ta_id
+                            },
+                            cache: false,
+                            success: function(verificationResponse) {
+                                Swal.close();
+                                
+                                // Show verification result
+                                const isVerified = verificationResponse.toLowerCase().includes('success') || 
+                                                verificationResponse.toLowerCase().includes('verified') ||
+                                                verificationResponse.toLowerCase().includes('approved');
+                                
+                                Swal.fire({
+                                    title: isVerified ? 'Approved!' : 'Verification Failed',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="${isVerified ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger'} fa-3x"></i>
+                                            </div>
+                                            <h6 class="mb-2">${isVerified ? 'Certificate Approved' : 'Unable to Approve'}</h6>
+                                            <p class="text-muted">Verification Failed</p>
+                                            
+                                            ${isVerified ? 
+                                                `<div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-certificate me-2"></i>
+                                                        <div>
+                                                            <strong>Certificate Approved</strong>
+                                                            <div class="small text-muted">
+                                                                Approved by ${send_by_name || 'user'} • ${new Date().toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>` : 
+                                                `<div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                                        <div>
+                                                            <strong>Verification Failed</strong>
+                                                            <div class="small text-muted">
+                                                                Please check the OTP and try again
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`
+                                            }
+                                        </div>`,
+                                    icon: isVerified ? 'success' : 'error',
+                                    confirmButtonText: isVerified ? 'Continue' : 'Try Again',
+                                    confirmButtonColor: isVerified ? '#198754' : '#dc3545',
+                                    showCancelButton: !isVerified,
+                                    cancelButtonText: 'Generate New OTP'
+                                }).then((finalResult) => {
+                                    if (!isVerified && finalResult.dismiss === Swal.DismissReason.cancel) {
+                                        // Regenerate OTP
+                                        $('#lc_generate_otp_for_approval_for_certificate_and_register').click();
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.close();
+                                
+                                Swal.fire({
+                                    title: 'Verification Error',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                            </div>
+                                            <h6 class="mb-2">Unable to Verify</h6>
+                                            <p class="text-danger small">Connection error</p>
+                                            <div class="alert alert-warning mt-3">
+                                                <i class="fas fa-lightbulb me-2"></i>
+                                                Please try again or contact system administrator
+                                            </div>
+                                        </div>`,
+                                    icon: 'error',
+                                    confirmButtonText: 'Retry',
+                                    confirmButtonColor: '#dc3545'
+                                });
+                            }
+                        });
+                    } else if (otpResult.dismiss === Swal.DismissReason.cancel) {
+                        // User clicked "Resend OTP"
+                        Swal.fire({
+                            title: 'Resending OTP...',
+                            text: 'Generating a new verification code',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        
+                        // Regenerate OTP
+                        $.ajax({
+                            type: "POST",
+                            url: "Case_Management_Serv",
+                            data: {
+                                request_type: 'online_select_verification_code_create',
+                                case_number: case_number,
+                                job_number: job_number,
+                                transaction_number: transaction_number,
+                                type_of_transaction: 'approval_of_certificate_transaction'
+                            },
+                            cache: false,
+                            success: function(newOtpResponse) {
+                                Swal.close();
+                                
+                                Swal.fire({
+                                    title: 'New OTP Generated',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-redo text-primary fa-3x"></i>
+                                            </div>
+                                            <h6 class="mb-2">New Code Sent</h6>
+                                            <p class="text-muted">A new verification code has been generated</p>
+                                            <div class="alert alert-info mt-3">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                New verification code has been created
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'Enter New Code',
+                                    confirmButtonColor: '#0dcaf0'
+                                }).then(() => {
+                                    // Show OTP entry dialog again
+                                    $('#lc_generate_otp_for_approval_for_certificate_and_register').click();
+                                });
+                            }
+                        });
+                    }
+                });
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled OTP generation
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'OTP generation was cancelled',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error during OTP generation
+            Swal.fire({
+                title: 'Generation Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h6 class="mb-2">Unable to Generate OTP</h6>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+O) for OTP generation
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + O
+        if (e.ctrlKey && e.shiftKey && e.key === 'O') {
+            e.preventDefault();
+            $('#lc_generate_otp_for_approval_for_certificate_and_register').click();
+        }
+    });
+
+    // Optional: Add auto-focus and auto-submit for OTP input
+    $(document).on('shown.bs.modal', function() {
+        // This helps when OTP input is in a modal
+        setTimeout(() => {
+            const otpInput = document.getElementById('swalOTPInput');
+            if (otpInput) {
+                otpInput.focus();
+                
+                // Auto-submit when 6 digits are entered
+                otpInput.addEventListener('input', function() {
+                    if (this.value.length === 6 && /^\d{6}$/.test(this.value)) {
+                        // Find and click the confirm button after a short delay
+                        setTimeout(() => {
+                            const confirmBtn = document.querySelector('.swal2-confirm');
+                            if (confirmBtn) confirmBtn.click();
+                        }, 300);
+                    }
+                });
+            }
+        }, 100);
+    });
+
+    // Optional: Add paste handler for OTP
+    document.addEventListener('paste', function(e) {
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.id === 'swalOTPInput') {
+            e.preventDefault();
+            const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+            const cleanOTP = pastedData.replace(/\D/g, '').substring(0, 6);
+            activeElement.value = cleanOTP;
+            
+            // Trigger input event for auto-submit
+            const event = new Event('input', { bubbles: true });
+            activeElement.dispatchEvent(event);
+        }
+    });
+
+    $('#btn_confirm_registration_transaction').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const case_number = $('#cs_main_case_number').val();
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        
+        // Validation
+        if (!job_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Job Number is required to confirm registration</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Please select a job before confirming the transaction
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                // Focus on job number field
+                $("#cs_main_job_number").focus();
+            });
+            return;
+        }
+        
+        if (!case_number || !transaction_number) {
+            Swal.fire({
+                title: 'Incomplete Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                        </div>
+                        <p>Complete case information is required</p>
+                        <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                            <ul class="mb-0 text-start">
+                                ${!case_number ? '<li>Case Number is required</li>' : ''}
+                                ${!transaction_number ? '<li>Transaction Number is required</li>' : ''}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Confirm Registration Transaction?',
+            html: `<div class="text-start">
+                    <h6 class="mb-3">Final Confirmation</h6>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x me-3"></i>
+                            <div>
+                                <h6 class="text-warning mb-2">Important Action</h6>
+                                <p class="mb-0">You are about to confirm the parcel and registration transaction.</p>
+                                <p class="mb-0 mt-1">This action <strong class="text-danger">cannot be undone</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Transaction Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Transaction Number:</strong> ${transaction_number}</li>
+                                    <li><strong>Action:</strong> Confirm Registration Transaction</li>
+                                    <li><strong>Timestamp:</strong> ${new Date().toLocaleString()}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-3">
+                        <i class="fas fa-check-double me-2"></i>
+                        <strong>Please verify:</strong> All parcel details and transaction information have been reviewed and are correct
+                    </div>
+                    
+                    <p class="text-danger fw-bold mt-4">
+                        <i class="fas fa-lock me-2"></i>
+                        This is the final step in the registration process
+                    </p>
+                </div>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check-circle me-2"></i>Yes, Confirm Transaction',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: "Case_Management_Serv",
+                        type: "POST",
+                        data: {
+                            request_type: "select_confirm_registration_transaction",
+                            job_number: job_number,
+                            case_number: case_number,
+                            transaction_number: transaction_number
+                        },
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Confirmation response:', response);
+                
+                const isSuccess = response === 'Application Successfully completed';
+                
+                if (isSuccess) {
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Transaction Confirmed</h5>
+                                <p class="text-muted">Registration transaction has been successfully confirmed</p>
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-certificate me-2"></i>
+                                        <div>
+                                            <strong>${response}</strong>
+                                            <div class="small text-muted mt-1">
+                                                Confirmed at ${new Date().toLocaleTimeString()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-sync-alt me-2"></i>
+                                        <div>
+                                            <strong>Page will refresh in 5 seconds...</strong>
+                                            <div class="small text-muted mt-1">
+                                                Please wait while we update the system
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                    
+                    // Auto-refresh after 5 seconds (backup in case timer doesn't work)
+                    setTimeout(() => {
+                        location.reload();
+                    }, 5000);
+                    
+                } else {
+                    // Show error message
+                    Swal.fire({
+                        title: 'Confirmation Failed',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Unable to Confirm Transaction</h5>
+                                <p class="text-muted">The system encountered an error while processing your request</p>
+                                
+                                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <div>
+                                            <strong>Error Response:</strong>
+                                            <div class="small text-muted mt-1">
+                                                ${response || 'Unknown error occurred'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Please try again.</strong> If the problem persists, contact system administrator.
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled - show brief message
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h5 class="mb-2">Confirmation Cancelled</h5>
+                            <p class="text-muted">Registration transaction confirmation was cancelled</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No changes were made to the system
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Server Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-server text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Connection Error</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-wifi me-2"></i>
+                            <strong>Network Issue:</strong> Please check your internet connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Retry',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+C) for confirmation
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + C
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            $('#btn_confirm_registration_transaction').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const confirmBtn = $('#btn_confirm_registration_transaction');
+        if (confirmBtn.length) {
+            const originalTitle = confirmBtn.attr('title') || 'Confirm Registration Transaction';
+            confirmBtn.attr('data-bs-toggle', 'tooltip');
+            confirmBtn.attr('data-bs-placement', 'top');
+            confirmBtn.attr('title', `${originalTitle} (Ctrl+Shift+C)`);
+            
+            // Initialize tooltip
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                new bootstrap.Tooltip(confirmBtn[0]);
+            }
+        }
+    });
+
+    // Optional: Add double confirmation for critical action
+    function requireDoubleConfirmation() {
+        return new Promise((resolve) => {
+            Swal.fire({
+                title: 'Double Verification Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-shield-alt text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Security Check</h5>
+                        <p class="text-muted">Please confirm once more that you want to proceed</p>
+                        
+                        <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Critical Action:</strong> This will finalize the registration transaction
+                        </div>
+                        
+                        <div class="mt-4">
+                            <input type="text" 
+                                id="doubleConfirmText" 
+                                class="form-control" 
+                                placeholder="Type 'CONFIRM' to proceed">
+                        </div>
+                    </div>`,
+                showCancelButton: true,
+                confirmButtonText: 'Final Confirm',
+                cancelButtonText: 'Abort',
+                confirmButtonColor: '#dc3545',
+                preConfirm: () => {
+                    const inputText = document.getElementById('doubleConfirmText').value;
+                    if (inputText !== 'CONFIRM') {
+                        Swal.showValidationMessage('You must type CONFIRM exactly to proceed');
+                        return false;
+                    }
+                    return true;
+                }
+            }).then((result) => {
+                resolve(result.isConfirmed);
+            });
+        });
+    }
+
+    $('#btn_process_completed_app_cabinet').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const cabinet_to_send_to = $('#cabinet_to_send_to').val().trim();
+        const job_number = $("#cs_main_job_number").val();
+        const applicant_name = $('#cabinet_ar_name').val() || 'Applicant';
+        const locality = $('#cabinet_locality').val() || 'N/A';
+        
+        // Validation
+        const errors = [];
+        
+        if (!job_number) {
+            errors.push('Job Number is required');
+            $("#cs_main_job_number").focus();
+        }
+        
+        if (!cabinet_to_send_to) {
+            errors.push('Cabinet Name is required');
+            $('#cabinet_to_send_to').focus();
+        }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <h6 class="mb-2">Please complete the following:</h6>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning text-start mt-3">
+                            <ul class="mb-0">
+                                ${errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Process to Cabinet?',
+            html: `<div class="text-start">
+                    <h6 class="mb-3">Confirm Cabinet Processing</h6>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-inbox me-2 mt-1"></i>
+                            <div>
+                                <strong>Processing Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Applicant:</strong> ${applicant_name}</li>
+                                    <li><strong>Locality:</strong> ${locality}</li>
+                                    <li><strong>Destination Cabinet:</strong> ${cabinet_to_send_to}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-archive me-2 mt-1"></i>
+                            <div>
+                                <strong>Cabinet Action:</strong>
+                                <p class="mb-0 mt-2">This will move the completed job application to the specified cabinet.</p>
+                                <ul class="small mt-1 mb-0">
+                                    <li>Application will be marked as completed</li>
+                                    <li>Files will be moved to cabinet: <strong>${cabinet_to_send_to}</strong></li>
+                                    <li>This action updates the application status</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Note:</strong> Once processed to cabinet, the application status cannot be reverted
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-paper-plane me-1"></i>Process to Cabinet',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: "Case_Management_Serv",
+                        type: "POST",
+                        data: {
+                            request_type: "select_cabinet_completed_application",
+                            job_number: job_number,
+                            cabinet_to_send_to: cabinet_to_send_to
+                        },
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Processing response:', response);
+                
+                try {
+                    // Try to parse JSON response
+                    const jsonResponse = JSON.parse(response);
+                    const isSuccess = jsonResponse.success === true;
+                    
+                    if (isSuccess) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success!',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-check-circle text-success fa-3x"></i>
+                                    </div>
+                                    <h6 class="mb-2">Application Processed</h6>
+                                    <p class="text-muted">Job application has been successfully completed and moved to cabinet</p>
+                                    
+                                    <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-inbox me-2"></i>
+                                            <div>
+                                                <strong>Moved to Cabinet:</strong> ${cabinet_to_send_to}
+                                                <div class="small text-muted mt-1">
+                                                    Processed for ${job_number} • ${new Date().toLocaleTimeString()}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-sync-alt me-2"></i>
+                                            <div>
+                                                <strong>Page will refresh in 3 seconds...</strong>
+                                                <div class="small text-muted mt-1">
+                                                    Please wait while we update the system
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`,
+                            icon: 'success',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            allowOutsideClick: false
+                        }).then(() => {
+                            location.reload();
+                        });
+                        
+                        // Auto-refresh after 3 seconds (backup)
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                        
+                    } else {
+                        // JSON success was false
+                        Swal.fire({
+                            title: 'Processing Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h6 class="mb-2">Unable to Process Application</h6>
+                                    <p class="text-muted">The system encountered an error</p>
+                                    
+                                    <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            <div>
+                                                <strong>Error:</strong> 
+                                                <div class="small text-muted mt-1">
+                                                    ${jsonResponse.message || 'Unknown error occurred'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                    
+                } catch (e) {
+                    // Response is not JSON or parsing failed
+                    console.error('Response parsing error:', e);
+                    
+                    // Check if response contains success message
+                    const isTextSuccess = typeof response === 'string' && 
+                                        (response.toLowerCase().includes('success') || 
+                                        response.toLowerCase().includes('completed'));
+                    
+                    Swal.fire({
+                        title: isTextSuccess ? 'Processed' : 'Processing Result',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="${isTextSuccess ? 'fas fa-check-circle text-success' : 'fas fa-info-circle text-info'} fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">${isTextSuccess ? 'Action Completed' : 'Processing Response'}</h5>
+                                <div class="alert ${isTextSuccess ? 'alert-success' : 'alert-info'} mt-3">
+                                    ${response}
+                                </div>
+                            </div>`,
+                        icon: isTextSuccess ? 'success' : 'info',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: isTextSuccess ? '#198754' : '#0dcaf0',
+                        showCancelButton: true,
+                        cancelButtonText: 'Refresh Page'
+                    }).then((refreshResult) => {
+                        if (refreshResult.dismiss === Swal.DismissReason.cancel) {
+                            location.reload();
+                        }
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h6 class="mb-2">Processing Cancelled</h6>
+                            <p class="text-muted">Cabinet processing was not completed</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Application remains in current state
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Processing Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h6 class="mb-2">Connection Error</h6>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-server me-2"></i>
+                            <strong>Server Issue:</strong> Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+P) for cabinet processing
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + P
+        if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+            e.preventDefault();
+            $('#btn_process_completed_app_cabinet').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const processBtn = $('#btn_process_completed_app_cabinet');
+        if (processBtn.length) {
+            const originalTitle = processBtn.attr('title') || 'Process to Cabinet';
+            processBtn.attr('data-bs-toggle', 'tooltip');
+            processBtn.attr('data-bs-placement', 'top');
+            processBtn.attr('title', `${originalTitle} (Ctrl+Shift+P)`);
+            
+            // Initialize tooltip
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                new bootstrap.Tooltip(processBtn[0]);
+            }
+        }
+    });
+
+    // Optional: Auto-focus on cabinet input when modal opens
+    $('#send_a_message_to_client').on('shown.bs.modal', function() {
+        setTimeout(() => {
+            $('#cabinet_to_send_to').focus();
+        }, 300);
+    });
+
+    $('#frmSaveCollection').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Collect form data
+        const col_job_number = $("#cs_main_job_number").val();
+        const col_collected_by_id_type = $("#col_id_type").val();
+        const col_collected_by = $("#col_collected_by").val().trim();
+        const col_collected_by_id_number = $("#col_id_number").val().trim();
+        const col_collected_by_phone_number = $("#col_phone_number").val().trim();
+        
+        // Validation
+        const errors = [];
+        
+        if (!col_job_number) {
+            errors.push('Job Number is required');
+        }
+        
+        if (!col_collected_by) {
+            errors.push('Collector Name is required');
+            $("#col_collected_by").focus();
+        }
+        
+        if (!col_collected_by_id_type) {
+            errors.push('ID Type is required');
+            $("#col_id_type").focus();
+        }
+        
+        if (!col_collected_by_id_number) {
+            errors.push('ID Number is required');
+            $("#col_id_number").focus();
+        }
+        
+        if (!col_collected_by_phone_number) {
+            errors.push('Phone Number is required');
+            $("#col_phone_number").focus();
+        }
+        
+        // Validate phone number format (basic validation)
+        const phoneRegex = /^[0-9\-\+\(\)\s]{10,15}$/;
+        if (col_collected_by_phone_number && !phoneRegex.test(col_collected_by_phone_number)) {
+            errors.push('Please enter a valid phone number');
+        }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <h6 class="mb-2">Please correct the following:</h6>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning text-start mt-3">
+                            <ul class="mb-0">
+                                ${errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Save Collection Details?',
+            html: `<div class="text-start">
+                    <h6 class="mb-3">Confirm Collection Information</h6>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-user-check me-2 mt-1"></i>
+                            <div>
+                                <strong>Collection Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${col_job_number}</li>
+                                    <li><strong>Collector:</strong> ${col_collected_by}</li>
+                                    <li><strong>ID Type:</strong> ${col_collected_by_id_type}</li>
+                                    <li><strong>ID Number:</strong> ${col_collected_by_id_number}</li>
+                                    <li><strong>Phone:</strong> ${col_collected_by_phone_number}</li>
+                                    <li><strong>Timestamp:</strong> ${new Date().toLocaleString()}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-save me-2 mt-1"></i>
+                            <div>
+                                <strong>Save Action:</strong>
+                                <p class="mb-0 mt-2">This will save the collection details to the system.</p>
+                                <ul class="small mt-1 mb-0">
+                                    <li>Collector information will be recorded</li>
+                                    <li>Collection timestamp will be saved</li>
+                                    <li>Job status may be updated</li>
+                                    <li>Receipt can be printed after saving</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted small mt-3">
+                        This information will be used for tracking and verification purposes.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i>Save Details',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'load_save_collection_details_by_job_number',
+                            job_number: col_job_number,
+                            collected_by_id_type: col_collected_by_id_type,
+                            collected_by: col_collected_by,
+                            collected_by_id_number: col_collected_by_id_number,
+                            collected_by_phone_number: col_collected_by_phone_number
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Save response:', response);
+                
+                try {
+                    // Try to parse JSON response
+                    const jsonResponse = JSON.parse(response);
+                    const isSuccess = jsonResponse.msg === "SUCCESS";
+                    
+                    if (isSuccess) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success!',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-check-circle text-success fa-3x"></i>
+                                    </div>
+                                    <h6 class="mb-2">Collection Details Saved</h6>
+                                    <p class="text-muted">Collector information has been saved successfully</p>
+                                    
+                                    <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-user-check me-2"></i>
+                                            <div>
+                                                <strong>Saved Successfully</strong>
+                                                <div class="small text-muted mt-1">
+                                                    Job: ${col_job_number} • ${new Date().toLocaleTimeString()}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            <div>
+                                                <strong>Next Steps:</strong>
+                                                <ul class="mb-0 mt-1 small">
+                                                    <li>Collection receipt can now be printed</li>
+                                                    <li>Job status has been updated</li>
+                                                    <li>Collector information is recorded</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`,
+                            icon: 'success',
+                            confirmButtonText: 'Print Receipt',
+                            confirmButtonColor: '#198754',
+                            showCancelButton: true,
+                            cancelButtonText: 'Close Modal',
+                            width: 500
+                        }).then((actionResult) => {
+                            if (actionResult.isConfirmed) {
+                                // Trigger print receipt function
+                                printCollectionReceipt(col_job_number, col_collected_by);
+                            }
+                            
+                            // Close the collection modal
+                            const collectionModal = bootstrap.Modal.getInstance(document.getElementById('enter_details_for_collection_and_print_collection'));
+                            if (collectionModal) {
+                                collectionModal.hide();
+                            }
+                            
+                            // Optional: Show the general message dialog
+                            if ($("#general_message_dialog").length) {
+                                $('#general_message_dialog #general_message_dialog_msg_new').val("Collection details saved successfully");
+                                $("#general_message_dialog").modal('show');
+                            }
+                        });
+                        
+                    } else {
+                        // JSON response but not SUCCESS
+                        Swal.fire({
+                            title: 'Save Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h6 class="mb-2">Unable to Save Details</h6>
+                                    <p class="text-muted">The system encountered an error</p>
+                                    
+                                    <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            <div>
+                                                <strong>Error Response:</strong>
+                                                <div class="small text-muted mt-1">
+                                                    ${jsonResponse.msg || 'Unknown error'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                    
+                } catch (e) {
+                    // Response is not JSON or parsing failed
+                    console.error('Response parsing error:', e);
+                    
+                    // Fallback: Check if response contains success message
+                    const isTextSuccess = typeof response === 'string' && 
+                                        (response.toLowerCase().includes('success') || 
+                                        response.toLowerCase().includes('saved'));
+                    
+                    Swal.fire({
+                        title: isTextSuccess ? 'Processed' : 'Save Result',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="${isTextSuccess ? 'fas fa-check-circle text-success' : 'fas fa-info-circle text-info'} fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">${isTextSuccess ? 'Details Saved' : 'Processing Complete'}</h5>
+                                <div class="alert ${isTextSuccess ? 'alert-success' : 'alert-info'} mt-3">
+                                    <pre class="mb-0" style="white-space: pre-wrap; max-height: 200px; overflow: auto;">${response}</pre>
+                                </div>
+                            </div>`,
+                        icon: isTextSuccess ? 'success' : 'info',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: isTextSuccess ? '#198754' : '#0dcaf0'
+                    }).then(() => {
+                        // Close the collection modal
+                        const collectionModal = bootstrap.Modal.getInstance(document.getElementById('enter_details_for_collection_and_print_collection'));
+                        if (collectionModal) {
+                            collectionModal.hide();
+                        }
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h6 class="mb-2">Save Cancelled</h6>
+                            <p class="text-muted">Collection details were not saved</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No changes were made to the system
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Save Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h6 class="mb-2">Connection Error</h6>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-server me-2"></i>
+                            <strong>Server Issue:</strong> Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Retry',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Print receipt function
+    function printCollectionReceipt(jobNumber, collectorName) {
+        Swal.fire({
+            title: 'Printing Receipt...',
+            text: 'Please wait while we generate the collection receipt',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        // Simulate printing process
+        setTimeout(() => {
+            Swal.close();
+            
+            // Show print options
+            Swal.fire({
+                title: 'Receipt Ready',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-print text-primary fa-3x"></i>
+                        </div>
+                        <h6 class="mb-2">Collection Receipt</h6>
+                        <p class="text-muted">Receipt for job ${jobNumber} is ready to print</p>
+                        
+                        <div class="alert alert-info mt-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user me-2"></i>
+                                <div class="text-start">
+                                    <strong>Collector:</strong> ${collectorName}<br>
+                                    <strong>Job Number:</strong> ${jobNumber}<br>
+                                    <strong>Date:</strong> ${new Date().toLocaleDateString()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-print me-1"></i>Print Now',
+                cancelButtonText: '<i class="fas fa-download me-1"></i>Download PDF',
+                confirmButtonColor: '#0d6efd'
+            }).then((printResult) => {
+                if (printResult.isConfirmed) {
+                    // Trigger actual print
+                    window.print();
+                } else if (printResult.dismiss === Swal.DismissReason.cancel) {
+                    // Download PDF
+                    downloadReceiptPDF(jobNumber);
+                }
+            });
+        }, 1500);
+    }
+
+    // Optional: Download receipt PDF
+    function downloadReceiptPDF(jobNumber) {
+        // Your PDF download logic here
+        console.log('Downloading receipt for job:', jobNumber);
+        
+        Swal.fire({
+            title: 'Downloading...',
+            text: 'Receipt PDF is being generated',
+            icon: 'info',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+S) for saving
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + S
+        if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+            e.preventDefault();
+            $('#frmSaveCollection').submit();
+        }
+    });
+
+    $('#linkSearchMotherfile').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get search parameters
+        let enq_search_type = "";
+        const selected_rbtn = $("input[name='link_search_type']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        const enq_search_value = $("#link_search_value").val().trim();
+        
+        // Validation
+        if (!enq_search_type) {
+            Swal.fire({
+                title: 'Search Type Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Select Search Type</h5>
+                        <p class="text-muted">Please select the type of field for your search</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Choose either Job Number or Certificate Number
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        if (!enq_search_value) {
+            Swal.fire({
+                title: 'Search Value Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-search text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Enter Search Value</h5>
+                        <p class="text-muted">Please enter a ${enq_search_type.replace('_', ' ').toLowerCase()}</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Enter the ${enq_search_type === 'job_number' ? 'job number' : 'certificate number'} to search
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                $("#link_search_value").focus();
+            });
+            return;
+        }
+        
+        // Optional: Minimum length validation (commented out in original)
+        // if (enq_search_value.length < 8) {
+        //     Swal.fire({
+        //         title: 'Minimum Length Required',
+        //         html: `<div class="text-center">
+        //                 <div class="mb-3">
+        //                     <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+        //                 </div>
+        //                 <h5 class="mb-2">Search Too Short</h5>
+        //                 <p class="text-muted">Please enter 8 or more characters to search</p>
+        //                 <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+        //                     <i class="fas fa-ruler me-2"></i>
+        //                     Minimum 8 characters required for accurate search
+        //                 </div>
+        //             </div>`,
+        //         icon: 'warning',
+        //         confirmButtonText: 'OK',
+        //         confirmButtonColor: '#fd7e14'
+        //     });
+        //     return;
+        // }
+        
+        // Hide results section
+        $("#link-search-results-section").hide();
+        
+        // Show search progress
+        const searchProgress = Swal.fire({
+            title: 'Searching...',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-search fa-spin text-primary fa-2x"></i>
+                    </div>
+                    <h5 class="mb-2">Searching Records</h5>
+                    <p class="text-muted">Looking for ${enq_search_type === 'job_number' ? 'job' : 'certificate'}: <strong>${enq_search_value}</strong></p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                            role="progressbar" 
+                            style="width: 100%"></div>
+                    </div>
+                </div>`,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+        
+        // Perform AJAX search
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_application_details_by_job_number_or_certificate_number',
+                job_number: enq_search_value,
+                search_type: enq_search_type
+            },
+            cache: false,
+            success: function(jobdetails) {
+                // Close progress dialog
+                searchProgress.close();
+                
+                // Show results section
+                $("#link-search-results-section").show();
+                
+                const table = $('#link-search-results-table');
+                table.find("tbody tr").remove();
+
+                console.log(jobdetails);
+                
+                // Check for error or empty results
+                if (jobdetails.includes('Error Loading Data') || !jobdetails || jobdetails === '[]') {
+                    Swal.fire({
+                        title: 'No Results Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-warning fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Search Unsuccessful</h5>
+                                <p class="text-muted">No records found for ${enq_search_type === 'job_number' ? 'job' : 'certificate'}: <strong>${enq_search_value}</strong></p>
+                                
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <div class="d-flex">
+                                        <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                                        <div>
+                                            <strong>Possible reasons:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>The ${enq_search_type === 'job_number' ? 'job number' : 'certificate number'} may be incorrect</li>
+                                                <li>The record may not exist in the system</li>
+                                                <li>There may be a typo in your search</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-outline-primary" onclick="$('#link_search_value').focus()">
+                                        <i class="fas fa-redo me-1"></i>
+                                        Try Another Search
+                                    </button>
+                                </div>
+                            </div>`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#fd7e14',
+                        width: 550
+                    });
+                    return false;
+                }
+                
+                try {
+                    // Parse and display results
+                    const json_p = JSON.parse(jobdetails);
+                    
+                    // Show success message with result count
+                    const resultCount = json_p.length;
+                    Swal.fire({
+                        title: 'Search Complete',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-plus text-success fa-2x"></i>
+                                </div>
+                                <h5 class="mb-2">${resultCount} Record${resultCount !== 1 ? 's' : ''} Found</h5>
+                                <p class="text-muted">Search results for ${enq_search_type === 'job_number' ? 'job' : 'certificate'}: <strong>${enq_search_value}</strong></p>
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <div class="text-start">
+                                            <strong>Results Summary:</strong>
+                                            <div class="small text-muted">
+                                                ${resultCount} matching record${resultCount !== 1 ? 's' : ''} displayed below
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Populate table with results
+                    $(json_p).each(function() {
+                        const row = `
+                            <tr>
+                                <td>${this.ar_name || 'N/A'}</td>
+                                <td>${this.certificate_number || 'N/A'}</td>
+                                <td>${this.job_number || 'N/A'}</td>
+                                <td>${this.locality || 'N/A'}</td>
+                                <td>
+                                    <button type="button" 
+                                            id="btn-view-mother-Child-details" 
+                                            data-job_number="${this.job_number}"
+                                            data-case_number="${this.case_number || ''}"
+                                            data-transaction_number="[0, 0]" 
+                                            business_process_sub_name="-"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#transitional_certificate_template" 
+                                            class="btn btn-primary btn-icon-split" 
+                                            title="View Case Details">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                        <span class="text">View</span>
+                                    </button>
+                                </td>
+                            </tr>`;
+                        table.append(row);
+                    });
+                    
+                    // Update results count display
+                    $('#searchResultsCount').text(`Found ${resultCount} record${resultCount !== 1 ? 's' : ''}`);
+                    
+                    // Scroll to results section
+                    $('html, body').animate({
+                        scrollTop: $("#link-search-results-section").offset().top - 100
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('Error parsing search results:', error);
+                    
+                    Swal.fire({
+                        title: 'Data Error',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-database text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Unable to Process Results</h5>
+                                <p class="text-danger small">Error parsing search results data</p>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-code me-2"></i>
+                                    <strong>Technical Issue:</strong> The server response could not be processed
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Close progress dialog
+                searchProgress.close();
+                
+                Swal.fire({
+                    title: 'Search Failed',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Connection Error</h5>
+                            <p class="text-danger small">${error || 'Unable to connect to server'}</p>
+                            <div class="alert alert-warning mt-3">
+                                <i class="fas fa-wifi me-2"></i>
+                                <strong>Network Issue:</strong> Please check your connection and try again
+                            </div>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'Retry Search',
+                    confirmButtonColor: '#dc3545'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#linkSearchMotherfile').submit();
+                    }
+                });
+            }
+        });
+    });
+
 });

@@ -3150,7 +3150,7 @@
                 </div>
                 
                 <!-- Tabs Navigation -->
-                <ul class="nav nav-tabs tab-style-2 nav-justified mb-3 d-sm-flex d-block" id="parcelTabs" role="tablist">
+                <ul class="nav nav-tabs mb-3 tab-style-6" id="parcelTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="details-tab" data-bs-toggle="tab" 
                                 data-bs-target="#details" type="button" role="tab">
@@ -3975,11 +3975,14 @@
                 
                 <!-- Register Description Section -->
                 <div class="card border mt-4">
-                    <div class="card-header bg-light">
+                    <div class="card-header bg-light d-flex justify-content-between">
                         <h6 class="mb-0">
                             <i class="fas fa-file-alt me-2"></i>
                             Register: Description of Land
                         </h6>
+                        <button class="btn btn-sm btn-danger" id="btn_compose_register_description">
+                          <i class="fas fa-edit me-1"></i>Compose Template
+                        </button>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -4026,10 +4029,10 @@
                             <i class="fas fa-download me-1"></i>
                             Export
                         </button> -->
-                        <button type="button" class="btn btn-outline-info" id="btn_print_root_title">
+                        <!-- <button type="button" class="btn btn-outline-info" id="btn_print_root_title">
                             <i class="fas fa-print me-1"></i>
                             Print Preview
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
@@ -4243,7 +4246,7 @@
 
                     
                           <!-- Modal Footer -->
-                          <div class="modal-footer bg-light border-top mt-4">
+                          <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
                               <div class="d-flex justify-content-between w-100 align-items-center">
                                   <div>
                                       <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
@@ -4425,7 +4428,7 @@
                           </div>
                     
                           <!-- Modal Footer -->
-                          <div class="modal-footer bg-light border-top mt-4">
+                          <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
                               <div class="d-flex justify-content-between w-100 align-items-center">
                                   <div>
                                       <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
@@ -4571,7 +4574,6 @@
             </div>
             
             <!-- Modal Body -->
-
             <div class="modal-body">
                 <form id="form_add_encumbrances">
                     
@@ -4750,10 +4752,9 @@
                             </div>
                           </div>
 
-                    
-                          <!-- Modal Footer -->
-                          <div class="modal-footer bg-light border-top mt-4">
-                              <div class="d-flex justify-content-between w-100 align-items-center">
+                          <!-- Buttons moved to left column -->
+                          <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
+                              <div class="d-flex justify-content-between align-items-center">
                                   <div>
                                       <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
                                               data-action_type='encumbrances' style="display: none;">
@@ -4777,7 +4778,6 @@
                         
                         <!-- Right Column -->
                         <div class="col-lg-6 d-flex flex-column scrollable-col">
-                            
                             <div class="_gated_workflow_documents"></div>
                         </div>
                         
@@ -4788,4 +4788,1051 @@
 
         </div>
     </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="compose_certificate" tabindex="-1" aria-labelledby="composeCertificateLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="composeCertificateLabel">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Compose Certificate
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Certificate Type Card (Hidden by default) -->
+                <div class="card mb-3 d-none" id="cert_type_for_reg">
+                    <div class="card-header bg-primary bg-opacity-10 text-primary">
+                        <h6 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Certificate Configuration
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Certificate Type -->
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="lc_txt_type_of_certificate_" class="form-label fw-medium">
+                                        <i class="fas fa-certificate me-1"></i>
+                                        Certificate Type
+                                    </label>
+                                    <select name="lc_txt_type_of_certificate_" id="lc_txt_type_of_certificate_" 
+                                            class="form-select" data-trigger required>
+                                        <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
+                                            ${certificate_type == 'Individual' ? '-- Select Certificate Type --' : certificate_type}
+                                        </option>
+                                        <option value="Provisional Certificate">Provisional Certificate</option>
+                                        <option value="Land Certificate">Land Certificate</option>
+                                        <option value="Substituted Certificate">Substituted Certificate</option>
+                                    </select>
+                                    <div class="form-text">Select the type of certificate to generate</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Certificate Number -->
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="lc_txt_certificate_number_" class="form-label fw-medium">
+                                        <i class="fas fa-hashtag me-1"></i>
+                                        Certificate Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-tag"></i>
+                                        </span>
+                                        <input type="text" class="form-control" 
+                                               id="lc_txt_certificate_number_" 
+                                               readonly value="${certificate_number}">
+                                    </div>
+                                    <div class="form-text">Auto-generated certificate number</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Update Button -->
+                        <div class="mt-4">
+                            <button type="button" id="btn_save_lrd_certificate_update_details" 
+                                    class="btn btn-primary w-100">
+                                <i class="fas fa-sync-alt me-2"></i>
+                                Update Certificate Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Certificate Summary Card -->
+                <div class="card">
+                    <div class="card-header bg-success bg-opacity-10 text-success d-flex justify-content-between">
+                        <h6 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>
+                            Certificate Summary
+                        </h6>
+                        <button class="btn btn-sm btn-danger" id="btn_compose_certificate_template">
+                          <i class="fas fa-edit me-1"></i>Compose Template
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!-- Certificate Summary Textarea -->
+                        <div class="mb-4">
+                            <label for="lc_search_report_summary_details" class="form-label fw-medium">
+                                <i class="fas fa-edit me-1"></i>
+                                Certificate Content
+                            </label>
+                            <div class="position-relative">
+                                <!-- <textarea id="lc_search_report_summary_details" 
+                                          name="lc_search_report_summary_details" 
+                                          class="form-control" 
+                                          required 
+                                          rows="7"
+                                          style="min-height: 200px; padding: 1.5rem !important;"
+                                          placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                </textarea> -->
+                                <div id="lc_search_report_summary_details">
+                                  ${remark_or_comment}
+                                </div>
+                                <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                    <i class="fas fa-file-signature"></i>
+                                </div>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Enter the complete certificate summary and details. This content will be used to generate the final certificate.
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_save_search_report" 
+                                        id="lc_btn_save_search_report" 
+                                        class="btn btn-outline-primary w-100 h-100 py-3">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="fas fa-save fa-2x mb-2"></i>
+                                        <span class="fw-medium">Save Certificate</span>
+                                    </div>
+                                </button>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_save_register_description" 
+                                        id="lc_btn_activate_final_certificate_" 
+                                        class="btn btn-success w-100 h-100 py-3">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="fas fa-file-pdf fa-2x mb-2"></i>
+                                        <span class="fw-medium">Generate Certificate</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Alternative Horizontal Layout -->
+                        <!-- 
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="button" name="lc_btn_save_search_report" 
+                                    id="lc_btn_save_search_report" 
+                                    class="btn btn-outline-secondary flex-fill">
+                                <i class="fas fa-save me-2"></i>
+                                Save Certificate
+                            </button>
+                            
+                            <button type="button" name="lc_btn_save_register_description" 
+                                    id="lc_btn_activate_final_certificate_" 
+                                    class="btn btn-success flex-fill">
+                                <i class="fas fa-file-pdf me-2"></i>
+                                Generate Certificate
+                            </button>
+                        </div>
+                        -->
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Optional Footer -->
+            <!-- 
+            <div class="modal-footer bg-light border-top">
+                <div class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Certificate will be generated based on the summary provided above.
+                </div>
+            </div>
+            -->
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="confirm_otp_for_approval_certificate" tabindex="-1" 
+     aria-labelledby="confirmOtpModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title text-white" id="confirmOtpModalLabel">
+          <i class="fas fa-shield-alt me-2"></i>
+          Request OTP For Approval
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>OTP Required</strong>
+              <p class="mb-0 mt-1 fw-light">You need to generate a One-Time Password to proceed with certificate and register approval.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Optional Volume and Folio Display -->
+        <!-- 
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="form-label fw-medium">
+                <i class="fas fa-book me-1"></i>
+                Volume Number
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-hashtag"></i>
+                </span>
+                <input type="text" class="form-control" readonly value="${volume_number}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="form-label fw-medium">
+                <i class="fas fa-file-alt me-1"></i>
+                Folio Number
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-hashtag"></i>
+                </span>
+                <input type="text" class="form-control" readonly value="${folio_number}">
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+        
+        <!-- Generate OTP Button -->
+        <div class="text-center py-3">
+          <button type="button" id="lc_generate_otp_for_approval_for_certificate_and_register" 
+                  class="btn btn-danger btn-lg w-100 py-3">
+            <i class="fas fa-key me-2"></i>
+            Generate OTP
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-lock me-1"></i>
+            Secure one-time password will be sent for verification
+          </div>
+        </div>
+        
+        <!-- OTP Instructions -->
+        <div class="alert alert-light border mt-4">
+          <div class="d-flex">
+            <i class="fas fa-lightbulb text-warning me-3 mt-1"></i>
+            <div>
+              <strong class="text-dark">How it works:</strong>
+              <ul class="mb-0 mt-2 ps-3 fw-light">
+                <li class="text-muted">Click "Generate OTP" to create a one-time password</li>
+                <li class="text-muted">The OTP will be sent to authorized personnel</li>
+                <li class="text-muted">Use the OTP to complete certificate approval</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="view_certificate" tabindex="-1"
+     aria-labelledby="viewCertificateModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="viewCertificateModalLabel">
+          <i class="fas fa-file-pdf me-2"></i>
+          View Certificate
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body text-center p-5">
+        
+        <!-- Certificate Icon -->
+        <div class="mb-4">
+          <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
+            <i class="fas fa-certificate fa-3x"></i>
+          </div>
+          <h5 class="mb-3">Certificate Ready</h5>
+          <p class="text-muted mb-4">
+            Generate and view the final certificate document in PDF format.
+          </p>
+        </div>
+        
+        <!-- Generate Certificate Button -->
+        <div class="mb-4">
+          <button type="button" id="lc_btn_activate_final_certificate" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-pdf me-2"></i>
+            Generate Certificate
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-info-circle me-1"></i>
+            This will create a downloadable PDF certificate
+          </div>
+        </div>
+        
+        <!-- Certificate Information -->
+        <div class="alert alert-light border">
+          <div class="d-flex">
+            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+            <div class="text-start">
+              <strong class="text-dark">Certificate Details:</strong>
+              <ul class="mb-0 mt-2 ps-3">
+                <li class="text-muted">High-quality PDF format</li>
+                <li class="text-muted">Official signatures</li>
+                <li class="text-muted">Ready for download and printing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="view_register" tabindex="-1"
+     aria-labelledby="viewRegisterModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="viewRegisterModalLabel">
+          <i class="fas fa-book me-2"></i>
+          View Register
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body text-center p-5">
+        
+        <!-- Register Icon -->
+        <div class="mb-4">
+          <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" 
+               style="width: 80px; height: 80px; line-height: 80px;">
+            <i class="fas fa-book-open fa-3x"></i>
+          </div>
+          <h5 class="mb-3">Register Generation</h5>
+          <p class="text-muted mb-4">
+            Generate the official register document with all recorded entries.
+          </p>
+        </div>
+        
+        <!-- Generate Register Button -->
+        <div class="mb-4">
+          <button type="button" id="lc_btn_activate_final_register" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-alt me-2"></i>
+            Generate Register
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-info-circle me-1"></i>
+            This will create an official register document
+          </div>
+        </div>
+        
+        <!-- Register Information -->
+        <div class="alert alert-light border">
+          <div class="d-flex">
+            <i class="fas fa-list-check text-primary me-3 mt-1"></i>
+            <div class="text-start">
+              <strong class="text-dark">Register Contents:</strong>
+              <ul class="mb-0 mt-2 ps-3">
+                <li class="text-muted">Complete list of all entries</li>
+                <li class="text-muted">Chronological record of transactions</li>
+                <li class="text-muted">Official format with serial numbers</li>
+                <li class="text-muted">Ready for archival and reference</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="preview_certificate" tabindex="-1" aria-labelledby="preview_certificate_label" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="preview_certificate_label">
+          <i class="fas fa-file-alt me-2"></i>
+          Preview Certificate
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mt-2">
+          <div class="col-12">
+            <!-- Certificate Preview Options -->
+            <div class="d-grid gap-3">
+              <!-- Main Certificate View Button -->
+              <button type="button" id="lc_btn_activate_final_certificate_" class="btn btn-primary btn-lg py-3">
+                <i class="fas fa-eye me-2"></i>
+                View Final Certificate
+              </button>
+              
+              <!-- Optional: Provisional Certificate Button -->
+              <!--
+              <button type="button" id="lc_btn_activate_provisional_certificate" class="btn btn-warning btn-lg py-3">
+                <i class="fas fa-file-alt me-2"></i>
+                Generate Provisional Certificate
+              </button>
+              -->
+              
+              <!-- Optional: Additional Options -->
+              <!-- <div class="border-top pt-3 mt-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="showWatermark">
+                  <label class="form-check-label" for="showWatermark">
+                    <i class="fas fa-water me-1"></i>
+                    Show watermark preview
+                  </label>
+                </div>
+                <div class="form-check mt-2">
+                  <input class="form-check-input" type="checkbox" id="includeSignatures" checked>
+                  <label class="form-check-label" for="includeSignatures">
+                    <i class="fas fa-signature me-1"></i>
+                    Include signatures
+                  </label>
+                </div>
+              </div> -->
+            </div>
+            
+            <!-- Certificate Info (Optional) -->
+            <div class="alert alert-info mt-4">
+              <div class="d-flex">
+                <i class="fas fa-info-circle me-2 mt-1"></i>
+                <div>
+                  <small>
+                    <strong>Note:</strong> This preview shows the certificate as it will appear when generated. 
+                    You can make adjustments before finalizing.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-check me-1"></i>
+          Continue Editing
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="send_a_message_to_client" tabindex="-1" aria-labelledby="send_a_message_to_client_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="send_a_message_to_client_label">
+                    <i class="fas fa-folder me-2"></i>
+                    Cabinet Job Application
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="cabinetBatchingForm">
+                    <!-- Cabinet Batching Section -->
+                    <div class="card mb-4" id="cabinet-batching">
+                        <div class="card-header bg-primary bg-opacity-10 text-primary">
+                            <h6 class="card-title mb-0">
+                                <i class="fas fa-inbox me-2"></i>
+                                Batching to Cabinet
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="cabinet_to_send_to" class="form-label fw-medium">
+                                        <i class="fas fa-folder-open me-1"></i>
+                                        Cabinet Name:
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-archive"></i>
+                                        </span>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               id="cabinet_to_send_to" 
+                                               required
+                                               placeholder="Enter cabinet name">
+                                        <!-- <button type="button" class="btn btn-outline-success" id="btnBrowseCabinets">
+                                            <i class="fas fa-search"></i>
+                                        </button> -->
+                                    </div>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the cabinet name where the application will be stored
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Application Details -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-primary bg-opacity-10 text-primary">
+                            <h6 class="card-title mb-0">
+                                <i class="fas fa-file-alt me-2"></i>
+                                Application Details
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Applicant Name -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-user me-1"></i>
+                                        Applicant Name:
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-id-card"></i>
+                                        </span>
+                                        <input type="text" 
+                                               id="cabinet_ar_name"
+                                               class="form-control" 
+                                               value="${ar_name}" 
+                                               readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Job Number -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-hashtag me-1"></i>
+                                        Job Number:
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-briefcase"></i>
+                                        </span>
+                                        <input type="text" 
+                                               class="form-control" 
+                                               value="${job_number}" 
+                                               readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Locality -->
+                                <div class="col-12">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        Locality:
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-location-dot"></i>
+                                        </span>
+                                        <input type="text" 
+                                               id="cabinet_locality"
+                                               class="form-control" 
+                                               value="${locality}" 
+                                               readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Notes (Optional) -->
+                    <div class="mb-3">
+                        <label for="batchNotes" class="form-label fw-medium">
+                            <i class="fas fa-sticky-note me-1"></i>
+                            Notes (Optional):
+                        </label>
+                        <textarea class="form-control" 
+                                  id="batchNotes" 
+                                  rows="2" 
+                                  placeholder="Add any notes or instructions for cabinet storage..."></textarea>
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            Optional notes to help identify or categorize this batch
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100 d-flex justify-content-between">
+                    <button type="button" 
+                            class="btn btn-outline-secondary" 
+                            data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Cancel
+                    </button>
+                    <div>
+                        <!-- <button type="button" 
+                                class="btn btn-outline-primary me-2"
+                                id="btn_preview_batch">
+                            <i class="fas fa-eye me-1"></i>
+                            Preview
+                        </button> -->
+                        <button type="button" 
+                                class="btn btn-primary" 
+                                id="btn_process_completed_app_cabinet">
+                            <i class="fas fa-paper-plane me-1"></i>
+                            Process to Cabinet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="enter_details_for_collection_and_print_collection" tabindex="-1" aria-labelledby="collection_details_label" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="collection_details_label">
+          <i class="fas fa-user-check me-2"></i>
+          Enter Details for Collector
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="frmSaveCollection" class="needs-validation" novalidate>
+          
+          <!-- Collector's Information Card -->
+          <div class="card mb-4">
+            <div class="card-header bg-primary bg-opacity-10 text-primary">
+              <h6 class="card-title mb-0">
+                <i class="fas fa-id-card me-2"></i>
+                Collector's Information
+              </h6>
+            </div>
+            <div class="card-body">
+              <!-- Collected by -->
+              <div class="row mb-3">
+                <label class="col-md-3 col-form-label fw-medium">
+                  <i class="fas fa-user me-1"></i>
+                  Collected by:
+                </label>
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-signature"></i>
+                    </span>
+                    <input type="text" 
+                           class="form-control" 
+                           id="col_collected_by" 
+                           required
+                           placeholder="Enter full name of collector">
+                  </div>
+                  <div class="invalid-feedback">
+                    Please enter the collector's name
+                  </div>
+                </div>
+              </div>
+              
+              <!-- ID Type -->
+              <div class="row mb-3">
+                <label class="col-md-3 col-form-label fw-medium">
+                  <i class="fas fa-id-card me-1"></i>
+                  ID Type:
+                </label>
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-passport"></i>
+                    </span>
+                    <select id="col_id_type" 
+                            class="form-select" 
+                            required>
+                      <option value="" selected disabled>Select ID Type</option>
+                      <option value="NATIONAL ID">NATIONAL ID</option>
+                      <option value="PASSPORT">PASSPORT</option>
+                      <option value="DRIVERS LICENSE">DRIVERS LICENSE</option>
+                      <option value="NHIS CARD">NHIS CARD</option>
+                      <option value="VOTERS ID">VOTERS ID</option>
+                      <option value="SSNIT ID CARD">SSNIT ID CARD</option>
+                    </select>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please select an ID type
+                  </div>
+                </div>
+              </div>
+              
+              <!-- ID Number -->
+              <div class="row mb-3">
+                <label class="col-md-3 col-form-label fw-medium">
+                  <i class="fas fa-hashtag me-1"></i>
+                  ID Number:
+                </label>
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-fingerprint"></i>
+                    </span>
+                    <input type="text" 
+                           class="form-control" 
+                           id="col_id_number" 
+                           required
+                           placeholder="Enter ID number">
+                  </div>
+                  <div class="invalid-feedback">
+                    Please enter the ID number
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Phone Number -->
+              <div class="row mb-2">
+                <label class="col-md-3 col-form-label fw-medium">
+                  <i class="fas fa-phone me-1"></i>
+                  Phone Number:
+                </label>
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-mobile-alt"></i>
+                    </span>
+                    <input type="tel" 
+                           class="form-control" 
+                           id="col_phone_number" 
+                           required
+                           placeholder="Enter phone number">
+                  </div>
+                  <div class="invalid-feedback">
+                    Please enter a valid phone number
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Document Attachment Section -->
+          <div class="card border-warning mb-4">
+            <div class="card-header bg-warning bg-opacity-10 text-warning">
+              <h6 class="card-title mb-0">
+                <i class="fas fa-paperclip me-2"></i>
+                Document Attachment
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <i class="fas fa-file-upload text-warning me-2"></i>
+                  <span>Attach collector's identification document</span>
+                </div>
+                <button type="button" 
+                        class="btn btn-outline-warning publicFileUploadModal">
+                  <i class="fas fa-plus me-1"></i>
+                  Attach Document
+                </button>
+              </div>
+              <div class="form-text mt-2">
+                <i class="fas fa-info-circle me-1"></i>
+                Supported formats: PDF, JPG, PNG (Max: 5MB)
+              </div>
+              
+              <!-- Uploaded files preview -->
+              <div id="uploadedDocuments" class="mt-3" style="display: none;">
+                <div class="alert alert-success">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <i class="fas fa-check-circle me-2"></i>
+                      <span class="uploaded-file-name">document.pdf</span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional Notes -->
+          <div class="mb-4">
+            <label for="collectionNotes" class="form-label fw-medium">
+              <i class="fas fa-sticky-note me-1"></i>
+              Additional Notes (Optional):
+            </label>
+            <textarea class="form-control" 
+                      id="collectionNotes" 
+                      rows="2" 
+                      placeholder="Any additional information about the collection..."></textarea>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg py-3">
+              <i class="fas fa-save me-2"></i>
+              Save Collection Details
+            </button>
+          </div>
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="w-100 d-flex justify-content-between">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="printReceipt">
+            <label class="form-check-label" for="printReceipt">
+              <i class="fas fa-print me-1"></i>
+              Print receipt after save
+            </label>
+          </div>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times me-1"></i>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="check_availability_of_mother_file" tabindex="-1"
+     aria-labelledby="checkMotherFileModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="checkMotherFileModalLabel">
+          <i class="fas fa-archive me-2"></i>
+          Check Availability of Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Search Form Card -->
+        <div class="card">
+          <div class="card-header bg-primary bg-opacity-10 text-primary">
+            <h6 class="mb-0">
+              <i class="fas fa-search me-2"></i>
+              Search Mother File
+            </h6>
+          </div>
+          <div class="card-body">
+            <form id="linkSearchMotherfile" method="post">
+              
+              <!-- Search Type Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-3">
+                  <i class="fas fa-filter me-1"></i>
+                  Search By:
+                </label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type" 
+                           id="rbtn_search_type3" value="job_number" required>
+                    <label class="form-check-label" for="rbtn_search_type3">
+                      Job Number
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type" 
+                           id="rbtn_search_type4" value="certificate_number" required>
+                    <label class="form-check-label" for="rbtn_search_type4">
+                      Certificate Number
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Search Input -->
+              <div class="row g-3 align-items-end">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="link_search_value" class="form-label fw-medium">
+                      <i class="fas fa-keyboard me-1"></i>
+                      Search Value
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                      </span>
+                      <input class="form-control" id="link_search_value" name="link_search_value" 
+                             type="text" placeholder="Enter job number or certificate number" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100" id="btnEnquiryJobSearch">
+                      <i class="fas fa-search me-2"></i>
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-text">
+                Enter the job number or certificate number to search for mother file
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Search Results Card -->
+        <div class="card border-success mt-4" style="display:none" id="link-search-results-section">
+          <div class="card-header bg-success bg-opacity-10 text-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>
+                Search Results
+              </h6>
+              <span class="badge bg-success" id="resultsCount">0 results</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped" id="link-search-results-table">
+                <thead class="table-light">
+                  <tr>
+                    <th width="25%">
+                      <i class="fas fa-user me-1"></i>
+                      Applicant Name
+                    </th>
+                    <th width="20%">
+                      <i class="fas fa-certificate me-1"></i>
+                      Certificate Number
+                    </th>
+                    <th width="15%">
+                      <i class="fas fa-hashtag me-1"></i>
+                      Job Number
+                    </th>
+                    <th width="20%">
+                      <i class="fas fa-map-marker-alt me-1"></i>
+                      Locality
+                    </th>
+                    <th width="20%" class="text-center">
+                      <i class="fas fa-cogs me-1"></i>
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Results will be populated here -->
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResultsMessage" class="text-center py-5 d-none">
+              <div class="mb-3">
+                <i class="fas fa-file-excel fa-3x text-muted"></i>
+              </div>
+              <h6 class="text-muted">No Mother Files Found</h6>
+              <p class="text-muted small">Try searching with a different job number or certificate number</p>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingResults" class="text-center py-5 d-none">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3 text-muted">Searching for mother files...</p>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mt-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>About Mother Files:</strong>
+              <p class="mb-0 mt-2">
+                Mother files contain the original documents and records for each land registration case.
+                Use this search to check if a mother file exists for a specific job or certificate.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
 </div>

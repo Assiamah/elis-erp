@@ -17308,7 +17308,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 
 				// Parse the string to OffsetDateTime
 				//OffsetDateTime offsetDateTime = OffsetDateTime.parse(date_of_issue);
-				LocalDateTime dateTime =LocalDateTime.parse(date_of_issue);
+				OffsetDateTime dateTime = OffsetDateTime.parse(date_of_issue);
 				//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				//LocalDateTime dateTime = offsetDateTime.toLocalDateTime();
 				System.out.println("Date of Issue as LocalDateTime: " + dateTime);

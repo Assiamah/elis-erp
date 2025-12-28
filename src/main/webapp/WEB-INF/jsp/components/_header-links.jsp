@@ -82,7 +82,9 @@
 <script src="${pageContext.request.contextPath}/assets/openlayers/ol3-layerswitcher.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/openlayers/ol3-layerswitcher.css" type="text/css">
 
-
+<!-- Quill Editor -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/quill/dist/quill.snow.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/quill/dist/quill.bubble.css">
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
@@ -100,47 +102,47 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap5.min.css">
 <script>
 
-    window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.location.href) {
-							const url_obj = new URL(url)
-							let link_url;
-							//   console.log(url_obj)
+window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.location.href) {
+	const url_obj = new URL(url)
+	let link_url;
+	//   console.log(url_obj)
 
-							switch (url_obj.hostname) {
-								case '41.66.204.146':
-									link_url = url_obj.protocol + '//' + url_obj.hostname + ':6065';
-									break;
-								//    case 'csscloudservice.com':
-								// 	  link_url = url_obj.protocol + '//196.61.42.16:26060';
-								//     break;
+	switch (url_obj.hostname) {
+		case '41.66.204.146':
+			link_url = url_obj.protocol + '//' + url_obj.hostname + ':6065';
+			break;
+		//    case 'csscloudservice.com':
+		// 	  link_url = url_obj.protocol + '//196.61.42.16:26060';
+		//     break;
 
-								// 	case '196.61.42.16':
-								// 	  link_url = url_obj.protocol + '//196.61.42.16:26060';
-								//     break;
+		// 	case '196.61.42.16':
+		// 	  link_url = url_obj.protocol + '//196.61.42.16:26060';
+		//     break;
 
-								// 	case '10.1.0.38':
-								// 	  link_url = url_obj.protocol + '//10.1.0.36:8080';
-								//     break;
+		// 	case '10.1.0.38':
+		// 	  link_url = url_obj.protocol + '//10.1.0.36:8080';
+		//     break;
 
-								case '10.4.1.47':
-									link_url = url_obj.protocol + '//10.4.0.48:2020';
-									break;
+		case '10.4.1.47':
+			link_url = url_obj.protocol + '//10.4.0.48:2020';
+			break;
 
-								case 'elis.lc.gov.gh':
-									//link_url = url_obj.protocol + '//41.66.204.146:6065';
-									link_url = 'http:' + '//41.66.204.146:6065';
-									https://41.66.204.146:6065
-									break;
+		case 'elis.lc.gov.gh':
+			//link_url = url_obj.protocol + '//41.66.204.146:6065';
+			link_url = 'http:' + '//41.66.204.146:6065';
+			https://41.66.204.146:6065
+			break;
 
-								case 'localhost':
-									link_url = url_obj.protocol + '//localhost:2020';
-									//link_url = url_obj.protocol + '//10.4.1.53:2020';
-									break;
-								default:
-									link_url = url_obj.protocol + '//' + url_obj.hostname + ':2020';
-								//link_url = url_obj.protocol + '//' + url_obj.hostname + ':2020';
-								//link_url = url_obj.protocol + '//10.4.1.53:2020';
-							}
+		case 'localhost':
+			link_url = url_obj.protocol + '//localhost:2020';
+			//link_url = url_obj.protocol + '//10.4.1.53:2020';
+			break;
+		default:
+			link_url = url_obj.protocol + '//' + url_obj.hostname + ':2020';
+		//link_url = url_obj.protocol + '//' + url_obj.hostname + ':2020';
+		//link_url = url_obj.protocol + '//10.4.1.53:2020';
+	}
 
-							return link_url;
-						}
+	return link_url;
+}
 </script>

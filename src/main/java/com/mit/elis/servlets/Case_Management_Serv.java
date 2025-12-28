@@ -4149,42 +4149,46 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				JSONObject web_response_obj = new JSONObject(web_service_response);
 			//	System.out.println("web_response_obj");
 			//	System.out.println(web_response_obj);
-				//String msg_code = web_response_obj.getString("msg");
+				// String msg_code = web_response_obj.getString("msg");
 				// String vr_sms = web_response_obj.getString("sms");
-				// String vr_client_number = web_response_obj.getString("phone");
 
-				// // String new_message = "Use this OTP Code: " + verification_code
-				// // + " to approve the transaction for Signature on to ELIS";
+				boolean response_status = web_response_obj.getBoolean("success");
 
-				// JSONObject obj_sms = new JSONObject();
-				// obj_sms.put("recipient", vr_client_number);
-				// obj_sms.put("msg", vr_sms);
+				if (response_status) {
 
-				// String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
-				// 		cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
-				// // String new_message = "Verification code is " + smsm_result;
-				// System.out.println("smsm_result");
-				// System.out.println(smsm_result);
+					String vr_client_number = web_response_obj.getString("phone");
+					String vr_verification_code = web_response_obj.getString("verification_code");
 
-				// JSONObject obj_verify = new JSONObject(smsm_result);
-				// String arr_verify = obj_verify.get("msg").toString();
+					String new_message =
+						"ELIS OTP: " + vr_verification_code +
+						". Use this code to authorize the transaction signature. "
+						+ "Do not share this code.";
 
-				// System.out.println("sms response");
+					JSONObject obj_sms = new JSONObject();
+					obj_sms.put("recipient", vr_client_number);
+					obj_sms.put("msg", new_message);
 
-				// System.out.println(arr_verify);
+					String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
+					// String new_message = "Verification code is " + smsm_result;
+					System.out.println("smsm_result");
+					System.out.println(smsm_result);
 
+					JSONObject obj_verify = new JSONObject(smsm_result);
+					String arr_verify = obj_verify.get("msg").toString();
+
+					System.out.println("sms response");
+
+					System.out.println(arr_verify);
+
+				}
+				
 				// if (arr_verify.equals("Sms send Sucessfull")) {
 				// 	web_service_response = "OTP has been generate to your phone";
-				// } else {
+				// } else { 
 				// 	web_service_response = "Error Sending otp";
 
 				// }
-				//web_service_response = msg_code;
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 				// out.println("Message has been sent to your phone. Please

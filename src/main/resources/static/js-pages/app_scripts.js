@@ -3917,3 +3917,7 @@ function initializeCompletedMonthAppsTable(data) {
   
   return table;
 }
+
+$(document).on('click', '.publicFileUploadModal', function() {
+    $('#publicFileUploadModal').modal('show');
+})
