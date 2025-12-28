@@ -3525,27 +3525,27 @@ function initializePassedDueAppsTable(data) {
         render: function(data, type, row) {
           return `<span class="small">${data}</span>`;
         }
-      },
-      { 
-        data: null,
-        title: 'Action',
-        orderable: false,
-        searchable: false,
-        render: function(data, type, row) {
-          return `
-            <form action="registration_application_progress_details" method="post" class="d-inline">
-              <input type="hidden" name="case_number" value="${row.case_number}">
-              <input type="hidden" name="transaction_number" value="${row.transaction_number}">
-              <input type="hidden" name="job_number" value="${row.job_number}">
-              <input type="hidden" name="business_process_sub_name" value="${row.business_process_sub_name}">
-              <button type="submit" name="save" class="btn btn-info btn-sm">
-                <i class="fas fa-folder-open me-1"></i>
-                <span class="text">Work</span>
-              </button>
-            </form>
-          `;
-        }
       }
+    //   { 
+    //     data: null,
+    //     title: 'Action',
+    //     orderable: false,
+    //     searchable: false,
+    //     render: function(data, type, row) {
+    //       return `
+    //         <form action="registration_application_progress_details" method="post" class="d-inline">
+    //           <input type="hidden" name="case_number" value="${row.case_number}">
+    //           <input type="hidden" name="transaction_number" value="${row.transaction_number}">
+    //           <input type="hidden" name="job_number" value="${row.job_number}">
+    //           <input type="hidden" name="business_process_sub_name" value="${row.business_process_sub_name}">
+    //           <button type="submit" name="save" class="btn btn-info btn-sm">
+    //             <i class="fas fa-folder-open me-1"></i>
+    //             <span class="text">Work</span>
+    //           </button>
+    //         </form>
+    //       `;
+    //     }
+    //   }
     ],
     order: [[3, 'desc']], // Sort by modified_date descending
     pageLength: 10,

@@ -25398,3 +25398,8 @@ input.form-control.otp-input {
 .swal2-popup select {
     pointer-events: auto !important;
 }
+
+#view_existing_records_info:hover {
+    color: rgb(var(--secondary-rgb));
+    text-decoration: underline !important;
+}

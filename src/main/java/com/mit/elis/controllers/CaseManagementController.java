@@ -5338,7 +5338,8 @@ request.setAttribute("rq_id",rq_id);
 			// Session is expired
 			request.setAttribute("login", "sessionout");
 			System.out.println("If Not success");
-			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+			 model.addAttribute("content", "../auth/login.jsp");
+			 return "layouts/guest";
 
 		}
 		try {
@@ -5475,7 +5476,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				
 
-				//System.out.println(compliance_query_status);
+				// System.out.println("lrd_proprietorship_section: " + lrd_proprietorship_section);
 
 				// ArrayList main_details_list =
 				// googleJson.fromJson(main_details, ArrayList.class);
@@ -5526,9 +5527,9 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						ArrayList.class);
 
 
-						System.out.println("baby_step_milestone_list");
+						// System.out.println("baby_step_milestone_list");
 
-						System.out.println(baby_step_milestone_list);
+						System.out.println("lrd_proprietorship_section_list: " + lrd_proprietorship_section_list);
 
 				// request.setAttribute("transaction_details", main_details);
 				request.setAttribute("job_details", job_details_list);

@@ -4057,7 +4057,7 @@
               <th>Application Type</th>
               <th>Applicant Name</th>
               <th>Date Received</th>
-              <th>Action</th>
+              <!-- <th>Action</th> -->
             </tr>
           </thead>
           <tbody>

@@ -3949,7 +3949,7 @@ function getResolutionFromScale(scale) {
 
 let maps = {}; // Object to store multiple maps dynamically
 
-function initializeMap(targetId) {
+window.initializeMap = function initializeMap(targetId) {
     if (!maps[targetId]) { // Check if map already exists
         maps[targetId] = new ol.Map({
             target: targetId,
@@ -3995,7 +3995,7 @@ $(".map-modal").on("shown.bs.modal", function () {
     document.getElementById(targetId).style.display = "block";
 
     setTimeout(() => {
-        initializeMap(targetId);
+        window.initializeMap(targetId);
         if (maps[targetId]) {
             maps[targetId].updateSize();
         }

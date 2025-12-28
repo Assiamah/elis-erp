@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="ws.casemgt.Ws_client_application"%>
 <%@ page import="ws.users.Ws_users"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
@@ -174,54 +174,65 @@
     }
 
     .bg-pink {
-  background-color: #e83e8c !important;
-  color: white !important;
-}
+        background-color: #e83e8c !important;
+        color: white !important;
+    }
 
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
+    .avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.avatar-lg {
-  width: 56px;
-  height: 56px;
-}
+    .avatar-lg {
+        width: 56px;
+        height: 56px;
+    }
 
-.avatar-sm {
-  width: 36px;
-  height: 36px;
-}
+    .avatar-sm {
+        width: 36px;
+        height: 36px;
+    }
 
-.avatar-xs {
-  width: 28px;
-  height: 28px;
-}
+    .avatar-xs {
+        width: 28px;
+        height: 28px;
+    }
 
-.bg-light-primary {
-  background-color: rgba(13, 110, 253, 0.1) !important;
-}
+    .bg-light-primary {
+        background-color: rgba(13, 110, 253, 0.1) !important;
+    }
 
-.bg-light-success {
-  background-color: rgba(25, 135, 84, 0.1) !important;
-}
+    .bg-light-success {
+        background-color: rgba(25, 135, 84, 0.1) !important;
+    }
 
-.bg-light-warning {
-  background-color: rgba(255, 193, 7, 0.1) !important;
-}
+    .bg-light-warning {
+        background-color: rgba(255, 193, 7, 0.1) !important;
+    }
 
-.bg-light-info {
-  background-color: rgba(13, 202, 240, 0.1) !important;
-}
+    .bg-light-info {
+        background-color: rgba(13, 202, 240, 0.1) !important;
+    }
 
-.contact-info {
-  font-size: 0.875rem;
-}
+    .contact-info {
+        font-size: 0.875rem;
+    }
 
-.table-hover tbody tr:hover {
-  background-color: rgba(13, 110, 253, 0.05);
-}
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    #lc-map__ {
+        height: 450px !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    .scrollable-col {
+        overflow-y: auto;
+        max-height: 100%;
+    }
 </style>
 <div class="main-content app-content">
     <div class="container-fluid page-container">
@@ -267,9 +278,9 @@
         <input class="form-control" type="hidden" id="cs_main_case_number" value="${case_number}">
         <input class="form-control" type="hidden" id="cs_main_transaction_number"  name="cs_main_transaction_number" value="${transaction_number}" >
 
-        <div class="row">
+        <div class="row" style="height: 100vh;">
             <!-- Main Content Column -->
-            <div class="col-lg-8">
+            <div class="col-lg-8 d-flex flex-column scrollable-col">
                 <!-- Case Summary Card -->
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -281,9 +292,9 @@
                                 <h6 class="mb-0 fw-medium">Case Summary</h6>
                             </div>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
+                        <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" 
                                 data-bs-target="#caseSummaryCollapse" aria-expanded="true">
-                            <i class="bi bi-chevron-down"></i>
+                            <i class="bi bi-chevron-down"></i> Click to Expand
                         </button>
                     </div>
                     
@@ -349,6 +360,12 @@
 												${empty fn:trim(need_for_new_transaction) ? '--' : fn:trim(need_for_new_transaction)}
 											</div>
 										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">WKT Polygon</label>
+											<div class="fw-medium small text-secondary">
+												${empty fn:trim(parcel_wkt) ? '--' : fn:trim(parcel_wkt)}
+											</div>
+										</div>
 									</div>
 								</div>
 							 </div>
@@ -370,6 +387,10 @@
 											<label class="form-label text-muted small mb-1">Applicant Name</label>
 											<div class="fw-medium text-dark">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
 										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Application Type</label>
+											<div class="fw-medium text-dark">${empty fn:trim(business_process_sub_name) ? '--' : fn:trim(business_process_sub_name)}</div>
+										</div>
 										<div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Nature of Instrument</label>
 											<div class="fw-medium text-dark">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
@@ -377,11 +398,15 @@
 										
 										<div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Document Date</label>
-											<div class="fw-medium text-dark">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+                                            <fmt:parseDate value="${date_of_document}" pattern="yyyy-MM-dd" var="parsedDocumentDate"/>
+                                            <fmt:formatDate value="${parsedDocumentDate}" pattern="dd MMM yyyy" var="formattedDocumentDate"/>
+											<div class="fw-medium text-dark">${empty formattedDocumentDate ? '--' : formattedDocumentDate}</div>
 										</div>
 										<div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Registration Date</label>
-											<div class="fw-medium text-dark">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+                                            <fmt:parseDate value="${date_of_registration}" pattern="yyyy-MM-dd" var="parsedRegistrationDate"/>
+                                            <fmt:formatDate value="${parsedRegistrationDate}" pattern="dd MMM yyyy" var="formattedRegistrationDate"/>
+											<div class="fw-medium text-dark">${empty formattedRegistrationDate ? '--' : formattedRegistrationDate}</div>
 										</div>
 										<div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Type of Interest</label>
@@ -396,9 +421,15 @@
 											<label class="form-label text-muted small mb-1">Term</label>
 											<div class="fw-medium text-dark">${empty fn:trim(term) || term == '0' ? '--' : fn:trim(term)}</div>
 										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Option for Renewal</label>
+											<div class="fw-medium text-dark">${empty fn:trim(renewal_term) || renewal_term == '0' ? '--' : fn:trim(renewal_term)}</div>
+										</div>
 										<div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Commencement Date</label>
-											<div class="fw-medium text-dark">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+                                            <fmt:parseDate value="${commencement_date}" pattern="yyyy-MM-dd" var="parsedCommencementDate"/>
+                                            <fmt:formatDate value="${parsedCommencementDate}" pattern="dd MMM yyyy" var="formattedCommencementDate"/>
+											<div class="fw-medium text-dark">${empty formattedCommencementDate ? '--' : formattedCommencementDate}</div>
 										</div>
 										
 										<div class="col-md-4">
@@ -409,9 +440,45 @@
 											<label class="form-label text-muted small mb-1">Stamp Duty Payable</label>
 											<div class="fw-medium text-dark">${empty fn:trim(stamp_duty_payable) || stamp_duty_payable == '0' ? '--' : fn:trim(stamp_duty_payable)}</div>
 										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Consideration in Document</label>
+											<div class="fw-medium text-dark">${empty fn:trim(consideration_fee) || consideration_fee == '0' ? '--' : fn:trim(consideration_fee)}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Consideration Currency</label>
+											<div class="fw-medium text-dark">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Adopted Currency Rate</label>
+											<div class="fw-medium text-dark">${empty fn:trim(consideration_fee_adopted_rate) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
+										</div>
 										<div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Certificate Number</label>
 											<div class="fw-medium text-dark">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Publication Date</label>
+                                            <fmt:parseDate value="${publicity_date}" pattern="yyyy-MM-dd" var="parsedPublicityDate"/>
+                                            <fmt:formatDate value="${parsedPublicityDate}" pattern="dd MMM yyyy" var="formattedPublicityDate"/>
+											<div class="fw-medium text-dark"> ${empty formattedPublicityDate ? '--' : formattedPublicityDate}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Date of Issue</label>
+                                            <fmt:parseDate value="${date_of_issue}" pattern="yyyy-MM-dd" var="parsedDateOfIssue"/>
+                                            <fmt:formatDate value="${parsedDateOfIssue}" pattern="dd MMM yyyy" var="formattedDateOfIssue"/>
+											<div class="fw-medium text-dark"> ${empty formattedDateOfIssue ? '--' : formattedDateOfIssue}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Registered Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Interest Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Sub-Interest Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
 										</div>
 									</div>
 								</div>
@@ -684,7 +751,7 @@
             </div>
 
             <!-- Sidebar Column -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 d-flex flex-column scrollable-col">
                 <!-- Accordion for Sidebar Sections -->
                 <div class="accordion shadow-sm" id="sidebarAccordion">
                     <!-- Map Section -->
@@ -889,6 +956,113 @@
                         </div>
                     </div>
 
+                    <!-- Records Information -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseRecords">
+                                <i class="bi bi-file-text me-2"></i>
+                                Records Information
+                            </button>
+                        </h2>
+                        <div id="collapseRecords" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Records Info.</th>
+                                                <th>Entered By</th>
+                                                <th>Entered Date</th>
+                                                <th>Division</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${application_notes}" var="application_notes_row">
+                                                <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                                    ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <i class="fas fa-comment text-muted me-2"></i> -->
+                                                            <span class="text-truncate" style="max-width: 200px;">
+                                                                ${application_notes_row.an_description}
+                                                            </span>
+                                                            ${application_notes_row.an_status == false ? 
+                                                                '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span>${application_notes_row.created_by}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>${application_notes_row.created_date}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                            ${application_notes_row.division}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-primary btn-sm viewNotesModal" 
+                                                                data-target-id="${application_notes_row.an_id}"
+                                                                data-an_description="${application_notes_row.an_description}"
+                                                                data-created_by="${application_notes_row.created_by}"
+                                                                data-created_date="${application_notes_row.created_date}"
+                                                                data-modified_by="${application_notes_row.created_by}"
+                                                                data-modified_date="${application_notes_row.created_date}"
+                                                                data-division="${application_notes_row.division}"
+                                                                ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                            <i class="fas fa-eye me-1"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AHistory Or Tracking Information -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseHistoryOrTrackingInformation">
+                                <i class="bi bi-clock-history me-2"></i>
+                                History Or Tracking Information
+                            </button>
+                        </h2>
+                        <div id="collapseHistoryOrTrackingInformation" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body" style="max-height: 500px; overflow-y: auto;">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Comment</th>
+                                                <th>Comment By</th> 
+                                                <th>Comment Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${comments_on_application}" var="comments_on_application_row">
+                                                <tr>
+                                                    <td>${comments_on_application_row.officers_general_comments}</td>
+                                                    <td>${comments_on_application_row.created_by}</td>
+                                                    <td>${comments_on_application_row.created_date}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Documents -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
@@ -1047,6 +1221,188 @@
                         </div>
                     </div>
 
+                    <!-- Encumbrances -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseEncumbrances">
+                                <i class="bi bi-people-fill me-2"></i>
+                                Encumbrances
+                            </button>
+                        </h2>
+                        <div id="collapseEncumbrances" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Registered Number</th>
+                                                <th>Date of Instrument</th>
+                                                <th>Date of Registration</th>
+                                                <th>Memorials</th>
+                                                <th>Remarks</th>
+                                                <th>Entry No.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                             <c:forEach items="${lrd_encumbrances_section}" var="lrd_encumbrances_section_row">
+												<tr>
+                                                    <td>${lrd_encumbrances_section_row.es_registered_number}</td>
+                                                    <td>${lrd_encumbrances_section_row.es_date_of_instrument}</td>
+                                                    <td>${lrd_encumbrances_section_row.es_date_of_registration}</td>
+                                                    <td>${lrd_encumbrances_section_row.es_memorials}</td>
+                                                    <td>${lrd_encumbrances_section_row.es_remarks}</td>
+                                                    <td>${lrd_encumbrances_section_row.es_entry_number}</td>
+					                            </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Objections -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseObjections">
+                                <i class="bi bi-exclamation-circle me-2"></i>
+                                Objections
+                            </button>
+                        </h2>
+                        <div id="collapseObjections" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Objector </th>
+                                                <th>Address</th>
+                                                <th>Contact</th>
+                                                <th>Reasons </th>
+                                                <th>Remarks </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                             <c:forEach items="${case_objection}" var="case_objection_row">
+                                                <tr>
+                                                    <td>${case_objection_row.objector_name}</td>
+                                                    <td>${case_objection_row.objector_address}</td>
+                                                    <td>${case_objection_row.objector_contact}</td>
+                                                    <td>${case_objection_row.reasons}</td>
+                                                    <td>${case_objection_row.remarks}</td>
+                                                    
+                                                    <td>
+                                                            <button type="button" 
+                                                            
+                                                            id="editOjectionModal"  
+                                                            data-toggle="modal" 
+                                                            data-target="#newObjectionModal"  
+                                                            data-action="edit"  
+                                                            data-target-id= ${case_objection_row.id} 
+                                                            data-objector_name= ${case_objection_row.objector_name}  
+                                                            data-objector_address=${case_objection_row.objector_address} 
+                                                            data-objector_contact=${case_objection_row.objector_contact} 
+                                                            data-reasons= ${case_objection_row.reasons} 
+                                                            data-remarks=${case_objection_row.remarks} 
+                                                            data-status=${case_objection_row.status} 
+                                                            
+
+                                                            class="btn btn-danger btn-icon-split "  
+                                                            title="edit objection" >
+                                                                <span class="icon text-white-50"> <i class="fas fa-pencil-alt"></i></span><span class="text">Edit</span>
+                                                            </button> 
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Letters on Case -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseLettersOnCase">
+                                <i class="bi bi-envelope me-2"></i>
+                                Letters on Case
+                            </button>
+                        </h2>
+                        <div id="collapseLettersOnCase" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="card card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <select
+                                                    name="type_of_letter_new" id="type_of_letter_new"
+                                                    data-live-search="true" data-trigger class="form-control form-control-sm"
+                                                    >
+                                                    <option value="Select_Letter_Template">Select Letter Template</option>
+                                                    <option value="Inspection_Letter">Inspection Letter</option>
+                                                    <option value="Physical_Planning_Letter">Physical Planning Letter</option>
+                                                    <option value="Query_Letter">Query_Letter</option>
+                                                    <option value="Objection_Letter">Objection_Letter</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex gap-2 mb-3">
+                                                <button class="btn btn-sm btn-primary w-100" id="lc_btn_add_update_letters">
+                                                    <i class="bi bi-plus"></i> Add
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-primary w-100" id="btnloadlettersoncase">
+                                                    <i class="bi bi-eye"></i> Load
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Letter Type</th>
+                                                <th>Created By</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                             <c:forEach items="${case_letters}" var="case_letters_row">
+                                                <tr>
+                                                    <td>${case_letters_row.created_date}</td>
+                                                    <td>${case_letters_row.letter_type}</td>
+                                                    <td>${case_letters_row.created_by}</td>
+                                                    
+                                                    
+                                                    <td>
+                                                        <button type="button" id="btn-view-letters"  
+                                                        data-id="${case_letters_row.id}"
+                                                        data-letter_type = "${case_letters_row.letter_type}" 
+                                                        data-letter_template="${fn:escapeXml(case_letters_row.letter_template)}" 
+                                                        data-carbon_copy="${case_letters_row.carbon_copy}" 
+                                                        class="btn btn-primary btn-icon-split edit_letter_modal_open"  title="View Letter" >
+                                                            <span class="icon text-white-50"> <i class="fas fa-eye"></i></span><span class="text">View</span>
+                                                        </button> 
+                                                </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Case Steps -->
                     <div class="accordion-item">
                         <h2 class="accordion-header">
@@ -1074,8 +1430,7 @@
                                                                 <span>Date: 
                                                                     <c:choose>
                                                                         <c:when test="${process.complete_by_date != null}">
-                                                                            <fmt:parseDate value="${process.complete_by_date}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" />
-                                                                            <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd" />
+                                                                            ${process.complete_by_date}
                                                                         </c:when>
                                                                         <c:otherwise>N/A</c:otherwise>
                                                                     </c:choose>
@@ -1083,8 +1438,7 @@
                                                                 <span>Time: 
                                                                     <c:choose>
                                                                         <c:when test="${process.complete_by_date != null}">
-                                                                            <fmt:parseDate value="${process.complete_by_date}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" />
-                                                                            <fmt:formatDate value="${parsedDate}" pattern="HH:mm:ss" />
+                                                                            ${process.complete_by_date}
                                                                         </c:when>
                                                                         <c:otherwise>N/A</c:otherwise>
                                                                     </c:choose>

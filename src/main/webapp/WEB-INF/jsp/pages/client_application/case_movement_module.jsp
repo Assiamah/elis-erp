@@ -24,7 +24,7 @@
             <div class="d-flex align-center justify-content-between flex-wrap">
               <div>
                 <h1 class="page-title fw-medium fs-18 mb-1">Staff Case Management</h1>
-                <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage and monitor application workflows</p>
+                <!-- <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage and monitor application workflows</p> -->
               </div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
@@ -76,15 +76,49 @@
                               </div>
                               <div>
                                   <span class="d-block mb-1">
-                                      Request Applications
+                                      Incoming Applications
                                   </span>
                                   <div class="d-flex align-items-center gap-2">
-                                      <h5 class="fw-semibold mb-0">${applicationCount}</h5>
+                                      <h5 class="fw-semibold mb-0">${applicationlist.size()}</h5>
                                   </div>
                               </div>
                           </div>
                       </div>
                   </div>
+                  <div class="card custom-card">
+                        <div class="card-header justify-content-between">
+                            <div class="">
+                              <h5 class="card-title mb-0">Application List</h5>
+                              <!-- <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Showing 10 out of ${applicationlist.size()}</p> -->
+                            </div>
+                            <a href="javascript:void(0);" class="text-muted fs-12 text-decoration-underline">View All<i class="ti ti-arrow-narrow-right"></i></a>
+                        </div>
+                        <div class="card-body" style="max-height: 800px; overflow-y: auto;">
+                            <ul class="list-unstyled top-customers-list">
+                                <c:forEach items="${applicationlist}" var="appfiles" varStatus="loop">
+                                    <li>
+                                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                                            <div class="lh-1">
+                                                <span class="avatar avatar-md bg-primary-transparent">
+                                                    <i class="ri-folder-open-line"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-fill">
+                                                <span class="d-block fw-semibold">${appfiles.job_number}</span>
+                                                <span class="fs-12 text-muted">${fn:substring(appfiles.ar_name, 0, 20)}${fn:length(appfiles.ar_name) > 20 ? '...' : ''}</span>
+                                            </div>
+                                            <div class="text-end">
+                                                <!-- <div class="fw-semibold text-primary mb-0">$23,755</div> -->
+                                                <fmt:parseDate value="${appfiles.job_datesend}" pattern="yyyy-MM-dd" var="parsedJobDateSend"/>
+                                                <fmt:formatDate value="${parsedJobDateSend}" pattern="dd MMM yyyy" var="formattedParsedJobDateSend"/>
+                                                <span class="fs-12 text-muted">${formattedParsedJobDateSend}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-xl-9">
                     <div class="card custom-card">
@@ -134,9 +168,9 @@
                                               </div>
                                           </th> -->
                                           <th>Job Details</th>
-                                          <th>Applicant</th>
-                                          <th>Type</th>
+                                          <th>Applicantion Type</th>
                                           <th>Job Category</th>
+                                          <th>Request Type</th>
                                           <th>Status</th>
                                           <th>Timeline</th>
                                           <th class="text-center">Actions</th>
@@ -158,33 +192,36 @@
                                             
                                             <!-- Job Details -->
                                             <td>
-                                                <div class="d-flex flex-column">
-                                                    <span class="fw-bold text-primary small">${appfiles.job_number}</span>
-                                                    <small class="text-muted">Created: ${appfiles.created_date}</small>
-                                                </div>
-                                            </td>
-                                            
-                                            <!-- Applicant -->
-                                            <td>
-                                                <div class="d-flex align-items-center">
+                                                <!-- <div class="d-flex align-items-center">
                                                     <div class="avatar avatar-xs bg-light bg-opacity-10 rounded-circle me-2">
                                                         <i class="ri-user-line text-muted"></i>
                                                     </div>
                                                     <div>
-                                                        <div class="fw-medium small" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${appfiles.ar_name}">${fn:substring(appfiles.ar_name, 0, 20)}${fn:length(appfiles.ar_name) > 20 ? '...' : ''}</div>
-                                                        <small class="text-muted small">Sent by: ${appfiles.job_forwarded_by}</small>
+                                                        <div class="fw-bold text-primary small">${appfiles.job_number}</div>
+                                                        <small class="text-muted small" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${appfiles.ar_name}">${fn:substring(appfiles.ar_name, 0, 20)}${fn:length(appfiles.ar_name) > 20 ? '...' : ''}</small>
                                                     </div>
+                                                </div> -->
+                                                <div>
+                                                    <div class="fw-bold text-primary small">${appfiles.job_number}</div>
+                                                    <small class="text-muted small" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${appfiles.ar_name}">${fn:substring(appfiles.ar_name, 0, 20)}${fn:length(appfiles.ar_name) > 20 ? '...' : ''}</small>
                                                 </div>
                                             </td>
                                             
-                                            <!-- Application Type -->
+                                            <!-- Applicantion Type -->
                                             <td>
                                                 <span class="small">
                                                     ${appfiles.business_process_sub_name}
                                                 </span>
                                             </td>
+                                            
+                                            <!-- Job category -->
+                                            <td>
+                                                <span class="small">
+                                                    ${appfiles.request_category}
+                                                </span>
+                                            </td>
 
-                                            <!-- Job Category -->
+                                            <!-- Request Type -->
                                             <td>
                                                 <span class="small">
                                                     ${appfiles.request_category}
@@ -203,11 +240,13 @@
                                             </td>
                                             
                                             <!-- Timeline -->
-                                            <td>
+                                            <td width="100">
                                                <div class="d-flex flex-column">
+                                                <fmt:parseDate value="${appfiles.job_datesend}" pattern="yyyy-MM-dd" var="parsedJobDateSend"/>
+                                                <fmt:formatDate value="${parsedJobDateSend}" pattern="dd MMM yyyy" var="formattedParsedJobDateSend"/>
                                                 <small>
                                                     <i class="fas fa-calendar-alt me-1 text-muted"></i>
-                                                    Received: ${appfiles.job_datesend}
+                                                    ${formattedParsedJobDateSend}
                                                 </small>
 
                                                 <small>
@@ -224,6 +263,7 @@
                                                     <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
                                                     <input type="hidden" name="job_number" value="${appfiles.job_number}">
                                                     <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
+                                                    <input type="hidden" name="review_type" value="GeneralWorkRequest">
                                                     <button type="submit" class="btn btn-warning label-btn">
                                                         <i class="ri-folder-open-line label-btn-icon me-2"></i>
                                                         Work

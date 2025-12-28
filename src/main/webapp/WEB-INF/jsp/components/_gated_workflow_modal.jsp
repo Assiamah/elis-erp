@@ -1876,7 +1876,7 @@
             </h5>
             <p class="mb-0 small opacity-75">
               <i class="bi bi-info-circle me-1"></i>
-              Forward case for final review and verification
+              Forward case for first registration records reverification
             </p>
           </div>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -1944,7 +1944,7 @@
                   </div>
                   <div>
                     <h5 class="mb-0" id="send_lrd_badge_ffrv_v">
-                      <span class="badge bg-success">Completed</span>
+                      <!-- <span class="badge bg-success">Completed</span> -->
                     </h5>
                   </div>
                 </div>
@@ -1964,7 +1964,7 @@
                   </div>
                   <div>
                     <h5 class="mb-0" id="send_smd_badge_ffrv_v">
-                      <span class="badge bg-warning">Pending</span>
+                      <!-- <span class="badge bg-warning">Pending</span> -->
                     </h5>
                   </div>
                 </div>
@@ -1984,7 +1984,7 @@
                   </div>
                   <div>
                     <h5 class="mb-0" id="send_pvlmd_badge_ffrv_v">
-                      <span class="badge bg-secondary">Not Started</span>
+                      <!-- <span class="badge bg-secondary">Not Started</span> -->
                     </h5>
                   </div>
                 </div>
@@ -2038,4 +2038,2754 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="review_records_verification" tabindex="-1"
+     aria-labelledby="review_records_verification_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="review_records_verification_label">
+                    <i class="fas fa-clipboard-check me-2"></i>
+                    Records Verification (FRRV)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Application Notes Section -->
+                <div class="card border">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Records Information
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Records Info.</th>
+                                        <th>Entered By</th>
+                                        <th>Entered Date</th>
+                                        <th>Division</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${application_notes}" var="application_notes_row">
+                                    <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                        ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-comment text-muted me-2"></i>
+                                                <span class="text-truncate" style="max-width: 200px;">
+                                                    ${application_notes_row.an_description}
+                                                </span>
+                                                ${application_notes_row.an_status == false ? 
+                                                    '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user-circle text-muted me-2"></i>
+                                                <span>${application_notes_row.created_by}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                                <span>${application_notes_row.created_date}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                ${application_notes_row.division}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-outline-primary btn-sm viewNotesModal" 
+                                                    data-target-id="${application_notes_row.an_id}"
+                                                    data-an_description="${application_notes_row.an_description}"
+                                                    data-created_by="${application_notes_row.created_by}"
+                                                    data-created_date="${application_notes_row.created_date}"
+                                                    data-modified_by="${application_notes_row.created_by}"
+                                                    data-modified_date="${application_notes_row.created_date}"
+                                                    data-division="${application_notes_row.division}"
+                                                    ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                <i class="fas fa-eye me-1"></i>
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Attachments Section -->
+                <div class="mb-4">
+                    <a href="#" class="text-decoration-none" id="view_existing_records_info">
+                        <i class="ri-attachment-line me-1"></i>
+                        View Attachments (Existing Records Information)
+                    </a>
+                    
+                    <div class="card border mt-2 d-none" id="exreinfo_table">
+                        <div class="card-header bg-light py-2">
+                            <h6 class="mb-0">
+                                <i class="fas fa-folder me-2"></i>
+                                Scanned Documents
+                            </h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm mb-0" id="lc_frrv_scanned_documents_dataTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Document Name</th>
+                                            <th>Document Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Review all records before verification
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="button" id="btn_update_app_status_ffrv" style="display:none"
+                                class="btn btn-success">
+                            <i class="fas fa-check me-1"></i>
+                            Confirm Final Approval
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="viewNotesModal" tabindex="-1" aria-labelledby="viewNotesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" data-bs-backdrop="static">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="viewNotesModalLabel">
+                    <i class="fas fa-sticky-note me-2"></i>
+                    View Note Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="card border-0">
+                    <div class="card-body p-0">
+                        <form id="form_view_notes">
+                            
+                            <!-- Hidden Fields -->
+                            <input type="hidden" id="vi_note_id" name="vi_note_id" value="0">
+                            <input type="hidden" id="vi_an_job_number" value="${job_number}">
+                            <input type="hidden" id="vi_an_case_number" value="${case_number}">
+                            <input type="hidden" id="vi_an_type" value="Normal">
+                            
+                            <!-- Description Section -->
+                            <div class="mb-4">
+                                <div class="form-group">
+                                    <label for="vi_note_description" class="form-label fw-medium">
+                                        <i class="fas fa-align-left me-1"></i>
+                                        Note Description
+                                    </label>
+                                    <div class="border rounded p-3 bg-light" style="min-height: 150px;">
+                                        <div id="vi_note_description" class="note-content">
+                                            <!-- Note content will be displayed here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Metadata Section -->
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card border">
+                                        <div class="card-header bg-light py-2">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-user-plus me-1"></i>
+                                                Creation Details
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label small text-muted mb-1">Created By</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-user text-primary"></i>
+                                                    </div>
+                                                    <span id="vi_created_by" class="fw-medium"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label small text-muted mb-1">Created Date</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-calendar text-success"></i>
+                                                    </div>
+                                                    <span id="vi_created_date" class="fw-medium"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="card border">
+                                        <div class="card-header bg-light py-2">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-user-edit me-1"></i>
+                                                Modification Details
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label small text-muted mb-1">Modified By</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-user-edit text-info"></i>
+                                                    </div>
+                                                    <span id="vi_modified_by" class="fw-medium">No modifications</span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label small text-muted mb-1">Modified Date</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-calendar-alt text-warning"></i>
+                                                    </div>
+                                                    <span id="vi_modified_date" class="fw-medium">Not modified</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <!-- <i class="fas fa-clock me-1"></i>
+                        Last updated: <span id="vi_last_updated">Just now</span> -->
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="btn_print_note">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button>
+                        <!-- <button type="button" class="btn btn-primary" id="btn_edit_note">
+                            <i class="fas fa-edit me-1"></i>
+                            Edit Note
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="review_documents" tabindex="-1"
+     aria-labelledby="review_documents_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="review_documents_label">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Review Documents
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Documents Accordion -->
+                <div class="accordion" id="documentsAccordion">
+                    
+                    <!-- Application Documents Card -->
+                    <div class="accordion-item border rounded mb-3">
+                        <h2 class="accordion-header" id="headingApplication">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseApplication" 
+                                    aria-expanded="false" aria-controls="collapseApplication">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="me-3">
+                                        <i class="fas fa-folder-open fa-lg text-primary"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Application Documents</h6>
+                                        <small class="text-muted">Private application documents</small>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill ms-2" id="appDocsCount">0</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapseApplication" class="accordion-collapse collapse" 
+                             aria-labelledby="headingApplication" data-bs-parent="#documentsAccordion">
+                            <div class="accordion-body">
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-sm me-2" 
+                                                onclick="loadReviewApplicationDocuments()">
+                                            <i class="fas fa-sync-alt me-1"></i>
+                                            Refresh
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-bs-toggle="modal" data-bs-target="#fileUploadModal"
+                                                data-bs-placement="top" title="Add Documents">
+                                            <i class="fas fa-plus-circle me-1"></i>
+                                            Add Document
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_export_app_docs">
+                                            <i class="fas fa-download me-1"></i>
+                                            Export
+                                        </button> -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Documents Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lc_review_scanned_documents_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="55%">Document Name</th>
+                                                <th width="30%">Document Type</th>
+                                                <!-- <th width="15%">Size</th> -->
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div id="appDocsEmpty" class="text-center py-5 d-none">
+                                    <div class="mb-3">
+                                        <i class="fas fa-file-alt fa-3x text-muted"></i>
+                                    </div>
+                                    <h6 class="text-muted">No Application Documents</h6>
+                                    <p class="text-muted small mb-0">Click "Add Document" to upload files</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Public Documents Card -->
+                    <div class="accordion-item border rounded">
+                        <h2 class="accordion-header" id="headingPublic">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapsePublic" 
+                                    aria-expanded="false" aria-controls="collapsePublic">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="me-3">
+                                        <i class="fas fa-users fa-lg text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Public Documents</h6>
+                                        <small class="text-muted">Publicly accessible documents</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill ms-2" id="publicDocsCount">0</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapsePublic" class="accordion-collapse collapse" 
+                             aria-labelledby="headingPublic" data-bs-parent="#documentsAccordion">
+                            <div class="accordion-body">
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-sm me-2" onclick="loadReviewPublicDocuments()">
+                                            <i class="fas fa-sync-alt me-1"></i>
+                                            Refresh
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-bs-toggle="modal" data-bs-target="#publicFileUploadModal"
+                                                data-bs-placement="top" title="Add Public Documents">
+                                            <i class="fas fa-plus-circle me-1"></i>
+                                            Add Public Document
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_export_public_docs">
+                                            <i class="fas fa-download me-1"></i>
+                                            Export
+                                        </button> -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Public Documents Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lc_review_public_documents_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="55%">Document Name</th>
+                                                <th width="30%">Document Type</th>
+                                                <!-- <th width="15%">Size</th> -->
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div id="publicDocsEmpty" class="text-center py-5 d-none">
+                                    <div class="mb-3">
+                                        <i class="fas fa-users fa-3x text-muted"></i>
+                                    </div>
+                                    <h6 class="text-muted">No Public Documents</h6>
+                                    <p class="text-muted small mb-0">Click "Add Public Document" to upload files</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Total Documents: 
+                        <span class="fw-medium" id="totalDocumentsCount">0</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="button" id="btn_update_app_status_ffrv" style="display:none"
+                                class="btn btn-success">
+                            <i class="fas fa-check me-1"></i>
+                            Confirm Final Approval
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="sent_for_publication" tabindex="-1"
+     aria-labelledby="sent_for_publication_label" aria-hidden="true" data-bs-backdrop="static">
+     <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="sent_for_publication_label">
+                    <i class="fas fa-bullhorn me-2"></i>
+                    Check for Publication
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Publication Status Card -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            Publication Status
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="avatar-sm bg-light-primary rounded-circle d-flex align-items-center justify-content-center me-3">
+                                <i class="fas fa-calendar-alt text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <label class="form-label fw-medium mb-1">Publication Date</label>
+                                <div class="text-muted small">
+                                    <c:choose>
+                                        <c:when test="${(not empty fn:trim(publicity_date) and publicity_date != 'null') and not fn:contains(publicity_date, '-')}">
+                                            <span class="badge bg-success">Already Set</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge bg-warning">Not Set</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <span>${publicity_date}</span> -->
+                <!-- Publication Instructions -->
+                <div class="alert alert-info border-info bg-info bg-opacity-10">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-lightbulb fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading mb-2">Publication Notice</h6>
+                            <p class="small mb-0">
+                                Set the publication date if application has already been sent for publication otherwise click on the green button below to send for publication
+                            </p>
+                        </div>
+                    </div>
+                </div> 
+                <!-- Publication Date Section -->
+                <div class="mb-4">
+                    <label for="lc_txt_publicity_date" class="form-label fw-medium">
+                        <i class="fas fa-calendar-day me-1"></i>
+                        Set Publication Date
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-calendar"></i>
+                        </span>
+                        <c:choose>
+                            <c:when test="${(not empty fn:trim(publicity_date) and publicity_date != 'null') and not fn:contains(publicity_date, '-')}">
+                                <input type="date" class="form-control bg-light" id="lc_txt_publicity_date" style="cursor:not-allowed" 
+                                       value="${publicity_date}" readonly />
+                            </c:when>
+                            <c:otherwise>
+                                <input type="date" class="form-control" id="lc_txt_publicity_date" 
+                                       value="${publicity_date}" />
+                            </c:otherwise>
+                        </c:choose>
+                        <button class="btn btn-warning" type="button" id="lc_btn_update_publication_date"
+                            <c:if test="${(not empty fn:trim(publicity_date) and publicity_date ne 'null') and not fn:contains(publicity_date, '-')}">
+                                disabled
+                            </c:if>>
+                            <i class="fas fa-save me-1"></i>
+                            Update
+                        </button>
+                    </div>
+                    <small class="form-text text-muted mt-1">
+                        Select the date when it was published
+                    </small>
+                </div>
+
+                <hr class="text-muted">
+                
+                <!-- Send for Publication Button -->
+                <div class="mb-4 mt-2">
+                    <button class="btn btn-primary w-100 py-3" id="lc_btn_add_to_publication_list"
+                        <c:if test="${(not empty fn:trim(publicity_date) and publicity_date != 'null') and not fn:contains(publicity_date, '-')}">
+                            disabled
+                        </c:if>>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="me-3">
+                                <i class="fas fa-upload fa-lg"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fw-medium">Send for Publication</div>
+                                <small class="d-block opacity-75">Submit for public notice publishing</small>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <!-- <i class="fas fa-clock me-1"></i>
+                        Current Date: <span id="currentDateDisplay"></span> -->
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-info" id="btn_view_publication_schedule">
+                            <i class="fas fa-list me-1"></i>
+                            View Schedule
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+  </div>
+
+  <div class="modal fade effect-scale modal-blur" id="send_for_title_plan_preparation" tabindex="-1"
+     aria-labelledby="send_for_title_plan_preparation_label" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+     <div class="modal-content border-0 shadow-lg">
+        
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+           <h5 class="modal-title text-white" id="send_for_title_plan_preparation_label">
+              <i class="fas fa-map-marked-alt me-2"></i>
+              Title Plan Preparation
+           </h5>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <input  id="gid_pl_smd" name="gid_pl_smd" type="hidden" value="0" >
+            <input  id="lc_txt_transaction_number_pl_smd" name="lc_txt_transaction_number_pl_smd" type="hidden" value="0" >
+            <!-- Status Indicator -->
+            <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <div>
+                        <span class="fw-medium">Plan Status:</span>
+                        <span class="badge ms-2 ${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-') ? 'bg-success' : 'bg-warning'}">
+                            ${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-') ? 'Completed' : 'Pending'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+           
+            <!-- Form Fields -->
+            <div class="mb-4">
+                <label for="txt_lc_plan_no_pl_smd" class="form-label fw-medium">
+                    <i class="fas fa-hashtag me-1"></i>
+                    Plan Number
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-map"></i>
+                    </span>
+                    <c:choose>
+                        <c:when test="${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-')}">
+                            <input type="text" class="form-control bg-light" id="txt_lc_plan_no_pl_smd" 
+                                   value="${plan_no}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="txt_lc_plan_no_pl_smd" 
+                                   value="${plan_no}" placeholder="Enter plan number" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <small class="form-text text-muted mt-1">Unique identifier for the title plan</small>
+            </div>
+            
+            <div class="mb-4">
+                <label for="txt_lc_registry_mapref_pl_smd" class="form-label fw-medium">
+                    <i class="fas fa-map-pin me-1"></i>
+                    Registry Map Reference
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <c:choose>
+                        <c:when test="${not empty registry_mapref and registry_mapref != 'null' and not fn:contains(registry_mapref, '-')}">
+                            <input type="text" class="form-control bg-light" id="txt_lc_registry_mapref_pl_smd" 
+                                   value="${registry_mapref}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="txt_lc_registry_mapref_pl_smd" 
+                                   value="${registry_mapref}" placeholder="Enter registry map reference" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <small class="form-text text-muted mt-1">Official map reference from registry</small>
+            </div>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label for="txt_cc_no_pl_smd" class="form-label fw-medium">
+                        <i class="fas fa-file-contract me-1"></i>
+                        CC Number
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">CC</span>
+                        <c:choose>
+                            <c:when test="${not empty cc_no and cc_no != 'null' and not fn:contains(cc_no, '-')}">
+                                <input type="text" class="form-control bg-light" id="txt_cc_no_pl_smd" 
+                                       value="${cc_no}" readonly />
+                            </c:when>
+                            <c:otherwise>
+                                <input type="text" class="form-control" id="txt_cc_no_pl_smd" 
+                                       value="${cc_no}" placeholder="CC number" />
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="ltr_plan_no_pl_smd" class="form-label fw-medium">
+                        <i class="fas fa-file-signature me-1"></i>
+                        LTR Number
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">LTR</span>
+                        <c:choose>
+                            <c:when test="${not empty ltr_plan_no and ltr_plan_no != 'null' and not fn:contains(ltr_plan_no, '-')}">
+                                <input type="text" class="form-control bg-light" id="ltr_plan_no_pl_smd" 
+                                       value="${ltr_plan_no}" readonly />
+                            </c:when>
+                            <c:otherwise>
+                                <input type="text" class="form-control" id="ltr_plan_no_pl_smd" 
+                                       value="${ltr_plan_no}" placeholder="LTR number" />
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Update Button -->
+            <div class="mt-4">
+                <button class="btn btn-primary w-100 py-3" id="btn_save_lrd_title_plan_update_details_smd_new_update">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="me-3">
+                            <i class="fas fa-save fa-lg"></i>
+                        </div>
+                        <div class="text-start">
+                            <div class="fw-medium">
+                                <c:choose>
+                                    <c:when test="${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-')}">
+                                        Update Plan Details
+                                    </c:when>
+                                    <c:otherwise>
+                                        Save Plan Details
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <small class="d-block opacity-75">Save all plan information</small>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+            <!-- Help Text -->
+            <div class="alert alert-light border mt-4">
+                <div class="d-flex">
+                    <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
+                    <div>
+                        <h6 class="alert-heading mb-2">Instructions</h6>
+                        <p class="small mb-0">
+                            Update the plan information if the title plan has already been prepared.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="modal-footer bg-light">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <div class="text-muted small">
+                    <i class="fas fa-history me-1"></i>
+                    Last updated: <span id="planLastUpdated">
+                        <c:choose>
+                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
+                            <c:otherwise>Never</c:otherwise>
+                        </c:choose>
+                    </span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Close
+                    </button>
+                    <!-- <button type="button" class="btn btn-outline-info" id="btn_view_plan_preview">
+                        <i class="fas fa-eye me-1"></i>
+                        Preview
+                    </button> -->
+                </div>
+            </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="check_for_objection" tabindex="-1"
+     aria-labelledby="check_for_objection_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="check_for_objection_label">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Check for Objection
+                    <span class="badge bg-white text-danger ms-2" id="objectionCount">${fn:length(case_objection)}</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Objection Summary Card -->
+                <div class="card border-danger mb-4">
+                    <div class="card-header bg-danger bg-opacity-10 py-3 border-danger">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-clipboard-list text-danger me-2"></i>
+                                Objection Summary
+                            </h6>
+                            <button type="button" class="btn btn-outline-danger btn-sm" id="btn_add_new_objection"
+                                    data-bs-toggle="modal" data-bs-target="#newObjectionModal">
+                                <i class="fas fa-plus me-1"></i>
+                                Add New Objection
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-user-times text-danger"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Total Objectors</div>
+                                        <div class="h5 mb-0" id="totalObjectors">${fn:length(case_objection)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-clock text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Pending</div>
+                                        <div class="h5 mb-0" id="pendingObjections">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Resolved</div>
+                                        <div class="h5 mb-0" id="resolvedObjections">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Objections Table -->
+                <div class="card border">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-list text-primary me-2"></i>
+                            Objection Details
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="15%">Objector</th>
+                                        <th width="20%">Address</th>
+                                        <th width="10%">Contact</th>
+                                        <th width="20%">Reasons</th>
+                                        <th width="20%">Remarks</th>
+                                        <th width="15%" class="text-center">Status/Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${case_objection}" var="case_objection_row" varStatus="loop">
+                                        <tr class="${case_objection_row.status == 'pending' ? 'table-warning' : case_objection_row.status == 'resolved' ? 'table-success' : ''}">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-user text-danger"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-medium">${case_objection_row.objector_name}</div>
+                                                        <small class="text-muted">ID: ${case_objection_row.id}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-truncate" style="max-width: 200px;" 
+                                                     data-bs-toggle="tooltip" data-bs-placement="top" 
+                                                     title="${case_objection_row.objector_address}">
+                                                    ${case_objection_row.objector_address}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info bg-opacity-10 text-info">
+                                                    ${case_objection_row.objector_contact}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="text-truncate" style="max-width: 200px;" 
+                                                     data-bs-toggle="tooltip" data-bs-placement="top" 
+                                                     title="${case_objection_row.reasons}">
+                                                    ${case_objection_row.reasons}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-truncate" style="max-width: 200px;" 
+                                                     data-bs-toggle="tooltip" data-bs-placement="top" 
+                                                     title="${case_objection_row.remarks}">
+                                                    ${case_objection_row.remarks}
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-outline-danger btn-sm"
+                                                            data-bs-toggle="modal" data-bs-target="#newObjectionModal"
+                                                            data-action="edit"
+                                                            data-target-id="${case_objection_row.id}"
+                                                            data-objector_name="${case_objection_row.objector_name}"
+                                                            data-objector_address="${case_objection_row.objector_address}"
+                                                            data-objector_contact="${case_objection_row.objector_contact}"
+                                                            data-reasons="${case_objection_row.reasons}"
+                                                            data-remarks="${case_objection_row.remarks}"
+                                                            data-status="${case_objection_row.status}"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Objection">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm btn-view-objection"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="View Details"
+                                                            data-objector-name="${case_objection_row.objector_name}"
+                                                            data-reasons="${case_objection_row.reasons}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-success btn-sm btn-resolve-objection"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as Resolved"
+                                                            data-objection-id="${case_objection_row.id}">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <span class="badge ${case_objection_row.status == 'pending' ? 'bg-warning' : case_objection_row.status == 'resolved' ? 'bg-success' : 'bg-secondary'}">
+                                                        ${case_objection_row.status}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <c:if test="${empty case_objection}">
+                            <div class="text-center py-5">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle fa-3x text-success"></i>
+                                </div>
+                                <h5 class="text-muted">No Objections Found</h5>
+                                <p class="text-muted small mb-0">This application has no pending objections</p>
+                                <button type="button" class="btn btn-outline-primary btn-sm mt-3" 
+                                        data-bs-toggle="modal" data-bs-target="#newObjectionModal">
+                                    <i class="fas fa-plus me-1"></i>
+                                    Add First Objection
+                                </button>
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <span id="objectionSummary">
+                            <c:choose>
+                                <c:when test="${empty case_objection}">
+                                    No objections recorded
+                                </c:when>
+                                <c:when test="${fn:length(case_objection) == 1}">
+                                    1 objection recorded
+                                </c:when>
+                                <c:otherwise>
+                                    ${fn:length(case_objection)} objections recorded
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" id="btn_export_objections">
+                            <i class="fas fa-download me-1"></i>
+                            Export
+                        </button>
+                        <!-- <button type="button" class="btn btn-success" id="btn_mark_all_resolved">
+                            <i class="fas fa-check-double me-1"></i>
+                            Mark All Resolved
+                        </button> -->
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="view_parcel_and_transaction" tabindex="-1"
+     aria-labelledby="view_parcel_and_transaction_label" aria-hidden="true" data-bs-backdrop="static">
+     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="view_parcel_and_transaction_label">
+                    <i class="fas fa-map-marked-alt me-2"></i>
+                    View Parcel and Transaction
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Summary Card -->
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-hashtag text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Case Number</div>
+                                        <div class="h6 mb-0">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-file-contract text-success"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Job Number</div>
+                                        <div class="h6 mb-0">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-user text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Applicant</div>
+                                        <div class="h6 mb-0">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-tabs tab-style-2 nav-justified mb-3 d-sm-flex d-block" id="parcelTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" 
+                                data-bs-target="#details" type="button" role="tab">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Transaction Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="location-tab" data-bs-toggle="tab" 
+                                data-bs-target="#location" type="button" role="tab">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Location Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="financial-tab" data-bs-toggle="tab" 
+                                data-bs-target="#financial" type="button" role="tab">
+                            <i class="fas fa-money-bill-wave me-2"></i>
+                            Financial Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="map-tab" data-bs-toggle="tab" 
+                                data-bs-target="#map-" type="button" role="tab">
+                            <i class="fas fa-map me-2"></i>
+                            Map Visualization
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Tab Content -->
+                <div class="tab-content" id="parcelTabContent">
+                    
+                    <!-- Transaction Details Tab -->
+                    <div class="tab-pane fade show active" id="details" role="tabpanel">
+                        <div class="row g-3">
+                            <!-- Column 1 -->
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-file-alt me-2"></i>
+                                            Basic Information
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Transaction Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Regional Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Document</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Registration</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Nature of Instrument</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Type of Interest</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Column 2 -->
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-calendar-alt me-2"></i>
+                                            Term & Renewal
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Term</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(term) ? '--' : fn:trim(term)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Type of Use</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(type_of_use) ? '--' : fn:trim(type_of_use)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Commencement Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Option for Renewal</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(renewal_term) ? '--' : fn:trim(renewal_term)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Certificate Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Issue</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Column 3 -->
+                            <div class="col-12">
+                                <div class="card border">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-certificate me-2"></i>
+                                            Registration & Planning Details
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Plan Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(plan_no) ? '--' : fn:trim(plan_no)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">LTR Plan Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(ltr_plan_no) ? '--' : fn:trim(ltr_plan_no)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Registry Map Ref</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registry_mapref) ? '--' : fn:trim(registry_mapref)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">CC Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(cc_no) ? '--' : fn:trim(cc_no)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">GLPIN</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Interest Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Sub-Interest Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Registered Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Type of Plotting</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(smd_type_of_plotting) ? '--' : fn:trim(smd_type_of_plotting)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">SMD Reference Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(smd_reference_number) ? '--' : fn:trim(smd_reference_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Publication Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Location Details Tab -->
+                    <div class="tab-pane fade" id="location" role="tabpanel">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-globe-africa me-2"></i>
+                                            Location Information
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Region</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">District</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label small text-muted mb-1">Locality</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(locality) ? '--' : fn:trim(locality)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Size of Land</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-landmark me-2"></i>
+                                            Registration Details
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Registration District</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registration_district_number) ? '--' : fn:trim(registration_district_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Registration Section</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registration_section_number) ? '--' : fn:trim(registration_section_number)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Registration Block</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registration_block_number) ? '--' : fn:trim(registration_block_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Created Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Modified Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Details Tab -->
+                    <div class="tab-pane fade" id="financial" role="tabpanel">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-calculator me-2"></i>
+                                            Assessment Values
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label small text-muted mb-1">Assessed Value</label>
+                                                <div class="h5 fw-bold text-primary">${empty fn:trim(assessed_value) ? '--' : fn:trim(assessed_value)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Stamp Duty Payable</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(stamp_duty_payable) ? '--' : fn:trim(stamp_duty_payable)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Consideration in Document</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee) ? '--' : fn:trim(consideration_fee)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Consideration Currency</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Adopted Currency Rate</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_adopted_rate) ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Visualization Tab -->
+                    <div class="tab-pane fade" id="map-" role="tabpanel">
+                      <div class="row g-3"></div>
+                        <div class="card border h-100">
+                            <div class="card-header bg-light py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-map me-2"></i>
+                                        Map Visualization
+                                    </h6>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                id="lc_btn_visualise_wkt_" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Visualise Polygon">
+                                            <i class="fas fa-map me-1"></i>
+                                            Visualise
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" 
+                                                id="lc_btn_visualise_search" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Visualise Search">
+                                            <i class="fas fa-search me-1"></i>
+                                            Search
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="lc_btnprintmap" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Print Map">
+                                            <i class="fas fa-print me-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                
+                                <!-- WKT Polygon Input -->
+                                <div class="mb-3">
+                                    <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
+                                        <i class="fas fa-draw-polygon me-1"></i>
+                                        WKT Polygon
+                                    </label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="lc_bl_wkt_polygon" 
+                                               name="lc_bl_wkt_polygon" type="text" value="${parcel_wkt}"
+                                               placeholder="WKT polygon coordinates">
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                id="btn_copy_wkt" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Copy WKT">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Controls -->
+                                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                    <div class="d-flex align-items-center me-3">
+                                        <label class="me-2 mb-0">Scale:</label>
+                                        <div class="input-group input-group-sm me-2" style="width: 120px;">
+                                            <input class="form-control form-control-sm" id="lc_scale_value_e" 
+                                                   name="lc_scale_value_e" type="text" placeholder="Custom scale">
+                                        </div>
+                                        <select class="form-select form-select-sm" name="lc_scale_value" 
+                                                id="lc_scale_value" style="width: 120px;">
+                                            <option value="500">1:500</option>
+                                            <option value="1107">1:1,107</option>
+                                            <option value="1250">1:1,250</option>
+                                            <option value="2140">1:2,140</option>
+                                            <option value="2215">1:2,215</option>
+                                            <option value="2500">1:2,500</option>
+                                            <option value="2670">1:2,670</option>
+                                            <option value="2825">1:2,825</option>
+                                            <option value="5000" selected>1:5,000</option>
+                                            <option value="10000">1:10,000</option>
+                                            <option value="15000">1:15,000</option>
+                                            <option value="20000">1:20,000</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check me-2">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   checked id="lc_lockmapscale">
+                                            <label class="form-check-label small mb-0" for="lc_lockmapscale">
+                                                Lock Scale
+                                            </label>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" 
+                                                id="lc_btn_scale_zoom" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Zoom to Scale">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="ms-auto btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_zoom_full">
+                                            <i class="fas fa-expand"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_zoom_out">
+                                            <i class="fas fa-search-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_zoom_in">
+                                            <i class="fas fa-search-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Container -->
+                                <div class="mt-3 w-100">
+                                  <div id="lc-map__"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Confirm Transaction Button -->
+                <div class="mt-4">
+                    <button type="button" id="btn_confirm_registration_transaction" 
+                            class="btn btn-success w-100 py-3 d-none">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-check-circle fa-lg me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-medium">Confirm Transaction</div>
+                                <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Viewing details for transaction: ${transaction_number}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_details">
+                            <i class="fas fa-download me-1"></i>
+                            Export
+                        </button>
+                        <button type="button" class="btn btn-outline-info" id="btn_print_details">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="enter_root_of_title" tabindex="-1"
+     aria-labelledby="enter_root_of_title_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="enter_root_of_title_label">
+                    <i class="fas fa-book me-2"></i>
+                    Root of Title Register
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-tabs mb-4" id="rootOfTitleTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="proprietorship-tab" data-bs-toggle="tab" 
+                                data-bs-target="#proprietorship" type="button" role="tab">
+                            <i class="fas fa-user-tie me-2"></i>
+                            Proprietorship
+                            <span class="badge bg-primary ms-2">${fn:length(lrd_proprietorship_section)}</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="memorial-tab" data-bs-toggle="tab" 
+                                data-bs-target="#memorial" type="button" role="tab">
+                            <i class="fas fa-file-signature me-2"></i>
+                            Memorials
+                            <span class="badge bg-primary ms-2">${fn:length(lrd_memorials_section)}</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reservation-tab" data-bs-toggle="tab" 
+                                data-bs-target="#reservation" type="button" role="tab">
+                            <i class="fas fa-flag me-2"></i>
+                            Reservations
+                            <span class="badge bg-primary ms-2">${fn:length(lrd_reservation_section)}</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="encumbrance-tab" data-bs-toggle="tab" 
+                                data-bs-target="#encumbrance" type="button" role="tab">
+                            <i class="fas fa-lock me-2"></i>
+                            Encumbrances
+                            <span class="badge bg-primary ms-2">${fn:length(lrd_encumbrances_section)}</span>
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Tab Content -->
+                <div class="tab-content" id="rootOfTitleTabContent">
+                    
+                    <!-- Proprietorship Tab -->
+                    <div class="tab-pane fade show active" id="proprietorship" role="tabpanel">
+                        <div class="card border">
+                            <div class="card-header bg-primary bg-opacity-10 border-primary">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="fas fa-user-tie me-2"></i>
+                                        Proprietorship Details
+                                    </h6>
+                                    <button type="button" class="btn btn-primary btn-sm newProprietorshipModal">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Proprietor
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_proprietorship_details_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Registered No.</th>
+                                                <th>Proprietors</th>
+                                                <th>Date of Instrument</th>
+                                                <th>Nature of Instrument</th>
+                                                <th>Date of Registration</th>
+                                                <th>Parties</th>
+                                                <th>Price Paid</th>
+                                                <th>Term</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${lrd_proprietorship_section}" var="proprietorship_section">
+                                                <tr>
+                                                    <td>
+                                                        <span class="badge bg-info bg-opacity-10 text-info">
+                                                            ${proprietorship_section.ps_registration_number}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fas fa-user text-muted me-2"></i>
+                                                            <span>${proprietorship_section.ps_proprietor}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>${proprietorship_section.ps_date_of_instrument}</td>
+                                                    <td>
+                                                        <span class="badge bg-secondary">
+                                                            ${proprietorship_section.ps_nature_of_instrument}
+                                                        </span>
+                                                    </td>
+                                                    <td>${proprietorship_section.ps_date_of_registration}</td>
+                                                    <td>
+                                                        <div class="small">
+                                                            <div><strong>From:</strong> ${proprietorship_section.ps_transferor}</div>
+                                                            <div><strong>To:</strong> ${proprietorship_section.ps_transferee}</div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="fw-medium text-success">${proprietorship_section.ps_price_paid}</span>
+                                                    </td>
+                                                    <td>${proprietorship_section.ps_term}</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-primary btn-sm editProprietorshipModal"
+                                                                data-target-id="${proprietorship_section.ps_id}"
+                                                                data-ps_id="${proprietorship_section.ps_id}"
+                                                                data-ps_case_number="${proprietorship_section.ps_case_number}"
+                                                                data-ps_registration_number="${proprietorship_section.ps_registration_number}"
+                                                                data-ps_proprietor="${proprietorship_section.ps_proprietor}"
+                                                                data-ps_date_of_instrument="${proprietorship_section.ps_date_of_instrument}"
+                                                                data-ps_nature_of_instrument="${proprietorship_section.ps_nature_of_instrument}"
+                                                                data-ps_date_of_registration="${proprietorship_section.ps_date_of_registration}"
+                                                                data-ps_transferor="${proprietorship_section.ps_transferor}"
+                                                                data-ps_transferee="${proprietorship_section.ps_transferee}"
+                                                                data-ps_price_paid="${proprietorship_section.ps_price_paid}"
+                                                                data-ps_remarks="${proprietorship_section.ps_remarks}"
+                                                                data-ps_signature="${proprietorship_section.ps_signature}"
+                                                                data-ps_term="${proprietorship_section.ps_term}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Proprietor">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Memorials Tab -->
+                    <div class="tab-pane fade" id="memorial" role="tabpanel">
+                        <div class="card border">
+                            <div class="card-header bg-danger bg-opacity-10 border-danger">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 text-danger">
+                                        <i class="fas fa-file-signature me-2"></i>
+                                        Memorial Details
+                                    </h6>
+                                    <button type="button" class="btn btn-danger btn-sm newMemorialsModal">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Memorial
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_memorial_details_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Registered No</th>
+                                                <th>Memorials</th>
+                                                <th>Date of Instrument</th>
+                                                <th>Date of Registration</th>
+                                                <th>Entry No</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${lrd_memorials_section}" var="memorials_section">
+                                                <tr>
+                                                    <td>
+                                                        <span class="badge bg-danger bg-opacity-10 text-danger">
+                                                            ${memorials_section.m_registered_no}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-truncate" style="max-width: 200px;">
+                                                            ${memorials_section.m_memorials}
+                                                        </div>
+                                                    </td>
+                                                    <td>${memorials_section.m_date_of_instrument}</td>
+                                                    <td>${memorials_section.m_date_of_registration}</td>
+                                                    <td>
+                                                        <span class="badge bg-secondary">${memorials_section.m_entry_number}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-danger btn-sm editMemorialsModal"
+                                                                data-target-id="${memorials_section.mid}"
+                                                                data-mid="${memorials_section.mid}"
+                                                                data-m_case_number="${memorials_section.m_case_number}"
+                                                                data-m_registered_no="${memorials_section.m_registered_no}"
+                                                                data-m_memorials="${memorials_section.m_memorials}"
+                                                                data-m_date_of_registration="${memorials_section.m_date_of_registration}"
+                                                                data-m_date_of_instrument="${memorials_section.m_date_of_instrument}"
+                                                                data-m_back="${memorials_section.m_back}"
+                                                                data-m_remarks="${memorials_section.m_remarks}"
+                                                                data-m_entry_number="${memorials_section.m_entry_number}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Memorial">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reservations Tab -->
+                    <div class="tab-pane fade" id="reservation" role="tabpanel">
+                        <div class="card border">
+                            <div class="card-header bg-success bg-opacity-10 border-success">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 text-success">
+                                        <i class="fas fa-flag me-2"></i>
+                                        Reservation Details
+                                    </h6>
+                                    <button type="button" class="btn btn-success btn-sm newReservationModal">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Reservation
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_reservation_details_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Reservation Description</th>
+                                                <th>Created By</th>
+                                                <th>Created On</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${lrd_reservation_section}" var="reservation_section">
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-truncate" style="max-width: 250px;">
+                                                            ${reservation_section.reservation_description}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fas fa-user-circle text-muted me-2"></i>
+                                                            <span>${reservation_section.modified_by}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>${reservation_section.created_date}</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-success btn-sm editReservationModal"
+                                                                data-rs_id="${reservation_section.rs_id}"
+                                                                data-rs_reservation_description="${reservation_section.reservation_description}"
+                                                                data-rs_case_number="${reservation_section.case_number}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Reservation">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Encumbrances Tab -->
+                    <div class="tab-pane fade" id="encumbrance" role="tabpanel">
+                        <div class="card border">
+                            <div class="card-header bg-warning bg-opacity-10 border-warning">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 text-warning">
+                                        <i class="fas fa-lock me-2"></i>
+                                        Encumbrance Details
+                                    </h6>
+                                    <button type="button" class="btn btn-warning btn-sm newEncumberancesModal">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Encumbrance
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_registration_encumbrance_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Registered Number</th>
+                                                <th>Date of Instrument</th>
+                                                <th>Date of Registration</th>
+                                                <th>Memorials</th>
+                                                <th>Entry No.</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${lrd_encumbrances_section}" var="lrd_encumbrances_section_row">
+                                                <tr>
+                                                    <td>
+                                                        <span class="badge bg-warning bg-opacity-10 text-warning">
+                                                            ${lrd_encumbrances_section_row.es_registered_number}
+                                                        </span>
+                                                    </td>
+                                                    <td>${lrd_encumbrances_section_row.es_date_of_instrument}</td>
+                                                    <td>${lrd_encumbrances_section_row.es_date_of_registration}</td>
+                                                    <td>
+                                                        <div class="text-truncate" style="max-width: 200px;">
+                                                            ${lrd_encumbrances_section_row.es_memorials}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-secondary">${lrd_encumbrances_section_row.es_entry_number}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-warning btn-sm editEncumberancesModal"
+                                                                data-es_id="${lrd_encumbrances_section_row.es_id}"
+                                                                data-es_case_number="${lrd_encumbrances_section_row.es_case_number}"
+                                                                data-es_registered_number="${lrd_encumbrances_section_row.es_registered_number}"
+                                                                data-es_date_of_registration="${lrd_encumbrances_section_row.es_date_of_registration}"
+                                                                data-es_date_of_instrument="${lrd_encumbrances_section_row.es_date_of_instrument}"
+                                                                data-es_back="${lrd_encumbrances_section_row.es_back}"
+                                                                data-es_forward="${lrd_encumbrances_section_row.es_forward}"
+                                                                data-es_remarks="${lrd_encumbrances_section_row.es_remarks}"
+                                                                data-es_memorials="${lrd_encumbrances_section_row.es_memorials}"
+                                                                data-es_signature="${lrd_encumbrances_section_row.es_signature}"
+                                                                data-es_entry_number="${lrd_encumbrances_section_row.es_entry_number}"
+                                                                data-es_action_on_form_encumbrances="edit"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Encumbrance">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Register Description Section -->
+                <div class="card border mt-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>
+                            Register: Description of Land
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="lc_description_of_land_lrd" class="form-label fw-medium">Land Description</label>
+                            <textarea id="lc_description_of_land_lrd" name="lc_description_of_land_lrd" 
+                                      class="form-control" rows="5" required>${smd_region}</textarea>
+                            <div class="form-text">Complete description of the land as it appears in the register</div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_save_register_description" 
+                                        id="lc_btn_save_register_description" class="btn btn-primary w-100">
+                                    <i class="fas fa-save me-2"></i>
+                                    Save Register Description
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_save_register_description" 
+                                        id="lc_btn_activate_final_register_" class="btn btn-success w-100">
+                                    <i class="fas fa-file-export me-2"></i>
+                                    Generate Final Register
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Root of Title Management
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_root_title">
+                            <i class="fas fa-download me-1"></i>
+                            Export
+                        </button> -->
+                        <button type="button" class="btn btn-outline-info" id="btn_print_root_title">
+                            <i class="fas fa-print me-1"></i>
+                            Print Preview
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newProprietorshipModal" tabindex="-1" aria-labelledby="newProprietorshipModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="newProprietorshipModalLabel">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Proprietorship Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_proprietory">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="ps_id" name="ps_id" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-4" style="height: 100vh;">
+                        
+                        <!-- Left Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+
+                          <div class="row g-4">
+                            <div class="col-lg-6">
+                              <!-- Case Number -->
+                              <div class="mb-3">
+                                  <label for="ps_case_number" class="form-label fw-medium">
+                                      <i class="fas fa-hashtag me-1"></i>
+                                      Case Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-folder"></i>
+                                      </span>
+                                      <input type="text" name="ps_case_number" id="ps_case_number" 
+                                            value="${case_number}" class="form-control" required readonly>
+                                  </div>
+                              </div>
+                              
+                              <!-- Registered Number -->
+                              <div class="mb-3">
+                                  <label for="ps_registration_number" class="form-label fw-medium">
+                                      <i class="fas fa-certificate me-1"></i>
+                                      Registered Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-hashtag"></i>
+                                      </span>
+                                      <input type="text" name="ps_registration_number" id="ps_registration_number" 
+                                            value="${registered_number}" class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Proprietor/Grantee -->
+                              <div class="mb-3">
+                                  <label for="ps_proprietor" class="form-label fw-medium">
+                                      <i class="fas fa-user me-1"></i>
+                                      Proprietor/Grantee
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-user-check"></i>
+                                      </span>
+                                      <input type="text" name="ps_proprietor" id="ps_proprietor" 
+                                            value="${ar_name}" class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Date of Instrument -->
+                              <div class="mb-3">
+                                  <label for="ps_date_of_instrument" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-alt me-1"></i>
+                                      Date of Instrument
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar"></i>
+                                      </span>
+                                      <input type="date" name="ps_date_of_instrument" id="ps_date_of_instrument" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Nature of Instrument -->
+                              <div class="mb-3">
+                                  <label for="ps_nature_of_instrument" class="form-label fw-medium">
+                                      <i class="fas fa-file-contract me-1"></i>
+                                      Nature of Instrument
+                                  </label>
+                                  <textarea id="ps_nature_of_instrument" name="ps_nature_of_instrument" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Describe the nature of the instrument"></textarea>
+                                  <div class="form-text">
+                                      <i class="fas fa-lightbulb me-1"></i>
+                                      Examples: Lease, Conveyance, Mortgage, Gift, etc.
+                                  </div>
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-6">
+                              <!-- Date of Registration -->
+                              <div class="mb-3">
+                                  <label for="ps_date_of_registration" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                      Date of Registration
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar-day"></i>
+                                      </span>
+                                      <input type="date" name="ps_date_of_registration" id="ps_date_of_registration" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Term -->
+                              <div class="mb-3">
+                                  <label for="ps_term" class="form-label fw-medium">
+                                      <i class="fas fa-clock me-1"></i>
+                                      Term
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-history"></i>
+                                      </span>
+                                      <input type="text" name="ps_term" id="ps_term" 
+                                            class="form-control" required 
+                                            placeholder="e.g., 50 years, Perpetual">
+                                  </div>
+                              </div>
+                              
+                              <!-- Grantor -->
+                              <div class="mb-3">
+                                  <label for="ps_transferor" class="form-label fw-medium">
+                                      <i class="fas fa-user-minus me-1"></i>
+                                      Grantor (Transferor)
+                                  </label>
+                                  <textarea name="ps_transferor" id="ps_transferor" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Enter grantor details"></textarea>
+                              </div>
+                              
+                              <!-- Grantee -->
+                              <div class="mb-3">
+                                  <label for="ps_transferee" class="form-label fw-medium">
+                                      <i class="fas fa-user-plus me-1"></i>
+                                      Grantee (Transferee)
+                                  </label>
+                                  <textarea name="ps_transferee" id="ps_transferee" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Enter grantee details">${ar_name}</textarea>
+                              </div>
+                              
+                              <!-- Price Paid -->
+                              <div class="mb-3">
+                                  <label for="ps_price_paid" class="form-label fw-medium">
+                                      <i class="fas fa-money-bill-wave me-1"></i>
+                                      Price Paid
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-dollar-sign"></i>
+                                      </span>
+                                      <input type="text" name="ps_price_paid" id="ps_price_paid" 
+                                            class="form-control" required 
+                                            placeholder="Enter amount">
+                                  </div>
+                              </div>
+                              
+                            </div>
+                            <div class="col-12">
+                                
+                                <!-- Remarks -->
+                                <div class="mb-3">
+                                    <label for="ps_remarks" class="form-label fw-medium">
+                                        <i class="fas fa-sticky-note me-1"></i>
+                                        Remarks
+                                    </label>
+                                    <textarea name="ps_remarks" id="ps_remarks" 
+                                              class="form-control" rows="3" required
+                                              placeholder="Additional remarks or notes"></textarea>
+                                </div>
+                                
+                                <!-- Signed By -->
+                                <div class="mb-3">
+                                    <label for="ps_signature" class="form-label fw-medium">
+                                        <i class="fas fa-signature me-1"></i>
+                                        Signed By
+                                    </label>
+                                    <textarea name="ps_signature" id="ps_signature" 
+                                              class="form-control" rows="2" required
+                                              placeholder="Names and signatures of authorized persons"></textarea>
+                                </div>
+                                
+                            </div>
+                          </div>
+
+                    
+                          <!-- Modal Footer -->
+                          <div class="modal-footer bg-light border-top mt-4">
+                              <div class="d-flex justify-content-between w-100 align-items-center">
+                                  <div>
+                                      <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                              data-action_type='proprietor'>
+                                          <i class="fas fa-trash me-1"></i>
+                                          Delete
+                                      </button> -->
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                          <i class="fas fa-times me-1"></i>
+                                          Cancel
+                                      </button>
+                                      <button type="submit" id="btn_proprietorship" class="btn btn-primary">
+                                          <i class="fas fa-save me-1"></i>
+                                          Save Changes
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+                            
+                            <div class="_gated_workflow_documents"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newMemorialsModal" tabindex="-1" aria-labelledby="newMemorialsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="newMemorialsModalLabel">
+                    <i class="fas fa-file-signature me-2"></i>
+                    Memorials Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_memorials">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="mid" name="mid" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-4" style="height: 100vh;">
+                        
+                        <!-- Left Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+
+                           <div class="row g-4">
+                            <div class="col-lg-6">
+                              <!-- Case Number -->
+                              <div class="mb-3">
+                                  <label for="m_case_number" class="form-label fw-medium">
+                                      <i class="fas fa-hashtag me-1"></i>
+                                      Case Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-folder"></i>
+                                      </span>
+                                      <input type="text" name="m_case_number" id="m_case_number" 
+                                            value="${case_number}" class="form-control" readonly>
+                                  </div>
+                              </div>
+                              
+                              <!-- Registered Number -->
+                              <div class="mb-3">
+                                  <label for="m_registered_no" class="form-label fw-medium">
+                                      <i class="fas fa-certificate me-1"></i>
+                                      Registered Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-hashtag"></i>
+                                      </span>
+                                      <input type="text" name="m_registered_no" id="m_registered_no" 
+                                            value="${registered_number}" class="form-control" required
+                                            placeholder="Enter registered number">
+                                  </div>
+                              </div>
+                              
+                              <!-- Entry Number -->
+                              <div class="mb-3">
+                                  <label for="m_entry_number" class="form-label fw-medium">
+                                      <i class="fas fa-list-ol me-1"></i>
+                                      Entry Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-sort-numeric-up"></i>
+                                      </span>
+                                      <input type="text" name="m_entry_number" id="m_entry_number" 
+                                            class="form-control" required
+                                            placeholder="Enter entry number">
+                                  </div>
+                              </div>
+                              
+                              <!-- Date of Instrument -->
+                              <div class="mb-3">
+                                  <label for="m_date_of_instrument" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-alt me-1"></i>
+                                      Date of Instrument
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar"></i>
+                                      </span>
+                                      <input type="date" name="m_date_of_instrument" id="m_date_of_instrument" 
+                                            class="form-control" required>
+                                  </div>
+                                  <div class="form-text">Date when the instrument was executed</div>
+                              </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                              <!-- Date of Registration -->
+                              <div class="mb-3">
+                                  <label for="m_date_of_registration" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                      Date of Registration
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar-day"></i>
+                                      </span>
+                                      <input type="date" name="m_date_of_registration" id="m_date_of_registration" 
+                                            class="form-control" required>
+                                  </div>
+                                  <div class="form-text">Date when the memorial was registered</div>
+                              </div>
+                              
+                              <!-- Memorials -->
+                              <div class="mb-3">
+                                  <label for="m_memorials" class="form-label fw-medium">
+                                      <i class="fas fa-file-alt me-1"></i>
+                                      Memorials Text
+                                  </label>
+                                  <textarea name="m_memorials" id="m_memorials" 
+                                            class="form-control" rows="6" required
+                                            placeholder="Enter memorials text">
+  Subject to the reservations, exceptions, restrictions, restrictive covenants and conditions contained or referred to in a lease (a true copy of which is annexed hereto) made between (Grantor_Here) of the one part and ${ar_name} of the other part.</textarea>
+                                  <div class="form-text">
+                                      <i class="fas fa-info-circle me-1"></i>
+                                      Official memorial text describing the conditions and restrictions
+                                  </div>
+                              </div>
+                            </div>
+                        
+                            <!-- Full Width Fields -->
+                            <div class="col-12">
+                                
+                                <!-- Remarks -->
+                                <div class="mb-3">
+                                    <label for="m_remarks" class="form-label fw-medium">
+                                        <i class="fas fa-sticky-note me-1"></i>
+                                        Remarks
+                                    </label>
+                                    <textarea name="m_remarks" id="m_remarks" 
+                                              class="form-control" rows="3"
+                                              placeholder="Additional remarks or notes about this memorial"></textarea>
+                                    <div class="form-text">Optional notes for internal reference</div>
+                                </div>
+                                
+                            </div>
+                          </div>
+                    
+                          <!-- Modal Footer -->
+                          <div class="modal-footer bg-light border-top mt-4">
+                              <div class="d-flex justify-content-between w-100 align-items-center">
+                                  <div>
+                                      <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                              data-action_type='memorials' style="display: none;">
+                                          <i class="fas fa-trash me-1"></i>
+                                          Delete
+                                      </button> -->
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                          <i class="fas fa-times me-1"></i>
+                                          Cancel
+                                      </button>
+                                      <button type="submit" id="btn_memorials" class="btn btn-danger">
+                                          <i class="fas fa-save me-1"></i>
+                                          Save Memorial
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                            
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+                            <div class="_gated_workflow_documents"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newReservationModal" tabindex="-1" aria-labelledby="newReservationModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title text-white" id="newReservationModalLabel">
+                    <i class="fas fa-calendar-check me-2"></i>
+                    Reservation Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_reservation">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="rs_id" name="rs_id" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-3">
+                        
+                        <!-- Case Number -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="rs_case_number" class="form-label fw-medium">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    Case Number
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-folder"></i>
+                                    </span>
+                                    <input type="text" name="rs_case_number" id="rs_case_number" 
+                                          value="${case_number}" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reservation Description -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="rs_reservation_description" class="form-label fw-medium">
+                                    <i class="fas fa-file-alt me-1"></i>
+                                    Reservation Description
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-align-left"></i>
+                                    </span>
+                                    <textarea class="form-control" id="rs_reservation_description" 
+                                              rows="10" required
+                                              placeholder="Enter reservation description..."></textarea>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Provide detailed description of the reservation
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                        <!-- Optional delete button (hidden by default) -->
+                        <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                data-action_type='reservation' style="display: none;">
+                            <i class="fas fa-trash me-1"></i>
+                            Delete
+                        </button> -->
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="submit" id="btn_reservation_section" class="btn btn-primary" form="form_add_reservation">
+                            <i class="fas fa-save me-1"></i>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newEncumberancesModal" tabindex="-1" aria-labelledby="newEncumberancesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="newEncumberancesModalLabel">
+                    <i class="fas fa-lock me-2"></i>
+                    Encumbrances Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+
+            <div class="modal-body">
+                <form id="form_add_encumbrances">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="es_id" name="es_id" value="0">
+                    <input type="hidden" id="action_on_form_encumbrances" name="action_on_form_encumbrances">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-4" style="height: 100vh;">
+                        
+                        <!-- Left Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+
+                          <div class="row g-4">
+                            <div class="col-lg-6">
+                              <!-- Case Number -->
+                               <div class="mb-3">
+                                  <label for="es_case_number" class="form-label fw-medium">
+                                      <i class="fas fa-hashtag me-1"></i>
+                                      Case Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-folder"></i>
+                                      </span>
+                                      <input type="text" name="es_case_number" id="es_case_number" 
+                                            class="form-control" required readonly value="${case_number}">
+                                  </div>
+                              </div>
+                              
+                              <!-- Registered Number -->
+                              <div class="mb-3">
+                                  <label for="es_registered_number" class="form-label fw-medium">
+                                      <i class="fas fa-certificate me-1"></i>
+                                      Registered Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-hashtag"></i>
+                                      </span>
+                                      <input type="text" name="es_registered_number" id="es_registered_number" 
+                                            class="form-control" required
+                                            placeholder="Enter registered number">
+                                  </div>
+                              </div>
+                              
+                              <!-- Entry Number -->
+                              <div class="mb-3">
+                                  <label for="es_entry_number" class="form-label fw-medium">
+                                      <i class="fas fa-list-ol me-1"></i>
+                                      Entry Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-sort-numeric-up"></i>
+                                      </span>
+                                      <input type="text" name="es_entry_number" id="es_entry_number" 
+                                            class="form-control" required
+                                            placeholder="Enter entry number">
+                                  </div>
+                              </div>
+                              
+                              <!-- Date of Registration -->
+                              <div class="mb-3">
+                                  <label for="es_date_of_registration" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                      Date of Registration
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar-day"></i>
+                                      </span>
+                                      <input type="date" name="es_date_of_registration" id="es_date_of_registration" 
+                                            class="form-control" required>
+                                  </div>
+                                  <div class="form-text">Date when the encumbrance was registered</div>
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-6">
+                              <!-- Date of Instrument -->
+                                <div class="mb-3">
+                                  <label for="es_date_of_instrument" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-alt me-1"></i>
+                                      Date of Instrument
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar"></i>
+                                      </span>
+                                      <input type="date" name="es_date_of_instrument" id="es_date_of_instrument" 
+                                            class="form-control" required>
+                                  </div>
+                                  <div class="form-text">Date when the instrument was executed</div>
+                              </div>
+                              
+                              <!-- Memorials -->
+                              <div class="mb-3">
+                                  <label for="es_memorials" class="form-label fw-medium">
+                                      <i class="fas fa-file-alt me-1"></i>
+                                      Memorials
+                                  </label>
+                                  <textarea name="es_memorials" id="es_memorials" 
+                                            class="form-control" rows="4" required
+                                            placeholder="Describe the memorials or encumbrances"></textarea>
+                                  <div class="form-text">
+                                      <i class="fas fa-info-circle me-1"></i>
+                                      Description of memorials or encumbrances on the property
+                                  </div>
+                              </div>
+                              
+                            </div>
+                            <!-- Full Width Fields - Back & Forward -->
+                            <div class="col-12">
+                                <div class="row g-4">
+                                    <div class="col-lg-6">
+                                        <!-- Back -->
+                                        <div class="mb-3">
+                                            <label for="es_back" class="form-label fw-medium">
+                                                <i class="fas fa-arrow-left me-1"></i>
+                                                Back (Source References)
+                                            </label>
+                                            <textarea name="es_back" id="es_back" 
+                                                      class="form-control" rows="3" required
+                                                      placeholder="References to previous entries or sources"></textarea>
+                                            <div class="form-text">References to previous registry entries</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <!-- Forward -->
+                                        <div class="mb-3">
+                                            <label for="es_forward" class="form-label fw-medium">
+                                                <i class="fas fa-arrow-right me-1"></i>
+                                                Forward (Forward References)
+                                            </label>
+                                            <textarea name="es_forward" id="es_forward" 
+                                                      class="form-control" rows="3" required
+                                                      placeholder="References to subsequent entries"></textarea>
+                                            <div class="form-text">References to subsequent registry entries</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Full Width Fields - Remarks & Signature -->
+                            <div class="col-12">
+                                <div class="row g-4">
+                                    <div class="col-lg-6">
+                                        <!-- Remarks -->
+                                        <div class="mb-3">
+                                            <label for="es_remarks" class="form-label fw-medium">
+                                                <i class="fas fa-sticky-note me-1"></i>
+                                                Remarks
+                                            </label>
+                                            <textarea name="es_remarks" id="es_remarks" 
+                                                      class="form-control" rows="3" required
+                                                      placeholder="Additional remarks or notes"></textarea>
+                                            <div class="form-text">Internal notes or observations</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <!-- Signature -->
+                                        <div class="mb-3">
+                                            <label for="es_signature" class="form-label fw-medium">
+                                                <i class="fas fa-signature me-1"></i>
+                                                Signature
+                                            </label>
+                                            <textarea name="es_signature" id="es_signature" 
+                                                      class="form-control" rows="3" required
+                                                      placeholder="Authorized signatures"></textarea>
+                                            <div class="form-text">Names and signatures of authorized persons</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+
+                    
+                          <!-- Modal Footer -->
+                          <div class="modal-footer bg-light border-top mt-4">
+                              <div class="d-flex justify-content-between w-100 align-items-center">
+                                  <div>
+                                      <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                              data-action_type='encumbrances' style="display: none;">
+                                          <i class="fas fa-trash me-1"></i>
+                                          Delete
+                                      </button>
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                          <i class="fas fa-times me-1"></i>
+                                          Cancel
+                                      </button>
+                                      <button type="submit" id="btn_encumberances_section" class="btn btn-warning">
+                                          <i class="fas fa-save me-1"></i>
+                                          Save Encumbrance
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+                            
+                            <div class="_gated_workflow_documents"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+
+        </div>
+    </div>
 </div>
