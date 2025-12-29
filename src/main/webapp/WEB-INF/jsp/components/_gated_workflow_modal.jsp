@@ -6573,3 +6573,622 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="check_interest_and_sub_interest_mother_file" tabindex="-1"
+     aria-labelledby="checkInterestModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="checkInterestModalLabel">
+          <i class="fas fa-archive me-2"></i>
+          Check Interest and Sub-Interest Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Search Form Card -->
+        <div class="card mb-4">
+          <div class="card-header bg-primary bg-opacity-10 text-primary">
+            <h6 class="mb-0">
+              <i class="fas fa-search me-2"></i>
+              Search Mother File
+            </h6>
+          </div>
+          <div class="card-body">
+            <form id="linkSearchMotherfileInterest" method="post">
+              
+              <!-- Search Type Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-3">
+                  <i class="fas fa-filter me-1"></i>
+                  Search By:
+                </label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type__" 
+                           id="rbtn_search_type10" value="job_number" required>
+                    <label class="form-check-label" for="rbtn_search_type10">
+                      Job Number
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type__" 
+                           id="rbtn_search_type11" value="certificate_number" required>
+                    <label class="form-check-label" for="rbtn_search_type11">
+                      Certificate Number
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Search Input -->
+              <div class="row g-3 align-items-end">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="link_search_value__" class="form-label fw-medium">
+                      <i class="fas fa-keyboard me-1"></i>
+                      Search Value
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                      </span>
+                      <input class="form-control" id="link_search_value__" name="link_search_value__" 
+                             type="text" placeholder="Enter job number or certificate number" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100" id="btnEnquiryJobSearch">
+                      <i class="fas fa-search me-2"></i>
+                      Search
+                    </button>
+                  </div>
+                </div>
+                <div class="form-text">
+                    Enter the job number or certificate number to search for mother file
+                </div>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="card border-success" style="display:none" id="link-search-results-section__">
+          <div class="card-header bg-success bg-opacity-10 text-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>
+                Search Results
+              </h6>
+              <span class="badge bg-success rounded-pill">Found</span>
+            </div>
+          </div>
+          <div class="card-body">
+            
+            <!-- Loading State -->
+            <div id="loadingResults" class="text-center py-5 d-none">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3 text-muted">Searching for mother file...</p>
+            </div>
+            
+            <!-- Results Content -->
+            <div id="resultsContent" class="d-none">
+              <div class="row g-4">
+                
+                <!-- Interest Number Card -->
+                <div class="col-md-6">
+                  <div class="card border-info h-100">
+                    <div class="card-header bg-info bg-opacity-10 text-info">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                          <i class="fas fa-hashtag me-2"></i>
+                          Interest Number
+                        </h6>
+                        <span class="badge bg-info">Main</span>
+                      </div>
+                    </div>
+                    <div class="card-body text-center p-4">
+                      <div class="mb-3">
+                        <i class="fas fa-key fa-3x text-info"></i>
+                      </div>
+                      <div class="display-value fs-5 fw-bold text-info mb-3" id="chk_interest_number">
+                        -
+                      </div>
+                      <p class="text-muted small mb-0">
+                        Primary interest identifier for the mother file
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Sub-Interest Number Card -->
+                <div class="col-md-6">
+                  <div class="card border-warning h-100">
+                    <div class="card-header bg-warning bg-opacity-10 text-warning">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                          <i class="fas fa-layer-group me-2"></i>
+                          Sub-Interest Number
+                        </h6>
+                        <span class="badge bg-warning">Secondary</span>
+                      </div>
+                    </div>
+                    <div class="card-body text-center p-4">
+                      <div class="mb-3">
+                        <i class="fas fa-sitemap fa-3x text-warning"></i>
+                      </div>
+                      <div class="display-value fs-5 fw-bold text-warning mb-3" id="chk_sub_interest_number">
+                        -
+                      </div>
+                      <p class="text-muted small mb-0">
+                        Secondary interest identifier under the main interest
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              <!-- Additional Information -->
+              <div class="alert alert-info bg-info bg-opacity-10 border-info mt-4">
+                <div class="d-flex">
+                  <i class="fas fa-info-circle me-3 mt-1"></i>
+                  <div>
+                    <strong>About Interest Numbers:</strong>
+                    <ul class="mb-0 mt-2 ps-3">
+                      <li>Interest Number identifies the primary legal interest in the property</li>
+                      <li>Sub-Interest Number identifies subsidiary interests or divisions</li>
+                      <li>Both numbers are essential for complete mother file identification</li>
+                      <li>Used for cross-referencing and legal documentation</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResultsMessage" class="text-center py-5 d-none">
+              <div class="mb-3">
+                <i class="fas fa-file-excel fa-3x text-muted"></i>
+              </div>
+              <h6 class="text-muted">No Mother Files Found</h6>
+              <p class="text-muted small">Try searching with a different job number or certificate number</p>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade effect-scale modal-blur" id="link_to_mother_file" tabindex="-1"
+     aria-labelledby="linkToMotherFileModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="linkToMotherFileModalLabel">
+          <i class="fas fa-link me-2"></i>
+          Link to Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+         <input class="form-control" hidden id="linkedMotherFile" value="${mother_to_child_link_list}" />    
+         <div class="mb-3" id="htmlLinkedMotherFile"></div>
+        <!-- Search Form Card -->
+        <div class="card">
+          <div class="card-header bg-primary bg-opacity-10 text-primary">
+            <h6 class="mb-0">
+              <i class="fas fa-search me-2"></i>
+              Search Mother File
+            </h6>
+          </div>
+          <div class="card-body">
+            <form id="linkSearchMotherfile_" method="post">
+              
+              <!-- Search Type Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-3">
+                  <i class="fas fa-filter me-1"></i>
+                  Search By:
+                </label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type_" 
+                           id="rbtn_search_type7" value="job_number" required>
+                    <label class="form-check-label" for="rbtn_search_type7">
+                      Job Number
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type_" 
+                           id="rbtn_search_type8" value="certificate_number" required>
+                    <label class="form-check-label" for="rbtn_search_type8">
+                      Certificate Number
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Search Input -->
+              <div class="row g-3 align-items-end">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="link_search_value_" class="form-label fw-medium">
+                      <i class="fas fa-keyboard me-1"></i>
+                      Search Value
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                      </span>
+                      <input class="form-control" id="link_search_value_" name="link_search_value_" 
+                             type="text" placeholder="Enter job number or certificate number" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100" id="btnEnquiryJobSearch">
+                      <i class="fas fa-search me-2"></i>
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-text">
+                Enter the job number or certificate number to search for mother file
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Search Results Card -->
+        <div class="card border-success mt-4" style="display:none" id="link-search-results-section_">
+          <div class="card-header bg-success bg-opacity-10 text-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>
+                Search Results
+              </h6>
+              <span class="badge bg-success" id="resultsCount_">0 results</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped" id="link-search-results-table_">
+                <thead class="table-light">
+                  <tr>
+                    <th width="25%">
+                      <!-- <i class="fas fa-user me-1"></i> -->
+                      Applicant Name
+                    </th>
+                    <th width="30%">
+                      <!-- <i class="fas fa-certificate me-1"></i> -->
+                      Certificate Number
+                    </th>
+                    <th width="15%">
+                      <!-- <i class="fas fa-hashtag me-1"></i> -->
+                      Job Number
+                    </th>
+                    <th width="20%">
+                      <!-- <i class="fas fa-map-marker-alt me-1"></i> -->
+                      Locality
+                    </th>
+                    <th width="10%" class="text-end">
+                      <!-- <i class="fas fa-cogs me-1"></i> -->
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Results will be populated here -->
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResultsMessage_" class="text-center py-5 d-none">
+              <div class="mb-3">
+                <i class="fas fa-file-excel fa-3x text-muted"></i>
+              </div>
+              <h6 class="text-muted">No Mother Files Found</h6>
+              <p class="text-muted small">Try searching with a different job number or certificate number</p>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingResults_" class="text-center py-5 d-none">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3 text-muted">Searching for mother files...</p>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="card mt-2">
+            <div class="card-header bg-primary bg-opacity-10 text-primary">
+                <h6 class="mb-0">
+                    <i class="fas fa-link me-2"></i>
+                    Link Application to Mother File
+                </h6>
+            </div>
+            <div class="card-body">
+                
+                <!-- Search Type Selection -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium mb-3">
+                        <i class="fas fa-filter me-1"></i>
+                        Search By:
+                    </label>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                id="rbtn_search_type5" value="job_number" required>
+                            <label class="form-check-label" for="rbtn_search_type5">
+                                Job Number
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                id="rbtn_search_type6" value="certificate_number" required>
+                            <label class="form-check-label" for="rbtn_search_type6">
+                                Certificate Number
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Input and Button -->
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="lrd_search_for_mother_transction_to_child" class="form-label fw-medium">
+                                <i class="fas fa-search me-1"></i>
+                                Search Value
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-file-contract"></i>
+                                </span>
+                                <input class="form-control bg-light" id="lrd_search_for_mother_transction_to_child" 
+                                    name="lrd_search_for_mother_transction_to_child" type="text"  style="cursor: not-allowed;"
+                                    placeholder="Enter Job Number or Certificate Number of the Mother File" readonly required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary w-100" 
+                                    id="lrd_btn_search_for_mother_transction_to_child"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Search and Link">
+                                <i class="fas fa-link me-2"></i>
+                                Link Application
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-text">
+                        Enter the Job Number or Certificate Number of the mother file to link
+                    </div>
+                </div>
+                
+                <!-- Optional: Information Alert -->
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-4">
+                    <div class="d-flex">
+                        <i class="fas fa-info-circle me-3 mt-1"></i>
+                        <div>
+                            <strong>About Linking:</strong>
+                            <p class="mb-0 mt-2">
+                                Linking applications to mother files creates a relationship between the current application 
+                                and existing mother file records for reference and tracking purposes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="determining_type_of_transfer" tabindex="-1"
+     aria-labelledby="determiningTypeOfTransferLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="determiningTypeOfTransferLabel">
+          <i class="fas fa-exchange-alt me-2"></i>
+          Determine Type of Transfer
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>Transfer Type Determination</strong>
+              <p class="mb-0 mt-2">Select the extent of land and interest to determine the appropriate transfer type.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Content -->
+        <form id="transferTypeForm">
+          
+          <!-- Extent Land -->
+          <div class="mb-4">
+            <label for="lc_intended_parcel" class="form-label fw-medium">
+              <i class="fas fa-map me-1"></i>
+              Extent of Land
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-mountain"></i>
+              </span>
+              <select name="lc_intended_parcel" id="lc_intended_parcel" 
+                      class="form-select" required>
+                <option value="${intended_parcel == '' ? '' : intended_parcel}">
+                  ${intended_parcel == '' ? '-- Select Extent of Land --' : intended_parcel}
+                </option>
+                <option value="Whole Parcel">Whole Parcel</option>
+                <option value="Part of parcel">Part of Parcel</option>
+              </select>
+            </div>
+            <div class="form-text">
+              <i class="fas fa-question-circle me-1"></i>
+              Select whether the transfer involves the entire parcel or only a portion
+            </div>
+          </div>
+          
+          <!-- Extent Interest -->
+          <div class="mb-4">
+            <label for="lc_intended_interest" class="form-label fw-medium">
+              <i class="fas fa-handshake me-1"></i>
+              Extent of Interest
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-percentage"></i>
+              </span>
+              <select name="lc_intended_interest" id="lc_intended_interest" 
+                      class="form-select" required>
+                <option value="${intended_interest == '' ? '' : intended_interest}">
+                  ${intended_interest == '' ? '-- Select Extent of Interest --' : intended_interest}
+                </option>
+                <option value="Whole Interest">Whole Interest</option>
+                <option value="Part of Interest">Part of Interest</option>
+              </select>
+            </div>
+            <div class="form-text">
+              <i class="fas fa-question-circle me-1"></i>
+              Select whether the transfer involves the entire interest or only a portion
+            </div>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="mt-4">
+            <button type="button" id="lc_btn_determine_type_of_transfer" 
+                    class="btn btn-primary w-100 py-3">
+              <i class="fas fa-calculator me-2"></i>
+              Determine Transfer Type
+            </button>
+          </div>
+          
+          <!-- Result Display (Optional) -->
+          <!-- 
+          <div class="alert alert-success mt-3 d-none" id="transferTypeResult">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle me-3"></i>
+              <div>
+                <strong>Determined Transfer Type:</strong>
+                <span id="calculatedTransferType" class="fw-bold ms-2"></span>
+              </div>
+            </div>
+          </div>
+          -->
+          
+        </form>
+        
+        <!-- Explanation Section -->
+        <div class="alert alert-light border mt-4">
+          <h6 class="mb-3">
+            <i class="fas fa-lightbulb text-warning me-2"></i>
+            Understanding Transfer Types
+          </h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-2">
+                <i class="fas fa-check text-success me-2 mt-1"></i>
+                <div>
+                  <strong>Whole Parcel</strong>
+                  <p class="small text-muted mb-0">Transfer of entire land parcel</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start mb-2">
+                <i class="fas fa-check text-success me-2 mt-1"></i>
+                <div>
+                  <strong>Part of Parcel</strong>
+                  <p class="small text-muted mb-0">Transfer of only a portion of land</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-2">
+                <i class="fas fa-check text-success me-2 mt-1"></i>
+                <div>
+                  <strong>Whole Interest</strong>
+                  <p class="small text-muted mb-0">Transfer of complete ownership rights</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start mb-2">
+                <i class="fas fa-check text-success me-2 mt-1"></i>
+                <div>
+                  <strong>Part of Interest</strong>
+                  <p class="small text-muted mb-0">Transfer of partial ownership rights</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

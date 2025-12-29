@@ -961,7 +961,7 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
                                     data-bs-target="#collapseRecords">
-                                <i class="bi bi-file-text me-2"></i>
+                                <i class="bi bi-folder2 me-2"></i>
                                 Records Information
                             </button>
                         </h2>
@@ -1226,7 +1226,7 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
                                     data-bs-target="#collapseEncumbrances">
-                                <i class="bi bi-people-fill me-2"></i>
+                                <i class="bi bi-person-lock me-2"></i>
                                 Encumbrances
                             </button>
                         </h2>
@@ -1255,6 +1255,56 @@
                                                     <td>${lrd_encumbrances_section_row.es_remarks}</td>
                                                     <td>${lrd_encumbrances_section_row.es_entry_number}</td>
 					                            </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Link Details -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseLinkDetails">
+                                <i class="bi bi-link-45deg me-2"></i>
+                                Link Details
+                            </button>
+                        </h2>
+                        <div id="collapseLinkDetails" class="accordion-collapse collapse" 
+                             data-bs-parent="#sidebarAccordion">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Job Number</th>
+                                                <th>Case Number</th>
+                                                <th>Type of Relationship</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                             <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
+                                                <tr>
+                                                
+                                                    <td>${mother_to_child_link_row.job_number}</td>
+                                                    <td>${mother_to_child_link_row.mc_case_number}</td>
+                                                    <td>${mother_to_child_link_row.mc_type_of_relationship}</td>
+                                                    <td>${mother_to_child_link_row.created_date}</td>
+                                                    <td>
+                                                        <button type="button"  
+                                                            data-job_number="${mother_to_child_link_row.mc_job_number}" 
+                                                            data-case_number="${mother_to_child_link_row.mc_case_number}" 
+                                                            data-transaction_number="[0, 0]"
+                                                            class="btn btn-sm btn-warning btn-view-mother-Child-details"
+                                                        >
+                                                            <i class="fas fa-eye"></i>
+                                                        </button> 
+                                                    </td>
+                                                </tr>
                                             </c:forEach>
                                         </tbody>
                                     </table>
@@ -1415,27 +1465,89 @@
                         <div id="collapseCaseSteps" class="accordion-collapse collapse" 
                              data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
-                                <ul class="process-list">
-                                    <c:forEach items="${baby_step_milestone_list}" var="milestone">
-                                        <div class="milestone">
-                                            <h6>${milestone.milestone_description} (Status: ${milestone.mile_stone_status})</h6>
-                                            <ul>
-                                                <c:forEach items="${milestone.baby_steps}" var="process">
-                                                    <li>
-                                                        <i class="fas ${process.bse_status == 'Completed' ? 'fa-check-circle text-success' : process.bse_status == 'Ongoing' ? 'fa-spinner text-warning' : 'fa-times-circle text-danger'}"></i>
+                                <c:forEach items="${baby_step_milestone_list}" var="milestone">
+
+                                    <%-- ==============================
+                                        INITIALIZE STATUS FLAGS
+                                    =============================== --%>
+                                    <c:set var="hasOngoing" value="false" />
+                                    <c:set var="allCompleted" value="true" />
+
+                                    <%-- ==============================
+                                        EVALUATE BABY STEPS
+                                    =============================== --%>
+                                    <c:forEach items="${milestone.baby_steps}" var="process">
+                                        <c:if test="${process.bse_status == 'Ongoing'}">
+                                            <c:set var="hasOngoing" value="true" />
+                                        </c:if>
+
+                                        <c:if test="${process.bse_status != 'Completed'}">
+                                            <c:set var="allCompleted" value="false" />
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <%-- ==============================
+                                        DETERMINE MILESTONE STATUS
+                                    =============================== --%>
+                                    <c:choose>
+                                        <c:when test="${allCompleted}">
+                                            <c:set var="milestoneStatus" value="Completed" />
+                                            <c:set var="milestoneBadge" value="bg-success" />
+                                        </c:when>
+                                        <c:when test="${hasOngoing}">
+                                            <c:set var="milestoneStatus" value="Ongoing" />
+                                            <c:set var="milestoneBadge" value="bg-warning" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="milestoneStatus" value="Pending" />
+                                            <c:set var="milestoneBadge" value="bg-danger" />
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                    <%-- ==============================
+                                        MILESTONE HEADER
+                                    =============================== --%>
+                                    <h6 class="mb-2 d-flex justify-content-between">
+                                        ${milestone.milestone_description}
+                                        
+                                        <span class="badge ${milestoneBadge} text-white">
+                                            ${milestoneStatus}
+                                        </span>
+                                    </h6>
+
+                                    <%-- ==============================
+                                        BABY STEPS CARD
+                                    =============================== --%>
+                                    <div class="card card-body mb-3">
+                                        <ul class="list-unstyled projects-recent-activity-list">
+
+                                            <c:forEach items="${milestone.baby_steps}" var="process">
+                                                <li class="mb-2">
+                                                    <div class="d-flex align-items-start gap-3">
+
+                                                        <%-- STATUS ICON --%>
                                                         <div>
-                                                            <div class="process-item">${process.bse_description}</div>
-                                                            <div class="process-details">
-                                                                <span>Performed by: ${process.completed_by != null ? process.completed_by : 'Pending'}</span>
-                                                                <span>Date: 
-                                                                    <c:choose>
-                                                                        <c:when test="${process.complete_by_date != null}">
-                                                                            ${process.complete_by_date}
-                                                                        </c:when>
-                                                                        <c:otherwise>N/A</c:otherwise>
-                                                                    </c:choose>
-                                                                </span>
-                                                                <span>Time: 
+                                                            <i class="fas
+                                                                ${process.bse_status == 'Completed' ? 'fa-check-circle text-success' :
+                                                                process.bse_status == 'Ongoing' ? 'fa-spinner text-warning' :
+                                                                'fa-times-circle text-danger'}">
+                                                            </i>
+                                                        </div>
+
+                                                        <%-- CONTENT --%>
+                                                        <div class="flex-fill">
+                                                            <div class="d-flex align-items-start justify-content-between mb-1 flex-wrap">
+                                                                <div class="fw-semibold text-truncate"
+                                                                    style="max-width: 200px;"
+                                                                    data-bs-toggle="tooltip"
+                                                                    data-bs-custom-class="tooltip-primary"
+                                                                    data-bs-placement="top"
+                                                                    title="${process.bse_description}">
+                                                                    ${process.bse_description}
+                                                                </div>
+
+                                                                <span class="badge bg-light text-muted border">
+                                                                    Date &amp; Time:
                                                                     <c:choose>
                                                                         <c:when test="${process.complete_by_date != null}">
                                                                             ${process.complete_by_date}
@@ -1444,13 +1556,23 @@
                                                                     </c:choose>
                                                                 </span>
                                                             </div>
+
+                                                            <div class="descrption">
+                                                                Performed by:
+                                                                <strong>
+                                                                    ${process.completed_by != null ? process.completed_by : 'Pending'}
+                                                                </strong>
+                                                            </div>
                                                         </div>
-                                                    </li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </c:forEach>
-                                </ul>
+
+                                                    </div>
+                                                </li>
+                                            </c:forEach>
+
+                                        </ul>
+                                    </div>
+
+                                </c:forEach>
                             </div>
                         </div>
                     </div>

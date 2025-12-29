@@ -8928,4 +8928,1347 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    $('#linkSearchMotherfileInterest').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        $('#loadingResults').removeClass('d-none');
+        $('#resultsContent').addClass('d-none');
+        $('#noResultsMessage').addClass('d-none');
+        $('#link-search-results-section__').show();
+        
+        var enq_search_type = "";
+        var selected_rbtn = $("input[name='link_search_type__']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        var enq_search_value = $("#link_search_value__").val();
+        
+        if (enq_search_type.length <= 0) {
+            // Show error notification
+            Swal.fire({
+                title: 'Search Type Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Please select the type of field for your search</p>
+                        <p class="text-muted small">Choose either "Job Number" or "Certificate Number"</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            
+            $('#loadingResults').addClass('d-none');
+            $('#link-search-results-section__').hide();
+            return false;
+        }
+        
+        if (!enq_search_value.trim()) {
+            // Show error notification
+            Swal.fire({
+                title: 'Search Value Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Please enter a search value</p>
+                        <p class="text-muted small">Enter a job number or certificate number to search</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            
+            $('#loadingResults').addClass('d-none');
+            return false;
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_application_details_by_job_number_or_certificate_number',
+                job_number: enq_search_value,
+                search_type: enq_search_type
+            },
+            cache: false,
+            success: function(jobdetails) {
+                $('#loadingResults').addClass('d-none');
+                
+                if (jobdetails.includes('Error Loading Data') || !jobdetails || jobdetails.includes('[]')) {
+                    // Show no results
+                    $('#noResultsMessage').removeClass('d-none');
+                    $('#resultsContent').addClass('d-none');
+                    
+                    // Show error notification
+                    Swal.fire({
+                        title: 'No Results Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-muted fa-2x"></i>
+                                </div>
+                                <p>No mother files found for "${enq_search_value}"</p>
+                                <p class="text-muted small">Try searching with a different job number or certificate number</p>
+                            </div>`,
+                        icon: 'info',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#0d6efd'
+                    });
+                    
+                } else {
+                    try {
+                        var json_p = JSON.parse(jobdetails);
+                        
+                        if (json_p && json_p.length > 0) {
+                            // Update display values
+                            $('#chk_interest_number').text(json_p[0].interest_number || 'Not Available');
+                            $('#chk_sub_interest_number').text(json_p[0].sub_interest_number || 'Not Available');
+                            
+                            // Style the values based on availability
+                            if (!json_p[0].interest_number) {
+                                $('#chk_interest_number').addClass('text-muted').removeClass('text-info');
+                            } else {
+                                $('#chk_interest_number').addClass('text-info').removeClass('text-muted');
+                            }
+                            
+                            if (!json_p[0].sub_interest_number) {
+                                $('#chk_sub_interest_number').addClass('text-muted').removeClass('text-warning');
+                            } else {
+                                $('#chk_sub_interest_number').addClass('text-warning').removeClass('text-muted');
+                            }
+                            
+                            // Show results
+                            $('#resultsContent').removeClass('d-none');
+                            $('#noResultsMessage').addClass('d-none');
+                            
+                            // Show success notification
+                            Swal.fire({
+                                title: 'Search Successful!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle text-success fa-2x"></i>
+                                        </div>
+                                        <p>Found mother file details</p>
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span><strong>Interest:</strong> ${json_p[0].interest_number || 'N/A'}</span>
+                                                <span><strong>Sub-Interest:</strong> ${json_p[0].sub_interest_number || 'N/A'}</span>
+                                            </div>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: 'Continue',
+                                confirmButtonColor: '#198754',
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                            
+                        } else {
+                            // Show no results
+                            $('#noResultsMessage').removeClass('d-none');
+                            $('#resultsContent').addClass('d-none');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error parsing response:', error);
+                        
+                        // Show error state
+                        $('#noResultsMessage').removeClass('d-none');
+                        $('#resultsContent').addClass('d-none');
+                        
+                        Swal.fire({
+                            title: 'Processing Error',
+                            text: 'Failed to process server response',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingResults').addClass('d-none');
+                $('#noResultsMessage').removeClass('d-none');
+                $('#resultsContent').addClass('d-none');
+                
+                Swal.fire({
+                    title: 'Search Failed',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                            </div>
+                            <p>Unable to complete search</p>
+                            <p class="text-danger small">${error || 'Server error occurred'}</p>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        });
+    });
+
+    $('#linkSearchMotherfile_').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get search parameters
+        let enq_search_type = "";
+        const selected_rbtn = $("input[name='link_search_type_']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        const enq_search_value = $("#link_search_value_").val().trim();
+        
+        // Validation
+        if (!enq_search_type) {
+            Swal.fire({
+                title: 'Search Type Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Select Search Type</h5>
+                        <p class="text-muted">Please select the type of field for your search</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Choose either Job Number or Certificate Number
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        if (!enq_search_value) {
+            Swal.fire({
+                title: 'Search Value Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-search text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Enter Search Value</h5>
+                        <p class="text-muted">Please enter a ${enq_search_type.replace('_', ' ').toLowerCase()}</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Enter the ${enq_search_type === 'job_number' ? 'job number' : 'certificate number'} to search
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                $("#link_search_value_").focus();
+            });
+            return;
+        }
+        
+        // Optional: Minimum length validation (commented out in original)
+        // if (enq_search_value.length < 8) {
+        //     Swal.fire({
+        //         title: 'Minimum Length Required',
+        //         html: `<div class="text-center">
+        //                 <div class="mb-3">
+        //                     <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+        //                 </div>
+        //                 <h5 class="mb-2">Search Too Short</h5>
+        //                 <p class="text-muted">Please enter 8 or more characters to search</p>
+        //                 <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+        //                     <i class="fas fa-ruler me-2"></i>
+        //                     Minimum 8 characters required for accurate search
+        //                 </div>
+        //             </div>`,
+        //         icon: 'warning',
+        //         confirmButtonText: 'OK',
+        //         confirmButtonColor: '#fd7e14'
+        //     });
+        //     return;
+        // }
+        
+        // Hide results section
+        $("#link-search-results-section_").hide();
+        
+        // Show search progress
+        const searchProgress = Swal.fire({
+            title: 'Searching...',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-search fa-spin text-primary fa-2x"></i>
+                    </div>
+                    <h5 class="mb-2">Searching Records</h5>
+                    <p class="text-muted">Looking for ${enq_search_type === 'job_number' ? 'job' : 'certificate'}: <strong>${enq_search_value}</strong></p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                            role="progressbar" 
+                            style="width: 100%"></div>
+                    </div>
+                </div>`,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+        
+        // Perform AJAX search
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_application_details_by_job_number_or_certificate_number',
+                job_number: enq_search_value,
+                search_type: enq_search_type
+            },
+            cache: false,
+            success: function(jobdetails) {
+                // Close progress dialog
+                searchProgress.close();
+                
+                // Show results section
+                $("#link-search-results-section_").show();
+                
+                const table = $('#link-search-results-table_');
+                table.find("tbody tr").remove();
+
+                // console.log(jobdetails);
+                
+                // Check for error or empty results
+                if (jobdetails.includes('Error Loading Data') || !jobdetails || jobdetails === '[]') {
+                    Swal.fire({
+                        title: 'No Results Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-warning fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Search Unsuccessful</h5>
+                                <p class="text-muted">No records found for ${enq_search_type === 'job_number' ? 'job' : 'certificate'}: <strong>${enq_search_value}</strong></p>
+                                
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <div class="d-flex">
+                                        <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                                        <div>
+                                            <strong>Possible reasons:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>The ${enq_search_type === 'job_number' ? 'job number' : 'certificate number'} may be incorrect</li>
+                                                <li>The record may not exist in the system</li>
+                                                <li>There may be a typo in your search</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-outline-primary" onclick="$('#link_search_value').focus()">
+                                        <i class="fas fa-redo me-1"></i>
+                                        Try Another Search
+                                    </button>
+                                </div>
+                            </div>`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#fd7e14',
+                        width: 550
+                    });
+                    return false;
+                }
+                
+                try {
+                    // Parse and display results
+                    const json_p = JSON.parse(jobdetails);
+                    
+                    // Show success message with result count
+                    const resultCount = json_p.length;
+                    Swal.fire({
+                        title: 'Search Complete',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-plus text-success fa-2x"></i>
+                                </div>
+                                <h5 class="mb-2">${resultCount} Record${resultCount !== 1 ? 's' : ''} Found</h5>
+                                <p class="text-muted">Search results for ${enq_search_type === 'job_number' ? 'job' : 'certificate'}: <strong>${enq_search_value}</strong></p>
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <div class="text-start">
+                                            <strong>Results Summary:</strong>
+                                            <div class="small text-muted">
+                                                ${resultCount} matching record${resultCount !== 1 ? 's' : ''} displayed below
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Populate table with results
+                    $(json_p).each(function() {
+                        const row = `
+                            <tr>
+                                <td>${this.ar_name || 'N/A'}</td>
+                                <td>${this.certificate_number || 'N/A'}</td>
+                                <td>${this.job_number || 'N/A'}</td>
+                                <td>${this.locality || 'N/A'}</td>
+                                <td class="text-end">
+                                    <button type="button" 
+                                            data-job_number="${this.job_number}"
+                                            data-case_number="${this.case_number || ''}"
+                                            data-transaction_number="[0, 0]" 
+                                            business_process_sub_name="-"
+                                            class="btn btn-warning btn-view-mother-Child-details" 
+                                            title="View Case Details">
+                                            <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                        table.append(row);
+                    });
+                    
+                    // Update results count display
+                    $('#searchResultsCount_').text(`Found ${resultCount} record${resultCount !== 1 ? 's' : ''}`);
+
+                    $('#resultsCount_').text(resultCount || 0 +' results');
+
+                    $('#lrd_search_for_mother_transction_to_child').val(enq_search_value);
+                    
+                    // Scroll to results section
+                    $('html, body').animate({
+                        scrollTop: $("#link-search-results-section_").offset().top - 100
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('Error parsing search results:', error);
+                    
+                    Swal.fire({
+                        title: 'Data Error',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-database text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Unable to Process Results</h5>
+                                <p class="text-danger small">Error parsing search results data</p>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-code me-2"></i>
+                                    <strong>Technical Issue:</strong> The server response could not be processed
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Close progress dialog
+                searchProgress.close();
+                
+                Swal.fire({
+                    title: 'Search Failed',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Connection Error</h5>
+                            <p class="text-danger small">${error || 'Unable to connect to server'}</p>
+                            <div class="alert alert-warning mt-3">
+                                <i class="fas fa-wifi me-2"></i>
+                                <strong>Network Issue:</strong> Please check your connection and try again
+                            </div>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'Retry Search',
+                    confirmButtonColor: '#dc3545'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#linkSearchMotherfile_').submit();
+                    }
+                });
+            }
+        });
+    });
+
+    $("#link_to_mother_file").on('shown.bs.modal', function(e) {
+    var case_number = $("#cs_main_case_number").val();
+    var job_number = $("#cs_main_job_number").val();
+    
+    // Create loading alert
+    const loadingAlert = `
+        <div class="alert alert-info alert-dismissible fade show d-flex align-items-center" role="alert">
+            <div class="spinner-border spinner-border-sm me-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="flex-grow-1">
+                <strong>Checking Mother File Status...</strong>
+                <p class="mb-0 small">Please wait while we verify the mother file link status</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    
+    // Show loading state
+    $("#htmlLinkedMotherFile").html(loadingAlert);
+    
+        $.ajax({
+            url: "Case_Management_Serv",
+            type: "POST",
+            data: {
+                request_type: "select_check_if_motherfile_linked",
+                job_number: job_number,
+                case_number: case_number
+            },
+            success: function(response) {
+                // console.log(response);
+                
+                try {
+                    response = JSON.parse(response);
+                    
+                    if (response.count >= 1) {
+                        let mother_file_job_number = response.data.mc_job_number;
+                        
+                        // Success Alert - Linked
+                        const successAlert = `
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-check-circle fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="alert-heading mb-2">
+                                            <i class="fas fa-link me-2"></i>
+                                            Mother File Linked
+                                        </h5>
+                                        <p class="mb-2">
+                                            This application is successfully linked to mother file:
+                                            <span class="badge bg-success ms-2">${mother_file_job_number}</span>
+                                        </p>
+                                        <div class="d-flex align-items-center mt-3">
+                                            <i class="fas fa-info-circle me-2 text-success"></i>
+                                            <small class="text-success">No further action required. The link is already established.</small>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        $("#htmlLinkedMotherFile").html(successAlert);
+                        
+                        // Disable form controls
+                        $("#lrd_search_for_mother_transction_to_child")
+                            .prop('disabled', true)
+                            .addClass('bg-light')
+                            .attr('placeholder', 'Already linked to ' + mother_file_job_number);
+                        
+                        $("#lrd_btn_search_for_mother_transction_to_child")
+                            .prop('disabled', true)
+                            .removeClass('btn-primary')
+                            .addClass('btn-secondary')
+                            .html('<i class="fas fa-lock me-2"></i>Already Linked');
+                            
+                        // Optional: Add badge to button
+                        $('<span class="badge bg-success ms-2">Linked</span>').appendTo("#lrd_btn_search_for_mother_transction_to_child");
+                        
+                    } else {
+                        // Warning Alert - Not Linked
+                        const warningAlert = `
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="alert-heading mb-2">
+                                            <i class="fas fa-unlink me-2"></i>
+                                            No Mother File Linked
+                                        </h5>
+                                        <p class="mb-3">
+                                            This application is not linked to any mother file yet. 
+                                            Please link it to enable full functionality.
+                                        </p>
+                                        <div class="alert alert-light border mt-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-lightbulb text-warning me-3"></i>
+                                                <div>
+                                                    <strong>To link a mother file:</strong>
+                                                    <ol class="mb-0 mt-2 ps-3">
+                                                        <li>Select search type (Job Number or Certificate)</li>
+                                                        <li>Enter the mother file identifier</li>
+                                                        <li>Click "Link Application" button</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        $("#htmlLinkedMotherFile").html(warningAlert);
+                        
+                        // Enable form controls
+                        $("#lrd_search_for_mother_transction_to_child")
+                            .prop('disabled', false)
+                            .removeClass('bg-light')
+                            .attr('placeholder', 'Enter Job Number or Certificate Number');
+                        
+                        $("#lrd_btn_search_for_mother_transction_to_child")
+                            .prop('disabled', false)
+                            .removeClass('btn-secondary')
+                            .addClass('btn-primary')
+                            .html('<i class="fas fa-link me-2"></i>Link Application')
+                            .find('.badge').remove(); // Remove any existing badge
+                    }
+                    
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    
+                    // Error Alert
+                    const errorAlert = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="alert-heading mb-2">Unable to Check Status</h5>
+                                    <p class="mb-0">
+                                        There was an error checking the mother file link status. 
+                                        Please try again or contact support if the issue persists.
+                                    </p>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    $("#htmlLinkedMotherFile").html(errorAlert);
+                    
+                    // Enable form controls anyway
+                    $("#lrd_search_for_mother_transction_to_child").prop('disabled', false);
+                    $("#lrd_btn_search_for_mother_transction_to_child").prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
+                
+                // Network Error Alert
+                const networkErrorAlert = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-wifi fa-2x"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="alert-heading mb-2">Connection Error</h5>
+                                <p class="mb-0">
+                                    Unable to connect to the server. Please check your internet connection and try again.
+                                </p>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                
+                $("#htmlLinkedMotherFile").html(networkErrorAlert);
+                
+                // Enable form controls anyway
+                $("#lrd_search_for_mother_transction_to_child").prop('disabled', false);
+                $("#lrd_btn_search_for_mother_transction_to_child").prop('disabled', false);
+            }
+        });
+    });
+
+    $("#lrd_btn_search_for_mother_transction_to_child").click(function(event) {
+        event.preventDefault();
+        
+        // Collect data
+        const mc_job_number = $('#lrd_search_for_mother_transction_to_child').val().trim();
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        
+        let enq_search_type = "";
+        const selected_rbtn = $("input[name='rbtn_search_type']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        // Validation
+        const errors = [];
+        
+        if (!mc_job_number || mc_job_number.length < 3) {
+            errors.push('Please enter 3 or more characters to search');
+            $('#lrd_search_for_mother_transction_to_child').focus();
+        }
+        
+        if (!enq_search_type) {
+            errors.push('Please select the type of field for your search');
+        }
+        
+        if (!job_number || !case_number || !transaction_number) {
+            errors.push('Current case information is incomplete');
+        }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Please correct the following:</h5>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning text-start mt-3">
+                            <ul class="mb-0">
+                                ${errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Determine search type display name
+        const searchTypeDisplay = enq_search_type === 'job_number' ? 'Job Number' : 
+                                enq_search_type === 'certificate_number' ? 'Certificate Number' : 
+                                enq_search_type.replace('_', ' ').toUpperCase();
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Link to Mother File?',
+            html: `<div class="text-start">
+                    <h5 class="mb-3">Confirm Mother File Link</h5>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x me-3"></i>
+                            <div>
+                                <h5 class="text-warning mb-2">Important Action</h5>
+                                <p class="mb-0">You are about to link this application to a mother file.</p>
+                                <p class="mb-0 mt-1">This will <strong class="text-danger">copy transaction data</strong> from the mother file.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-link me-2 mt-1"></i>
+                            <div>
+                                <strong>Link Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Search Type:</strong> ${searchTypeDisplay}</li>
+                                    <li><strong>Mother Job Number:</strong> ${mc_job_number}</li>
+                                    <li><strong>Baby Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Baby Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Baby Transaction Number:</strong> ${transaction_number}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-3">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        <strong>What will happen:</strong> Transaction data will be copied from the mother file to this child application
+                    </div>
+                    
+                    <p class="text-muted small mt-4">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This action creates a parent-child relationship between applications
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-link me-2"></i>Yes, Link to Mother File',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_copy_mother_file_transaction_to_child',
+                            mc_job_number: mc_job_number,
+                            job_number: job_number,
+                            case_number: case_number,
+                            transaction_number: transaction_number,
+                            type_of_value: enq_search_type
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                // console.log('Link response:', response);
+                
+                // Check if response is empty (mother file not found)
+                if (!response || response.trim() === '') {
+                    Swal.fire({
+                        title: 'Mother File Not Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-warning fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">No Matching Mother File</h5>
+                                <p class="text-muted">The ${searchTypeDisplay.toLowerCase()} <strong>${mc_job_number}</strong> was not found</p>
+                                
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <div>
+                                            <strong>Possible reasons:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>The ${searchTypeDisplay.toLowerCase()} may be incorrect</li>
+                                                <li>The mother file may not exist</li>
+                                                <li>There may be a typo in your search</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-outline-primary" onclick="$('#lrd_search_for_mother_transction_to_child').focus()">
+                                        <i class="fas fa-redo me-1"></i>
+                                        Try Another Search
+                                    </button>
+                                </div>
+                            </div>`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#fd7e14',
+                        width: 550
+                    });
+                    return;
+                }
+                
+                try {
+                    // Parse JSON response
+                    const jsonResponse = JSON.parse(response);
+                    
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Mother File Linked</h5>
+                                <p class="text-muted">Application has been successfully linked to mother file</p>
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-link me-2"></i>
+                                        <div>
+                                            <strong>Linked Successfully</strong>
+                                            <div class="small text-muted mt-1">
+                                                Mother: ${mc_job_number} → Child: ${job_number}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Display response details if available -->
+                                ${jsonResponse.ar_name || jsonResponse.certificate_number || jsonResponse.job_number ? 
+                                    `<div class="alert alert-info bg-info bg-opacity-10 border-info mt-3 text-start">
+                                        <div class="d-flex">
+                                            <i class="fas fa-file-alt me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Mother File Details:</strong>
+                                                <ul class="mb-0 ps-3 small">
+                                                    ${jsonResponse.ar_name ? `<li><strong>Applicant:</strong> ${jsonResponse.ar_name}</li>` : ''}
+                                                    ${jsonResponse.certificate_number ? `<li><strong>Certificate:</strong> ${jsonResponse.certificate_number}</li>` : ''}
+                                                    ${jsonResponse.job_number ? `<li><strong>Job Number:</strong> ${jsonResponse.job_number}</li>` : ''}
+                                                    ${jsonResponse.locality ? `<li><strong>Locality:</strong> ${jsonResponse.locality}</li>` : ''}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>` : ''
+                                }
+                                
+                                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <div>
+                                            <strong>Next Steps:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>Transaction data has been copied</li>
+                                                <li>Parent-child relationship established</li>
+                                                <li>You can now proceed with other operations</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: '#198754',
+                        showCancelButton: true,
+                        cancelButtonText: 'View Details',
+                        width: 550
+                    }).then((actionResult) => {
+                        if (actionResult.dismiss === Swal.DismissReason.cancel) {
+                            // Optional: Show detailed view or refresh page
+                           location.reload(); // Uncomment to refresh page
+                        }
+                    });
+                    
+                    // Optional: Clear search field after successful link
+                    $('#lrd_search_for_mother_transction_to_child').val('');
+                    
+                } catch (e) {
+                    // Response is not JSON or parsing failed
+                    console.error('Response parsing error:', e);
+                    
+                    // Check if response contains success message
+                    const isTextSuccess = typeof response === 'string' && 
+                                        (response.toLowerCase().includes('success') || 
+                                        response.toLowerCase().includes('linked'));
+                    
+                    Swal.fire({
+                        title: isTextSuccess ? 'Linked' : 'Link Result',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="${isTextSuccess ? 'fas fa-check-circle text-success' : 'fas fa-info-circle text-info'} fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">${isTextSuccess ? 'Link Successful' : 'Processing Complete'}</h5>
+                                <div class="alert ${isTextSuccess ? 'alert-success' : 'alert-info'} mt-3">
+                                    ${response}
+                                </div>
+                            </div>`,
+                        icon: isTextSuccess ? 'success' : 'info',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: isTextSuccess ? '#198754' : '#0dcaf0'
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h5 class="mb-2">Link Cancelled</h5>
+                            <p class="text-muted">Mother file linking was not completed</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No changes were made to the application
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Link Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Connection Error</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-server me-2"></i>
+                            <strong>Server Issue:</strong> Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+M) for mother file search
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + M
+        if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+            e.preventDefault();
+            $('#lrd_search_for_mother_transction_to_child').focus();
+        }
+    });
+
+    // Optional: Add enter key support for search input
+    $('#lrd_search_for_mother_transction_to_child').on('keypress', function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault();
+            $("#lrd_btn_search_for_mother_transction_to_child").click();
+        }
+    });
+
+    // Optional: Auto-select radio button when input is focused
+    $('#lrd_search_for_mother_transction_to_child').on('focus', function() {
+        // You could add logic to auto-select a radio button if needed
+        // Example: $("input[name='rbtn_search_type'][value='job_number']").prop('checked', true);
+    });
+
+    $('#lc_btn_determine_type_of_transfer').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const case_number = $("#cs_main_case_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        const job_number = $("#cs_main_job_number").val();
+        const lc_intended_interest = $("#lc_intended_interest").val().trim();
+        const lc_intended_parcel = $("#lc_intended_parcel").val().trim();
+        const send_by_id = localStorage.getItem('userid');
+        const send_by_name = localStorage.getItem('fullname');
+        
+        // Validation
+        const errors = [];
+        
+        if (!case_number || !transaction_number || !job_number) {
+            errors.push('Case information is incomplete');
+        }
+        
+        // Optional: Validate intended interest and parcel if required
+        // if (!lc_intended_interest) {
+        //     errors.push('Intended interest is required');
+        //     $("#lc_intended_interest").focus();
+        // }
+        
+        // if (!lc_intended_parcel) {
+        //     errors.push('Intended parcel is required');
+        //     $("#lc_intended_parcel").focus();
+        // }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Please complete the following:</h5>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning text-start mt-3">
+                            <ul class="mb-0">
+                                ${errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Determine Transfer Type?',
+            html: `<div class="text-start">
+                    <h5 class="mb-3">Confirm Transfer Determination</h5>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
+                        <div class="d-flex">
+                            <i class="fas fa-exchange-alt text-warning fa-2x me-3"></i>
+                            <div>
+                                <h5 class="text-warning mb-2">Important Action</h5>
+                                <p class="mb-0">You are about to determine the transfer type for this application.</p>
+                                <p class="mb-0 mt-1">This will <strong class="text-danger">analyze and set the transfer type</strong> based on application data.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Application Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Transaction Number:</strong> ${transaction_number}</li>
+                                    ${lc_intended_interest ? `<li><strong>Intended Interest:</strong> ${lc_intended_interest}</li>` : ''}
+                                    ${lc_intended_parcel ? `<li><strong>Intended Parcel:</strong> ${lc_intended_parcel}</li>` : ''}
+                                    <!--<li><strong>Processed By:</strong> ${send_by_name || 'Current User'}</li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-3">
+                        <i class="fas fa-cogs me-2"></i>
+                        <strong>What will happen:</strong> The system will analyze the application and determine the appropriate transfer type automatically
+                    </div>
+                    
+                    <p class="text-muted small mt-4">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This action cannot be undone. The determined transfer type will route the application to the appropriate workflow.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check-circle me-2"></i>Yes, Determine Transfer Type',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_determining_type_of_transfer',
+                            case_number: case_number,
+                            job_number: job_number,
+                            transaction_number: transaction_number,
+                            lc_intended_parcel: lc_intended_parcel,
+                            lc_intended_interest: lc_intended_interest,
+                            fullname: send_by_name,
+                            userid: send_by_id
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Transfer type response:', response);
+                
+                // Check if response is not empty (success)
+                if (response && response.trim() !== "") {
+                    // Disable the button as in original code
+                    $('#lc_btn_determine_type_of_transfer').prop("disabled", true);
+                    
+                    // Try to parse JSON response to get determined transfer type
+                    let determinedTransferType = 'Transfer';
+                    let parsedResponse = null;
+                    
+                    try {
+                        parsedResponse = JSON.parse(response);
+                        if (parsedResponse && parsedResponse.type_of_transfer) {
+                            determinedTransferType = parsedResponse.type_of_transfer;
+                        }
+                    } catch (e) {
+                        // Response is not JSON, keep default
+                        console.log('Response is not JSON, using default transfer type');
+                    }
+                    
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Transfer Type Determined</h5>
+                                <p class="text-muted">Application transfer type has been determined</p>
+                                
+                                ${determinedTransferType ? 
+                                    `<div class="alert alert-primary bg-primary bg-opacity-10 border-primary mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-exchange-alt me-2"></i>
+                                            <div>
+                                                <strong>Determined Type:</strong> <span class="badge bg-primary fs-6">${determinedTransferType}</span>
+                                                <div class="small text-muted mt-1">
+                                                    The system has analyzed and set the transfer type
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>` : ''
+                                }
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check me-2"></i>
+                                        <div>
+                                            <strong>Determination Successful</strong>
+                                            <div class="small text-muted mt-1">
+                                                ${job_number} • ${new Date().toLocaleTimeString()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <div>
+                                            <strong>Next Steps:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>Application transfer type has been set</li>
+                                                <li>Button has been disabled to prevent duplicate submissions</li>
+                                                <li>Proceed with the next step in the workflow</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: '#198754',
+                        showCancelButton: true,
+                        cancelButtonText: 'View Details',
+                        width: 550
+                    }).then((actionResult) => {
+                        // Show the general message dialog (preserving original behavior)
+                        if ($("#general_message_dialog").length) {
+                            $('#general_message_dialog #general_message_dialog_msg_new').val('Application transfer type has been determined successfully');
+                            $("#general_message_dialog").modal('show');
+                        }
+                        
+                        if (actionResult.dismiss === Swal.DismissReason.cancel) {
+                            // Optional: Show detailed information
+                            Swal.fire({
+                                title: 'Response Details',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-code text-info fa-2x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Server Response</h5>
+                                        <div class="alert alert-info mt-3 text-start">
+                                            <pre class="mb-0" style="white-space: pre-wrap; max-height: 200px; overflow: auto;">${response}</pre>
+                                        </div>
+                                    </div>`,
+                                icon: 'info',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#0dcaf0',
+                                width: 600
+                            });
+                        }
+                    });
+                    
+                } else {
+                    // Empty response (error case)
+                    Swal.fire({
+                        title: 'Determination Failed',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Unable to Determine Transfer Type</h5>
+                                <p class="text-muted">The system could not process your request</p>
+                                
+                                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <div>
+                                            <strong>Empty Response:</strong>
+                                            <div class="small text-muted mt-1">
+                                                Server returned no data. Please try again.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545'
+                    }).then(() => {
+                        // Show error in general message dialog (preserving original behavior)
+                        if ($("#general_message_dialog").length) {
+                            $('#general_message_dialog #general_message_dialog_msg_new').val('Ops! Error occurred!!');
+                            $("#general_message_dialog").modal('show');
+                        }
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h5 class="mb-2">Action Cancelled</h5>
+                            <p class="text-muted">Transfer type determination was not completed</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No changes were made to the application
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Determination Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Connection Error</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-server me-2"></i>
+                            <strong>Server Issue:</strong> Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Retry',
+                confirmButtonColor: '#dc3545'
+            }).then(() => {
+                // Show error in general message dialog (preserving original behavior)
+                if ($("#general_message_dialog").length) {
+                    $('#general_message_dialog #general_message_dialog_msg_new').val('Ops! Error occurred!!');
+                    $("#general_message_dialog").modal('show');
+                }
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+Shift+T) for transfer determination
+    $(document).on('keydown', function(e) {
+        // Ctrl + Shift + T
+        if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+            e.preventDefault();
+            $('#lc_btn_determine_type_of_transfer').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const transferBtn = $('#lc_btn_determine_type_of_transfer');
+        if (transferBtn.length) {
+            const originalTitle = transferBtn.attr('title') || 'Determine Transfer Type';
+            transferBtn.attr('data-bs-toggle', 'tooltip');
+            transferBtn.attr('data-bs-placement', 'top');
+            transferBtn.attr('title', `${originalTitle} (Ctrl+Shift+T)`);
+            
+            // Initialize tooltip
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                new bootstrap.Tooltip(transferBtn[0]);
+            }
+        }
+    });
+
 });
