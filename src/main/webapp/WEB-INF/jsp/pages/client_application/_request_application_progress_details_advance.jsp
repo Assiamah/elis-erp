@@ -1520,15 +1520,15 @@
                     },
                     cache: false,
                     success: function(response) {
-                        console.log(response);
-                        var json_result = JSON.parse(response);
+                        //console.log(response);
+                        //var json_result = JSON.parse(response);
                         
                         Swal.close();
                         
-                        if (json_result.success) {
+                        // if (json_result.success) {
                             Swal.fire({
                                 title: 'Success!',
-                                text: json_result.msg,
+                                text: 'Step approved successfully',
                                 icon: 'success',
                                 confirmButtonText: 'OK',
                                 timer: 2000,
@@ -1537,14 +1537,14 @@
                                     location.reload();
                                 }
                             });
-                        } else {
-                            Swal.fire({
-                                title: 'Failed!',
-                                text: json_result.msg,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        }
+                        // } else {
+                        //     Swal.fire({
+                        //         title: 'Failed!',
+                        //         text: json_result.msg,
+                        //         icon: 'error',
+                        //         confirmButtonText: 'OK'
+                        //     });
+                        // }
                     },
                     error: function() {
                         Swal.fire({

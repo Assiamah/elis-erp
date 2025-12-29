@@ -8416,7 +8416,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const table = $('#link-search-results-table');
                 table.find("tbody tr").remove();
 
-                console.log(jobdetails);
+                // console.log(jobdetails);
                 
                 // Check for error or empty results
                 if (jobdetails.includes('Error Loading Data') || !jobdetails || jobdetails === '[]') {
@@ -8498,21 +8498,15 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <td>${this.certificate_number || 'N/A'}</td>
                                 <td>${this.job_number || 'N/A'}</td>
                                 <td>${this.locality || 'N/A'}</td>
-                                <td>
+                                <td class="text-end">
                                     <button type="button" 
-                                            id="btn-view-mother-Child-details" 
                                             data-job_number="${this.job_number}"
                                             data-case_number="${this.case_number || ''}"
                                             data-transaction_number="[0, 0]" 
                                             business_process_sub_name="-"
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#transitional_certificate_template" 
-                                            class="btn btn-primary btn-icon-split" 
+                                            class="btn btn-warning btn-view-mother-Child-details" 
                                             title="View Case Details">
-                                        <span class="icon text-white-50">
                                             <i class="fas fa-eye"></i>
-                                        </span>
-                                        <span class="text">View</span>
                                     </button>
                                 </td>
                             </tr>`;
@@ -8521,6 +8515,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Update results count display
                     $('#searchResultsCount').text(`Found ${resultCount} record${resultCount !== 1 ? 's' : ''}`);
+
+                    $('#resultsCount').text(resultCount || 0 +' results');
                     
                     // Scroll to results section
                     $('html, body').animate({
@@ -8577,5 +8573,359 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    $(document).on('click', '.btn-view-mother-Child-details', function() {
+        const job_number = $(this).data('job_number');
+        const case_number = $(this).data('case_number');
+        const transaction_number = $(this).data('transaction_number');
+        const business_process_sub_name = $(this).data('business_process_sub_name');
+
+        // Open modal with case details
+        const modal = new bootstrap.Modal(document.getElementById('transitional_certificate_template'));
+        modal.show();
+
+        // Update modal header with case number
+        $('#modalCaseNumber').text(`Case: ${case_number}`);
+
+        // Load case details
+        loadCaseDetails(job_number, case_number, transaction_number, business_process_sub_name);
+    });
+
+    function loadCaseDetails(job_number, case_number, transaction_number, business_process_sub_name) {
+        // Show loading state
+        showLoadingState();
+        
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_general_case_details',
+                job_number: job_number,
+                transaction_number: case_number,
+                case_number: case_number
+            },
+            cache: false,
+            success: function(jobdetails) {
+                try {
+                    const result = JSON.parse(jobdetails);
+                    
+                    // Update basic case details
+                    updateCaseDetails(result);
+                    
+                    // Update root of title sections
+                    updateRootOfTitle(result);
+                    
+                    // Hide loading state
+                    hideLoadingState();
+                    
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    showErrorState();
+                }
+            },
+            error: function() {
+                showErrorState();
+            }
+        });
+    }
+
+    function updateCaseDetails(result) {
+        // Update all fields
+        const fields = {
+            // Basic Information
+            'ts_main_case_number_sm': result.parcel_details?.case_number,
+            'ts_main_regional_number_sm': result.parcel_details?.regional_number,
+            'ts_main_locality_sm': result.parcel_details?.locality,
+            'ts_main_transaction_number_sm': result.transaction_details?.transaction_number,
+            
+            // Registration Details
+            'ts_main_registration_district_number_sm': result.parcel_details?.registration_district_number,
+            'ts_main_registration_section_number_sm': result.parcel_details?.registration_section_number,
+            'ts_main_registration_block_number_sm': result.parcel_details?.registration_block_number,
+            'ts_main_district_sm': result.parcel_details?.district,
+            
+            // Land Information
+            'ts_main_size_of_land_sm': result.parcel_details?.land_size,
+            'ts_main_glpin_sm': result.parcel_details?.glpin,
+            'ts_main_cc_no_sm': result.parcel_details?.cc_no,
+            'ts_main_region_sm': result.parcel_details?.region,
+            
+            // Document Information
+            'ts_main_date_of_document_sm': result.transaction_details?.date_of_document,
+            'ts_main_nature_of_instrument_sm': result.transaction_details?.nature_of_instrument,
+            'ts_main_type_of_interest_sm': result.transaction_details?.type_of_interest,
+            'ts_main_type_of_use_sm': result.transaction_details?.type_of_use,
+            
+            // Financial Details
+            'ts_main_assessed_value_sm': result.transaction_details?.assessed_value,
+            'ts_main_stamp_duty_payable_sm': result.transaction_details?.stamp_duty_payable,
+            'ts_main_consideration_fee_sm': result.transaction_details?.consideration_fee,
+            'ts_main_case_consideration_fee_currency_sm': result.transaction_details?.consideration_fee_currency,
+            
+            // Dates & Applicant
+            'ts_main_commencement_date_sm': result.transaction_details?.commencement_date,
+            'ts_main_date_of_registration_sm': result.transaction_details?.date_of_registration,
+            'ts_main_publicity_date_sm': result.transaction_details?.publicity_date,
+            'ts_main_ar_name_sm': result.transaction_details?.ar_name,
+            
+            // Reference Numbers
+            'ts_main_job_number_sm': result.job_detail?.job_number,
+            'ts_main_certificate_number_sm': result.transaction_details?.certificate_number,
+            'ts_main_case_registered_number_sm': result.transaction_details?.registered_number,
+            'ts_main_case_date_of_issue_sm': result.transaction_details?.date_of_issue,
+            
+            // Plotting & Plans
+            'ts_main_smd_type_of_plotting_sm': result.parcel_details?.smd_type_of_plotting,
+            'ts_main_smd_reference_number_sm': result.parcel_details?.smd_reference_number,
+            'ts_main_plan_no_sm': result.parcel_details?.plan_no,
+            'ts_main_registry_mapref_sm': result.parcel_details?.registry_mapref,
+            
+            // Additional Details
+            'ts_main_term_sm': result.transaction_details?.term,
+            'ts_main_case_consideration_fee_adopted_rate_sm': result.transaction_details?.consideration_fee_adopted_rate,
+            'ts_main_interest_number': result.transaction_details?.interest_number,
+            'ts_main_sub_interest_number': result.transaction_details?.sub_interest_number
+        };
+        
+        // Update all elements
+        for (const [id, value] of Object.entries(fields)) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value || '-';
+            }
+        }
+    }
+
+    function updateRootOfTitle(result) {
+        // Update proprietorship table
+        updateTableData('#lrd_proprietorship_details_dataTable_2', result.lrd_proprietorship_section, '#noProprietorship', '#proprietorshipCount');
+        
+        // Update memorials table
+        updateTableData('#lrd_memorial_details_dataTable_2', result.lrd_memorials_section, '#noMemorials', '#memorialsCount');
+        
+        // Update valuation table
+        updateTableData('#lrd_valuation_details_dataTable_2', result.lrd_valuation_section, '#noValuations', '#valuationCount');
+        
+        // Update certificate table
+        updateTableData('#lrd_certificate_details_dataTable_2', result.lrd_certificate_section, '#noCertificates', '#certificateCount');
+        
+        // Update encumbrances table
+        updateTableData('#lrd_registration_encumbrance_dataTable_2', result.lrd_encumbrances_section, '#noEncumbrances', '#encumbrancesCount');
+    }
+
+    function updateTableData(tableId, data, noDataId, countId) {
+        const table = $(tableId);
+        const noDataElement = $(noDataId);
+        const countElement = $(countId);
+        
+        table.find('tbody').empty();
+        
+        if (data && data.length > 0) {
+            noDataElement.hide();
+            table.show();
+            
+            data.forEach(item => {
+                const row = createTableRow(item, tableId);
+                table.find('tbody').append(row);
+            });
+            
+            countElement.text(data.length);
+        } else {
+            table.hide();
+            noDataElement.show();
+            countElement.text('0');
+        }
+    }
+
+    function createTableRow(item, tableId) {
+        let row = '<tr>';
+        
+        switch(tableId) {
+            case '#lrd_proprietorship_details_dataTable_2':
+                row += `<td><span class="badge bg-primary bg-opacity-10 text-primary">${item.ps_registration_number || '-'}</span></td>`;
+                row += `<td>${item.ps_proprietor || '-'}</td>`;
+                row += `<td>${item.ps_date_of_instrument || '-'}</td>`;
+                row += `<td>${item.ps_nature_of_instrument || '-'}</td>`;
+                break;
+                
+            case '#lrd_memorial_details_dataTable_2':
+                row += `<td><span class="badge bg-info bg-opacity-10 text-info">${item.m_registered_no || '-'}</span></td>`;
+                row += `<td><div class="text-truncate" style="max-width: 250px;">${item.m_memorials || '-'}</div></td>`;
+                row += `<td>${item.m_date_of_instrument || '-'}</td>`;
+                row += `<td>${item.m_date_of_registration || '-'}</td>`;
+                row += `<td><span class="badge bg-secondary">${item.m_entry_number || '-'}</span></td>`;
+                break;
+                
+            case '#lrd_valuation_details_dataTable_2':
+                row += `<td>${item.vs_date_of_valuation || '-'}</td>`;
+                row += `<td><span class="fw-medium text-success">${item.vs_amount || '-'}</span></td>`;
+                row += `<td><div class="text-truncate" style="max-width: 200px;">${item.vs_remarks || '-'}</div></td>`;
+                break;
+                
+            case '#lrd_certificate_details_dataTable_2':
+                row += `<td>${item.cs_date_of_registration || '-'}</td>`;
+                row += `<td>${item.cs_to_whom_issued || '-'}</td>`;
+                row += `<td><span class="badge bg-primary bg-opacity-10 text-primary">${item.cs_serial_number || '-'}</span></td>`;
+                row += `<td><div class="text-truncate" style="max-width: 200px;">${item.cs_official_notes || '-'}</div></td>`;
+                break;
+                
+            case '#lrd_registration_encumbrance_dataTable_2':
+                row += `<td><span class="badge bg-danger bg-opacity-10 text-danger">${item.es_registered_number || '-'}</span></td>`;
+                row += `<td>${item.es_date_of_instrument || '-'}</td>`;
+                row += `<td>${item.es_date_of_registration || '-'}</td>`;
+                row += `<td><div class="text-truncate" style="max-width: 200px;">${item.es_memorials || '-'}</div></td>`;
+                row += `<td><div class="text-truncate" style="max-width: 150px;">${item.es_remarks || '-'}</div></td>`;
+                break;
+        }
+        
+        row += '</tr>';
+        return row;
+    }
+
+    function showLoadingState() {
+        // Add loading spinners or placeholders
+        $('.info-item span').addClass('placeholder-glow');
+        // $('.table tbody').html('<tr><td colspan="10" class="text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2 text-muted">Loading case details...</p></td></tr>');
+    }
+
+    function hideLoadingState() {
+        $('.info-item span').removeClass('placeholder-glow');
+    }
+
+    function showErrorState() {
+        // Show error messages
+        $('.info-item span').text('Error loading');
+        // $('.table tbody').html('<tr><td colspan="10" class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-danger mb-3"></i><p class="text-danger">Failed to load data</p></td></tr>');
+    }
+
+     $('#btn_load_scanned_documents_ts').on('click', function(e) { 
+        loadTSDocuments();
+    });
+
+    function loadTSDocuments() {
+        const case_number = $("#cs_main_case_number").val();
+        const tableBody = $('#documentsTableBody_ts');
+        const loadingIndicator = $('#documentsLoading');
+        
+        if (!case_number) {
+            showToast('Case number is required', 'danger');
+            return;
+        }
+        
+        // Show loading state
+        loadingIndicator.removeClass('d-none');
+        tableBody.html('<tr><td colspan="4" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div><small>Loading documents...</small></td></tr>');
+        
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+                request_type: 'load_case_scanned_document_new',
+                case_number: case_number
+            },
+            cache: false,
+            success: function(serviceresponse) {
+                loadingIndicator.addClass('d-none');
+                
+                if(!serviceresponse) {
+                    tableBody.html('<tr id="tsNoDocuments"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-folder-x fs-1 mb-2 d-block"></i><p class="mb-0">No documents found</p><small>Click "Add Documents" to upload documents</small></div></td></tr>');
+                    updateDocumentStatistics(0, 0, 0, 0);
+                    return;
+                }
+                
+                try {
+                    const json_p = JSON.parse(serviceresponse);
+                    let html = '';
+                    let totalDocs = 0;
+                    
+                    $(json_p).each(function () {
+                        totalDocs++;
+                        const docName = this.doc_description || 'Unnamed Document';
+                        const docUuid = this.doc_uuid || '#';
+                        const docType = this.doc_type || 'PDF';
+                        
+                        html += `
+                            <tr>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <!--<div class="form-check me-2">
+                                            <input class="form-check-input document-checkbox" type="checkbox" value="${docUuid}">
+                                        </div>
+                                        <div class="avatar avatar-xs bg-light-primary rounded-circle me-2">
+                                            <i class="bi bi-file-earmark"></i>
+                                        </div>-->
+                                        <div>
+                                            <a href="${docUuid}" class="link-post fw-semibold text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to preview">
+                                                ${docName}
+                                            </a>
+                                            <small class="text-muted d-block">
+                                                <i class="bi bi-calendar me-1"></i> ${this.upload_date || 'Date not available'}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge bg-info">
+                                        ${docType}
+                                    </span>
+                                </td>
+                                <!--<td class="align-middle text-center">
+                                    <span class="badge bg-secondary">.pdf</span>
+                                </td>-->
+                                <td class="align-middle text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document"
+                                                data-document-path="${docUuid}"
+                                                data-document-name="${docName}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <a href="${docUuid}" 
+                                        class="btn btn-outline-success btn-sm" 
+                                        download="${docName}"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <!--<button type="button" class="btn btn-outline-primary btn-sm btn-open-document"
+                                                data-document-path="${docUuid}">
+                                            <i class="bi bi-folder2-open"></i>
+                                        </button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableBody.html(html);
+                    
+                    // Update statistics
+                    updateDocumentStatistics(totalDocs, 0, totalDocs, 0);
+                    
+                    // Initialize tooltips for new elements
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                    });
+
+                    $('#tsNoDocuments').addClass('d-none');
+                    
+                    // Show success message
+                    showToast(`Successfully loaded ${totalDocs} document(s)`, 'success');
+                    
+                } catch(e) {
+                    console.error('Error parsing document data:', e);
+                    tableBody.html('<tr id="tsNoDocuments"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                    updateDocumentStatistics(0, 0, 0, 0);
+                    showToast('Error loading documents. Please try again.', 'danger');
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingIndicator.addClass('d-none');
+                tableBody.html('<tr id="tsNoDocuments"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                updateDocumentStatistics(0, 0, 0, 0);
+                showToast('Error loading documents. Please try again.', 'danger');
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
 
 });
