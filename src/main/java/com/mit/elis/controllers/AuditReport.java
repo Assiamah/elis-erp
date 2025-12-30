@@ -133,7 +133,7 @@ public class AuditReport {
 	
             
 
-
+	request.setAttribute("page_name", "audit_report");
 					model.addAttribute("content", "../pages/client_application/audit_report_dashboard.jsp"); return "layouts/app";
         
 

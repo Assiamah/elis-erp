@@ -561,7 +561,7 @@ $(document).ready(function() {
 					// $('th:nth-child(8),
 					// th:nth-child(8)').hide();
 					// $('.to_hide_on_level_1').hide();
-					datatable.column(11).visible(false);
+					//datatable.column(11).visible(false);
 
 				}
 
@@ -715,7 +715,7 @@ $(document).ready(function() {
 					// $('th:nth-child(8),
 					// th:nth-child(8)').hide();
 					// $('.to_hide_on_level_1').hide();
-					datatable.column(11).visible(false);
+					//datatable.column(11).visible(false);
 
 				}
 

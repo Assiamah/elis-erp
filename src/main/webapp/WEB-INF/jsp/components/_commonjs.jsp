@@ -112,6 +112,12 @@ ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name==
 
 <script src="${pageContext.request.contextPath}/assets/libs/jsw/jquery.smartWizard.js" type="text/javascript"></script>
 
+
+
+${page_name == "rent_management_dashboard" ? "<script src='js-pages/rent_management.js'></script>" : ""}
+${page_name == "audit_report" ? "<script src='js-pages/audit_report_dashboard.js'></script>" : ""}
+<!-- ${page_name == "audit_report" ? "<script src='js-pages/audit_report.js'></script>" : ""} -->
+
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lrdmaps.js'></script>" : ""}
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lrdfpmaps.js'></script>" : ""}
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrsmaps.js'></script>" : ""}

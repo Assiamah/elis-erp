@@ -133,7 +133,7 @@
                         </div>
 
                         <!-- Advanced Search -->
-                        <div class="card border-info">
+                        <!-- <div class="card border-info">
                             <div class="card-header bg-info bg-opacity-10 border-info py-2">
                                 <h6 class="mb-0 fw-semibold">
                                     <i class="fas fa-search-plus me-2"></i>Advanced Search
@@ -155,6 +155,28 @@
                                         <i class="fas fa-layer-group me-1"></i> Load All
                                     </button>
                                 </div>
+                            </div>
+                        </div> -->
+
+                         <!-- Multiple Parcels Table -->
+                        <div class="mt-4">
+                            <h6 class="fw-semibold mb-3 text-primary">
+                                <i class="fas fa-copy me-2"></i>Multiple Parcel Overlays
+                            </h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm" id="lrd_more_than_one_parcel_Table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Reference Number</th>
+                                            <th>Locality</th>
+                                            <th>Remarks</th>
+                                            <th class="text-center">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic content will be inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -223,27 +245,7 @@
                             <div id="lrd-map" class="h-100 w-100"></div>
                         </div>
 
-                        <!-- Multiple Parcels Table -->
-                        <div class="mt-4">
-                            <h6 class="fw-semibold mb-3 text-primary">
-                                <i class="fas fa-copy me-2"></i>Multiple Parcel Overlays
-                            </h6>
-                            <div class="table-responsive">
-                                <table class="table table-hover table-sm" id="lrd_more_than_one_parcel_Table">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Reference Number</th>
-                                            <th>Locality</th>
-                                            <th>Remarks</th>
-                                            <th class="text-center">Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Dynamic content will be inserted here -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                       
                     </div>
                     <div class="card-footer bg-transparent border-0 pt-3">
                         <div class="d-flex justify-content-between align-items-center">

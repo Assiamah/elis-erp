@@ -443,9 +443,9 @@ $(document)
 									'click',
 									function(evt) {
 										// click_type= 'DrawClick'
-										var viewResolution = map.getView()
+										var viewResolution = lrd_map.getView()
 												.getResolution();
-										var viewProjection = map.getView()
+										var viewProjection = lrd_map.getView()
 												.getProjection();
 
 										if (lrd_click_type === 'DrawClick') {
@@ -645,9 +645,9 @@ $(document)
 																		console
 																				.log(parcel_uuid);
 
-																		$(
-																				"#lrdparcelIndormation")
-																				.modal();
+																
+
+																				$("#lrdparcelIndormation").modal('show');
 
 																		$(
 																				'#lrdparcelIndormation #lrd_ps_fid')
@@ -775,10 +775,10 @@ $(document)
 																										json_p.data.polygon_wkt);
 
 																						lrd_pvlmd_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(json_p.data.polygon_wkt)}));
-																						lrd_pvlmd_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.GeoJSON()).readFeatures(json_p.parcels)}));
+																						//lrd_pvlmd_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.GeoJSON()).readFeatures(json_p.parcels)}));
 
 																						view.fit(lrd_pvlmd_searchLayer.getSource().getExtent());
-																						lrd_map.getView().fit(lrd_pvlmd_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
+																						lrd_map.getView().fit(lrd_pvlmd_searchLayer.getSource().getExtent(),{size : lrd_map.getSize(),maxZoom : 16})
 
 																					}
 																				});
@@ -1070,7 +1070,7 @@ $(document)
 												lrd_pvlmd_searchLayer
 														.getSource()
 														.getExtent(), {
-													size : map.getSize(),
+													size : lrd_map.getSize(),
 													maxZoom : 16
 												})
 
@@ -1119,7 +1119,7 @@ $(document)
 										lrd_map.getView().fit(
 												lrd_markers.getSource()
 														.getExtent(), {
-													size : map.getSize(),
+													size : lrd_map.getSize(),
 													maxZoom : 16
 												})
 									});
@@ -1303,61 +1303,54 @@ $(document)
 																.data(
 																		'modified_date'));
 
-										var table = $('#lrd_transaction_dataTable');
-										table.find("tbody tr").remove();
-										$
-												.ajax({
-													type : "POST",
-													url : 'Maps',
-													data : {
-														request_type : 'load_lrd_transaction_details',
-														fid_fk : parcel_uuid
-													},
-													cache : false,
-													beforeSend : function() {
-														// $('#district').html('<img
-														// src="img/loading.gif"
-														// alt=""
-														// width="24"
-														// height="24">');
-													},
-													success : function(
-															serviceresponse) {
+// 										var table = $('#lrd_transaction_dataTable');
+// 										table.find("tbody tr").remove();
+// 										$
+// 												.ajax({
+// 													type : "POST",
+// 													url : 'Maps',
+// 													data : {
+// 														request_type : 'load_lrd_transaction_details',
+// 														fid_fk : parcel_uuid
+// 													},
+// 													cache : false,
+// 													beforeSend : function() {
+// 													},
+// 													success : function(
+// 															serviceresponse) {
+// console.log("json_p")
+// console.log(serviceresponse)
+// 														var json_p = JSON.parse(serviceresponse);
+// 														console.log(json_p)
 
-														var json_p = JSON
-																.parse(serviceresponse);
-														console.log(json_p)
+													
 
-														/*
-														 * $(
-														 * '#lrd_txt_wkt_polygon')
-														 * .val( json_p.wkt);
-														 */
+// 														$(json_p.data)
+// 																.each(
+// 																		function() {
 
-														$(json_p.data)
-																.each(
-																		function() {
+// 																			table
+// 																					.append("<tr><td>"
+// 																							+ this.applicant_name
+// 																							+ "</td><td>"
+// 																							+ this.grantor_name
+// 																							+ "</td><td>"
+// 																							+ this.certicate_number
+// 																							+ "</td><td>"
+// 																							+ this.nature_of_instument
+// 																							+ "</td>"
 
-																			table
-																					.append("<tr><td>"
-																							+ this.applicant_name
-																							+ "</td><td>"
-																							+ this.grantor_name
-																							+ "</td><td>"
-																							+ this.certicate_number
-																							+ "</td><td>"
-																							+ this.nature_of_instument
-																							+ "</td>"
+// 																							+ '<td><p data-placement="top" data-toggle="tooltip" title="Details"><button class="btn btn-info btn-icon-split" data-dismiss="modal" data-toggle="modal" href="#addlrdtransaction" data-target-id="'
+// 																							+ this.gid
+// 																							+ '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Details</span></button></p></td>'
 
-																							+ '<td><p data-placement="top" data-toggle="tooltip" title="Details"><button class="btn btn-info btn-icon-split" data-dismiss="modal" data-toggle="modal" href="#addlrdtransaction" data-target-id="'
-																							+ this.gid
-																							+ '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Details</span></button></p></td>'
+// 																							+ "</tr>");
+// 																		});
 
-																							+ "</tr>");
-																		});
+// 													}
+// 												});
 
-													}
-												});
+
 
 										/*
 										 * $ .ajax({ type : "POST", url :
@@ -1373,59 +1366,59 @@ $(document)
 										 * json_p.data.polygon_wkt); } });
 										 */
 
-										$
-												.ajax({
-													type : "POST",
-													url : "Maps",
-													data : {
-														request_type : 'search_lrd_parcel_wkt',
-														parcel_id : parcel_uuid,
-													},
-													cache : false,
+										// $
+										// 		.ajax({
+										// 			type : "POST",
+										// 			url : "Maps",
+										// 			data : {
+										// 				request_type : 'search_lrd_parcel_wkt',
+										// 				parcel_id : parcel_uuid,
+										// 			},
+										// 			cache : false,
 
-													success : function(
-															jobdetails) {
+										// 			success : function(
+										// 					jobdetails) {
 
-														console.log(jobdetails);
-														var json_p = JSON
-																.parse(jobdetails);
+										// 				console.log(jobdetails);
+										// 				var json_p = JSON
+										// 						.parse(jobdetails);
 
-														$(
-																'#lrd_txt_wkt_polygon')
-																.val(
-																		json_p.data.polygon_wkt);
+										// 				$(
+										// 						'#lrd_txt_wkt_polygon')
+										// 						.val(
+										// 								json_p.data.polygon_wkt);
 
-														lrd_pvlmd_searchLayer
-																.setSource(new ol.source.Vector(
-																		{
-																			features : (new ol.format.WKT())
-																					.readFeatures(json_p.data.polygon_wkt)
-																		}));
-														lrd_pvlmd_searchLayer
-																.setSource(new ol.source.Vector(
-																		{
-																			features : (new ol.format.GeoJSON())
-																					.readFeatures(json_p.parcels)
-																		}));
+										// 				lrd_pvlmd_searchLayer
+										// 						.setSource(new ol.source.Vector(
+										// 								{
+										// 									features : (new ol.format.WKT())
+										// 											.readFeatures(json_p.data.polygon_wkt)
+										// 								}));
+										// 				lrd_pvlmd_searchLayer
+										// 						.setSource(new ol.source.Vector(
+										// 								{
+										// 									features : (new ol.format.GeoJSON())
+										// 											.readFeatures(json_p.parcels)
+										// 								}));
 
-														view
-																.fit(lrd_pvlmd_searchLayer
-																		.getSource()
-																		.getExtent());
-														lrd_map
-																.getView()
-																.fit(
-																		lrd_pvlmd_searchLayer
-																				.getSource()
-																				.getExtent(),
-																		{
-																			size : map
-																					.getSize(),
-																			maxZoom : 16
-																		})
+										// 				view
+										// 						.fit(lrd_pvlmd_searchLayer
+										// 								.getSource()
+										// 								.getExtent());
+										// 				lrd_map
+										// 						.getView()
+										// 						.fit(
+										// 								lrd_pvlmd_searchLayer
+										// 										.getSource()
+										// 										.getExtent(),
+										// 								{
+										// 									size : map
+										// 											.getSize(),
+										// 									maxZoom : 16
+										// 								})
 
-													}
-												});
+										// 			}
+										// 		});
 
 										var table_docs = $('#lrd_scanned_documents_dataTable');
 										table_docs.find("tbody tr").remove();
@@ -3532,7 +3525,7 @@ $(document)
 									});
 
 					function getResolutionFromScale(scale) {
-						var units = map.getView().getProjection().getUnits();
+						var units = lrd_map.getView().getProjection().getUnits();
 						var dpi = 25.4 / 0.28;
 						var mpu = ol.proj.METERS_PER_UNIT[units];
 						var resolution = scale / (mpu * 39.37 * dpi);

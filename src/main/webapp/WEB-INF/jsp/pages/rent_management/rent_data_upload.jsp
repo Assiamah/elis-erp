@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.google.gson.GsonBuilder"%>
-<jsp:include page="../includes/_header.jsp"></jsp:include>
 
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -140,8 +139,6 @@
         </div>
     </div>
 </div>
-
-<jsp:include page="../includes/_footer.jsp"></jsp:include>
 
 <!-- JavaScript -->
 <script>

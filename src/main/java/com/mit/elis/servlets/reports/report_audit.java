@@ -77,7 +77,9 @@ public class report_audit {
 
 			if (request_type.equals("audit_report_count_on_payments")) {
 
-                String regional_code = request.getParameter("regional_code");
+               // String regional_code = (String) session.getAttribute("regional_code");
+                  String regional_code ="11";
+      
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
 
