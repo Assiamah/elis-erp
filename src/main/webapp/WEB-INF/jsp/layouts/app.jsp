@@ -47,8 +47,7 @@
 
         <!-- include modal.jsp"-->
         <jsp:include page="../components/_modal.jsp"></jsp:include>
-               <!-- include modal.jsp"-->
-        <jsp:include page="../components/lrd_maps_modals.jsp"></jsp:include>
+        <!-- <jsp:include page="../components/lrd_maps_modals.jsp"></jsp:include> -->
 
 
         <!-- include notifications.jsp"-->

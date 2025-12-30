@@ -1,6 +1,10 @@
 $(document).ready(function() {
 
-    var datatable = $("#job_casemgtdetailsdataTable").DataTable({
+    setTimeout(function() {
+        window.initializeTooltips();
+    }, 50);
+
+    var datatable = $("#tbl_rent_records").DataTable({
         // responsive: true,
         stateSave : true,
         "createdRow" : function(row, data, dataIndex) {
@@ -24,24 +28,24 @@ $(document).ready(function() {
 
         if(rts_select_type == 'Plot Number'){
 
-            $('#div_rent_estate').removeClass('d-none');
+            $('#div_rent_estate').addClass('d-none');
             $('#div_rent_keyword').removeClass('d-none');
             $('#div_certificate_rmap_search').addClass('d-none');
-            $('#div_btn_rmap_search').removeClass('d-none');
+            $('#div_btn_rmap_search').addClass('d-none');
 
         } else if(rts_select_type == 'Estate'){
 
             $('#div_rent_estate').removeClass('d-none');
             $('#div_rent_keyword').addClass('d-none');
             $('#div_certificate_rmap_search').addClass('d-none');
-            $('#div_btn_rmap_search').removeClass('d-none');
+            $('#div_btn_rmap_search').addClass('d-none');
             
         } else if(rts_select_type == 'Name of Leasee/Assignee'){
 
-            $('#div_rent_estate').removeClass('d-none');
+            $('#div_rent_estate').addClass('d-none');
             $('#div_rent_keyword').removeClass('d-none');
             $('#div_certificate_rmap_search').addClass('d-none');
-            $('#div_btn_rmap_search').removeClass('d-none');
+            $('#div_btn_rmap_search').addClass('d-none');
             
         } else if(rts_select_type == 'Certificate Number'){
 
@@ -109,76 +113,587 @@ $(document).ready(function() {
 
     
     $('#btn_generate_rent_demand_note').on('click', (e) => {
-        //e.preventDefault();
-      
-        var rdn_rent_id = $('#rdn_rent_id').val();
-        var rdn_account_number = $('#rdn_account_number').val();
-       
-
-
-        $.ajax({
-            type: "POST",
-            url: "rent_mgt_serv",
-          //  target : '_blank',
-            data: {
-                request_type: 'select_prepare_rent_demand_notice_single',
-                rdn_rent_id: rdn_rent_id,
-                rdn_account_number : rdn_account_number
-                   
-                     },
-            cache: false,
-          
-            beforeSend: function () { },
-            success: function(jobdetails) {
-                //console.log(data)
-            //        $('#elisDocumentPreview').modal({
-            //           backdrop: 'static',
-            //         });
-                 
-            //        var blob = new Blob(
-            //                [ data ],
-            //                {
-            //                    type : "application/pdf"
-            //                });
-            //    var objectUrl = URL
-            //                .createObjectURL(blob);
-
-            var table = $('#tbl_rent_assessment_details');
-            table.find("tbody tr").remove();
-        
-            //console.log(jobdetails);
-            var json_p = JSON.parse(jobdetails);
-            
-            $(json_p.rent_assessment).each(function () {
-                        
-                        table.append("<tr><td>" 
-                            + this.rc_period 
-                            + "</td><td>" 
-                            + this.rc_amount_of_one_cedi 
-                            + "</td><td>" 
-                            + this.rc_amount_of_one_cedi_pa 
-                            + "</td><td>" 
-                            + this.rc_annual_rent 
-                            + "</td><td>" 
-                            + this.rc_amount_assessed 
-                            + "</td><td>" 
-                            + this.rc_description 
-                            + "</td>"
-                                
-                                   
-                        + "</tr>");
-                  });
-
-
-            },
-            complete: function(){
-                //console.log("Completed ajax");
-
-              }
+    e.preventDefault();
+    
+    var rdn_rent_id = $('#rdn_rent_id').val();
+    var rdn_account_number = $('#rdn_account_number').val();
+    var rdn_leasee_name = $('#rdn_leasee_name').val();
+    var rdn_plot_number = $('#rdn_plot_number').val() || 'N/A';
+    var rdn_estate = $('#rdn_estate').val() || 'N/A';
+    
+    // Validate required fields
+    if (!rdn_rent_id || rdn_rent_id === '0') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Information',
+            text: 'Please select a valid lease record to generate demand notice.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    
+    if (!rdn_leasee_name) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Information',
+            text: 'Please enter the lessee name.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    
+    // Show confirmation dialog
+    Swal.fire({
+        title: 'Generate Rent Demand Notice',
+        html: `
+            <div class="text-start">
+                <p class="mb-3">Are you sure you want to generate a rent demand notice?</p>
+                
+                <div class="alert alert-info py-2 mb-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-circle fa-lg me-3"></i>
+                        <div>
+                            <div class="fw-bold">${rdn_leasee_name}</div>
+                            <small class="text-muted">
+                                <i class="fas fa-hashtag me-1"></i>Plot: ${rdn_plot_number} | 
+                                <i class="fas fa-warehouse me-1 ms-2"></i>Estate: ${rdn_estate}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <table class="table table-sm table-bordered bg-light">
+                        <tbody>
+                            <!--<tr>
+                                <td class="fw-semibold" style="width: 40%">Lease ID:</td>
+                                <td>${rdn_rent_id}</td>
+                            </tr>-->
+                            <tr>
+                                <td class="fw-semibold">Account Number:</td>
+                                <td>${rdn_account_number || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Generation Type:</td>
+                                <td>
+                                    <span class="badge bg-primary">Single Assessment</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmGeneration">
+                    <label class="form-check-label" for="confirmGeneration">
+                        I confirm all details are correct
+                    </label>
+                </div>
+                
+                <div class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    This will calculate rent assessments based on current rates and outstanding amounts.
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-cogs me-1"></i> Generate Now',
+        cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            const checkbox = document.getElementById('confirmGeneration');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please confirm that all details are correct');
+                return false;
+            }
+            return true;
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+        width: '500px'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading animation
+            let timerInterval;
+            Swal.fire({
+                title: 'Generating Demand Notice',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-file-invoice-dollar fa-spin fa-2x text-primary"></i>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <p class="mt-2 mb-0 text-muted" id="swal-progress-text">Calculating assessments...</p>
+                    </div>
+                `,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    const progressBar = Swal.getHtmlContainer().querySelector('.progress-bar');
+                    const progressText = Swal.getHtmlContainer().querySelector('#swal-progress-text');
+                    let progress = 0;
+                    
+                    timerInterval = setInterval(() => {
+                        progress += 10;
+                        if (progress <= 80) {
+                            progressBar.style.width = `${progress}%`;
+                            if (progress < 30) {
+                                progressText.textContent = 'Calculating assessments...';
+                            } else if (progress < 60) {
+                                progressText.textContent = 'Applying rates and charges...';
+                            } else {
+                                progressText.textContent = 'Finalizing calculations...';
+                            }
+                        }
+                    }, 300);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
             });
-          
+            
+            // Disable generate button during processing
+            $('#btn_generate_rent_demand_note').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Generating...');
+            
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "rent_mgt_serv",
+                data: {
+                    request_type: 'select_prepare_rent_demand_notice_single',
+                    rdn_rent_id: rdn_rent_id,
+                    rdn_account_number: rdn_account_number
+                },
+                cache: false,
+                success: function(jobdetails) {
+                    Swal.close();
+                    
+                    try {
+                        var json_p = JSON.parse(jobdetails);
+                        var table = $('#tbl_rent_assessment_details');
+                        
+                        // Clear existing rows
+                        table.find("tbody tr").remove();
+                        
+                        // Check if we have data
+                        if (!json_p.rent_assessment || json_p.rent_assessment.length === 0) {
+                            // Show empty state
+                            table.find('tbody').append(`
+                                <tr id="noAssessmentData">
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+                                            <p class="mb-2 fw-semibold">No Assessment Data Available</p>
+                                            <small>No rent assessments found for this period</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+                            
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'No Assessments Found',
+                                text: 'No rent assessments were generated for this period.',
+                                confirmButtonColor: '#3085d6'
+                            });
+                        } else {
+                            // Calculate total amount
+                            let totalAmount = 0;
+                            
+                            // Populate table with data
+                            $(json_p.rent_assessment).each(function (index) {
+                                const amountAssessed = parseFloat(this.rc_amount_assessed || 0);
+                                totalAmount += amountAssessed;
+                                
+                                const row = `
+                                    <tr>
+                                        <td class="text-center">
+                                            <span class="fw-semibold">${this.rc_period || 'N/A'}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            ${this.rc_amount_of_one_cedi || '0.00'}
+                                        </td>
+                                        <td class="text-end">
+                                            ${this.rc_amount_of_one_cedi_pa || '0.00'}
+                                        </td>
+                                        <td class="text-end fw-semibold">
+                                            ${parseFloat(this.rc_annual_rent || 0).toFixed(2)}
+                                        </td>
+                                        <td class="text-end fw-bold text-primary">
+                                            ${amountAssessed.toFixed(2)}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-file-alt text-secondary me-2"></i>
+                                                <span>${this.rc_description || 'Rent Assessment'}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                                
+                                table.find('tbody').append(row);
+                            });
+                            
+                            // Add total row if we have data
+                            if (json_p.rent_assessment.length > 0) {
+                                table.find('tbody').append(`
+                                    <tr class="table-light">
+                                        <td colspan="4" class="text-end fw-bold">Total Amount Due:</td>
+                                        <td colspan="2" class="text-start fw-bold text-success">
+                                            GHS ${totalAmount.toFixed(2)}
+                                        </td>
+                                    </tr>
+                                `);
+                            }
+                            
+                            // Show success message with options
+                            Swal.fire({
+                                title: 'Demand Notice Generated!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle fa-3x text-success"></i>
+                                        </div>
+                                        <p class="mb-2"><strong>Rent demand notice generated successfully!</strong></p>
+                                        <div class="alert alert-success py-2">
+                                            <small>
+                                                <i class="fas fa-calculator me-1"></i>
+                                                Generated ${json_p.rent_assessment.length} assessment(s) for ${rdn_leasee_name}
+                                            </small>
+                                        </div>
+                                        <div class="alert alert-info py-2">
+                                            <small>
+                                                <i class="fas fa-money-bill-wave me-1"></i>
+                                                Total Amount Due: <strong>GHS ${totalAmount.toFixed(2)}</strong>
+                                            </small>
+                                        </div>
+                                    </div>
+                                `,
+                                showCancelButton: true,
+                                confirmButtonColor: '#198754',
+                                cancelButtonColor: '#6c757d',
+                                confirmButtonText: '<i class="fas fa-print me-1"></i> View & Print',
+                                cancelButtonText: '<i class="fas fa-eye me-1"></i> View Details',
+                                showDenyButton: true,
+                                denyButtonText: '<i class="fas fa-envelope me-1"></i> Send Email',
+                                denyButtonColor: '#0d6efd',
+                                width: '500px'
+                            }).then((result) => {
+                                // Enable print button if exists
+                                $('#btn_print_rent_demand_note').prop('disabled', false);
+                                
+                                if (result.isConfirmed) {
+                                    // Generate print/PDF view
+                                    generatePrintView(rdn_rent_id, rdn_account_number);
+                                } else if (result.isDenied) {
+                                    // Send email
+                                    const email = $('#rdn_email').val();
+                                    if (email) {
+                                        sendDemandNoticeEmail(email, rdn_leasee_name, rdn_rent_id);
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Email Required',
+                                            text: 'Please enter an email address to send the demand notice.',
+                                            confirmButtonColor: '#3085d6'
+                                        });
+                                    }
+                                }
+                                // If cancelled (view details), just keep modal open
+                            });
+                        }
+                        
+                        // Update generation info
+                        if (json_p.generation_date) {
+                            $('#generationDate').text(json_p.generation_date);
+                        }
+                        
+                        if (json_p.assessment_period) {
+                            $('#assessmentPeriod').text(json_p.assessment_period);
+                        }
+                        
+                        // Show summary if it exists
+                        if (json_p.summary) {
+                            $('#assessmentSummary').show();
+                        }
+                        
+                    } catch (e) {
+                        console.error('Error parsing response:', e);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Data Error',
+                            text: 'Failed to parse server response. Please try again.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.close();
+                    console.error('AJAX Error:', error);
+                    
+                    let errorMessage = 'Failed to generate demand notice. ';
+                    if (xhr.status === 0) {
+                        errorMessage += 'No network connection.';
+                    } else if (xhr.status === 404) {
+                        errorMessage += 'Server endpoint not found.';
+                    } else if (xhr.status === 500) {
+                        errorMessage += 'Server error. Please try again later.';
+                    } else {
+                        errorMessage += 'Please check your connection.';
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Generation Failed',
+                        html: `
+                            <div class="text-start">
+                                <p class="mb-2">${errorMessage}</p>
+                                <div class="alert alert-danger py-2 mt-2">
+                                    <small>
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        <strong>Error Details:</strong> ${error}
+                                    </small>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="retryDemandNoticeGeneration()">
+                                        <i class="fas fa-redo me-1"></i> Retry
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="Swal.close()">
+                                        <i class="fas fa-times me-1"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'OK',
+                        showConfirmButton: false,
+                        width: '500px'
+                    });
+                },
+                complete: function() {
+                    // Re-enable generate button
+                    $('#btn_generate_rent_demand_note').prop('disabled', false).html('<i class="fas fa-cogs me-2"></i> Generate Rent Demand Notice');
+                }
+            });
+        }
+    });
+});
 
-    })
+// Function to retry demand notice generation
+function retryDemandNoticeGeneration() {
+    Swal.close();
+    setTimeout(() => {
+        $('#btn_generate_rent_demand_note').click();
+    }, 500);
+}
+
+// Function to generate print view
+function generatePrintView(rentId, accountNumber) {
+    // Show loading for print generation
+    Swal.fire({
+        title: 'Preparing Print Preview',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-print fa-spin fa-2x text-primary"></i>
+                </div>
+                <p class="mb-0 text-muted">Generating printable demand notice...</p>
+            </div>
+        `,
+        allowOutsideClick: false,
+        showConfirmButton: false
+    });
+    
+    // Make AJAX request for print
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: {
+            request_type: 'generate_demand_notice_pdf',
+            rdn_rent_id: rentId,
+            rdn_account_number: accountNumber
+        },
+        cache: false,
+        success: function(response) {
+            Swal.close();
+            
+            try {
+                const result = JSON.parse(response);
+                
+                if (result.success && result.pdf_url) {
+                    // Open PDF in new tab
+                    window.open(result.pdf_url, '_blank');
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Print Ready',
+                        text: 'Demand notice PDF has been generated and opened in a new tab.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Print Failed',
+                        text: result.message || 'Failed to generate printable demand notice.',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing print response:', e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Print Error',
+                    text: 'Failed to generate print preview.',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.close();
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Failed to generate print preview. Please try again.',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    });
+}
+
+// Function to send demand notice email
+function sendDemandNoticeEmail(email, lesseeName, rentId) {
+    Swal.fire({
+        title: 'Send Demand Notice',
+        html: `
+            <div class="text-start">
+                <p>Send rent demand notice to <strong>${lesseeName}</strong>?</p>
+                <div class="alert alert-info py-2">
+                    <small>
+                        <i class="fas fa-envelope me-1"></i>
+                        Email: <strong>${email}</strong>
+                    </small>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="includeAttachment">
+                    <label class="form-check-label" for="includeAttachment">
+                        Include PDF attachment
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="sendCopyToAdmin">
+                    <label class="form-check-label" for="sendCopyToAdmin">
+                        Send copy to admin
+                    </label>
+                </div>
+                <div class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    An email with the demand notice details will be sent immediately.
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-paper-plane me-1"></i> Send Now',
+        cancelButtonText: 'Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            const includeAttachment = $('#includeAttachment').is(':checked');
+            const sendCopyToAdmin = $('#sendCopyToAdmin').is(':checked');
+            
+            return $.ajax({
+                type: "POST",
+                url: "rent_mgt_serv",
+                data: {
+                    request_type: 'send_demand_notice_email',
+                    rent_id: rentId,
+                    email: email,
+                    include_attachment: includeAttachment ? '1' : '0',
+                    send_copy_to_admin: sendCopyToAdmin ? '1' : '0'
+                }
+            }).then(response => {
+                try {
+                    const result = JSON.parse(response);
+                    return result;
+                } catch (e) {
+                    throw new Error('Invalid server response');
+                }
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            if (result.value.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Email Sent!',
+                    html: `
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-paper-plane fa-3x text-success"></i>
+                            </div>
+                            <p class="mb-2">Demand notice has been sent successfully!</p>
+                            <div class="alert alert-success py-2">
+                                <small>
+                                    <i class="fas fa-envelope me-1"></i>
+                                    Sent to: <strong>${email}</strong>
+                                </small>
+                            </div>
+                        </div>
+                    `,
+                    confirmButtonColor: '#198754'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Send Failed',
+                    text: result.value.message || 'Failed to send email.',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        }
+    });
+}
+
+// Add CSS for progress animation
+if (!$('#demand-notice-styles').length) {
+    const style = document.createElement('style');
+    style.id = 'demand-notice-styles';
+    style.textContent = `
+        .swal2-popup .progress {
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .swal2-popup .progress-bar {
+            background-color: #0d6efd;
+            transition: width 0.3s ease;
+        }
+        
+        #tbl_rent_assessment_details tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        #tbl_rent_assessment_details tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+            transform: translateX(2px);
+        }
+        
+        #btn_generate_rent_demand_note:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    `;
+    document.head.appendChild(style);
+}
 
     $('#btn_print_rent_demand_note').on('click', (e) => {
         //e.preventDefault();
@@ -201,28 +716,42 @@ $(document).ready(function() {
             xhrFields : {
                    responseType : 'blob'
                },
-            beforeSend: function () { },
-            success: function(data) {
-                //console.log(data)
+            beforeSend: function () { 
+                 showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+            //     //console.log(data)
                  
                 
-                //$('#elisDocumentPreview').modal({backdrop: 'static',});
-                    $('#elisDocumentPreview').modal('show');
-                   // console.log("pdf blob sdata");
-                    //console.log(data);
-                   var blob = new Blob(
-                           [ data ],
-                           {
-                               type : "application/pdf"
-                           });
-               var objectUrl = URL
-                           .createObjectURL(blob);
-                   // window.open(objectUrl);
-               ///	console.log("success ajax");
+            //     //$('#elisDocumentPreview').modal({backdrop: 'static',});
+            //         $('#elisDocumentPreview').modal('show');
+            //        // console.log("pdf blob sdata");
+            //         //console.log(data);
+            //        var blob = new Blob(
+            //                [ data ],
+            //                {
+            //                    type : "application/pdf"
+            //                });
+            //    var objectUrl = URL
+            //                .createObjectURL(blob);
+            //        // window.open(objectUrl);
+            //    ///	console.log("success ajax");
 
-                $('#elisdovumentpreviewblobfile').attr('src',objectUrl);
+            //     $('#elisdovumentpreviewblobfile').attr('src',objectUrl);
                    
-                   
+                const file = new File([pdfBlob], `Demand Notice_${rdn_account_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
                    
                  
             },
@@ -235,604 +764,1502 @@ $(document).ready(function() {
 
     })
 
-    $('#btn_save_rent_client_details').on('click', (e) => {
-        e.preventDefault();
-
-        var rt_rent_id = $('#addlegder .rt_rent_id').val();
-        var rt_parcel_id = $('#addlegder #rt_parcel_id').val();
-        var rt_leasee_name = $('#addlegder #rt_leasee_name').val();
-        var rt_leasee_address = $('#addlegder #rt_leasee_address').val();
-        var rt_mobile_phone_1 = $('#addlegder #rt_mobile_phone_1').val();
-        var rt_mobile_phone_2 = $('#addlegder #rt_mobile_phone_2').val();
-        var rt_email = $('#addlegder #rt_email').val();
-        var rt_leasee_digital_address = $('#addlegder #rt_leasee_digital_address').val();
-        //var rt_locality = $('#rt_locality').val();
-        var rt_estate = $('#addlegder #rt_estate').val();
-        var rt_plot_number = $('#addlegder #rt_plot_number').val();
-        var rt_plot_size = $('#addlegder #rt_plot_size').val();
-       // var rt_block_number = $('#rt_block_number').val();
-        var rt_convenant_user = $('#addlegder #rt_convenant_user').val();
-        //var rt_original_use = $('#rt_original_use').val();
-        var rt_current_use = $('#addlegder #rt_current_use').val();
-        var rt_nature_of_dev = $('#addlegder #rt_nature_of_dev').val();
-        var rt_parcel_address = $('#addlegder #rt_parcel_address').val();
-        var rt_file_number = $('#addlegder #rt_file_number').val();
-        var rt_ledger = $('#addlegder #rt_ledger').val();
-        var rt_folio = $('#addlegder #rt_folio').val();
-        var rt_ls_number = $('#addlegder #rt_ls_number').val();
-        var rt_commencement_date = $('#addlegder #rt_commencement_date').val();
-        var rt_term = $('#addlegder #rt_term').val();
-        //var rt_expiry_date = $('#rt_expiry_date').val();
-        var rt_consent_date = $('#addlegder #rt_consent_date').val();
-        var rt_location_rate = $('#addlegder #rt_location_rate').val();
-        var rt_rent_category = $('#addlegder #rt_rent_category').val();
-        var rt_rent_review_clause = $('#addlegder #rt_rent_review_clause').val();
-        var rt_rent_passing = $('#addlegder #rt_rent_passing').val();
-        //var rt_adjoining_plots = $('#rt_adjoining_plots').val();
-        //var rt_amount_due = $('#rt_amount_due').val();
-        var rt_rent_outstanding = $('#addlegder #rt_rent_outstanding').val();
-        //var rt_classification_of_arrears = $('#rt_classification_of_arrears').val();
-       // var rt_serial_number = $('#rt_serial_number').val();
-        var rt_remarks = $('#addlegder #rt_remarks').val();
-        var rt_last_payment_date = $('#addlegder #rt_last_payment_date').val();
-        var rt_nature_of_instrument = $('#addlegder #rt_nature_of_instrument').val();
-        //var rt_last_review_date = $('#rt_last_review_date').val();
-        var rt_last_payment_period = $('#addlegder #rt_last_payment_period').val();
-        var rt_period_in_arrears = $('#addlegder #rt_period_in_arrears').val();
-        var rt_glpin = $('#addlegder #rt_glpin').val();
-
-        // if(!rt_leasee_name || !rt_leasee_address || !rt_mobile_phone_1 || !rt_region_code || !rt_locality || !rt_estate || 
-        //     !rt_plot_number || !rt_plot_size || !rt_block_number || !rt_file_number || !rt_ledger || !rt_commencement_date || !rt_term || 
-        //     !rt_expiry_date || !rt_consent_date || !rt_location_rate) {
-
-        //         alert('Please fill in all the required fields');
-        //         return;
-        //  }
-
-        console.log(rt_rent_id, rt_rent_category, rt_nature_of_dev);
-
-         // List of required fields
-        const fields = [
-            { field: rt_leasee_name, selector: '#rt_leasee_name' },
-            { field: rt_leasee_address, selector: '#rt_leasee_address' },
-            //{ field: rt_mobile_phone_1, selector: '#rt_mobile_phone_1' },
-            // { field: rt_region_code, selector: '#rt_region_code' },
-            // { field: rt_locality, selector: '#rt_locality' },
-            { field: rt_estate, selector: '#rt_estate' },
-            { field: rt_plot_number, selector: '#rt_plot_number' },
-            { field: rt_plot_size, selector: '#rt_plot_size' },
-            //{ field: rt_block_number, selector: '#rt_block_number' },
-            { field: rt_file_number, selector: '#rt_file_number' },
-            { field: rt_ledger, selector: '#rt_ledger' },
-            { field: rt_commencement_date, selector: '#rt_commencement_date' },
-            { field: rt_term, selector: '#rt_term' },
-            //{ field: rt_expiry_date, selector: '#rt_expiry_date' },
-            //{ field: rt_consent_date, selector: '#rt_consent_date' },
-            //{ field: rt_location_rate, selector: '#rt_location_rate' },
-            { field: rt_last_payment_date, selector: '#rt_last_payment_date' },
-            { field: rt_rent_review_clause, selector: '#rt_rent_review_clause' },
-            //{ field: rt_last_review_date, selector: '#rt_last_review_date' },
-            { field: rt_last_payment_period, selector: '#rt_last_payment_period' },
-            //{ field: rt_period_in_arrears, selector: '#rt_period_in_arrears'},
-        ];
-
-        let allFieldsFilled = true;
-
-        fields.forEach(({ field, selector }) => {
-            const inputElement = document.querySelector(selector);
-
-            if (!field) {
-                inputElement.style.border = '2px solid red'; // Add red border for empty fields
-                allFieldsFilled = false;
-            } else {
-                inputElement.style.border = ''; // Reset border if the field is filled
+    // Function to open PDF modal
+    function openPDFModal(file, fileURL) {
+        // Create modal HTML
+        const modalHTML = `
+            <div class="modal fade effect-fade modal-blur" id="pdfViewerModal" tabindex="-1" aria-labelledby="pdfViewerModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between">
+                            <h6 class="modal-title" id="pdfViewerModalLabel">
+                                <i class="fas fa-file-pdf me-2"></i>
+                                ${file.name}
+                            </h6>
+                            <div>
+                                <span class="badge bg-light text-dark ms-2">${formatFileSize(file.size)}</span>
+                                <button type="button" class="btn btn-sm btn-outline-light me-2" id="btnDownloadPDF">
+                                    <i class="fas fa-download me-1"></i>Download
+                                </button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <div class="modal-body p-0" style="min-height: 70vh;">
+                            <div id="pdfViewerContainer">
+                                <!--<div id="pdfLoading" class="d-flex flex-column align-items-center justify-content-center h-100 p-5">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Loading PDF...</span>
+                                    </div>
+                                    <p class="text-muted">Loading PDF document...</p>
+                                </div>-->
+                                <div id="pdfViewer" style="display: none;">
+                                    <div class="pdf-toolbar bg-light p-2 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <button class="btn btn-sm btn-outline-dark me-2" id="btnPrevPage">
+                                                    <i class="fas fa-chevron-left"></i>
+                                                </button>
+                                                <span class="mx-2">
+                                                    Page: <span id="currentPage">1</span> / <span id="totalPages">0</span>
+                                                </span>
+                                                <button class="btn btn-sm btn-outline-dark ms-2" id="btnNextPage">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                    <span class="input-group-text">Zoom</span>
+                                                    <select class="form-select" id="zoomSelect">
+                                                        <option value="0.5">50%</option>
+                                                        <option value="0.75">75%</option>
+                                                        <option value="1" selected>100%</option>
+                                                        <option value="1.25">125%</option>
+                                                        <option value="1.5">150%</option>
+                                                        <option value="2">200%</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pdf-container p-3">
+                                        <canvas id="pdfCanvas" class="mx-auto d-block shadow-sm"></canvas>
+                                    </div>
+                                </div>
+                                <div id="pdfError" class="d-none text-center p-5">
+                                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                                    <h5>Unable to load PDF</h5>
+                                    <p class="text-muted">There was an error loading the PDF document.</p>
+                                    <button class="btn btn-primary" onclick="location.reload()">
+                                        <i class="fas fa-redo me-2"></i>Try Again
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <div class="text-muted small">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Use arrow keys to navigate between pages
+                            </div>
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add modal to body if not exists
+        if (!document.getElementById('pdfViewerModal')) {
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        } else {
+            // Remove existing modal
+            const existingModal = document.getElementById('pdfViewerModal');
+            if (existingModal) {
+                existingModal.remove();
             }
-        });
-
-        if (!allFieldsFilled) {
-            alert('Please fill in all the required fields');
-            return;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
-
-
- 
-     rt_estate = rt_estate.replace('.0', '');
-
-        $.ajax({
-            type : "POST",
-            url : "rent_mgt_serv",
-            data : {
-                request_type : 'add_update_rent_leasee_details',
-                rent_id : rt_rent_id || 0,
-                parcel_id : rt_parcel_id || '',
-                owners_name : rt_leasee_name || '',
-                address : rt_leasee_address || '',
-                mobile : rt_mobile_phone_1 || '',
-                mobile_1 : rt_mobile_phone_2 || '',
-                email : rt_email || '',
-                file_number : rt_file_number || '',
-                ledger : rt_ledger || '',
-                folio : rt_folio || '',
-                digital_address : rt_leasee_digital_address || '',
-                //block : rt_block_number || '',
-                plot_number : rt_plot_number || '',
-                plot_size : rt_plot_size || '',
-                covenanted_user : rt_convenant_user || '',
-                current_use : rt_current_use || '',
-                nature_of_devt : rt_nature_of_dev || '',
-                parcel_address : rt_parcel_address || '',
-                ls_number : rt_ls_number || '',
-                comm_date : rt_commencement_date || '',
-                term : rt_term || '',
-                //expiry_date : rt_expiry_date || '',
-                consent_date : rt_consent_date || '',
-                location_rate : rt_location_rate || '',
-                rent_category : rt_rent_category || '',
-                rent_review_clause : rt_rent_review_clause || 0,
-                rent_passing : rt_rent_passing || 0,
-                //adjoining_plots : rt_adjoining_plots || '',
-                //amount_due : rt_amount_due || '',
-                //arrears_amounts : rt_arrears_amounts,
-                //original_use : rt_original_use || '',
-                rent_outstanding : rt_rent_outstanding || '',
-                //classification_of_arrears : rt_classification_of_arrears || '',
-                glpin : rt_glpin || '',
-                remarks : rt_remarks || '',
-                estate : rt_estate || '',
-                last_payment_date : rt_last_payment_date || '',
-                nature_of_instrument : rt_nature_of_instrument || '',
-                //last_review_date : rt_last_review_date || '',
-                //region_id : rt_region_code || 0,
-                last_payment_period : rt_last_payment_period || '',
-                period_in_arrears : rt_period_in_arrears || ''
-
-
-            },
-            cache : false,
-            //beforeSend : function() {},
-            success: function(response) {
-                try {
-                    const json_p = JSON.parse(response);
-                    if (json_p.success) {
-                        $('#addlegder').modal('hide');
-                       // $.notify({ message: '<i class="fa fa-check-circle fa-fw"></i><span class="text-bold">Data saved successfully.</span>' }, { type: 'success' });
-                        $("#btn_rt_search").trigger("click");
-                    } else {
-                        //$.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Error occurred, try again.</span>' }, { type: 'danger' });
-                    }
-                } catch (e) {
-                    console.error('Error parsing response:', e);
-                   // $.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">An error occurred while processing the response.</span>' }, { type: 'danger' });
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX Error:', textStatus, errorThrown);
-                //$.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">AJAX request failed: ' + textStatus + '</span>' }, { type: 'danger' });
+        
+        // Get modal instance
+        const modal = new bootstrap.Modal(document.getElementById('pdfViewerModal'));
+        
+        // Show modal
+        modal.show();
+        
+        // Initialize PDF.js when modal is shown
+        document.getElementById('pdfViewerModal').addEventListener('shown.bs.modal', function() {
+            initializePDFViewer(fileURL);
+        });
+        
+        // Clean up object URL when modal is closed
+        document.getElementById('pdfViewerModal').addEventListener('hidden.bs.modal', function() {
+            URL.revokeObjectURL(fileURL);
+            this.remove();
+        });
+        
+        // Download button handler
+        document.getElementById('pdfViewerModal').addEventListener('click', function(e) {
+            if (e.target.id === 'btnDownloadPDF' || e.target.closest('#btnDownloadPDF')) {
+                downloadPDF(file);
             }
         });
-    })
+    }
 
- $('#btn_save_edit_rent_client_details').on('click', (e) => {
-       e.preventDefault();
-//console.log('fughjhghjh hgvhghgghg hghggh')
-        var rt_rent_id = $('#editlegder #rt_e_rent_id').val();
-        var rt_parcel_id = $('#editlegder #rt_e_parcel_id').val();
-        var rt_leasee_name = $('#editlegder #rt_e_leasee_name').val();
-        var rt_leasee_address = $('#editlegder #rt_e_leasee_address').val();
-        var rt_mobile_phone_1 = $('#editlegder #rt_e_mobile_phone_1').val();
-        var rt_mobile_phone_2 = $('#editlegder #rt_e_mobile_phone_2').val();
-        var rt_email = $('#editlegder #rt_e_email').val();
-        var rt_leasee_digital_address = $('#editlegder #rt_e_leasee_digital_address').val();
-        //var rt_locality = $('#rt_e_locality').val();
-        var rt_estate = $('#editlegder #rt_e_estate').val();
-        var rt_plot_number = $('#editlegder #rt_e_plot_number').val();
-        var rt_plot_size = $('#editlegder #rt_e_plot_size').val();
-       // var rt_block_number = $('#rt_e_block_number').val();
-        var rt_convenant_user = $('#editlegder #rt_e_convenant_user').val();
-        //var rt_original_use = $('#rt_e_original_use').val();
-        var rt_current_use = $('#editlegder #rt_e_current_use').val();
-        var rt_nature_of_dev = $('#editlegder #rt_e_nature_of_dev').val();
-        var rt_parcel_address = $('#editlegder #rt_e_parcel_address').val();
-        var rt_file_number = $('#editlegder #rt_e_file_number').val();
-        var rt_ledger = $('#editlegder #rt_e_ledger').val();
-        var rt_folio = $('#editlegder #rt_e_folio').val();
-        var rt_ls_number = $('#editlegder #rt_e_ls_number').val();
-        var rt_commencement_date = $('#editlegder #rt_e_commencement_date').val();
-        var rt_term = $('#editlegder #rt_e_term').val();
-        //var rt_expiry_date = $('#rt_e_expiry_date').val();
-        var rt_consent_date = $('#editlegder #rt_e_consent_date').val();
-        var rt_location_rate = $('#editlegder #rt_e_location_rate').val();
-        var rt_rent_category = $('#editlegder #rt_e_rent_category').val();
-        var rt_rent_review_clause = $('#editlegder #rt_e_rent_review_clause').val();
-        var rt_rent_passing = $('#editlegder #rt_e_rent_passing').val();
-        //var rt_adjoining_plots = $('#rt_e_adjoining_plots').val();
-        //var rt_amount_due = $('#rt_e_amount_due').val();
-        var rt_rent_outstanding = $('#editlegder #rt_e_rent_outstanding').val();
-        //var rt_classification_of_arrears = $('#rt_e_classification_of_arrears').val();
-       // var rt_serial_number = $('#rt_e_serial_number').val();
-        var rt_remarks = $('#editlegder #rt_e_remarks').val();
-        var rt_last_payment_date = $('#editlegder #rt_e_last_payment_date').val();
-        var rt_nature_of_instrument = $('#editlegder #rt_e_nature_of_instrument').val();
-        //var rt_last_review_date = $('#rt_e_last_review_date').val();
-        var rt_last_payment_period = $('#editlegder #rt_e_last_payment_period').val();
-        var rt_period_in_arrears = $('#editlegder #rt_e_period_in_arrears').val();
-        var rt_glpin = $('#editlegder #rt_e_glpin').val();
+    // Function to initialize PDF.js viewer
+    function initializePDFViewer(fileURL) {
+        // Check if PDF.js is loaded
+        if (typeof pdfjsLib === 'undefined') {
+            // Load PDF.js dynamically
+            loadPDFJS().then(() => {
+                renderPDF(fileURL);
+            }).catch(error => {
+                console.error('Failed to load PDF.js:', error);
+                showPDFError();
+            });
+        } else {
+            renderPDF(fileURL);
+        }
+    }
 
+    // Function to load PDF.js library dynamically
+    function loadPDFJS() {
+        return new Promise((resolve, reject) => {
+            if (typeof pdfjsLib !== 'undefined') {
+                resolve();
+                return;
+            }
+            
+            // Create script element
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            script.integrity = 'sha512-9o9W6Vg9Q9W6XjP0lL8y4E5qX1G8M8q2+5Q6J5q5v5z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z';
+            script.crossOrigin = 'anonymous';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+            
+            // Also load the worker
+            const workerScript = document.createElement('script');
+            workerScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            workerScript.integrity = 'sha512-9o9W6Vg9Q9W6XjP0lL8y4E5qX1G8M8q2+5Q6J5q5v5z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z';
+            workerScript.crossOrigin = 'anonymous';
+            document.head.appendChild(workerScript);
+        });
+    }
+
+    // Function to render PDF using PDF.js
+    async function renderPDF(fileURL) {
+        try {
+            const pdfContainer = document.getElementById('pdfViewerContainer');
+            //const pdfLoading = document.getElementById('pdfLoading');
+            const pdfViewer = document.getElementById('pdfViewer');
+            const pdfCanvas = document.getElementById('pdfCanvas');
+            const currentPageSpan = document.getElementById('currentPage');
+            const totalPagesSpan = document.getElementById('totalPages');
+            const zoomSelect = document.getElementById('zoomSelect');
+            
+            // Set PDF.js worker path
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+            
+            // Load the PDF
+            const loadingTask = pdfjsLib.getDocument(fileURL);
+            const pdf = await loadingTask.promise;
+            
+            // Get total pages
+            const totalPages = pdf.numPages;
+            totalPagesSpan.textContent = totalPages;
+            
+            // Set initial page
+            let currentPage = 1;
+            let scale = parseFloat(zoomSelect.value);
+            
+            // Function to render a specific page
+            async function renderPage(pageNum) {
+                try {
+                    //pdfLoading.style.display = 'flex';
+                    pdfViewer.style.display = 'none';
+                    
+                    const page = await pdf.getPage(pageNum);
+                    
+                    // Get viewport
+                    const viewport = page.getViewport({ scale: scale });
+                    
+                    // Set canvas dimensions
+                    const canvas = pdfCanvas;
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    // Render PDF page
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    
+                    await page.render(renderContext).promise;
+                    
+                    // Update UI
+                    currentPageSpan.textContent = currentPage;
+                    //pdfLoading.style.display = 'none';
+                    pdfViewer.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Error rendering page:', error);
+                    showPDFError();
+                }
+            }
+            
+            // Render first page
+            await renderPage(currentPage);
+            
+            // Navigation handlers
+            document.getElementById('btnPrevPage').addEventListener('click', async () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    await renderPage(currentPage);
+                }
+            });
+            
+            document.getElementById('btnNextPage').addEventListener('click', async () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    await renderPage(currentPage);
+                }
+            });
+            
+            // Zoom handler
+            zoomSelect.addEventListener('change', async () => {
+                scale = parseFloat(zoomSelect.value);
+                await renderPage(currentPage);
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', async (e) => {
+                if (document.getElementById('pdfViewerModal').classList.contains('show')) {
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                            if (currentPage > 1) {
+                                currentPage--;
+                                await renderPage(currentPage);
+                            }
+                            break;
+                        case 'ArrowRight':
+                            if (currentPage < totalPages) {
+                                currentPage++;
+                                await renderPage(currentPage);
+                            }
+                            break;
+                        case '+':
+                        case '=':
+                            e.preventDefault();
+                            if (scale < 3) {
+                                scale += 0.25;
+                                zoomSelect.value = scale.toFixed(2);
+                                await renderPage(currentPage);
+                            }
+                            break;
+                        case '-':
+                            e.preventDefault();
+                            if (scale > 0.25) {
+                                scale -= 0.25;
+                                zoomSelect.value = scale.toFixed(2);
+                                await renderPage(currentPage);
+                            }
+                            break;
+                    }
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error loading PDF:', error);
+            showPDFError();
+        }
+    }
+
+    // Function to download PDF
+    function downloadPDF(file) {
+        const downloadURL = URL.createObjectURL(file);
+        const a = document.createElement('a');
+        a.href = downloadURL;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(downloadURL);
+        
+        // Show success message
+        Swal.fire({
+            title: 'Download Started',
+            text: `Downloading ${file.name}`,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    // Helper function to format file size
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+     // Helper function to show loading indicator
+    function showLoadingIndicator() {
+        // You can customize this based on your UI
+        Swal.fire({
+            title: 'Generating PDF',
+            text: 'Please wait while we generate the register document...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+
+    // Helper function to hide loading indicator
+    function hideLoadingIndicator() {
+        Swal.close();
+    }
+
+    // Helper function to show PDF error
+    function showPDFError() {
+        //const pdfLoading = document.getElementById('pdfLoading');
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pdfError = document.getElementById('pdfError');
+        
+        //if (pdfLoading) pdfLoading.style.display = 'none';
+        if (pdfViewer) pdfViewer.style.display = 'none';
+        if (pdfError) {
+            pdfError.classList.remove('d-none');
+            pdfError.classList.add('d-flex', 'flex-column', 'align-items-center', 'justify-content-center');
+        }
+    }
+
+    // Add CSS for PDF viewer
+    const pdfViewerCSS = `
+        #pdfCanvas {
+            max-width: 100%;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        
+        .pdf-container {
+            overflow: auto;
+            max-height: calc(70vh - 100px);
+            background: beige;
+        }
+        
+        .pdf-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        #btnViewFile:hover {
+            transform: translateY(-1px);
+            transition: transform 0.2s;
+        }
+        
+        #pdfViewerModal .modal-dialog {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        
+        .modal {
+            background: rgba(0, 0, 0, 0.42) !important;
+        }
+        
+        #pdfViewerModal .modal-body {
+            min-height: 70vh;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            #pdfViewerModal .modal-dialog {
+                max-width: 95%;
+                margin: 0.5rem;
+            }
+            
+            .pdf-toolbar {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .pdf-toolbar > div {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    `;
+
+    // Add CSS to document
+    if (!document.getElementById('pdf-viewer-css')) {
+        const style = document.createElement('style');
+        style.id = 'pdf-viewer-css';
+        style.textContent = pdfViewerCSS;
+        document.head.appendChild(style);
+    }
+
+   // Initialize modal on show
+$('#addlegder').on('shown.bs.modal', function () {
+    // Load dynamic dropdowns
+    loadNewEstateList();
+    loadNewNatureOfDevelopmentList();
+    loadNewNatureOfInstrumentList();
     
+    // Set default dates
+    const today = new Date().toISOString().split('T')[0];
+    $('#rt_commencement_date').val(today);
+    $('#rt_last_payment_date').val(today);
+    
+    // Reset form
+    resetAddForm();
+});
 
-        console.log(rt_rent_id, rt_rent_category, rt_nature_of_dev);
-
-         // List of required fields
-        const fields = [
-            { field: rt_leasee_name, selector: '#rt_e_leasee_name' },
-            { field: rt_leasee_address, selector: '#rt_e_leasee_address' },
-            //{ field: rt_mobile_phone_1, selector: '#rt_e_mobile_phone_1' },
-            // { field: rt_region_code, selector: '#rt_e_region_code' },
-            // { field: rt_locality, selector: '#rt_e_locality' },
-            { field: rt_estate, selector: '#rt_e_estate' },
-            { field: rt_plot_number, selector: '#rt_e_plot_number' },
-            { field: rt_plot_size, selector: '#rt_e_plot_size' },
-            //{ field: rt_block_number, selector: '#rt_e_block_number' },
-            { field: rt_file_number, selector: '#rt_e_file_number' },
-            { field: rt_ledger, selector: '#rt_e_ledger' },
-            { field: rt_commencement_date, selector: '#rt_e_commencement_date' },
-            { field: rt_term, selector: '#rt_e_term' },
-            //{ field: rt_expiry_date, selector: '#rt_e_expiry_date' },
-            //{ field: rt_consent_date, selector: '#rt_e_consent_date' },
-            //{ field: rt_location_rate, selector: '#rt_e_location_rate' },
-            { field: rt_last_payment_date, selector: '#rt_e_last_payment_date' },
-            { field: rt_rent_review_clause, selector: '#rt_e_rent_review_clause' },
-            //{ field: rt_last_review_date, selector: '#rt_e_last_review_date' },
-            { field: rt_last_payment_period, selector: '#rt_e_last_payment_period' },
-            //{ field: rt_period_in_arrears, selector: '#rt_e_period_in_arrears'},
-        ];
-
-        let allFieldsFilled = true;
-
-        fields.forEach(({ field, selector }) => {
-            const inputElement = document.querySelector(selector);
-
-            if (!field) {
-                inputElement.style.border = '2px solid red'; // Add red border for empty fields
-                allFieldsFilled = false;
-            } else {
-                inputElement.style.border = ''; // Reset border if the field is filled
-            }
-        });
-
-        if (!allFieldsFilled) {
-            alert('Please fill in all the required fields');
-            return;
-        }
-
-
- 
-     rt_estate = rt_estate.replace('.0', '');
-
-        $.ajax({
-            type : "POST",
-            url : "rent_mgt_serv",
-            data : {
-                request_type : 'add_update_rent_leasee_details',
-                rent_id : rt_rent_id || 0,
-                parcel_id : rt_parcel_id || 0,
-                owners_name : rt_leasee_name || '',
-                address : rt_leasee_address || '',
-                mobile : rt_mobile_phone_1 || '',
-                mobile_1 : rt_mobile_phone_2 || '',
-                email : rt_email || '',
-                file_number : rt_file_number || '',
-                ledger : rt_ledger || '',
-                folio : rt_folio || '',
-                digital_address : rt_leasee_digital_address || '',
-                //block : rt_block_number || '',
-                plot_number : rt_plot_number || '',
-                plot_size : rt_plot_size || '',
-                covenanted_user : rt_convenant_user || '',
-                current_use : rt_current_use || '',
-                nature_of_devt : rt_nature_of_dev || '',
-                parcel_address : rt_parcel_address || '',
-                ls_number : rt_ls_number || '',
-                comm_date : rt_commencement_date || '',
-                term : rt_term || '',
-                //expiry_date : rt_expiry_date || '',
-                consent_date : rt_consent_date || '',
-                location_rate : rt_location_rate || '',
-                rent_category : rt_rent_category || '',
-                rent_review_clause : rt_rent_review_clause || 0,
-                rent_passing : rt_rent_passing || 0,
-                //adjoining_plots : rt_adjoining_plots || '',
-                //amount_due : rt_amount_due || '',
-                //arrears_amounts : rt_arrears_amounts,
-                //original_use : rt_original_use || '',
-                rent_outstanding : rt_rent_outstanding || '',
-                //classification_of_arrears : rt_classification_of_arrears || '',
-                glpin : rt_glpin || '',
-                remarks : rt_remarks || '',
-                estate : rt_estate || '',
-                last_payment_date : rt_last_payment_date || '',
-                nature_of_instrument : rt_nature_of_instrument || '',
-                //last_review_date : rt_last_review_date || '',
-                //region_id : rt_region_code || 0,
-                last_payment_period : rt_last_payment_period || '',
-                period_in_arrears : rt_period_in_arrears || ''
-
-
-            },
-            cache : false,
-            //beforeSend : function() {},
-            success: function(response) {
-                try {
-                    const json_p = JSON.parse(response);
-                    if (json_p.success) {
-                        $('#editlegder').modal('hide');
-                       // $.notify({ message: '<i class="fa fa-check-circle fa-fw"></i><span class="text-bold">Data saved successfully.</span>' }, { type: 'success' });
-                        $("#btn_rt_search").trigger("click");
-                    } else {
-                        //$.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Error occurred, try again.</span>' }, { type: 'danger' });
-                    }
-                } catch (e) {
-                    console.error('Error parsing response:', e);
-                    //$.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">An error occurred while processing the response.</span>' }, { type: 'danger' });
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX Error:', textStatus, errorThrown);
-                //$.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">AJAX request failed: ' + textStatus + '</span>' }, { type: 'danger' });
-            }
-        });
-    })
-
-    $('#btn_rt_search').on('click', (e) => {
-    e.preventDefault();
-
-    var rts_select_type = $('#rts_select_type').val();
-    var rts_estate = $('#rts_estate').val();
-    var rts_keyword = $('#rts_keyword').val();
-
-    if (!rts_select_type) {
-        // $.notify({
-        //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Please select a search type.</span>'
-        // }, { type: 'danger' });
-        return;
-    }
-
-    switch (rts_select_type) {
-        case 'Plot Number':
-            if (!rts_estate || !rts_keyword) {
-                // $.notify({
-                //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Please fill all required fields.</span>'
-                // }, { type: 'danger' });
-                return;
-            }
-            break;
-        case 'Estate':
-            if (!rts_estate) {
-                // $.notify({
-                //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Please select an estate.</span>'
-                // }, { type: 'danger' });
-                return;
-            }
-            break;
-        case 'Name of Leasee/Assignee':
-            if (!rts_keyword || rts_keyword.length < 3) {
-                // $.notify({
-                //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Keyword should be at least 3 characters.</span>'
-                // }, { type: 'danger' });
-                return;
-            }
-            break;
-    }
-
-    // Clean estate value (remove .0 from floats)
-    if (rts_estate) {
-        rts_estate = rts_estate.replace(".0", "");
-    }
-
+// Load estate list for add modal
+function loadNewEstateList() {
     $.ajax({
         type: "POST",
         url: "rent_mgt_serv",
-        data: {
-            request_type: 'select_rent_leasee_details',
-            select_type: rts_select_type,
-            estate: rts_estate,
-            keyword: rts_keyword
-        },
+        data: { request_type: "get_estate_list" },
         cache: false,
-        beforeSend: function() {
-            // Optional: show loading spinner
-        },
-        success: function(response) {
-            console.log(response);
+        success: function (response) {
             try {
-                var json_p = JSON.parse(response);
-
-                // Update summary cards
-                $("#total_leasee").html(json_p.total_leasee || 0);
-                $("#rentOutstanding").html("GHS " + json_p.total_rent_oustanding || "0.00");
-
-                // Clear table if no data
-                if (!json_p.data || json_p.data.length === 0) {
-                    // $.notify({
-                    //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">No data found.</span>'
-                    // }, { type: 'danger' });
-
-                    datatable.clear().draw();
-                    return;
-                }
-
-                // Clear and repopulate table
-                datatable.clear();
-
-                $(json_p.data).each(function() {
-                    const amount = parseFloat(this.rent_outstanding || 0);
-                    const formattedAmount = amount.toLocaleString('en-GH', {
-                        style: 'currency',
-                        currency: 'GHS'
-                    });
-
-                    // Calculate unexpired term
-                    var endDate = new Date(this.expiry_date.replace(/-/g, "/"));
-                    var today = new Date();
-                    var diffYears = endDate.getFullYear() - today.getFullYear();
-
-                    var display_reminder = diffYears <= 0
-                        ? `<span class="badge bg-danger">${Math.abs(diffYears)} Year(s) Passed</span>`
-                        : `<span class="badge bg-success">${diffYears} Year(s) Left</span>`;
-
-                    datatable.row.add([
-                        this.account_number || '-',
-                        this.plot_number || '-',
-                        this.owners_name || '-',
-                        this.file_number || '-',
-                        this.comm_date || '-',
-                        this.term || '-',
-                        this.plot_size || '-',
-                        this.last_review_date || '-',
-                        this.last_payment_period || '-',
-                        `<div class="text-end fw-bold">${formattedAmount}</div>`,
-                        display_reminder,
-                        `<div class="dropdown">
-                            <button class="btn btn-danger btn-sm dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-info-circle"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item viewLedgerBtn" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#"
-                                      data-rent_id="${this.rl_id}"
-                                      data-owners_name="${this.owners_name}"
-                                      data-address="${this.address}"
-                                      data-mobile="${this.mobile}"
-                                      data-mobile_1="${this.mobile_1}"
-                                      data-email="${this.email}"
-                                      data-file_number="${this.file_number}"
-                                      data-ledger="${this.ledger}"
-                                      data-folio="${this.folio}"
-                                      data-plot_number="${this.plot_number}"
-                                      data-plot_size="${this.plot_size}"
-                                      data-covenanted_user="${this.covenanted_user}"
-                                      data-current_use="${this.current_use}"
-                                      data-nature_of_devt="${this.nature_of_devt}"
-                                      data-parcel_address="${this.parcel_address}"
-                                      data-ls_number="${this.ls_number}"
-                                      data-comm_date="${this.comm_date}"
-                                      data-term="${this.term}"
-                                      data-consent_date="${this.consent_date}"
-                                      data-location_rate="${this.location_rate}"
-                                      data-rent_category="${this.rent_category}"
-                                      data-rent_review_clause="${this.rent_review_clause}"
-                                      data-rent_passing="${this.rent_passing}"
-                                      data-rent_outstanding="${this.rent_outstanding}"
-                                      data-glpin="${this.glpin}"
-                                      data-remarks="${this.remarks}"
-                                      data-estate="${this.estate}"
-                                      data-estate_id="${this.estate_id}"
-                                      data-last_payment_date="${this.last_payment_date}"
-                                      data-expiry_date="${this.expiry_date}"
-                                      data-nature_of_instrument="${this.nature_of_instrument}"
-                                      data-last_payment_period="${this.last_payment_period}"
-                                      data-period_in_arrears="${this.period_in_arrears}">
-                                    <i class="fas fa-eye"></i> View Details
-                                </a></li>
-
-                                <li><a class="dropdown-item" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#editlegder"
-                                      data-rent_id="${this.rl_id}"
-                                      data-owners_name="${this.owners_name}"
-                                      data-address="${this.address}"
-                                      data-mobile="${this.mobile}"
-                                      data-mobile_1="${this.mobile_1}"
-                                      data-email="${this.email}"
-                                      data-file_number="${this.file_number}"
-                                      data-ledger="${this.ledger}"
-                                      data-folio="${this.folio}"
-                                      data-plot_number="${this.plot_number}"
-                                      data-plot_size="${this.plot_size}"
-                                      data-covenanted_user="${this.covenanted_user}"
-                                      data-current_use="${this.current_use}"
-                                      data-nature_of_devt="${this.nature_of_devt}"
-                                      data-parcel_address="${this.parcel_address}"
-                                      data-ls_number="${this.ls_number}"
-                                      data-comm_date="${this.comm_date}"
-                                      data-term="${this.term}"
-                                      data-consent_date="${this.consent_date}"
-                                      data-location_rate="${this.location_rate}"
-                                      data-rent_category="${this.rent_category}"
-                                      data-rent_review_clause="${this.rent_review_clause}"
-                                      data-rent_passing="${this.rent_passing}"
-                                      data-rent_outstanding="${this.rent_outstanding}"
-                                      data-glpin="${this.glpin}"
-                                      data-remarks="${this.remarks}"
-                                      data-estate="${this.estate}"
-                                      data-estate_id="${this.estate_id}"
-                                      data-last_payment_date="${this.last_payment_date}"
-                                      data-nature_of_instrument="${this.nature_of_instrument}"
-                                      data-last_payment_period="${this.last_payment_period}"
-                                      data-period_in_arrears="${this.period_in_arrears}">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a></li>
-
-                                <li><a class="dropdown-item" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#singlerentdemandnotice"
-                                      data-rent_id="${this.rl_id}"
-                                      data-account_number="${this.account_number}"
-                                      data-owners_name="${this.owners_name}"
-                                      data-address="${this.address}"
-                                      data-mobile="${this.mobile}"
-                                      data-mobile_1="${this.mobile_1}"
-                                      data-email="${this.email}">
-                                    <i class="fas fa-money-bill"></i> Rent Demand Notice
-                                </a></li>
-
-                                <li><a class="dropdown-item" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#paymenthistory"
-                                      data-m_id="${this.rl_id}">
-                                    <i class="fas fa-history"></i> Payment History
-                                </a></li>
-
-                                <li><a class="dropdown-item" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#rentTransactionhistory"
-                                      data-rent_id="${this.rl_id}"
-                                      data-account_number="${this.account_number}"
-                                      data-plot_number="${this.plot_number}">
-                                    <i class="fas fa-exchange-alt"></i> Transaction History
-                                </a></li>
-
-                                <li><a class="dropdown-item" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#rentdocuments"
-                                      data-rent_id="${this.rl_id}"
-                                      data-account_number="${this.account_number}"
-                                      data-file_number="${this.file_number}"
-                                      data-email="${this.email}">
-                                    <i class="fas fa-file-alt"></i> Documents
-                                </a></li>
-
-                                <li><a class="dropdown-item" href="#"
-                                      data-bs-toggle="modal" data-bs-target="#rentremarks"
-                                      data-m_id="${this.rl_id}">
-                                    <i class="fas fa-comment-dots"></i> Remarks
-                                </a></li>
-                            </ul>
-                        </div>`
-                    ]).draw(false);
+                const estates = JSON.parse(response);
+                const select = $("#rt_estate");
+                select.empty();
+                select.append('<option value="">-- Select Estate --</option>');
+                
+                estates.forEach(function (estate) {
+                    select.append(`<option value="${estate.ge_id}">${estate.ge_location_name}</option>`);
                 });
-
             } catch (e) {
-                console.error('Error parsing JSON response:', e);
-                // $.notify({
-                //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Invalid response from server.</span>'
-                // }, { type: 'danger' });
+                console.error("Error parsing estate list:", e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Data Error',
+                    text: 'Failed to load estate list.'
+                });
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error('AJAX Error:', textStatus, errorThrown);
-            // $.notify({
-            //     message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Request failed. Please try again.</span>'
-            // }, { type: 'danger' });
+        error: function (xhr, status, error) {
+            console.error("Error fetching estate list:", error);
+            $("#rt_estate").html('<option value="">Error loading estates</option>');
+        }
+    });
+}
+
+// Load nature of development list
+function loadNewNatureOfDevelopmentList() {
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: { request_type: "get_nature_of_development_list" },
+        cache: false,
+        success: function (response) {
+            try {
+                const developments = JSON.parse(response);
+                const select = $("#rt_nature_of_dev");
+                select.empty();
+                select.append('<option value="">-- Select --</option>');
+                
+                developments.forEach(function (dev) {
+                    select.append(`<option value="${dev.na_name}">${dev.na_name}</option>`);
+                });
+            } catch (e) {
+                console.error("Error parsing development list:", e);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching development list:", error);
+            $("#rt_nature_of_dev").html('<option value="">Error loading options</option>');
+        }
+    });
+}
+
+// Load nature of instrument list
+function loadNewNatureOfInstrumentList() {
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: { request_type: "get_nature_of_instrument_list" },
+        cache: false,
+        success: function (response) {
+            try {
+                const instruments = JSON.parse(response);
+                const select = $("#rt_nature_of_instrument");
+                select.empty();
+                select.append('<option value="">-- Select --</option>');
+                
+                instruments.forEach(function (instrument) {
+                    select.append(`<option value="${instrument.nt_name}">${instrument.nt_name}</option>`);
+                });
+            } catch (e) {
+                console.error("Error parsing instrument list:", e);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching instrument list:", error);
+            $("#rt_nature_of_instrument").html('<option value="">Error loading options</option>');
+        }
+    });
+}
+
+// Calculate expiry date when commencement date or term changes
+$(document).on('change', '#rt_commencement_date, #rt_term', function () {
+    calculateExpiryDate();
+});
+
+function calculateExpiryDate() {
+    const commDate = $("#rt_commencement_date").val();
+    const term = $("#rt_term").val();
+    
+    if (commDate && term) {
+        const expiryDate = new Date(commDate);
+        expiryDate.setFullYear(expiryDate.getFullYear() + parseInt(term));
+        $("#rt_expiry_date").val(expiryDate.toISOString().split('T')[0]);
+    }
+}
+
+// Auto-generate account number based on plot and estate
+$(document).on('change', '#rt_plot_number, #rt_estate', function () {
+    generateAccountNumber();
+});
+
+function generateAccountNumber() {
+    const plotNumber = $("#rt_plot_number").val();
+    const estateId = $("#rt_estate").val();
+    const estateName = $("#rt_estate option:selected").text();
+    
+    if (plotNumber && estateId) {
+        // Generate a simple account number format: ESTATE-PLOT-YYMMDD
+        const now = new Date();
+        const datePart = now.getFullYear().toString().slice(-2) + 
+                        (now.getMonth() + 1).toString().padStart(2, '0') + 
+                        now.getDate().toString().padStart(2, '0');
+        
+        // Get estate code (first 3 letters or use ID)
+        const estateCode = estateName.substring(0, 3).toUpperCase() || estateId;
+        const accountNumber = `${estateCode}-${plotNumber}-${datePart}`;
+        
+        // You can store this or display it if you have an account number field
+        // $("#rt_account_number").val(accountNumber);
+    }
+}
+
+// Handle save button click
+$(document).on('click', '#btn_save_rent_client_details', function (e) {
+    e.preventDefault();
+    
+    const form = document.getElementById('addlegderForm');
+    
+    // Form validation
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            html: `
+                <div class="text-start">
+                    <p class="mb-2">Please fill all required fields correctly:</p>
+                    <ul class="text-start">
+                        ${getAddFormValidationErrors(form)}
+                    </ul>
+                </div>
+            `,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Fix Errors',
+            width: '500px'
+        });
+        return;
+    }
+    
+    // Show confirmation dialog with form data preview
+    Swal.fire({
+        title: 'Confirm New Lease',
+        html: `
+            <div class="text-start">
+                <p class="mb-3"><strong>Are you sure you want to create this new lease record?</strong></p>
+                
+                <div class="alert alert-info py-2 mb-3">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        You are about to add: <strong>${$("#rt_leasee_name").val() || 'New Lessee'}</strong>
+                    </small>
+                </div>
+                
+                <div class="preview-section mb-2">
+                    <table class="table table-sm table-bordered bg-light">
+                        <tbody>
+                            <tr>
+                                <td class="fw-semibold" style="width: 40%">Plot Number:</td>
+                                <td>${$("#rt_plot_number").val() || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Estate:</td>
+                                <td>${$("#rt_estate option:selected").text() || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Lease Term:</td>
+                                <td>${$("#rt_term").val() || '0'} years</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">File Number:</td>
+                                <td>${$("#rt_file_number").val() || 'N/A'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmAddCheckbox">
+                    <label class="form-check-label" for="confirmAddCheckbox">
+                        I confirm all information is accurate
+                    </label>
+                </div>
+                
+                <div class="text-muted small">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Please ensure there are no duplicate entries for this plot.
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-plus-circle me-1"></i> Yes, Create Lease',
+        cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            const checkbox = document.getElementById('confirmAddCheckbox');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please confirm the information is accurate');
+                return false;
+            }
+            
+            // Optional: Check for duplicate plot number
+            return checkDuplicatePlot();
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with saving
+            saveNewLeaseDetails();
         }
     });
 });
+
+// Function to check for duplicate plot number
+function checkDuplicatePlot() {
+    const plotNumber = $("#rt_plot_number").val();
+    const estateId = $("#rt_estate").val();
+    
+    return new Promise((resolve) => {
+        $.ajax({
+            type: "POST",
+            url: "rent_mgt_serv",
+            data: {
+                request_type: "check_duplicate_plot",
+                plot_number: plotNumber,
+                estate_id: estateId
+            },
+            cache: false,
+            success: function (response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.duplicate) {
+                        Swal.showValidationMessage(`
+                            <div class="text-start">
+                                <p>Plot number <strong>${plotNumber}</strong> already exists in this estate.</p>
+                                <p class="mb-0">Existing lessee: <strong>${result.existing_lessee}</strong></p>
+                            </div>
+                        `);
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+                } catch (e) {
+                    // If check fails, still allow save (server will handle duplicate check)
+                    resolve(true);
+                }
+            },
+            error: function () {
+                // If check fails, still allow save
+                resolve(true);
+            }
+        });
+    });
+}
+
+// Function to get validation errors for add form
+function getAddFormValidationErrors(form) {
+    const invalidFields = form.querySelectorAll(':invalid');
+    let errorsHtml = '';
+    
+    const fieldLabels = {
+        'rt_leasee_name': 'Full Name',
+        'rt_leasee_address': 'Postal Address',
+        'rt_mobile_phone_1': 'Primary Mobile',
+        'rt_plot_number': 'Plot Number',
+        'rt_plot_size': 'Plot Size',
+        'rt_file_number': 'File Number',
+        'rt_ledger': 'Ledger',
+        'rt_estate': 'Estate',
+        'rt_commencement_date': 'Commencement Date',
+        'rt_term': 'Lease Term',
+        'rt_rent_review_clause': 'Rent Review Period',
+        'rt_location_rate': 'Location Rate',
+        'rt_last_payment_date': 'Last Payment Date',
+        'rt_last_payment_period': 'Last Payment Period',
+        'rt_period_in_arrears': 'Periods in Arrears'
+    };
+    
+    invalidFields.forEach(field => {
+        const fieldId = field.id;
+        const fieldName = fieldLabels[fieldId] || fieldId.replace('rt_', '').replace(/_/g, ' ');
+        errorsHtml += `<li><strong>${fieldName}:</strong> ${field.validationMessage || 'Required field'}</li>`;
+    });
+    
+    return errorsHtml || '<li>Please check all required fields marked with *</li>';
+}
+
+// Function to save new lease details
+function saveNewLeaseDetails() {
+    // Prepare data
+    const formData = {
+        request_type: 'add_update_rent_leasee_details',
+        rent_id: $("#rt_rent_id").val(),
+        owners_name: $("#rt_leasee_name").val(),
+        address: $("#rt_leasee_address").val(),
+        mobile: $("#rt_mobile_phone_1").val(),
+        mobile_1: $("#rt_mobile_phone_2").val(),
+        email: $("#rt_email").val(),
+        digital_address: $("#rt_leasee_digital_address").val(),
+        file_number: $("#rt_file_number").val(),
+        ledger: $("#rt_ledger").val(),
+        folio: $("#rt_folio").val(),
+        plot_number: $("#rt_plot_number").val(),
+        plot_size: $("#rt_plot_size").val(),
+        covenanted_user: $("#rt_convenant_user").val(),
+        current_use: $("#rt_current_use").val(),
+        nature_of_devt: $("#rt_nature_of_dev").val(),
+        parcel_address: $("#rt_parcel_address").val(),
+        ls_number: $("#rt_ls_number").val(),
+        comm_date: $("#rt_commencement_date").val(),
+        term: $("#rt_term").val().replace(".0", ""),
+        estate: $("#rt_estate").val(),
+        nature_of_instrument: $("#rt_nature_of_instrument").val(),
+        rent_category: $("#rt_rent_category").val(),
+        rent_review_clause: $("#rt_rent_review_clause").val().replace(".0", ""),
+        rent_passing: $("#rt_rent_passing").val().replace(".0", ""),
+        location_rate: $("#rt_location_rate").val().replace(".0", ""),
+        last_payment_date: $("#rt_last_payment_date").val(),
+        last_payment_period: $("#rt_last_payment_period").val(),
+        rent_outstanding: $("#rt_rent_outstanding").val(),
+        period_in_arrears: $("#rt_period_in_arrears").val(),
+        remarks: $("#rt_remarks").val(),
+        glpin: $("#rt_glpin").val()
+    };
+    
+    // Show loading with progress indicator
+    let timerInterval;
+    Swal.fire({
+        title: 'Creating New Lease',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-plus-circle fa-spin fa-2x text-primary"></i>
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 0%"></div>
+                </div>
+                <p class="mt-2 mb-0 text-muted" id="swal-progress-text">Processing request...</p>
+            </div>
+        `,
+        allowOutsideClick: false,
+        didOpen: () => {
+            const progressBar = Swal.getHtmlContainer().querySelector('.progress-bar');
+            const progressText = Swal.getHtmlContainer().querySelector('#swal-progress-text');
+            let progress = 0;
+            
+            timerInterval = setInterval(() => {
+                progress += 10;
+                if (progress <= 90) {
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = progress < 50 
+                        ? 'Validating data...' 
+                        : 'Saving to database...';
+                }
+            }, 300);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+    });
+    
+    // Send AJAX request
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: formData,
+        cache: false,
+        success: function (response) {
+            Swal.close();
+            
+            try {
+                const result = JSON.parse(response);
+                
+                if (result.success) {
+                    // Success notification with options
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle fa-3x text-success"></i>
+                                </div>
+                                <p class="mb-2"><strong>New lease created successfully!</strong></p>
+                                <div class="alert alert-success py-2">
+                                    <small>
+                                        <i class="fas fa-check me-1"></i>
+                                        <strong>${formData.owners_name}</strong> has been added as a new lessee
+                                    </small>
+                                </div>
+                                ${result.account_number ? 
+                                    `<div class="alert alert-info py-2">
+                                        <small>
+                                            <i class="fas fa-id-card me-1"></i>
+                                            Account Number: <strong>${result.account_number}</strong>
+                                        </small>
+                                    </div>` : ''
+                                }
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonColor: '#198754',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fas fa-eye me-1"></i> View New Record',
+                        cancelButtonText: '<i class="fas fa-plus me-1"></i> Add Another',
+                        showDenyButton: true,
+                        denyButtonText: '<i class="fas fa-print me-1"></i> Print Details',
+                        denyButtonColor: '#0d6efd',
+                        width: '500px'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Close modal and refresh table
+                            $('#addlegder').modal('hide');
+                            $('#btn_rt_search').click();
+                        } else if (result.isDenied) {
+                            // Print details
+                            generateAddPrintView(formData, result.account_number);
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            // Add another - reset form and keep modal open
+                            resetAddForm();
+                        }
+                    });
+                } else {
+                    // Error handling
+                    let errorMessage = result.message || 'Failed to create new lease.';
+                    
+                    // Check for specific error types
+                    if (errorMessage.includes('duplicate') || errorMessage.includes('already exists')) {
+                        errorMessage = `
+                            <div class="text-start">
+                                <p class="mb-2"><strong>Duplicate Entry Detected!</strong></p>
+                                <p class="mb-1">A record with similar details already exists:</p>
+                                <ul class="text-start">
+                                    ${result.duplicate_details ? 
+                                        Object.entries(result.duplicate_details)
+                                            .map(([key, value]) => `<li><strong>${key}:</strong> ${value}</li>`)
+                                            .join('') 
+                                        : '<li>Please check for duplicate plot numbers or file numbers</li>'}
+                                </ul>
+                                <div class="mt-3">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="Swal.close();">
+                                        <i class="fas fa-edit me-1"></i> Edit Existing
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="resetAddForm(); Swal.close();">
+                                        <i class="fas fa-redo me-1"></i> Start Over
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Creation Failed',
+                        html: errorMessage,
+                        confirmButtonText: 'OK',
+                        showConfirmButton: false,
+                        width: '500px'
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Invalid response from server. Please contact support.',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            Swal.close();
+            console.error('AJAX Error:', error);
+            
+            let errorMessage = 'Failed to create new lease. ';
+            if (xhr.status === 0) {
+                errorMessage += 'No network connection.';
+            } else if (xhr.status === 404) {
+                errorMessage += 'Server endpoint not found.';
+            } else if (xhr.status === 500) {
+                errorMessage += 'Server error. Please try again later.';
+            } else {
+                errorMessage += 'Please check your connection.';
+            }
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                html: `
+                    <div class="text-start">
+                        <p class="mb-2">${errorMessage}</p>
+                        <div class="alert alert-danger py-2 mt-2">
+                            <small>
+                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                <strong>Error Details:</strong> ${error}
+                            </small>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-outline-primary" onclick="retryAddSave()">
+                                <i class="fas fa-redo me-1"></i> Retry
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary ms-2" onclick="Swal.close()">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'OK',
+                showConfirmButton: false,
+                width: '500px'
+            });
+        }
+    });
+}
+
+// Function to reset add form
+function resetAddForm() {
+    const form = document.getElementById('addlegderForm');
+    form.reset();
+    form.classList.remove('was-validated');
+    
+    // Reset calculated fields
+    $("#rt_expiry_date").val('');
+    
+    // Set default dates
+    const today = new Date().toISOString().split('T')[0];
+    $('#rt_commencement_date').val(today);
+    $('#rt_last_payment_date').val(today);
+    
+    // Reset numeric fields to 0
+    $('#rt_rent_passing').val('0');
+    $('#rt_location_rate').val('0.00');
+    $('#rt_rent_outstanding').val('0');
+    $('#rt_period_in_arrears').val('0');
+    $('#rt_rent_review_clause').val('0');
+    $('#rt_last_payment_period').val('0');
+    
+    // Focus on first field
+    $('#rt_leasee_name').focus();
+}
+
+// Function to retry add save operation
+function retryAddSave() {
+    Swal.close();
+    setTimeout(() => {
+        $('#btn_save_rent_client_details').click();
+    }, 500);
+}
+
+// Function to generate print view for new lease
+function generateAddPrintView(data, accountNumber) {
+    // This would open a print preview of the new lease
+    // Implementation depends on your print functionality
+    console.log('Printing new lease data:', data);
+    
+    Swal.fire({
+        title: 'Lease Created',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-print fa-3x text-primary"></i>
+                </div>
+                <p class="mb-2">New lease has been created successfully.</p>
+                ${accountNumber ? 
+                    `<p class="mb-3"><strong>Account Number:</strong> ${accountNumber}</p>` : ''
+                }
+                <p class="text-muted small">Print functionality would open here.</p>
+            </div>
+        `,
+        confirmButtonText: 'OK'
+    }).then(() => {
+        $('#addlegder').modal('hide');
+        $('#btn_rt_search').click();
+    });
+}
+
+// Format numeric inputs on blur
+$(document).on('blur', '#rt_rent_passing, #rt_location_rate, #rt_rent_outstanding', function () {
+    const value = parseFloat($(this).val()) || 0;
+    $(this).val(value.toFixed(2));
+});
+
+// Format other numeric inputs
+$(document).on('blur', '#rt_plot_size, #rt_term, #rt_rent_review_clause', function () {
+    const value = parseFloat($(this).val()) || 0;
+    $(this).val(value.toFixed(1));
+});
+
+// Add unsaved changes protection
+$(document).on('input', '#addlegderForm input, #addlegderForm select, #addlegderForm textarea', function() {
+    $('#addlegderForm').addClass('form-modified');
+});
+
+$('#addlegder').on('hide.bs.modal', function(e) {
+    if ($('#addlegderForm').hasClass('form-modified')) {
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Unsaved Changes',
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">You have unsaved changes. What would you like to do?</p>
+                    <div class="alert alert-warning py-2">
+                        <small>
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            All entered data will be lost if you close without saving.
+                        </small>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i> Save & Close',
+            denyButtonText: '<i class="fas fa-times me-1"></i> Discard Changes',
+            cancelButtonText: '<i class="fas fa-arrow-left me-1"></i> Continue Editing',
+            confirmButtonColor: '#198754',
+            denyButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            width: '500px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Trigger save
+                $('#btn_save_rent_client_details').click();
+            } else if (result.isDenied) {
+                // Discard changes and close
+                $('#addlegderForm').removeClass('form-modified');
+                $('#addlegder').modal('hide');
+            }
+            // If cancelled, do nothing (continue editing)
+        });
+        
+        return false;
+    }
+});
+
+// Auto-fill mobile field with country code
+$(document).on('blur', '#rt_mobile_phone_1, #rt_mobile_phone_2', function() {
+    let value = $(this).val();
+    if (value && !value.startsWith('0') && value.length === 9) {
+        $(this).val('0' + value);
+    }
+});
+
+// Add keyboard shortcut for save (Ctrl + S)
+$(document).on('keydown', '#addlegder', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        $('#btn_save_rent_client_details').click();
+    }
+});
+
+// Add auto-suggest for common fields based on estate
+$(document).on('change', '#rt_estate', function() {
+    const estateId = $(this).val();
+    if (estateId) {
+        // You could fetch default values for this estate here
+        // For now, we'll just show a loading state
+        $('#rt_location_rate').attr('placeholder', 'Loading default rate...');
+        
+        // Example: Fetch estate-specific defaults
+        $.ajax({
+            type: "POST",
+            url: "rent_mgt_serv",
+            data: { 
+                request_type: "get_estate_defaults",
+                estate_id: estateId 
+            },
+            cache: false,
+            success: function (response) {
+                try {
+                    const defaults = JSON.parse(response);
+                    if (defaults.default_location_rate) {
+                        $('#rt_location_rate').val(defaults.default_location_rate);
+                    }
+                    $('#rt_location_rate').removeAttr('placeholder');
+                } catch (e) {
+                    console.error('Error parsing estate defaults:', e);
+                }
+            },
+            error: function() {
+                $('#rt_location_rate').removeAttr('placeholder');
+            }
+        });
+    }
+});
+
+// Clear form-modified class when modal is hidden
+$('#addlegder').on('hidden.bs.modal', function() {
+    $('#addlegderForm').removeClass('form-modified');
+});
+
+// Add CSS for form-modified indicator
+if (!$('#add-form-styles').length) {
+    const style = document.createElement('style');
+    style.id = 'add-form-styles';
+    style.textContent = `
+        #addlegder .form-modified .card-header {
+            position: relative;
+        }
+        
+        #addlegder .form-modified .card-header::after {
+            content: '●';
+            color: #ffc107;
+            position: absolute;
+            right: 10px;
+            font-size: 12px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        #addlegder .form-control:valid {
+            border-color: #198754;
+        }
+        
+        #addlegder .form-control:invalid {
+            border-color: #dc3545;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+ 
+
+    $('#btn_rt_search').on('click', (e) => {
+        e.preventDefault();
+
+        var rts_select_type = $('#rts_select_type').val();
+        var rts_estate = $('#rts_estate').val();
+        var rts_keyword = $('#rts_keyword').val();
+
+        // Validation with SweetAlert
+        if (!rts_select_type) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Search Type Required',
+                text: 'Please select a search type to continue.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        // Validate based on search type
+        switch (rts_select_type) {
+            case 'Plot Number':
+                if (!rts_estate || !rts_keyword) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Missing Information',
+                        text: 'Please select an estate and enter a plot number.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                break;
+            case 'Estate':
+                if (!rts_estate) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Estate Required',
+                        text: 'Please select an estate to search.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                break;
+            case 'Name of Leasee/Assignee':
+                if (!rts_keyword || rts_keyword.length < 3) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Search Term Too Short',
+                        text: 'Please enter at least 3 characters for name search.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                break;
+        }
+
+        // Clean estate value
+        if (rts_estate) {
+            rts_estate = rts_estate.replace(".0", "");
+        }
+
+        // Show loading indicator
+        // Swal.fire({
+        //     title: 'Searching...',
+        //     text: 'Please wait while we fetch the data.',
+        //     allowOutsideClick: false,
+        //     didOpen: () => {
+        //         Swal.showLoading();
+        //     }
+        // });
+
+        $.ajax({
+            type: "POST",
+            url: "rent_mgt_serv",
+            data: {
+                request_type: 'select_rent_leasee_details',
+                select_type: rts_select_type,
+                estate: rts_estate,
+                keyword: rts_keyword
+            },
+            cache: false,
+            success: function(response) {
+                // console.log(response);
+                try {
+                    var json_p = JSON.parse(response);
+
+                    // Close loading dialog
+                    Swal.close();
+
+                    // Update summary cards
+                    $("#total_leasee").html(json_p.total_leasee || 0);
+                    
+                    // Format currency for outstanding amount
+                    const totalOutstanding = parseFloat(json_p.total_rent_oustanding || 0);
+                    const formattedTotal = totalOutstanding.toLocaleString('en-GH', {
+                        style: 'currency',
+                        currency: 'GHS',
+                        minimumFractionDigits: 2
+                    });
+                    $("#rentOutstanding").html(formattedTotal);
+
+                    // Clear table if no data
+                    if (!json_p.data || json_p.data.length === 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'No Results Found',
+                            text: 'No records match your search criteria.',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                        
+                        datatable.clear().draw();
+                        return;
+                    }
+
+                    // Success notification
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Search Complete',
+                    //     text: `Found ${json_p.data.length} record(s)`,
+                    //     timer: 1500,
+                    //     showConfirmButton: false
+                    // });
+
+                    // Clear and repopulate table
+                    datatable.clear();
+
+                    $(json_p.data).each(function() {
+                        const amount = parseFloat(this.rent_outstanding || 0);
+                        const formattedAmount = amount.toLocaleString('en-GH', {
+                            style: 'currency',
+                            currency: 'GHS',
+                            minimumFractionDigits: 2
+                        });
+
+                        // Format dates
+                        const formatDate = (dateStr) => {
+                            if (!dateStr) return '-';
+                            return new Date(dateStr.replace(/-/g, '/')).toLocaleDateString('en-GH', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            });
+                        };
+
+                        // Calculate unexpired term with improved logic
+                        var endDate = new Date(this.expiry_date?.replace(/-/g, "/"));
+                        var today = new Date();
+                        var display_reminder = '-';
+                        
+                        if (this.expiry_date) {
+                            const diffTime = endDate - today;
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            const diffYears = Math.floor(diffDays / 365);
+                            
+                            if (diffDays < 0) {
+                                const yearsPassed = Math.abs(diffYears);
+                                display_reminder = `<span class="badge bg-danger py-1 px-2">
+                                    <i class="fas fa-clock me-1"></i>${yearsPassed} Year(s) Expired
+                                </span>`;
+                            } else if (diffDays <= 365) {
+                                display_reminder = `<span class="badge bg-warning text-dark py-1 px-2">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>${diffDays} Day(s) Left
+                                </span>`;
+                            } else {
+                                display_reminder = `<span class="badge bg-success py-1 px-2">
+                                    <i class="fas fa-check-circle me-1"></i>${diffYears} Year(s) Left
+                                </span>`;
+                            }
+                        }
+
+                        // Create dropdown actions with improved icons
+                        const dropdownHtml = `
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    title="Actions">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 220px;">
+                                <li>
+                                    <h6 class="dropdown-header text-primary mb-1">
+                                        <i class="fas fa-user-circle me-2"></i>${this.owners_name || 'Leasee'}
+                                    </h6>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center py-2 viewLedgerBtn" href="#"
+                                        data-all='${JSON.stringify(this)}'>
+                                        <i class="fas fa-eye text-info me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">View Details</div>
+                                            <small class="text-muted">Complete lease information</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="#"
+                                        data-bs-toggle="modal" data-bs-target="#editlegder"
+                                        data-all='${JSON.stringify(this)}'>
+                                        <i class="fas fa-edit text-primary me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">Edit Details</div>
+                                            <small class="text-muted">Update lease information</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="#"
+                                        data-bs-toggle="modal" data-bs-target="#singlerentdemandnotice"
+                                        data-rent_id="${this.rl_id}"
+                                        data-account_number="${this.account_number}"
+                                        data-owners_name="${this.owners_name}"
+                                        data-address="${this.address}"
+                                        data-mobile="${this.mobile}"
+                                        data-mobile_1="${this.mobile_1}"
+                                        data-email="${this.email}"
+                                        data-plot_number="${this.plot_number}"
+                                        data-estate="${this.estate}">
+                                        <i class="fas fa-file-invoice-dollar text-success me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">Demand Notice</div>
+                                            <small class="text-muted">Generate rent invoice</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="#"
+                                        data-bs-toggle="modal" data-bs-target="#paymenthistory"
+                                        data-m_id="${this.rl_id}">
+                                        <i class="fas fa-history text-secondary me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">Payment History</div>
+                                            <small class="text-muted">View all payments</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="#"
+                                        data-bs-toggle="modal" data-bs-target="#rentdocuments"
+                                        data-rent_id="${this.rl_id}">
+                                        <i class="fas fa-folder text-warning me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">Documents</div>
+                                            <small class="text-muted">Manage lease documents</small>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>`;
+
+                        // Format term with years
+                        const termYears = this.term ? `${this.term} Year(s)` : '-';
+
+                        // Add row with improved formatting
+                        datatable.row.add([
+                            dropdownHtml,
+                            `<div class="fw-medium small text-primary">${this.account_number || '-'}</div>`,
+                            `<div>
+                                <div class="fw-medium small">${this.plot_number || '-'}</div>
+                            </div>`,
+                            `<div class="text-truncate" style="max-width: 200px;" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${this.owners_name || ''}">
+                                <small>${this.owners_name || '-'}</small>
+                            </div>`,
+                            `<small>${this.file_number}</small>`,
+                            `<small>${formatDate(this.comm_date)}</small>`,
+                            `<span class="badge bg-light text-dark">${termYears}</span>`,
+                            this.plot_size ? `<small>${this.plot_size} Acres</small>` : '-',
+                            `<small>${formatDate(this.last_review_date)}</small>`,
+                            `<small>${this.last_payment_period}</small>`,
+                            `<div class="text-end fw-bold ${amount > 0 ? 'text-danger' : 'text-success'}">
+                                ${formattedAmount}
+                                ${amount > 0 ? '<br><small class="text-muted">Outstanding</small>' : '<br><small class="text-muted">Paid</small>'}
+                            </div>`,
+                            display_reminder
+                        ]).draw(false);
+                    });
+
+                    // Add hover effects and improve table styling
+                    $('.dataTable').addClass('table-hover');
+                    
+                } catch (e) {
+                    console.error('Error parsing JSON response:', e);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Data Error',
+                        text: 'Failed to process server response. Please try again.',
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request Failed',
+                    text: 'Unable to connect to server. Please check your connection and try again.',
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
 
       $('#btn_load_scanned_documents_rent').on('click', function(e) { 
 	   
@@ -1084,299 +2511,1427 @@ console.log (fileExtension);
 
 
 
-     let currentLedgerData = {}; // store globally within this scope
+let currentLedgerData = {};
 
-    $(document).on("click", ".viewLedgerBtn", function () {
-        // Grab data attributes from the button (or from your AJAX response)
-        const data = $(this).data(); 
-        currentLedgerData = data; // save for edit later
-        console.log('data')
-          console.log(data)
-        // Populate fields
-//         $("#view_leasee_name").text(data.owners_name || "");
-//         $("#view_email").text(data.email || "");
-//         $("#view_address").text(data.address || "");
-//         $("#view_digital_address").text(data.digital_address || "");
-//         $("#view_mobile1").text(data.mobile || "");
-//         $("#view_mobile2").text(data.mobile_1 || "");
-
-//         $("#view_plot_number").text(data.plot_number || "");
-//         $("#view_plot_size").text(data.plot_size || "");
-//         $("#view_file_number").text(data.file_number || "");
-//         $("#view_ledger").text(data.ledger || "");
-//         $("#view_folio").text(data.folio || "");
-//         $("#view_ls_number").text(data.ls_number || "");
-//         $("#view_parcel_address").text(data.parcel_address || "");
-//         $("#view_convenant_user").text(data.convenant_user || "");
-//         $("#view_current_use").text(data.current_use || "");
-//         $("#view_nature_of_dev").text(data.nature_of_devt || "");
-
-//         $("#view_estate").text($("#rts_estate option:selected").text() || "");
-//         //$("#view_estate").text($("#rts_estate option:selected").text() || "");
-//         $("#view_commencement_date").text(data.comm_date || "");
-//         $("#view_term").text(data.term || "");
-//         $("#view_nature_of_instrument").text(data.nature_of_instrument || "");
-
-//         $("#view_rent_category").text(data.rent_category || "");
-//         $("#view_rent_passing").text(data.rent_passing || "");
-//         $("#view_location_rate").text(data.location_rate || "");
-//         $("#view_rent_review_clause").text(data.rent_review_clause || "");
-
-//         $("#view_last_payment_date").text(data.last_payment_date || "");
-//         $("#view_rent_outstanding").text(data.rent_outstanding || "");
-//         $("#view_period_in_arrears").text(data.period_in_arrears || "");
-//         $("#view_remarks").text(data.remarks || "");
-//         $("#view_last_payment_period").text(data.last_payment_period || "");
-//  $("#view_expiry_date").text(data.expiry_date || "");
-        
-
-        // Show modal
-      //  $("#viewLedger").modal("show");
-//         const modalEl = document.getElementById("viewLedger");
-// const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-// modal.show();
-
-  $('#pdfViewerModal').modal('show'); 
-// const modalEl = document.getElementById('viewLedger');
-    // const modal = new bootstrap.Modal(modalEl, {
-    //     backdrop: 'static',
-    //     keyboard: false
-    // });
-
-    });
-
-    $(document).on("click", "#editLedgerBtn", function () {
-        // Hide the view modal
-        $("#viewLedger").modal("hide");
-        
-        // Populate edit modal form fields using currentLedgerData
-        const data = currentLedgerData;
-
-        $("#addlegder .rt_rent_id").val(data.rent_id || "");
-        $("#addlegder #rt_leasee_name").val(data.owners_name || "");
-        $("#addlegder #rt_leasee_address").val(data.address || "");
-        $("#addlegder #rt_mobile_phone_1").val(data.mobile || "");
-        $("#addlegder #rt_mobile_phone_2").val(data.mobile_1 || "");
-        $("#addlegder #rt_email").val(data.email || "");
-        $("#addlegder #rt_file_number").val(data.file_number || "");
-        $("#addlegder #rt_ledger").val(data.ledger || "");
-        $("#addlegder #rt_folio").val(data.folio || "");
-        $("#addledger #rt_leasee_digital_address").val(data.digital_address || "");
-        $("#addlegder #rt_plot_number").val(data.plot_number || "");
-        $("#addlegder #rt_plot_size").val(data.plot_size || "");
-        $("#addlegder #rt_convenant_user").val(data.covenanted_user || "");
-        $("#addlegder #rt_current_use").val(data.current_use || "");
-        $("#addlegder #rt_nature_of_dev").val(data.nature_of_devt || "");
-        $("#addlegder #rt_parcel_address").val(data.parcel_address || "");
-        $("#addlegder #rt_ls_number").val(data.ls_number || "");
-        $("#addlegder #rt_commencement_date").val(data.comm_date || "");
-        $("#addlegder #rt_term").val(data.term || "");
-        $("#addlegder #rt_consent_date").val(data.consent_date || "");
-        $("#addlegder #rt_location_rate").val(data.location_rate || "");
-        $("#addlegder #rt_rent_category").val(data.rent_category || "");
-        $("#addlegder #rt_rent_review_clause").val(data.rent_review_clause || "");
-        $("#addlegder #rt_rent_passing").val(data.rent_passing || "");
-        $("#addlegder #rt_rent_outstanding").val(data.rent_outstanding || "");
-        $("#addlegder #rt_glpin").val(data.glpin || "");
-        $("#addlegder #rt_remarks").val(data.remarks || "");
-        $("#addlegder #rt_estate").val(data.estate+".0" || "");
-        $("#addlegder #rt_last_payment_date").val(data.last_payment_date || "");
-        $("#addlegder #rt_nature_of_instrument").val(data.nature_of_instrument || "");
-        $("#addlegder #rt_last_payment_period").val(data.last_payment_period || "");
-        $("#addlegder #rt_period_in_arrears").val(data.period_in_arrears || "");
-
-        $("#modal_label").text("Edit Lessee");
-
-        // Show edit modal
-        $("#addlegder").modal("show");
-    });
-
-    $('#addlegder').on('hidden.bs.modal', (e) => {
-        $('#addlegderForm')[0].reset();
-    })
-
-    // $('#addlegder').on('shown.bs.modal', (e) => {
-    //     e.preventDefault();
+$(document).on("click", ".viewLedgerBtn", function () {
+    // Get data from the button (passed as JSON string in data-all attribute)
+    const dataStr = $(this).data('all');
+    currentLedgerData = typeof dataStr === 'string' ? JSON.parse(dataStr) : $(this).data();
     
-    //     // Set values for form fields using data attributes from the triggering element
-    //     $(".rt_rent_id").val($(e.relatedTarget).data("rent_id"));
-    //     $("#rt_leasee_name").val($(e.relatedTarget).data("owners_name"));
-    //     $("#rt_leasee_address").val($(e.relatedTarget).data("address"));
-    //     $("#rt_mobile_phone_1").val($(e.relatedTarget).data("mobile"));
-    //     $("#rt_mobile_phone_2").val($(e.relatedTarget).data("mobile_1"));
-    //     $("#rt_email").val($(e.relatedTarget).data("email"));
-    //     $("#rt_file_number").val($(e.relatedTarget).data("file_number"));
-    //     $("#rt_ledger").val($(e.relatedTarget).data("ledger"));
-    //     $("#rt_folio").val($(e.relatedTarget).data("folio"));
-    //     $("#rt_leasee_digital_address").val($(e.relatedTarget).data("digital_address"));
-    //     // $("#rt_block_number").val($(e.relatedTarget).data("block"));
-    //     $("#rt_plot_number").val($(e.relatedTarget).data("plot_number"));
-    //     $("#rt_plot_size").val($(e.relatedTarget).data("plot_size"));
-    //     $("#rt_convenant_user").val($(e.relatedTarget).data("covenanted_user"));
-    //     $("#rt_current_use").val($(e.relatedTarget).data("current_use"));
-    //     $("#rt_nature_of_dev").val($(e.relatedTarget).data("nature_of_devt"));
-    //     $("#rt_parcel_address").val($(e.relatedTarget).data("parcel_address"));
-    //     $("#rt_ls_number").val($(e.relatedTarget).data("ls_number"));
-    //     $("#rt_commencement_date").val($(e.relatedTarget).data("comm_date"));
-    //     $("#rt_term").val($(e.relatedTarget).data("term"));
-    //    // $("#rt_expiry_date").val($(e.relatedTarget).data("expiry_date"));
-    //     $("#rt_consent_date").val($(e.relatedTarget).data("consent_date"));
-    //     $("#rt_rent_category").val($(e.relatedTarget).data("rent_category"));
-    //     $("#rt_rent_review_clause").val($(e.relatedTarget).data("rent_review_clause"));
-    //     $("#rt_rent_passing").val($(e.relatedTarget).data("rent_passing"));
-    //     // $("#rt_adjoining_plots").val($(e.relatedTarget).data("adjoining_plots"));
-    //     // $("#rt_original_use").val($(e.relatedTarget).data("original_use"));
-    //     $("#rt_rent_outstanding").val($(e.relatedTarget).data("rent_outstanding"));
-    //     //$("#rt_classification_of_arrears").val($(e.relatedTarget).data("classification_of_arrears"));
-    //     $("#rt_glpin").val($(e.relatedTarget).data("glpin"));
-    //     $("#rt_remarks").val($(e.relatedTarget).data("remarks"));
-    //     $("#rt_estate").val($(e.relatedTarget).data("estate")+'.0');
-    //     $("#rt_last_payment_date").val($(e.relatedTarget).data("last_payment_date"));
-    //     $("#rt_nature_of_instrument").val($(e.relatedTarget).data("nature_of_instrument"));
-    //     //$("#rt_last_review_date").val($(e.relatedTarget).data("last_review_date"));
-    //     //$("#rt_region_code").val($(e.relatedTarget).data("region_id"));
-    //     $("#rt_last_payment_period").val($(e.relatedTarget).data("last_payment_period"));
-    //     $("#rt_period_in_arrears").val($(e.relatedTarget).data("period_in_arrears"));
-    //     $("#modal_label").text($(e.relatedTarget).data("modal_label"));
-    // });
-
-    $('#singlerentdemandnotice').on('shown.bs.modal', (e) => {
-       // e.preventDefault();
+    console.log('Ledger data:', currentLedgerData);
     
-        // Set values for form fields using data attributes from the triggering element
-        $("#rdn_rent_id").val($(e.relatedTarget).data("rent_id"));
-        $("#rdn_account_number").val($(e.relatedTarget).data("account_number"));
-        $("#rdn_leasee_name").val($(e.relatedTarget).data("owners_name"));
-        $("#rdn_leasee_address").val($(e.relatedTarget).data("address"));
-        $("#rdn_mobile_phone_1").val($(e.relatedTarget).data("mobile"));
-        $("#rdn_mobile_phone_2").val($(e.relatedTarget).data("mobile_1"));
-        $("#rdn_email").val($(e.relatedTarget).data("email"));
-         
-        var table = $('#tbl_rent_assessment_details');
-            table.find("tbody tr").remove();
+    // Format currency
+    const formatCurrency = (amount) => {
+        if (!amount) return 'GHS 0.00';
+        const num = parseFloat(amount);
+        return num.toLocaleString('en-GH', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        });
+    };
+    
+    // Format date
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '-';
+        try {
+            const date = new Date(dateStr.replace(/-/g, '/'));
+            return date.toLocaleDateString('en-GH', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        } catch (e) {
+            return dateStr;
+        }
+    };
+    
+    // Populate Lessee Information
+    $("#view_leasee_name").text(currentLedgerData.all?.owners_name || "-");
+    $("#view_email").text(currentLedgerData.all?.email || "-");
+    $("#view_address").text(currentLedgerData.all?.address || "-");
+    $("#view_digital_address").text(currentLedgerData.all?.digital_address || "-");
+    $("#view_mobile1").text(currentLedgerData.all?.mobile || "-");
+    $("#view_mobile2").text(currentLedgerData.all?.mobile_1 || "-");
+    $("#view_account_number").text(currentLedgerData.all?.account_number || "-");
+    $("#view_file_number").text(currentLedgerData.all?.file_number || "-");
+    
+    // Populate Property Details
+    $("#view_plot_number").text(currentLedgerData.all?.plot_number || "-");
+    $("#view_plot_size").text(currentLedgerData.all?.plot_size ? `${currentLedgerData.all?.plot_size} sqm` : "-");
+    $("#view_estate").text(currentLedgerData.all?.estate || "-");
+    $("#view_ls_number").text(currentLedgerData.all?.ls_number || "-");
+    $("#view_parcel_address").text(currentLedgerData.all?.parcel_address || "-");
+    $("#view_ledger").text(currentLedgerData.all?.ledger || "-");
+    $("#view_folio").text(currentLedgerData.all?.folio || "-");
+    $("#view_convenant_user").text(currentLedgerData.all?.covenanted_user || "-");
+    $("#view_current_use").text(currentLedgerData.all?.current_use || "-");
+    $("#view_nature_of_dev").text(currentLedgerData.all?.nature_of_devt || "-");
+    
+    // Populate Lease Terms
+    $("#view_commencement_date").text(formatDate(currentLedgerData.all?.comm_date));
+    $("#view_term").text(currentLedgerData.all?.term ? `${currentLedgerData.all?.term} Year(s)` : "-");
+    $("#view_expiry_date").text(formatDate(currentLedgerData.all?.expiry_date));
+    $("#view_nature_of_instrument").text(currentLedgerData.all?.nature_of_instrument || "-");
+    
+    // Populate Rent Information
+    $("#view_rent_category").text(currentLedgerData.all?.rent_category || "-");
+    $("#view_rent_passing").text(formatCurrency(currentLedgerData.all?.rent_passing));
+    $("#view_location_rate").text(formatCurrency(currentLedgerData.all?.location_rate));
+    $("#view_rent_review_clause").text(currentLedgerData.all?.rent_review_clause || "-");
+    
+    // Populate Payment Status
+    $("#view_last_payment_date").text(formatDate(currentLedgerData.all?.last_payment_date));
+    $("#view_last_payment_period").text(currentLedgerData.all?.last_payment_period || "-");
+    $("#view_rent_outstanding").text(formatCurrency(currentLedgerData.all?.rent_outstanding));
+    $("#view_period_in_arrears").text(currentLedgerData.all?.period_in_arrears || "0");
+    
+    // Populate Additional Information
+    $("#view_glpin").text(currentLedgerData.all?.glpin || "-");
+    $("#view_remarks").text(currentLedgerData.all?.remarks || "-");
+    
+    // Calculate and display lease status badge
+    const updateStatusBadge = () => {
+        if (!currentLedgerData.expiry_date) return;
         
-    });
-
-     $('#editlegder').on('shown.bs.modal', (e) => {
-       // e.preventDefault();
+        const endDate = new Date(currentLedgerData.expiry_date.replace(/-/g, "/"));
+        const today = new Date();
+        const diffTime = endDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        let statusText = '';
+        let statusClass = '';
+        
+        if (diffDays < 0) {
+            statusText = 'Expired';
+            statusClass = 'bg-danger';
+        } else if (diffDays <= 30) {
+            statusText = 'Expiring Soon';
+            statusClass = 'bg-warning text-dark';
+        } else if (parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0) {
+            statusText = 'Payment Due';
+            statusClass = 'bg-danger';
+        } else {
+            statusText = 'Active';
+            statusClass = 'bg-success';
+        }
+        
+        // Add status badge to modal title
+        $('#viewLedgerModalLabel').append(`
+            <span class="badge ${statusClass} ms-2">${statusText}</span>
+        `);
+    };
     
-        $("#rt_e_rent_id").val($(e.relatedTarget).data("rent_id"));
-        $("#rt_e_leasee_name").val($(e.relatedTarget).data("owners_name"));
-        $("#rt_e_leasee_address").val($(e.relatedTarget).data("address"));
-        $("#rt_e_mobile_phone_1").val($(e.relatedTarget).data("mobile"));
-        $("#rt_e_mobile_phone_2").val($(e.relatedTarget).data("mobile_1"));
-        $("#rt_e_email").val($(e.relatedTarget).data("email"));
-        $("#rt_e_file_number").val($(e.relatedTarget).data("file_number"));
-        $("#rt_e_ledger").val($(e.relatedTarget).data("ledger"));
-        $("#rt_e_folio").val($(e.relatedTarget).data("folio"));
-        $("#rt_e_leasee_digital_address").val($(e.relatedTarget).data("digital_address"));
-        // $("#rt_e_block_number").val($(e.relatedTarget).data("block"));
-        $("#rt_e_plot_number").val($(e.relatedTarget).data("plot_number"));
-        $("#rt_e_plot_size").val($(e.relatedTarget).data("plot_size"));
-        $("#rt_e_convenant_user").val($(e.relatedTarget).data("covenanted_user"));
-        $("#rt_e_current_use").val($(e.relatedTarget).data("current_use"));
-       
-        $("#rt_e_parcel_address").val($(e.relatedTarget).data("parcel_address"));
-        $("#rt_e_ls_number").val($(e.relatedTarget).data("ls_number"));
-        $("#rt_e_commencement_date").val($(e.relatedTarget).data("comm_date"));
-        $("#rt_e_term").val($(e.relatedTarget).data("term"));
-       // $("#rt_expiry_date").val($(e.relatedTarget).data("expiry_date"));
-        $("#rt_e_consent_date").val($(e.relatedTarget).data("consent_date"));
-        $("#rt_e_rent_category").val($(e.relatedTarget).data("rent_category"));
-        $("#rt_e_rent_review_clause").val($(e.relatedTarget).data("rent_review_clause"));
-        $("#rt_e_rent_passing").val($(e.relatedTarget).data("rent_passing"));
-        // $("#rt_adjoining_plots").val($(e.relatedTarget).data("adjoining_plots"));
-        // $("#rt_original_use").val($(e.relatedTarget).data("original_use"));
-        $("#rt_e_rent_outstanding").val($(e.relatedTarget).data("rent_outstanding"));
-        //$("#rt_classification_of_arrears").val($(e.relatedTarget).data("classification_of_arrears"));
-        $("#rt_e_glpin").val($(e.relatedTarget).data("glpin"));
-        $("#rt_e_remarks").val($(e.relatedTarget).data("remarks"));
-       // $("#rt_e_estate").val($(e.relatedTarget).data("estate")+'.0');
-       
-        $("#rt_e_last_payment_date").val($(e.relatedTarget).data("last_payment_date"));
-     
-        //$("#rt_last_review_date").val($(e.relatedTarget).data("last_review_date"));
-        //$("#rt_region_code").val($(e.relatedTarget).data("region_id"));
-        $("#rt_e_last_payment_period").val($(e.relatedTarget).data("last_payment_period"));
-        $("#rt_e_period_in_arrears").val($(e.relatedTarget).data("period_in_arrears"));
+    // Clear any existing status badge
+    $('#viewLedgerModalLabel .badge').remove();
+    updateStatusBadge();
+    
+    // Show modal using Bootstrap 5
+    const modal = new bootstrap.Modal(document.getElementById('viewLedgerModal'));
+    modal.show();
+});
 
- console.log('estate ID')
-        console.log($(e.relatedTarget).data("estate_id"))
+// Update the print button functionality
+$(document).on("click", "#btnPrintLedger", function () {
+    generatePrintView();
+});
 
-		$.ajax({
-                type: "POST",
-                url: "rent_mgt_serv",
-                data: {
-                    request_type: "get_estate_list",
-                },
-                cache: false,
-                success: function (jobdetails) {
-                    const select = $("#rt_e_estate");
-                    select.empty(); // Clear existing options
-                    const json_p = JSON.parse(jobdetails);
-                    $(json_p).each(function () {
-                    select.append(
-                        `<option value="${this.ge_id}">${this.ge_location_name}</option>`
-                    );
-                    });
-                    $("#rt_e_estate").val($(e.relatedTarget).data("estate_id"));
-
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching estate list:", error);
-                },
-                });    
-
-                $.ajax({
-                type: "POST",
-                url: "rent_mgt_serv",
-                data: {
-                    request_type: "get_nature_of_development_list",
-                },
-                cache: false,
-                success: function (jobdetails) {
-                    const select = $("#rt_e_nature_of_dev");
-                    select.empty(); // Clear existing options
-                    const json_p = JSON.parse(jobdetails);
-                    $(json_p).each(function () {
-                    select.append(
-                        `<option value="${this.na_name}">${this.na_name}</option>`
-                    );
-                    });
-                    $("#rt_e_nature_of_dev").val($(e.relatedTarget).data("nature_of_devt"));
-
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching estate list:", error);
-                },
-                });  
-
-                $.ajax({
-                type: "POST",
-                url: "rent_mgt_serv",
-                data: {
-                    request_type: "get_nature_of_instrument_list",
-                },
-                cache: false,
-                success: function (jobdetails) {
-                    const select = $("#rt_e_nature_of_instrument");
-                    select.empty(); // Clear existing options
-                    const json_p = JSON.parse(jobdetails);
-                    $(json_p).each(function () {
-                    select.append(
-                        `<option value="${this.nt_name}">${this.nt_name}</option>`
-                    );
-                    });
-                      $("#rt_e_nature_of_instrument").val($(e.relatedTarget).data("nature_of_instrument"));
-
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching estate list:", error);
-                },
-                });  
-
-        //$("#modal_label").text($(e.relatedTarget).data("modal_label"));
+function generatePrintView() {
+    // Create a new window for printing
+    const printWindow = window.open('', '_blank', 'width=1000,height=800');
+    
+    // Get current date
+    const currentDate = new Date().toLocaleDateString('en-GH', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
+    
+    // Format currency
+    const formatCurrency = (amount) => {
+        if (!amount) return 'GHS 0.00';
+        const num = parseFloat(amount);
+        return num.toLocaleString('en-GH', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        });
+    };
+    
+    // Format date for print
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'Not Available';
+        try {
+            const date = new Date(dateStr.replace(/-/g, '/'));
+            return date.toLocaleDateString('en-GH', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        } catch (e) {
+            return dateStr;
+        }
+    };
+    
+    // Calculate lease status
+    let leaseStatus = 'Active';
+    let statusClass = 'success';
+    if (currentLedgerData.all?.expiry_date) {
+        const endDate = new Date(currentLedgerData.all?.expiry_date.replace(/-/g, "/"));
+        const today = new Date();
+        const diffTime = endDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays < 0) {
+            leaseStatus = 'EXPIRED';
+            statusClass = 'danger';
+        } else if (diffDays <= 30) {
+            leaseStatus = 'EXPIRING SOON';
+            statusClass = 'warning';
+        } else if (parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0) {
+            leaseStatus = 'PAYMENT DUE';
+            statusClass = 'danger';
+        }
+    }
+    
+    // Create the print HTML
+    const printContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lease Agreement Details - ${currentLedgerData.all?.account_number || 'N/A'}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            .print-header, .print-footer {
+                position: fixed;
+                left: 0;
+                right: 0;
+                color: #666;
+                font-size: 10px;
+            }
+            
+            .print-header {
+                top: 0;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .print-footer {
+                bottom: 0;
+                border-top: 1px solid #dee2e6;
+                padding-top: 10px;
+                text-align: center;
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .print-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+        
+        .letterhead {
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .letterhead h1 {
+            color: #007bff;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .letterhead .subtitle {
+            color: #6c757d;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        
+        .status-success { background-color: #d4edda; color: #155724; }
+        .status-warning { background-color: #fff3cd; color: #856404; }
+        .status-danger { background-color: #f8d7da; color: #721c24; }
+        
+        .section-title {
+            color: #007bff;
+            font-weight: 600;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 60px;
+            height: 2px;
+            background: #007bff;
+        }
+        
+        .info-row {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: #212529;
+            font-size: 15px;
+        }
+        
+        .financial-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .financial-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #dc3545;
+        }
+        
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 120px;
+            color: rgba(0, 123, 255, 0.05);
+            font-weight: 900;
+            z-index: -1;
+            white-space: nowrap;
+        }
+        
+        .signature-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #dee2e6;
+        }
+        
+        .signature-line {
+            width: 300px;
+            border-bottom: 1px solid #333;
+            margin: 40px auto 10px;
+        }
+        
+        .stamp {
+            position: absolute;
+            right: 50px;
+            bottom: 50px;
+            border: 2px solid #dc3545;
+            padding: 10px 20px;
+            transform: rotate(15deg);
+            background: white;
+            font-weight: bold;
+            color: #dc3545;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .header-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .qr-code-placeholder {
+            width: 100px;
+            height: 100px;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #adb5bd;
+            border-radius: 8px;
+            margin: 0 auto;
+            color: #6c757d;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="print-container">
+        <!-- Watermark -->
+        <div class="watermark">CONFIDENTIAL</div>
+        
+        <!-- Letterhead -->
+        <div class="letterhead text-center mb-4">
+            <h1>${currentLedgerData.all?.estate || 'PROPERTY MANAGEMENT SYSTEM'}</h1>
+            <p class="subtitle">Official Lease Agreement Document</p>
+            <div class="mt-3">
+                <span class="status-badge status-${statusClass}">${leaseStatus}</span>
+            </div>
+        </div>
+        
+        <!-- Document Info -->
+        <div class="header-info">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">Document Reference:</span>
+                        <span class="info-value ms-2 fw-bold">${currentLedgerData.all?.account_number || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Print Date:</span>
+                        <span class="info-value ms-2">${currentDate}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">File Number:</span>
+                        <span class="info-value ms-2">${currentLedgerData.all?.file_number || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lessee Information -->
+        <div class="mb-4">
+            <h4 class="section-title">
+                <i class="fas fa-user-tie me-2"></i>LESSEE INFORMATION
+            </h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">Full Name:</span>
+                        <span class="info-value">${currentLedgerData.all?.owners_name || 'Not Available'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Contact Address:</span>
+                        <span class="info-value">${currentLedgerData.all?.address || 'Not Available'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Digital Address:</span>
+                        <span class="info-value">${currentLedgerData.all?.digital_address || 'Not Available'}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">Email Address:</span>
+                        <span class="info-value">${currentLedgerData.all?.email || 'Not Available'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Primary Contact:</span>
+                        <span class="info-value">${currentLedgerData.all?.mobile || 'Not Available'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Secondary Contact:</span>
+                        <span class="info-value">${currentLedgerData.all?.mobile_1 || 'Not Available'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Property Details -->
+        <div class="mb-4">
+            <h4 class="section-title">
+                <i class="fas fa-map-marker-alt me-2"></i>PROPERTY DETAILS
+            </h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="info-row">
+                        <span class="info-label">Plot Number:</span>
+                        <span class="info-value fw-bold">${currentLedgerData.all?.plot_number || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Plot Size:</span>
+                        <span class="info-value">${currentLedgerData.all?.plot_size || '0'} sqm</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Estate:</span>
+                        <span class="info-value">${currentLedgerData.all?.estate || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-row">
+                        <span class="info-label">LS Number:</span>
+                        <span class="info-value">${currentLedgerData.all?.ls_number || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Ledger:</span>
+                        <span class="info-value">${currentLedgerData.all?.ledger || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Folio:</span>
+                        <span class="info-value">${currentLedgerData.all?.folio || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-row">
+                        <span class="info-label">Parcel Address:</span>
+                        <span class="info-value">${currentLedgerData.all?.parcel_address || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Current Use:</span>
+                        <span class="info-value">${currentLedgerData.all?.current_use || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nature of Development:</span>
+                        <span class="info-value">${currentLedgerData.all?.nature_of_devt || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lease Terms -->
+        <div class="mb-4">
+            <h4 class="section-title">
+                <i class="fas fa-file-contract me-2"></i>LEASE TERMS
+            </h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="info-row">
+                        <span class="info-label">Commencement Date:</span>
+                        <span class="info-value">${formatDate(currentLedgerData.all?.comm_date)}</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-row">
+                        <span class="info-label">Lease Term:</span>
+                        <span class="info-value">${currentLedgerData.all?.term || '0'} Years</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-row">
+                        <span class="info-label">Expiry Date:</span>
+                        <span class="info-value">${formatDate(currentLedgerData.all?.expiry_date)}</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="info-row">
+                        <span class="info-label">Instrument Type:</span>
+                        <span class="info-value">${currentLedgerData.all?.nature_of_instrument || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Financial Information -->
+        <div class="mb-4">
+            <h4 class="section-title">
+                <i class="fas fa-money-bill-wave me-2"></i>FINANCIAL INFORMATION
+            </h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="financial-box text-center">
+                        <div class="info-label mb-2">Rent Passing</div>
+                        <div class="financial-amount">${formatCurrency(currentLedgerData.all?.rent_passing)}</div>
+                        <small class="text-muted">per annum</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="financial-box text-center">
+                        <div class="info-label mb-2">Location Rate</div>
+                        <div class="financial-amount">${formatCurrency(currentLedgerData.all?.location_rate)}</div>
+                        <small class="text-muted">base rate</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="financial-box text-center">
+                        <div class="info-label mb-2">Rent Outstanding</div>
+                        <div class="financial-amount">${formatCurrency(currentLedgerData.all?.rent_outstanding)}</div>
+                        <small class="text-muted">current balance</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">Rent Category:</span>
+                        <span class="info-value">${currentLedgerData.all?.rent_category || 'N/A'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Rent Review Clause:</span>
+                        <span class="info-value">${currentLedgerData.all?.rent_review_clause || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">Last Payment Date:</span>
+                        <span class="info-value">${formatDate(currentLedgerData.all?.last_payment_date)}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Last Payment Period:</span>
+                        <span class="info-value">${currentLedgerData.all?.last_payment_period || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Status -->
+        <div class="mb-4">
+            <h4 class="section-title">
+                <i class="fas fa-chart-line me-2"></i>PAYMENT STATUS
+            </h4>
+            <div class="alert ${parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0 ? 'alert-danger' : 'alert-success'}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="info-row">
+                            <span class="info-label">Periods in Arrears:</span>
+                            <span class="info-value fw-bold">${currentLedgerData.all?.period_in_arrears || '0'}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-row">
+                            <span class="info-label">Account Status:</span>
+                            <span class="info-value fw-bold">${parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0 ? 'IN ARREARS' : 'CURRENT'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Information -->
+        <div class="mb-4">
+            <h4 class="section-title">
+                <i class="fas fa-info-circle me-2"></i>ADDITIONAL INFORMATION
+            </h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">GLPIN:</span>
+                        <span class="info-value">${currentLedgerData.all?.glpin || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-row">
+                        <span class="info-label">Covenanted User:</span>
+                        <span class="info-value">${currentLedgerData.all?.covenanted_user || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Remarks:</span>
+                <div class="info-value mt-2 p-3 bg-light rounded">
+                    ${currentLedgerData.all?.remarks || 'No remarks available'}
+                </div>
+            </div>
+        </div>
+        
+        <!-- QR Code & Validation -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="qr-code-placeholder">
+                    <div>
+                        <i class="fas fa-qrcode fa-3x mb-2"></i><br>
+                        Document QR Code
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="signature-section">
+                    <p class="text-center mb-4">
+                        <small class="text-muted">This document was generated electronically and is valid without signature</small>
+                    </p>
+                    <div class="signature-line"></div>
+                    <p class="text-center mt-2">
+                        <small>Property Management Officer</small>
+                    </p>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            Document ID: ${currentLedgerData.all?.account_number || 'N/A'}<br>
+                            Generated: ${new Date().toISOString()}<br>
+                            Valid until: ${formatDate(currentLedgerData.all?.expiry_date)}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-5 pt-4 border-top text-center">
+            <p class="text-muted small">
+                ${currentLedgerData.all?.estate || 'Property Management System'} © ${new Date().getFullYear()} | 
+                This document contains confidential information. Unauthorized distribution is prohibited.
+            </p>
+            <p class="text-muted small">
+                Page 1 of 1 | Printed on ${currentDate}
+            </p>
+        </div>
+    </div>
+    
+    <div class="print-header no-print">
+        Lease Agreement Details | ${currentLedgerData.all?.account_number || 'N/A'}
+    </div>
+    
+    <div class="print-footer no-print">
+        Confidential Document | Do Not Duplicate | ${currentDate}
+    </div>
+    
+    <script>
+        // Automatically trigger print when page loads
+        window.onload = function() {
+            setTimeout(() => {
+                window.print();
+                // Close window after printing
+                setTimeout(() => {
+                    window.close();
+                }, 1000);
+            }, 500);
+        };
+        
+        // Add keyboard shortcut for printing
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>`;
+
+    // Write content to print window
+    printWindow.document.open();
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+}
+
+$('#singlerentdemandnotice').on('shown.bs.modal', (e) => {
+    // e.preventDefault();
+
+    // Set values for form fields using data attributes from the triggering element
+    $("#rdn_rent_id").val($(e.relatedTarget).data("rent_id"));
+    $("#rdn_account_number").val($(e.relatedTarget).data("account_number"));
+    $("#rdn_leasee_name").val($(e.relatedTarget).data("owners_name"));
+    $("#rdn_leasee_address").val($(e.relatedTarget).data("address"));
+    $("#rdn_mobile_phone_1").val($(e.relatedTarget).data("mobile"));
+    $("#rdn_mobile_phone_2").val($(e.relatedTarget).data("mobile_1"));
+    $("#rdn_email").val($(e.relatedTarget).data("email"));
+    $("#rdn_plot_number").val($(e.relatedTarget).data("plot_number"));
+    $("#rdn_estate").val($(e.relatedTarget).data("estate"));
+        
+    var table = $('#tbl_rent_assessment_details');
+        table.find("tbody tr").remove();
+    
+});
+
+     // Handle edit button click
+$(document).on("click", "a[data-bs-target='#editlegder']", function (e) {
+    e.preventDefault();
+    
+    // Get data from data-all attribute (JSON string)
+    const dataStr = $(this).data('all');
+    currentLedgerData = typeof dataStr === 'string' ? JSON.parse(dataStr) : $(this).data();
+    
+    // Store data in a global variable for the modal shown event
+    window.editModalData = currentLedgerData;
+});
+
+// Handle modal shown event
+$('#editlegder').on('shown.bs.modal', function (e) {
+    if (!window.editModalData) return;
+    
+    const data = window.editModalData;
+    // console.log(data);
+    
+    // Populate form fields
+    $("#rt_e_rent_id").val(data.all?.rl_id || 0);
+    $("#rt_e_leasee_name").val(data.all?.owners_name || "");
+    $("#rt_e_leasee_address").val(data.all?.address || "");
+    $("#rt_e_mobile_phone_1").val(data.all?.mobile || "");
+    $("#rt_e_mobile_phone_2").val(data.all?.mobile_1 || "");
+    $("#rt_e_email").val(data.all?.email || "");
+    $("#rt_e_leasee_digital_address").val(data.all?.digital_address || "");
+    $("#rt_e_file_number").val(data.all?.file_number || "");
+    $("#rt_e_ledger").val(data.all?.ledger || "");
+    $("#rt_e_folio").val(data.all?.folio || "");
+    $("#rt_e_plot_number").val(data.all?.plot_number || "");
+    $("#rt_e_plot_size").val(data.all?.plot_size || "");
+    $("#rt_e_parcel_address").val(data.all?.parcel_address || "");
+    $("#rt_e_ls_number").val(data.all?.ls_number || "");
+    $("#rt_e_commencement_date").val(data.all?.comm_date || "");
+    $("#rt_e_term").val(data.all?.term || "");
+    $("#rt_e_expiry_date").val(data.all?.expiry_date || "");
+    $("#rt_e_rent_category").val(data.all?.rent_category || "");
+    $("#rt_e_rent_review_clause").val(data.all?.rent_review_clause || "0");
+    $("#rt_e_rent_passing").val(data.all?.rent_passing || "0");
+    $("#rt_e_rent_outstanding").val(data.all?.rent_outstanding || "0");
+    $("#rt_e_glpin").val(data.all?.glpin || "");
+    $("#rt_e_remarks").val(data.all?.remarks || "");
+    $("#rt_e_last_payment_date").val(data.all?.last_payment_date || "");
+    $("#rt_e_last_payment_period").val(data.all?.last_payment_period || "0");
+    $("#rt_e_period_in_arrears").val(data.all?.period_in_arrears || "0");
+    
+    // Calculate expiry date if not provided
+    if (data.all?.comm_date && data.all?.term && !data.all?.expiry_date) {
+        const commDate = new Date(data.all?.comm_date);
+        const expiryDate = new Date(commDate);
+        expiryDate.setFullYear(expiryDate.getFullYear() + parseInt(data.all?.term));
+        $("#rt_e_expiry_date").val(expiryDate.toISOString().split('T')[0]);
+    }
+    
+    // Load estate list
+    loadEstateList(data.all?.estate);
+    
+    // Load nature of development list
+    loadNatureOfDevelopmentList(data.all?.nature_of_devt);
+    
+    // Load nature of instrument list
+    loadNatureOfInstrumentList(data.all?.nature_of_instrument);
+    
+    // Set covenanted user and current use
+    setTimeout(() => {
+        $("#rt_e_convenant_user").val(data.all?.covenanted_user || "");
+        $("#rt_e_current_use").val(data.all?.current_use || "");
+    }, 500);
+});
+
+// Load estate list
+function loadEstateList(selectedEstateId) {
+    // console.log(selectedEstateId);
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: { request_type: "get_estate_list" },
+        cache: false,
+        success: function (response) {
+            try {
+                const estates = JSON.parse(response);
+                const select = $("#rt_e_estate");
+                select.empty();
+                select.append('<option value="">-- Select Estate --</option>');
+                
+                estates.forEach(function (estate) {
+                    const option = $(`<option value="${estate.ge_id}">${estate.ge_location_name}</option>`);
+                    if (estate.ge_id == selectedEstateId) {
+                        option.attr('selected', true);
+                    }
+                    select.append(option);
+                });
+                
+                // Trigger change for Bootstrap validation
+                select.trigger('change');
+            } catch (e) {
+                console.error("Error parsing estate list:", e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Data Error',
+                    text: 'Failed to load estate list.'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching estate list:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Failed to load estate list. Please try again.'
+            });
+        }
+    });
+}
+
+// Load nature of development list
+function loadNatureOfDevelopmentList(selectedNature) {
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: { request_type: "get_nature_of_development_list" },
+        cache: false,
+        success: function (response) {
+            try {
+                const developments = JSON.parse(response);
+                const select = $("#rt_e_nature_of_dev");
+                select.empty();
+                select.append('<option value="">-- Select --</option>');
+                
+                developments.forEach(function (dev) {
+                    const option = $(`<option value="${dev.na_name}">${dev.na_name}</option>`);
+                    if (dev.na_name == selectedNature) {
+                        option.attr('selected', true);
+                    }
+                    select.append(option);
+                });
+            } catch (e) {
+                console.error("Error parsing development list:", e);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching development list:", error);
+        }
+    });
+}
+
+// Load nature of instrument list
+function loadNatureOfInstrumentList(selectedInstrument) {
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: { request_type: "get_nature_of_instrument_list" },
+        cache: false,
+        success: function (response) {
+            try {
+                const instruments = JSON.parse(response);
+                const select = $("#rt_e_nature_of_instrument");
+                select.empty();
+                select.append('<option value="">-- Select --</option>');
+                
+                instruments.forEach(function (instrument) {
+                    const option = $(`<option value="${instrument.nt_name}">${instrument.nt_name}</option>`);
+                    if (instrument.nt_name == selectedInstrument) {
+                        option.attr('selected', true);
+                    }
+                    select.append(option);
+                });
+            } catch (e) {
+                console.error("Error parsing instrument list:", e);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching instrument list:", error);
+        }
+    });
+}
+
+// Calculate expiry date when commencement date or term changes
+$(document).on('change', '#rt_e_commencement_date, #rt_e_term', function () {
+    const commDate = $("#rt_e_commencement_date").val();
+    const term = $("#rt_e_term").val();
+    
+    if (commDate && term) {
+        const expiryDate = new Date(commDate);
+        expiryDate.setFullYear(expiryDate.getFullYear() + parseInt(term));
+        $("#rt_expiry_date").val(expiryDate.toISOString().split('T')[0]);
+    }
+});
+
+// Form validation and save handler
+$(document).on('click', '#btn_save_edit_rent_client_details', function (e) {
+    e.preventDefault();
+    
+    const form = document.getElementById('editlegderForm');
+    
+    // Form validation
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            html: `
+                <div class="text-start">
+                    <p class="mb-2">Please fill all required fields correctly:</p>
+                    <ul class="text-start">
+                        ${getValidationErrors(form)}
+                    </ul>
+                </div>
+            `,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Fix Errors',
+            width: '500px'
+        });
+        return;
+    }
+    
+    // Get form data for preview
+    const formData = getFormDataPreview();
+    
+    // Show confirmation dialog with form data preview
+    Swal.fire({
+        title: 'Confirm Update',
+        html: `
+            <div class="text-start">
+                <p class="mb-3"><strong>Are you sure you want to update this lease record?</strong></p>
+                
+                <div class="alert alert-info py-2 mb-3">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        You are about to update: <strong>${formData.owners_name || 'Unknown'}</strong>
+                    </small>
+                </div>
+                
+                <div class="preview-section mb-2">
+                    <table class="table table-sm table-bordered bg-light">
+                        <tbody>
+                            <tr>
+                                <td class="fw-semibold" style="width: 40%">Plot Number:</td>
+                                <td>${formData.plot_number || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">File Number:</td>
+                                <td>${formData.file_number || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Lease Term:</td>
+                                <td>${formData.term || '0'} years</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Rent Outstanding:</td>
+                                <td>GHS ${parseFloat(formData.rent_outstanding || 0).toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmUpdateCheckbox">
+                    <label class="form-check-label" for="confirmUpdateCheckbox">
+                        I have verified all information is correct
+                    </label>
+                </div>
+                
+                <div class="text-muted small">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    This action cannot be undone. Please review carefully.
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-save me-1"></i> Yes, Update Now',
+        cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            const checkbox = document.getElementById('confirmUpdateCheckbox');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please confirm that you have verified the information');
+                return false;
+            }
+            return true;
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with saving
+            saveLeaseDetails();
+        }
+    });
+});
+
+// Function to get form validation errors
+function getValidationErrors(form) {
+    const invalidFields = form.querySelectorAll(':invalid');
+    let errorsHtml = '';
+    
+    invalidFields.forEach(field => {
+        const fieldName = field.previousElementSibling?.textContent || field.id;
+        errorsHtml += `<li><strong>${fieldName}:</strong> ${field.validationMessage || 'Required field'}</li>`;
+    });
+    
+    return errorsHtml || '<li>Please check all required fields marked with *</li>';
+}
+
+// Function to get form data for preview
+function getFormDataPreview() {
+    return {
+        owners_name: $("#rt_e_leasee_name").val(),
+        plot_number: $("#rt_e_plot_number").val(),
+        file_number: $("#rt_e_file_number").val(),
+        term: $("#rt_e_term").val(),
+        rent_outstanding: $("#rt_e_rent_outstanding").val(),
+        address: $("#rt_e_leasee_address").val(),
+        mobile: $("#rt_e_mobile_phone_1").val(),
+        estate: $("#rt_e_estate option:selected").text() || $("#rt_e_estate").val()
+    };
+}
+
+// Function to save lease details
+function saveLeaseDetails() {
+    // Prepare full data object
+    
+    const formData = {
+        request_type: 'add_update_rent_leasee_details',
+        rent_id: $("#rt_e_rent_id").val(),
+        parcel_id: $('#rt_e_parcel_id').val(),
+        owners_name: $("#rt_e_leasee_name").val(),
+        address: $("#rt_e_leasee_address").val(),
+        mobile: $("#rt_e_mobile_phone_1").val(),
+        mobile_1: $("#rt_e_mobile_phone_2").val(),
+        email: $("#rt_e_email").val(),
+        digital_address: $("#rt_e_leasee_digital_address").val(),
+        file_number: $("#rt_e_file_number").val(),
+        ledger: $("#rt_e_ledger").val(),
+        folio: $("#rt_e_folio").val(),
+        plot_number: $("#rt_e_plot_number").val(),
+        plot_size: $("#rt_e_plot_size").val(),
+        covenanted_user: $("#rt_e_convenant_user").val(),
+        current_use: $("#rt_e_current_use").val(),
+        nature_of_devt: $("#rt_e_nature_of_dev").val(),
+        parcel_address: $("#rt_e_parcel_address").val(),
+        ls_number: $("#rt_e_ls_number").val(),
+        comm_date: $("#rt_e_commencement_date").val(),
+        term: $("#rt_e_term").val(),
+        estate: $('#rt_e_estate').val().replace('.0', ''),
+        nature_of_instrument: $("#rt_e_nature_of_instrument").val(),
+        rent_category: $("#rt_e_rent_category").val(),
+        rent_review_clause: $("#rt_e_rent_review_clause").val(),
+        rent_passing: $("#rt_e_rent_passing").val(),
+        location_rate: $("#rt_e_location_rate").val(),
+        last_payment_date: $("#rt_e_last_payment_date").val(),
+        last_payment_period: $("#rt_e_last_payment_period").val(),
+        rent_outstanding: $("#rt_e_rent_outstanding").val(),
+        period_in_arrears: $("#rt_e_period_in_arrears").val(),
+        remarks: $("#rt_e_remarks").val(),
+        glpin: $("#rt_e_glpin").val()
+    };
+    
+    // Show loading with progress indicator
+    let timerInterval;
+    Swal.fire({
+        title: 'Updating Lease Details',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-sync-alt fa-spin fa-2x text-primary"></i>
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 0%"></div>
+                </div>
+                <p class="mt-2 mb-0 text-muted" id="swal-progress-text">Processing request...</p>
+            </div>
+        `,
+        allowOutsideClick: false,
+        didOpen: () => {
+            const progressBar = Swal.getHtmlContainer().querySelector('.progress-bar');
+            const progressText = Swal.getHtmlContainer().querySelector('#swal-progress-text');
+            let progress = 0;
+            
+            timerInterval = setInterval(() => {
+                progress += 10;
+                if (progress <= 90) {
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = progress < 50 
+                        ? 'Processing request...' 
+                        : 'Saving to database...';
+                }
+            }, 300);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+    });
+    
+    // Send AJAX request
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: formData,
+        cache: false,
+        success: function (response) {
+            Swal.close();
+            
+            try {
+                const result = JSON.parse(response);
+                
+                if (result.success) {
+                    // Success notification with options
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle fa-3x text-success"></i>
+                                </div>
+                                <p class="mb-2"><strong>Lease details updated successfully!</strong></p>
+                                <div class="alert alert-success py-2">
+                                    <small>
+                                        <i class="fas fa-check me-1"></i>
+                                        Record for <strong>${formData.owners_name}</strong> has been updated
+                                    </small>
+                                </div>
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonColor: '#198754',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fas fa-eye me-1"></i> View Updated Record',
+                        cancelButtonText: '<i class="fas fa-times me-1"></i> Close',
+                        showDenyButton: true,
+                        denyButtonText: '<i class="fas fa-print me-1"></i> Print Details',
+                        denyButtonColor: '#0d6efd',
+                        width: '500px'
+                    }).then((result) => {
+                        $('#editlegder').modal('hide');
+                        
+                        if (result.isConfirmed) {
+                            // Trigger search to refresh table
+                            $('#btn_rt_search').click();
+                            // Optionally scroll to the updated record
+                            highlightUpdatedRecord(formData.rent_id);
+                        } else if (result.isDenied) {
+                            // Generate print view
+                            generatePrintView(formData);
+                        } else {
+                            // Just refresh the table
+                            $('#btn_rt_search').click();
+                        }
+                    });
+                } else {
+                    // Error handling
+                    let errorMessage = result.message || 'Failed to update lease details.';
+                    
+                    // Check for specific error types
+                    if (errorMessage.includes('duplicate') || errorMessage.includes('already exists')) {
+                        errorMessage = `
+                            <div class="text-start">
+                                <p class="mb-2"><strong>Duplicate Entry Detected!</strong></p>
+                                <p class="mb-1">A record with similar details already exists:</p>
+                                <ul class="text-start">
+                                    ${result.duplicate_details ? 
+                                        Object.entries(result.duplicate_details)
+                                            .map(([key, value]) => `<li><strong>${key}:</strong> ${value}</li>`)
+                                            .join('') 
+                                        : '<li>Please check for duplicate plot numbers or file numbers</li>'}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update Failed',
+                        html: errorMessage,
+                        confirmButtonColor: '#dc3545',
+                        confirmButtonText: 'Try Again',
+                        width: '500px'
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Invalid response from server. Please contact support.',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            Swal.close();
+            console.error('AJAX Error:', error);
+            
+            // Check for specific error types
+            let errorMessage = 'Failed to save changes. ';
+            if (xhr.status === 0) {
+                errorMessage += 'No network connection.';
+            } else if (xhr.status === 404) {
+                errorMessage += 'Server endpoint not found.';
+            } else if (xhr.status === 500) {
+                errorMessage += 'Server error. Please try again later.';
+            } else {
+                errorMessage += 'Please check your connection.';
+            }
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                html: `
+                    <div class="text-start">
+                        <p class="mb-2">${errorMessage}</p>
+                        <div class="alert alert-danger py-2 mt-2">
+                            <small>
+                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                <strong>Error Details:</strong> ${error}
+                            </small>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-sm btn-outline-primary" onclick="retrySave()">
+                                <i class="fas fa-redo me-1"></i> Retry
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary ms-2" onclick="Swal.close()">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'OK',
+                showConfirmButton: false,
+                width: '500px'
+            });
+        }
+    });
+}
+
+// Function to highlight updated record in table
+function highlightUpdatedRecord(rentId) {
+    setTimeout(() => {
+        const row = datatable.row(`[data-rent-id="${rentId}"]`).node();
+        if (row) {
+            $(row).addClass('table-success');
+            $('html, body').animate({
+                scrollTop: $(row).offset().top - 100
+            }, 1000);
+            
+            // Remove highlight after 3 seconds
+            setTimeout(() => {
+                $(row).removeClass('table-success');
+            }, 3000);
+        }
+    }, 1000);
+}
+
+// Function to retry save operation
+function retrySave() {
+    Swal.close();
+    // Trigger save again after a short delay
+    setTimeout(() => {
+        $('#btn_save_edit_rent_client_details').click();
+    }, 500);
+}
+
+// Function to generate print view (if needed)
+function generatePrintView(data) {
+    // This function would generate a print view of the updated data
+    // Implementation depends on your print functionality
+    // console.log('Printing updated data:', data);
+    
+    Swal.fire({
+        icon: 'info',
+        title: 'Print Preview',
+        text: 'Print functionality would open here.',
+        confirmButtonText: 'OK'
+    });
+}
+
+// Add change detection to prevent accidental data loss
+$(document).on('input', '#editlegderForm input, #editlegderForm select, #editlegderForm textarea', function() {
+    // Mark form as modified
+    $('#editlegderForm').addClass('form-modified');
+    
+    // Add visual indicator to save button
+    $('#btn_save_edit_rent_client_details').addClass('btn-pulse');
+    
+    // Remove indicator after 2 seconds if no more changes
+    clearTimeout(window.formChangeTimer);
+    window.formChangeTimer = setTimeout(() => {
+        $('#btn_save_edit_rent_client_details').removeClass('btn-pulse');
+    }, 2000);
+});
+
+// Prevent accidental closure of modal with unsaved changes
+$('#editlegder').on('hide.bs.modal', function(e) {
+    if ($('#editlegderForm').hasClass('form-modified')) {
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Unsaved Changes',
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">You have unsaved changes. What would you like to do?</p>
+                    <div class="alert alert-warning py-2">
+                        <small>
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            Changes will be lost if you close without saving.
+                        </small>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i> Save & Close',
+            denyButtonText: '<i class="fas fa-times me-1"></i> Discard Changes',
+            cancelButtonText: '<i class="fas fa-arrow-left me-1"></i> Continue Editing',
+            confirmButtonColor: '#198754',
+            denyButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            width: '500px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Save and close
+                saveLeaseDetails();
+                $('#editlegderForm').removeClass('form-modified');
+            } else if (result.isDenied) {
+                // Discard changes and close
+                $('#editlegderForm').removeClass('form-modified');
+                $('#editlegder').modal('hide');
+            }
+            // If cancelled, do nothing (continue editing)
+        });
+        
+        return false;
+    }
+});
+
+// Clear validation when modal is hidden
+$('#editlegder').on('hidden.bs.modal', function () {
+    const form = document.getElementById('editlegderForm');
+    form.classList.remove('was-validated');
+    window.editModalData = null;
+});
+
+// Format currency inputs on blur
+$(document).on('blur', '#rt_e_rent_passing, #rt_e_location_rate, #rt_e_rent_outstanding', function () {
+    const value = parseFloat($(this).val()) || 0;
+    $(this).val(value.toFixed(2));
+});
+
+// Format numeric inputs
+$(document).on('blur', '#rt_e_plot_size, #rt_e_term, #rt_e_rent_review_clause', function () {
+    const value = parseFloat($(this).val()) || 0;
+    $(this).val(value.toFixed(1));
+});
 
 
 
