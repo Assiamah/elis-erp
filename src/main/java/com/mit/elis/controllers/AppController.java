@@ -251,7 +251,8 @@ public class AppController {
 	public String forgot_password(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 
-				model.addAttribute("content", "../pages/forgot_password.jsp"); return "layouts/app";
+				model.addAttribute("content", "../auth/forgot_password.jsp"); 
+				return "layouts/guest";
 
 	}
 

@@ -40,6 +40,9 @@
 
     <!-- Toastify CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/libs/toastify-js/src/toastify.css">
+    
+    <!-- SweetAlert2 CSS -->
+    <link href="${pageContext.request.contextPath}/assets/libs/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">
 
     <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -61,6 +64,9 @@
     
     <!-- Toastify JS -->
     <script src="${pageContext.request.contextPath}/assets/libs/toastify-js/src/toastify.js"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/dist/sweetalert2.min.js"></script>
 
 </body>
 
