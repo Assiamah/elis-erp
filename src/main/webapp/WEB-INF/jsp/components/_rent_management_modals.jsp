@@ -1275,93 +1275,355 @@
 </div>
 
 <!-- Payment History Modal -->
-<div class="modal fade" data-position="0" id="paymenthistory" tabindex="-1" aria-labelledby="paymenthistoryLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="paymenthistoryLabel">Payment History</h5>
-				<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<button class="btn btn-warning btn-sm mb-2" >Load Payments</button>
-				<button class="btn btn-success btn-sm mb-2" data-bs-toggle="collapse" data-bs-target="#addpaymentdiv">Add Payment</button>
-				<div class="collapse mb-2" id="addpaymentdiv">
-					<div class="card card-body">
-						<div class="card">
-							<div class="card-header bg-secondary text-white">
-								Particulars of Payment
-							</div>
-							<div class="card-body">
-								<input id="rt_rent_id" value="0" type="hidden"/>
-								<div class="row">
-									<div class="col-6">
-										<div class="mb-2">
-											<label for="py_payment_mode" class="form-label">Payment Mode: <span class="text-danger">*</span></label>
-											<select class="form-control" id="py_payment_mode">
-												<option disabled selected value="">-- select --</option>
-												<option value="Cash">Cash</option>
-											</select>
-										</div>
-										<div class="mb-2">
-											<label for="receipt_no" class="form-label">Receipt No.: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="receipt_no" required/>
-										</div>
-										<div class="mb-2">
-											<label for="arrears_amount" class="form-label">Arrears Amount: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="arrears_amount" required />
-										</div>
-										<div class="mb-2">
-											<label for="period_in_arrears" class="form-label">Period In Arrears: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="period_in_arrears" required/>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="mb-2">
-											<label for="payment_amount" class="form-label">Payment Amount: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="payment_amount" required/>
-										</div>
-										<div class="mb-2">
-											<label for="last_payment_period" class="form-label">Period of Last Payment: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="last_payment_period" required/>
-										</div>
-										<div class="mb-2">
-											<label for="payment_date" class="form-label">Date: <span class="text-danger">*</span></label>
-											<input type="date" class="form-control" id="payment_date" required/>
-										</div>
-										<div class="mb-2">
-											<label for="payment_remarks" class="form-label">Remarks: </label>
-											<input type="text" class="form-control" id="payment_remarks" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button class="btn btn-success btn-sm mt-2">Save Details</button>
-					</div>
-				</div>
-				<div class="table-responsive small">
-					<table class="table table-striped table-bordered table-hover"
-						id="tbl_rent_payment_history" width="100%" cellspacing="0">
-						<thead>
-							<tr>
-								<th>Action</th>
-								<th>Payment Mode</th>
-								<th>Arrears Amount</th>
-								<th>Receipt No.</th>
-								<th>Date</th>
-								<th>Payment Amount</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
+<div class="modal fade effect-scale modal-blur" id="paymenthistory" tabindex="-1" aria-labelledby="paymenthistoryLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="paymenthistoryLabel">
+                    <i class="fas fa-history me-2"></i>Payment History
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Hidden Input -->
+                <input type="hidden" id="rt_rent_id" value="0">
+                
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mb-4">
+                    <div>
+                        <button class="btn btn-warning px-4" id="btn_load_payments">
+                            <i class="fas fa-sync-alt me-2"></i>Load Payments
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-success px-4" data-bs-toggle="collapse" data-bs-target="#addpaymentdiv">
+                            <i class="fas fa-plus-circle me-2"></i>Add New Payment
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Add Payment Form -->
+                <div class="collapse mb-4" id="addpaymentdiv">
+                    <div class="card">
+                        <div class="card-header bg-primary bg-opacity-10">
+                            <h6 class="mb-0 text-primary">
+                                <i class="fas fa-money-check-alt me-2"></i>Record New Payment
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="addPaymentForm" class="needs-validation" novalidate>
+                                <div class="row g-3">
+                                    <!-- Left Column -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="py_payment_mode" class="form-label fw-semibold">
+                                                <i class="fas fa-credit-card me-1"></i>Payment Mode <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select" id="py_payment_mode" required>
+                                                <option value="" selected disabled>-- Select Payment Mode --</option>
+                                                <option value="Cash">Cash</option>
+                                                <option value="Cheque">Cheque</option>
+                                                <option value="Bank Transfer">Bank Transfer</option>
+                                                <option value="Mobile Money">Mobile Money</option>
+                                                <option value="Online Payment">Online Payment</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select payment mode.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="receipt_no" class="form-label fw-semibold">
+                                                <i class="fas fa-receipt me-1"></i>Receipt Number <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="receipt_no" required>
+                                            <div class="invalid-feedback">Please enter receipt number.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="arrears_amount" class="form-label fw-semibold">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>Arrears Amount (GHS) <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">GHS</span>
+                                                <input type="number" class="form-control" id="arrears_amount" step="0.01" min="0" required>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter arrears amount.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="period_in_arrears" class="form-label fw-semibold">
+                                                <i class="fas fa-calendar-times me-1"></i>Periods in Arrears <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="period_in_arrears" min="0" required>
+                                                <span class="input-group-text">periods</span>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter periods in arrears.</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right Column -->
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="payment_amount" class="form-label fw-semibold">
+                                                <i class="fas fa-money-bill-wave me-1"></i>Payment Amount (GHS) <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">GHS</span>
+                                                <input type="number" class="form-control" id="payment_amount" step="0.01" min="0" required>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter payment amount.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="last_payment_period" class="form-label fw-semibold">
+                                                <i class="fas fa-calendar-check me-1"></i>Last Payment Period <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="last_payment_period" placeholder="e.g., 2024-Q1" required>
+                                            <div class="invalid-feedback">Please enter last payment period.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="payment_date" class="form-label fw-semibold">
+                                                <i class="fas fa-calendar-day me-1"></i>Payment Date <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="date" class="form-control" id="payment_date" required>
+                                            <div class="invalid-feedback">Please select payment date.</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="payment_remarks" class="form-label fw-semibold">
+                                                <i class="fas fa-comment-dots me-1"></i>Remarks
+                                            </label>
+                                            <textarea class="form-control" id="payment_remarks" rows="3" placeholder="Optional notes about this payment..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Form Actions -->
+                                <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-outline-secondary me-2" data-bs-toggle="collapse" data-bs-target="#addpaymentdiv">
+                                        <i class="fas fa-times me-1"></i> Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-success" id="btn_save_payment">
+                                        <i class="fas fa-save me-1"></i> Save Payment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="card bg-light border">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-money-bill-wave fa-2x text-success"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0">Current Balance</h6>
+                                            <p class="mb-0 fw-bold text-success" id="currentBalance">GHS 0.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light border">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-clock fa-2x text-warning"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0">Last Payment</h6>
+                                            <p class="mb-0 fw-bold" id="lastPaymentDate">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light border">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-calendar-alt fa-2x text-primary"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0">Period Status</h6>
+                                            <p class="mb-0 fw-bold" id="periodStatus">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment History Table -->
+                <div class="card border-warning">
+                    <div class="card-header bg-warning bg-opacity-10 border-warning d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 text-warning">
+                            <i class="fas fa-list-ol me-2"></i>Payment History Records
+                        </h6>
+                        <div>
+                            <span class="badge bg-warning text-dark me-2" id="paymentCount">0 payments</span>
+                            <span class="badge bg-success" id="totalPaid">GHS 0.00</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered align-middle mb-0" id="tbl_rent_payment_history" width="100%">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="80px" class="text-center">
+                                            <i class="fas fa-cog"></i>
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-credit-card me-1"></i>Payment Mode
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>Arrears Amount
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-receipt me-1"></i>Receipt No.
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-calendar-day me-1"></i>Date
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-money-bill-wave me-1"></i>Payment Amount
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-clipboard-check me-1"></i>Status
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-user-check me-1"></i>Recorded By
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentHistoryBody">
+                                    <!-- Data will be populated here -->
+                                    <tr id="noPaymentData">
+                                        <td colspan="8" class="text-center py-5">
+                                            <div class="text-muted">
+                                                <i class="fas fa-history fa-2x mb-3"></i>
+                                                <p class="mb-2 fw-semibold">No Payment History Available</p>
+                                                <small>Click "Load Payments" to fetch payment records</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="table-light" id="paymentSummary" style="display: none;">
+                                    <tr>
+                                        <td colspan="5" class="text-end fw-bold">Total Paid Amount:</td>
+                                        <td colspan="3" class="text-start fw-bold text-success" id="summaryTotalPaid">GHS 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-end fw-bold">Total Payments:</td>
+                                        <td colspan="3" class="text-start fw-bold text-primary" id="summaryPaymentCount">0 payments</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                        <!-- Filter and Export Options -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="paymentSearch" placeholder="Search payments...">
+                                    <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                        <i class="fas fa-download me-1"></i> Export
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" id="exportPDF">
+                                            <i class="fas fa-file-pdf text-danger me-2"></i> Export as PDF
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#" id="exportExcel">
+                                            <i class="fas fa-file-excel text-success me-2"></i> Export as Excel
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#" id="exportCSV">
+                                            <i class="fas fa-file-csv text-info me-2"></i> Export as CSV
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Statistics Summary -->
+                <div class="row mt-4" id="paymentStatistics" style="display: none;">
+                    <div class="col-md-3">
+                        <div class="card bg-success bg-opacity-10 border-success">
+                            <div class="card-body text-center p-3">
+                                <i class="fas fa-money-check-alt fa-2x text-success mb-2"></i>
+                                <h5 class="mb-1" id="totalPaymentsCount">0</h5>
+                                <small class="text-muted">Total Payments</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info bg-opacity-10 border-info">
+                            <div class="card-body text-center p-3">
+                                <i class="fas fa-cash-register fa-2x text-info mb-2"></i>
+                                <h5 class="mb-1" id="avgPaymentAmount">GHS 0.00</h5>
+                                <small class="text-muted">Average Payment</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning bg-opacity-10 border-warning">
+                            <div class="card-body text-center p-3">
+                                <i class="fas fa-calendar-minus fa-2x text-warning mb-2"></i>
+                                <h5 class="mb-1" id="lastPaymentDays">-</h5>
+                                <small class="text-muted">Days Since Last</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-primary bg-opacity-10 border-primary">
+                            <div class="card-body text-center p-3">
+                                <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                                <h5 class="mb-1" id="paymentFrequency">-</h5>
+                                <small class="text-muted">Payment Frequency</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <div class="d-flex justify-content-between w-100">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <span id="recordInfo">No lease selected</span>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Single Rent Demand Notice Modal - Bootstrap 5 -->
@@ -1478,24 +1740,12 @@
                             <table class="table table-hover table-bordered align-middle mb-0" id="tbl_rent_assessment_details">
                                 <thead class="table-light">
                                     <tr>
-                                        <th width="15%" class="text-center">
-                                            <i class="fas fa-calendar me-1"></i>Period
-                                        </th>
-                                        <th width="12%" class="text-center">
-                                            <i class="fas fa-landmark me-1"></i>A-1 Cedi
-                                        </th>
-                                        <th width="12%" class="text-center">
-                                            <i class="fas fa-chart-line me-1"></i>A-1 Cedi PA
-                                        </th>
-                                        <th width="15%" class="text-center">
-                                            <i class="fas fa-money-bill-wave me-1"></i>Annual Rent
-                                        </th>
-                                        <th width="15%" class="text-center">
-                                            <i class="fas fa-calculator me-1"></i>Amount Assessed
-                                        </th>
-                                        <th width="31%" class="text-center">
-                                            <i class="fas fa-file-alt me-1"></i>Description
-                                        </th>
+                                        <th>Period</th>
+                                        <th>A-1Cedi</th>
+                                        <th>A-1Cedi PA</th>
+                                        <th>Annual Rent</th>
+                                        <th>Amount Assessed </th>
+                                        <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody id="assessmentTableBody">
@@ -1566,7 +1816,7 @@
                         </button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-success me-2" id="btn_print_rent_demand_note" disabled>
+                        <button type="button" class="btn btn-warning me-2" id="btn_print_rent_demand_note" disabled>
                             <i class="fas fa-print me-1"></i> View & Print
                         </button>
                         <button type="button" class="btn btn-primary" id="btn_send_email" disabled>
@@ -1715,69 +1965,89 @@
 </div>
 
 <!-- Rent Documents Modal -->
-<div class="modal fade" data-position="0" id="rentdocuments" tabindex="-1" aria-labelledby="rentdocumentsLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="rentdocumentsLabel">Documents</h5>
-				<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<button class="btn btn-warning btn-sm mb-2" id="btn_load_scanned_documents_rent">Load Documents</button>
-				<button class="btn btn-success btn-sm mb-2" data-bs-toggle="collapse" data-bs-target="#uploaddocumentdiv">Upload Document</button>
-				<button type="button" class="btn btn-primary" id="lrd_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#fileUploadModal" title="Add Documents">
-					<i class="fa fa-plus-circle"></i>
-				</button>
-				<div class="collapse mb-2" id="uploaddocumentdiv">
-					<div class="card card-body">
-						<div class="d-flex justify-content-between">
-							<label for="file" class="form-label">Document on File File:</label>
-						</div>
-						<div class="card card-body fileUploadrent" id="ocfileContainer">	
-							<form class="form-horizontal" method="POST" enctype="multipart/form-data" id="id_form_rent">
-								<input id="fileUploadFormrent" class="form-control" type="file" name="sampleFile" />
-								<a href="#" class="ocPreviewBtn mb-3" style="text-decoration: underline;">Preview PDF</a>
-							</form>
-						</div>
-						<label for="file_upload_file_number_rent" class="form-label">File Number</label>
-						<input type="text" name="file_upload_file_number_rent" id="file_upload_file_number_rent" class="form-control" required readonly>
-						<input type="button" id="btn_upload_case_file_rent" class="btn btn-primary" value="Click to upload">
-					</div>
-				</div>
-				<div class="table-responsive small">
-					<table class="table table-bordered table-hover table-sm" id="lc_rent_scanned_documents_dataTable" width="100%" cellspacing="0">
-						<thead>
-							<tr>
-								<th>Document Name</th>
-								<th>Document Type</th>
-								<th>Open File</th>
-							</tr>
-						</thead>
-						<tbody>				
-							<c:forEach items="${casescanneddocuments}" var="casescanneddocuments_row">
-								<tr>
-									<td>${casescanneddocuments_row.document_name}</td>
-									<td>${casescanneddocuments_row.document_type}</td>
-									<td>${casescanneddocuments_row.document_extention}</td>
-									<td>
-										<form action="registration_application_progress_details" method="post">
-											<input type="hidden" name="document_path" id="document_path" value="${casescanneddocuments_row.document_file}">
-											<button type="submit" name="save" class="btn btn-info btn-icon-split">
-												<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Work</span>
-											</button>
-										</form>
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
+<div class="modal fade effect-scale modal-blur" id="rentdocuments" tabindex="-1" aria-labelledby="rentdocumentsLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="rentdocumentsLabel">
+                    <i class="fas fa-folder me-2"></i>Lease Documents
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 mb-4 flex-wrap">
+                    <button class="btn btn-warning" id="btn_load_scanned_documents_rent">
+                        <i class="fas fa-sync-alt me-2"></i>Load Documents
+                    </button>
+                    <button class="btn btn-primary fileUploadModal">
+                        <i class="fas fa-cloud-upload-alt me-2"></i>Upload Document
+                    </button>
+                </div>
+                
+                <!-- Documents Table -->
+                <div class="card">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                            <i class="fas fa-list me-2"></i>Document List
+                        </h6>
+                        <div>
+                            <span class="badge bg-primary" id="documentCount">0 documents</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="lc_rent_scanned_documents_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-start">
+                                            <i class="fas fa-file me-1"></i>Document
+                                        </th>
+                                        <th class="text-center">
+                                            <i class="fas fa-tag me-1"></i>Type
+                                        </th>
+                                        <th class="text-center" style="width: 150px;">
+                                            <i class="fas fa-cog me-1"></i>Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic content will be loaded here -->
+                                    <tr id="noDocumentsRow">
+                                        <td colspan="6" class="text-center py-5">
+                                            <div class="text-muted">
+                                                <i class="fas fa-folder-open fa-2x mb-3"></i>
+                                                <p class="mb-2 fw-semibold">No Documents Found</p>
+                                                <small>Upload documents using the "Upload Document" button above</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <div class="d-flex justify-content-between w-100">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <span id="documentInfo">Documents are stored securely</span>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Rent Remarks Modal -->

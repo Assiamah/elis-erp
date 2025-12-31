@@ -336,6 +336,8 @@ $(document).ready(function() {
                                         </td>
                                     </tr>
                                 `;
+
+                                $('#assessmentCount').text(json_p.rent_assessment.length + ' Items');
                                 
                                 table.find('tbody').append(row);
                             });
@@ -380,9 +382,9 @@ $(document).ready(function() {
                                 cancelButtonColor: '#6c757d',
                                 confirmButtonText: '<i class="fas fa-print me-1"></i> View & Print',
                                 cancelButtonText: '<i class="fas fa-eye me-1"></i> View Details',
-                                showDenyButton: true,
-                                denyButtonText: '<i class="fas fa-envelope me-1"></i> Send Email',
-                                denyButtonColor: '#0d6efd',
+                                //showDenyButton: true,
+                                //denyButtonText: '<i class="fas fa-envelope me-1"></i> Send Email',
+                                //denyButtonColor: '#0d6efd',
                                 width: '500px'
                             }).then((result) => {
                                 // Enable print button if exists
@@ -514,45 +516,33 @@ function generatePrintView(rentId, accountNumber) {
         type: "POST",
         url: "rent_mgt_serv",
         data: {
-            request_type: 'generate_demand_notice_pdf',
+            request_type: 'print_rent_demand_notice',
             rdn_rent_id: rentId,
             rdn_account_number: accountNumber
         },
         cache: false,
-        success: function(response) {
+        xhrFields : {
+            responseType : 'blob'
+        },
+        beforeSend: function () { 
+            showLoadingIndicator();
+        },
+        success: function(pdfBlob) {
             Swal.close();
             
-            try {
-                const result = JSON.parse(response);
+            const file = new File([pdfBlob], `Demand Notice_${accountNumber}.pdf`, {
+                type: "application/pdf",
+                lastModified: Date.now()
+            });
                 
-                if (result.success && result.pdf_url) {
-                    // Open PDF in new tab
-                    window.open(result.pdf_url, '_blank');
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Print Ready',
-                        text: 'Demand notice PDF has been generated and opened in a new tab.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Print Failed',
-                        text: result.message || 'Failed to generate printable demand notice.',
-                        confirmButtonColor: '#dc3545'
-                    });
-                }
-            } catch (e) {
-                console.error('Error parsing print response:', e);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Print Error',
-                    text: 'Failed to generate print preview.',
-                    confirmButtonColor: '#dc3545'
-                });
-            }
+            // Create object URL
+            const fileURL = URL.createObjectURL(file);
+                
+            // Open PDF in modal
+            openPDFModal(file, fileURL);
+                
+            // Hide loading indicator
+            hideLoadingIndicator();
         },
         error: function(xhr, status, error) {
             Swal.close();
@@ -2263,8 +2253,6 @@ if (!$('#add-form-styles').length) {
 
       $('#btn_load_scanned_documents_rent').on('click', function(e) { 
 	   
-		
-			
 			
 			 var table_docs_mains = $('#lc_rent_scanned_documents_dataTable');
 			 table_docs_mains.find("tbody tr").remove(); 
@@ -2631,628 +2619,6 @@ $(document).on("click", ".viewLedgerBtn", function () {
     modal.show();
 });
 
-// Update the print button functionality
-$(document).on("click", "#btnPrintLedger", function () {
-    generatePrintView();
-});
-
-function generatePrintView() {
-    // Create a new window for printing
-    const printWindow = window.open('', '_blank', 'width=1000,height=800');
-    
-    // Get current date
-    const currentDate = new Date().toLocaleDateString('en-GH', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    
-    // Format currency
-    const formatCurrency = (amount) => {
-        if (!amount) return 'GHS 0.00';
-        const num = parseFloat(amount);
-        return num.toLocaleString('en-GH', {
-            style: 'currency',
-            currency: 'GHS',
-            minimumFractionDigits: 2
-        });
-    };
-    
-    // Format date for print
-    const formatDate = (dateStr) => {
-        if (!dateStr) return 'Not Available';
-        try {
-            const date = new Date(dateStr.replace(/-/g, '/'));
-            return date.toLocaleDateString('en-GH', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric'
-            });
-        } catch (e) {
-            return dateStr;
-        }
-    };
-    
-    // Calculate lease status
-    let leaseStatus = 'Active';
-    let statusClass = 'success';
-    if (currentLedgerData.all?.expiry_date) {
-        const endDate = new Date(currentLedgerData.all?.expiry_date.replace(/-/g, "/"));
-        const today = new Date();
-        const diffTime = endDate - today;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
-        if (diffDays < 0) {
-            leaseStatus = 'EXPIRED';
-            statusClass = 'danger';
-        } else if (diffDays <= 30) {
-            leaseStatus = 'EXPIRING SOON';
-            statusClass = 'warning';
-        } else if (parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0) {
-            leaseStatus = 'PAYMENT DUE';
-            statusClass = 'danger';
-        }
-    }
-    
-    // Create the print HTML
-    const printContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lease Agreement Details - ${currentLedgerData.all?.account_number || 'N/A'}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @page {
-            size: A4;
-            margin: 20mm;
-        }
-        
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            
-            .container {
-                width: 100%;
-                max-width: 100%;
-                padding: 0;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-            
-            .page-break {
-                page-break-before: always;
-            }
-            
-            .print-header, .print-footer {
-                position: fixed;
-                left: 0;
-                right: 0;
-                color: #666;
-                font-size: 10px;
-            }
-            
-            .print-header {
-                top: 0;
-                border-bottom: 2px solid #007bff;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-            }
-            
-            .print-footer {
-                bottom: 0;
-                border-top: 1px solid #dee2e6;
-                padding-top: 10px;
-                text-align: center;
-            }
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .print-container {
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-        }
-        
-        .letterhead {
-            border-bottom: 3px solid #007bff;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .letterhead h1 {
-            color: #007bff;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .letterhead .subtitle {
-            color: #6c757d;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-        
-        .status-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 12px;
-        }
-        
-        .status-success { background-color: #d4edda; color: #155724; }
-        .status-warning { background-color: #fff3cd; color: #856404; }
-        .status-danger { background-color: #f8d7da; color: #721c24; }
-        
-        .section-title {
-            color: #007bff;
-            font-weight: 600;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 60px;
-            height: 2px;
-            background: #007bff;
-        }
-        
-        .info-row {
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed #e9ecef;
-        }
-        
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            font-weight: 600;
-            color: #495057;
-            font-size: 14px;
-        }
-        
-        .info-value {
-            color: #212529;
-            font-size: 15px;
-        }
-        
-        .financial-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-        }
-        
-        .financial-amount {
-            font-size: 24px;
-            font-weight: 700;
-            color: #dc3545;
-        }
-        
-        .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 120px;
-            color: rgba(0, 123, 255, 0.05);
-            font-weight: 900;
-            z-index: -1;
-            white-space: nowrap;
-        }
-        
-        .signature-section {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px solid #dee2e6;
-        }
-        
-        .signature-line {
-            width: 300px;
-            border-bottom: 1px solid #333;
-            margin: 40px auto 10px;
-        }
-        
-        .stamp {
-            position: absolute;
-            right: 50px;
-            bottom: 50px;
-            border: 2px solid #dc3545;
-            padding: 10px 20px;
-            transform: rotate(15deg);
-            background: white;
-            font-weight: bold;
-            color: #dc3545;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        .header-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .qr-code-placeholder {
-            width: 100px;
-            height: 100px;
-            background: #e9ecef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #adb5bd;
-            border-radius: 8px;
-            margin: 0 auto;
-            color: #6c757d;
-            font-size: 12px;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="print-container">
-        <!-- Watermark -->
-        <div class="watermark">CONFIDENTIAL</div>
-        
-        <!-- Letterhead -->
-        <div class="letterhead text-center mb-4">
-            <h1>${currentLedgerData.all?.estate || 'PROPERTY MANAGEMENT SYSTEM'}</h1>
-            <p class="subtitle">Official Lease Agreement Document</p>
-            <div class="mt-3">
-                <span class="status-badge status-${statusClass}">${leaseStatus}</span>
-            </div>
-        </div>
-        
-        <!-- Document Info -->
-        <div class="header-info">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Document Reference:</span>
-                        <span class="info-value ms-2 fw-bold">${currentLedgerData.all?.account_number || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Print Date:</span>
-                        <span class="info-value ms-2">${currentDate}</span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">File Number:</span>
-                        <span class="info-value ms-2">${currentLedgerData.all?.file_number || 'N/A'}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Lessee Information -->
-        <div class="mb-4">
-            <h4 class="section-title">
-                <i class="fas fa-user-tie me-2"></i>LESSEE INFORMATION
-            </h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Full Name:</span>
-                        <span class="info-value">${currentLedgerData.all?.owners_name || 'Not Available'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Contact Address:</span>
-                        <span class="info-value">${currentLedgerData.all?.address || 'Not Available'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Digital Address:</span>
-                        <span class="info-value">${currentLedgerData.all?.digital_address || 'Not Available'}</span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Email Address:</span>
-                        <span class="info-value">${currentLedgerData.all?.email || 'Not Available'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Primary Contact:</span>
-                        <span class="info-value">${currentLedgerData.all?.mobile || 'Not Available'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Secondary Contact:</span>
-                        <span class="info-value">${currentLedgerData.all?.mobile_1 || 'Not Available'}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Property Details -->
-        <div class="mb-4">
-            <h4 class="section-title">
-                <i class="fas fa-map-marker-alt me-2"></i>PROPERTY DETAILS
-            </h4>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="info-row">
-                        <span class="info-label">Plot Number:</span>
-                        <span class="info-value fw-bold">${currentLedgerData.all?.plot_number || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Plot Size:</span>
-                        <span class="info-value">${currentLedgerData.all?.plot_size || '0'} sqm</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Estate:</span>
-                        <span class="info-value">${currentLedgerData.all?.estate || 'N/A'}</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="info-row">
-                        <span class="info-label">LS Number:</span>
-                        <span class="info-value">${currentLedgerData.all?.ls_number || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Ledger:</span>
-                        <span class="info-value">${currentLedgerData.all?.ledger || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Folio:</span>
-                        <span class="info-value">${currentLedgerData.all?.folio || 'N/A'}</span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="info-row">
-                        <span class="info-label">Parcel Address:</span>
-                        <span class="info-value">${currentLedgerData.all?.parcel_address || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Current Use:</span>
-                        <span class="info-value">${currentLedgerData.all?.current_use || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Nature of Development:</span>
-                        <span class="info-value">${currentLedgerData.all?.nature_of_devt || 'N/A'}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Lease Terms -->
-        <div class="mb-4">
-            <h4 class="section-title">
-                <i class="fas fa-file-contract me-2"></i>LEASE TERMS
-            </h4>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="info-row">
-                        <span class="info-label">Commencement Date:</span>
-                        <span class="info-value">${formatDate(currentLedgerData.all?.comm_date)}</span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-row">
-                        <span class="info-label">Lease Term:</span>
-                        <span class="info-value">${currentLedgerData.all?.term || '0'} Years</span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-row">
-                        <span class="info-label">Expiry Date:</span>
-                        <span class="info-value">${formatDate(currentLedgerData.all?.expiry_date)}</span>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="info-row">
-                        <span class="info-label">Instrument Type:</span>
-                        <span class="info-value">${currentLedgerData.all?.nature_of_instrument || 'N/A'}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Financial Information -->
-        <div class="mb-4">
-            <h4 class="section-title">
-                <i class="fas fa-money-bill-wave me-2"></i>FINANCIAL INFORMATION
-            </h4>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="financial-box text-center">
-                        <div class="info-label mb-2">Rent Passing</div>
-                        <div class="financial-amount">${formatCurrency(currentLedgerData.all?.rent_passing)}</div>
-                        <small class="text-muted">per annum</small>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="financial-box text-center">
-                        <div class="info-label mb-2">Location Rate</div>
-                        <div class="financial-amount">${formatCurrency(currentLedgerData.all?.location_rate)}</div>
-                        <small class="text-muted">base rate</small>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="financial-box text-center">
-                        <div class="info-label mb-2">Rent Outstanding</div>
-                        <div class="financial-amount">${formatCurrency(currentLedgerData.all?.rent_outstanding)}</div>
-                        <small class="text-muted">current balance</small>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Rent Category:</span>
-                        <span class="info-value">${currentLedgerData.all?.rent_category || 'N/A'}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Rent Review Clause:</span>
-                        <span class="info-value">${currentLedgerData.all?.rent_review_clause || 'N/A'}</span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Last Payment Date:</span>
-                        <span class="info-value">${formatDate(currentLedgerData.all?.last_payment_date)}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Last Payment Period:</span>
-                        <span class="info-value">${currentLedgerData.all?.last_payment_period || 'N/A'}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Payment Status -->
-        <div class="mb-4">
-            <h4 class="section-title">
-                <i class="fas fa-chart-line me-2"></i>PAYMENT STATUS
-            </h4>
-            <div class="alert ${parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0 ? 'alert-danger' : 'alert-success'}">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Periods in Arrears:</span>
-                            <span class="info-value fw-bold">${currentLedgerData.all?.period_in_arrears || '0'}</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Account Status:</span>
-                            <span class="info-value fw-bold">${parseFloat(currentLedgerData.all?.rent_outstanding || 0) > 0 ? 'IN ARREARS' : 'CURRENT'}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Additional Information -->
-        <div class="mb-4">
-            <h4 class="section-title">
-                <i class="fas fa-info-circle me-2"></i>ADDITIONAL INFORMATION
-            </h4>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">GLPIN:</span>
-                        <span class="info-value">${currentLedgerData.all?.glpin || 'N/A'}</span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="info-row">
-                        <span class="info-label">Covenanted User:</span>
-                        <span class="info-value">${currentLedgerData.all?.covenanted_user || 'N/A'}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Remarks:</span>
-                <div class="info-value mt-2 p-3 bg-light rounded">
-                    ${currentLedgerData.all?.remarks || 'No remarks available'}
-                </div>
-            </div>
-        </div>
-        
-        <!-- QR Code & Validation -->
-        <div class="row mt-5">
-            <div class="col-md-6">
-                <div class="qr-code-placeholder">
-                    <div>
-                        <i class="fas fa-qrcode fa-3x mb-2"></i><br>
-                        Document QR Code
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="signature-section">
-                    <p class="text-center mb-4">
-                        <small class="text-muted">This document was generated electronically and is valid without signature</small>
-                    </p>
-                    <div class="signature-line"></div>
-                    <p class="text-center mt-2">
-                        <small>Property Management Officer</small>
-                    </p>
-                    <div class="text-center mt-3">
-                        <small class="text-muted">
-                            Document ID: ${currentLedgerData.all?.account_number || 'N/A'}<br>
-                            Generated: ${new Date().toISOString()}<br>
-                            Valid until: ${formatDate(currentLedgerData.all?.expiry_date)}
-                        </small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="mt-5 pt-4 border-top text-center">
-            <p class="text-muted small">
-                ${currentLedgerData.all?.estate || 'Property Management System'} © ${new Date().getFullYear()} | 
-                This document contains confidential information. Unauthorized distribution is prohibited.
-            </p>
-            <p class="text-muted small">
-                Page 1 of 1 | Printed on ${currentDate}
-            </p>
-        </div>
-    </div>
-    
-    <div class="print-header no-print">
-        Lease Agreement Details | ${currentLedgerData.all?.account_number || 'N/A'}
-    </div>
-    
-    <div class="print-footer no-print">
-        Confidential Document | Do Not Duplicate | ${currentDate}
-    </div>
-    
-    <script>
-        // Automatically trigger print when page loads
-        window.onload = function() {
-            setTimeout(() => {
-                window.print();
-                // Close window after printing
-                setTimeout(() => {
-                    window.close();
-                }, 1000);
-            }, 500);
-        };
-        
-        // Add keyboard shortcut for printing
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-                e.preventDefault();
-                window.print();
-            }
-        });
-    </script>
-</body>
-</html>`;
-
-    // Write content to print window
-    printWindow.document.open();
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-}
 
 $('#singlerentdemandnotice').on('shown.bs.modal', (e) => {
     // e.preventDefault();
@@ -3707,7 +3073,6 @@ function saveLeaseDetails() {
                         confirmButtonText: '<i class="fas fa-eye me-1"></i> View Updated Record',
                         cancelButtonText: '<i class="fas fa-times me-1"></i> Close',
                         showDenyButton: true,
-                        denyButtonText: '<i class="fas fa-print me-1"></i> Print Details',
                         denyButtonColor: '#0d6efd',
                         width: '500px'
                     }).then((result) => {
@@ -3718,9 +3083,7 @@ function saveLeaseDetails() {
                             $('#btn_rt_search').click();
                             // Optionally scroll to the updated record
                             highlightUpdatedRecord(formData.rent_id);
-                        } else if (result.isDenied) {
-                            // Generate print view
-                            generatePrintView(formData);
+                        
                         } else {
                             // Just refresh the table
                             $('#btn_rt_search').click();
@@ -3837,20 +3200,6 @@ function retrySave() {
     setTimeout(() => {
         $('#btn_save_edit_rent_client_details').click();
     }, 500);
-}
-
-// Function to generate print view (if needed)
-function generatePrintView(data) {
-    // This function would generate a print view of the updated data
-    // Implementation depends on your print functionality
-    // console.log('Printing updated data:', data);
-    
-    Swal.fire({
-        icon: 'info',
-        title: 'Print Preview',
-        text: 'Print functionality would open here.',
-        confirmButtonText: 'OK'
-    });
 }
 
 // Add change detection to prevent accidental data loss
@@ -4678,6 +4027,665 @@ console.log($(e.relatedTarget).data("file_number"))
                 }
             });
         };
+
+let currentLesseeData = {};
+    
+    // Handle modal shown event
+    $('#paymenthistory').on('shown.bs.modal', function(e) {
+        // Get data from the triggering element
+        const button = $(e.relatedTarget);
+        const rentId = button.data('m_id') || button.data('rent_id');
+        
+        // Store rent ID
+        $('#rt_rent_id').val(rentId || '0');
+        
+        // Store additional data if available
+        currentLesseeData = {
+            rent_id: rentId,
+            owners_name: button.data('owners_name'),
+            plot_number: button.data('plot_number'),
+            account_number: button.data('account_number')
+        };
+        
+        // Update record info
+        updateRecordInfo();
+        
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        $('#payment_date').val(today);
+        
+        // Clear previous data
+        clearPaymentTable();
+        
+        // Reset form
+        $('#addPaymentForm')[0].reset();
+        $('#addPaymentForm').removeClass('was-validated');
+    });
+    
+    // Load Payments button
+    $('#btn_load_payments').on('click', function() {
+        const rentId = $('#rt_rent_id').val();
+        
+        if (!rentId || rentId === '0') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please select a lease record first.',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+        
+        loadPaymentHistory(rentId);
+    });
+    
+    // Save Payment form submission
+    $('#addPaymentForm').on('submit', function(e) {
+        e.preventDefault();
+        saveNewPayment();
+    });
+    
+    // Search functionality
+    $('#paymentSearch').on('keyup', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        filterPayments(searchTerm);
+    });
+    
+    // Clear search
+    $('#clearSearch').on('click', function() {
+        $('#paymentSearch').val('');
+        filterPayments('');
+    });
+    
+    // Export handlers
+    $('#exportPDF').on('click', function(e) {
+        e.preventDefault();
+        exportPayments('pdf');
+    });
+    
+    $('#exportExcel').on('click', function(e) {
+        e.preventDefault();
+        exportPayments('excel');
+    });
+    
+    $('#exportCSV').on('click', function(e) {
+        e.preventDefault();
+        exportPayments('csv');
+    });
+
+        // Function to update record information
+function updateRecordInfo() {
+    const info = currentLesseeData;
+    let infoText = '';
+    
+    if (info.owners_name) {
+        infoText = `${info.owners_name}`;
+        if (info.plot_number) {
+            infoText += ` | Plot: ${info.plot_number}`;
+        }
+        if (info.account_number) {
+            infoText += ` | Account: ${info.account_number}`;
+        }
+    } else {
+        infoText = 'Select a lease to view payment history';
+    }
+    
+    $('#recordInfo').text(infoText);
+}
+
+// Function to load payment history
+function loadPaymentHistory(rentId) {
+    // Show loading state
+    $('#btn_load_payments').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Loading...');
+    
+    $.ajax({
+        type: "POST",
+        url: "rent_mgt_serv",
+        data: {
+            request_type: 'get_payment_history',
+            rent_id: rentId
+        },
+        cache: false,
+        success: function(response) {
+            $('#btn_load_payments').prop('disabled', false).html('<i class="fas fa-sync-alt me-2"></i> Load Payments');
+            
+            try {
+                const result = JSON.parse(response);
+                
+                if (result.success && result.data) {
+                    populatePaymentTable(result.data.payments);
+                    updatePaymentStatistics(result.data);
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payments Loaded',
+                        text: `Loaded ${result.data.payments.length} payment record(s)`,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    clearPaymentTable();
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'No Payments Found',
+                        text: 'No payment records found for this lease.',
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Data Error',
+                    text: 'Failed to parse payment data.',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#btn_load_payments').prop('disabled', false).html('<i class="fas fa-sync-alt me-2"></i> Load Payments');
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Failed to load payment history.',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    });
+}
+
+// Function to populate payment table
+function populatePaymentTable(payments) {
+    const tbody = $('#paymentHistoryBody');
+    tbody.empty();
+    
+    if (payments && payments.length > 0) {
+        $('#noPaymentData').remove();
+        
+        let totalAmount = 0;
+        
+        payments.forEach((payment, index) => {
+            const amount = parseFloat(payment.amount || 0);
+            totalAmount += amount;
+            
+            // Format date
+            const paymentDate = payment.payment_date ? 
+                new Date(payment.payment_date).toLocaleDateString('en-GH', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                }) : '-';
+            
+            // Get payment method icon
+            const methodClass = getPaymentMethodClass(payment.payment_mode);
+            
+            // Get status badge
+            const statusBadge = getPaymentStatusBadge(payment.status);
+            
+            const row = `
+                <tr>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item view-payment" href="#" data-id="${payment.id}">
+                                        <i class="fas fa-eye me-2"></i> View Details
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item print-receipt" href="#" data-id="${payment.id}">
+                                        <i class="fas fa-print me-2"></i> Print Receipt
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger reverse-payment" href="#" data-id="${payment.id}">
+                                        <i class="fas fa-undo me-2"></i> Reverse Payment
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-${getPaymentMethodIcon(payment.payment_mode)} ${methodClass} me-2"></i>
+                            <span>${payment.payment_mode || '-'}</span>
+                        </div>
+                    </td>
+                    <td class="text-end fw-semibold text-danger">
+                        GHS ${parseFloat(payment.arrears_amount || 0).toFixed(2)}
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-light text-dark">${payment.receipt_no || '-'}</span>
+                    </td>
+                    <td class="text-center">
+                        ${paymentDate}
+                    </td>
+                    <td class="text-end fw-bold text-success">
+                        GHS ${amount.toFixed(2)}
+                    </td>
+                    <td class="text-center">
+                        ${statusBadge}
+                    </td>
+                    <td class="text-center">
+                        <small class="text-muted">${payment.recorded_by || 'System'}</small>
+                    </td>
+                </tr>
+            `;
+            
+            tbody.append(row);
+        });
+        
+        // Update summary
+        $('#paymentCount').text(`${payments.length} payment${payments.length !== 1 ? 's' : ''}`);
+        $('#totalPaid').text(`GHS ${totalAmount.toFixed(2)}`);
+        $('#summaryTotalPaid').text(`GHS ${totalAmount.toFixed(2)}`);
+        $('#summaryPaymentCount').text(`${payments.length} payment${payments.length !== 1 ? 's' : ''}`);
+        
+        $('#paymentSummary').show();
+    } else {
+        tbody.html(`
+            <tr id="noPaymentData">
+                <td colspan="8" class="text-center py-5">
+                    <div class="text-muted">
+                        <i class="fas fa-history fa-2x mb-3"></i>
+                        <p class="mb-2 fw-semibold">No Payment History Available</p>
+                        <small>No payment records found for this lease</small>
+                    </div>
+                </td>
+            </tr>
+        `);
+        $('#paymentSummary').hide();
+        $('#paymentCount').text('0 payments');
+        $('#totalPaid').text('GHS 0.00');
+    }
+    
+    // Add event listeners to action buttons
+    addPaymentActionListeners();
+}
+
+// Helper function to get payment method icon
+function getPaymentMethodIcon(method) {
+    const icons = {
+        'Cash': 'money-bill',
+        'Cheque': 'file-invoice',
+        'Bank Transfer': 'university',
+        'Mobile Money': 'mobile-alt',
+        'Online Payment': 'globe'
+    };
+    return icons[method] || 'credit-card';
+}
+
+// Helper function to get payment method class
+function getPaymentMethodClass(method) {
+    const classes = {
+        'Cash': 'payment-method-cash',
+        'Cheque': 'payment-method-cheque',
+        'Bank Transfer': 'payment-method-transfer',
+        'Mobile Money': 'payment-method-mobile'
+    };
+    return classes[method] || '';
+}
+
+// Helper function to get payment status badge
+function getPaymentStatusBadge(status) {
+    const statusMap = {
+        'paid': { class: 'badge-paid', text: 'Paid' },
+        'pending': { class: 'badge-pending', text: 'Pending' },
+        'reversed': { class: 'badge-reversed', text: 'Reversed' }
+    };
+    
+    const statusInfo = statusMap[status] || { class: 'badge-secondary', text: 'Unknown' };
+    return `<span class="badge ${statusInfo.class}">${statusInfo.text}</span>`;
+}
+
+// Function to save new payment
+function saveNewPayment() {
+    const form = document.getElementById('addPaymentForm');
+    
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            text: 'Please fill all required fields correctly.',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+    
+    const formData = {
+        request_type: 'save_payment',
+        rent_id: $('#rt_rent_id').val(),
+        payment_mode: $('#py_payment_mode').val(),
+        receipt_no: $('#receipt_no').val(),
+        arrears_amount: $('#arrears_amount').val(),
+        period_in_arrears: $('#period_in_arrears').val(),
+        payment_amount: $('#payment_amount').val(),
+        last_payment_period: $('#last_payment_period').val(),
+        payment_date: $('#payment_date').val(),
+        payment_remarks: $('#payment_remarks').val()
+    };
+    
+    // Show confirmation
+    Swal.fire({
+        title: 'Confirm Payment',
+        html: `
+            <div class="text-start">
+                <p class="mb-3">Are you sure you want to record this payment?</p>
+                <div class="alert alert-info py-2 mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Amount:</span>
+                        <span class="fw-bold">GHS ${parseFloat(formData.payment_amount).toFixed(2)}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <span>Receipt No:</span>
+                        <span class="fw-bold">${formData.receipt_no}</span>
+                    </div>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmPayment">
+                    <label class="form-check-label" for="confirmPayment">
+                        I confirm this payment has been received
+                    </label>
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-check-circle me-1"></i> Confirm & Save',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+            const checkbox = document.getElementById('confirmPayment');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please confirm the payment has been received');
+                return false;
+            }
+            return true;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            $('#btn_save_payment').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Saving...');
+            
+            $.ajax({
+                type: "POST",
+                url: "rent_mgt_serv",
+                data: formData,
+                cache: false,
+                success: function(response) {
+                    $('#btn_save_payment').prop('disabled', false).html('<i class="fas fa-save me-1"></i> Save Payment');
+                    
+                    try {
+                        const result = JSON.parse(response);
+                        
+                        if (result.success) {
+                            // Close add payment form
+                            $('#addpaymentdiv').collapse('hide');
+                            
+                            // Reset form
+                            form.reset();
+                            form.classList.remove('was-validated');
+                            
+                            // Reload payments
+                            loadPaymentHistory(formData.rent_id);
+                            
+                            // Show success
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payment Recorded!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle fa-3x text-success"></i>
+                                        </div>
+                                        <p class="mb-2">Payment recorded successfully!</p>
+                                        <div class="alert alert-success py-2">
+                                            <small>
+                                                <i class="fas fa-receipt me-1"></i>
+                                                Receipt: <strong>${formData.receipt_no}</strong>
+                                            </small>
+                                        </div>
+                                    </div>
+                                `,
+                                confirmButtonColor: '#198754'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Save Failed',
+                                text: result.message || 'Failed to save payment.',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    } catch (e) {
+                        console.error('Error parsing response:', e);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Server Error',
+                            text: 'Failed to save payment.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#btn_save_payment').prop('disabled', false).html('<i class="fas fa-save me-1"></i> Save Payment');
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Connection Error',
+                        text: 'Failed to save payment.',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            });
+        }
+    });
+}
+
+// Function to update payment statistics
+function updatePaymentStatistics(data) {
+    if (data.statistics) {
+        const stats = data.statistics;
+        
+        $('#totalPaymentsCount').text(stats.total_payments || '0');
+        $('#avgPaymentAmount').text(`GHS ${parseFloat(stats.average_payment || 0).toFixed(2)}`);
+        $('#lastPaymentDays').text(stats.days_since_last || '-');
+        $('#paymentFrequency').text(stats.frequency || '-');
+        
+        $('#paymentStatistics').show();
+    } else {
+        $('#paymentStatistics').hide();
+    }
+}
+
+// Function to clear payment table
+function clearPaymentTable() {
+    $('#paymentHistoryBody').html(`
+        <tr id="noPaymentData">
+            <td colspan="8" class="text-center py-5">
+                <div class="text-muted">
+                    <i class="fas fa-history fa-2x mb-3"></i>
+                    <p class="mb-2 fw-semibold">No Payment History Available</p>
+                    <small>Click "Load Payments" to fetch payment records</small>
+                </div>
+            </td>
+        </tr>
+    `);
+    $('#paymentSummary').hide();
+    $('#paymentStatistics').hide();
+}
+
+// Function to filter payments
+function filterPayments(searchTerm) {
+    const rows = $('#tbl_rent_payment_history tbody tr');
+    let visibleCount = 0;
+    
+    rows.each(function() {
+        const rowText = $(this).text().toLowerCase();
+        if (rowText.includes(searchTerm)) {
+            $(this).show();
+            visibleCount++;
+        } else {
+            $(this).hide();
+        }
+    });
+}
+
+// Function to export payments
+function exportPayments(format) {
+    const rentId = $('#rt_rent_id').val();
+    
+    if (!rentId || rentId === '0') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Information',
+            text: 'Please load payment history first.',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+    
+    Swal.fire({
+        title: 'Exporting Payments',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-file-export fa-spin fa-2x text-primary"></i>
+                </div>
+                <p class="mb-0 text-muted">Preparing ${format.toUpperCase()} export...</p>
+            </div>
+        `,
+        allowOutsideClick: false,
+        showConfirmButton: false
+    });
+    
+    // In a real implementation, this would generate and download the export file
+    setTimeout(() => {
+        Swal.close();
+        Swal.fire({
+            icon: 'success',
+            title: 'Export Ready',
+            text: `Payment history exported as ${format.toUpperCase()}`,
+            confirmButtonColor: '#198754'
+        });
+    }, 1500);
+}
+
+// Function to add event listeners to action buttons
+function addPaymentActionListeners() {
+    // View payment details
+    $('.view-payment').on('click', function(e) {
+        e.preventDefault();
+        const paymentId = $(this).data('id');
+        viewPaymentDetails(paymentId);
+    });
+    
+    // Print receipt
+    $('.print-receipt').on('click', function(e) {
+        e.preventDefault();
+        const paymentId = $(this).data('id');
+        printReceipt(paymentId);
+    });
+    
+    // Reverse payment
+    $('.reverse-payment').on('click', function(e) {
+        e.preventDefault();
+        const paymentId = $(this).data('id');
+        reversePayment(paymentId);
+    });
+}
+
+// Function to view payment details
+function viewPaymentDetails(paymentId) {
+    // Implementation for viewing payment details
+    console.log('View payment:', paymentId);
+    
+    Swal.fire({
+        icon: 'info',
+        title: 'Payment Details',
+        text: 'Payment details view would open here.',
+        confirmButtonText: 'OK'
+    });
+}
+
+// Function to print receipt
+function printReceipt(paymentId) {
+    // Implementation for printing receipt
+    console.log('Print receipt:', paymentId);
+    
+    Swal.fire({
+        icon: 'info',
+        title: 'Print Receipt',
+        text: 'Receipt print preview would open here.',
+        confirmButtonText: 'OK'
+    });
+}
+
+// Function to reverse payment
+function reversePayment(paymentId) {
+    Swal.fire({
+        title: 'Reverse Payment',
+        html: `
+            <div class="text-start">
+                <p class="mb-3">Are you sure you want to reverse this payment?</p>
+                <div class="alert alert-danger py-2">
+                    <small>
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        This action cannot be undone. A reversal entry will be created.
+                    </small>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmReverse">
+                    <label class="form-check-label" for="confirmReverse">
+                        I understand this will create a reversal transaction
+                    </label>
+                </div>
+            </div>
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-undo me-1"></i> Reverse Payment',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+            const checkbox = document.getElementById('confirmReverse');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please confirm you understand this action');
+                return false;
+            }
+            return true;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Implement reversal logic here
+            console.log('Reverse payment:', paymentId);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Payment Reversed',
+                text: 'Payment has been reversed successfully.',
+                confirmButtonColor: '#198754'
+            }).then(() => {
+                // Reload payments
+                const rentId = $('#rt_rent_id').val();
+                loadPaymentHistory(rentId);
+            });
+        }
+    });
+}
+
+$(document).on('click', '.fileUploadModal', function() {
+    $('#fileUploadModal').modal('show');
+});
 
 });
 

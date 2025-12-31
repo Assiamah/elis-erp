@@ -20,7 +20,7 @@
             <div class="col-xxl-9">
                 <div class="row">
                     <div class="col-xl-3">
-                        <div class="card custom-card dashboard-main-card primary">
+                        <div class="card custom-card dashboard-main-card primary school-card">
                             <div class="card-body">
                                 <div class="d-flex align-items-start gap-3">
                                     <div class="lh-1">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3">
-                        <div class="card custom-card dashboard-main-card danger">
+                        <div class="card custom-card dashboard-main-card danger school-card">
                             <div class="card-body">
                                 <div class="d-flex align-items-start gap-3">
                                     <div class="lh-1">
@@ -47,14 +47,14 @@
                                     </div>
                                     <div>
                                         <span class="d-block text-muted mb-1">Total Rent Outstanding</span>
-                                        <h6 class="fw-semibold mb-0"><small class="fw-light">GHS</small> ${total_rent_oustanding}</h6>
+                                        <h6 class="fw-semibold mb-0"><small class="fw-light">GHS</small> ${total_rent_outstanding}</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3">
-                        <div class="card custom-card dashboard-main-card info">
+                        <div class="card custom-card dashboard-main-card info school-card">
                             <div class="card-body">
                                 <div class="d-flex align-items-start gap-3">
                                     <div class="lh-1">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3">
-                        <div class="card custom-card dashboard-main-card warning">
+                        <div class="card custom-card dashboard-main-card warning school-card">
                             <div class="card-body">
                                 <div class="d-flex align-items-start gap-3">
                                     <div class="lh-1">
@@ -161,11 +161,60 @@
                 <div class="card custom-card overflow-hidden">
                     <div class="card-header">
                         <div class="card-title">
-                            Task Activity
+                            Top Estate by Outstanding Rent
+                        </div>
+                    </div>
+                   <div class="card-body py-0">
+                        <div id="estate-outstanding-statistics"></div>
+                    </div>
+                    
+                </div>
+                <!-- <div class="card custom-card overflow-hidden">
+                    <div class="card-header">
+                        <div class="card-title">
+                            Top Estate by Rent Payments
                         </div>
                     </div>
                    
                     
+                </div> -->
+                <div class="card custom-card overflow-hidden">
+                    <div class="card-header justify-content-between">
+                        <div>
+                            <h5 class="card-title mb-0">
+                                Recent Payments
+                            </h5>
+                            <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Showing last 10 recent payments</p>
+                        </div>
+                        <div>
+                            <a href="javascript:void(0);" class="text-muted fs-12 text-decoration-underline">View All<i class="ti ti-arrow-narrow-right"></i></a>
+                        </div>
+                    </div>  
+                    <div class="card-body">
+                        <ul class="list-unstyled projects-recent-transactions-list">
+                            <!-- <li>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="lh-1">
+                                        <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                                            S
+                                        </span>
+                                    </div>
+                                    <div class="flex-fill">
+                                        <span class="d-block fw-semibold">Sarah Miller</span>
+                                        <span class="fs-13 text-muted">Feb 17,2025 - 3:45 PM</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="d-block fw-semibold">$1,500.00</span>
+                                        <span class="text-success fw-medium fs-13">Completed</span>
+                                    </div>
+                                </div>
+                            </li> -->
+                            <div id="empty_recent_payments" class="d-flex flex-column justify-content-center align-items-center text-center">
+                                <i class="ri-no-credit-card-line text-muted fs-1 mb-2"></i>
+                                <p class="text-muted mb-0">No recent payments found</p>
+                            </div>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,3 +222,77 @@
 </div>
 
 <jsp:include page="../../components/_rent_management_modals.jsp"></jsp:include>
+<script src="${pageContext.request.contextPath}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+
+<script>
+    const estateOutstandingRent = JSON.parse('${estate_outstanding_rent}');
+    const estateData = estateOutstandingRent || [];
+
+    let categories = estateData.map(e => e.estate_name);
+    let seriesData = estateData.map(e => e.total_outstanding_for_estate);
+
+    // Ensure at least 10 rows
+    const MIN_ROWS = 10;
+
+    while (categories.length < MIN_ROWS) {
+        categories.push('—');
+        seriesData.push(0);
+    }
+
+    const options2 = {
+        series: [{
+            name: 'Outstanding Rent (GHS)',
+            data: seriesData
+        }],
+        chart: {
+            type: 'bar',
+            height: 351,
+            fontFamily: 'Poppins, Arial, sans-serif',
+            toolbar: { show: false }
+        },
+        grid: {
+            borderColor: '#f2f6f7'
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                barHeight: "30%",
+                borderRadius: 2
+            }
+        },
+        colors: ["rgba(var(--danger-rgb))"],
+        dataLabels: {
+            enabled: false
+        },
+        xaxis: {
+            categories: categories,
+            labels: {
+                formatter: function (val) {
+                    const num = Number(val);
+
+                    if (num >= 1_000_000) {
+                        return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+                    }
+
+                    if (num >= 1_000) {
+                        return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+                    }
+
+                    return num;
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: val => `GHS `+Number(val).toLocaleString()
+            }
+        }
+    };
+
+    const chart2 = new ApexCharts(
+        document.querySelector("#estate-outstanding-statistics"),
+        options2
+    );
+
+    chart2.render();
+</script>

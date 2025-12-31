@@ -101,10 +101,14 @@ public class RentController {
 					.toString();
 			request.setAttribute("total_leasee", total_leasee_count);
 
-			String total_rent_oustanding_count = professioan_dashboard_details_obj.get("total_rent_oustanding")
+			String total_rent_oustanding_count = professioan_dashboard_details_obj.get("total_rent_outstanding")
 					.toString();
 			double value = Double.parseDouble(total_rent_oustanding_count);
-			request.setAttribute("total_rent_oustanding", numberFormat.format(value));
+			request.setAttribute("total_rent_outstanding", numberFormat.format(value));
+
+			String estate_outstanding_rent = professioan_dashboard_details_obj.get("estate_outstanding_rent")
+					.toString();
+			request.setAttribute("estate_outstanding_rent", estate_outstanding_rent);
 
 			// String bills_unpaid_count =
 			// professioan_dashboard_details_obj.get("bills_unpaid_count").toString();
