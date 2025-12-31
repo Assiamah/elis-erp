@@ -177,8 +177,13 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
         // console.log("✅ Parsed Response:", json_result);
 
         if (!json_result.data || json_result.data.length === 0) {
-          alert("⚠️ No records found within the selected date range. Please check back later.");
-          return;
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Records Found',
+                text: 'No records found within the selected date range. Please check back later.',
+                confirmButtonText: 'OK'
+            });
+            return;
         }
 
         // Prepare DataTable data

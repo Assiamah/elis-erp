@@ -13,340 +13,246 @@
 
 
 <!--===============================================NEW UPDATE JUDE ========================================================================  -->
-<div class="modal fade" id="addupdateuserdatails" tabindex="-1"
-	role="dialog" aria-labelledby="addupdateuserdatails" aria-hidden="true"
->
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">Add/Edit User</h4>
-			</div>
-			<form id="frmAddEditUser" >
-			<div class="modal-body">
-				
-				<input id="ur_userid" name="ur_userid" type="hidden" value="0">
-				
-				
-				<div class="form-group">	
-					<div class="form-row">
-						<div class="col-sm-2">
-							<label for="bl_job_number">Title</label> 
-							<select  id="ur_title" class="form-control selectpicker" required>
-								<option value="Mr">Mr</option>
-								<option value="Ms">Ms</option>
-								<option value="Mrs">Mrs</option>
-								<option value="Dr">Dr</option>
-								<option value="Rev">Rev</option>
-								<option value="Prof">Prof</option>
-								
-								<option value="Surv">Surv</option>
-								<option value="Eng">Eng</option>
-								
-								
-							</select>
-						</div>
+<div class="modal fade effect-scale modal-blur" id="addupdateuserdatails" tabindex="-1" aria-labelledby="addupdateuserdatailsLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="addupdateuserdatailsLabel">
+                    <i class="fas fa-user-edit me-2"></i>Add/Edit User
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <form id="frmAddEditUser">
+                <div class="modal-body">
+                    <input id="ur_userid" name="ur_userid" type="hidden" value="0">
+                    <input id="ur_id" name="ur_id" type="hidden" value="0">
+                    <input id="ur_regional_code" name="ur_regional_code" type="hidden" value="">
 
-						<div class="col">
-							<label for="bl_ar_name_gen">Full Name</label>
-							<input class="form-control" placeholder="" id="ur_fullname" required/>
-						</div>
-					</div>
-				</div>
-				<br>
-				<hr>
+                    <!-- Personal Information Section -->
+                    <div class="mb-4">
+                        <h6 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-user-circle me-2"></i>Personal Information
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="ur_title" class="form-label">Title</label>
+                                <select id="ur_title" class="form-select" required data-trigger>
+                                    <option value="Mr">Mr</option>
+                                    <option value="Ms">Ms</option>
+                                    <option value="Mrs">Mrs</option>
+                                    <option value="Dr">Dr</option>
+                                    <option value="Rev">Rev</option>
+                                    <option value="Prof">Prof</option>
+                                    <option value="Surv">Surv</option>
+                                    <option value="Eng">Eng</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_fullname" class="form-label">Full Name</label>
+                                <input class="form-control" id="ur_fullname" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_address" class="form-label">Address</label>
+                                <textarea rows="2" class="form-control" id="ur_address"></textarea>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_emailaddress" class="form-label">E-Mail Address</label>
+                                <input type="email" class="form-control" id="ur_emailaddress" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="ur_phone" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_mobile" class="form-label">Mobile Number</label>
+                                <input type="tel" class="form-control" id="ur_mobile">
+                            </div>
+                        </div>
+                    </div>
 
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="bl_ar_name_gen">Address</label>
-							<textarea rows="2" class="form-control" placeholder=""
-								id="ur_address"
-							></textarea>
-						</div>
-					
-						<div class="col">
-							<label for="">E-Mail Address</label>
-								<textarea rows="2" class="form-control" placeholder=""
-								id="ur_emailaddress"
-							required></textarea>
-							 
-						</div>
-					</div>
-				</div>
-				
-				
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="bl_job_number">Phone #</label> <input
-								class="form-control " type="text"
-								placeholder="" id="ur_phone"  required
-							>
-						</div>
+                    <!-- Employment Information Section -->
+                    <div class="mb-4">
+                        <h6 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-briefcase me-2"></i>Employment Information
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="ur_staffnumber" class="form-label">Staff Number</label>
+                                <input type="text" class="form-control" id="ur_staffnumber" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_designation" class="form-label">Designation</label>
+                                <select id="ur_designation" class="form-select">
+                                    <option value="">Select Designation</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-						<div class="col">
-							<label for="bl_job_number">Phone # 2</label> <input
-								class="form-control " type="text"
-								placeholder="" id="ur_mobile"
-							>
-						</div>
-					</div>
-				</div>
-				<br>
-				<hr>
-				
-				
+                    <!-- Office Information Section -->
+                    <div class="mb-4">
+                        <h6 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-building me-2"></i>Office Information
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="ur_region" class="form-label">Region</label>
+                                <select id="ur_region" class="form-select" required>
+                                    <option value="">Select Region</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_district" class="form-label">Office Location</label>
+                                <select id="ur_district" class="form-select" required>
+                                    <option value="">Select Office Location</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_division" class="form-label">Division</label>
+                                <select id="ur_division" class="form-select">
+                                    <option value="">Select Division</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_department" class="form-label">Department/Unit</label>
+                                <input class="form-control" list="listofunits" id="ur_department" placeholder="Select or type department" required>
+                                <datalist id="listofunits"></datalist>
+                            </div>
+                        </div>
+                    </div>
 
-				
-				
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="">Staff Number</label> <input type="text"
-						class="form-control" id="ur_staffnumber"
-						placeholder="" required
-					>
-						</div>
+                    <!-- Account Information Section -->
+                    <div class="mb-4">
+                        <h6 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-user-lock me-2"></i>Account Information
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="ur_username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="ur_username" required>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_userprofile" class="form-label">User Profile</label>
+                                <select id="ur_userprofile" class="form-select">
+                                    <option value="Admin">Administrator</option>
+                                    <option value="User" selected>User</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_user_level" class="form-label">User Level</label>
+                                <select id="ur_user_level" class="form-select" required>
+                                    <option value="1">Level 1</option>
+                                    <option value="2">Level 2</option>
+                                    <option value="3">Level 3</option>
+                                    <option value="4">Level 4</option>
+                                    <option value="5">Level 5</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="usr_access_level" class="form-label">User Access Level</label>
+                                <select id="usr_access_level" class="form-select" required>
+                                    <option value="" disabled selected>-- select --</option>
+                                    <c:forEach items="${elis_app_levels_list}" var="applevellist">
+                                        <option value="${applevellist.eal_name}">${applevellist.eal_description}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-						<div class="col">
-							<label for="bl_job_number">Designation</label> 
-							<select id="ur_designation" class="form-control selectpicker" >
-								
-								<option value>Select</option> 
-								
-							
-								
-							</select>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="">Region</label> 
-							<select id="ur_region" data-live-search="true" class="form-control selectpicker" required> 
-								<!-- <option value="Greater Accra">Greater Accra</option>
-								<option value="Ashanti">Ashanti</option>
-								<option value="Eastern">Eastern</option> -->
-								<option value>Select</option> 
-								
-
-							</select>
-						</div>
-
-						<div class="col">
-							<label for="bl_job_number">Office Location</label> 
-							<select id="ur_district" class="form-control selectpicker"  required>
-								<!-- <option value="10">Tema</option>
-								<option value="11">Accra</option>
-								<option value="Amasaman">Amasaman</option> -->
-								<option value>Select</option> 
-								
-								
-								
-								
-		
-							</select>
-							
-							
-							
-							
-						</div>
-					</div>
-				</div>
-				
-				
-				
-				
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="">Division</label> 
-							<select id="ur_division" class="form-control selectpicker">
-								<!-- <option value=none>Select</option> -->
-								<!-- <option value="LRD">LRD</option>
-								<option value="PVLMD">PVLMD</option>
-								<option value="LVD">LVD</option>
-								<option value="SMD">SMD</option>
-								<option value="RLO">RLO</option>
-								<option value="CORPORATE">CORPORATE</option> -->
-								
-								<!-- <option value="CSAU">CSAU</option> -->
-							</select>
-						</div>
-
-						<div class="col">
-							<label for="bl_job_number">Department/Unit</label> 
-							<input autocomplete="off" class="form-control" id="ur_department"  type="text"  list="listofunits" class=""  placeholder="Select/Enter Unit" required  >
-		                    <datalist id="listofunits"></datalist>
-						</div>
-					</div>
-				</div>
-				
-				<br>
-				<hr>
-
-				
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="">Username</label> 
-							<input type="text" class="form-control" id="ur_username"  required>
-						</div>
-					
-						<div class="col">
-							<label for="bl_job_number">User Profile</label> 
-							<select id="ur_userprofile" class="form-control selectpicker" >
-								<option value="Admin">Administrator</option>
-								<option value="User" selected>User</option>
-							</select>
-						</div>
-					</div>
-					
-				</div>
-				
-				<div class="form-group">
-					<div class="form-row">
-						
-						<div class="col">
-							<label for="bl_job_number">User Level</label> 
-							<select  id="ur_user_level" class="form-control selectpicker"  required>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div>
-
-						<div class="col">
-							<label for="bl_job_number">User Access Level</label> 
-							<select  id="usr_access_level" class="form-control selectpicker"  required>
-								<option disabled selected>-- select --</option>
-								<c:forEach items="${elis_app_levels_list}" var="applevellist">
-										<option  value="${applevellist.eal_name}">${applevellist.eal_description}</option>
-								</c:forEach>
-							</select>
-						</div>
-				
-					</div>
-				</div> <br>
-				<hr>
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-							<label for="">Password</label> 
-							<input type="text" class="form-control" id="ur_web_pass"  >
-						</div>
-						<div class="col">
-							<label for="">Confirm Password</label> 
-							<input type="text" class="form-control" id="ur_web_pass_confirm" placeholder=""  >
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="form-row">
-						<div class="col">
-					<label for="bl_job_number">Is User Disabled</label> 
-					<select  id="ur_isdisabled" class="form-control selectpicker"  required>
-						<option value="Yes">Yes</option>
-						<option value="No">No</option>
-					</select>
-					<!-- <input id="testiii"/> -->
-				</div>
-				<div class="col">
-					<label for="party_ar_nationality_gen">Force Password Change</label> 
-					<select id="ur_passwordchanged" class="form-control selectpicker" >
-						<option value="YES">No</option>
-						<option value="NO">Yes</option>
-					</select>
-				</div>
-			</div>
-		</div>
-				<div class="form-group">
-					<div class="form-row">
-						
-						
-						<div class="col">
-							<label for="party_ar_nationality_gen">Can Password Expire</label> <select
-								id="ur_canpasswordexpire"
-								data-live-search="true" class="form-control selectpicker"
-							>
-								<option value="Yes">Yes</option>
-								<option value="No">No</option>
-
-							</select>
-							<!-- <input id="ur_canpasswordexpire22"/> -->
-						</div>
-						<div class="col">
-							<!-- <label for="">Password Validity Days</label> <input type="number"
-						class="form-control" id="ur_passwordvaliditydays"
-						placeholder="" required
-					> -->	
-								<label for="">Password Expire Date</label> 
-								<input type="date" class="form-control" id="ur_passwordexpirydate"  required>
-						</div>
-				
-					</div>
-				</div>
-				
-				<br>
-				
-				<hr>
-				<div class="form-group">
-					<div class="form-row">
-						
-						<div class="col">
-							<label for="bl_job_number">Allow User to See Applications in All Office Regions</label> 
-							<select  id="ur_view_all_offices" class="form-control selectpicker"  required>
-								<option>Yes</option>
-								<option>No</option>
-							</select>
-						</div>
-				
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer ">
-
-				<div class="my-2"></div>
-				<button type="submit" id="btnsaveuserdetails" class="btn btn-success btn-icon-split" > 
-					<span class="icon text-white-50"> <i class="fas fa-check"></i> </span> 
-					<span class="text">Save</span>
-				</button>
-
-				<div class="my-2"></div>
-					<a href="#" data-dismiss="modal" class="btn btn-danger btn-icon-split" > 
-					<span class="icon text-white-50"> <i class="fas fa-trash"></i></span> 
-					<span class="text">Close</span>
-
-				</a>
-
-
-
-
-
-
-				<!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-warning btn-lg" ><span class="glyphicon glyphicon-ok-sign"></span>Add to List</button>
-       -->
-
-
-
-			</div>
-			</form>
-		</div>
-		
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+                    <!-- Security Settings Section -->
+                    <div class="mb-4">
+                        <h6 class="border-bottom pb-2 mb-3">
+                            <i class="fas fa-shield-alt me-2"></i>Security Settings
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="ur_web_pass" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="ur_web_pass">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_web_pass_confirm" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="ur_web_pass_confirm">
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_isdisabled" class="form-label">Account Status</label>
+                                <select id="ur_isdisabled" class="form-select" required>
+                                    <option value="No">Active</option>
+                                    <option value="Yes">Disabled</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_passwordchanged" class="form-label">Force Password Change</label>
+                                <select id="ur_passwordchanged" class="form-select">
+                                    <option value="NO">Yes (Force Change)</option>
+                                    <option value="YES">No</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_canpasswordexpire" class="form-label">Password Expiry</label>
+                                <select id="ur_canpasswordexpire" class="form-select">
+                                    <option value="Yes">Yes (Password Expires)</option>
+                                    <option value="No">No (Never Expires)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="ur_passwordexpirydate" class="form-label">Password Expiry Date</label>
+                                <input type="date" class="form-control" id="ur_passwordexpirydate">
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="ur_view_all_offices" class="form-label">Cross-Office Access</label>
+                                <select id="ur_view_all_offices" class="form-select">
+                                    <option value="No">No (Only Assigned Office)</option>
+                                    <option value="Yes">Yes (All Offices)</option>
+                                </select>
+                                <div class="form-text">
+                                    Allow user to view applications in all office regions
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Close
+                    </button>
+                    <button type="submit" id="btnsaveuserdetails" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Save User
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -721,115 +627,76 @@
 
 
 
-<div class="modal fade" id="assignReassignUserProfile" tabindex="-1" role="dialog"
-	aria-labelledby="assignReassignUserProfile" aria-hidden="true"
->
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">Assign Roles</h4>
-			</div>
-			<div class="modal-body">
+<div class="modal fade effect-scale modal-blur" id="assignReassignUserProfile" tabindex="-1" aria-labelledby="assignReassignUserProfileLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="assignReassignUserProfileLabel">
+                    <i class="fas fa-user-shield me-2"></i>Assign Roles
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="up_userid" name="up_userid" type="hidden">
 
+                <!-- User Information -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input class="form-control bg-light" type="text" id="up_fullname" readonly style="cursor: not-allowed;">
+                            <label for="up_fullname">Full Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input class="form-control bg-light" type="text" id="up_username" readonly style="cursor: not-allowed;">
+                            <label for="up_username">Username</label>
+                        </div>
+                    </div>
+                </div>
 
-				<input id="up_userid" name="up_userid" type="hidden" value="${userid}">
+                <!-- Roles/Profiles Section -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="fas fa-list-check me-2"></i>Available Roles/Profiles
+                        </h6>
+                        <small class="text-muted">Select the roles to assign to this user</small>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="tbl_user_profile_list_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="60%">Role/Profile Description</th>
+                                        <th width="30%">Status</th>
+                                        <th width="10%" class="text-center">Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-
-				<div class="form-group">
-					<label for="bl_job_number">Full Name</label> <input
-						class="form-control " type="text" placeholder=""
-						id="up_fullname" readonly
-					>
-				</div>
-
-
-
-
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- Example Bar Chart Card-->
-						<div class="card mb-3">
-							<div class="card-header">
-								<i class="fa fa-bar-chart"></i>Check List
-							</div>
-							<div class="card-body">
-
-
-
-								<!--  Here is where the fee list comes -->
-
-								<div class="table-responsive">
-								
-									
-									<table class="table table-bordered table-hover" id="tbl_user_profile_list_dataTable"
-										width="100%"
-									>
-									
-										<thead>
-											<tr>
-												<th>Description</th>
-												<th>Option</th>
-												<th>id</th>
-
-											</tr>
-										</thead>
-				
-										<tbody>
-
-
-
-										</tbody>
-									</table>
-								</div>
-
-								<!--  End Of Table -->
-							</div>
-							<div class="card-footer small text-muted"></div>
-						</div>
-
-
-					</div>
-				</div>
-
-
-
-
-
-
-				
-			</div>
-			<div class="modal-footer ">
-
-				<div class="my-2"></div>
-				<a href="#" id="btn_save_user_profile_details"
-					class="btn btn-success btn-icon-split"
-				> <span class="icon text-white-50"> <i class="fas fa-check"></i>
-				</span> <span class="text">Assign</span>
-				</a>
-
-				<div class="my-2"></div>
-				<a href="#" data-dismiss="modal"
-					class="btn btn-danger btn-icon-split"
-				> <span class="icon text-white-50"> <i class="fas fa-trash"></i>
-				</span> <span class="text">Close</span>
-
-				</a>
-
-
-
-				<input type="hidden" id="bl_jn_id" name="jn_id"> <input
-					type="hidden" id="bl_send_by_id" name="send_by_id"
-				> <input type="hidden" id="bl_userid" name="userid">
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+                <!-- Summary Section -->
+                <div class="alert alert-info mt-3 mb-0" id="selectionSummary">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span id="selectedCount">0</span> role(s) selected
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-primary" id="btn_save_user_profile_details">
+                    <i class="fas fa-check me-1"></i>Assign Selected Roles
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 

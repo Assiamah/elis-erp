@@ -85,7 +85,23 @@
     }
 </style>
 
-<div class="container-fluid">
+ <!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+              <div>
+                <h1 class="page-title fw-medium fs-18 mb-1">Audit Report Dashboard</h1>
+                <!-- <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage and monitor application workflows</p> -->
+              </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Audit Report Dashboard</li>
+                </ol>
+            </div>
+        </div>
 
     <input type="hidden" id="startdate">
     <input type="hidden" id="start_date">
@@ -95,8 +111,8 @@
     <!-- Dashboard Header -->
     <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
         <div>
-            <h1 class="h3 mb-1 text-gray-800 dashboard-title">User Activity Dashboard</h1>
-            <p class="dashboard-subtitle">
+            <h1 class="h4 mb-1 text-gray-800 dashboard-title">User Activity Dashboard</h1>
+            <p class="dashboard-subtitle fw-light">
                 This Dashboard provides comprehensive visibility into user activities across all divisions. 
                 Monitor staff login patterns, track changes made to land records, and analyze operational trends.
             </p>
@@ -240,9 +256,9 @@
 </div>
 
 <!-- Advanced Activity Logs Modal -->
-<div class="modal fade" id="activityLogsModal" tabindex="-1" aria-labelledby="activityLogsModalLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="activityLogsModal" tabindex="-1" aria-labelledby="activityLogsModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content modal-glass shadow-lg border-0">
+        <div class="modal-content border-0">
             <div class="modal-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top py-3">
                 <div class="d-flex align-items-center">
                     <div class="icon-container bg-opacity-20 rounded-circle p-2 me-3">
@@ -285,9 +301,9 @@
 <!-- Similar modals updated for Bootstrap 5 below -->
 
 <!-- USER Activity Logs Modal -->
-<div class="modal fade" id="USERactivityLogsModal" tabindex="-1" aria-labelledby="USERactivityLogsModalLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="USERactivityLogsModal" tabindex="-1" aria-labelledby="USERactivityLogsModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content modal-glass shadow-lg border-0">
+        <div class="modal-content border-0">
             <div class="modal-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top py-3">
                 <div class="d-flex align-items-center">
                     <div class="icon-container bg-opacity-20 rounded-circle p-2 me-3">
@@ -326,9 +342,9 @@
 <!-- All other modals follow the same pattern — here’s one example for brevity -->
 
 <!-- Activity Details Modal (Update Parcel) -->
-<div class="modal fade" id="activityDetailsModal" tabindex="-1" aria-labelledby="activityDetailsLabel" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="activityDetailsModal" tabindex="-1" aria-labelledby="activityDetailsLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">
+        <div class="modal-content border-0">
             <div class="modal-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top py-3">
                 <div class="d-flex align-items-center">
                     <div class="icon-container bg-opacity-20 rounded-circle p-2 me-3">
@@ -388,6 +404,8 @@
             </div>
         </div>
     </div>
+</div>
+
 </div>
 
 <!-- Repeat similar updates for other modals: newactivityDetailsModal, addParcelDetailsModal, transactionUpdateModal, etc. -->
