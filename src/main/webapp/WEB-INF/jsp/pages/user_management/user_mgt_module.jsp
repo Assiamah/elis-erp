@@ -38,7 +38,7 @@
                           <div class="card-body p-0">
                               <div class="row g-0">
                                   <div class="col-xl-6 ">
-                                      <div class="card custom-card dashboard-main-card border-0 shadow-none border-lg-end border-bottom mb-0 rounded-0">
+                                      <div class="card custom-card dashboard-main-card primary school-card border-0 shadow-none border-lg-end border-bottom mb-0 rounded-0">
                                           <div class="card-body">
                                               <div class="mb-3">
                                                   <span class="avatar avatar-lg avatar-rounded bg-primary-transparent svg-primary">
@@ -55,10 +55,10 @@
                                       </div>
                                   </div>
                                   <div class="col-xl-6">
-                                      <div class="card custom-card dashboard-main-card border-0 shadow-none border-bottom mb-0 rounded-0">
+                                      <div class="card custom-card dashboard-main-card success school-card border-0 shadow-none border-bottom mb-0 rounded-0">
                                           <div class="card-body">
                                               <div class="mb-3">
-                                                  <span class="avatar avatar-lg avatar-rounded bg-secondary-transparent svg-secondary">
+                                                  <span class="avatar avatar-lg avatar-rounded bg-success-transparent svg-success">
                                                       <i class="bi bi-person-check fa-2x"></i>
                                                   </span>
                                               </div>
@@ -74,22 +74,15 @@
                                                     </c:forEach>
                                                     ${activeCount}
                                                   </h5>
-                                                  <div>
-                                                      <span class="badge bg-danger-transparent rounded-pill">
-                                                          <i class="ti ti-arrow-down me-1"></i>1.86%
-                                                      </span>
-                                                      <span class="text-muted fs-12">This Year</span>
-                                                  </div>
-                                            
                                               </div>
                                           </div>
                                       </div>
                                   </div>
                                   <div class="col-xl-6">
-                                      <div class="card custom-card dashboard-main-card dashboard-main-border border-0 shadow-none border-lg-end mb-0 rounded-0">
+                                      <div class="card custom-card dashboard-main-card secondary school-card dashboard-main-border border-0 shadow-none border-lg-end mb-0 rounded-0">
                                           <div class="card-body">
                                               <div class="mb-3">
-                                                  <span class="avatar avatar-lg avatar-rounded bg-danger-transparent svg-danger">
+                                                  <span class="avatar avatar-lg avatar-rounded bg-secondary-transparent svg-secondary">
                                                       <i class="bi bi-person-lock fa-2x"></i>
                                                   </span>
                                               </div>
@@ -112,7 +105,7 @@
                                       </div>
                                   </div>
                                   <div class="col-xl-6">
-                                      <div class="card custom-card dashboard-main-card border-0 shadow-none mb-0 rounded-0">
+                                      <div class="card custom-card dashboard-main-card warning school-card border-0 shadow-none mb-0 rounded-0">
                                           <div class="card-body">
                                               <div class="mb-3">
                                                   <span class="avatar avatar-lg avatar-rounded bg-warning-transparent svg-warning">
@@ -207,9 +200,9 @@
                                     </div>
                                   </td>
 
-                                  <td>${user.region}</td>
+                                  <td><span class="small text-dark">${user.region}</span></td>
                                   <td><span class="badge bg-light text-dark">${user.division}</span></td>
-                                  <td><span class="small">${fn:length(user.unit_name) >20 ? fn:substring(user.unit_name, 0, 20) : user.unit_name}</span></td>
+                                  <td><span class="small text-dark">${fn:length(user.unit_name) >20 ? fn:substring(user.unit_name, 0, 20) : user.unit_name}</span></td>
                                   <td>
                                     <span class="badge ${user.isdisabled ? 'bg-danger' : 'bg-success'}">${user.isdisabled ? 'Disabled' : 'Active'}</span><br>
                                     <c:if test="${passwordvaliditydays <= 7 and passwordvaliditydays > 0}">
