@@ -4832,3 +4832,308 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade effect-scale modal-blur" id="collectionForPayment" tabindex="-1" aria-labelledby="collectionForPaymentLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="collectionForPaymentLabel">
+                    <i class="fas fa-money-bill-wave me-2"></i>Collection for Payment
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="frmCollectionForPayment">
+                    <div class="row g-3">
+                        <!-- Job Number -->
+                        <div class="col-md-6">
+                            <label for="cfp_job_number" class="form-label fw-bold">
+                                <i class="fas fa-file-alt me-1"></i>Job Number
+                            </label>
+                            <input type="text" class="form-control bg-light" id="cfp_job_number" readonly style="cursor: not-allowed;">
+                        </div>
+                        
+                        <!-- Applicant Name -->
+                        <div class="col-md-6">
+                            <label for="cfp_ar_name" class="form-label fw-bold">
+                                <i class="fas fa-user me-1"></i>Applicant Name
+                            </label>
+                            <input type="text" class="form-control bg-light" id="cfp_ar_name" readonly style="cursor: not-allowed;">>
+                        </div>
+                        
+                        <!-- Collector's Name -->
+                        <div class="col-md-6">
+                            <label for="cfp_collectors_name" class="form-label fw-bold">
+                                <i class="fas fa-user-tie me-1"></i>Collector's Name
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="cfp_collectors_name" required>
+                            <div class="invalid-feedback">
+                                Please enter collector's name
+                            </div>
+                        </div>
+                        
+                        <!-- ID Type -->
+                        <div class="col-md-6">
+                            <label for="cfp_id_type" class="form-label fw-bold">
+                                <i class="fas fa-id-card me-1"></i>ID Type
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="cfp_id_type" name="cfp_id_type" required>
+                                <option value="" selected disabled>Select ID Type</option>
+                                <option value="Ghana Card">Ghana Card</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Drivers License">Driver's License</option>
+                                <option value="Voters ID">Voter's ID</option>
+                                <option value="NHIS">NHIS</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select ID type
+                            </div>
+                        </div>
+                        
+                        <!-- ID Number -->
+                        <div class="col-md-6">
+                            <label for="cpf_id_number" class="form-label fw-bold">
+                                <i class="fas fa-id-badge me-1"></i>ID Number
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="cpf_id_number" required>
+                            <div class="invalid-feedback">
+                                Please enter ID number
+                            </div>
+                        </div>
+                        
+                        <!-- Phone Number -->
+                        <div class="col-md-6">
+                            <label for="cpf_collectors_phone" class="form-label fw-bold">
+                                <i class="fas fa-phone me-1"></i>Phone Number
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="tel" class="form-control" id="cpf_collectors_phone" required>
+                            <div class="invalid-feedback">
+                                Please enter phone number
+                            </div>
+                        </div>
+                        
+                        <!-- Purpose -->
+                        <div class="col-12">
+                            <label for="cpf_collection_purpose" class="form-label fw-bold">
+                                <i class="fas fa-bullseye me-1"></i>Purpose
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="cpf_collection_purpose" required>
+                            <div class="invalid-feedback">
+                                Please enter collection purpose
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Notes (Optional) -->
+                        <div class="col-12">
+                            <label for="cfp_additional_notes" class="form-label fw-bold">
+                                <i class="fas fa-sticky-note me-1"></i>Additional Notes (Optional)
+                            </label>
+                            <textarea class="form-control" id="cfp_additional_notes" rows="2" placeholder="Any additional information..."></textarea>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Status Messages -->
+                <div class="alert alert-info mt-3 mb-0 d-none" id="cfp_status_message">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span id="cfp_message_text"></span>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <!-- Status Indicator -->
+                    <div class="status-indicator d-none" id="cfp_processing_indicator">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                            <span class="visually-hidden">Processing...</span>
+                        </div>
+                        <small class="text-muted">Processing...</small>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btn_cpf_save_comment">
+                            <i class="fas fa-save me-1"></i>Save Collection
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="filelistModal" tabindex="-1" aria-labelledby="filelistModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <div class="modal-title text-white d-flex align-items-center w-100">
+                    <i class="fas fa-history fa-lg me-3"></i>
+                    <div>
+                        <h5 class="mb-0 fw-bold" id="filelistModalLabel">File Tracking History</h5>
+                        <small class="text-white-50 d-block mt-1">Physical file movement and location history</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-0">
+                <!-- Summary Card -->
+                <div class="card rounded-0 border-0 border-bottom rounded-top">
+                    <div class="card-body py-3">
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-file-alt text-primary fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Tracking For</small>
+                                        <span class="fw-bold" id="fileTrackingJobNumber">N/A</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-exchange-alt text-success fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Total Movements</small>
+                                        <span class="fw-bold" id="totalMovements">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-info bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-map-marker-alt text-info fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Current Location</small>
+                                        <span class="fw-bold" id="currentLocation">Unknown</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto ms-auto">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-warning bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-sync-alt text-warning fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Last Updated</small>
+                                        <span class="fw-bold" id="lastUpdated">Just now</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="table-responsive" style="max-height: 500px;">
+                    <table class="table table-hover table-sm align-middle mb-0" id="tbl_file_history">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col" class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-calendar me-2 text-muted"></i>
+                                        <span>Date & Time</span>
+                                    </div>
+                                </th>
+                                <th scope="col">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building me-2 text-muted"></i>
+                                        <span>Division/Department</span>
+                                    </div>
+                                </th>
+                                <th scope="col">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user-check me-2 text-muted"></i>
+                                        <span>Received By</span>
+                                    </div>
+                                </th>
+                                <th scope="col">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user-tie me-2 text-muted"></i>
+                                        <span>Sent By</span>
+                                    </div>
+                                </th>
+                                <th scope="col" class="text-center">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-info-circle me-2 text-muted"></i>
+                                        <span>Status</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows will be populated dynamically -->
+                            <tr id="noRecordsRow" class="d-none">
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="fas fa-inbox fa-3x mb-3 opacity-25"></i>
+                                        <h6 class="mb-2">No tracking history found</h6>
+                                        <p class="small mb-0">No file movement records available for this application</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Legend -->
+                <div class="card border-0 rounded-0 border-top">
+                    <div class="card-body py-2">
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <small class="text-muted me-2">Status Legend:</small>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
+                                <i class="fas fa-check-circle me-1"></i>Received
+                            </span>
+                            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">
+                                <i class="fas fa-paper-plane me-1"></i>Sent
+                            </span>
+                            <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">
+                                <i class="fas fa-clock me-1"></i>Pending
+                            </span>
+                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">
+                                <i class="fas fa-exclamation-circle me-1"></i>Delayed
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> records
+                        </small>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnExportHistory">
+                            <i class="fas fa-download me-1"></i>Export
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Close
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnRefreshHistory">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
