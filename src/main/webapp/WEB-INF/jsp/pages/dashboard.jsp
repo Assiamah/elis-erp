@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
+    
 .gcsez-dashboard {
     background: #f8fafc;
     min-height: calc(100vh - 70px);
@@ -48,21 +49,25 @@
     gap: 20px;
     margin-bottom: 32px;
 }
-
 .gcsez-stat-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    border: none;                       /* remove default border if any */
+    border-left: 6px solid;             /* colored left border */
     border-radius: 12px;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    transition: all 0.2s ease;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Assign different colors to each card */
+.gcsez-stat-card:nth-child(1) { border-left-color: #6f42c1; }  /* purple */
+.gcsez-stat-card:nth-child(2) { border-left-color: #198754; }  /* green  */
+.gcsez-stat-card:nth-child(3) { border-left-color: #0d6efd; }  /* blue   */
+.gcsez-stat-card:nth-child(4) { border-left-color: #fd7e14; }  /* orange */
+
 .gcsez-stat-card:hover {
-    border-color: #326573;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 }
 
 .gcsez-stat-icon {
@@ -100,11 +105,24 @@
 }
 
 .gcsez-section {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+/* subtle top accent bar */
+.gcsez-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    border-radius: 14px 14px 0 0;
+    background: linear-gradient(90deg, #6f42c1, #0d6efd);
 }
 
 .gcsez-section-header {
@@ -267,10 +285,27 @@
 }
 
 .gcsez-stat-mini {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 14px;
     text-align: center;
-    padding: 12px;
-    background: #f9fafb;
-    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.gcsez-stat-mini:nth-child(1) {
+    border-left: 4px solid #198754;
+}
+.gcsez-stat-mini:nth-child(2) {
+    border-left: 4px solid #fd7e14;
+}
+.gcsez-stat-mini:nth-child(3) {
+    border-left: 4px solid #dc3545;
+}
+
+.gcsez-stat-mini:hover {
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
 .gcsez-stat-mini-value {
