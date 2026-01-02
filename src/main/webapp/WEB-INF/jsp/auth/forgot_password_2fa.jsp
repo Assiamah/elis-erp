@@ -327,7 +327,7 @@
             </div>
             
             <!-- OTP Input Form -->
-            <form name="loginForm" id="loginForm" method="POST" action="Login" novalidate>
+            <form name="loginForm" id="loginForm" method="POST" action="change_password_rs" novalidate>
                 <!-- OTP Inputs -->
                 <div class="mb-4">
                     <label class="form-label fw-semibold mb-1">Enter 6-digit verification code:</label>
@@ -545,7 +545,7 @@
             // Create form dynamically
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'two_factor_verification';
+            form.action = 'send_code_for_password_reset';
 
             // Username field
             const usernameInput = document.createElement('input');
@@ -553,14 +553,7 @@
             usernameInput.name = 'email';
             usernameInput.value = '${user}'; // JSP value
 
-            // Password field
-            const passwordInput = document.createElement('input');
-            passwordInput.type = 'hidden';
-            passwordInput.name = 'password';
-            passwordInput.value = '${pass}'; // JSP value
-
             form.appendChild(usernameInput);
-            form.appendChild(passwordInput);
 
             document.body.appendChild(form);
 

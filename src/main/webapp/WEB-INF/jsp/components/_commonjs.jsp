@@ -135,3 +135,7 @@ ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name==
 ${page_name == "application_review_details_advanced" ? "<script src='js-pages/gated_workflow.js'></script>" : ""}
 
 ${page_name == "page_enquiry_backoffice" ? "<script src='js-pages/enquiry_backoffice.js'></script>" : ""}
+${page_name == "page_enquiry_desk" ? "<script src='js-pages/enquiry_collections.js'></script>" : ""}
+${page_name == "page_enquiry_desk_stamping" ? "<script src='js-pages/enquiry_collections_stamping.js'></script>" : ""}
+
+${page_name == "user_management" ? "<script src='js-pages/user_mgt.js'></script>" : ""}

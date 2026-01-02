@@ -156,7 +156,7 @@
                                   </ul>
                               </div>
                           </div>
-                          </div>
+                        </div>
                         <div class="card-body p-3 position-relative" id="todo-content">
                             <div class="table-responsive">
                               <table class="table table-hover align-middle mb-0" id="applicationTable">
@@ -274,11 +274,11 @@
                                       </c:forEach>
                                   </tbody>
                               </table>
+                            </div>
                         </div>
-                    </div>
                     
+                    </div>
                 </div>
-            </div>
             <!--End::row-1 -->
 
     </div>

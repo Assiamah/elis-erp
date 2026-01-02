@@ -224,28 +224,29 @@
                         <!-- Login Form -->
                         <form name="loginForm" id="loginForm" method="POST" action="two_factor_verification" novalidate>
                             <!-- Email Field -->
-                            <div class="mb-4">
+                            <div class="mb-3">
                                 <div class="position-relative">
                                     <input type="email" 
-                                           class="form-control form-control-lg floating-input ps-4" 
+                                           class="form-control floating-input ps-4" 
                                            name="email" 
                                            id="email" 
                                            placeholder=" "
                                            required>
                                     <label for="email" class="floating-label">
-                                        <i class="ri-mail-line me-2"></i>Email Address
+                                        <i class="ri-user-line me-2"></i>User ID
                                     </label>
                                     <!-- <div class="position-absolute end-0 top-50 translate-middle-y me-4">
                                         <i class="ri-user-3-line text-muted"></i>
                                     </div> -->
                                 </div>
+                                <small class="text-muted fw-light small"><i class="ri-information-line me-1"></i>User ID is your official email address</small>
                             </div>
 
                             <!-- Password Field -->
                             <div class="mb-4">
                                 <div class="position-relative">
                                     <input type="password" 
-                                           class="form-control form-control-lg floating-input ps-4" 
+                                           class="form-control floating-input ps-4" 
                                            name="password" 
                                            id="password" 
                                            placeholder=" "
@@ -269,7 +270,7 @@
                                         Remember this device
                                     </label>
                                 </div>
-                                <a href="reset-password-basic.html" class="text-decoration-none fs-14 text-primary fw-medium">
+                                <a href="forgot_password" class="text-decoration-none fs-14 text-primary fw-medium">
                                     Forgot Password?
                                 </a>
                             </div>
@@ -330,7 +331,7 @@
                 <!-- Footer -->
                 <div class="text-center mt-5">
                     <p class="text-muted fs-12 mb-0">
-                        © 2024 Lands Commission. All rights reserved.
+                        © <script>document.write(new Date().getFullYear())</script> Lands Commission. All rights reserved.
                         <a href="#" class="text-muted text-decoration-underline ms-1">Privacy Policy</a>
                     </p>
                 </div>
@@ -413,13 +414,13 @@
                 <div class="row g-3 mb-5">
                     <div class="col-4">
                         <div class="text-center">
-                            <h3 class="text-white fw-bold mb-1">10K+</h3>
+                            <h3 class="text-white fw-bold mb-1">1.2K+</h3>
                             <p class="text-white opacity-75 fs-12 mb-0">Active Users</p>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="text-center">
-                            <h3 class="text-white fw-bold mb-1">50M+</h3>
+                            <h3 class="text-white fw-bold mb-1">100K+</h3>
                             <p class="text-white opacity-75 fs-12 mb-0">Records</p>
                         </div>
                     </div>
