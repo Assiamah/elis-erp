@@ -2,34 +2,52 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.google.gson.GsonBuilder"%>
+<!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
-<div class="container-fluid">
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Rent Management Upload - ${fullname}</h1>
-    </div>
-    <hr>
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">Rent Management Upload</h1>
+                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Bulk rent data upload for ${fullname}</p>
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Rent Management</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bulk Upload</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Accordion -->
-                <a href="#collapseBulkRent" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-file-upload"></i> Bulk Rent Data Upload
-                    </h6>
-                </a>
+        <!-- Start::row-1 -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card custom-card">
+                    <!-- Card Header - Accordion -->
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="ri-upload-cloud-2-line text-primary me-2 fs-5"></i>
+                                <h5 class="card-title mb-0">Bulk Rent Data Upload</h5>
+                            </div>
+                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapseBulkRent" aria-expanded="true">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </button>
+                        </div>
+                    </div>
 
-                <!-- Card Content - Collapse -->
-                <div class="collapse show" id="collapseBulkRent">
-                    <div class="card-body">
+                    <!-- Card Content - Collapse -->
+                    <div class="collapse show" id="collapseBulkRent">
+                        <div class="card-body">
 
-                        <!-- Region & Estate Selection -->
-                        <div class="form-group">
-                            <div class="form-row">
+                            <!-- Region & Estate Selection -->
+                            <div class="row mb-4">
                                 <div class="col-md-6 mb-3">
-                                    <label for="rnt_upload_office_region"><strong>Office Region</strong></label>
-                                    <select class="form-control selectpicker" id="rnt_upload_office_region" data-live-search="true" required>
+                                    <label class="form-label fw-semibold">Office Region</label>
+                                    <select class="form-select" id="rnt_upload_office_region" required>
                                         <option value="" disabled selected>Select Office Region</option>
                                         <c:forEach items="${officeregionlist}" var="region">
                                             <option value="${region.ord_region_code}">${region.ord_region_name}</option>
@@ -38,8 +56,8 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="rnt_upload_estate"><strong>Estate</strong></label>
-                                    <select class="form-control selectpicker" id="rnt_upload_estate" data-live-search="true" required>
+                                    <label class="form-label fw-semibold">Estate</label>
+                                    <select class="form-select" id="rnt_upload_estate" required>
                                         <option value="" disabled selected>Select Estate</option>
                                         <c:forEach items="${estate_list}" var="estate">
                                             <option value="${estate.ge_id}">${estate.ge_location_name}</option>
@@ -47,99 +65,219 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Action Buttons -->
-                        <div class="form-row mb-4">
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-info btn-lg btn-block" id="btn_upload_rent_by_csv" data-toggle="modal" data-target="#fileRentUploadModal">
-                                    <i class="fas fa-file-upload"></i> Upload CSV
-                                </button>
+                            <!-- Action Buttons -->
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-3">
+                                    <button type="button" class="btn btn-info w-100" 
+                                            id="btn_upload_rent_by_csv" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#fileRentUploadModal">
+                                        <i class="ri-upload-cloud-2-line me-1"></i> Upload CSV
+                                    </button>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <button type="button" class="btn btn-success w-100" 
+                                            id="btn_process_rent_data_by_csv">
+                                        <i class="ri-cpu-line me-1"></i> Process Rent Data
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-success btn-lg btn-block" id="btn_process_rent_data_by_csv">
-                                    <i class="fas fa-cogs"></i> Process Rent Data
-                                </button>
+
+                            <!-- Success / Error Alert -->
+                            <div id="uploadAlert" class="alert d-none" role="alert"></div>
+
+                            <!-- Data Table -->
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0" 
+                                       id="bulk_rent_data_list_dataTable_smd">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Owner's Name</th>
+                                            <th>Address</th>
+                                            <th>File No.</th>
+                                            <th>Ledger</th>
+                                            <th>Folio</th>
+                                            <th>Plot No.</th>
+                                            <th>Plot Size</th>
+                                            <th>Covenanted User</th>
+                                            <th>LS Number</th>
+                                            <th>Nature of Instrument</th>
+                                            <th>Comm. Date</th>
+                                            <th>Term</th>
+                                            <th>Consent Date</th>
+                                            <th>Rent Review</th>
+                                            <th>Rent Passing</th>
+                                            <th>Arrears</th>
+                                            <th>Prev. Review</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
-                        </div>
-
-                        <!-- Success / Error Alert -->
-                        <div id="uploadAlert" class="alert d-none" role="alert"></div>
-
-                        <!-- Data Table -->
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-sm" id="bulk_rent_data_list_dataTable_smd" width="100%" cellspacing="0">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Owner's Name</th>
-                                        <th>Address</th>
-                                        <th>File No.</th>
-                                        <th>Ledger</th>
-                                        <th>Folio</th>
-                                        <th>Plot No.</th>
-                                        <th>Plot Size</th>
-                                        <th>Covenanted User</th>
-                                        <!-- <th>Current Use</th> -->
-                                        <th>LS Number</th>
-                                        <th>Nature of Instrument</th>
-                                        <th>Comm. Date</th>
-                                        <th>Term</th>
-                                        <th>Consent Date</th>
-                                        <th>Rent Review</th>
-                                        <th>Rent Passing</th>
-                                        <th>Arrears</th>
-                                        <th>Prev. Review</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--End::row-1 -->
+
     </div>
 </div>
 
 <!-- CSV Upload Modal -->
-<div class="modal fade" id="fileRentUploadModal" tabindex="-1" role="dialog" aria-labelledby="fileRentUploadModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="fileRentUploadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="fileRentUploadModalLabel"><i class="fas fa-file-csv"></i> Upload Rent CSV</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title">
+                    <i class="ri-file-excel-2-line me-2"></i>Upload Rent CSV
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="csvUploadForm" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="csvFile"><strong>Select CSV File</strong></label>
-                        <input type="file" class="form-control-file" id="csvFile" name="csvFile" accept=".csv" required>
-                        <small class="form-text text-muted">
+                    <div class="mb-3">
+                        <label for="csvFile" class="form-label fw-semibold">Select CSV File</label>
+                        <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv" required>
+                        <div class="form-text">
                             Only <code>.csv</code> files are allowed. Max size: 10MB.
-                        </small>
+                        </div>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="uploadRegion"><strong>Region</strong></label>
-                        <input type="text" class="form-control" id="uploadRegion" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="uploadEstate"><strong>Estate</strong></label>
-                        <input type="text" class="form-control" id="uploadEstate" readonly>
-                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="btnConfirmUpload">
-                    <i class="fas fa-upload"></i> Upload
+                    <i class="ri-upload-cloud-2-line me-1"></i> Upload
                 </button>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    /* Custom styles for better UI */
+    .form-select {
+        border-radius: 0.375rem;
+        border: 1px solid #e9ecef;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .form-select:focus {
+        border-color: #3a7bd5;
+        box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
+    }
+    
+    .table th {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+        font-weight: 600;
+        background-color: #f9fafc;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .table td {
+        vertical-align: middle;
+        font-size: 0.875rem;
+    }
+    
+    #uploadAlert {
+        border-radius: 0.375rem;
+        padding: 1rem 1.25rem;
+    }
+    
+    #uploadAlert.alert-success {
+        background-color: rgba(25, 135, 84, 0.1);
+        border-color: rgba(25, 135, 84, 0.2);
+        color: #198754;
+    }
+    
+    #uploadAlert.alert-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        border-color: rgba(220, 53, 69, 0.2);
+        color: #dc3545;
+    }
+    
+    #uploadAlert.alert-info {
+        background-color: rgba(13, 202, 240, 0.1);
+        border-color: rgba(13, 202, 240, 0.2);
+        color: #0dcaf0;
+    }
+    
+    /* Card header styling */
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e9ecef;
+        padding: 1rem 1.25rem;
+    }
+    
+    /* Button styling */
+    .btn {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border-radius: 0.375rem;
+        transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Modal styling */
+    .modal-content {
+        border-radius: 0.5rem;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal-header {
+        background-color: #f9fafc;
+        border-bottom: 1px solid #e9ecef;
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        border-top: 1px solid #e9ecef;
+        padding: 1rem 1.5rem;
+    }
+    
+    /* File input styling */
+    .form-control[type="file"] {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .form-control[type="file"]:focus {
+        border-color: #3a7bd5;
+        box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .modal-dialog {
+            margin: 0.5rem;
+        }
+        
+        .table-responsive {
+            font-size: 0.8125rem;
+        }
+        
+        .btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+    }
+</style>
 <!-- JavaScript -->
 <script>
 $(document).ready(function () {
@@ -474,7 +612,7 @@ function parseCsvLine(line) {
 
     // Auto-load on region/estate change
     $('#rnt_upload_office_region, #rnt_upload_estate').on('change', function () {
-        loadRentData();
+       // loadRentData();
     });
 });
 </script>

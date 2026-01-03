@@ -145,6 +145,19 @@ public class GenerateCaseReports {
 				pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
 				pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 				
+
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 			
 			
  				String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -239,7 +252,19 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
-		
+	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");	
 	
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -421,6 +446,18 @@ public class GenerateCaseReports {
 		
 			
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -544,6 +581,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -638,6 +687,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 			
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 	
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -733,6 +794,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -826,6 +899,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -920,6 +1005,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -1012,6 +1109,18 @@ public class GenerateCaseReports {
 		
 			
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -1132,6 +1241,19 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
+
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 	
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -1323,6 +1445,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 			
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 	
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -1415,6 +1549,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -1508,6 +1654,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -1992,6 +2150,19 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
+
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 			
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -2299,6 +2470,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -2391,6 +2574,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -2482,6 +2677,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -2663,6 +2870,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -2763,6 +2982,18 @@ public class GenerateCaseReports {
 		
 			
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -2862,6 +3093,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -2963,6 +3206,19 @@ public class GenerateCaseReports {
 		
 	
 
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
+
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
 
@@ -3053,6 +3309,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 	
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -3143,6 +3411,18 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 			
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 	
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
@@ -3345,6 +3625,18 @@ public class GenerateCaseReports {
 		
 			
 	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
 
 	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
@@ -3564,4 +3856,14 @@ public class GenerateCaseReports {
 		return timeStamp;
 
 	}
+	        public static String formatFileSize(long bytes) {
+    if (bytes <= 0) return "0 B";
+    
+    final String[] units = new String[] {"B", "KB", "MB", "GB", "TB"};
+    int digitGroups = (int) (Math.log10(bytes) / Math.log10(1024));
+    
+    return String.format("%.1f %s", 
+        bytes / Math.pow(1024, digitGroups), 
+        units[digitGroups]);
+}
 }
