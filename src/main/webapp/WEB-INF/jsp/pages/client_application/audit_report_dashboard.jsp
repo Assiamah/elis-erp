@@ -290,7 +290,7 @@
                 </div>
             </div>
             <div class="modal-footer bg-white border-top py-3">
-                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-outline-danger rounded-pill px-4" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i> Close
                 </button>
             </div>
@@ -331,7 +331,7 @@
                 </div>
             </div>
             <div class="modal-footer bg-white border-top py-3">
-                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-outline-danger rounded-pill px-4" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i> Close
                 </button>
             </div>
@@ -398,13 +398,368 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i> Close
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<div class="modal fade effect-scale modal-blur" id="newactivityDetailsModal" tabindex="-1"
+     aria-labelledby="activityDetailsLabel"
+     aria-hidden="true"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white rounded-top-4 px-4 py-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white bg-opacity-25 rounded-circle p-2">
+                        <i class="fas fa-chart-line fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0" id="t_audit_title"></h5>
+                        <small class="opacity-75">
+                            Comprehensive overview of system activities
+                        </small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body px-4 py-4">
+
+                <!-- Log Date -->
+                <div class="d-flex align-items-center mb-4">
+                    <i class="fas fa-calendar-alt text-primary me-2"></i>
+                    <span class="fw-semibold me-1">Log Date:</span>
+                    <span id="logDateDisplay_6" class="text-primary fw-bold"></span>
+                </div>
+
+                <!-- Data Added -->
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-warning bg-opacity-25 fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                        <i class="fas fa-edit text-warning"></i>
+                        Data Added
+                    </div>
+                    <div class="card-body p-3">
+                        <div id="changesRequestedd"
+                             class="bg-body-secondary rounded-3 p-3 small"
+                             style="max-height: 420px; overflow-y: auto;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 px-4 py-3">
+                <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade effect-scale modal-blur" id="addParcelDetailsModal" tabindex="-1"
+     aria-labelledby="activityDetailsLabel"
+     aria-hidden="true"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white rounded-top-4 px-4 py-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white bg-opacity-25 rounded-circle p-2">
+                        <i class="fas fa-chart-line fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0" id="t_audit_title1"></h5>
+                        <small class="opacity-75">
+                            Comprehensive overview of system activities
+                        </small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body px-4 py-4">
+
+                <!-- Log Date -->
+                <div class="d-flex align-items-center mb-4">
+                    <i class="fas fa-calendar-alt text-primary me-2"></i>
+                    <span class="fw-semibold me-1">Log Date:</span>
+                    <span id="logDateDisplay_2" class="text-primary fw-bold"></span>
+                </div>
+
+                <!-- Plotting Info -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-header bg-warning bg-opacity-25 fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                        <i class="fas fa-edit text-warning"></i>
+                        Plotting Info
+                    </div>
+                    <div class="card-body p-3">
+                        <div id="AddParcelchangesRequested"
+                             class="bg-body-secondary rounded-3 p-3 small"
+                             style="max-height: 360px; overflow-y: auto;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spatial Component -->
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-success text-white fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Spatial Component
+                    </div>
+                    <div class="card-body p-0 position-relative rounded-bottom-4">
+                        <div id="addParcelActivityMap"
+                             style="height: 450px; width: 100%;"></div>
+
+                        <div id="addParcelMapStatus"
+                             class="position-absolute bottom-0 start-0 w-100 px-3 py-2
+                                    bg-white bg-opacity-90 border-top small text-muted rounded-bottom-4">
+                            <i class="fas fa-sync fa-spin me-1"></i>
+                            Initializing map with layer controls…
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 px-4 py-3">
+                <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade effect-scale modal-blur" id="transactionUpdateModal" tabindex="-1"
+     aria-labelledby="transactionUpdateModalLabel"
+     aria-hidden="true"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white rounded-top-4 px-4 py-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white bg-opacity-25 rounded-circle p-2">
+                        <i class="fas fa-chart-line fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0" id="t_audit_title_update_transaction"></h5>
+                        <small class="opacity-75">
+                            Comprehensive overview of system activities
+                        </small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body px-4 py-4">
+
+                <!-- Log Date & Legend -->
+                <div class="row align-items-center mb-4">
+                    <div class="col-lg-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            <span class="fw-semibold me-1">Log Date:</span>
+                            <span id="logDateDisplay_3" class="text-primary fw-bold"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="d-flex justify-content-lg-end gap-3 flex-wrap small">
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="rounded"
+                                      style="background:#ffc107;width:16px;height:8px;"></span>
+                                <span>🟨 Changed</span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="rounded"
+                                      style="background:#28a745;width:16px;height:8px;"></span>
+                                <span>🟩 Added</span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="rounded"
+                                      style="background:#dee2e6;width:16px;height:8px;"></span>
+                                <span>⬜ Unchanged</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Comparison -->
+                <div class="row g-4">
+
+                    <!-- Original Data -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-primary bg-opacity-10 fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                                <i class="fas fa-trash-alt text-primary"></i>
+                                Original Data
+                            </div>
+                            <!-- <div class="card-header bg-primary text-primary fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                                <i class="fas fa-database text-primary"></i>
+                                Original Data
+                            </div> -->
+
+                            <div class="card-body p-3">
+                                <div id="UpdateTransactionoriginalData"
+                                     class="bg-body-secondary rounded-3 p-3 small"
+                                     style="max-height: 380px; overflow-y: auto;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modified Data -->
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-warning bg-opacity-25 fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                                <i class="fas fa-edit text-warning"></i>
+                                Modifications Made
+                            </div>
+                            <div class="card-body p-3">
+                                <div id="UpdateTransactionchangesRequested"
+                                     class="bg-body-secondary rounded-3 p-3 small"
+                                     style="max-height: 380px; overflow-y: auto;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 px-4 py-3">
+                <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade effect-scale modal-blur" id="transactionDeleteModal"
+     tabindex="-1"
+     aria-labelledby="transactionDeleteeModalLabel"
+     aria-hidden="true"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white rounded-top-4 px-4 py-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white bg-opacity-25 rounded-circle p-2">
+                        <i class="fas fa-chart-line fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0"
+                            id="t_audit_title_delete_transaction"></h5>
+                        <small class="opacity-75">
+                            Comprehensive overview of system activities
+                        </small>
+                    </div>
+                </div>
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body px-4 py-4">
+
+                <!-- Log Date -->
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar-alt text-primary me-2"></i>
+                            <span class="fw-semibold me-1">Log Date:</span>
+                            <span id="logDateDisplay_4" class="text-primary fw-bold"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deleted Data -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-header bg-danger bg-opacity-10 fw-semibold rounded-top-4 d-flex align-items-center gap-2">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                                Deleted Data
+                            </div>
+                            <div class="card-body p-3">
+                                <div id="deleteTransactionoriginalData"
+                                     class="bg-body-secondary rounded-3 p-3 small"
+                                     style="max-height: 380px; overflow-y: auto;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 px-4 py-3">
+                <button type="button"
+                        class="btn btn-outline-danger px-4"
+                        data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i> Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
 
 </div>
 

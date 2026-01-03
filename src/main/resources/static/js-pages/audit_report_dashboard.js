@@ -266,10 +266,10 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
                   .css('width', '100%');
               }
             },
-            {
-              extend: 'colvis',
-              text: 'Show / Hide Columns'
-            },
+            // {
+            //   extend: 'colvis',
+            //   text: 'Show / Hide Columns'
+            // },
             'pageLength'
           ]
         }).draw();
@@ -404,10 +404,10 @@ $(document).off('click', '#view_activities_By_usser').on('click', '#view_activit
                 .css('width', '100%');
             }
           },
-          {
-            extend: 'colvis',
-            text: 'Show / Hide Columns'
-          },
+        //   {
+        //     extend: 'colvis',
+        //     text: 'Show / Hide Columns'
+        //   },
           'pageLength'
         ]
       }).draw();
@@ -1623,7 +1623,7 @@ function AddParcelDetailsDisplay(changesData, originalData) {
                     <div class="col-md-6 mb-2">
                         <label class="text-muted small mb-1">IP Address</label>
                         <div class="value-display">
-                            <span class="badge badge-light border">${changesData.ip_address || 'N/A'}</span>
+                            <span class="value-display font-weight-bold text-dark">${changesData.ip_address || 'N/A'}</span>
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
