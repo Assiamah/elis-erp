@@ -7192,3 +7192,859 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="generate_certificate_number" tabindex="-1"
+     aria-labelledby="generateCertificateNumberLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="generateCertificateNumberLabel">
+          <i class="fas fa-hashtag me-2"></i>
+          Generate Certificate Number
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>Certificate Number Generation</strong>
+              <p class="mb-0 mt-2">Select certificate type to generate a unique certificate number.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Certificate Type Selection -->
+        <div class="mb-4">
+          <label for="lc_txt_type_of_certificate" class="form-label fw-medium">
+            <i class="fas fa-certificate me-1"></i>
+            Certificate Type
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-file-alt"></i>
+            </span>
+            <select name="lc_txt_type_of_certificate" id="lc_txt_type_of_certificate" 
+                    class="form-select" required>
+              <option value="${certificate_type == 'Individual' ? '' : empty fn:trim(certificate_type) ? '' : certificate_type}">
+                ${certificate_type == 'Individual' ? '-- Select Certificate Type --' : empty fn:trim(certificate_type) ? '-- Select Certificate Type --' : certificate_type}
+              </option>
+              <option value="Provisional Certificate">Provisional Certificate</option>
+              <option value="Land Certificate">Land Certificate</option>
+              <option value="Substituted Certificate">Substituted Certificate</option>
+            </select>
+          </div>
+          <div class="form-text">
+            <i class="fas fa-question-circle me-1"></i>
+            Select the type of certificate to generate a number for
+          </div>
+        </div>
+        
+        <!-- Generated Certificate Number -->
+        <div class="mb-4">
+          <label class="form-label fw-medium">
+            <i class="fas fa-hashtag me-1"></i>
+            Certificate Number
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-tag"></i>
+            </span>
+            <input type="text" class="form-control bg-light" 
+                   id="lc_txt_certificate_number" readonly 
+                   value="${certificate_number}"
+                   placeholder="Will be generated after selection">
+          </div>
+          <div class="form-text">
+            <i class="fas fa-lock me-1"></i>
+            Auto-generated certificate number based on selected type
+          </div>
+        </div>
+        
+        <!-- Generate Button -->
+        <div class="mt-4">
+          <button type="button" id="lc_btn_generate_certificate_number_only" 
+                  class="btn btn-primary w-100 py-3"
+                  ${not empty certificate_number and certificate_number != 'null' and not fn:contains(certificate_number, '-') ? 'disabled' : ''}>
+            <i class="fas fa-magic me-2"></i>
+            Generate Certificate Number
+          </button>
+          <div class="form-text mt-2 text-center">
+            <c:if test="${not empty certificate_number and certificate_number != 'null' and not fn:contains(certificate_number, '-')}">
+              <i class="fas fa-check-circle text-success me-1"></i>
+              <span class="text-success">Certificate number already generated</span>
+            </c:if>
+            <c:if test="${empty certificate_number or certificate_number == 'null' or fn:contains(certificate_number, '-')}">
+              <i class="fas fa-lightbulb text-warning me-1"></i>
+              <span class="text-warning">Click to generate a new certificate number</span>
+            </c:if>
+          </div>
+        </div>
+        
+        <!-- Certificate Types Explanation -->
+        <div class="alert alert-light border mt-4">
+          <h6 class="mb-3">
+            <i class="fas fa-lightbulb text-primary me-2"></i>
+            Certificate Types Explained
+          </h6>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="text-center p-2">
+                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                <div class="small fw-bold">Provisional</div>
+                <small class="text-muted">Temporary certificate</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center p-2">
+                <i class="fas fa-landmark fa-2x text-success mb-2"></i>
+                <div class="small fw-bold">Land Certificate</div>
+                <small class="text-muted">Permanent land title</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center p-2">
+                <i class="fas fa-exchange-alt fa-2x text-info mb-2"></i>
+                <div class="small fw-bold">Substituted</div>
+                <small class="text-muted">Replacement certificate</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="generate_volume_and_folio" tabindex="-1"
+     aria-labelledby="generateVolumeFolioLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="generateVolumeFolioLabel">
+          <i class="fas fa-book-open me-2"></i>
+          Generate Volume and Folio
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>Volume and Folio Numbers</strong>
+              <p class="mb-0 mt-2">Generate unique volume and folio numbers for registry referencing.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Volume Number -->
+        <div class="mb-4">
+          <label for="lc_txt_volume_number" class="form-label fw-medium">
+            <i class="fas fa-book me-1"></i>
+            Volume Number
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-hashtag"></i>
+            </span>
+            <input type="text" class="form-control bg-light" 
+                   id="lc_txt_volume_number" readonly 
+                   value="${volume_number}"
+                   placeholder="Will be generated">
+          </div>
+          <div class="form-text">
+            <i class="fas fa-layer-group me-1"></i>
+            Registry volume number for physical file organization
+          </div>
+        </div>
+        
+        <!-- Folio Number -->
+        <div class="mb-4">
+          <label for="lc_txt_folio_number" class="form-label fw-medium">
+            <i class="fas fa-file-alt me-1"></i>
+            Folio Number
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-list-ol"></i>
+            </span>
+            <input type="text" class="form-control bg-light" 
+                   id="lc_txt_folio_number" readonly 
+                   value="${folio_number}"
+                   placeholder="Will be generated">
+          </div>
+          <div class="form-text">
+            <i class="fas fa-file me-1"></i>
+            Page or file number within the registry volume
+          </div>
+        </div>
+        
+        <!-- Generate Button -->
+        <div class="mt-4">
+          <button type="button" id="lc_btn_generate_volume_folio_number_only" 
+                  class="btn btn-primary w-100 py-3"
+                  ${not empty volume_number and volume_number != 'null' and not fn:contains(volume_number, '-') ? 'disabled' : ''}>
+            <i class="fas fa-gears me-2"></i>
+            Generate Volume & Folio
+          </button>
+          <div class="form-text mt-2 text-center">
+            <c:choose>
+              <c:when test="${not empty volume_number and volume_number != 'null' and not fn:contains(volume_number, '-')}">
+                <i class="fas fa-check-circle text-success me-1"></i>
+                <span class="text-success">Volume and folio numbers already generated</span>
+              </c:when>
+              <c:otherwise>
+                <i class="fas fa-lightbulb text-warning me-1"></i>
+                <span class="text-warning">Click to generate new volume and folio numbers</span>
+              </c:otherwise>
+            </c:choose>
+          </div>
+        </div>
+        
+        <!-- Registry Information -->
+        <!-- <div class="alert alert-light border mt-4">
+          <h6 class="mb-3">
+            <i class="fas fa-archive text-primary me-2"></i>
+            About Registry Numbers
+          </h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-2">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-2">
+                  <i class="fas fa-book"></i>
+                </div>
+                <div>
+                  <strong>Volume Number</strong>
+                  <p class="small text-muted mb-0">Identifies the physical registry book</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex align-items-start mb-2">
+                <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 me-2">
+                  <i class="fas fa-file"></i>
+                </div>
+                <div>
+                  <strong>Folio Number</strong>
+                  <p class="small text-muted mb-0">Identifies the specific page within the volume</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="enter_encumbrance_transaction_on_mother" tabindex="-1"
+     aria-labelledby="encumbranceTransactionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="encumbranceTransactionModalLabel">
+          <i class="fas fa-file-contract me-2"></i>
+          Encumbrance Transactions on Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Header with Add Button -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h6 class="mb-0">
+              <i class="fas fa-list-ul me-2 text-danger"></i>
+              Encumbrance Records
+            </h6>
+            <small class="text-muted">List of all encumbrance transactions on the mother file</small>
+          </div>
+          <button type="button" class="btn btn-danger newEncumberancesModalonMother" 
+                  data-bs-toggle="tooltip" data-bs-placement="top" title="Add New Encumbrance">
+            <i class="fas fa-plus-circle me-2"></i>
+            Add Encumbrance
+          </button>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="table table-hover table-sm" id="lrd_encumberance_details_dataTable">
+            <thead class="table-light">
+              <tr>
+                <th width="15%">
+                  <i class="fas fa-hashtag me-1"></i>
+                  Registered No.
+                </th>
+                <th width="15%">
+                  <i class="fas fa-calendar-alt me-1"></i>
+                  Date of Instrument
+                </th>
+                <th width="15%">
+                  <i class="fas fa-calendar-check me-1"></i>
+                  Date of Registration
+                </th>
+                <th width="40%">
+                  <i class="fas fa-file-alt me-1"></i>
+                  Memorials
+                </th>
+                <!-- <th width="15%">
+                  <i class="fas fa-sticky-note me-1"></i>
+                  Remarks
+                </th> -->
+                <th width="10%">
+                  <i class="fas fa-list-ol me-1"></i>
+                  Entry No.
+                </th>
+                <th width="5%" class="text-center">
+                  <i class="fas fa-cog me-1"></i>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data will be populated here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="text-center py-5" id="noEncumbrancesMc">
+          <div class="mb-3">
+            <i class="fas fa-file-contract fa-3x text-muted"></i>
+          </div>
+          <h6 class="text-muted mb-2">No Encumbrance Records Found</h6>
+          <p class="text-muted small">Click "Add Encumbrance" to create new encumbrance transactions</p>
+        </div>
+        
+        <!-- Loading State -->
+        <div class="text-center py-5 d-none" id="loadingEncumbrances">
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 text-muted">Loading encumbrance records...</p>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="verify_transaction_on_mother" tabindex="-1"
+     aria-labelledby="verifyTransactionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="verifyTransactionModalLabel">
+          <i class="fas fa-check-circle me-2"></i>
+          Verify Transaction on Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>Linked Transactions Verification</strong>
+              <p class="mb-0 mt-2">View and verify all transactions linked to this mother file.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="table table-hover table-sm" id="linkdetails_dataTable">
+            <thead class="table-light">
+              <tr>
+                <th width="20%">
+                  <i class="fas fa-hashtag me-1"></i>
+                  Job Number
+                </th>
+                <th width="20%">
+                  <i class="fas fa-file-alt me-1"></i>
+                  Case Number
+                </th>
+                <th width="25%">
+                  <i class="fas fa-link me-1"></i>
+                  Relationship Type
+                </th>
+                <th width="20%">
+                  <i class="fas fa-calendar me-1"></i>
+                  Date Linked
+                </th>
+                <th width="15%" class="text-center">
+                  <i class="fas fa-cog me-1"></i>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
+                <tr>
+                  <td>
+                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                      ${mother_to_child_link_row.job_number}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="fw-medium">${mother_to_child_link_row.mc_case_number}</span>
+                  </td>
+                  <td>
+                    <c:choose>
+                      <c:when test="${mother_to_child_link_row.mc_type_of_relationship == 'Mother-Child'}">
+                        <span class="badge bg-success">
+                          <i class="fas fa-link me-1"></i>
+                          ${mother_to_child_link_row.mc_type_of_relationship}
+                        </span>
+                      </c:when>
+                      <c:otherwise>
+                        <span class="badge bg-info">
+                          ${mother_to_child_link_row.mc_type_of_relationship}
+                        </span>
+                      </c:otherwise>
+                    </c:choose>
+                  </td>
+                  <td>
+                    <div class="small text-muted">
+                      <i class="fas fa-clock me-1"></i>
+                      ${mother_to_child_link_row.created_date}
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <button type="button" class="btn btn-outline-primary btn-sm btn-view-mother-Child-details"
+                            data-job_number="${mother_to_child_link_row.mc_job_number}"
+                            data-case_number="${mother_to_child_link_row.mc_case_number}"
+                            data-transaction_number="[0, 0]"
+                            business_process_sub_name="-"
+                            data-bs-toggle="modal"
+                            data-bs-target="#transitional_certificate_template"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="View Full Case Details">
+                      <i class="fas fa-eye me-1"></i>
+                      View
+                    </button>
+                  </td>
+                </tr>
+              </c:forEach>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Empty State -->
+        <c:if test="${empty mother_to_child_link_list}">
+          <div class="text-center py-5">
+            <div class="mb-3">
+              <i class="fas fa-search fa-3x text-muted"></i>
+            </div>
+            <h6 class="text-muted mb-2">No Linked Transactions Found</h6>
+            <p class="text-muted small">No transactions are currently linked to this mother file</p>
+          </div>
+        </c:if>
+        
+        <!-- Statistics (Optional) -->
+        <c:if test="${not empty mother_to_child_link_list}">
+          <div class="alert alert-light border mt-4">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="text-center">
+                  <div class="h4 fw-bold text-primary mb-1">${fn:length(mother_to_child_link_list)}</div>
+                  <div class="small text-muted">Total Links</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-center">
+                  <div class="h4 fw-bold text-success mb-1">
+                    <c:set var="motherChildCount" value="0" />
+                    <c:forEach items="${mother_to_child_link_list}" var="link">
+                      <c:if test="${link.mc_type_of_relationship == 'Mother'}">
+                        <c:set var="motherChildCount" value="${motherChildCount + 1}" />
+                      </c:if>
+                    </c:forEach>
+                    ${motherChildCount}
+                  </div>
+                  <div class="small text-muted">Mother-Child Links</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-center">
+                  <c:set var="latestDate" value="" />
+                  <c:forEach items="${mother_to_child_link_list}" var="link">
+                    <c:if test="${empty latestDate or link.created_date gt latestDate}">
+                      <c:set var="latestDate" value="${link.created_date}" />
+                    </c:if>
+                  </c:forEach>
+                  <div class="small text-muted">Last Linked</div>
+                  <div class="small fw-medium">${latestDate}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </c:if>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="enter_mortgage_transaction" tabindex="-1"
+     aria-labelledby="mortgageTransactionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="mortgageTransactionModalLabel">
+                    <i class="fas fa-file-contract me-2"></i>
+                    Mortgage Transaction
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Header with Add Button -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h6 class="mb-0">
+                            <i class="fas fa-list-alt me-2 text-primary"></i>
+                            Memorial Records
+                        </h6>
+                        <small class="text-muted">Manage memorial transactions for mortgage processing</small>
+                    </div>
+                    <button type="button" class="btn btn-primary newMemorialsModal" 
+                            id="getMCRegistered_no"
+                            title="Add New Memorial">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Add Memorial
+                    </button>
+                </div>
+                
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm" id="lrd_memorial_details_dataTable_3">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="15%">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    Registered No.
+                                </th>
+                                <th width="30%">
+                                    <i class="fas fa-file-alt me-1"></i>
+                                    Memorials
+                                </th>
+                                <th width="15%">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Date of Instrument
+                                </th>
+                                <th width="15%">
+                                    <i class="fas fa-calendar-check me-1"></i>
+                                    Date of Registration
+                                </th>
+                                <th width="10%">
+                                    <i class="fas fa-list-ol me-1"></i>
+                                    Entry No.
+                                </th>
+                                <th width="15%" class="text-center">
+                                    <i class="fas fa-cog me-1"></i>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${lrd_memorials_section}" var="memorials_section">
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger">
+                                            ${memorials_section.m_registered_no}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 250px;">
+                                            ${memorials_section.m_memorials}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small">
+                                            <i class="fas fa-calendar text-muted me-1"></i>
+                                            ${memorials_section.m_date_of_instrument}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small">
+                                            <i class="fas fa-calendar-check text-muted me-1"></i>
+                                            ${memorials_section.m_date_of_registration}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">${memorials_section.m_entry_number}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-outline-danger btn-sm editMemorialsModal"
+                                                data-mid="${memorials_section.mid}"
+                                                data-m_case_number="${memorials_section.m_case_number}"
+                                                data-m_registered_no="${memorials_section.m_registered_no}"
+                                                data-m_memorials="${memorials_section.m_memorials}"
+                                                data-m_date_of_registration="${memorials_section.m_date_of_registration}"
+                                                data-m_date_of_instrument="${memorials_section.m_date_of_instrument}"
+                                                data-m_back="${memorials_section.m_back}"
+                                                data-m_remarks="${memorials_section.m_remarks}"
+                                                data-m_entry_number="${memorials_section.m_entry_number}"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Edit Memorial">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Empty State -->
+                <c:if test="${empty lrd_memorials_section}">
+                    <div class="text-center py-5" id="noMemorialsMD">
+                        <div class="mb-3">
+                            <i class="fas fa-file-contract fa-3x text-muted"></i>
+                        </div>
+                        <h6 class="text-muted mb-2">No Memorial Records Found</h6>
+                        <p class="text-muted small">Click "Add Memorial" to create new mortgage transaction records</p>
+                    </div>
+                </c:if>
+                
+                <!-- Information Alert -->
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-4">
+                    <div class="d-flex">
+                        <i class="fas fa-info-circle me-3 mt-1"></i>
+                        <div>
+                            <strong>About Mortgage Memorials:</strong>
+                            <p class="mb-0 mt-2">
+                                Memorials record the details of mortgage transactions including registration dates, 
+                                instrument details, and entry numbers for legal documentation.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between w-100">
+                    <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="compose_mmemo" tabindex="-1"
+     aria-labelledby="previewMemoModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="previewMemoModalLabel">
+          <i class="fas fa-file-alt me-2"></i>
+          Preview Memo
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body text-center p-5">
+        
+        <!-- Memo Icon -->
+        <div class="mb-4">
+          <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
+            <i class="fas fa-file-invoice fa-3x"></i>
+          </div>
+          <h5 class="mb-3">Memo Generation</h5>
+          <p class="text-muted mb-4">
+            Generate an official memo document for this transaction.
+          </p>
+        </div>
+        
+        <!-- Generate Memo Button -->
+        <div class="mb-4">
+          <button type="button" id="lc_btn_generate_memo_for_certificate_2" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-pdf me-2"></i>
+            Generate Memo
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-info-circle me-1"></i>
+            Creates an official memo document in pdf format
+          </div>
+        </div>
+        
+        <!-- Memo Information -->
+        <!-- <div class="alert alert-light border">
+          <div class="d-flex">
+            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+            <div class="text-start">
+              <strong class="text-dark">Memo Features:</strong>
+              <ul class="mb-0 mt-2 ps-3">
+                <li class="text-muted">Professional memo format</li>
+                <li class="text-muted">Official letterhead and signatures</li>
+                <li class="text-muted">Downloadable Word document</li>
+                <li class="text-muted">Ready for printing and distribution</li>
+              </ul>
+            </div>
+          </div>
+        </div> -->
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="preview_memo" tabindex="-1"
+     aria-labelledby="previewMemoModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="previewMemoModalLabel">
+          <i class="fas fa-file-alt me-2"></i>
+          Preview Memo
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body text-center p-5">
+        
+        <!-- Memo Icon -->
+        <div class="mb-4">
+          <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
+            <i class="fas fa-file-invoice fa-3x"></i>
+          </div>
+          <h5 class="mb-3">Memo Generation</h5>
+          <p class="text-muted mb-4">
+            Generate an official memo document for this transaction.
+          </p>
+        </div>
+        
+        <!-- Generate Memo Button -->
+        <div class="mb-4">
+          <button type="button" id="lc_btn_generate_memo_for_certificate_2" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-pdf me-2"></i>
+            Generate Memo
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-info-circle me-1"></i>
+            Creates an official memo document in pdf format
+          </div>
+        </div>
+        
+        <!-- Memo Information -->
+        <!-- <div class="alert alert-light border">
+          <div class="d-flex">
+            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+            <div class="text-start">
+              <strong class="text-dark">Memo Features:</strong>
+              <ul class="mb-0 mt-2 ps-3">
+                <li class="text-muted">Professional memo format</li>
+                <li class="text-muted">Official letterhead and signatures</li>
+                <li class="text-muted">Downloadable Word document</li>
+                <li class="text-muted">Ready for printing and distribution</li>
+              </ul>
+            </div>
+          </div>
+        </div> -->
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

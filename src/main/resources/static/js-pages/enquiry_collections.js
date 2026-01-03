@@ -60,7 +60,7 @@ $(document).ready(function() {
     }
 
     function performEnquirySearch(searchType, searchValue) {
-        showLoadingState($('#btnEnquiryJobSearch'), 'Searching...');
+        //showLoadingState($('#btnEnquiryJobSearch'), 'Searching...');
 
         $.ajax({
             type: "POST",
@@ -76,7 +76,7 @@ $(document).ready(function() {
             },
             error: handleAjaxError,
             complete: function() {
-                resetLoadingState($('#btnEnquiryJobSearch'), 'Search');
+                //resetLoadingState($('#btnEnquiryJobSearch'), 'Search');
             }
         });
     }
@@ -220,13 +220,13 @@ $(document).ready(function() {
 							<li><hr class="dropdown-divider"></li>
 
 							<!-- Add Fees -->
-							<li>
+							<!--<li>
 								<a class="dropdown-item"
 								href="javascript:void(0);">
 									<i class="ri-money-dollar-box-line me-2"></i>
 									Add Fees
 								</a>
-							</li>
+							</li>-->
 
 						</ul>
 					</div>
@@ -427,7 +427,7 @@ $(document).ready(function() {
 	}
 
 	function saveCollectionForPaymentComment(jobNumber, comment) {
-		showLoadingState($('#btn_cpf_save_comment'), 'Saving...');
+		//showLoadingState($('#btn_cpf_save_comment'), 'Saving...');
 		
 		$.ajax({
 			type: "POST",
@@ -445,7 +445,7 @@ $(document).ready(function() {
 			},
 			error: handleAjaxError,
 			complete: function() {
-				resetLoadingState($('#btn_cpf_save_comment'), 'Save Comment');
+				//resetLoadingState($('#btn_cpf_save_comment'), 'Save Comment');
 			}
 		});
 	}
@@ -459,9 +459,251 @@ $(document).ready(function() {
 	}
 
 	// ==================== COLLECTION MODAL ====================
-	$('#collectionModal').on('show.bs.modal', function(event) {
+	let currentStep = 1;
+    const totalSteps = 3;
+    
+    // Initialize stepper
+    function initializeStepper() {
+        updateStepper();
+        updateButtons();
+    }
+    
+    // Update stepper UI
+    function updateStepper() {
+        $('.wizard-steps-collection .step').removeClass('active');
+        $('.step-content-collection').removeClass('active');
+        
+        $(`.wizard-steps-collection .step[data-step="${currentStep}"]`).addClass('active');
+        $(`#step-${currentStep}-content-collection`).addClass('active');
+        
+        // Show/hide complete button
+        if (currentStep === totalSteps) {
+            $('#btnCompleteProcessCollection').show();
+            $('#btnNextStepCollection').hide();
+        } else {
+            $('#btnCompleteProcessCollection').hide();
+            $('#btnNextStepCollection').show();
+        }
+    }
+    
+    // Update button states
+    function updateButtons() {
+        $('#btnPrevStepCollection').prop('disabled', currentStep === 1);
+    }
+    
+    // Next button click
+    $('#btnNextStepCollection').on('click', function() {
+        if (validateCurrentStep()) {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStepper();
+                updateButtons();
+            }
+        }
+    });
+    
+    // Previous button click
+    $('#btnPrevStepCollection').on('click', function() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateStepper();
+            updateButtons();
+        }
+    });
+    
+    // Complete button click
+    $('#btnCompleteProcessCollection').on('click', function() {
+        if (validateCurrentStep()) {
+            $('#frmSaveCollection').submit();
+        }
+    });
+    
+    // Step validation
+    function validateCurrentStep() {
+        let isValid = true;
+        
+        switch(currentStep) {
+            case 1:
+                // Application details step - always valid (readonly)
+                break;
+                
+            case 2:
+                // Identity verification - check if parties exist
+                if ($('#noPartiesRow').is(':visible')) {
+                    showNotification('No parties found for verification', 'warning');
+                    isValid = false;
+                }
+                break;
+                
+            case 3:
+                // Confirmation step - validate checklist and form
+                const uncheckedItems = $('.collection-checklist-item:required:not(:checked)');
+                if (uncheckedItems.length > 0) {
+                    showNotification('Please complete all required checklist items', 'warning');
+                    isValid = false;
+                }
+                
+                const form = document.getElementById('frmSaveCollection');
+                if (!form.checkValidity()) {
+                    form.classList.add('was-validated');
+                    isValid = false;
+                }
+                break;
+        }
+        
+        return isValid;
+    }
+    
+    // Update checklist row creation function
+    function createCollectionChecklistRow(checklist, index) {
+        return `
+            <tr>
+                <td class="ps-4">
+                    <div class="d-flex align-items-center">
+                        <div class="form-check">
+                            <input class="form-check-input collection-checklist-item" 
+                                   type="checkbox" id="check_${index}" 
+                                   ${checklist.required ? 'required' : ''}>
+                            <label class="form-check-label ms-2" for="check_${index}">
+                                ${escapeHtml(checklist.collection_of_application_checklist_name || '')}
+                            </label>
+                        </div>
+                    </div>
+                </td>
+                <td class="pe-4 text-center">
+                    <div class="form-check d-inline-block">
+                        <input class="form-check-input" type="checkbox" id="confirm_${index}">
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+    
+    // Update application party row creation function
+    function createApplicationPartyRow(party, index) {
+        return `
+            <tr class="small">
+                <td class="ps-4">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0 me-3">
+                            <div class="avatar-title bg-light rounded-circle">
+                                <i class="fas fa-user text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="fw-medium small">${escapeHtml(party.ar_name || '')}</h6>
+                            <small class="text-muted">Party</small>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge bg-info bg-opacity-10 text-info">
+                        ${escapeHtml(party.ar_gender || 'N/A')}
+                    </span>
+                </td>
+                <td>
+                    <small class="d-block">${escapeHtml(party.ar_cell_phone || 'N/A')}</small>
+                </td>
+                <td>
+                    <span class="badge bg-light text-dark">
+                        ${escapeHtml(party.ar_id_type || 'N/A')}
+                    </span>
+                </td>
+                <td>
+                    <code class="bg-light p-1 rounded">${escapeHtml(party.ar_id_number || 'N/A')}</code>
+                </td>
+                <td class="pe-4">
+                    <span class="badge bg-primary">
+                        ${escapeHtml(party.type_of_party || 'N/A')}
+                    </span>
+                </td>
+            </tr>
+        `;
+    }
+    
+    // Update populateCollectionData function
+    function populateCollectionData(response) {
+        try {
+            const data = JSON.parse(response);
+            
+            // Reset stepper
+            currentStep = 1;
+            initializeStepper();
+
+			//console.log(data);
+            
+            // Update counts
+            const checklistCount = data.collection_checklist && Array.isArray(data.collection_checklist) ? data.collection_checklist.length : 0;
+            const partyCount = data.application_parties && Array.isArray(data.application_parties) ? data.application_parties.length : 0;
+            
+            $('#checklistCount').text(`${checklistCount} Item${checklistCount !== 1 ? 's' : ''}`);
+            $('#partyCount').text(`${partyCount} Part${partyCount !== 1 ? 'ies' : 'y'}`);
+            
+            // Populate collection checklist
+            const checklistTable = $('#collection-checklist tbody');
+            const noChecklistRow = $('#noChecklistRow');
+            checklistTable.find('tr:not(#noChecklistRow)').remove();
+            
+            if (checklistCount > 0) {
+                noChecklistRow.hide();
+                data.collection_checklist.forEach((checklist, index) => {
+                    checklistTable.append(createCollectionChecklistRow(checklist, index));
+                });
+            } else {
+                noChecklistRow.show();
+            }
+            
+            // Populate application parties
+            const partiesTable = $('#collection-parties tbody');
+            const noPartiesRow = $('#noPartiesRow');
+            partiesTable.find('tr:not(#noPartiesRow)').remove();
+            
+            if (partyCount > 0) {
+                noPartiesRow.hide();
+                data.application_parties.forEach((party, index) => {
+                    partiesTable.append(createApplicationPartyRow(party, index));
+                });
+            } else {
+                noPartiesRow.show();
+            }
+            
+            // Populate application details
+            if (data.application_details) {
+                const details = data.application_details;
+                $("#col_applicant_name").val(details.ar_name || '');
+                $("#col_application_type").val(details.business_process_name || '');
+                $("#col_job_number").val(details.job_number || '');
+                $("#col_division").val(details.current_division_of_application || '');
+                $("#col_job_status").val(details.current_application_status || '');
+                $("#col_collection_status").val(details.is_collected || '');
+                $("#col_forwarded_by").val(details.job_forwarded_by || '');
+                $("#col_date_forwarded").val(details.job_datesend || '');
+                $("#col_current_officer").val(details.current_officer || '');
+                $("#col_received_by").val(details.job_recieved_by || '');
+                $("#col_received_date").val(details.job_received_date || '');
+                $("#col_carbinet").val(details.file_number || '');
+                $("#col_shelve").val(details.shelve || '--');
+                $("#col_filed").val(details.is_filed || '');
+                $("#col_filed_date").val(details.filed_date || '');
+                $("#col_batchnumber").val(details.batch_number || '');
+                $("#col_batched_date").val(details.batch_date || '');
+                $("#col_batched_by").val(details.batched_by || '');
+                // $("#col_collected_by").val(details.collected_by || '');
+                $("#col_id_type").val(details.collected_by_id_type || '');
+                $("#col_id_number").val(details.collected_by_id_number || '');
+                $("#col_phone_number").val(details.collected_by_phone_number || '');
+            }
+            
+        } catch (error) {
+            console.error('Error parsing collection data:', error);
+            showNotification('Error loading collection details', 'error');
+        }
+    }
+    
+    // Initialize when modal shows
+    $('#collectionModal').on('show.bs.modal', function(event) {
 		const jobNumber = $(event.relatedTarget).data('target-id');
-		
+    
 		if (!jobNumber) {
 			console.error('No job number provided for collection modal');
 			return;
@@ -469,7 +711,8 @@ $(document).ready(function() {
 
 		resetCollectionModal();
 		loadCollectionDetails(jobNumber);
-	});
+		initializeStepper();
+    });
 
 	function resetCollectionModal() {
 		const fields = [
@@ -485,11 +728,10 @@ $(document).ready(function() {
 		fields.forEach(selector => $(selector).val(''));
 		clearTableRows($('#collection-checklist'));
 		clearTableRows($('#collection-parties'));
-		$('#smartwizardcollection').smartWizard("reset");
 	}
 
 	function loadCollectionDetails(jobNumber) {
-		showLoadingState($('#collectionModal .modal-content'), 'Loading...');
+		//showLoadingState($('#collectionModal .modal-content'), 'Loading...');
 		
 		$.ajax({
 			type: "POST",
@@ -504,85 +746,18 @@ $(document).ready(function() {
 			},
 			error: handleAjaxError,
 			complete: function() {
-				resetLoadingState($('#collectionModal .modal-content'), '');
+				//resetLoadingState($('#collectionModal .modal-content'), '');
 			}
 		});
 	}
-
-	function populateCollectionData(response) {
-		try {
-			const data = JSON.parse(response);
-			
-			// Populate collection checklist
-			if (data.collection_checklist && Array.isArray(data.collection_checklist)) {
-				const checklistTable = $('#collection-checklist');
-				data.collection_checklist.forEach(checklist => {
-					checklistTable.append(createCollectionChecklistRow(checklist));
-				});
-			}
-			
-			// Populate application parties
-			if (data.application_parties && Array.isArray(data.application_parties)) {
-				const partiesTable = $('#collection-parties');
-				data.application_parties.forEach(party => {
-					partiesTable.append(createApplicationPartyRow(party));
-				});
-			}
-			
-			// Populate application details
-			if (data.application_details) {
-				const details = data.application_details;
-				$("#col_applicant_name").val(details.ar_name || '');
-				$("#col_application_type").val(details.business_process_name || '');
-				$("#col_job_number").val(details.job_number || '');
-				$("#col_division").val(details.current_division_of_application || '');
-				$("#col_job_purpose").val(details.job_purpose || '');
-				$("#col_job_status").val(details.current_application_status || '');
-				$("#col_collection_status").val(details.is_collected || '');
-				$("#col_forwarded_by").val(details.job_forwarded_by || '');
-				$("#col_date_forwarded").val(details.job_datesend || '');
-				$("#col_current_officer").val(details.current_officer || '');
-				$("#col_received_by").val(details.job_recieved_by || '');
-				$("#col_received_date").val(details.job_received_date || '');
-				$("#col_carbinet").val(details.file_number || '');
-				$("#col_shelve").val(details.shelve || '--');
-				$("#col_filed").val(details.is_filed || '');
-				$("#col_filed_date").val(details.filed_date || '');
-				$("#col_batchnumber").val(details.batch_number || '');
-				$("#col_batched_date").val(details.batch_date || '');
-				$("#col_batched_by").val(details.batched_by || '');
-				$("#col_collected_by").val(details.collected_by || '');
-				$("#col_id_type").val(details.collected_by_id_type || '');
-				$("#col_id_number").val(details.collected_by_id_number || '');
-				$("#col_phone_number").val(details.collected_by_phone_number || '');
-			}
-		} catch (error) {
-			console.error('Error parsing collection data:', error);
-			showNotification('Error loading collection details', 'error');
-		}
-	}
-
-	function createCollectionChecklistRow(checklist) {
-		return `
-			<tr>
-				<td>${escapeHtml(checklist.collection_of_application_checklist_name || '')}</td>
-				<td><input type="checkbox" required class="collection-checklist-item"></td>
-			</tr>
-		`;
-	}
-
-	function createApplicationPartyRow(party) {
-		return `
-			<tr>
-				<td>${escapeHtml(party.ar_name || '')}</td>
-				<td>${escapeHtml(party.ar_gender || '')}</td>
-				<td>${escapeHtml(party.ar_cell_phone || '')}</td>
-				<td>${escapeHtml(party.ar_id_type || '')}</td>
-				<td>${escapeHtml(party.ar_id_number || '')}</td>
-				<td>${escapeHtml(party.type_of_party || '')}</td>
-			</tr>
-		`;
-	}
+    
+    // Reset when modal hides
+    $('#collectionModal').on('hidden.bs.modal', function(event) {
+        currentStep = 1;
+        $('.step-content-collection').removeClass('active');
+        $('#btnCompleteProcessCollection').hide();
+        $('#btnNextStepCollection').show();
+    });
 
 	function formatDate(dateString) {
         if (!dateString) return 'Date not available';
@@ -652,39 +827,176 @@ $(document).ready(function() {
 	}
 
 	function saveCollectionDetails(jobNumber, collectedBy, idType, idNumber, phoneNumber) {
-		showLoadingState($('#frmSaveCollection button[type="submit"]'), 'Saving...');
-		
-		$.ajax({
-			type: "POST",
-			url: "Case_Management_Serv",
-			data: {
-				request_type: 'load_save_collection_details_by_job_number',
-				job_number: jobNumber,
-				collected_by: collectedBy,
-				collected_by_id_type: idType,
-				collected_by_id_number: idNumber,
-				collected_by_phone_number: phoneNumber
-			},
-			cache: false,
-			success: function(response) {
-				try {
-					const data = JSON.parse(response);
-					if (data.msg === "SUCCESS") {
-						showNotification('Collection details saved successfully', 'success');
-						$('#collectionModal').modal('hide');
-						resetCollectionModal();
-					} else {
-						showNotification(data.msg || 'Error saving collection details', 'error');
-					}
-				} catch (error) {
-					showNotification('Error processing response', 'error');
-				}
-			},
-			error: handleAjaxError,
-			complete: function() {
-				resetLoadingState($('#frmSaveCollection button[type="submit"]'), 'Save Collection');
+		// Show confirmation dialog
+		Swal.fire({
+			title: 'Confirm Collection',
+			html: `
+				<div class="text-start">
+					<p class="mb-3">Are you sure you want to save these collection details?</p>
+					<div class="card border-0 bg-light mb-3">
+						<div class="card-body p-3">
+							<table class="table table-sm table-borderless mb-0">
+								<tbody>
+									<tr>
+										<td class="text-muted" style="width: 120px;"><small>Job Number:</small></td>
+										<td><strong>${escapeHtml(jobNumber)}</strong></td>
+									</tr>
+									<tr>
+										<td class="text-muted"><small>Collected By:</small></td>
+										<td><strong>${escapeHtml(collectedBy)}</strong></td>
+									</tr>
+									<tr>
+										<td class="text-muted"><small>ID Type:</small></td>
+										<td><strong>${escapeHtml(idType)}</strong></td>
+									</tr>
+									<tr>
+										<td class="text-muted"><small>ID Number:</small></td>
+										<td><strong>${escapeHtml(idNumber)}</strong></td>
+									</tr>
+									<tr>
+										<td class="text-muted"><small>Phone:</small></td>
+										<td><strong>${escapeHtml(phoneNumber)}</strong></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="alert alert-warning py-2 mb-0">
+						<i class="fas fa-exclamation-triangle me-2"></i>
+						<small>This action cannot be undone. Please verify all details before proceeding.</small>
+					</div>
+				</div>
+			`,
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, Save Collection',
+			cancelButtonText: 'Cancel',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			reverseButtons: true,
+			showLoaderOnConfirm: true,
+			allowOutsideClick: () => !Swal.isLoading(),
+			preConfirm: () => {
+				// Return a promise for the AJAX call
+				return new Promise((resolve, reject) => {
+					$.ajax({
+						type: "POST",
+						url: "Case_Management_Serv",
+						data: {
+							request_type: 'load_save_collection_details_by_job_number',
+							job_number: jobNumber,
+							collected_by: collectedBy,
+							collected_by_id_type: idType,
+							collected_by_id_number: idNumber,
+							collected_by_phone_number: phoneNumber
+						},
+						cache: false,
+						success: function(response) {
+							try {
+								const data = JSON.parse(response);
+								if (data.msg === "SUCCESS") {
+									resolve({
+										success: true,
+										message: 'Collection details saved successfully'
+									});
+								} else {
+									resolve({
+										success: false,
+										message: data.msg || 'Error saving collection details'
+									});
+								}
+							} catch (error) {
+								resolve({
+									success: false,
+									message: 'Error processing response'
+								});
+							}
+						},
+						error: function(xhr, status, error) {
+							resolve({
+								success: false,
+								message: handleAjaxError(xhr, status, error, true)
+							});
+						}
+					});
+				});
 			}
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if (result.value.success) {
+					// Success - show success message
+					Swal.fire({
+						title: 'Success!',
+						text: result.value.message,
+						icon: 'success',
+						confirmButtonText: 'OK',
+						confirmButtonColor: '#3085d6',
+						timer: 3000,
+						timerProgressBar: true,
+						willClose: () => {
+							// Close modal and reset
+							$('#collectionModal').modal('hide');
+							resetCollectionModal();
+							
+							// Optional: Refresh the search results
+							if (typeof handleEnquirySearch === 'function') {
+								// You might want to trigger a search refresh here
+								// handleEnquirySearch();
+							}
+						}
+					});
+				} else {
+					// Error from server
+					Swal.fire({
+						title: 'Error!',
+						html: `
+							<div class="text-start">
+								<p class="mb-3">${result.value.message}</p>
+								<div class="alert alert-danger py-2 mb-0">
+									<i class="fas fa-exclamation-circle me-2"></i>
+									<small>Please check the details and try again.</small>
+								</div>
+							</div>
+						`,
+						icon: 'error',
+						confirmButtonText: 'Try Again',
+						confirmButtonColor: '#d33'
+					});
+				}
+			}
+		}).catch((error) => {
+			// Handle any unexpected errors
+			console.error('Error in saveCollectionDetails:', error);
+			Swal.fire({
+				title: 'Unexpected Error!',
+				text: 'An unexpected error occurred. Please try again.',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			});
 		});
+	}
+
+	// Helper function to handle AJAX errors (updated to return message string)
+	function handleAjaxError(xhr, status, error, returnMessage = false) {
+		console.error('AJAX Error:', error);
+		
+		let errorMessage = 'Error loading data. Please try again.';
+		
+		if (xhr.status === 0) {
+			errorMessage = 'Network error. Please check your internet connection.';
+		} else if (xhr.status === 404) {
+			errorMessage = 'Requested resource not found.';
+		} else if (xhr.status === 500) {
+			errorMessage = 'Internal server error. Please try again later.';
+		} else if (xhr.responseJSON && xhr.responseJSON.message) {
+			errorMessage = xhr.responseJSON.message;
+		}
+		
+		if (returnMessage) {
+			return errorMessage;
+		} else {
+			showNotification(errorMessage, 'error');
+		}
 	}
 
 	// ==================== ADD FEES BUTTON HANDLER ====================
@@ -849,9 +1161,6 @@ $(document).ready(function() {
 		if (!validateBatchlistInput(jobNumber)) {
 			return;
 		}
-
-		// Set the job number in the summary
-		$('#fileTrackingJobNumber').text(jobNumber || 'N/A');
 		
 		// Reset summary fields
 		$('#totalMovements').text('0');
@@ -864,7 +1173,7 @@ $(document).ready(function() {
 	}
 
     function loadFileLocationData(jobNumber) {
-		showLoadingState($('#filelistModal .modal-content'), 'Loading history...');
+		//showLoadingState($('#filelistModal .modal-content'), 'Loading history...');
 		
 		$.ajax({
 			type: "POST",
@@ -879,7 +1188,7 @@ $(document).ready(function() {
 			},
 			error: handleAjaxError,
 			complete: function() {
-				resetLoadingState($('#filelistModal .modal-content'), '');
+				//resetLoadingState($('#filelistModal .modal-content'), '');
 			}
 		});
 	}
@@ -888,10 +1197,10 @@ $(document).ready(function() {
 		//console.log(response)
 		try {
 			const data = JSON.parse(response);
-			const table = $('#tbl_file_history');
+			const table = $('#tbl_file_history tbody');
 			const noRecordsRow = $('#noRecordsRow');
 			
-			clearTableRows(table);
+			table.find("tr").remove();
 			noRecordsRow.addClass('d-none');
 
 			if (!Array.isArray(data) || data.length === 0) {
@@ -899,11 +1208,14 @@ $(document).ready(function() {
 				updateSummaryFields([], jobNumber);
 				return;
 			}
-
+			
 			// Populate table rows
 			data.forEach(item => {
 				table.append(createFileLocationRow(item));
 			});
+
+			// Set the job number in the summary
+			$('#fileTrackingJobNumber').text(jobNumber || 'N/A');
 
 			// Update summary fields
 			updateSummaryFields(data, jobNumber);
@@ -917,9 +1229,8 @@ $(document).ready(function() {
 
 	function updateSummaryFields(data, jobNumber) {
 		const count = Array.isArray(data) ? data.length : 0;
-		
 		// Update counts
-		$('#totalMovements').text(count);
+		$('#filelistModal #totalMovements').text(count);
 		$('#showingCount').text(count);
 		$('#totalCount').text(count);
 		
@@ -931,7 +1242,7 @@ $(document).ready(function() {
 		// Determine current location (last record's division)
 		if (count > 0) {
 			const lastRecord = data[data.length - 1];
-			$('#currentLocation').text(lastRecord.division || 'Unknown');
+			$('#currentLocation').text(lastRecord.user_fullname || 'Unknown');
 			
 			// Update last updated time
 			if (lastRecord.created_date) {
@@ -989,27 +1300,27 @@ $(document).ready(function() {
     function createFileLocationRow(item) {
 		// console.log(item)
 		// Determine status based on data
-		let statusClass = 'info';
-		let statusText = 'In Transit';
+		// let statusClass = 'info';
+		// let statusText = 'In Transit';
 		
-		if (item.user_fullname && item.created_by) {
-			statusClass = 'success';
-			statusText = 'Received';
-		} else if (item.created_by && !item.user_fullname) {
-			statusClass = 'warning';
-			statusText = 'Sent';
-		}
+		// if (item.user_fullname && item.created_by) {
+		// 	statusClass = 'success';
+		// 	statusText = 'Received';
+		// } else if (item.created_by && !item.user_fullname) {
+		// 	statusClass = 'warning';
+		// 	statusText = 'Sent';
+		// }
 		
 		return `
 			<tr>
 				<td class="ps-4">
 					<div class="d-flex align-items-center">
-						<div class="bg-light rounded p-2 me-3">
+						<!--<div class="bg-light rounded p-2 me-3">
 							<i class="fas fa-calendar-day text-primary"></i>
-						</div>
+						</div>-->
 						<div>
-							<div class="fw-semibold">${formatDate(item.created_date)}</div>
-							<small class="text-muted">${formatTime(item.created_date)}</small>
+							<div class="fw-medium">${formatDate(item.created_date)}</div>
+							<!--<small class="text-muted">${formatTime(item.created_date)}</small>-->
 						</div>
 					</div>
 				</td>
@@ -1018,44 +1329,39 @@ $(document).ready(function() {
 				</td>
 				<td>
 					<div class="d-flex align-items-center">
-						<div class="bg-light rounded-circle p-2 me-2">
+						<!--<div class="bg-light rounded-circle p-2 me-2">
 							<i class="fas fa-user text-success"></i>
-						</div>
+						</div>-->
 						<span>${escapeHtml(item.user_fullname || 'N/A')}</span>
 					</div>
 				</td>
 				<td>
 					<div class="d-flex align-items-center">
-						<div class="bg-light rounded-circle p-2 me-2">
+						<!--<div class="bg-light rounded-circle p-2 me-2">
 							<i class="fas fa-user-tie text-primary"></i>
-						</div>
+						</div>-->
 						<span>${escapeHtml(item.created_by || 'N/A')}</span>
 					</div>
-				</td>
-				<td class="text-center">
-					<span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} border border-${statusClass} border-opacity-25">
-						${statusText}
-					</span>
 				</td>
 			</tr>
 		`;
 	}
 
 	// Helper functions for date and time formatting
-	function formatDate(dateString) {
-		if (!dateString) return 'N/A';
-		try {
-			const date = new Date(dateString);
-			if (isNaN(date.getTime())) return 'N/A';
-			return date.toLocaleDateString('en-GB', {
-				year: 'numeric',
-				month: 'short',
-				day: 'numeric'
-			});
-		} catch (error) {
-			return 'N/A';
-		}
-	}
+	// function formatDate(dateString) {
+	// 	if (!dateString) return 'N/A';
+	// 	try {
+	// 		const date = new Date(dateString);
+	// 		if (isNaN(date.getTime())) return 'N/A';
+	// 		return date.toLocaleDateString('en-GB', {
+	// 			year: 'numeric',
+	// 			month: 'short',
+	// 			day: 'numeric'
+	// 		});
+	// 	} catch (error) {
+	// 		return 'N/A';
+	// 	}
+	// }
 
 	function formatTime(dateString) {
 		if (!dateString) return '';

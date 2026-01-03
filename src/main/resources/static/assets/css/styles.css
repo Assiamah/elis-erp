@@ -24704,19 +24704,19 @@ input.form-control.otp-input {
 }
 
 /* Wizard Steps */
-.wizard-steps, .wizard-steps-on-case {
+.wizard-steps, .wizard-steps-on-case, .wizard-steps-collection {
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
 }
 
-.wizard-steps .step, .wizard-steps-on-case .step {
+.wizard-steps .step, .wizard-steps-on-case .step,  .wizard-steps-collection .step {
     text-align: center;
     position: relative;
     flex: 1;
 }
 
-.wizard-steps .step:not(:last-child)::after, .wizard-steps-on-case .step:not(:last-child)::after {
+.wizard-steps .step:not(:last-child)::after, .wizard-steps-on-case .step:not(:last-child)::after, .wizard-steps-collection .step:not(:last-child)::after {
     content: '';
     position: absolute;
     top: 24px;
@@ -24727,23 +24727,23 @@ input.form-control.otp-input {
     z-index: 1;
 }
 
-.wizard-steps .step.active::after, .wizard-steps-on-case .step.active::after {
+.wizard-steps .step.active::after, .wizard-steps-on-case .step.active::after, .wizard-steps-collection .step.active::after {
     background: rgb(var(--primary-rgb)) !important;
 }
 
-.wizard-steps .step.active .step-icon, .wizard-steps-on-case .step.active .step-icon {
+.wizard-steps .step.active .step-icon, .wizard-steps-on-case .step.active .step-icon, .wizard-steps-collection .step.active .step-icon {
     background: rgb(var(--primary-rgb)) !important;
     color: var(--custom-white);
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(77, 68, 181, 0.3);
 }
 
-.wizard-steps .step.completed .step-icon, .wizard-steps-on-case .step.completed .step-icon {
+.wizard-steps .step.completed .step-icon, .wizard-steps-on-case .step.completed .step-icon, .wizard-steps-collection .step.completed .step-icon {
     background: rgb(var(--primary-rgb)) !important;
     color: var(--custom-white);
 }
 
-.wizard-steps .step.completed::after, .wizard-steps-on-case .step.completed::after {
+.wizard-steps .step.completed::after, .wizard-steps-on-case .step.completed::after, .wizard-steps-collection .step.completed::after {
     background: rgb(var(--primary-rgb)) !important;
 }
 
@@ -24778,12 +24778,12 @@ input.form-control.otp-input {
 }
 
 /* Step Content */
-.step-content, .step-content-on-case {
+.step-content, .step-content-on-case, .step-content-collection {
     display: none;
     animation: fadeIn 0.3s ease;
 }
 
-.step-content.active, .step-content-on-case.active {
+.step-content.active, .step-content-on-case.active, .step-content-collection.active {
     display: block;
 }
 

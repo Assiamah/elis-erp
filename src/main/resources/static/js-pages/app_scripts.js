@@ -1037,6 +1037,47 @@ $('#btnAddAlltoBatchlist').on('click', function(e) {
 		
 }); 
 
+$('#btnaddreqtolistFinal').on('click', function(e) {
+    //console.log('Add to batchlist');
+    var job_number = $("#req_job_number").val();
+    //var send_by_id = $("#modified_by_id").val();
+    //var send_by =$("#modified_by").val();
+    var ar_name = $("#req_ar_name").val();
+    var business_process_sub_name =$("#req_business_process_sub_name").val();
+    var job_purpose =$("#req_job_purpose").val();
+    var remarks =$("#req_remarks").val();
+    var locality =$("#req_locality").val(); 
+
+    //console.log(job_purpose, remarks);
+
+    if(job_purpose && remarks){
+        addJobToRequestlist(
+            job_number,
+            ar_name,
+            business_process_sub_name,
+            //locality,
+            job_purpose,
+            remarks);
+        //console.log('Add to batchlist');
+        //prepareRequestBatchingModal();
+        $('#askForPurposeOfSendingRequest').modal('hide');
+    }else{
+        // $.notify({
+        //     message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold"> Purpose of Bacthing and Remarks Required </span>',
+        // }, {
+        //     type: 'danger'
+        // });
+
+        swal.fire({
+			title: 'Ops!',
+			text: 'Purpose and remarks field are required!',
+			icon: 'warning',
+			confirmButtonText: 'OK'
+		})
+    }
+
+}); 
+
 window.addJobToBatchlist = function (
     job_number_html,
     ar_name_html,
@@ -1062,6 +1103,35 @@ window.addJobToBatchlist = function (
     existing[job_number_plain] = obj;
 
     localStorage.setItem('batchlistdata', JSON.stringify(existing));
+};
+
+window.addJobToRequestlist = function (
+    job_number_html,
+    ar_name_html,
+    business_process_sub_name,
+    job_purpose,
+    remarks_notes
+) {
+
+    var job_number_plain = $('<div>').html(job_number_html).text().trim();
+
+    var obj = {
+        jobNumberPlain: job_number_plain,
+        jobNumberHtml: job_number_html,
+        applicantNameHtml: ar_name_html,
+        applicationType: business_process_sub_name,
+        batchingPurpose: job_purpose,
+        remarksNotes: remarks_notes
+    };
+
+    var existing = localStorage.getItem('requestlistdata');
+    existing = existing ? JSON.parse(existing) : {};
+
+    existing[job_number_plain] = obj;
+
+    localStorage.setItem('requestlistdata', JSON.stringify(existing));
+
+    prepareRequestlistModal();
 };
 
 window.removeJobFromBatchlist = function (job_number_plain) {
@@ -1098,6 +1168,39 @@ window.removeJobFromBatchlist = function (job_number_plain) {
     });
 };
 
+window.removeJobFromRequestlist = function (job_number_plain) {
+
+    Swal.fire({
+        title: 'Remove Application',
+        text: 'Are you sure you want to remove this application?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it',
+        confirmButtonColor: '#dc3545'
+    }).then(result => {
+
+        if (!result.isConfirmed) return;
+
+        var existing = JSON.parse(localStorage.getItem('requestlistdata') || '{}');
+
+        delete existing[job_number_plain];
+
+        if (Object.keys(existing).length === 0) {
+            localStorage.removeItem('requestlistdata');
+        } else {
+            localStorage.setItem('requestlistdata', JSON.stringify(existing));
+        }
+
+        prepareRequestlistModal();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Removed',
+            timer: 1200,
+            showConfirmButton: false
+        });
+    });
+};
 
 window.prepareBatchlistModal = function () {
 
@@ -1159,9 +1262,75 @@ window.prepareBatchlistModal = function () {
     updateBatchCount();
 };
 
+window.prepareRequestlistModal = function () {
+
+    const existing = localStorage.getItem('requestlistdata');
+
+    if (!existing) {
+        Swal.fire({
+            title: 'No Applications',
+            text: 'No applications in batch list!',
+            icon: 'warning'
+        });
+        return;
+    }
+
+    const data = JSON.parse(existing);
+
+    // ✅ Keep ONLY valid application objects
+    const values = Object.values(data).filter(item =>
+        item &&
+        item.jobNumberPlain &&              // must exist
+        item.jobNumberHtml &&               // must exist
+        item.jobNumberPlain !== 'Job Number'
+    );
+
+    // Nothing valid left
+    if (!values.length) {
+        $('#requestlistdataTable').empty();
+        updateBatchCount();
+        return;
+    }
+
+    $('#requestlistdataTable').empty();
+
+    values.forEach(item => {
+
+        const row = $('<tr/>');
+
+        row.append($('<td/>').html(item.jobNumberHtml));
+        row.append($('<td/>').html(item.applicantNameHtml));
+        row.append($('<td/>').html(item.applicationType));
+        row.append($('<td/>').html(item.batchingPurpose));
+        row.append($('<td/>').html(item.remarksNotes));
+
+        row.append(
+            $('<td class="text-center"/>').append(
+                $('<button/>', {
+                    type: 'button',
+                    class: 'btn btn-sm btn-danger',
+                    html: '<i class="ri-delete-bin-line"></i>',
+                    click: () => removeJobFromRequestlist(item.jobNumberPlain)
+                })
+            )
+        );
+
+        $('#requestlistdataTable').append(row);
+    });
+
+    $('#viewRequestlistModal').modal('show');
+    updateRequestCount();
+};
+
 $('#btnViewBatchlist').on('click', function(e) {
         
 	prepareBatchlistModal();
+		
+});
+
+$('#btnViewRequestlist').on('click', function(e) {
+        
+	prepareRequestlistModal();
 		
 });
 
@@ -1193,11 +1362,44 @@ $('input[name="batch_type_radio"]').on('change', function() {
 	}
 });
 
+$('input[name="request_type_radio"]').on('change', function() {
+	const type = $(this).val();
+	$('#request_type').val(type);
+	
+	// Hide all sections first
+	$('.batch-section').hide().removeClass('active-section');
+	
+	// Show selected section
+	switch(type) {
+		case 'Unit':
+			$('#unit-requesting-section').show().addClass('active-section');
+			break;
+		case 'Individual':
+			$('#individual-requesting-section').show().addClass('active-section');
+			break;
+		case 'Cabinet':
+			$('#cabinet-requesting-section').show().addClass('active-section');
+			break;
+	}
+	
+	// Show/hide process button
+	const hasItems = $('#requestlistdataTable tr').length > 0;
+	if (hasItems) {
+		$('#btn_process_requestlist_ft').show();
+	}
+});
+
 // Handle form submission for cabinet batching
 $('#frmBatchToCabinet').on('submit', function(e) {
 	e.preventDefault();
 	// Add your cabinet batching logic here
 	console.log('Batch to cabinet:', $('#cabinet_to_send_to').val());
+});
+
+$('#frmRequestToCabinet').on('submit', function(e) {
+	e.preventDefault();
+	// Add your cabinet batching logic here
+	console.log('Request to cabinet:', $('#cabinet_to_send_to').val());
 });
 
 // Update batch count
@@ -1223,6 +1425,28 @@ function updateBatchCount() {
     }
 }
 
+function updateRequestCount() {
+    // Count rows in the table body
+    const count = $('#requestlistTable tbody tr').length;
+    $('#request-count').text(count);
+    
+    // Show/hide empty state
+    if (count === 0) {
+        $('#empty-request-state').show();
+        $('#requestlistTable').hide();
+    } else {
+        $('#empty-request-state').hide();
+        $('#requestlistTable').show();
+    }
+    
+    // Show/hide process button
+    if (count > 0 && $('#request_type').val()) {
+        $('#btn_process_requestlist_ft').show();
+    } else {
+        $('#btn_process_requestlist_ft').hide();
+    }
+}
+
 // Remove all from list
 $('#remove_all_from_list').on('click', function () {
 
@@ -1243,6 +1467,35 @@ $('#remove_all_from_list').on('click', function () {
         $('#batchlistdataTable').empty();
 
         updateBatchCount();
+
+        Swal.fire({
+            title: 'Cleared!',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    });
+});
+
+$('#remove_all_from_request_list').on('click', function () {
+
+    Swal.fire({
+        title: 'Clear All Applications',
+        text: 'This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, clear all',
+        confirmButtonColor: '#dc3545'
+    }).then(result => {
+
+        if (!result.isConfirmed) return;
+
+        localStorage.removeItem('requestlistdata');
+
+        // ✅ correct table
+        $('#requestlistdataTable').empty();
+
+        updateRequestCount();
 
         Swal.fire({
             title: 'Cleared!',
@@ -1283,6 +1536,44 @@ $(document).on('click', '.remove-from-batch', function() {
             swal.fire({
                 title: 'Removed!',
                 text: 'Application removed from batch list.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd',
+                timer: 1500
+            });
+        }
+    });
+});
+
+$(document).on('click', '.remove-from-request', function() {
+    const $row = $(this).closest('tr');
+    const jobNumber = $row.find('td:first-child').text().trim();
+    
+    swal.fire({
+        title: 'Remove Application',
+        text: 'Are you sure you want to remove application ' + jobNumber + ' from the request?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Remove from localStorage
+            var existing = localStorage.getItem('requestlistdata');
+            existing = existing ? JSON.parse(existing) : {};
+            delete existing[jobNumber];
+            localStorage.setItem('requestlistdata', JSON.stringify(existing));
+            
+            // Remove from table
+            $row.remove();
+            updateRequestCount();
+            
+            // Show success message
+            swal.fire({
+                title: 'Removed!',
+                text: 'Application removed from request list.',
                 icon: 'success',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#0d6efd',
@@ -1408,6 +1699,135 @@ $('#unit_division_to_send_to').on('change', function() {
         error: function(xhr, status, error) {
             console.error('AJAX error:', error);
             $("#unit_to_send_to").empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading units',
+                disabled: true,
+                selected: true
+            }));
+            $unitCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUnitNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
+$('#req_unit_division_to_send_to').on('change', function() {
+    const selected_division = $(this).val();
+    const $select = $("#req_unit_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $unitCount = $("#req_unit-count");
+    const $unitIcon = $("#req_unit-icon");
+    
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading units...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $unitIcon.removeClass('ri-building-2-line').addClass('ri-loader-4-line animate-spin');
+    $(".process-btn").hide();
+    
+    if (!selected_division || selected_division === "") {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+        return;
+    }
+    
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_units',
+        },
+        cache: false,
+        success: function(jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                const $select = $("#req_unit_to_send_to");
+                let unitCount = 0;
+                
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+                
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a unit',
+                    disabled: true,
+                    selected: true
+                }));
+                
+                // Add units to select
+                $(json_p.data).each(function() {
+                    if (this.unit_division && this.unit_division.includes(selected_division)) {
+                        const option = $('<option>', {
+                            value: this.unit_id || this.unit_name,
+                            text: this.unit_name || '',
+                            'data-division': this.unit_division || ''
+                        });
+                        
+                        $select.append(option);
+                        unitCount++;
+                    }
+                });
+                
+                // Update UI based on results
+                if (unitCount > 0) {
+                    $select.prop('disabled', false);
+                    $unitCount.text(`(${unitCount} units)`).removeClass('text-danger').addClass('text-success');
+                    
+                    // Show success feedback
+                    showUnitNotification(`${unitCount} units loaded successfully`, 'success');
+                    
+                    // Enable when a unit is selected
+                    $select.on('change', function() {
+                        if ($(this).val()) {
+                            $(".process-btn").show();
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(".process-btn").hide();
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No units available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $unitCount.text('(No units)').removeClass('text-success').addClass('text-danger');
+                    showUnitNotification('No units found for this division', 'warning');
+                }
+                
+            } catch (error) {
+                console.error('Error loading units:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading units',
+                    disabled: true,
+                    selected: true
+                }));
+                $unitCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUnitNotification('Failed to load units. Please try again.', 'danger');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX error:', error);
+            $("#req_unit_to_send_to").empty().append($('<option>', {
                 value: '',
                 text: 'Network error loading units',
                 disabled: true,
@@ -1593,6 +2013,140 @@ function loadUnitUsers() {
     });
 }
 
+function loadReqUnitUsers() {
+    const selected_division = $("#req_division_to_send_to").val();
+    const $select = $("#req_user_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $userCount = $("#req_user-count");
+    const $userIcon = $("#req_user-icon");
+    
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading users...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $userIcon.removeClass('ri-user-line').addClass('ri-loader-4-line animate-spin');
+    
+    if (!selected_division) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+        return;
+    }
+    
+    const regional_code_general = $("#regional_code_general").text();
+    
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_users',
+        },
+        cache: false,
+        success: function(jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                let userCount = 0;
+                
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+                
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a user',
+                    disabled: true,
+                    selected: true
+                }));
+                
+                // Add users to select
+                $(json_p).each(function() {
+                    if (selected_division == this.unit_name && regional_code_general == this.regional_code) {
+                        const option = $('<option>', {
+                            value: this.userid,
+                            text: this.fullname || '',
+                            'data-unit': this.unit_name || '',
+                            'data-regional': this.regional_code || ''
+                        });
+                        
+                        $select.append(option);
+                        userCount++;
+                    }
+                });
+                
+                // Update UI based on results
+                if (userCount > 0) {
+                    $select.prop('disabled', false);
+                    $userCount.text(`(${userCount} users)`).removeClass('text-danger').addClass('text-success');
+                    
+                    // Show success feedback
+                    showUserNotification(`${userCount} users loaded successfully`, 'success');
+                    
+                    // Add change event handler
+                    $select.off('change.userChange').on('change.userChange', function() {
+                        const userId = $(this).val();
+                        const userName = $(this).find('option:selected').text();
+                        
+                        if (userId) {
+                            // Store selected user data
+                            $(this).data('selected-user-id', userId);
+                            $(this).data('selected-user-name', userName);
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No users available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $userCount.text('(No users)').removeClass('text-success').addClass('text-danger');
+                    showUserNotification(`No users found in ${selected_division}`, 'warning');
+                }
+                
+            } catch (error) {
+                console.error('Error loading users:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading users',
+                    disabled: true,
+                    selected: true
+                }));
+                $userCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUserNotification('Failed to load users. Please try again.', 'danger');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX error:', error);
+            $select.empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading users',
+                disabled: true,
+                selected: true
+            }));
+            $userCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUserNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+}
+
 // Helper function for user notifications
 function showUserNotification(message, type = 'info') {
     let $notification = $('.user-notification');
@@ -1639,6 +2193,12 @@ $(document).ready(function() {
             loadUnitUsers();
         }
     });
+
+    $('#viewRequestlistModal').on('shown.bs.modal', function() {
+        if ($("#req_division_to_send_to").val()) {
+            loadReqUnitUsers();
+        }
+    });
     
     // Or load when individual batch type is selected
     $('input[name="batch_type_radio"][value="Individual"]').on('change', function() {
@@ -1651,6 +2211,19 @@ $(document).ready(function() {
 	$('input[name="batch_type_radio"][value="Unit"]').on('change', function() {
         if ($(this).is(':checked')) {
 			$("#lbl_batch_type").val('Unit');
+        }
+    });
+
+    $('input[name="request_type_radio"][value="Individual"]').on('change', function() {
+        if ($(this).is(':checked')) {
+            loadReqUnitUsers();
+			$("#lbl_request_type").val('Individual');
+        }
+    });
+
+	$('input[name="request_type_radio"][value="Unit"]').on('change', function() {
+        if ($(this).is(':checked')) {
+			$("#lbl_request_type").val('Unit');
         }
     });
 });
@@ -1781,6 +2354,18 @@ $("#btn_process_batchlist_ft").click(function(event) {
     processBatch();
 });
 
+$("#btn_process_requestlist_ft").click(function(event) {
+    event.preventDefault();
+    
+    // Validate request type selection
+    if (!validateRequestTypeSelection()) {
+        return;
+    }
+    
+    // Process the batch
+    processRequest();
+});
+
 // Function to validate batch type selection
 function validateBatchTypeSelection() {
     const batchType = $('#batch_type').val();
@@ -1838,6 +2423,62 @@ function validateBatchTypeSelection() {
     return true;
 }
 
+function validateRequestTypeSelection() {
+    const requestType = $('#request_type').val();
+    
+    if (!requestType) {
+        Swal.fire({
+            title: 'Missing Information',
+            text: 'Please select where to send the request (Unit or Individual)',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return false;
+    }
+    
+    if (requestType === 'Unit') {
+        const unitSelected = $("#req_unit_to_send_to").val();
+        if (!unitSelected) {
+            Swal.fire({
+                title: 'Unit Required',
+                text: 'Please select a unit to send the request to',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return false;
+        }
+    } else if (requestType === 'Individual') {
+        const userSelected = $("#req_user_to_send_to").val();
+        if (!userSelected) {
+            Swal.fire({
+                title: 'User Required',
+                text: 'Please select a user to send the request to',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return false;
+        }
+    }
+    
+    // Validate there are items in the request
+    const requestItems = getRequestItemsFromTable();
+    if (requestItems.length === 0) {
+        Swal.fire({
+            title: 'Empty Request',
+            text: 'There are no applications in the request list',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return false;
+    }
+    
+    return true;
+}
+
 // Function to get batch items from table
 function getBatchItemsFromTable() {
     const batchItems = [];
@@ -1859,6 +2500,28 @@ function getBatchItemsFromTable() {
     });
     
     return batchItems;
+}
+
+function getRequestItemsFromTable() {
+    const requestItems = [];
+    
+    $('#requestlistdataTable tr').each(function() {
+        const $row = $(this);
+        const item = {
+            job_number: $row.find('td:eq(0)').text().trim(),
+            ar_name: $row.find('td:eq(1)').text().trim(),
+            business_process_sub_name: $row.find('td:eq(2)').text().trim(),
+            job_purpose: $row.find('td:eq(3)').text().trim(),
+            remarks_notes: $row.find('td:eq(4)').text().trim()
+        };
+        
+        // Only add if we have a job number
+        if (item.job_number) {
+            requestItems.push(item);
+        }
+    });
+    
+    return requestItems;
 }
 
 // Function to get recipient information
@@ -1888,6 +2551,54 @@ function getRecipientInfo(batchType) {
         }
     } else if (batchType === 'Individual') {
         const $userSelect = $("#user_to_send_to");
+        const selectedOption = $userSelect.find('option:selected');
+        
+        // Get the selected value
+        const selectedValue = $userSelect.val();
+        
+        if (selectedValue) {
+            // Get data attributes from the selected option
+            recipient.id = selectedOption.data('id') || selectedValue;
+            recipient.name = selectedOption.text() || selectedValue;
+            
+            // Try to get from data attributes if available
+            const userId = selectedOption.data('user-id') || selectedOption.data('id');
+            const userName = selectedOption.data('name') || selectedOption.text();
+            
+            if (userId) recipient.id = userId;
+            if (userName) recipient.name = userName;
+        }
+    }
+    
+    return recipient;
+}
+
+function getReqRecipientInfo(batchType) {
+    let recipient = {
+        id: '',
+        name: '',
+        type: batchType
+    };
+    
+    if (batchType === 'Unit') {
+        const $unitSelect = $("#req_unit_to_send_to");
+        const selectedOption = $unitSelect.find('option:selected');
+        
+        // Get the selected value
+        const selectedValue = $unitSelect.val();
+        
+        if (selectedValue) {
+            // Get data attributes from the selected option
+            recipient.id = selectedOption.data('id') || selectedValue;
+            recipient.name = selectedOption.text() || selectedValue;
+            
+            // If no data-id, use the value as ID
+            if (!recipient.id) {
+                recipient.id = selectedValue;
+            }
+        }
+    } else if (batchType === 'Individual') {
+        const $userSelect = $("#req_user_to_send_to");
         const selectedOption = $userSelect.find('option:selected');
         
         // Get the selected value
@@ -2028,6 +2739,92 @@ function processBatch() {
     });
 }
 
+function processRequest() {
+    // Show loading state
+    Swal.fire({
+        title: 'Processing Request',
+        text: 'Please wait while we process your request...',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    // Get batch data
+    const batchType = $('#request_type').val();
+    const lblBatchType = $("#lbl_request_type").val();
+    const batchItems = getRequestItemsFromTable();
+    const listOfApplications = JSON.stringify(batchItems);
+    
+    // Get recipient information
+    const recipient = getReqRecipientInfo(batchType);
+    if (!recipient.id || !recipient.name) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Could not determine recipient information',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return;
+    }
+    
+    // Prepare AJAX data
+    const ajaxData = {
+        request_type: 'process_request_list',
+        division: localStorage.getItem('division') || '',
+        list_of_application: listOfApplications,
+        send_to_name: recipient.name,
+        send_to_id: recipient.id,
+        batch_type: lblBatchType
+    };
+    
+    // First AJAX call to process batch
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: ajaxData,
+        cache: false,
+        success: function(response) {
+            try {
+                const jsonResponse = JSON.parse(response);
+                
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error);
+                }
+                
+                // Get batch number from response
+                const batchNumber = jsonResponse.batch_number;
+                
+                // Generate PDF report
+                generateBatchReport(batchItems, batchNumber, recipient);
+                
+            } catch (error) {
+                console.error('Error processing request:', error);
+                Swal.fire({
+                    title: 'Processing Error',
+                    text: 'Failed to process request: ' + error.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#0d6efd'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX error:', error);
+            Swal.fire({
+                title: 'Server Error',
+                text: 'Unable to connect to server. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+        }
+    });
+}
+
 // Function to generate batch report PDF
 function generateBatchReport(batchItems, batchNumber, recipient) {
     const reportData = {
@@ -2057,6 +2854,7 @@ function generateBatchReport(batchItems, batchNumber, recipient) {
             
             // Clean up after successful processing
             cleanupAfterBatchProcessing();
+            cleanupAfterRequestProcessing();
         },
         error: function(xhr, status, error) {
             console.error('Error generating report:', error);
@@ -2069,6 +2867,7 @@ function generateBatchReport(batchItems, batchNumber, recipient) {
             }).then(() => {
                 // Still clean up even if report failed
                 cleanupAfterBatchProcessing();
+                cleanupAfterRequestProcessing();
             });
         }
     });
@@ -2124,6 +2923,43 @@ function cleanupAfterBatchProcessing() {
         Swal.fire({
             title: 'Batch Processed Successfully!',
             text: 'The batch has been processed and sent.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd',
+            timer: 3000
+        });
+    }, 500);
+}
+
+function cleanupAfterRequestProcessing() {
+    // Clear localStorage
+    localStorage.removeItem('requestlistdata');
+    
+    // Clear table
+    $('#requestlistdataTable').empty();
+    
+    // Update batch count
+    updateRequestCount();
+    
+    // Hide process button
+    $('#btn_process_requestlist_ft').hide();
+    
+    // Close batch list modal
+    const batchModal = bootstrap.Modal.getInstance(document.getElementById('viewRequestlistModal'));
+    if (batchModal) {
+        batchModal.hide();
+    }
+    
+    // Reset form fields
+    $('#req_unit_to_send_to').val('');
+    $('#req_user_to_send_to').val('');
+    $('#request_type').val('');
+    
+    // Show success message
+    setTimeout(() => {
+        Swal.fire({
+            title: 'Request Processed Successfully!',
+            text: 'The request has been processed and sent.',
             icon: 'success',
             confirmButtonText: 'OK',
             confirmButtonColor: '#0d6efd',

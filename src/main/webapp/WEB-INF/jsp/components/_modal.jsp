@@ -1531,7 +1531,7 @@
          <!-- Footer - Clean and professional -->
          <div class="modal-footer border-top">
             <div class="me-auto">
-               <button type="button" class="btn btn-outline-danger" id="remove_all_from_list" onclick="remove_all_from_list();">
+               <button type="button" class="btn btn-outline-danger" id="remove_all_from_list">
                   <i class="ri-delete-bin-line me-1"></i>Clear All
                </button>
             </div>
@@ -4950,11 +4950,13 @@
             <div class="modal-footer">
                 <div class="d-flex w-100 justify-content-between align-items-center">
                     <!-- Status Indicator -->
-                    <div class="status-indicator d-none" id="cfp_processing_indicator">
-                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
-                            <span class="visually-hidden">Processing...</span>
+                    <div>
+                        <div class="status-indicator d-none" id="cfp_processing_indicator">
+                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                                <span class="visually-hidden">Processing...</span>
+                            </div>
+                            <small class="text-muted">Processing...</small>
                         </div>
-                        <small class="text-muted">Processing...</small>
                     </div>
                     
                     <!-- Action Buttons -->
@@ -5068,12 +5070,12 @@
                                         <span>Sent By</span>
                                     </div>
                                 </th>
-                                <th scope="col" class="text-center">
+                                <!-- <th scope="col" class="text-center">
                                     <div class="d-flex align-items-center justify-content-center">
                                         <i class="fas fa-info-circle me-2 text-muted"></i>
                                         <span>Status</span>
                                     </div>
-                                </th>
+                                </th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -5092,7 +5094,7 @@
                 </div>
 
                 <!-- Legend -->
-                <div class="card border-0 rounded-0 border-top">
+                <!-- <div class="card border-0 rounded-0 border-top">
                     <div class="card-body py-2">
                         <div class="d-flex flex-wrap align-items-center gap-3">
                             <small class="text-muted me-2">Status Legend:</small>
@@ -5110,7 +5112,7 @@
                             </span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <div class="modal-footer bg-light">
@@ -5122,9 +5124,9 @@
                         </small>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnExportHistory">
+                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" id="btnExportHistory">
                             <i class="fas fa-download me-1"></i>Export
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
                             <i class="fas fa-times me-1"></i>Close
                         </button>
@@ -5134,6 +5136,874 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="collectionModal" tabindex="-1" aria-labelledby="collectionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <div class="modal-title text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-hand-holding fa-2x me-2"></i>
+                        <div>
+                            <h5 class="mb-0 fw-bold text-white" id="collectionModalLabel">
+                                </i>Collection of Completed Application
+                            </h5>
+                            <small class="text-white-50 opacity-75">Complete the collection process for issued applications</small>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-0">
+                <!-- Application Header Info -->
+                <div class="card rounded-0 border-0 border-bottom">
+                    <div class="card-body py-3">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <input class="form-control bg-light" placeholder="Applicant Name" 
+                                              id="col_applicant_name" readonly style="cursor: not-allowed;">
+                                    <label for="col_applicant_name" class="fw-semibold">
+                                        <i class="fas fa-user me-1"></i>Applicant Name
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-light" id="col_application_type" readonly style="cursor: not-allowed;">
+                                    <label for="col_application_type" class="fw-semibold">
+                                        <i class="fas fa-file-alt me-1"></i>Application Type
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-light fw-bold" id="col_job_number" readonly style="cursor: not-allowed;">
+                                    <label for="col_job_number" class="fw-semibold">
+                                        <i class="fas fa-hashtag me-1"></i>Job Number
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wizard Steps -->
+                <div class="card border-0 shadow-sm rounded-0">
+                    <div class="card-header bg-transparent border-bottom py-3">
+                        <div class="wizard-steps-collection">
+                            <div class="step active" data-step="1">
+                                <div class="step-icon">1</div>
+                                <div class="step-label">Application Details</div>
+                            </div>
+                            <div class="step" data-step="2">
+                                <div class="step-icon">2</div>
+                                <div class="step-label">Identity Verification</div>
+                            </div>
+                            <div class="step" data-step="3">
+                                <div class="step-icon">3</div>
+                                <div class="step-label">Confirmation</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Step 1: Application Details -->
+                        <div class="step-content-collection active" id="step-1-content-collection">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0 fw-semibold"><i class="fas fa-info-circle me-2 text-primary"></i>Application Details</h6>
+                                <span class="badge bg-primary">Complete</span>
+                            </div>
+                            
+                            <div class="row g-4">
+                                <!-- Left Column -->
+                                <div class="col-lg-6">
+                                    <div class="card border h-100">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Tracking Information</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Current Division</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-building text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_division" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Job Status</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-tasks text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_job_status" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Collection Status</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-hand-holding text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_collection_status" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Current Officer</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-user-tie text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_current_officer" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label small fw-bold text-muted">Forwarded By</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-paper-plane text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_forwarded_by" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Date Forwarded</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-calendar text-primary"></i>
+                                                        </span>
+                                                        <input type="date" class="form-control bg-light" id="col_date_forwarded" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Received By</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-user-check text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_received_by" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label small fw-bold text-muted">Received Date</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-calendar-check text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_received_date" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Right Column -->
+                                <div class="col-lg-6">
+                                    <div class="card border h-100">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0"><i class="fas fa-archive me-2"></i>File & Batch Information</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Cabinet Name</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-folder text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_carbinet" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Shelve Number</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-layer-group text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_shelve" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Filed Status</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-file-archive text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_filed" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Filed Date</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-calendar-alt text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_filed_date" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label small fw-bold text-muted">Batch Number</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-boxes text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_batchnumber" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Date Batched</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-calendar-day text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_batched_date" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label small fw-bold text-muted">Batched By</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-light border-0">
+                                                            <i class="fas fa-user-cog text-primary"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control bg-light" id="col_batched_by" readonly style="cursor: not-allowed;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Identity Verification -->
+                        <div class="step-content-collection" id="step-2-content-collection">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0 fw-semibold"><i class="fas fa-user-check me-2 text-primary"></i>Identity Verification</h6>
+                                <span class="badge bg-primary" id="partyCount">0 Parties</span>
+                            </div>
+                            
+                            <div class="card border">
+                                <div class="card-header bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0"><i class="fas fa-users me-2"></i>Application Parties</h6>
+                                        <span class="badge bg-primary" id="partyCount">0 Parties</span>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0" id="collection-parties">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="ps-4">
+                                                        <i class="fas fa-user me-1"></i>Name
+                                                    </th>
+                                                    <th>
+                                                        <i class="fas fa-venus-mars me-1"></i>Gender
+                                                    </th>
+                                                    <th>
+                                                        <i class="fas fa-phone me-1"></i>Contact
+                                                    </th>
+                                                    <th>
+                                                        <i class="fas fa-id-card me-1"></i>ID Type
+                                                    </th>
+                                                    <th>
+                                                        <i class="fas fa-fingerprint me-1"></i>ID Number
+                                                    </th>
+                                                    <th class="pe-4">
+                                                        <i class="fas fa-tag me-1"></i>Applicant Type
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Rows will be populated dynamically -->
+                                                <tr id="noPartiesRow">
+                                                    <td colspan="6" class="text-center py-5">
+                                                        <div class="text-muted">
+                                                            <i class="fas fa-users-slash fa-2x mb-3 opacity-25"></i>
+                                                            <p class="mb-0">No party information available</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Confirm & Complete -->
+                        <div class="step-content-collection" id="step-3-content-collection">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0 fw-semibold"><i class="fas fa-clipboard-check me-2 text-primary"></i>Confirm & Complete Collection</h6>
+                                <span class="badge bg-success" id="checklistCount">0 Items</span>
+                            </div>
+                            
+                            <form id="frmSaveCollection" class="needs-validation" novalidate>
+                                <div class="row g-4">
+                                    <!-- Checklist -->
+                                    <div class="col-lg-6">
+                                        <div class="card border h-100">
+                                            <div class="card-header bg-light">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Collection Checklist</h6>
+                                                    <span class="badge bg-success" id="checklistCount">0 Items</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless align-middle mb-0" id="collection-checklist">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th class="ps-4 fw-medium py-3">Description</th>
+                                                                <th class="pe-4 fw-medium py-3 text-center">Confirm</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Rows will be populated dynamically -->
+                                                            <tr id="noChecklistRow">
+                                                                <td colspan="2" class="text-center py-5">
+                                                                    <div class="text-muted">
+                                                                        <i class="fas fa-clipboard fa-2x mb-3 opacity-25"></i>
+                                                                        <p class="mb-0">No checklist items available</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Collection Details Form -->
+                                    <div class="col-lg-6">
+                                        <div class="card border h-100">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0"><i class="fas fa-user-cog me-2"></i>Collector Information</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-12">
+                                                        <label for="col_collected_by" class="form-label fw-semibold">
+                                                            <i class="fas fa-user-tie me-1 text-primary"></i>Collected By
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <input type="text" class="form-control" id="col_collected_by" 
+                                                               placeholder="Enter collector's full name" required>
+                                                        <div class="invalid-feedback">
+                                                            Please enter collector's name
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <label for="col_id_type" class="form-label fw-semibold">
+                                                            <i class="fas fa-id-card me-1 text-primary"></i>ID Type
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <select class="form-select" id="col_id_type" required>
+                                                            <option value="" selected disabled>Select ID Type</option>
+                                                            <option value="NATIONAL ID">National ID</option>
+                                                            <option value="PASSPORT">Passport</option>
+                                                            <option value="DRIVERS LICENSE">Driver's License</option>
+                                                            <option value="NHIS CARD">NHIS Card</option>
+                                                            <option value="VOTERS ID">Voter's ID</option>
+                                                            <option value="SSNIT ID CARD">SSNIT ID Card</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select ID type
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <label for="col_id_number" class="form-label fw-semibold">
+                                                            <i class="fas fa-fingerprint me-1 text-primary"></i>ID Number
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <input type="text" class="form-control" id="col_id_number" 
+                                                               placeholder="ID Number" required>
+                                                        <div class="invalid-feedback">
+                                                            Please enter ID number
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-12">
+                                                        <label for="col_phone_number" class="form-label fw-semibold">
+                                                            <i class="fas fa-phone me-1 text-primary"></i>Phone Number
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <input type="tel" class="form-control" id="col_phone_number" 
+                                                               placeholder="+233 XX XXX XXXX" required>
+                                                        <div class="invalid-feedback">
+                                                            Please enter phone number
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-12">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="col_confirm_terms" required>
+                                                            <label class="form-check-label small" for="col_confirm_terms">
+                                                                I confirm that all information provided is accurate and I have verified the collector's identity
+                                                            </label>
+                                                            <div class="invalid-feedback">
+                                                                You must confirm before submitting
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom-3">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-primary me-2" id="btnPrevStepCollection">
+                            <i class="fas fa-chevron-left me-2"></i>Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btnNextStepCollection">
+                            Next Step <i class="fas fa-chevron-right ms-2"></i>
+                        </button>
+                        <button type="button" class="btn btn-success ms-2" id="btnCompleteProcessCollection" style="display: none;">
+                            <i class="fas fa-check me-2"></i>Complete Collection
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="viewRequestlistModal" tabindex="-1" aria-labelledby="viewBatchlistModalLabel" aria-hidden="true" data-bs-backdrop="static">
+   <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+         <!-- Header - Clean and professional -->
+         <div class="modal-header border-bottom">
+            <h5 class="modal-title fw-semibold fs-5" id="viewRequestlistModalLabel">
+               <i class="ri-group-line me-2"></i>Request List Processing
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         
+         <div class="modal-body">
+            <input id="lbl_request_type" name="lbl_request_type" type="hidden" value="">
+            
+            <!-- Request Type Selection Card -->
+            <div class="card mb-4 shadow-sm border">
+               <div class="card-body">
+                  <div class="row align-items-center mb-3">
+                     <div class="col-md-4">
+                        <label class="form-label fw-semibold mb-2">
+                           <i class="ri-share-forward-line me-1"></i>Request To:
+                        </label>
+                        <div class="btn-group w-100" role="group" aria-label="Request type selection">
+                           <input type="radio" class="btn-check" name="request_type_radio" id="request_type_unit" autocomplete="off" value="Unit">
+                           <label class="btn btn-outline-primary" for="request_type_unit">
+                              <i class="ri-building-2-line me-1"></i>Unit
+                           </label>
+                           
+                           <input type="radio" class="btn-check" name="request_type_radio" id="request_type_individual" autocomplete="off" value="Individual">
+                           <label class="btn btn-outline-primary" for="request_type_individual">
+                              <i class="ri-user-line me-1"></i>Individual
+                           </label>
+                           
+                           <c:if test="${unit_name == 'CSAU' || unit_name == 'CORPORATE CSAU UNIT'}">
+                                <input type="radio" class="btn-check" name="request_type_radio"
+                                        id="request_type_cabinet" autocomplete="off" value="Cabinet">
+                                <label class="btn btn-outline-primary" for="request_type_cabinet">
+                                    <i class="ri-archive-line me-1"></i>Cabinet
+                                </label>
+                            </c:if>
+                        </div>
+                        <input type="hidden" name="request_type" id="request_type">
+                        <div class="text-muted small mt-3">
+                           <i class="ri-information-line me-1"></i>
+                           Select where to request the selected applications
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Unit Requesting Section -->
+                  <div class="batch-section bg-primary-transparent border rounded p-3 mb-3" id="unit-requesting-section" style="display: none;">
+                     <h6 class="fw-semibold mb-3 text-primary">
+                        <i class="ri-building-2-fill me-2"></i>Requesting to a Unit
+                     </h6>
+                     <div class="row g-3">
+                        <div class="col-md-6">
+                           <label for="req_unit_division_to_send_to" class="form-label fw-medium">
+                              Division <span class="text-danger">*</span>
+                           </label>
+                           <select id="req_unit_division_to_send_to" data-trigger class="form-select">
+                              <option value="" selected disabled>Select Division</option>
+                              <option value="LVD">LVD</option>
+                              <option value="LRD">LRD</option>
+                              <option value="PVLMD">PVLMD</option>
+                              <option value="SMD">SMD</option>
+                              <option value="RLO">RLO</option>
+                           </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="unit_to_send_to" class="form-label fw-medium">
+                                Unit <span class="text-danger">*</span>
+                                <small class="text-muted ms-1" id="req_unit-count">(0 units)</small>
+                            </label>
+                            <div class="datalist-container">
+                                <div class="input-group">
+                                    <select class="form-select" 
+                                        id="req_unit_to_send_to" 
+                                        aria-describedby="unit-help">
+                                        <option value="" selected disabled>Select a unit</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <span class="input-group-text">
+                                        <i class="ri-building-2-line" id="unit-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="req_unit-help" class="form-text">
+                                <i class="ri-information-line me-1"></i>
+                                Select a unit from the dropdown list
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Individual Requesting Section -->
+                  <div class="batch-section bg-primary-transparent border rounded p-3 mb-3" id="individual-requesting-section" style="display: none;">
+                     <h6 class="fw-semibold mb-3 text-primary">
+                        <i class="ri-user-fill me-2"></i>Requesting to an Individual
+                     </h6>
+                     <div class="row g-3">
+                       <div class="col-md-6">
+                            <label for="division_to_send_to" class="form-label fw-medium">
+                                Division/Unit
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_division_to_send_to" 
+                                    value="${unit_name}" readonly>
+                                <span class="input-group-text">
+                                    <i class="ri-lock-line text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="user_to_send_to" class="form-label fw-medium">
+                                User <span class="text-danger">*</span>
+                                <small class="text-muted ms-1" id="req_user-count">(0 users)</small>
+                            </label>
+                            <div class="datalist-container">
+                                <div class="input-group">
+                                    <select class="form-select" id="req_user_to_send_to" required>
+                                        <option value="" selected disabled>Select a user</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <span class="input-group-text">
+                                        <i class="ri-user-line" id="req_user-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="req_user-help" class="form-text">
+                                <i class="ri-information-line me-1"></i>
+                                Select a user from the dropdown list
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Cabinet Batching Section -->
+                  <div class="batch-section bg-primary-transparent border rounded p-3 mb-3" id="cabinet-requesting-section" style="display: none;">
+                     <h6 class="fw-semibold mb-3 text-primary">
+                        <i class="ri-archive-fill me-2"></i>Requesting to Cabinet
+                     </h6>
+                     <form id="frmRequestToCabinet" class="row g-3">
+                        <div class="col-md-8">
+                           <label for="cabinet_to_send_to" class="form-label fw-medium">
+                              Cabinet Name <span class="text-danger">*</span>
+                           </label>
+                           <div class="input-group">
+                              <input type="text" class="form-control" id="req_cabinet_to_send_to" 
+                                     placeholder="Enter cabinet name" required>
+                              <span class="input-group-text">
+                                 <i class="ri-archive-drawer-line"></i>
+                              </span>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <label class="form-label">&nbsp;</label>
+                           <button type="submit" class="btn btn-primary w-100">
+                              <i class="ri-send-plane-line me-1"></i>Request to Cabinet
+                           </button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            
+            <!-- Request List Table Card -->
+            <div class="card shadow-sm border">
+               <div class="card-header border-bottom bg-light">
+                  <h6 class="mb-0 fw-semibold">
+                     <i class="ri-list-check-2 me-2"></i>Request List Items
+                     <span class="badge bg-primary ms-2" id="request-count">0</span>
+                  </h6>
+               </div>
+               <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0" id="requestlistTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="border-bottom">
+                                        <i class="ri-hashtag me-1 text-muted"></i>Reference No.
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-file-text-line me-1 text-muted"></i>Application Name
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-file-list-3-fill me-1 text-muted"></i>Application Type
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-chat-quote-line me-1 text-muted"></i>Purpose
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-sticky-note-line me-1 text-muted"></i>Remarks
+                                    </th>
+                                    <th class="border-bottom text-center">
+                                        <i class="ri-settings-3-line me-1 text-muted"></i>Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestlistdataTable">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                  
+                  <!-- Empty State -->
+                  <div class="text-center py-5" id="empty-request-state">
+                        <div class="mb-3">
+                            <i class="ri-inbox-line fs-1 text-muted"></i>
+                        </div>
+                        <h6 class="text-muted mb-2">No items in request list</h6>
+                        <p class="text-muted small">Select applications from the table to add them to the request</p>
+                    </div>
+                </div>
+            </div>
+         </div>
+         
+         <!-- Footer - Clean and professional -->
+         <div class="modal-footer border-top">
+            <div class="me-auto">
+               <button type="button" class="btn btn-outline-danger" id="remove_all_from_request_list">
+                  <i class="ri-delete-bin-line me-1"></i>Clear All
+               </button>
+            </div>
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+               <i class="ri-close-line me-1"></i>Cancel
+            </button>
+            <button type="button" id="btn_process_requestlist_ft" class="btn btn-primary" style="display: none">
+               <i class="ri-send-plane-fill me-1"></i>Process Request
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade effect-scale modal-blur" id="askForPurposeOfSendingRequest" tabindex="-1" 
+     data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-labelledby="askForPurposeOfSendingRequestLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="askForPurposeOfSendingRequestLabel">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Add To Request List
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Info Alert -->
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-lg text-info me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Select Purpose for Request</h6>
+                            <p class="mb-0">Choose the appropriate purpose and add remarks before sending this request.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="bl_application_stage" name="bl_application_stage">
+                <input type="hidden" id="bl_application_stage_baby_step" name="bl_application_stage_baby_step">
+
+                <!-- Job Number -->
+                <div class="mb-4">
+                    <label for="bl_job_number" class="form-label fw-bold">
+                        <i class="fas fa-hashtag me-2 text-primary"></i>
+                        Job Number
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-barcode text-muted"></i>
+                        </span>
+                        <input class="form-control bg-light" type="text" placeholder="" 
+                               id="req_job_number" readonly style="cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <!-- Applicant Name -->
+                <div class="mb-4">
+                    <label for="bl_ar_name" class="form-label fw-bold">
+                        <i class="fas fa-user me-2 text-primary"></i>
+                        Applicant Name
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-user-tag text-muted"></i>
+                        </span>
+                        <textarea rows="2" class="form-control bg-light" placeholder="" 
+                                  id="req_ar_name" readonly style="cursor: not-allowed;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Application Type -->
+                <div class="mb-4">
+                    <label for="bl_business_process_sub_name" class="form-label fw-bold">
+                        <i class="fas fa-file-alt me-2 text-primary"></i>
+                        Application Type
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-file-signature text-muted"></i>
+                        </span>
+                        <textarea rows="2" class="form-control bg-light" placeholder="" 
+                                  id="req_business_process_sub_name" readonly style="cursor: not-allowed;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Locality -->
+                <div class="mb-4">
+                    <label for="bl_application_stage_name" class="form-label fw-bold">
+                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                        Locality
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-map-pin text-muted"></i>
+                        </span>
+                        <textarea rows="2" class="form-control bg-light" placeholder="" 
+                                  id="req_locality" readonly style="cursor: not-allowed;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Sent Purpose -->
+                <div class="mb-4">
+                    <label for="bl_job_purpose" class="form-label fw-bold">
+                        <i class="fas fa-bullseye me-2 text-primary"></i>
+                        Sent Purpose
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-tasks text-muted"></i>
+                        </span>
+                        <select name="req_job_purpose" id="req_job_purpose" 
+                                class="form-select">
+                            <!-- Options will be populated dynamically -->
+                            <option value="">-- select Purpose --</option>
+                        </select>
+                    </div>
+                    <small class="text-muted mt-1 d-block">
+                        <i class="fas fa-lightbulb me-1"></i>
+                        Select the purpose for sending this request
+                    </small>
+                </div>
+
+                <!-- Remarks -->
+                <div class="mb-4">
+                    <label for="bl_application_stage_name_baby_step" class="form-label fw-bold">
+                        <i class="fas fa-comment-dots me-2 text-primary"></i>
+                        Remarks
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-sticky-note text-muted"></i>
+                        </span>
+                        <textarea rows="3" class="form-control" placeholder="Add any additional remarks or instructions..." 
+                                  id="req_remarks"></textarea>
+                    </div>
+                    <small class="text-muted mt-1 d-block">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Optional: Add any special instructions or notes
+                    </small>
+                </div>
+
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 w-100">
+                    <!-- Add to List Button -->
+                    <a href="#" id="btnaddreqtolistFinal" 
+                       class="btn btn-success btn-lg px-4 d-none flex-fill">
+                        <span class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <span class="fw-bold">Add to List</span>
+                        </span>
+                    </a>
+                    
+                    <!-- Close Button -->
+                    <button type="button" class="btn btn-danger btn-lg px-4 flex-fill" 
+                            data-bs-dismiss="modal">
+                        <span class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-times me-2"></i>
+                            <span class="fw-bold">Cancel</span>
+                        </span>
+                    </button>
+                </div>
+                
+                <!-- Hidden Inputs -->
+                <input type="hidden" id="bl_jn_id" name="jn_id">
+                <input type="hidden" id="bl_send_by_id" name="send_by_id">
+                <input type="hidden" id="bl_userid" name="userid">
+                
+                <!-- Status Message -->
+                <div class="w-100 mt-3">
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning py-2 mb-0 text-center">
+                        <small>
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            All fields except Remarks are read-only
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
