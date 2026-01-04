@@ -313,7 +313,7 @@
                         <div class="card-body">
                             <!-- Parcel Attributes Section -->
 							<div class="card">
-								<div class="card-header justify-content-between">
+								<div class="card-header bg-success bg-opacity-10 justify-content-between">
 									<div class="card-title text-primary">
 										<i class="bi bi-geo-alt me-2"></i>Parcel Attributes
 									</div>
@@ -383,7 +383,7 @@
                             
                             <!-- Transaction Details Section -->
 							<div class="card">
-								<div class="card-header justify-content-between">
+								<div class="card-header bg-success bg-opacity-10 justify-content-between">
 									<div class="card-title text-primary">
 										<i class="bi bi-receipt me-2"></i>Transaction Details
 									</div>

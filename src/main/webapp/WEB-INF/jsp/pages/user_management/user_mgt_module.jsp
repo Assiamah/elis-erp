@@ -194,7 +194,7 @@
                                             <i class="ri-user-line text-muted"></i>
                                         </div>
                                         <div>
-                                            <div class="fw-bold text-primary small">${user.fullname}</div>
+                                            <div class="fw-medium text-primary small">${user.fullname}</div>
                                             <small class="text-muted small">${user.emailaddress}</small>
                                         </div>
                                     </div>

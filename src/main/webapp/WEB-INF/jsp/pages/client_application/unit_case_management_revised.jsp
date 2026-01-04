@@ -18,7 +18,7 @@
         <!-- Start::page-header -->
         <div class="page-header-breadcrumb mb-3">
             <div class="d-flex align-center justify-content-between flex-wrap">
-                <h1 class="page-title fw-medium fs-18 mb-0">Unit Case Management</h1>
+                <h1 class="page-title fw-medium fs-18 mb-0">Unit Case Management :: <span class="text-primary">${unit_name}</span></h1>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Unit Case Management</li>

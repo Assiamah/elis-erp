@@ -5578,7 +5578,7 @@
                         </button>
                     </div>
                     <div class="d-flex">
-                        <button type="button" class="btn btn-outline-primary me-2" id="btnPrevStepCollection">
+                        <button type="button" class="btn btn-warning me-2" id="btnPrevStepCollection">
                             <i class="fas fa-chevron-left me-2"></i>Previous
                         </button>
                         <button type="button" class="btn btn-primary" id="btnNextStepCollection">
@@ -6007,3 +6007,544 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="profileUpdate" tabindex="-1"
+     aria-labelledby="profileUpdateLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="profileUpdateLabel">
+                    <i class="fas fa-user-edit me-2"></i>
+                    My Profile
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="frmUdateProfile">
+                    
+                    <!-- Personal Information Card -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary bg-opacity-10">
+                            <h6 class="mb-0">
+                                <i class="fas fa-id-card me-2"></i>
+                                Personal Information
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Full Name -->
+                                <div class="col-md-6">
+                                    <label for="pr_fullname" class="form-label fw-bold">
+                                        <i class="fas fa-user me-1 text-primary"></i>
+                                        Full Name
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-signature text-muted"></i>
+                                        </span>
+                                        <textarea id="pr_fullname" class="form-control" rows="2" readonly disabled>${fullname}</textarea>
+                                    </div>
+                                </div>
+                                
+                                <!-- Address -->
+                                <div class="col-md-6">
+                                    <label for="pr_address" class="form-label fw-bold">
+                                        <i class="fas fa-home me-1 text-primary"></i>
+                                        Address
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marker-alt text-muted"></i>
+                                        </span>
+                                        <textarea id="pr_address" class="form-control" rows="2" 
+                                                  placeholder="Enter your current address"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Contact Information Row -->
+                            <div class="row g-3 mt-2">
+                                <!-- Phone #1 -->
+                                <div class="col-md-4">
+                                    <label for="pr_phone" class="form-label fw-bold">
+                                        <i class="fas fa-phone me-1 text-primary"></i>
+                                        Primary Phone
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-phone-alt text-muted"></i>
+                                        </span>
+                                        <input type="tel" class="form-control" id="pr_phone" 
+                                               placeholder="Enter phone number" value="${user_phone}">
+                                    </div>
+                                </div>
+                                
+                                <!-- Phone #2 -->
+                                <div class="col-md-4">
+                                    <label for="pr_mobile" class="form-label fw-bold">
+                                        <i class="fas fa-mobile-alt me-1 text-primary"></i>
+                                        Mobile Phone
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-mobile text-muted"></i>
+                                        </span>
+                                        <input type="tel" class="form-control" id="pr_mobile" 
+                                               placeholder="Enter mobile number" value="${user_phone2}">
+                                    </div>
+                                </div>
+                                
+                                <!-- Email -->
+                                <div class="col-md-4">
+                                    <label for="pr_emailaddress" class="form-label fw-bold">
+                                        <i class="fas fa-envelope me-1 text-primary"></i>
+                                        E-Mail Address
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-at text-muted"></i>
+                                        </span>
+                                        <input type="email" class="form-control" id="pr_emailaddress" 
+                                               readonly disabled value="${emailaddress}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Employment Information Card -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-success bg-opacity-10">
+                            <h6 class="mb-0">
+                                <i class="fas fa-briefcase me-2"></i>
+                                Employment Information
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Staff Number -->
+                                <div class="col-md-4">
+                                    <label for="pr_staffnumber" class="form-label fw-bold">
+                                        <i class="fas fa-id-badge me-1 text-success"></i>
+                                        Staff Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-hashtag text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_staffnumber" readonly disabled value="${staffnumber}">
+                                    </div>
+                                </div>
+                                
+                                <!-- Designation -->
+                                <div class="col-md-4">
+                                    <label for="pr_designation" class="form-label fw-bold">
+                                        <i class="fas fa-user-tie me-1 text-success"></i>
+                                        Designation
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-briefcase text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_designation" readonly disabled value="${designation}">
+                                    </div>
+                                </div>
+                                
+                                <!-- Department -->
+                                <div class="col-md-4">
+                                    <label for="pr_department" class="form-label fw-bold">
+                                        <i class="fas fa-building me-1 text-success"></i>
+                                        Unit/Department
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-sitemap text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_department" readonly disabled value="${unit_name}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Location Information Row -->
+                            <div class="row g-3 mt-2">
+                                <!-- Region -->
+                                <div class="col-md-4">
+                                    <label for="pr_region" class="form-label fw-bold">
+                                        <i class="fas fa-globe-africa me-1 text-success"></i>
+                                        Region
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_region" readonly disabled value="${region_name}">
+                                    </div>
+                                </div>
+                                
+                                <!-- District -->
+                                <div class="col-md-4">
+                                    <label for="pr_district" class="form-label fw-bold">
+                                        <i class="fas fa-map-marked-alt me-1 text-success"></i>
+                                        Office District
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-location-dot text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_district" readonly disabled value="${regional_name}">
+                                    </div>
+                                </div>
+                                
+                                <!-- Division -->
+                                <div class="col-md-4">
+                                    <label for="pr_division" class="form-label fw-bold">
+                                        <i class="fas fa-code-branch me-1 text-success"></i>
+                                        Division
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-network-wired text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_division" readonly disabled value="${division}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Security Card -->
+                    <div class="card">
+                        <div class="card-header bg-warning bg-opacity-10">
+                            <h6 class="mb-0">
+                                <i class="fas fa-lock me-2"></i>
+                                Account Security
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Username -->
+                                <div class="col-md-4">
+                                    <label for="pr_username" class="form-label fw-bold">
+                                        <i class="fas fa-user-circle me-1 text-warning"></i>
+                                        Username
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-user text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="pr_username" readonly disabled value="${username}">
+                                    </div>
+                                </div>
+                                
+                                <!-- Password -->
+                                <div class="col-md-4">
+                                    <label for="pr_web_pass" class="form-label fw-bold">
+                                        <i class="fas fa-key me-1 text-warning"></i>
+                                        Password
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="pr_web_pass" 
+                                               placeholder="Enter new password" required>
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                onclick="togglePassword_('pr_web_pass', this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">Minimum 14 characters with letters and numbers</small>
+                                </div>
+                                
+                                <!-- Confirm Password -->
+                                <div class="col-md-4">
+                                    <label for="pr_web_pass_confirm" class="form-label fw-bold">
+                                        <i class="fas fa-key me-1 text-warning"></i>
+                                        Confirm Password
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="pr_web_pass_confirm" 
+                                               placeholder="Confirm new password" required>
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                onclick="togglePassword_('pr_web_pass_confirm', this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div id="passwordMatchFeedback" class="form-text"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Password Strength Indicator -->
+                            <div class="mt-3">
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div id="passwordStrengthBar" class="progress-bar" 
+                                         role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <small id="passwordStrengthText" class="text-muted">Password strength</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <!-- Update Profile Button -->
+                <button type="submit" class="btn btn-primary px-4" id="pr_save_updates">
+                    <i class="fas fa-save me-2"></i>
+                    Update Profile
+                </button>
+                
+                <!-- Cancel Button -->
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>
+                    Cancel
+                </button>
+                
+                <!-- Logout Button -->
+                <a class="btn btn-outline-danger px-4"
+                   href="#"
+                  onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="viewNotificationModal" tabindex="-1" 
+     aria-labelledby="viewNotificationModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title text-white" id="viewNotificationModalLabel">
+                    <i class="fas fa-bell me-2"></i>
+                    Notification on Application
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Notification Details Card -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary bg-opacity-10">
+                        <h6 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Notification Details
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Job Number -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-hashtag fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small mb-1">Job Number</div>
+                                        <div class="fw-medium text-dark fs-13" id="notice-frm-jobnumber-text">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Date -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-calendar-alt fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small mb-1">Date</div>
+                                        <div class="fw-medium text-dark fs-13" id="notice-frm-date-text">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sent By -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-user-tag fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small mb-1">Sent By</div>
+                                        <div class="fw-medium text-dark fs-13" id="notice-frm-by-text">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Type -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-tag fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small mb-1">Type</div>
+                                        <div class="fw-medium text-dark fs-13" id="notice-frm-type-text">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Details -->
+                            <div class="col-12">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-comment-dots fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small mb-1">Details</div>
+                                        <div class="p-3 bg-light text-dark rounded border" id="notice-frm-details-text" style="min-height: 80px;">
+                                            -
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="me-3 text-primary">
+                                        <i class="fas fa-flag fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small mb-1">Status</div>
+                                        <div>
+                                            <span class="badge bg-info" id="notice-frm-status-text">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Replies Section -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success bg-opacity-10 d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                            <i class="fas fa-reply-all me-2"></i>
+                            Replies
+                        </h6>
+                        <span class="badge bg-success" id="replyCountBadge">0</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="notificationReplies" class="replies-container">
+                            <!-- Empty state -->
+                            <div class="empty-replies text-center py-5">
+                                <i class="fas fa-comment-slash fa-3x text-muted mb-3"></i>
+                                <p class="text-muted mb-0">No replies yet</p>
+                                <p class="small text-muted">Be the first to reply to this notification</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reply Form (Hidden by default) -->
+                <div class="card" id="replyFormContainer" style="display: none;">
+                    <div class="card-header bg-warning bg-opacity-10">
+                        <h6 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Add Reply
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form id="frmNotificationReply">
+                            <div class="mb-3">
+                                <label for="reply-frm-details" class="form-label fw-bold">
+                                    <i class="fas fa-comment-medical me-1 text-warning"></i>
+                                    Reply Message
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light align-items-start">
+                                        <i class="fas fa-pen text-muted mt-1"></i>
+                                    </span>
+                                    <textarea rows="3" class="form-control" id="reply-frm-details" 
+                                              placeholder="Type your reply here..." required></textarea>
+                                </div>
+                                <small class="text-muted">Enter your response to this notification</small>
+                                <input type="hidden" id="reply-frm-notice-id">
+                            </div>
+                            
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" id="btnCancelReply">
+                                    <i class="fas fa-times me-1"></i>
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-paper-plane me-1"></i>
+                                    Submit Reply
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <!-- Open Application Button -->
+                <form action="request_application_progress_details_advance" method="post" class="me-auto">
+                    <input type="hidden" name="case_number" id="nt_case_number" value="${appfiles.case_number}">
+                    <input type="hidden" name="transaction_number" id="nt_transaction_number" value="${appfiles.transaction_number}">
+                    <input type="hidden" name="job_number" id="nt_job_number" value="${appfiles.job_number}">
+                    <input type="hidden" name="review_type" value="GeneralWorkRequest">
+                    <button type="submit" name="save" class="btn btn-primary">
+                        <i class="fas fa-folder-open me-2"></i>
+                        Open/Work on Application
+                    </button>
+                </form>
+                
+                <!-- Reply Button -->
+                <button type="button" class="btn btn-warning" id="btnReplyNotification">
+                    <i class="fas fa-reply me-2"></i>
+                    Reply Notification
+                </button>
+                
+                <!-- Close Button -->
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="queriedNotificationModal" tabindex="-1" aria-labelledby="queriedNotificationModalLabel" aria-modal="true" role="dialog" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-5">
+                <div id="eventDetails">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                    <h6 class="fw-semibold mb-0"><i class="fas fa-bell text-danger opacity-10 me-2"></i>Notifications</h6>
+                    <!-- <span class="badge bg-success-transparent">Full Day</span> -->
+                    </div>
+                    <div id="queried_list">
+
+                    </div>
+                </div>
+                <div class="btn-list float-end mt-3">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal"><i class="ti ti-x me-2 align-middle"></i>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

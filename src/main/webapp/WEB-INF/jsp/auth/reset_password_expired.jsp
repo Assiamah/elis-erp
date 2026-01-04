@@ -413,7 +413,17 @@
                         
                         <div class="mb-3">
                             <div class="fw-medium text-muted fs-13 mb-1">Email Support</div>
-                            <div class="fw-semibold">itsupport@landscommission.gov.gh</div>
+                            <div class="fw-semibold">itsupport@lc.gov.gh</div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-global-line fs-18 text-success"></i>
+                            </div>
+                            <div>
+                                <div class="fw-medium text-muted fs-13 mb-1">Helpdesk Link</div>
+                                <a class="text-secondary" style="text-decoration: underline" href="https://helpdesk.lc.gov.gh" target="blank_">helpdesk.lc.gov.gh<a/>
+                            </div>
                         </div>
                         
                         <div class="mb-3">

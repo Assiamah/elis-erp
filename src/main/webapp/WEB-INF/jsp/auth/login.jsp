@@ -193,7 +193,7 @@
                         <img src="${pageContext.request.contextPath}/assets/images/NewLogo.jpg" 
                              width="70" alt="logo" class="rounded-circle">
                     </div>
-                    <h1 class="h4 fw-bold text-dark mb-1">Enterprise Land Information System</h1>
+                    <h1 class="h4 fw-semibold text-dark mb-1">Enterprise Land Information System</h1>
                     <!-- <p class="text-muted fs-14">Secure Access Portal</p> -->
                 </div>
 
@@ -203,7 +203,7 @@
 
                         <!-- Welcome Text -->
                         <div class="text-center mb-4">
-                            <h2 class="h5 fw-bold text-dark mb-2">Welcome Back</h2>
+                            <h2 class="h5 fw-semibold text-dark mb-2">Welcome Back</h2>
                             <p class="text-muted fs-14">Please sign in to continue</p>
                         </div>
 
@@ -322,7 +322,7 @@
                 <div class="text-center mt-4">
                     <p class="text-muted fs-13 mb-0">
                         Need help signing in?
-                        <a href="#" class="text-primary fw-medium text-decoration-none ms-1">
+                        <a href="#" class="text-primary fw-medium text-decoration-none ms-1 alternate-link">
                             Contact Support
                         </a>
                     </p>
@@ -356,8 +356,8 @@
                                 <div class="icon-wrapper bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                     <i class="ri-shield-check-line fs-32 text-success"></i>
                                 </div>
-                                <h6 class="fw-semibold mb-2">Military-Grade Security</h6>
-                                <p class="text-muted fs-13 mb-0">
+                                <h6 class="fw-medium mb-2">Military-Grade Security</h6>
+                                <p class="text-muted fw-light fs-13 mb-0">
                                     Advanced encryption and multi-factor authentication protect your sensitive data
                                 </p>
                             </div>
@@ -371,8 +371,8 @@
                                 <div class="icon-wrapper bg-info bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                     <i class="ri-server-line fs-32 text-info"></i>
                                 </div>
-                                <h6 class="fw-semibold mb-2">99.9% Uptime</h6>
-                                <p class="text-muted fs-13 mb-0">
+                                <h6 class="fw-medium mb-2">99.9% Uptime</h6>
+                                <p class="text-muted fw-light fs-13 mb-0">
                                     Guaranteed system availability with real-time monitoring and automatic failover
                                 </p>
                             </div>
@@ -386,8 +386,8 @@
                                 <div class="icon-wrapper bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                     <i class="ri-database-2-line fs-32 text-warning"></i>
                                 </div>
-                                <h6 class="fw-semibold mb-2">Centralized Data Hub</h6>
-                                <p class="text-muted fs-13 mb-0">
+                                <h6 class="fw-medium mb-2">Centralized Data Hub</h6>
+                                <p class="text-muted fw-light fs-13 mb-0">
                                     Unified platform for all land records with advanced search and analytics capabilities
                                 </p>
                             </div>
@@ -401,8 +401,8 @@
                                 <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
                                     <i class="ri-customer-service-2-line fs-32 text-primary"></i>
                                 </div>
-                                <h6 class="fw-semibold mb-2">24/7 Expert Support</h6>
-                                <p class="text-muted fs-13 mb-0">
+                                <h6 class="fw-medium mb-2">24/7 Expert Support</h6>
+                                <p class="text-muted fw-light fs-13 mb-0">
                                     Dedicated support team available round the clock for immediate assistance
                                 </p>
                             </div>
@@ -439,8 +439,8 @@
                             <i class="ri-shield-flash-fill fs-20 text-danger"></i>
                         </div>
                         <div class="flex-grow-1 text-start">
-                            <h6 class="alert-heading mb-1 fw-semibold text-dark">Security Reminder</h6>
-                            <p class="mb-0 fs-13 text-dark">
+                            <h6 class="alert-heading mb-1 fw-medium text-dark">Security Reminder</h6>
+                            <p class="mb-0 fw-light fs-13 text-dark">
                                 Your security is our priority. Always verify you're on the official ELIS portal before entering credentials.
                             </p>
                         </div>
@@ -521,5 +521,94 @@
         setTimeout(() => {
             $('.alert-dismissible').alert('close');
         }, 5000);
+
+        $('.alternate-link').on('click', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                title: '<strong>Contact System Administrator</strong>',
+                html: `
+                    <div class="text-start">
+                        <div class="mb-4">
+                            <h6 class="text-primary fw-semibold mb-2">For login assistance, contact:</h6>
+                        </div>
+                        
+                        <div class="contact-details mb-4">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-building-line fs-18 text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-muted fs-13 mb-1">IT Support Department</div>
+                                    <div class="fw-semibold">Lands Commission Headquarters</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-mail-line fs-18 text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-muted fs-13 mb-1">Email Address</div>
+                                    <div class="fw-semibold">itsupport@lc.gov.gh</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-global-line fs-18 text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-muted fs-13 mb-1">Helpdesk Link</div>
+                                    <a class="text-secondary" style="text-decoration: underline" href="https://helpdesk.lc.gov.gh" target="blank_">helpdesk.lc.gov.gh<a/>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-phone-line fs-18 text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-muted fs-13 mb-1">Phone Number</div>
+                                    <div class="fw-semibold">+233 30 123 4567</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-time-line fs-18 text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-muted fs-13 mb-1">Office Hours</div>
+                                    <div class="fw-semibold">Monday - Friday</div>
+                                    <div class="text-muted fs-13">8:00 AM - 5:00 PM (GMT)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning border-warning border-start-3 border-0 bg-light p-3 mt-3 mb-0">
+                            <div class="d-flex">
+                                <i class="ri-information-line fs-18 text-warning me-2"></i>
+                                <div class="fs-13">
+                                    <strong>Note:</strong> Please have your employee ID ready when contacting support for faster assistance.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                icon: 'info',
+                showCloseButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Got it',
+                confirmButtonColor: '#10b981',
+                width: '500px',
+                padding: '1.5rem',
+                customClass: {
+                    popup: 'border-radius-16',
+                    title: 'mb-3',
+                    htmlContainer: 'text-dark'
+                }
+            });
+        });
     });
 </script>
