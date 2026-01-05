@@ -3,8 +3,7 @@
 <%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.google.gson.GsonBuilder"%>
   <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-       
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 <div class="content-wrapper">
@@ -156,4 +155,3 @@
 </div>
 <!-- Content -->
 </div>
-<jsp:include page="../includes/_ticket_footer.jsp"></jsp:include>

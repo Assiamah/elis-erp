@@ -11,8 +11,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-   <jsp:include page="../client_application/_application_process_header.jsp"></jsp:include>
-					          
+        
    <h3 class="border-bottom border-gray pb-2">Final Approval of Registration</h3>
                
    
@@ -106,6 +105,5 @@
  </div>
 
             
-		<jsp:include page="../client_application/_application_process_footer_ar.jsp"></jsp:include>
-  
+	
   

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- <jsp:include page="../legal/includes/header.jsp"></jsp:include>
+ 
  
    
   <div class="container-fluid">
@@ -245,7 +245,7 @@ pageEncoding="ISO-8859-1"%>
   
 
 
-  <jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+  
 
 <script type="text/javascript" src="legal/includes/pages_script/legal_reports.js"></script> 
 <script type="text/javascript" src="vendor/chart.js/Chart.min.js"></script> 

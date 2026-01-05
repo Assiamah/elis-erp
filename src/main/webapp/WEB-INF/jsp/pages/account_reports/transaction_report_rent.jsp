@@ -3,7 +3,6 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
-<jsp:include page="../includes/_header.jsp"></jsp:include>
 
 
 <!-- Begin Page Content -->
@@ -222,7 +221,6 @@
 <!-- /.container-fluid -->
 
 
-<jsp:include page="../includes/_footer.jsp"></jsp:include>
 
 <script type="text/javascript">
 

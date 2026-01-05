@@ -3,8 +3,6 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-  <jsp:include page="../CICA/includes/header.jsp"></jsp:include>
-  
 
  <div class="content-wrapper">
     <div class="container-fluid">

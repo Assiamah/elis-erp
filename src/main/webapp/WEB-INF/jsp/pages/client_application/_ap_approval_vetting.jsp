@@ -11,8 +11,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-   <jsp:include page="../client_application/_application_process_header.jsp"></jsp:include>
-					          
    <h3 class="border-bottom border-gray pb-2">Approval/Vetting/Approve for Publication</h3>
    <div class="row">
 
@@ -313,7 +311,4 @@
 		 </div>
 
           
-            
-		<jsp:include page="../client_application/_application_process_footer_ar.jsp"></jsp:include>
-  
-  
+       

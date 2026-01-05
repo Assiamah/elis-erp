@@ -10095,7 +10095,7 @@ request.setAttribute("rq_id",rq_id);
 				// ArrayList javaArrayListFromGSON =
 				// googleJson.fromJson(all_menus, ArrayList.class);
 				request.setAttribute("applicationlistcount", all_menus);
-
+//load_application_batched_to_user_all
 				web_service_response_menu_data = casemgt_web_service
 						.load_request_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),

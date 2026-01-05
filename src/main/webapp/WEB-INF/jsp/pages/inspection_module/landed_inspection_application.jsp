@@ -16,9 +16,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
 
-<jsp:include
-	page="../client_application/_application_process_header.jsp"
-></jsp:include>
 
 
 
@@ -358,8 +355,4 @@
 </div>
 
 
-
-<jsp:include
-	page="../client_application/_application_process_footer.jsp"
-></jsp:include>
 

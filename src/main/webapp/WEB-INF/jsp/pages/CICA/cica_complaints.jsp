@@ -11,7 +11,8 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@page import="java.util.*" %>
-<jsp:include page="../CICA/includes/header.jsp"></jsp:include>
+
+
 <!-- Begin Page Content -->
    <div class="container-fluid">
 	<section class="section dashboard">
@@ -260,5 +261,5 @@
       </div>
     </div>
 <!-- Status Client Modal-->
-<jsp:include page="../CICA/includes/footer.jsp"></jsp:include>
+
 <script type="text/javascript" src="CICA/includes/pages_script/cica_complaints.js"></script>

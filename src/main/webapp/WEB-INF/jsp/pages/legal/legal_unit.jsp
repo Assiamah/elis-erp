@@ -11,7 +11,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@page import="java.util.*" %>
-<jsp:include page="../legal/includes/header.jsp"></jsp:include>
+
 <!-- Begin Page Content -->
    <div class="container-fluid">
 	<section class="section dashboard">
@@ -281,6 +281,6 @@ function deleteRow(r) {
   
 }
 </script>
-<jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+
 <jsp:include page="../legal/includes/modals.jsp"></jsp:include>
 <script type="text/javascript" src="legal/includes/pages_script/legal_unit.js"></script>

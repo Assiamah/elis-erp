@@ -13,8 +13,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-<jsp:include page="../includes/_header.jsp"></jsp:include>
-
 
 
 <input type="hidden" id="cs_main_case_number" value="${case_number}">
@@ -1577,8 +1575,3 @@
 
 
 
-
-
-
-
-	<jsp:include page="../includes/_footer.jsp"></jsp:include>

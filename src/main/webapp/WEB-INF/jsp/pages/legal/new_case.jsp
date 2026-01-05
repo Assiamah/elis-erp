@@ -8,7 +8,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
- <jsp:include page="../legal/includes/header.jsp"></jsp:include>
+ 
  
    
   <div class="container-fluid">
@@ -287,6 +287,6 @@
   
 
 
-  <jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+  
 
 <script type="text/javascript" src="legal/includes/pages_script/legal_reports.js"></script> 

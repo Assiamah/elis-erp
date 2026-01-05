@@ -10,9 +10,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
-
-   <jsp:include page="../client_application/_application_process_header.jsp"></jsp:include>
-					          
+	          
    <!-- <div id="" class=""> -->
     <h3 class="border-bottom border-gray pb-2">Final Approval of Registration</h3>
 
@@ -484,7 +482,3 @@
 		 </div>
 
           
-            
-		<jsp:include page="../client_application/_application_process_footer_ar.jsp"></jsp:include>
-  
-  

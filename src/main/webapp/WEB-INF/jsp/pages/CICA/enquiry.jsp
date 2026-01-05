@@ -10,8 +10,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-  <jsp:include page="../legal/includes/header.jsp"></jsp:include>
-  
 
  <div class="content-wrapper">
     <div class="container-fluid">
@@ -182,5 +180,5 @@
  }
  </script>
     
- <jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+
  <script src="legal/includes/bootstrap/js/bootstrap.bundle.js"></script>

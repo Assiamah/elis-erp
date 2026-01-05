@@ -14,12 +14,6 @@
   <jsp:include page="../includes/_header.jsp"></jsp:include>
   
 
-  <% 
-
-
-	  
-%>
-
   
   
 

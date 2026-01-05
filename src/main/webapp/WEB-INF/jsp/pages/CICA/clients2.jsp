@@ -10,8 +10,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-  <jsp:include page="../CICA/includes/header.jsp"></jsp:include>
-  
 
  <div class="content-wrapper">
     <div class="container-fluid">
@@ -420,8 +418,7 @@
 
 <script type="text/javascript" src="CICA/includes/pages_script/clients.js"></script>
 
-    
- <jsp:include page="../CICA/includes/footer.jsp"></jsp:include>
+
  <script src="CICA/includes/bootstrap/js/bootstrap.bundle.js"></script>
   
 <script>

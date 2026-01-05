@@ -11,7 +11,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@page import="java.util.*" %>
-<jsp:include page="../legal/includes/header.jsp"></jsp:include>
+
 <!-- Begin Page Content -->
    <div class="container-fluid">
    
@@ -1021,7 +1021,7 @@
   </div> 
   
   <!-- Notes Modal  -->
-<jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+
 
 <script type="text/javascript" src="legal/includes/pages_script/case_work.js"></script>
 <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>

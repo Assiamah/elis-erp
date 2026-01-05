@@ -11,7 +11,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %> 
 <%@page import="java.util.*" %>
-<jsp:include page="../CICA/includes/header.jsp"></jsp:include>
+
 <input type="text" name="regional_code" value="${sessionScope.regional_code}"  hidden/> 
 				 
 <!-- Begin Page Content -->
@@ -486,5 +486,5 @@
 	}
 </script>
 
-<jsp:include page="../CICA/includes/footer.jsp"></jsp:include>
+
 <script type="text/javascript" src="CICA/includes/pages_script/cica_tickets.js"></script>

@@ -13,10 +13,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<jsp:include page="../includes/_header.jsp"></jsp:include>
-
-
-
 
 
 
@@ -487,4 +483,3 @@
     </div>
  
  
-	<jsp:include page="../includes/_footer.jsp"></jsp:include>

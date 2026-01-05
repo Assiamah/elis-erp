@@ -11,7 +11,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@page import="java.util.*" %>
-<jsp:include page="../legal/includes/header.jsp"></jsp:include>
+
 <!-- Begin Page Content -->
    <div class="container-fluid">
 	<section class="section dashboard">
@@ -417,7 +417,7 @@
                   </div>
                 </div>
 
-<jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+
 <script type="text/javascript" src="legal/includes/pages_script/case_management.js"></script> 
      <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
     <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>

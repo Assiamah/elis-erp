@@ -10,7 +10,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
-<jsp:include page="../includes/_header.jsp"></jsp:include>
+
 <jsp:useBean id="now" class="java.util.Date" />
 
 
@@ -972,7 +972,6 @@
 
 
 
-<jsp:include page="../includes/_footer.jsp"></jsp:include>
 <jsp:include page="../includes/_corporate_modals.jsp"></jsp:include>	
 
 <!-- For capturing HTML as images -->

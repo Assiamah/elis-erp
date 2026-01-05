@@ -109,7 +109,7 @@
                                             <th>Rent Review</th>
                                             <th>Rent Passing</th>
                                             <th>Arrears</th>
-                                            <th>Prev. Review</th>
+                                            <th>Out. Rent</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -344,7 +344,7 @@ $(document).ready(function () {
                     "Plot No.", "Plot Size", "Covenanted User", "LS Number", 
                     "Nature of Instrument", "Comm. Date", 
                     "Term", "Consent Date", "Rent Review", "Rent Passing", 
-                    "Arrears", "Prev. Review"
+                    "Arrears", "Out. Rent"
                 ];
 
                 // // Validate headers
@@ -380,7 +380,7 @@ $(document).ready(function () {
                             row[13] || '0', // Rent Review
                             row[14] || '0', // Rent Passing
                             row[15] || '0', // Arrears
-                            row[16] || '-'  // Prev. Review
+                            row[16] || '0'  // Prev. Review
                         ]);
                     }
                 }
@@ -445,7 +445,7 @@ $(document).ready(function () {
             'owners_name', 'address', 'file_number', 'ledger', 'folio', 
             'plot_number', 'plot_size', 'covenanted_user', 'ls_number', 'nature_of_instrument', 'comm_date', 
             'term', 'consent_date', 'rent_review_clause', 'rent_passing', 
-            'period_in_arrears', 'previous_rent_review_clause'
+            'period_in_arrears', 'rent_outstanding'
         ];
 
       $table.rows().every(function (rowIdx) {
@@ -590,7 +590,7 @@ function parseCsvLine(line) {
                         row.rent_review_clause || '',
                         row.rent_passing || '',
                         row.period_in_arrears || '',
-                        row.previous_rent_review_clause || ''
+                        row.rent_outstanding || '0'
                     ]);
                 });
             }

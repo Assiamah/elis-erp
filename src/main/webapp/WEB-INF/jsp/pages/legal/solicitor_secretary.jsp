@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<jsp:include page="../legal/includes/header.jsp"></jsp:include>
+
 <!-- Begin Page Content -->
    <div class="container-fluid">
 	<section class="section dashboard">
@@ -134,5 +134,5 @@
       </div>
     </div>
 <!-- Incoming Modal-->
-<jsp:include page="../legal/includes/footer.jsp"></jsp:include>
+
 <script type="text/javascript" src="legal/includes/pages_script/legal_unit.js"></script>
