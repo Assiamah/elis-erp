@@ -1309,7 +1309,7 @@
                                                         <button type="button"  
                                                             data-job_number="${mother_to_child_link_row.mc_job_number}" 
                                                             data-case_number="${mother_to_child_link_row.mc_case_number}" 
-                                                            data-transaction_number="[0, 0]"
+                                                            data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
                                                             class="btn btn-sm btn-warning btn-view-mother-Child-details"
                                                         >
                                                             <i class="fas fa-eye"></i>

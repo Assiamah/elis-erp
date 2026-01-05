@@ -1282,7 +1282,12 @@ window.prepareRequestlistModal = function () {
         return;
     }
 
-    const data = JSON.parse(existing);
+    const parsed = JSON.parse(existing);
+
+    // ✅ OBJECT → ARRAY (THIS IS THE KEY FIX)
+    const data = Array.isArray(parsed)
+        ? parsed
+        : Object.values(parsed);
 
     // ✅ Ensure array + valid entries
     const values = data.filter(item =>
@@ -4289,6 +4294,258 @@ $('#appsPassedDueModal').on('shown.bs.modal', function (e) {
       initializePassedDueAppsTable([]);
     }
   });
+});
+
+$('#batchedApplicationsModal').on('shown.bs.modal', function () {
+
+  if ($.fn.DataTable.isDataTable('#report_dashboard_batched_apps_by_user_table')) {
+    $('#report_dashboard_batched_apps_by_user_table').DataTable().destroy();
+  }
+
+  $('#report_dashboard_batched_apps_by_user_table tbody').empty();
+
+  $.ajax({
+    type: "POST",
+    url: "Case_Management_Serv",
+    data: {
+      request_type: 'load_application_batched_to_user_all',
+    },
+    success: function (data) {
+      try {
+        const jsonData = typeof data === 'string' ? JSON.parse(data) : data;
+        initializeBatchedAppsTable(jsonData.data);
+      } catch (e) {
+        console.error("JSON parse error:", e, data);
+        initializeBatchedAppsTable([]);
+      }
+    },
+    error: function (xhr) {
+      console.error("AJAX error:", xhr.responseText);
+      initializeBatchedAppsTable([]);
+    }
+  });
+});
+
+// Modified initializeBatchedAppsTable function with your column structure
+function initializeBatchedAppsTable(data) {
+    // console.log(data);
+  // Adjust the columns to match your data structure
+  const table = $('#report_dashboard_batched_apps_by_user_table').DataTable({
+    data: data,
+    destroy: true,
+    responsive: true,
+    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+         '<"row"<"col-sm-12"tr>>' +
+         '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>' +
+         '<"row"<"col-sm-12"B>>',
+    buttons: [
+      {
+        extend: 'excel',
+        text: '<i class="ri-file-excel-line me-1"></i>Excel',
+        className: 'btn btn-outline-primary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3] // Adjust column indices as needed
+        }
+      },
+      {
+        extend: 'print',
+        text: '<i class="ri-printer-line me-1"></i>Print',
+        className: 'btn btn-outline-secondary btn-sm',
+        exportOptions: {
+          columns: [0, 1, 2, 3] // Adjust column indices as needed
+        }
+      }
+    ],
+    columns: [
+      { 
+        data: 'job_number',
+        title: 'Job Number',
+        render: function(data, type, row) {
+          return `<span class="fw-medium text-primary small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'business_process_sub_name',
+        title: 'Application Type',
+        render: function(data, type, row) {
+          return `<span class="text-muted small">${data}</span>`;
+        }
+      },
+      { 
+        data: 'ar_name',
+        title: 'Applicant Name',
+        render: function(data, type, row) {
+          return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-light rounded-circle me-2">
+                <i class="ri-user-line text-muted"></i>
+              </div>
+              <div>
+                <div class="fw-medium small">${data}</div>
+              </div>
+            </div>
+          `;
+        }
+      },
+      { 
+        data: 'modified_date',
+        title: 'Date Received',
+        render: function(data, type, row) {
+          return `<span class="small">${data}</span>`;
+        }
+      },
+      { 
+        data: null,
+        title: 'Action',
+        orderable: false,
+        searchable: false,
+        render: function(data, type, row) {
+          return `
+            <button class="btn btn-sm btn-danger"
+                data-job_number="${row.job_number}" 
+                data-ar_name="${row.ar_name}" 
+                data-business_process_sub_name="${row.business_process_sub_name}" 
+                data-locality="${row.locality}" 
+                id="btnSpecificWorkRequest">
+                <i class="bi bi-send"></i>
+                Send Request
+            </button>
+          `;
+        }
+      }
+    ],
+    order: [[3, 'desc']], // Sort by modified_date descending
+    pageLength: 10,
+    language: {
+      emptyTable: "No batched applications found",
+      info: "Showing _START_ to _END_ of _TOTAL_ entries",
+      infoEmpty: "Showing 0 to 0 of 0 entries",
+      infoFiltered: "(filtered from _MAX_ total entries)",
+      lengthMenu: "Show _MENU_ entries",
+      loadingRecords: "Loading...",
+      processing: "Processing...",
+      search: "",
+      searchPlaceholder: "Search applications...",
+      zeroRecords: "No matching records found",
+      paginate: {
+        first: '<i class="ri-arrow-left-s-line"></i>',
+        last: '<i class="ri-arrow-right-s-line"></i>',
+        next: '<i class="ri-arrow-right-s-line"></i>',
+        previous: '<i class="ri-arrow-left-s-line"></i>'
+      }
+    },
+    initComplete: function() {
+      // Add custom search input if needed
+      $('.dataTables_filter input').attr('placeholder', 'Search applications...');
+    },
+    drawCallback: function() {
+      // Update any dynamic content after table draw
+      // You can add additional callbacks here if needed
+    }
+  });
+  
+  return table;
+}
+
+$(document).on('click', '#btnSpecificWorkRequest', function(e) {
+
+    $("#askForPurposeOfSendingRequest").modal('show')
+    $("#batchedApplicationsModal").modal('hide')
+
+    $('#req_job_number').val($(e.currentTarget).data('job_number'));
+    $('#req_ar_name').val($(e.currentTarget).data('ar_name'));
+    $('#req_business_process_sub_name').val($(e.currentTarget).data('business_process_sub_name'));
+    $('#req_locality').val($(e.currentTarget).data('locality'));
+
+    var options = $("#req_job_purpose");
+    options.empty();
+    options.append(new Option("-- select Purpose --",0));
+
+    $('#req_job_purpose').append(
+        '<option value="SpecificWorkRequest">Specific Work Request</option>'
+    );
+});
+
+$('#req_job_purpose').on('change', function(e) {
+    var job_purpose = $('#req_job_purpose').val();
+    var job_number = $('#req_job_number').val();
+
+    // console.log(job_number);
+
+    if(job_purpose == 'Certificate Generation' || job_purpose == 'Certificate Generation Transition' || job_purpose == 'Folio and Volume Generation') {
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_check_wkt_polygon_by_job_number',
+                job_number: job_number,
+            },
+            cache: false,
+            success: function(response) {
+                var json_p = JSON.parse(response);
+
+                if(json_p.data || json_p.data != null){
+                    $('#btnaddreqtolistFinal').removeClass('d-none');
+                    
+                    // Show success notification with SweetAlert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Application Verified',
+                        text: 'Application has been noted and is ready for request submission.',
+                        // toast: true,
+                        // position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    $('#btnaddreqtolistFinal').addClass('d-none');
+
+                    // Replace alert and notify with SweetAlert
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Application Not Noted',
+                        html: `
+                            <div class="text-center">
+                                <i class="fas fa-exclamation-triangle fa-3x mb-3 text-warning"></i>
+                                <p class="mb-0"><strong>Application has not been noted</strong></p>
+                                <p class="text-muted small mt-2">Please ensure the application is properly noted before proceeding.</p>
+                            </div>
+                        `,
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#dc3545',
+                        allowOutsideClick: false
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Error handling with SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request Failed',
+                    text: 'An error occurred while checking application status.',
+                    confirmButtonText: 'Try Again'
+                });
+            }
+        });
+    } else {
+        $('#btnaddreqtolistFinal').removeClass('d-none');
+        
+        // Optional: Show a simple confirmation for other purposes
+        if(job_purpose && job_purpose !== '') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Purpose Selected',
+                text: `Purpose "${job_purpose}" has been selected.`,
+                // toast: true,
+                // position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
+        }
+    }
 });
 
 // Modal hidden event to clean up DataTable

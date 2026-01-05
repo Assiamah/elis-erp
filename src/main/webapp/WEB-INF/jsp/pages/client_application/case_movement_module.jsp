@@ -128,11 +128,16 @@
                               <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Applications assigned to you</p>
                             </div> 
                             <div class="d-flex flex-wrap gap-2">
-                            
-                              <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">
+
+                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#batchedApplicationsModal">
+                                  <i class="ri-folders-line fs-13"></i>
+                                  Batched Applications [ <span class="fw-semibold">${applicationlist_all.size()}</span> ]
+                                </button>
+
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">
                                   <i class="ri-error-warning-line fs-13"></i>
                                   Overdue Applications
-                              </button>
+                                </button>
                               
                               <!-- Additional Action Buttons -->
                               <div class="dropdown">
@@ -160,7 +165,7 @@
                         <div class="card-body p-3 position-relative" id="todo-content">
                             <div class="table-responsive">
                               <table class="table table-hover align-middle mb-0" id="applicationTable">
-                                  <thead class="bg-light">
+                                  <thead class="table-light">
                                       <tr>
                                           <!-- <th class="ps-4" width="40">
                                               <div class="form-check">
@@ -170,8 +175,8 @@
                                           <th>Job Details</th>
                                           <th>Applicantion Type</th>
                                           <th>Job Category</th>
-                                          <th>Request Type</th>
-                                          <th>Status</th>
+                                          <th>Purpose</th>
+                                          <th>Sent By</th>
                                           <th>Timeline</th>
                                           <th class="text-center">Actions</th>
                                       </tr>
@@ -224,18 +229,26 @@
                                             <!-- Request Type -->
                                             <td>
                                                 <span class="small">
-                                                    ${appfiles.request_category}
+                                                    ${appfiles.job_purpose}
                                                 </span>
                                             </td>
                                             
                                             <!-- Status -->
                                             <td>
-                                                <div class="d-flex flex-column">
+                                                <!-- <div class="d-flex flex-column">
                                                     <span class="small" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" title="${appfiles.current_application_status}">
                                                         ${fn:substring(appfiles.current_application_status, 0, 20)}${fn:length(appfiles.current_application_status) > 20 ? '...' : ''}
                                                     </span>
                                                     ${appfiles.objections > 0 ? 
                                                         '<small class="text-danger mt-1"><i class="fas fa-exclamation-circle me-1"></i>Has Objections</small>' : ''}
+                                                </div> -->
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar avatar-xs bg-light rounded-circle me-2">
+                                                        <i class="ri-user-line text-muted"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-medium small">${appfiles.job_forwarded_by}</div>
+                                                    </div>
                                                 </div>
                                             </td>
                                             

@@ -5858,6 +5858,10 @@
 
             <!-- Modal Body -->
             <div class="modal-body p-0">
+
+                <input type="hidden" id="certificateAndRegisterDetailsCaseNumber">
+                <input type="hidden" id="certificateAndRegisterDetailsTransactionNumber">
+                <input type="hidden" id="certificateAndRegisterDetailsJobNumber">
                 
                 <!-- Case Details Section -->
                 <div class="accordion" id="caseDetailsAccordion">
@@ -6528,7 +6532,7 @@
                                                 <p class="card-text text-muted mb-4">
                                                     Create the official register document with all case details and records.
                                                 </p>
-                                                <button type="button" id="lc_btn_activate_final_register_" 
+                                                <button type="button" id="lc_btn_activate_final_register_md" 
                                                         class="btn btn-purple w-100 py-3">
                                                     <i class="fas fa-print me-2"></i>
                                                     Generate Register

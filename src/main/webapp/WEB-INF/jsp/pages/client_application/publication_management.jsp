@@ -123,7 +123,7 @@
 
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle mb-0" id="unpublishedDataTable">
-                                        <thead class="bg-light">
+                                        <thead class="table-light">
                                             <tr>
                                                 <th width="50">#</th>
                                                 <th>Job Number</th>
@@ -199,7 +199,7 @@
 
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle mb-0" id="publishedDataTable">
-                                        <thead class="bg-light">
+                                        <thead class="table-light">
                                             <tr>
                                                 <th width="50">
                                                     <div class="form-check">
@@ -375,7 +375,7 @@
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0" 
                            id="jobs_publishedButNotWorkedOnTable">
-                        <thead class="bg-light">
+                        <thead class="table-light">
                             <tr>
                                 <th>Job Number</th>
                                 <th>Applicant Name</th>
@@ -543,7 +543,7 @@
                                         <div class="table-responsive">
                                             <table class="table table-hover align-middle mb-0" 
                                                    id="party_details_datatable">
-                                                <thead class="bg-light">
+                                                <thead class="table-light">
                                                     <tr>
                                                         <th>Name</th>
                                                         <th>Sex</th>

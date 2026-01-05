@@ -4073,6 +4073,37 @@
   </div>
 </div>
 
+<div class="modal fade effect-scale modal-blur" id="batchedApplicationsModal" tabindex="-1" aria-labelledby="batchedApplicationsModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-info text-light">
+        <h5 class="modal-title" id="batchedApplicationsModalLabel">Batched Applications</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="report_dashboard_batched_apps_by_user_table" class="table table-striped table-hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Application Type</th>
+              <th>Applicant Name</th>
+              <th>Date Received</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade effect-scale modal-blur" id="appsReceivedMonthModal" tabindex="-1" aria-labelledby="appsReceivedMonthModalLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-xl">
     <div class="modal-content border-0 shadow">

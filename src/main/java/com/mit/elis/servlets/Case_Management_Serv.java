@@ -10607,6 +10607,23 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("load_application_batched_to_user_all")) {	
+
+				web_service_response = casemgt_cl_m
+							.load_application_batched_to_user_all(cls_url_config.getWeb_service_url_ser(),
+									cls_url_config.getWeb_service_url_ser_api_key(),
+									(String) session.getAttribute("userid"));
+
+							System.out.println(web_service_response);
+							if (web_service_response != null) {
+								// System.out.println(web_service_response);
+							} else {
+								System.out.println(web_service_response);
+							}
+
+							return web_service_response;
+			}
+
 			if (request_type.equals("select_send_message_to_officer")) {
 
 				String am_to_officer = request.getParameter("am_to_officer");

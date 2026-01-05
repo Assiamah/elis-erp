@@ -10079,6 +10079,7 @@ request.setAttribute("rq_id",rq_id);
 				cls_casemgt casemgt_web_service = new cls_casemgt();
 				String web_service_response_menu = null;
 				String web_service_response_menu_data = null;
+				String web_service_response_menu_data_all = null;
 				String web_service_response_tc = null;
 
 				web_service_response_menu = casemgt_web_service
@@ -10096,9 +10097,9 @@ request.setAttribute("rq_id",rq_id);
 				request.setAttribute("applicationlistcount", all_menus);
 
 				web_service_response_menu_data = casemgt_web_service
-						.load_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),
+						.load_request_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
-								(String) session.getAttribute("userid"));
+								(String) session.getAttribute("userid"));  
 
 				JSONObject menu_obj_data;
 				menu_obj_data = new JSONObject(web_service_response_menu_data);
@@ -10108,6 +10109,20 @@ request.setAttribute("rq_id",rq_id);
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus_data, ArrayList.class);
 
 				request.setAttribute("applicationlist", javaArrayListFromGSON);
+
+				web_service_response_menu_data_all = casemgt_web_service
+						.load_application_batched_to_user_all(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(),
+								(String) session.getAttribute("userid"));
+
+				JSONObject menu_obj_data_all;
+				menu_obj_data_all = new JSONObject(web_service_response_menu_data_all);
+				String all_menus_data_all = menu_obj_data_all.get("data").toString();
+				// System.out.println(all_menus_data);
+				Gson googleJson_all = new Gson();
+				ArrayList javaArrayListFromGSON_all = googleJson_all.fromJson(all_menus_data_all, ArrayList.class);
+
+				request.setAttribute("applicationlist_all", javaArrayListFromGSON_all);
 
 				// web_service_response_tc = casemgt_web_service
 				// 		.load_count_transitional_plotting_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),

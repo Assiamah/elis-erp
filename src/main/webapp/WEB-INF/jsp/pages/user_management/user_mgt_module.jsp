@@ -165,7 +165,7 @@
               <div class="card-body p-3 position-relative" id="todo-content">
                   <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0" id="userTable">
-                        <thead class="bg-light">
+                        <thead class="table-light">
                             <tr>
                                 <!-- <th class="ps-4" width="40">
                                     <div class="form-check">
@@ -279,6 +279,7 @@
 <script>
     $(document).ready(function() {
         const table = $('#userTable').DataTable({
+            stateSave: true,
             pageLength: 10
         });
 

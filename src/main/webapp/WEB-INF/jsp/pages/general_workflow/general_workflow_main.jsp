@@ -554,7 +554,7 @@
                     <div class="tab-pane fade show active" id="selectedJobs" role="tabpanel">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0" id="selectedJobsTable">
-                                <thead class="bg-light">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Job Number</th>
                                         <th>Applicant Name</th>

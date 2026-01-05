@@ -5597,6 +5597,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    $('#lc_btn_activate_final_register_md').on('click', function(e) {
+        var job_number = $("#certificateAndRegisterDetailsJobNumber").val();
+        var case_number = $("#certificateAndRegisterDetailsTransactionNumber").val();
+        // var transaction_number = $("#certificateAndRegisterDetailsTransactionNumber").val();
+        
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_register',
+                job_number: job_number,
+                case_number: case_number
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                // Show loading indicator
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                // Create file object from blob
+                const file = new File([pdfBlob], `Register_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+
+                // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+                hideLoadingIndicator();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to generate PDF document. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
     // Function to open PDF modal
     function openPDFModal(file, fileURL) {
         // Create modal HTML
@@ -8628,6 +8684,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal header with case number
         $('#modalCaseNumber').text(`Case: ${case_number}`);
 
+        $("#certificateAndRegisterDetailsCaseNumber").val(case_number);
+        $("#certificateAndRegisterDetailsJobNumber").val(job_number);
+
         // Load case details
         loadCaseDetails(job_number, case_number, transaction_number, business_process_sub_name);
     });
@@ -8671,6 +8730,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateCaseDetails(result) {
+
+        $("#certificateAndRegisterDetailsTransactionNumber").val(result.transaction_details?.transaction_number);
         // Update all fields
         const fields = {
             // Basic Information
@@ -11376,7 +11437,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-     $("#askForPurposeOfSendingRequest").on('shown.bs.modal', function (e) {
+    $("#askForPurposeOfSendingRequest").on('shown.bs.modal', function (e) {
 
         $('#req_job_number').val($(e.relatedTarget).data('job_number'));
         $('#req_ar_name').val($(e.relatedTarget).data('ar_name'));
@@ -11674,88 +11735,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             });
-    });
-
-    $('#req_job_purpose').on('change', function(e) {
-        var job_purpose = $('#req_job_purpose').val();
-        var job_number = $('#req_job_number').val();
-
-        console.log(job_number);
-
-        if(job_purpose == 'Certificate Generation' || job_purpose == 'Certificate Generation Transition' || job_purpose == 'Folio and Volume Generation') {
-            $.ajax({
-                type: "POST",
-                url: "Case_Management_Serv",
-                data: {
-                    request_type: 'select_check_wkt_polygon_by_job_number',
-                    job_number: job_number,
-                },
-                cache: false,
-                success: function(response) {
-                    var json_p = JSON.parse(response);
-
-                    if(json_p.data || json_p.data != null){
-                        $('#btnaddreqtolistFinal').removeClass('d-none');
-                        
-                        // Show success notification with SweetAlert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Application Verified',
-                            text: 'Application has been noted and is ready for request submission.',
-                            // toast: true,
-                            // position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-                    } else {
-                        $('#btnaddreqtolistFinal').addClass('d-none');
-
-                        // Replace alert and notify with SweetAlert
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Application Not Noted',
-                            html: `
-                                <div class="text-center">
-                                    <i class="fas fa-exclamation-triangle fa-3x mb-3 text-warning"></i>
-                                    <p class="mb-0"><strong>Application has not been noted</strong></p>
-                                    <p class="text-muted small mt-2">Please ensure the application is properly noted before proceeding.</p>
-                                </div>
-                            `,
-                            showCancelButton: false,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#dc3545',
-                            allowOutsideClick: false
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Error handling with SweetAlert
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Request Failed',
-                        text: 'An error occurred while checking application status.',
-                        confirmButtonText: 'Try Again'
-                    });
-                }
-            });
-        } else {
-            $('#btnaddreqtolistFinal').removeClass('d-none');
-            
-            // Optional: Show a simple confirmation for other purposes
-            if(job_purpose && job_purpose !== '') {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Purpose Selected',
-                    text: `Purpose "${job_purpose}" has been selected.`,
-                    // toast: true,
-                    // position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true
-                });
-            }
-        }
     });
 
 });
