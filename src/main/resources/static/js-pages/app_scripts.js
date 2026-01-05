@@ -1181,14 +1181,17 @@ window.removeJobFromRequestlist = function (job_number_plain) {
 
         if (!result.isConfirmed) return;
 
-        var existing = JSON.parse(localStorage.getItem('requestlistdata') || '{}');
+        const existing = JSON.parse(localStorage.getItem('requestlistdata') || '[]');
 
-        delete existing[job_number_plain];
+        // ✅ REMOVE item from array
+        const updated = existing.filter(item =>
+            item.jobNumberPlain !== job_number_plain
+        );
 
-        if (Object.keys(existing).length === 0) {
+        if (!updated.length) {
             localStorage.removeItem('requestlistdata');
         } else {
-            localStorage.setItem('requestlistdata', JSON.stringify(existing));
+            localStorage.setItem('requestlistdata', JSON.stringify(updated));
         }
 
         prepareRequestlistModal();
@@ -1207,6 +1210,8 @@ window.prepareBatchlistModal = function () {
     const existing = localStorage.getItem('batchlistdata');
 
     if (!existing) {
+        $('#batchlistdataTable').empty();
+        updateBatchCount();
         Swal.fire({
             title: 'No Applications',
             text: 'No applications in batch list!',
@@ -1267,6 +1272,8 @@ window.prepareRequestlistModal = function () {
     const existing = localStorage.getItem('requestlistdata');
 
     if (!existing) {
+        $('#requestlistdataTable').empty();
+        updateRequestCount();
         Swal.fire({
             title: 'No Applications',
             text: 'No applications in batch list!',
@@ -1277,22 +1284,20 @@ window.prepareRequestlistModal = function () {
 
     const data = JSON.parse(existing);
 
-    // ✅ Keep ONLY valid application objects
-    const values = Object.values(data).filter(item =>
+    // ✅ Ensure array + valid entries
+    const values = data.filter(item =>
         item &&
-        item.jobNumberPlain &&              // must exist
-        item.jobNumberHtml &&               // must exist
+        item.jobNumberPlain &&
+        item.jobNumberHtml &&
         item.jobNumberPlain !== 'Job Number'
     );
 
-    // Nothing valid left
+    $('#requestlistdataTable').empty();
+
     if (!values.length) {
-        $('#requestlistdataTable').empty();
-        updateBatchCount();
+        updateRequestCount();
         return;
     }
-
-    $('#requestlistdataTable').empty();
 
     values.forEach(item => {
 

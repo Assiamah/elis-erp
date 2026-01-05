@@ -223,7 +223,7 @@
             <div class="d-flex align-center justify-content-between flex-wrap">
                 <div>
                     <h1 class="page-title fw-medium fs-18 mb-1">General Workflow Dashboard</h1>
-                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage and track work requests and applications</p>
+                    <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Manage and track work requests and applications</p>
                 </div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
@@ -232,196 +232,298 @@
             </div>
         </div>
         <!-- End::page-header -->
-
-        <!-- Start::row-1 -->
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="workflow-dashboard">
-                    <!-- Modern Breadcrumb with Icon -->
-                    <div class="dashboard-header d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <i class="ri-projector-line text-primary me-3 fs-5"></i>
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item active" aria-current="page">
-                                        <span class="fw-semibold">General Workflow Dashboard</span>
-                                    </li>
-                                </ol>
-                            </nav>
-                        </div>
-                        <button class="btn btn-primary btn-add-request" data-bs-toggle="modal" data-bs-target="#addRequestModal">
-                            <i class="ri-add-circle-line me-2"></i>New Request
-                        </button>
+         <div class="row">
+            <div class="col-xl-2">
+                <div class="row">
+                    <div class="col-xl-12 col-md-6">
+                        <a href="#" class="stat-card-link btnLoadData btnLoadDataIncoming" data-status="incoming" data-id="1">
+                            <div class="card custom-card dashboard-main-card overflow-hidden info" id="card-incoming">
+                                <div class="card-body" id="body-bg-1">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="flex-fill">
+                                            <span class="fs-13 fw-medium">Incoming</span>
+                                            <h4 class="fw-semibold my-2 lh-1">${incoming}</h4>
+                                            <!-- <div class="d-flex align-items-center justify-content-between">
+                                                <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-semibold"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>0.45%</span>this month</span>
+                                            </div> -->
+                                        </div>
+                                        <div>
+                                            <span class="avatar avatar-md bg-info-transparent svg-info">
+                                                <i class="ri-download-2-line fa-2x"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-
-                    <!-- Minimal Stat Cards with Improved Layout -->
-                    <div class="stats-grid mb-5">
-                        <div class="stat-card stat-card-info" id="card-incoming">
-                            <a href="#" class="stat-card-link btnLoadData" data-status="incoming" data-id="1">
-                                <div class="card-body">
-                                    <div class="stat-icon">
-                                        <i class="ri-inbox-line text-info"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <h6 class="stat-title">INCOMING</h6>
-                                        <h3 class="stat-value">${incoming}</h3>
+                    <div class="col-xl-12 col-md-6">
+                        <a href="#" class="stat-card-link btnLoadData btnLoadDataCompleted" data-status="completed" data-id="3">
+                            <div class="card custom-card dashboard-main-card overflow-hidden primary" id="card-completed">
+                                <div class="card-body" id="body-bg-3">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="flex-fill">
+                                            <span class="fs-13 fw-medium">Completed</span>
+                                            <h4 class="fw-semibold my-2 lh-1">${completed}</h4>
+                                            <!-- <div class="d-flex align-items-center justify-content-between">
+                                                <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-medium"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>4.43%</span>this month</span>
+                                            </div> -->
+                                        </div>
+                                        <div>
+                                            <span class="avatar avatar-md bg-primary-transparent svg-primary">
+                                                <i class="ri-checkbox-circle-line fa-2x"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xl-12 col-md-6">
+                        <a href="#" class="stat-card-link btnLoadData btnLoadDataPending" data-status="pending" data-id="4">
+                            <div class="card custom-card dashboard-main-card overflow-hidden warning" id="card-pending">
+                                <div class="card-body" id="body-bg-4">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="flex-fill">
+                                            <span class="fs-13 fw-medium">Pending</span>
+                                            <h4 class="fw-semibold my-2 lh-1">${awaiting}</h4>
+                                            <!-- <div class="d-flex align-items-center justify-content-between">
+                                                <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-medium"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>1.25%</span>this month</span>
+                                            </div> -->
+                                        </div>
+                                        <div>
+                                            <span class="avatar avatar-md bg-warning-transparent svg-warning">
+                                                <i class="ri-time-line fa-2x"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xl-12 col-md-6">
+                        <a href="#" class="stat-card-link btnLoadData btnLoadDataQueried" data-status="queried" data-id="5">
+                            <div class="card custom-card dashboard-main-card overflow-hidden danger" id="card-queried">
+                                <div class="card-body" id="body-bg-5">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="flex-fill">
+                                            <span class="fs-13 fw-medium">Queried</span>
+                                            <h4 class="fw-semibold my-2 lh-1">${queried}</h4>
+                                            <!-- <div class="d-flex align-items-center justify-content-between">
+                                                <span class="fs-12 d-block text-muted"><span class="text-danger me-1 d-inline-flex align-items-center fw-medium"><i class="ti ti-trending-down me-1 fw-semibold align-middle"></i>2.97%</span>this month</span>
+                                            </div> -->
+                                        </div>
+                                        <div>
+                                            <span class="avatar avatar-md bg-danger-transparent svg-danger">
+                                                <i class="ri-question-line fa-2x"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div> 
+                </div>
+            </div>
+            <div class="col-xl-10">
+                <button class="btn btn-primary btn-add-request" data-bs-toggle="modal" data-bs-target="#addRequestModal">
+                    <i class="ri-add-circle-line me-2"></i>New Request
+                </button>
+                <div class="card custom-card shadow-sm mt-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title mb-0">Request Details</h5>
+                            <p class="text-muted small mb-0 filter-status"></p>
                         </div>
-                        
-                        <div class="stat-card stat-card-success" id="card-completed">
-                            <a href="#" class="stat-card-link btnLoadData" data-status="completed" data-id="3">
-                                <div class="card-body">
-                                    <div class="stat-icon">
-                                        <i class="ri-checkbox-circle-line text-success"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <h6 class="stat-title">COMPLETED</h6>
-                                        <h3 class="stat-value">${completed}</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        
-                        <div class="stat-card stat-card-warning" id="card-pending">
-                            <a href="#" class="stat-card-link btnLoadData" data-status="pending" data-id="4">
-                                <div class="card-body">
-                                    <div class="stat-icon">
-                                        <i class="ri-time-line text-warning"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <h6 class="stat-title">PENDING</h6>
-                                        <h3 class="stat-value">${awaiting}</h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        
-                        <div class="stat-card stat-card-danger" id="card-queried">
-                            <a href="#" class="stat-card-link btnLoadData" data-status="queried" data-id="5">
-                                <div class="card-body">
-                                    <div class="stat-icon">
-                                        <i class="ri-error-warning-line text-danger"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <h6 class="stat-title">QUERIED</h6>
-                                        <h3 class="stat-value">${queried}</h3>
-                                    </div>
-                                </div>
-                            </a>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary d-none" id="btn_add_request_all">
+                                <i class="ri-checkbox-circle-line me-1"></i> Add All To Request List
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary d-none" id="btn_add_archive_all">
+                                <i class="ri-delete-bin-line me-1"></i> Add All To Archive List
+                            </button>
+                            <button class="btn btn-sm btn-info btnLoadData" data-id="2">
+                                <i class="ri-group-line me-1"></i> Request With Officers 
+                                <span class="badge bg-white text-info ms-1">${with_officers}</span>
+                            </button>
                         </div>
                     </div>
-
-                    <!-- Modern Table Card -->
-                    <div class="card custom-card shadow-sm">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="card-title mb-0">Request Details</h5>
-                                <p class="text-muted small mb-0 filter-status"></p>
-                            </div>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-secondary d-none" id="btn_add_request_all">
-                                    <i class="ri-checkbox-circle-line me-1"></i> Add All To Request List
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary d-none" id="btn_add_archive_all">
-                                    <i class="ri-delete-bin-line me-1"></i> Add All To Archive List
-                                </button>
-                                <button class="btn btn-sm btn-info btnLoadData" data-id="2">
-                                    <i class="ri-group-line me-1"></i> Request With Officers 
-                                    <span class="badge bg-white text-info ms-1">${with_officers}</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table id="requestsTable" class="table table-hover align-middle mb-0 modern-table">
-                                    <thead class="bg-light">
-                                        <tr>
-                                            <th width="50">
-                                                <div class="form-check d-flex justify-content-center">
-                                                    <input class="form-check-input" type="checkbox" id="selectAll">
-                                                </div>
-                                            </th>
-                                            <th>Requested Date</th>
-                                            <th>Job Number</th>
-                                            <th>Application</th>
-                                            <th>Type</th>
-                                            <th>Purpose</th>
-                                            <th>Comment</th>
-                                            <th id="inbox_text">Requested By</th>
-                                            <th width="120" class="text-center">Status</th>
-                                            <th width="120" class="text-end">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="small">
-                                        <!-- Data will be loaded here dynamically -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center">
-                            <div class="table-info small">
-                                Showing <span id="shownCount">0</span> of <span id="totalCount">0</span> entries
-                            </div>
-                            <nav>
-                                <ul class="pagination pagination-sm mb-0">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="requestsTable" class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50">
+                                            <div class="form-check d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" id="selectAll">
+                                            </div>
+                                        </th>
+                                        <th>Requested Date</th>
+                                        <th>Job Number</th>
+                                        <th>Application</th>
+                                        <th>Type</th>
+                                        <th>Purpose</th>
+                                        <th>Comment</th>
+                                        <th id="inbox_text">Requested By</th>
+                                        <th width="120" class="text-center">Status</th>
+                                        <th width="120" class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="small">
+                                    <!-- Data will be loaded here dynamically -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--End::row-1 -->
 
     </div>
 </div>
 
 <!-- Modal for Adding New Request -->
-<div class="modal fade" id="addRequestModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade effect-scale modal-blur" id="addRequestModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Request</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Add New Request
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
+            <!-- Modal Body -->
             <div class="modal-body">
+                
+                <!-- Info Alert -->
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-lg text-info me-3"></i>
+                        <div>
+                            <h6 class="mb-1">Search and Add Request</h6>
+                            <p class="mb-0">Select request purpose and reference type to search for applications.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Request Form -->
                 <form id="addRequestForm">
-                    <div class="mb-3">
-                        <label class="form-label">Request Purpose:</label>
-                        <select class="form-select" id="gwf_request_purpose">
-                            <!-- Options will be populated dynamically -->
-                        </select>
+                    <!-- Request Purpose -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary bg-opacity-10 py-2">
+                            <h6 class="mb-0">
+                                <i class="fas fa-bullseye me-2 text-primary"></i>
+                                Request Purpose
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-tasks me-1 text-primary"></i>
+                                    Select Request Purpose
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-list-check text-muted"></i>
+                                    </span>
+                                    <select class="form-select" id="gwf_request_purpose" required>
+                                        <option value="" disabled selected>-- Select Purpose --</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                </div>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="fas fa-lightbulb me-1"></i>
+                                    Choose the purpose for this request
+                                </small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Reference Type:</label>
-                        <select class="form-select" id="gwf_request_reference_type">
-                            <option value="">-- Select Reference Type --</option>
-                            <option value="Job Number">Job Number</option>
-                            <option value="Certificate Number">Certificate Number</option>
-                            <option value="Parcel ID">Parcel ID</option>
-                            <option value="GLPIN">GLPIN</option>
-                        </select>
+                    
+                    <!-- Search Criteria -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-success bg-opacity-10 py-2">
+                            <h6 class="mb-0">
+                                <i class="fas fa-search me-2 text-success"></i>
+                                Search Criteria
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <!-- Reference Type -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-tag me-1 text-success"></i>
+                                    Reference Type
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-filter text-muted"></i>
+                                    </span>
+                                    <select class="form-select" id="gwf_request_reference_type" required>
+                                        <option value="" selected disabled>-- Select Reference Type --</option>
+                                        <option value="Job Number">
+                                            <i class="fas fa-hashtag me-1"></i> Job Number
+                                        </option>
+                                        <option value="Certificate Number">
+                                            <i class="fas fa-certificate me-1"></i> Certificate Number
+                                        </option>
+                                        <option value="Parcel ID">
+                                            <i class="fas fa-map-marker-alt me-1"></i> Parcel ID
+                                        </option>
+                                        <option value="GLPIN">
+                                            <i class="fas fa-fingerprint me-1"></i> GLPIN
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Keyword Search -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-key me-1 text-success"></i>
+                                    Search Keyword
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="gwf_request_keyword" 
+                                           placeholder="Enter search keyword" required>
+                                </div>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Enter keyword to search for specific applications
+                                </small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Keyword:</label>
-                        <input type="text" class="form-control" id="gwf_request_keyword" 
-                               placeholder="Enter search keyword">
+                    
+                    <!-- Validation Feedback -->
+                    <div id="validationFeedback" class="alert alert-warning d-none">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span id="validationMessage">Please fill in all required fields</span>
                     </div>
+                    
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="btn_check_request" class="btn btn-success">
-                    <i class="ri-search-line me-1"></i>Check
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light rounded-bottom">
+                <!-- Close Button -->
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>
+                    Cancel
+                </button>
+                
+                <!-- Check Button -->
+                <button type="button" id="btn_check_request" class="btn btn-success px-4">
+                    <span class="d-flex align-items-center">
+                        <i class="fas fa-search me-2"></i>
+                        <span>Search & Check</span>
+                    </span>
                 </button>
             </div>
         </div>
@@ -517,19 +619,35 @@
 
         if (request_purpose == "") {
             //alert("Please select Request Purpose");
-            toastr['warning']("Please select Request Purpose");
+            // toastr['warning']("Please select Request Purpose");
+            swal.fire({
+                title: 'Warning!',
+                text: 'Please select Request Purpose',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
             $("#gwf_request_purpose").focus();
             return;
         }
         if (request_reference_type == "") {
             //alert("Please select Reference Type");
-            toastr['warning']("Please select Reference Type");
+            swal.fire({
+                title: 'Warning!',
+                text: 'Please select Reference Type',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
             $("#gwf_request_reference_type").focus();
             return;
         }
         if (request_keyword == "") {
             //alert("Please enter Keyword");
-            toastr['warning']("Please enter Keyword");
+            swal.fire({
+                title: 'Warning!',
+                text: 'Please enter Keyword',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
             $("#gwf_request_keyword").focus();
             return;
         }
@@ -611,22 +729,23 @@
                             
                             // Add job to list
                             selectedJobsList.push({
-                                job_number: jobData.job_number,
-                                ar_name: jobData.ar_name,
-                                business_process_sub_name: jobData.business_process_sub_name,
-                                job_purpose: request_purpose,
-                                remarks_notes: remarks_notes,
+                                jobNumberPlain: jobData.job_number,
+                                jobNumberHtml: jobData.job_number,
+                                applicantNameHtml: jobData.ar_name,
+                                applicationType: jobData.business_process_sub_name,
+                                batchingPurpose: request_purpose,
+                                remarksNotes: remarks_notes,
                                 // created_on: jobData.created_on,
                                 // job_status: jobData.job_status
                             });
 
                             // Update localStorage
-                            localStorage.setItem('requestBatchingListData', JSON.stringify(selectedJobsList));
+                            localStorage.setItem('requestlistdata', JSON.stringify(selectedJobsList));
                             
                             // Update the table
-                            updateSelectedJobsTable();
+                            addJobToRequestlist();
 
-                            showAddRequestModal();
+                            prepareRequestlistModal();
                         }
                     });
                 }else{
@@ -709,6 +828,8 @@
             card.addClass('active');
             $(this).addClass('active');
 
+            removeAllActiveStates()
+
             // Update "Requested By" text based on type
             switch (data_id) {
                 case 1:
@@ -726,7 +847,7 @@
                     break;
             }
 
-            //console.log(data_id)
+            // console.log(data_id)
 
             data_id === 1
                 ? $("#btn_add_request_all").removeClass('d-none')
@@ -737,6 +858,8 @@
                 : $("#btn_add_archive_all").addClass('d-none');
 
             data_id === 2 ? $('.filter-status').text('[Showing: REQUESTS WITH OFFICERS]') : $('.filter-status').text('[Showing: ' + $(this).find('.stat-title').text() + ']');
+
+            highlightActiveCard(data_id);
 
             $.ajax({
                 type: "POST",
@@ -762,6 +885,63 @@
                 }
             });
         });
+
+        function removeAllActiveStates() {
+            // Remove all light background classes
+            $("#body-bg-1, #body-bg-2, #body-bg-4, #body-bg-5, #body-bg-6, #body-bg-7")
+                .removeClass('bg-primary-light bg-danger-light bg-warning-light bg-info-light bg-success-light bg-secondary-light');
+            
+            // Reset text colors (optional - keep text as is)
+            $("#number-text-1, #number-text-2, #number-text-4, #number-text-5, #number-text-6, #number-text-7")
+                .removeClass('text-white');
+            
+            // Remove active class from all cards
+            $('.dashboard-main-card').removeClass('active-card');
+        }
+
+        function highlightActiveCard(data_id) {
+            removeAllActiveStates();
+            switch (data_id) {
+                case 1: // Incoming Files - Primary
+                    $(".btn-to-be-disabled").prop('disabled', true);
+                    $("#body-bg-1").addClass('bg-info-light');
+                    $("#number-text-1").addClass('text-white');
+                    $("#card-incoming").addClass('active-card');
+                    break;
+                case 3: // Queried - Danger
+                    $(".btn-to-be-disabled").prop('disabled', false);
+                    $("#body-bg-3").addClass('bg-primary-light');
+                    $("#number-text-3").addClass('text-white');
+                    $("#card-completed").addClass('active-card');
+                    break;
+                case 4: // Awaiting Payments - Warning
+                    $(".btn-to-be-disabled").prop('disabled', true);
+                    $("#body-bg-4").addClass('bg-warning-light');
+                    $("#number-text-4").addClass('text-white');
+                    $("#card-pending").addClass('active-card');
+                    break;
+                case 5: // Awaiting Request - Info
+                    $(".btn-to-be-disabled").prop('disabled', true);
+                    $("#body-bg-5").addClass('bg-danger-light');
+                    $("#number-text-5").addClass('text-white');
+                    $("#card-queried").addClass('active-card');
+                    break;
+                case 6: // Request Completed - Success
+                    $(".btn-to-be-disabled").prop('disabled', true);
+                    $("#body-bg-6").addClass('bg-success-light');
+                    $("#number-text-6").addClass('text-white');
+                    $("#card-request_completed").addClass('active-card');
+                    break;
+                case 7: // Attention Required - Secondary
+                    $(".btn-to-be-disabled").prop('disabled', true);
+                    $("#body-bg-7").addClass('bg-secondary-light');
+                    $("#number-text-7").addClass('text-white');
+                    $("#card-attention_required").addClass('active-card');
+                    break;
+                default:
+                    // No card selected
+            }
+        }
 
         function showNoDataMessage() {
             const datatable = $('#requestsTable').DataTable();
@@ -796,16 +976,16 @@
             data.forEach(function(item) {
                 const rowNode = datatable.row.add([
                     '<div class="form-check d-flex justify-content-center align-items-center"><input class="form-check-input" type="checkbox"><input class="form-control rq_id" type="hidden" value="'+item.rq_id+'"></div>',
-                    item.created_on,
-                    item.job_number,
-                    item.ar_name,
-                    item.business_process_sub_name,
-                    item.job_purpose,
-                    (inbox_type == 2 ? item.officer_comments : item.remarks),
-                    ([4,2].includes(inbox_type) ? item.job_recieved_by : item.job_forwarded_by),
-                    `<div class="text-center"><h6><span class="badge badge-pill badge-`+getStatusClass(item.job_status)+`">`+item.job_status+`</span></h6></div>`,
+                    `<span class="fs-12">`+item.created_on+`</span>`,
+                    `<span class="text-primary">`+item.job_number+`</span>`,
+                    `<span class="fs-12">`+item.ar_name+`</span>`,
+                    `<span class="fs-12">`+item.business_process_sub_name+`</span>`,
+                    `<span class="fs-12">`+item.job_purpose+`</span>`,
+                   `<span class="fs-12">`+(inbox_type == 2 ? (item.officer_comments ? item.officer_comments : '--') : (item.remarks ? item.remarks : '--'))+`</span>`,
+                    `<span class="fs-12">`+([4,2].includes(inbox_type) ? item.job_recieved_by : item.job_forwarded_by)+`</span>`,
+                    `<span class="badge bg-`+getStatusClass(item.job_status)+`">`+item.job_status+`</span>`,
                     inbox_type == 1 ?
-                    `<div class="d-flex justify-content-end align-items-end">
+                    `<div class="d-flex justify-content-start align-items-start">
                         <div class="btn-group" role="group">
                             <button class="btn btn-sm btn-info btn-view-job" data-id="`+item.case_number+`">
                                 <i class="fas fa-eye ml-2"></i>
@@ -1064,8 +1244,9 @@
                     );
 
                     // Show the jobs list modal
-                    showJobsListModal();
-                    updateRequestListCount();
+                    // showJobsListModal();
+                    // updateRequestListCount();
+                    
                 });
             }
         });
@@ -1875,7 +2056,7 @@ function showJobsListModal() {
         });
         
         // Update the table
-        updateSelectedJobsTable();
+        // updateSelectedJobsTable();
     }
 
     $(document).ready(function() {

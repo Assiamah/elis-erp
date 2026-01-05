@@ -51,7 +51,7 @@
 							<div class="mb-4">
 								<label class="form-label fw-medium mb-3"><i class="fas fa-filter me-2"></i>Search By:</label>
 								<div class="search-type-selector">
-								<div class="row g-2 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+								<div class="row g-2 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6">
 										<div class="col">
 											<input type="radio" id="rbtn_search_type1" name="rbtn_search_type" class="btn-check" value="job_number" required>
 											<label class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center" for="rbtn_search_type1">
@@ -89,6 +89,13 @@
 											<label class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center" for="rbtn_search_type6">
 												<i class="fas fa-file-alt me-2"></i>
 												<span>Ref Number</span>
+											</label>
+										</div>
+										<div class="col">
+											<input type="radio" id="rbtn_search_type5" name="rbtn_search_type" class="btn-check" value="ar_name" required>
+											<label class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center" for="rbtn_search_type5">
+												<i class="fas fa-user me-2"></i>
+												<span>Applicant Name</span>
 											</label>
 										</div>
 									</div>

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-nav-layout="vertical" data-theme-mode="light" data-header-styles="transparent" data-width="fullwidth" data-menu-styles="transparent" data-page-style="regular" data-toggled="icon-hover-closed" data-vertical-style="overlay" loader="enable" style="--primary-rgb: 9 ,124, 103;">
+<html lang="en" dir="ltr" data-nav-layout="vertical" data-theme-mode="light" data-header-styles="color" data-width="fullwidth" data-menu-styles="color" data-page-style="regular" data-toggled="icon-hover-closed" data-vertical-style="overlay" loader="enable" style="--primary-rgb: 9 ,124, 103;">
 
 <head>
 

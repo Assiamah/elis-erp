@@ -2119,7 +2119,7 @@ if (!$('#add-form-styles').length) {
                         // Create dropdown actions with improved icons
                         const dropdownHtml = `
                         <div class="dropdown">
-                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button"
+                            <button class="btn btn-outline-dark btn-icon btn-sm btn-wave waves-effect waves-light" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="false"
                                     title="Actions">
                                 <i class="fas fa-ellipsis-v"></i>

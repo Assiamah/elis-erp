@@ -52,8 +52,8 @@
 <aside class="app-sidebar sticky" id="sidebar">
 
     <!-- Start::main-sidebar-header -->
-    <div class="main-sidebar-header">
-        <a href="#" class="header-logo">
+    <div class="main-sidebar-header" style="background: var(--header-bg);">
+        <a href="#" class="header-logo text-white">
             ELIS 5.0
         </a>
     </div>

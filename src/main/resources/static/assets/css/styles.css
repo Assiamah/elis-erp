@@ -25441,3 +25441,8 @@ input.form-control.otp-input {
     color: #6c757d;
     padding: 30px;
 }
+
+.side-menu__item:hover {
+    transform: translateX(10px);
+    transition: transform 0.3s ease-in-out;
+}
