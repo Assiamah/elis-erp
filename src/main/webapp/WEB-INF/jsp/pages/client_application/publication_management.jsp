@@ -33,7 +33,7 @@
         <!-- Start::row-1 -->
         <div class="row">
             <c:if test="${published_but_not_worked_on > 0}">
-                <div class="col-xl-6 col-md-6 mb-4">
+                <div class="col-xl-6 col-md-6">
                     <div class="card custom-card bg-danger-transparent border-0 shadow-none" 
                          data-bs-toggle="modal" data-bs-target="#publishedButNotWorkedOnModal" 
                          style="cursor: pointer">
@@ -70,7 +70,7 @@
                             <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Manage different publication statuses</p>
                         </div>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <!-- Tab Navigation -->
                         <ul class="nav nav-tabs nav-style-1 border-bottom-0" id="publicationTabs" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -99,9 +99,9 @@
                         </ul>
 
                         <!-- Tab Content -->
-                        <div class="tab-content p-4" id="publicationTabsContent">
+                        <div class="tab-content" id="publicationTabsContent">
                             <!-- Tab 1: Ready for Publication -->
-                            <div class="tab-pane fade show active" id="unpublishedList" role="tabpanel">
+                            <div class="tab-pane fade show active mt-3" id="unpublishedList" role="tabpanel">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div>
                                         <h5 class="mb-0">Ready for Publication</h5>
@@ -174,7 +174,7 @@
                             </div>
 
                             <!-- Tab 2: Awaiting Publication Date -->
-                            <div class="tab-pane fade" id="publishedList" role="tabpanel">
+                            <div class="tab-pane fade mt-3" id="publishedList" role="tabpanel">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div>
                                         <h5 class="mb-0">Awaiting Publication Date</h5>
@@ -254,7 +254,7 @@
                             </div>
 
                             <!-- Tab 3: Special Publication -->
-                            <div class="tab-pane fade" id="specialPublicationList" role="tabpanel">
+                            <div class="tab-pane fade mt-3" id="specialPublicationList" role="tabpanel">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div>
                                         <h5 class="mb-0 text-success">Special Publication</h5>
@@ -639,3 +639,45 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#publishedDataTable").DataTable({
+            stateSave: true,
+            // stateDuration: 60 * 60 * 24 * 30,
+            // stateSaveCallback: function(settings, data) {
+            //     localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data));
+            // },
+            // stateLoadCallback: function(settings) {
+            //     return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance));
+            // },
+            // lengthMenu: [10, 25, 50, 100],
+            // pageLength: 10,
+            // responsive: true,
+            // autoWidth: false,
+            // order: [[0, 'desc']],
+            // columnDefs: [
+            //     { targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], orderable: false }
+            // ]
+        });
+
+        $("#unpublishedDataTable").DataTable({
+            stateSave: true,
+            // stateDuration: 60 * 60 * 24 * 30,
+            // stateSaveCallback: function(settings, data) {
+            //     localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data));
+            // },
+            // stateLoadCallback: function(settings) {
+            //     return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance));
+            // },
+            // lengthMenu: [10, 25, 50, 100],
+            // pageLength: 10,
+            // responsive: true,
+            // autoWidth: false,
+            // order: [[0, 'desc']],
+            // columnDefs: [
+            //     { targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], orderable: false }
+            // ]
+        });
+    });
+</script>

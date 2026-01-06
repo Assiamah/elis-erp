@@ -516,6 +516,16 @@
                             </div>
                             <div class="action-buttons">
                                 <!-- Primary Action Button -->
+                                <button class="btn btn-info label-btn"
+                                    data-job_number="${job_number}" 
+                                    data-ar_name="${ar_name}"
+                                    data-req_id="${rq_id}"
+                                    data-business_process_sub_name="${business_process_sub_name}"
+                                    onclick="showArchiveConfirmation(this)"
+                                >
+                                    <i class="bi bi-check-circle label-btn-icon"></i>
+                                    Complete Request
+                                </button>
                                 <button class="btn btn-warning label-btn"
                                         data-bs-toggle="modal" 
                                         data-bs-target="#askForPurposeOfBatching"

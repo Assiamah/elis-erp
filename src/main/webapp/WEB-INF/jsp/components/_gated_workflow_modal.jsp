@@ -1939,7 +1939,7 @@
                     </div>
                     <div>
                       <span class="fw-semibold">LRD</span>
-                      <small class="text-muted d-block">Land Registry Division</small>
+                      <small class="text-muted d-block">Land Registration Division</small>
                     </div>
                   </div>
                   <div>
@@ -2885,14 +2885,14 @@
                                 <i class="fas fa-clipboard-list text-danger me-2"></i>
                                 Objection Summary
                             </h6>
-                            <button type="button" class="btn btn-outline-danger btn-sm" id="btn_add_new_objection"
+                            <!-- <button type="button" class="btn btn-outline-danger btn-sm" id="btn_add_new_objection"
                                     data-bs-toggle="modal" data-bs-target="#newObjectionModal">
                                 <i class="fas fa-plus me-1"></i>
                                 Add New Objection
-                            </button>
+                            </button> -->
                         </div>
                     </div>
-                    <div class="card-body">
+                    <!-- <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <div class="d-flex align-items-center">
@@ -2928,7 +2928,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 
                 <!-- Objections Table -->
@@ -3039,11 +3039,11 @@
                                 </div>
                                 <h5 class="text-muted">No Objections Found</h5>
                                 <p class="text-muted small mb-0">This application has no pending objections</p>
-                                <button type="button" class="btn btn-outline-primary btn-sm mt-3" 
+                                <!-- <button type="button" class="btn btn-outline-primary btn-sm mt-3" 
                                         data-bs-toggle="modal" data-bs-target="#newObjectionModal">
                                     <i class="fas fa-plus me-1"></i>
                                     Add First Objection
-                                </button>
+                                </button> -->
                             </div>
                         </c:if>
                     </div>
@@ -8051,4 +8051,104 @@
       
     </div>
   </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="review_instruction_with_request" tabindex="-1"
+     aria-labelledby="reviewInstructionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white rounded-top">
+                <h5 class="modal-title text-white" id="reviewInstructionModalLabel">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Review Instruction With Request
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Status Card -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary bg-opacity-10 py-2">
+                        <h6 class="mb-0">
+                            <i class="fas fa-info-circle me-2 text-primary"></i>
+                            Instruction Details
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Instructions Display -->
+                        <div class="instruction-content-container">
+                            <div class="instruction-header mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-clipboard-check fa-2x text-primary me-3"></i>
+                                    <div>
+                                        <h5 class="mb-1">Review Instructions</h5>
+                                        <p class="text-muted mb-0">Please review the following instructions carefully</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Main Instruction Content -->
+                            <div class="instruction-content p-4 bg-light rounded border">
+                                ${review_instruction}
+                            </div>
+                            
+                            <!-- Instruction Metadata (Optional) -->
+                            <!-- <div class="instruction-meta mt-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center text-muted small mb-2">
+                                            <i class="fas fa-calendar-alt me-2"></i>
+                                            <span>Last Updated: <span id="instructionDate">Just now</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <div class="d-flex align-items-center justify-content-md-end text-muted small mb-2">
+                                            <i class="fas fa-user-edit me-2"></i>
+                                            <span>Provided by: <span id="instructionAuthor">System</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons (if needed) -->
+                <div class="action-buttons d-none" id="instructionActions">
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle fa-lg text-warning me-3"></i>
+                            <div>
+                                <h6 class="mb-1">Required Action</h6>
+                                <p class="mb-0">Please acknowledge that you have read and understood the instructions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-success" id="btnAcknowledge">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Acknowledge & Continue
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnNeedClarification">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Need Clarification
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <!-- Close Button -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

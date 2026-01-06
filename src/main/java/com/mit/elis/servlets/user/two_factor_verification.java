@@ -419,7 +419,7 @@ System.out.println(password);
 	@PostMapping
 	public String send_code_for_password_reset(HttpSession session, Model model, HttpServletRequest request,
 			HttpServletResponse response) {
-		String userName = "prosper.edem13@gmail.com";
+		String userName = request.getParameter("email");
 		String web_service_response = null;
 		String new_userid = null;
 		String vr_region_code = null;
@@ -453,7 +453,7 @@ System.out.println(password);
 				
 			} else {
 				request.setAttribute("login", "failed");
-				model.addAttribute("content", "../auth/login.jsp");
+				model.addAttribute("content", "../auth/forgot_password.jsp");
 				return "layouts/guest";
 			}
 

@@ -227,11 +227,13 @@
                             <div class="mb-3">
                                 <div class="position-relative">
                                     <input type="email" 
-                                           class="form-control floating-input ps-4" 
-                                           name="email" 
-                                           id="email" 
-                                           placeholder=" "
-                                           required>
+                                        class="form-control floating-input ps-4" 
+                                        name="email" 
+                                        id="email" 
+                                        placeholder=""
+                                        pattern="[a-zA-Z0-9._%+-]+@lc\.gov\.gh$"
+                                        title="Email must be a valid @lc.gov.gh address"
+                                        required>
                                     <label for="email" class="floating-label">
                                         <i class="ri-user-line me-2"></i>User ID
                                     </label>

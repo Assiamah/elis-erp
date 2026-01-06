@@ -413,6 +413,18 @@
         
         <!-- Body -->
         <div class="reset-body">
+            <c:if test="${login == 'failed'}">
+                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4" role="alert">
+                    <div class="flex-shrink-0">
+                        <i class="ri-error-warning-line fs-20"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="alert-heading fw-semibold mb-1">Authentication Failed</h6>
+                        <p class="mb-0 fs-13">Invalid credentials. Please check your email.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
             <!-- Progress Steps -->
             <div class="step-indicator">
                 <div class="step active">
@@ -552,13 +564,13 @@
             // Simulate API call (replace with actual submission)
             setTimeout(() => {
                 // Show success message
-                $('#successMessage').addClass('show');
-                $('#instructionBox').hide();
-                $('#resetForm').hide();
+                // $('#successMessage').addClass('show');
+                // $('#instructionBox').hide();
+                // $('#resetForm').hide();
                 
                 // Update steps
-                $('.step').removeClass('active');
-                $('.step:nth-child(2)').addClass('active');
+                // $('.step').removeClass('active');
+                // $('.step:nth-child(2)').addClass('active');
                 
                 // Reset button state
                 btn.removeClass('loading');

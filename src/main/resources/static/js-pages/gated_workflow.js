@@ -11737,4 +11737,175 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
+    window.showArchiveConfirmation = function(element) {
+        const jobNumber = $(element).data('job_number');
+        const applicantName = $(element).data('ar_name');
+        const requestId = $(element).data('req_id');
+        
+        Swal.fire({
+            title: 'Complete Request?',
+            html: `
+                <div class="text-start">
+                    <p>Are you sure you want to complete this request?</p>
+                    
+                    <div class="card border-warning mb-3">
+                        <div class="card-header bg-warning bg-opacity-10">
+                            <h6 class="mb-0">
+                                <i class="fas fa-check me-2"></i>
+                                Request Details
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <!-- Job Number -->
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="me-3 text-primary">
+                                    <i class="fas fa-hashtag fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted small mb-1">Job Number</div>
+                                    <div class="fw-bold" id="swalJobNumber">${jobNumber || 'N/A'}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Applicant Name -->
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="me-3 text-primary">
+                                    <i class="fas fa-user fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted small mb-1">Applicant Name</div>
+                                    <div class="fw-bold" id="swalApplicantName">${applicantName || 'N/A'}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Note Input -->
+                            <div class="d-flex align-items-start">
+                                <div class="me-3 text-primary">
+                                    <i class="fas fa-sticky-note fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label for="swalCompleteNote" class="text-muted small mb-1">
+                                        Complete Note (Optional)
+                                    </label>
+                                    <textarea class="form-control form-control-sm" 
+                                            id="swalCompleteNote" 
+                                            rows="5" 
+                                            placeholder="Add a note about why you're completing this request..."></textarea>
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Optional: Add a note for future reference
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle me-3 mt-1"></i>
+                            <div>
+                                <strong>Warning:</strong> Completed requests will be moved to the archive section and removed from active request lists.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check me-2"></i> Yes, Complete Request',
+            cancelButtonText: '<i class="fas fa-times me-2"></i> Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                const note = document.getElementById('swalCompleteNote').value.trim();
+                
+                return new Promise((resolve) => {
+                    // Perform AJAX call
+                    const cleanedRequestId = requestId ? requestId.toString().replace('.0', '') : '';
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_archive_application_request',
+                            rq_id: cleanedRequestId,
+                            job_number: jobNumber,
+                            note: note
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve({ success: true, data: response });
+                        },
+                        error: function(xhr, status, error) {
+                            resolve({ success: false, error: error });
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+            allowEscapeKey: false,
+            backdrop: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response.success) {
+                    try {
+                        const jsonResponse = JSON.parse(response.data);
+                        
+                        if (jsonResponse.success === true) {
+                            // Success - show success message
+                            Swal.fire({
+                                title: 'Request Completed!',
+                                html: `
+                                    <div class="text-center">
+                                        <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                                        <p class="mb-0"><strong>Request has been completed successfully</strong></p>
+                                        <p class="text-muted small mt-2">
+                                            <i class="fas fa-hashtag me-1"></i>
+                                            ${jobNumber || 'Request'} has been moved to archive.
+                                        </p>
+                                    </div>
+                                `,
+                                icon: 'success',
+                                confirmButtonText: '<i class="fas fa-redo me-2"></i> Continue',
+                                confirmButtonColor: '#198754',
+                                allowOutsideClick: false
+                            }).then(() => {
+                                // Redirect after successful archive
+                                window.location.href = "/case_movement_module";
+                            });
+                        } else {
+                            // Server returned failure
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Archive Failed',
+                                text: jsonResponse.message || 'Failed to archive request. Please try again.',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    } catch (parseError) {
+                        // Error parsing JSON
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Processing Error',
+                            text: 'An error occurred while processing the response.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } else {
+                    // AJAX error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Archive Failed',
+                        text: 'An error occurred while archiving the request. Please try again.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    }
+
 });

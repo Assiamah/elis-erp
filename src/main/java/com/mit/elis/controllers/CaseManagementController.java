@@ -5070,8 +5070,8 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("lrd_certificate_section", lrd_certificate_section_list);
 				request.setAttribute("lrd_proprietorship_section", lrd_proprietorship_section_list);
 				request.setAttribute("lrd_reservation_section", lrd_reservation_section_list);
-request.setAttribute("baby_steps_list", baby_steps_list);
-request.setAttribute("active_digital_workflow_step_list", active_digital_workflow_step_list);
+				request.setAttribute("baby_steps_list", baby_steps_list);
+				request.setAttribute("active_digital_workflow_step_list", active_digital_workflow_step_list);
 
 				
 				request.setAttribute("collection_checklist", collection_checklist_list);
@@ -5242,7 +5242,7 @@ request.setAttribute("active_digital_workflow_step_list", active_digital_workflo
 				request.setAttribute("smd_licensed_surveyor_name",
 						job_detail_obj.get("smd_licensed_surveyor_name").toString());
 
-request.setAttribute("rq_id",rq_id);
+				request.setAttribute("rq_id",rq_id);
 
 						
 				JSONArray arr_r = new JSONArray();
@@ -5301,8 +5301,8 @@ request.setAttribute("rq_id",rq_id);
 				// request.setAttribute("casescanneddocuments_public",
 				// arr_r_public.toString());
 				request.setAttribute("page_name", "case_processing");
-				//request.setAttribute("page_name_", "review_application_progress_details");
-                //request.setAttribute("page_name", "application_review_details_advanced");
+				request.setAttribute("page_name_", "review_application_progress_details");
+                request.setAttribute("page_name", "application_review_details_advanced");
 				
 				// System.out.println(arr_r.toString());
 				// System.out.println(arr_r_public.toString());
@@ -5541,8 +5541,8 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("lrd_certificate_section", lrd_certificate_section_list);
 				request.setAttribute("lrd_proprietorship_section", lrd_proprietorship_section_list);
 				request.setAttribute("lrd_reservation_section", lrd_reservation_section_list);
-request.setAttribute("baby_steps_list", baby_steps_list);
-request.setAttribute("active_digital_workflow_step_list", active_digital_workflow_step_list);
+				request.setAttribute("baby_steps_list", baby_steps_list);
+				request.setAttribute("active_digital_workflow_step_list", active_digital_workflow_step_list);
 
 				
 				request.setAttribute("collection_checklist", collection_checklist_list);
@@ -5779,8 +5779,10 @@ request.setAttribute("rq_id",rq_id);
 				// System.out.println(arr_r_public.toString());
 
 				// System.out.println(business_process_sub_name);
-						model.addAttribute("content", "../pages/client_application/_request_application_progress_details_advance.jsp"); 
-						return "layouts/app";
+
+				model.addAttribute("content", "../pages/client_application/_request_application_progress_details_advance.jsp"); 
+						
+				return "layouts/app";
 
 				
 
