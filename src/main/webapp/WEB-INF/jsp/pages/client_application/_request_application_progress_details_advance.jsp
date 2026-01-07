@@ -283,7 +283,6 @@
 
         <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
             <div class="form-group">
-                <label for="es_case_number" class="col-form-label">Case Number</label>
                 <input type="hidden" name="es_case_number" id="m_es_case_number" class="form-control" required readonly value="${mother_to_child_link_row.mc_case_number}">
                 <input type="hidden" name="es_job_number" id="m_es_job_number" class="form-control" required readonly value="${mother_to_child_link_row.mc_job_number}">
             </div>

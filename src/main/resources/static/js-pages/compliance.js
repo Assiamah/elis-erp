@@ -2589,41 +2589,42 @@ $(document).on('click', '.view-messages', function() {
                 modal.find('#responseLoading').addClass('d-none');
                 
                 if (response.data && response.data.length > 0) {
+                                   response.data.sort((a, b) => {
+                        return new Date(b.created_date) - new Date(a.created_date);
+                    });
+
                     let html = '';
                     let responseCount = response.data.length;
-                    
-                    // Create timeline items
+
                     response.data.forEach((item, index) => {
-
-                        console.log(item);
-
-                        const isFirst = index === 0;
-                        const isLast = index === response.data.length - 1;
-                        
                         html += `
                             <li>
-                              <div class="d-flex align-items-start gap-3">
-                                  <div>
-                                      <span class="avatar avatar-md bg-warning rounded-circle me-2">
-                                          <i class="ri-user-line"></i>
-                                      </span>
-                                  </div>
-                                  <div class="flex-fill">
-                                      <div class="d-flex align-items-start justify-content-between mb-1 flex-wrap">
-                                          <div class="d-block fw-semibold">${item.created_by || 'Unknown User'}</div>
-                                          <span class="badge bg-light text-muted border">${convertDate(item.created_date.slice(0,10))}</span>
-                                      </div>
-                                      <div class="descrption">${item.reply_details || 'No details provided'}</div>
-                                  </div>
-                              </div>
-                          </li>
+                            <div class="d-flex align-items-start gap-3">
+                                <div>
+                                    <span class="avatar avatar-md bg-warning rounded-circle me-2">
+                                        <i class="ri-user-line"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="d-flex align-items-start justify-content-between mb-1 flex-wrap">
+                                        <div class="d-block fw-semibold">${item.created_by || 'Unknown User'}</div>
+                                        <span class="badge bg-light text-muted border">
+                                            ${convertDate(item.created_date.slice(0,10))}
+                                        </span>
+                                    </div>
+                                    <div class="descrption">
+                                        ${item.reply_details || 'No details provided'}
+                                    </div>
+                                </div>
+                            </div>
+                            </li>
                         `;
                     });
-                    
-                    // Update response count
-                    modal.find('#responseCount').text(`${responseCount} ${responseCount === 1 ? 'response' : 'responses'}`);
-                    
-                    // Add to container
+
+                    modal.find('#responseCount').text(
+                        `${responseCount} ${responseCount === 1 ? 'response' : 'responses'}`
+                    );
+
                     modal.find('#response_list').html(html);
                     modal.find('#responseContainer').removeClass('d-none');
                     
@@ -3252,49 +3253,185 @@ function insertTemplate(template) {
   //   })
   // });
 
-  $('#changequerystatusModal').on('show.bs.modal', function (event) {
-    $("#changequerystatusModal #job_number").val($(event.relatedTarget).data('job_number'));
-    document.getElementById('changequerystatusModalLabel').innerHTML = 'Confirmation: <span class="text-primary">' + $(event.relatedTarget).data('job_number') + '</span>'
-  });
+  $('#changequerystatusModal').on('show.bs.modal', function(event) {
+            const button = $(event.relatedTarget);
+            const jobNumber = button.data('job_number');
+            
+            // Update hidden input
+            $('#changequerystatusModal #job_number').val(jobNumber);
+            
+            // Update display
+            $('#displayJobNumber').text(jobNumber);
+            
+            // Update modal title with job number
+            $('#changequerystatusModalLabel').html(`
+                Set Query as Inactive
+                <small class="text-muted d-block fw-normal mt-1">Job #${jobNumber}</small>
+            `);
+            
+            // Reset form state
+            const form = $('#update-query-form')[0];
+            form.classList.remove('was-validated');
+            $('#confirmInactive').prop('checked', false);
+            $('#confirmSubmit').prop('disabled', true);
+        });
 
-  $("#update-query-form").on("submit", function (event) {
-    event.preventDefault();
+        // Enable/disable submit button based on checkbox
+        $('#changequerystatusModal').on('change', '#confirmInactive', function() {
+            $('#confirmSubmit').prop('disabled', !this.checked);
+        });
 
-    let form = $(this);
-    let data = form.serializeArray();
-
-
-    data = {
-      "request_type": $("#changequerystatusModal").find("#request_type").val(),
-      "job_number": $("#changequerystatusModal").find("#job_number").val(),
-    }
-
-
-    $.ajax({
-      type: "POST",
-      url: "/SendComplianceMessage",
-      data: data,
-      cache: false,
-      beforeSend: function () {
-        // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-      },
-      success: function (result) {
-        // var response = JSON.parse(result);
-        console.log(result);
-
-        if (result == 'Success') {
-
-          //form.trigger("reset");
-          form.parents(".modal").modal("hide");
-          alert("Query updated successfully.");
-
-        } else {
-          alert("We were not able to send your message. Please contact IT support if issue persists.");
+        $("#update-query-form").on("submit", function (event) {
+        event.preventDefault();
+        
+        const form = $(this);
+        const modal = $("#changequerystatusModal");
+        const submitBtn = form.find('button[type="submit"]');
+        const originalBtnText = submitBtn.html();
+        
+        // Get form data
+        const formData = {
+            "request_type": "update_compliance_application_notice",
+            "job_number": modal.find("#job_number").val()
+        };
+        
+        // Validate
+        if (!formData.job_number) {
+            showAlert("error", "Error", "Job number is required.");
+            return;
         }
-      }
+        
+        // Show loading state
+        submitBtn.prop("disabled", true).html(`
+            <span class="mdi mdi-spin mdi-loading me-1" role="status" aria-hidden="true"></span>
+            Processing...
+        `);
+        
+        // Disable cancel button during submission
+        modal.find('button[data-bs-dismiss="modal"]').prop("disabled", true);
+        
+        $.ajax({
+            type: "POST",
+            url: "/SendComplianceMessage",
+            data: formData,
+            cache: false,
+            //dataType: "json", // Expect JSON response
+            timeout: 30000, // 30 second timeout
+            
+            success: function(response) {
+            // console.log("API Response:", response);
+                
+                if (response === "Success") {
+                    submitBtn.html('<i class="ri-check-circle-fill me-1"></i> Success!');
+                    submitBtn.removeClass("btn-warning").addClass("btn-success");
 
-    })
-  });
+                    showSwalNotification(
+                        "success",
+                        "Query Updated",
+                        response.message
+                    );
+
+                    setTimeout(() => {
+                        modal.modal("hide");
+
+                        setTimeout(() => {
+                            submitBtn.html(originalBtnText).prop("disabled", false);
+                            submitBtn.removeClass("btn-success").addClass("btn-warning");
+                            modal.find('button[data-bs-dismiss="modal"]').prop("disabled", false);
+                            form[0].reset();
+
+                            if (typeof window.refreshQueryTable === "function") {
+                                window.refreshQueryTable();
+                            }
+
+                            $(document).trigger(
+                                "queryStatusUpdated",
+                                [formData.job_number, "inactive"]
+                            );
+                        }, 300);
+                    }, 1500);
+
+                } else {
+                    handleError(
+                        response.message || "Update failed. Please try again.",
+                        submitBtn,
+                        originalBtnText
+                    );
+                    modal.find('button[data-bs-dismiss="modal"]').prop("disabled", false);
+                }
+            },
+            
+            error: function(xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+                
+                let errorMessage = "Network error. Please check your connection.";
+                
+                if (xhr.status === 0) {
+                    errorMessage = "Cannot connect to server. Please check your network.";
+                } else if (xhr.status === 404) {
+                    errorMessage = "Request endpoint not found.";
+                } else if (xhr.status === 500) {
+                    errorMessage = "Server error. Please try again later.";
+                } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                
+                handleError(errorMessage, submitBtn, originalBtnText);
+                modal.find('button[data-bs-dismiss="modal"]').prop("disabled", false);
+            },
+            
+            complete: function() {
+                // Re-enable cancel button if still in error state
+                setTimeout(() => {
+                    if (submitBtn.prop("disabled")) {
+                        modal.find('button[data-bs-dismiss="modal"]').prop("disabled", false);
+                    }
+                }, 2000);
+            }
+        });
+    });
+
+// Helper function for error handling with SweetAlert2
+async function handleError(message, submitBtn = null, originalBtnText = null) {
+    if (submitBtn && originalBtnText) {
+        submitBtn.html('<i class="ri-error-warning-line me-1"></i> Failed');
+        submitBtn.removeClass("btn-warning").addClass("btn-danger");
+    }
+    
+    // Show SweetAlert2 error notification
+    await showSwalNotification('error', 'Update Failed', message);
+    
+    // Reset button after delay if provided
+    if (submitBtn && originalBtnText) {
+        setTimeout(() => {
+            submitBtn.html(originalBtnText).prop("disabled", false);
+            submitBtn.removeClass("btn-danger").addClass("btn-warning");
+        }, 3000);
+    }
+}
+
+// SweetAlert2 notification function (replaces toast)
+function showSwalNotification(type, title, message, options = {}) {
+    const defaultOptions = {
+        icon: type,
+        title: title,
+        text: message,
+        // toast: true,
+        // position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+    };
+    
+    // Merge custom options
+    const finalOptions = { ...defaultOptions, ...options };
+    
+    return Swal.fire(finalOptions);
+}
 
 // Print functionality
 // $(document).on('click', '#printResponses', function() {

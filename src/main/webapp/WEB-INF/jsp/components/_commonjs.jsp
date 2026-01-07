@@ -139,3 +139,5 @@ ${page_name == "page_enquiry_desk" ? "<script src='js-pages/enquiry_collections.
 ${page_name == "page_enquiry_desk_stamping" ? "<script src='js-pages/enquiry_collections_stamping.js'></script>" : ""}
 
 ${page_name == "user_management" ? "<script src='js-pages/user_mgt.js'></script>" : ""}
+
+${(page_name == "compliance_query_and_response") || (page_name == "regional_compliance_query_and_response") || (page_name == "compliance_notice_report") ? "<script src='js-pages/compliance_query_and_response.js'></script> " : ""}

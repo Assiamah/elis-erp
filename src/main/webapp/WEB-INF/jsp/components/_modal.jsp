@@ -3094,7 +3094,7 @@
 
 <!-- View Responses Modal -->
 <div class="modal fade" id="viewresponseModal" tabindex="-1" aria-labelledby="viewresponseModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
                 <div>
@@ -6572,10 +6572,153 @@
                     </div>
                 </div>
                 <div class="btn-list float-end mt-3">
-                <button type="button" class="btn btn-light border" data-bs-dismiss="modal"><i class="ti ti-x me-2 align-middle"></i>Close</button>
+                <button type="button" class="btn btn-danger border" data-bs-dismiss="modal"><i class="ti ti-x me-2 align-middle"></i>Close</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Bootstrap 5 Modal -->
+<div class="modal fade effect-scale modal-blur" id="changequerystatusModal" tabindex="-1" aria-labelledby="changequerystatusModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header border-bottom-0 pb-0">
+                <div class="w-100">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning bg-opacity-10 p-2 rounded-3">
+                                <i class="ri-alert-line text-warning fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="modal-title fw-semibold mb-0" id="changequerystatusModalLabel">Confirmation Required</h5>
+                            <p class="text-muted small mb-0 mt-1">Set query status to inactive</p>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Body -->
+            <div class="modal-body pt-0">
+                <div class="alert alert-warning border-warning border-opacity-25 d-flex align-items-start mb-4" role="alert">
+                    <i class="ri-information-line me-2 mt-1"></i>
+                    <div>
+                        <strong class="d-block mb-1">Warning</strong>
+                        <small class="text-muted">This action will archive the query and move it to inactive status.</small>
+                    </div>
+                </div>
+                
+                <div class="d-flex align-items-center gap-2 mb-3 p-3 bg-light-subtle rounded-2">
+                    <i class="ri-file-list-3-line text-primary"></i>
+                    <span class="text-muted">Job Number:</span>
+                    <span id="displayJobNumber" class="fw-bold text-dark ms-1"></span>
+                </div>
+                
+                <form method="post" id="update-query-form" action="SendComplianceMessage" class="needs-validation" novalidate>
+                    <input type="hidden" name="request_type" value="update_compliance_application_notice">
+                    <input type="hidden" id="job_number" name="job_number">
+                    
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="confirmInactive" required>
+                        <label class="form-check-label small" for="confirmInactive">
+                            I confirm that I want to set this query as inactive. This action can be reversed by an administrator.
+                        </label>
+                        <div class="invalid-feedback">
+                            You must confirm this action to proceed.
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-1"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-warning" id="confirmSubmit" disabled>
+                            <i class="ri-check-line me-1"></i> Yes, Set as Inactive
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Optional Footer -->
+            <div class="modal-footer border-top-0 pt-0">
+                <small class="text-muted">
+                    <i class="ri-information-line me-1"></i>
+                    Inactive queries will be moved to archive and won't appear in active lists.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 Modal -->
+<div class="modal fade effect-scale modal-blur" id="pending_queries_modal" tabindex="-1" aria-labelledby="pendingQueriesModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header border-bottom-0">
+                <div class="w-100">
+                    <h5 class="modal-title fw-semibold mb-1" id="pendingQueriesModalLabel">Pending Queries</h5>
+                    <p class="text-muted small mb-0" id="modalSubtitle"></p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Status Legend -->
+                <div class="d-flex flex-wrap justify-content-start gap-3 mb-4">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-info-subtle text-info me-2"><i class="fas fa-circle fa-xs"></i></span>
+                        <small class="text-muted">Reminder Applications</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-warning-subtle text-warning me-2"><i class="fas fa-circle fa-xs"></i></span>
+                        <small class="text-muted">Warning Applications</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-danger-subtle text-danger me-2"><i class="fas fa-circle fa-xs"></i></span>
+                        <small class="text-muted">Queried Applications</small>
+                    </div>
+                </div>
+                
+                <!-- DataTable -->
+                <div class="table-responsive">
+                    <table id="pending_queries_table_list" class="table table-hover align-middle" style="width: 100%">
+                        <thead class="table-light">
+                            <tr class="text-uppercase small">
+                                <th width="40">#</th>
+                                <th width="100">Job No.</th>
+                                <th>Details</th>
+                                <th width="120">Receiver</th>
+                                <th width="100">Unit</th>
+                                <th width="80">TAT</th>
+                                <th width="120">Date of Notice</th>
+                                <th width="100" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer border-top-0">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                        <span class="badge bg-primary rounded-pill" id="queryCountQR">0</span>
+                        <small class="text-muted ms-2">queries found</small>
+                    </div>
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-dismiss="modal">
+                        <i class="ri-close-line me-1"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

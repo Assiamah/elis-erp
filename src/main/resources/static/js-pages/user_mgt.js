@@ -115,156 +115,153 @@ $(document).ready(function() {
     $("#ur_passwordexpirydate").val(button.data('passwordexpirydate'));
     $("#ur_user_level").val(parseInt(button.data('user_level')));
 
-	console.log(button.data('usr_access_level'))
-    // Load departments/units
+    console.log(button.data('usr_access_level'));
+    
+    // Create an array of promises for all AJAX calls
+    const loadPromises = [
+        loadRegions(button),
+        loadDistricts(button),
+        loadDesignations(button),
+        loadDivisions(button)
+    ];
+    
+    // Execute all promises in parallel, then load departments
+    Promise.all(loadPromises)
+        .then(() => {
+            // Load departments after divisions are loaded
+            return loadDepartments(button, selected_division);
+        })
+        .catch(error => {
+            console.error("Error loading data:", error);
+        });
+});
 
-	
-
-    // Load regions
-	setTimeout(function() {
-    $.ajax({
-        type: "POST",
-        url: "app_modal_fills_serv",
-        data: {
-            request_type: 'get_region_list'
-        },
-        cache: false,
-        success: function(response) {
-            const json_p = JSON.parse(response);
-            const options = $("#ur_region");
-            options.empty();
-            options.append(new Option("-- Select --", ""));
-            
-            $(json_p).each(function() {
-                options.append(new Option(this.region_name, this.region_name));
-            });
-            
-            $("#ur_region").val(button.data('region'));
-        }
+// Helper function for AJAX calls
+function makeAjaxRequest(url, data) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            cache: false,
+            success: function(response) {
+                resolve(response);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
     });
-}, 500);
-    // Load districts
+}
 
-	setTimeout(function() {
-    $.ajax({
-        type: "POST",
-        url: "app_modal_fills_serv",
-        data: {
-            request_type: 'get_all_office_region'
-        },
-        cache: false,
-        success: function(response) {
-            const json_p = JSON.parse(response);
-            const options = $("#ur_district");
-            options.empty();
-            options.append(new Option("-- Select --", ""));
-            
-            $(json_p).each(function() {
-                options.append(new Option(this.ord_region_name, this.ord_region_code));
-            });
-            
-            $("#ur_district").val(parseInt(button.data('district_code')));
-        }
+// Individual loading functions that return promises
+function loadRegions(button) {
+    return makeAjaxRequest("app_modal_fills_serv", {
+        request_type: 'get_region_list'
+    }).then(response => {
+        const json_p = JSON.parse(response);
+        const options = $("#ur_region");
+        options.empty();
+        options.append(new Option("-- Select --", ""));
+        
+        $(json_p).each(function() {
+            options.append(new Option(this.region_name, this.region_name));
+        });
+        
+        $("#ur_region").val(button.data('region'));
     });
-}, 500);
-    // Load designations
+}
 
-	setTimeout(function() {
-    $.ajax({
-        type: "POST",
-        url: "app_modal_fills_serv",
-        data: {
-            request_type: 'get_list_of_designation'
-        },
-        cache: false,
-        success: function(response) {
-            const json_p = JSON.parse(response);
-            const options = $("#ur_designation");
-            options.empty();
-            options.append(new Option("-- Select --", ""));
-            
-            $(json_p).each(function() {
-                options.append(new Option(this.designation_name, this.designation_name));
-            });
-            
-            $("#ur_designation").val(button.data('designation'));
-        }
+function loadDistricts(button) {
+    return makeAjaxRequest("app_modal_fills_serv", {
+        request_type: 'get_all_office_region'
+    }).then(response => {
+        const json_p = JSON.parse(response);
+        const options = $("#ur_district");
+        options.empty();
+        options.append(new Option("-- Select --", ""));
+        
+        $(json_p).each(function() {
+            options.append(new Option(this.ord_region_name, this.ord_region_code));
+        });
+        
+        $("#ur_district").val(parseInt(button.data('district_code')));
     });
-}, 500);
-    // Load divisions
+}
 
-	setTimeout(function() {
-    $.ajax({
-        type: "POST",
-        url: "app_modal_fills_serv",
-        data: {
-            request_type: 'get_divisions_get_list'
-        },
-        cache: false,
-        success: function(response) {
-            const json_p = JSON.parse(response);
-            const options = $("#ur_division");
-            options.empty();
-            options.append(new Option("-- Select --", ""));
-            
-            $(json_p).each(function() {
-                options.append(new Option(this.division_name, this.division_name));
-            });
-            
-            $("#ur_division").val(button.data('division'));
-        }
+function loadDesignations(button) {
+    return makeAjaxRequest("app_modal_fills_serv", {
+        request_type: 'get_list_of_designation'
+    }).then(response => {
+        const json_p = JSON.parse(response);
+        const options = $("#ur_designation");
+        options.empty();
+        options.append(new Option("-- Select --", ""));
+        
+        $(json_p).each(function() {
+            options.append(new Option(this.designation_name, this.designation_name));
+        });
+        
+        $("#ur_designation").val(button.data('designation'));
     });
-	}, 500);
+}
 
-	setTimeout(function() {
-	$.ajax({
-        type: "POST",
-        url: "Case_Management_Serv",
-        data: {
-            request_type: 'get_lc_list_of_units',
-            office_id: button.data('regional_code')
-        },
-        cache: false,
-        success: function(response) {
-            const json_p = JSON.parse(response);
-            const datalist = $("#listofunits");
-            datalist.empty();
-            
-            $(json_p.data).each(function() {
-                if (this.unit_division.includes(selected_division)) {
-                    datalist.append(`<option 
-                        data-name="${this.unit_name}" 
-                        data-id="${this.unit_id}" 
-                        value="${this.unit_name}"
-                    ></option>`);
-                }
-            });
-            
-            // Set department value after options are loaded
-            const departmentValue = button.data('department');
-            $("#ur_department").val(departmentValue);
+function loadDivisions(button) {
+    return makeAjaxRequest("app_modal_fills_serv", {
+        request_type: 'get_divisions_get_list'
+    }).then(response => {
+        const json_p = JSON.parse(response);
+        const options = $("#ur_division");
+        options.empty();
+        options.append(new Option("-- Select --", ""));
+        
+        $(json_p).each(function() {
+            options.append(new Option(this.division_name, this.division_name));
+        });
+        
+        $("#ur_division").val(button.data('division'));
+    });
+}
 
-            // Validate if the value exists in datalist
-            const exists = $('#listofunits option').filter(function() {
-                return $(this).val() === departmentValue;
-            }).length > 0;
-
-            if (!exists && departmentValue) {
-                // If value doesn't exist in datalist but we have a value,
-                // add it as an option
+function loadDepartments(button, selected_division) {
+    return makeAjaxRequest("Case_Management_Serv", {
+        request_type: 'get_lc_list_of_units',
+        office_id: button.data('regional_code')
+    }).then(response => {
+        const json_p = JSON.parse(response);
+        const datalist = $("#listofunits");
+        datalist.empty();
+        
+        $(json_p.data).each(function() {
+            if (this.unit_division.includes(selected_division)) {
                 datalist.append(`<option 
-                    data-name="${departmentValue}" 
-                    data-id="${button.data('department_id')}" 
-                    value="${departmentValue}"
+                    data-name="${this.unit_name}" 
+                    data-id="${this.unit_id}" 
+                    value="${this.unit_name}"
                 ></option>`);
             }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error loading departments:", error);
+        });
+        
+        // Set department value after options are loaded
+        const departmentValue = button.data('department');
+        $("#ur_department").val(departmentValue);
+
+        // Validate if the value exists in datalist
+        const exists = $('#listofunits option').filter(function() {
+            return $(this).val() === departmentValue;
+        }).length > 0;
+
+        if (!exists && departmentValue) {
+            // If value doesn't exist in datalist but we have a value,
+            // add it as an option
+            datalist.append(`<option 
+                data-name="${departmentValue}" 
+                data-id="${button.data('department_id')}" 
+                value="${departmentValue}"
+            ></option>`);
         }
     });
-	}, 500);
-});
+}
 
 $(document).on('click', '#togglePassword', function() {
 	const passwordInput = document.getElementById('ur_web_pass');

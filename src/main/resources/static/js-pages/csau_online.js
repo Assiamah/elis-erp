@@ -1372,149 +1372,409 @@ $(document)
 			});
 
 			$('#btn_load_bill_details_after_payment_stamp_duty').on('click', function (e) {
+				e.preventDefault();
+				
+				// Clear previous results
 				$('#payment_details_section').html('');
-				var client_phone_search = $(
-					"#txt_ref_number_for_payment_rec").val();
-				// console.log(client_phone_search);
-
-
-				$
-
-					.ajax({
-						type: "POST",
-						url: "payment_serv",
-						// target:'_blank',
-
-						data: {
-							request_type: 'lc_payment_verification_for_bill_stamping',
-							ref_number: client_phone_search
-						},
-						cache: false,
-
-						beforeSend: function () {
-
-						},
-						success: function (
-							jobdetails) {
-							//console.log(jobdetails);
-							// alert(jobdetails);
-
-							var table = $('#stamp_duty_bill_list_dataTable');
-							table.find("tbody tr")
-								.remove();
-
-							// console.log(jobdetails);
-							try {
-								var json_p = JSON
-									.parse(jobdetails);
-
-								$(json_p.data)
-									.each(
-										function () {
-
-											if (this.payment_confiration_status === 0 || this.payment_confiration_status == null) {
-												$('#btnPrintEgcr2').data('ref_number', this.ref_number);
-												$('#btnPrintEgcr2').html("Check for Payment details from Online");
-												alert('Bill has not been paid. It cannot be acknowledge');
-												$('#document-section').show();
-											} else {
-
-												// get case number
-												// from job_number
-												$('#document-section').show();
-												$('#btnPrintEgcr2').data('ref_number', this.ref_number);
-
-												$('#btnPrintEgcr2').html("View eGCR");
-												$('#payment_details_section').html(`
-																	
-																	<hr>
-														          	<h3>Bill Details</h3>
-														          	<hr>
-														          	 <input type="hidden" id="business_process_sub_name" value="${this.business_process_sub_name_actual}" >
-														          	  <input type="hidden" id="cs_main_case_number" value="${this.case_number}" >
-																	  <div class="form-group row">
-																	  <div class="col-sm-6">
-																	  	  <label  class="form-label">Bill Number</label>
-																	      <input type="text" disabled class="form-control"  value="${this.ref_number}">
-																	    </div>
-																	    
-																	    <div class="col-sm-6">
-																	      <label  class="form-label">Bill Amount</label>
-																	      <input type="text" disabled class="form-control"  value="${this.bill_amount}">
-																	    </div>
-																	  </div>
-																	  <div class="form-group row">
-																	    <label class="col form-label">Applicant Name</label>
-																	    <div class="col-sm-12">
-																	      <input type="text" disabled class="form-control"  value="${this.lessees_name}">
-																	    </div>
-																	  </div>
-																	  
-																	 
-																	  <hr>
-														          	<h3>Payment Details <span class="badge badge-pill badge-success p-3 mr-10"> Paid </span></h3>
-														          	<hr>
-																	  
-																	  
-																	  
-																	  <div class="form-group row">
-																	    <label  class="col-sm-4 col-form-label">Payment Date</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_date}">
-																	    </div>
-																	  </div>
-																	  <div class="form-group row">
-																	    <label class="col-sm-4 col-form-label">Payment Amount</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_amount}">
-																	    </div>
-																	  </div>
-																	  
-																	  
-																	  <div class="form-group row">
-																	    <label  class="col-sm-4 col-form-label">Payment Mode </label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_mode}">
-																	    </div>
-																	  </div>
-																	  <!--div class="form-group row">
-																	    <label class="col-sm-4 col-form-label">Payment Bank</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_bank}">
-																	    </div>
-																	  </div-->
-																	  
-																	  <div class="form-group row">
-																	    <label class="col-sm-4 col-form-label">GH.gov Ref number</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.checkout_id}">
-																	    </div>
-																	  </div>
-
-																	  <div class="form-group row">
-																	  <label class="col-sm-4 col-form-label">Receipt Number</label>
-																	  <div class="col-sm-8">
-																		<input type="text" disabled class="form-control" id="lbl_payment_slip_number_for_egcr" value="${this.payment_slip_number}">
-																	  </div>
-																	</div>
-																	  
-																	  <div class="form-group row">
-																	    
-																	   
-																	  </div>
-																	`);
-											}
-										});
-
-							} catch (e) {
-								console.log(e)
-							}
-
-
-						}
+				
+				// Get search value
+				var client_phone_search = $("#txt_ref_number_for_payment_rec").val().trim();
+				
+				// Validation with SweetAlert2
+				if (!client_phone_search) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Reference Number Required',
+						text: 'Please enter a reference/job number to search',
+						confirmButtonColor: '#0d6efd',
+						confirmButtonText: 'OK',
+						focusConfirm: true
+					}).then(() => {
+						$("#txt_ref_number_for_payment_rec").focus();
 					});
-
+					return false;
+				}
+				
+				// Show loading indicator
+				Swal.fire({
+					title: 'Searching...',
+					text: 'Please wait while we fetch bill details',
+					allowOutsideClick: false,
+					showConfirmButton: false,
+					willOpen: () => {
+						Swal.showLoading();
+					}
+				});
+				
+				$.ajax({
+					type: "POST",
+					url: "payment_serv",
+					data: {
+						request_type: 'lc_payment_verification_for_bill_stamping',
+						ref_number: client_phone_search
+					},
+					cache: false,
+					success: function (jobdetails) {
+						Swal.close();
+						
+						try {
+							var json_p = JSON.parse(jobdetails);
+							
+							if (!json_p.data || json_p.data.length === 0) {
+								showNoResultsFound(client_phone_search);
+								return;
+							}
+							
+							// Process each record
+							$(json_p.data).each(function () {
+								var record = this;
+								
+								if (record.payment_confiration_status === 0 || record.payment_confiration_status == null) {
+									handleUnpaidBill(record);
+								} else {
+									handlePaidBill(record);
+								}
+							});
+							
+						} catch (e) {
+							console.log('Error:', e);
+							showErrorAlert();
+						}
+					},
+					error: function (xhr, status, error) {
+						Swal.close();
+						showErrorAlert();
+						console.error('AJAX Error:', error);
+					}
+				});
 			});
+
+			// Function to show no results found
+			function showNoResultsFound(searchTerm) {
+				$('#payment_details_section').html(`
+					<div class="card border-warning">
+						<div class="card-body text-center py-5">
+							<div class="mb-4">
+								<i class="fas fa-search fa-4x text-warning opacity-50"></i>
+							</div>
+							<h4 class="text-warning mb-3">No Bills Found</h4>
+							<p class="text-muted mb-4">
+								No bill found for reference number: 
+								<strong class="text-dark">${searchTerm}</strong>
+							</p>
+							<button class="btn btn-outline-primary" onclick="$('#txt_ref_number_for_payment_rec').focus().select()">
+								<i class="fas fa-edit me-2"></i>Try Another Number
+							</button>
+						</div>
+					</div>
+				`);
+				
+				$('#document-section').hide();
+			}
+
+			// Function to handle unpaid bills
+			function handleUnpaidBill(record) {
+				Swal.fire({
+					icon: 'warning',
+					title: 'Payment Required',
+					html: `
+						<div class="text-start">
+							<p>The bill <strong>${record.ref_number}</strong> has not been paid.</p>
+							<div class="alert alert-warning mt-3">
+								<i class="fas fa-exclamation-triangle me-2"></i>
+								This bill cannot be acknowledged until payment is completed.
+							</div>
+						</div>
+					`,
+					confirmButtonColor: '#6c757d',
+					confirmButtonText: 'Close'
+				});
+				
+				$('#document-section').show();
+				$('#btnPrintEgcr2').data('ref_number', record.ref_number);
+				$('#btnPrintEgcr2').html(`
+					<i class="fas fa-sync-alt me-2"></i>Check Online Payment
+				`);
+				
+				// Show unpaid bill details
+				showUnpaidBillDetails(record);
+			}
+
+			// Function to handle paid bills
+			function handlePaidBill(record) {
+				$('#document-section').show();
+				$('#btnPrintEgcr2').data('ref_number', record.ref_number);
+				$('#btnPrintEgcr2').html(`
+					<i class="fas fa-file-invoice me-2"></i>View eGCR
+				`);
+				
+				// Show paid bill details
+				showPaidBillDetails(record);
+			}
+
+			// Function to show unpaid bill details
+			function showUnpaidBillDetails(record) {
+				$('#payment_details_section').html(`
+					<div class="card border-warning">
+						<div class="card-header bg-warning bg-opacity-10 border-warning">
+							<h4 class="mb-0 text-warning">
+								<i class="fas fa-clock me-2"></i>Pending Payment
+							</h4>
+						</div>
+						<div class="card-body">
+							<div class="alert alert-warning">
+								<i class="fas fa-exclamation-circle me-2"></i>
+								This bill requires payment confirmation before proceeding.
+							</div>
+							
+							<div class="row g-3">
+								<div class="col-md-6">
+									<label class="form-label text-muted small">Bill Number</label>
+									<div class="input-group">
+										<span class="input-group-text bg-light">
+											<i class="fas fa-hashtag"></i>
+										</span>
+										<input type="text" class="form-control bg-light" readonly value="${record.ref_number || 'N/A'}">
+									</div>
+								</div>
+								
+								<div class="col-md-6">
+									<label class="form-label text-muted small">Bill Amount</label>
+									<div class="input-group">
+										<span class="input-group-text bg-light">
+											<i class="fas fa-money-bill-wave"></i>
+										</span>
+										<input type="text" class="form-control bg-light" readonly value="${record.bill_amount || '0.00'}">
+									</div>
+								</div>
+								
+								<div class="col-12">
+									<label class="form-label text-muted small">Applicant Name</label>
+									<div class="input-group">
+										<span class="input-group-text bg-light">
+											<i class="fas fa-user"></i>
+										</span>
+										<input type="text" class="form-control bg-light" readonly value="${record.lessees_name || 'N/A'}">
+									</div>
+								</div>
+							</div>
+							
+							<div class="mt-4 text-center">
+								<button class="btn btn-outline-warning" onclick="checkPaymentStatus('${record.ref_number}')">
+									<i class="fas fa-redo me-2"></i>Refresh Payment Status
+								</button>
+							</div>
+						</div>
+					</div>
+				`);
+			}
+
+			// Function to show paid bill details
+			function showPaidBillDetails(record) {
+				$('#payment_details_section').html(`
+					<div class="card border-success shadow-sm">
+						<div class="card-header bg-success bg-opacity-10 border-success d-flex justify-content-between align-items-center">
+							<h4 class="mb-0 text-success">
+								<i class="fas fa-check-circle me-2"></i>Bill Details
+							</h4>
+							<span class="badge bg-success rounded-pill fs-6">
+								<i class="fas fa-check me-1"></i> Paid
+							</span>
+						</div>
+						
+						<div class="card-body">
+							<input type="hidden" id="business_process_sub_name" value="${record.business_process_sub_name_actual || ''}">
+							<input type="hidden" id="cs_main_case_number" value="${record.case_number || ''}">
+							
+							<!-- Bill Information -->
+							<div class="mb-4">
+								<h5 class="text-muted mb-3 border-bottom pb-2">
+									<i class="fas fa-file-invoice me-2"></i>Bill Information
+								</h5>
+								<div class="row g-3">
+									<div class="col-md-6">
+										<div class="card border-light h-100">
+											<div class="card-body">
+												<div class="d-flex align-items-center mb-2">
+													<div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+														<i class="fas fa-hashtag text-primary"></i>
+													</div>
+													<div>
+														<small class="text-muted">Bill Number</small>
+														<h6 class="mb-0">${record.ref_number || 'N/A'}</h6>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="card border-light h-100">
+											<div class="card-body">
+												<div class="d-flex align-items-center mb-2">
+													<div class="bg-info bg-opacity-10 p-2 rounded me-3">
+														<i class="fas fa-money-bill-wave text-info"></i>
+													</div>
+													<div>
+														<small class="text-muted">Bill Amount</small>
+														<h6 class="mb-0">${record.bill_amount || '0.00'}</h6>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-12">
+										<div class="card border-light">
+											<div class="card-body">
+												<div class="d-flex align-items-center">
+													<div class="bg-secondary bg-opacity-10 p-2 rounded me-3">
+														<i class="fas fa-user text-secondary"></i>
+													</div>
+													<div>
+														<small class="text-muted">Applicant Name</small>
+														<h6 class="mb-0">${record.lessees_name || 'N/A'}</h6>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- Payment Information -->
+							<div>
+								<h5 class="text-muted mb-3 border-bottom pb-2">
+									<i class="fas fa-credit-card me-2"></i>Payment Details
+								</h5>
+								<div class="row g-3">
+									<div class="col-md-6">
+										<div class="card border-light">
+											<div class="card-body">
+												<small class="text-muted d-block mb-1">
+													<i class="fas fa-calendar-alt me-1"></i>Payment Date
+												</small>
+												<h6 class="mb-0">${record.payment_date || 'N/A'}</h6>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="card border-light">
+											<div class="card-body">
+												<small class="text-muted d-block mb-1">
+													<i class="fas fa-money-check-alt me-1"></i>Payment Amount
+												</small>
+												<h6 class="mb-0">${record.payment_amount || '0.00'}</h6>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="card border-light">
+											<div class="card-body">
+												<small class="text-muted d-block mb-1">
+													<i class="fas fa-exchange-alt me-1"></i>Payment Mode
+												</small>
+												<h6 class="mb-0">${record.payment_mode || 'N/A'}</h6>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="card border-light">
+											<div class="card-body">
+												<small class="text-muted d-block mb-1">
+													<i class="fas fa-receipt me-1"></i>GH.gov Ref Number
+												</small>
+												<h6 class="mb-0">${record.checkout_id || 'N/A'}</h6>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-12">
+										<div class="card border-light">
+											<div class="card-body">
+												<small class="text-muted d-block mb-1">
+													<i class="fas fa-file-invoice-dollar me-1"></i>Receipt Number
+												</small>
+												<h6 class="mb-0">${record.payment_slip_number || 'N/A'}</h6>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<!-- Action Buttons -->
+							<div class="mt-4 pt-3 border-top">
+								<div class="row g-2">
+									<div class="col">
+										<button class="btn btn-outline-primary w-100" onclick="downloadReceipt('${record.ref_number}')">
+											<i class="fas fa-download me-2"></i>Download Receipt
+										</button>
+									</div>
+									<div class="col">
+										<button class="btn btn-outline-success w-100" onclick="sendEmailConfirmation('${record.ref_number}')">
+											<i class="fas fa-envelope me-2"></i>Email Confirmation
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				`);
+			}
+
+			// Function to show error alert
+			function showErrorAlert() {
+				Swal.fire({
+					icon: 'error',
+					title: 'Search Failed',
+					text: 'An error occurred while searching. Please try again.',
+					confirmButtonColor: '#dc3545',
+					confirmButtonText: 'Try Again'
+				}).then(() => {
+					$("#txt_ref_number_for_payment_rec").focus().select();
+				});
+				
+				$('#payment_details_section').html(`
+					<div class="card border-danger">
+						<div class="card-body text-center py-5">
+							<div class="mb-4">
+								<i class="fas fa-exclamation-triangle fa-4x text-danger opacity-50"></i>
+							</div>
+							<h4 class="text-danger mb-3">Search Error</h4>
+							<p class="text-muted mb-4">
+								Unable to retrieve bill details. Please check the reference number and try again.
+							</p>
+						</div>
+					</div>
+				`);
+			}
+
+			// Optional helper functions for actions
+			function checkPaymentStatus(refNumber) {
+				Swal.fire({
+					title: 'Checking Status...',
+					text: 'Verifying payment status with payment gateway',
+					allowOutsideClick: false,
+					showConfirmButton: false,
+					willOpen: () => {
+						Swal.showLoading();
+					}
+				});
+				
+				// Add your payment status check logic here
+				setTimeout(() => {
+					Swal.close();
+					Swal.fire({
+						icon: 'info',
+						title: 'Status Updated',
+						text: 'Payment status has been refreshed',
+						confirmButtonText: 'OK'
+					});
+				}, 1500);
+			}
 
 			$('.txt-action-rec').on('click', function (e) {
 

@@ -146,8 +146,9 @@ System.out.println(password);
 				if(passwordchanged.equals("NO")) {
 
 					session.setAttribute("user", userName);
+					model.addAttribute("email", emailaddress);
 
-				  model.addAttribute("content", "../auth/change_password.jsp");
+				  model.addAttribute("content", "../auth/reset_password_form.jsp");
         return "layouts/guest";
 
 				}
@@ -746,5 +747,84 @@ System.out.println(password);
 			return "layouts/guest";
 		}
 	}
+
+	@PostMapping("/perform-first-time-password-reset")
+	public String performFirstTimePasswordReset(HttpServletRequest request,
+									HttpSession session,
+									Model model) {
+		
+		//String token = request.getParameter("token");
+		String email = request.getParameter("email");
+		String newPassword = request.getParameter("newPassword");
+		String confirmPassword = request.getParameter("confirmPassword");
+		
+		// Validate passwords match
+		if (!newPassword.equals(confirmPassword)) {
+			model.addAttribute("error", "Passwords do not match");
+			model.addAttribute("email", email);
+			//model.addAttribute("token", token);
+			model.addAttribute("content", "../auth/first_time_reset_password_form.jsp");
+			return "layouts/guest";
+		}
+		
+		// Validate password strength
+		if (newPassword.length() < 14) {
+			model.addAttribute("error", "Password must be at least 14 characters long");
+			model.addAttribute("email", email);
+			//model.addAttribute("token", token);
+			model.addAttribute("content", "../auth/first_time_reset_password_form.jsp");
+			return "layouts/guest";
+		}
+		
+		// Validate token
+		// String sessionToken = (String) session.getAttribute("reset_token");
+		// Long expiryTime = (Long) session.getAttribute("reset_token_expiry");
+		
+		// if (sessionToken == null || !sessionToken.equals(token) || 
+		// 	expiryTime == null || System.currentTimeMillis() > expiryTime) {
+		// 	model.addAttribute("error", "Reset link has expired");
+		// 	model.addAttribute("content", "../auth/reset_password_expired.jsp");
+		// 	return "layouts/guest";
+		// }
+		
+		try {
+			// Call your existing password reset service
+			// JSONObject resetRequest = new JSONObject();
+			// resetRequest.put("email", email);
+			// resetRequest.put("new_password", newPassword);
+			
+			String result = cls_users.select_self_change_user_password(
+				cls_url_config.getWeb_service_url_ser(),
+				cls_url_config.getWeb_service_url_ser_api_key(),
+				email, newPassword
+			);
+			
+			JSONObject resultObj = new JSONObject(result);
+			if ("Success".equals(resultObj.get("msg"))) {
+				// Clear reset token from session
+				session.removeAttribute("reset_token");
+				session.removeAttribute("reset_token_expiry");
+				
+				// Show success page
+				model.addAttribute("content", "../auth/reset_password_success.jsp");
+				return "layouts/guest";
+			} else {
+				model.addAttribute("error", "Failed to reset password. Please try again.");
+				model.addAttribute("email", email);
+				//model.addAttribute("token", token);
+				model.addAttribute("content", "../auth/first_time_reset_password_form.jsp");
+				return "layouts/guest";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", "An error occurred. Please try again.");
+			model.addAttribute("email", email);
+			//model.addAttribute("token", token);
+			model.addAttribute("content", "../auth/first_time_reset_password_form.jsp");
+			return "layouts/guest";
+		}
+	}
+									
 
 }

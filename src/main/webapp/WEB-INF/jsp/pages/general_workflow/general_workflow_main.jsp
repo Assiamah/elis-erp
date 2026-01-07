@@ -14,10 +14,10 @@
 
 <link href="../assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 <style>
-    .workflow-dashboard {
+    /* .workflow-dashboard {
         font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         color: #3c4d62;
-    }
+    } */
 
     .dashboard-header {
         padding: 1rem 0;
