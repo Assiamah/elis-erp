@@ -475,55 +475,35 @@ $(document)
 														 * </td>'
 														 */
 
-														+ '<td class="text-end"><button title="Create New Job" class="btn btn-success btn-icon-split btn-sm" data-bs-toggle="modal" data-bs-target="#addNewserviceBillModal" '
-														+ 'data-pu_name="'
-														+ this.first_name
-														+ ' '
-														+ this.other_names
-														+ ' '
-														+ this.last_name
-														+ '" '
-														+ 'data-pu_email="'
-														+ this.email
-														+ '" '
-														+ 'data-pu_country="'
-														+ this.country
-														+ '" '
-														+ 'data-pu_account_number="'
-														+ this.account_number
-														+ '" '
-														+ 'data-pu_type="'
-														+ this.type
-														+ '" '
-														+ 'data-pu_address="'
-														+ this.address
-														+ '">'
-														+ '<span class="icon text-white-50"> <i class="fas fa-plus"></i></span></button>'
+														+ '<td class="text-end">'
+														+ '<div class="d-flex justify-content-end gap-2">'
 
-														+ '<button title="Link Job to Client" class="btn btn-info btn-icon-split ms-2 btn-sm" data-bs-toggle="modal" data-bs-target="#linkaccounttoJobsModal" '
-														+ 'data-pu_name="'
-														+ this.first_name
-														+ ' '
-														+ this.other_names
-														+ ' '
-														+ this.last_name
-														+ '" '
-														+ 'data-pu_email="'
-														+ this.email
-														+ '" '
-														+ 'data-pu_country="'
-														+ this.country
-														+ '" '
-														+ 'data-pu_account_number="'
-														+ this.account_number
-														+ '" '
-														+ 'data-pu_type="'
-														+ this.type
-														+ '" '
-														+ 'data-pu_address="'
-														+ this.address
-														+ '">'
-														+ '<span class="icon text-white-50"> <i class="fas fa-check"></i></span></button> </td>'
+														+ '<button title="Create New Job" '
+														+ 'class="btn btn-success btn-icon-split btn-sm" '
+														+ 'data-bs-toggle="modal" data-bs-target="#addNewserviceBillModal" '
+														+ 'data-pu_name="' + this.first_name + ' ' + this.other_names + ' ' + this.last_name + '" '
+														+ 'data-pu_email="' + this.email + '" '
+														+ 'data-pu_country="' + this.country + '" '
+														+ 'data-pu_account_number="' + this.account_number + '" '
+														+ 'data-pu_type="' + this.type + '" '
+														+ 'data-pu_address="' + this.address + '">'
+														+ '<span class="icon text-white-50"><i class="fas fa-plus me-1"></i></span>New Job'
+														+ '</button>'
+
+														+ '<button title="Link Job to Client" '
+														+ 'class="btn btn-info btn-icon-split btn-sm" '
+														+ 'data-bs-toggle="modal" data-bs-target="#linkaccounttoJobsModal" '
+														+ 'data-pu_name="' + this.first_name + ' ' + this.other_names + ' ' + this.last_name + '" '
+														+ 'data-pu_email="' + this.email + '" '
+														+ 'data-pu_country="' + this.country + '" '
+														+ 'data-pu_account_number="' + this.account_number + '" '
+														+ 'data-pu_type="' + this.type + '" '
+														+ 'data-pu_address="' + this.address + '">'
+														+ '<span class="icon text-white"><i class="fas fa-link"></i></span>'
+														+ '</button>'
+
+														+ '</div>'
+														+ '</td>'
 
 														// +
 														// '<td><p
@@ -4353,66 +4333,42 @@ $(document)
 
 														// Add
 														// Job
-														+ '<td class="text-end"><button class="btn btn-primary btn-circle btn-sm me-2" data-bs-backdrop="static" data-bs-keyboard="false" data-title="Add New Service" data-bs-toggle="modal" data-bs-target="#addNewserviceBillModalonCase" '
-														+ 'data-ref_number="'
-														+ this.job_number
-														+ '" '
-														+ 'data-case_number="'
-														+ this.transaction_number
-														+ '" '
-														+ 'data-land_size="'
-														+ this.land_size
-														+ '" '
-														+ 'data-ar_name="'
-														+ this.ar_name
-														+ '" '
-														+ 'data-created_for_id="'
-														+ this.created_for_id
-														+ '" '
-														+ 'data-licensed_no="'
-														+ this.licensed_no
-														+ '" '
-														+ 'data-locality="'
-														+ this.locality
-														+ '" '
-														+ 'data-bill_amount="'
-														+ this.current_application_status
+														+ '<td class="text-end">'
+														+ '<div class="d-flex justify-content-end gap-2">'
 
-														+ '" id="ad_new_service"><span class="fa fa-plus-circle"></span></button>'
+														+ '<button class="btn btn-primary btn-circle btn-sm" '
+														+ 'data-bs-backdrop="static" data-bs-keyboard="false" '
+														+ 'data-title="Add New Service" '
+														+ 'data-bs-toggle="modal" data-bs-target="#addNewserviceBillModalonCase" '
+														+ 'data-ref_number="' + this.job_number + '" '
+														+ 'data-case_number="' + this.transaction_number + '" '
+														+ 'data-land_size="' + this.land_size + '" '
+														+ 'data-ar_name="' + this.ar_name + '" '
+														+ 'data-created_for_id="' + this.created_for_id + '" '
+														+ 'data-licensed_no="' + this.licensed_no + '" '
+														+ 'data-locality="' + this.locality + '" '
+														+ 'data-bill_amount="' + this.current_application_status + '">'
+														+ '<span class="fa fa-plus-circle me-1"></span>New Service'
+														+ '</button>'
 
-														+ '<button class="btn btn-info btn-circle btn-sm" data-title="Add New Service"  data-backdrop="static" data-keyboard="false" data-bs-toggle="modal" data-bs-target="#generateTransitionalBillModal" '
-														+ 'data-ref_number="'
-														+ this.job_number
-														+ '" '
-														+ 'data-case_number="'
-														+ this.case_number
-														+ '" '
-														+ 'data-transaction_number="'
-														+ this.transaction_number
-														+ '" '
-														+ 'data-land_size="'
-														+ this.land_size
-														+ '" '
-														+ 'data-ar_name="'
-														+ this.ar_name
-														+ '" '
-														+ 'data-created_for_id="'
-														+ this.created_for_id
-														+ '" '
-														+ 'data-business_process_name="'
-														+ this.business_process_name
-														+ '" '
-														+ 'data-locality="'
-														+ this.locality
-														+ '" '
+														+ '<button class="btn btn-info btn-circle btn-sm" '
+														+ 'data-title="Add New Service" '
+														+ 'data-bs-toggle="modal" data-bs-target="#generateTransitionalBillModal" '
+														+ 'data-ref_number="' + this.job_number + '" '
+														+ 'data-case_number="' + this.case_number + '" '
+														+ 'data-transaction_number="' + this.transaction_number + '" '
+														+ 'data-land_size="' + this.land_size + '" '
+														+ 'data-ar_name="' + this.ar_name + '" '
+														+ 'data-created_for_id="' + this.created_for_id + '" '
+														+ 'data-business_process_name="' + this.business_process_name + '" '
+														+ 'data-locality="' + this.locality + '" '
+														+ 'data-licensed_no="' + this.licensed_no + '" '
+														+ 'data-bill_amount="' + this.current_application_status + '">'
+														+ '<span class="fa fa-receipt"></span>'
+														+ '</button>'
 
-														+ 'data-licensed_no="'
-														+ this.licensed_no
-														+ '" '
-														+ 'data-bill_amount="'
-														+ this.current_application_status
-
-														+ '" id="ad_new_service"><span class="fa fa-receipt"></span></button></td>'
+														+ '</div>'
+														+ '</td>'
 
 
 														// + '<td><p data-placement="top" data-toggle="tooltip" title="Receive After Payment"><button class="btn btn-info btn-circle btn-sm" data-title="Add New Service"  data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#reSubmissionAppModal" '

@@ -22,28 +22,75 @@
                 <!-- Tab Navigation -->
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-transparent border-0 px-4 pt-4 pb-0">
-                        <ul class="nav nav-tabs tab-style-6 nav-tabs-line" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#search-clients" type="button" role="tab">
-                                    <i class="fas fa-search me-1 align-middle"></i>Search Clients
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#payment-acknowledge" type="button" role="tab">
-                                    <i class="fas fa-check-circle me-2"></i>Payment Acknowledge
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#process-case" type="button" role="tab">
-                                    <i class="fas fa-cogs me-2"></i>Process Case
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#manual-bills" type="button" role="tab">
-                                    <i class="fas fa-file-invoice me-2"></i>Manual Bills
-                                </button>
-                            </li>
-                        </ul>
+                        <div class="row nav nav-tabs g-3">
+                            <!-- Card 1: Search Clients -->
+                            <div class="col-md-3">
+                                <div class="card card-hover border-danger" style="cursor: pointer;" 
+                                    data-bs-toggle="tab" data-bs-target="#search-clients">
+                                    <div class="card-body text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-search fa-2x text-danger"></i>
+                                        </div>
+                                        <h6 class="card-title mb-1 text-dark fw-semibold">Search Clients</h6>
+                                        <p class="card-text small text-muted">Find clients to create bills</p>
+                                    </div>
+                                    <div class="card-footer bg-danger bg-opacity-10 border-0 text-center py-2">
+                                        <small class="text-danger fw-medium">Click to select</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Payment Acknowledge -->
+                            <div class="col-md-3">
+                                <div class="card card-hover border-success" style="cursor: pointer;" 
+                                    data-bs-toggle="tab" data-bs-target="#payment-acknowledge">
+                                    <div class="card-body text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-check-circle fa-2x text-success"></i>
+                                        </div>
+                                        <h6 class="card-title mb-1 text-dark fw-semibold">Payment Acknowledge</h6>
+                                        <p class="card-text small text-muted">Acknowledge after payment</p>
+                                    </div>
+                                    <div class="card-footer bg-success bg-opacity-10 border-0 text-center py-2">
+                                        <small class="text-success fw-medium">Click to select</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Process Case -->
+                            <div class="col-md-3">
+                                <div class="card card-hover border-warning" style="cursor: pointer;" 
+                                    data-bs-toggle="tab" data-bs-target="#process-case">
+                                    <div class="card-body text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-cogs fa-2x text-warning"></i>
+                                        </div>
+                                        <h6 class="card-title mb-1 text-dark fw-semibold">Process On Case</h6>
+                                        <p class="card-text small text-muted">Process application on case</p>
+                                    </div>
+                                    <div class="card-footer bg-warning bg-opacity-10 border-0 text-center py-2">
+                                        <small class="text-warning fw-medium">Click to select</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 4: Manual Bills -->
+                            <div class="col-md-3">
+                                <div class="card card-hover border-info" style="cursor: pointer;" 
+                                    data-bs-toggle="tab" data-bs-target="#manual-bills">
+                                    <div class="card-body text-center p-3">
+                                        <div class="mb-2">
+                                            <i class="fas fa-file-invoice fa-2x text-info"></i>
+                                        </div>
+                                        <h6 class="card-title mb-1 text-dark fw-semibold">Manual Bills</h6>
+                                        <p class="card-text small text-muted">Create manual bills</p>
+                                    </div>
+                                    <div class="card-footer bg-info bg-opacity-10 border-0 text-center py-2">
+                                        <small class="text-info fw-medium">Click to select</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="card-body px-4 pt-4">
@@ -53,12 +100,12 @@
                                 <div class="card border-0 shadow-none">
                                     <div class="card-header bg-light border-0 py-3">
                                         <h5 class="mb-0 fw-semibold">
-                                            <i class="fas fa-search text-primary me-2"></i>
+                                            <i class="fas fa-search text-danger me-2"></i>
                                             Search for Clients to Create Bills
                                         </h5>
                                     </div>
                                     <div class="card-body">
-										<div id="searchClientErrorAlert"></div>
+                                        <div id="searchClientErrorAlert"></div>
                                         <div class="row g-3">
                                             <div class="col-md-10">
                                                 <div class="input-group">
@@ -66,13 +113,13 @@
                                                         <i class="fas fa-user text-muted"></i>
                                                     </span>
                                                     <input type="text" 
-                                                           class="form-control border-start-0" 
-                                                           id="client_by_email_phone_search" 
-                                                           placeholder="Enter email or phone number">
+                                                        class="form-control border-start-0" 
+                                                        id="client_by_email_phone_search" 
+                                                        placeholder="Enter email or phone number">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-primary w-100" id="btnFindClientDetails">
+                                                <button class="btn btn-danger w-100" id="btnFindClientDetails">
                                                     <i class="fas fa-search me-1"></i> Search
                                                 </button>
                                             </div>
@@ -116,9 +163,9 @@
                                                         <i class="fas fa-hashtag text-muted"></i>
                                                     </span>
                                                     <input type="text" 
-                                                           class="form-control border-start-0" 
-                                                           id="txt_ref_number_for_payment" 
-                                                           placeholder="Enter reference number">
+                                                        class="form-control border-start-0" 
+                                                        id="txt_ref_number_for_payment" 
+                                                        placeholder="Enter reference number">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -165,10 +212,10 @@
                                                         <i class="fas fa-briefcase text-muted"></i>
                                                     </span>
                                                     <input type="text" 
-                                                           class="form-control border-start-0" 
-                                                           id="txt_job_number_for_adding_case_and_status" 
-                                                           placeholder="Enter job number"
-															oninput="this.value = this.value.toUpperCase()">
+                                                        class="form-control border-start-0" 
+                                                        id="txt_job_number_for_adding_case_and_status" 
+                                                        placeholder="Enter job number"
+                                                            oninput="this.value = this.value.toUpperCase()">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -203,7 +250,7 @@
                                 <div class="card border-0 shadow-none">
                                     <div class="card-header bg-light border-0 py-3">
                                         <h5 class="mb-0 fw-semibold">
-                                            <i class="fas fa-file-invoice text-warning me-2"></i>
+                                            <i class="fas fa-file-invoice text-info me-2"></i>
                                             Create Manual Bills
                                         </h5>
                                     </div>
@@ -215,13 +262,13 @@
                                                         <i class="fas fa-user text-muted"></i>
                                                     </span>
                                                     <input type="text" 
-                                                           class="form-control border-start-0" 
-                                                           id="client_by_email_phone_search_mb" 
-                                                           placeholder="Enter email or phone number">
+                                                        class="form-control border-start-0" 
+                                                        id="client_by_email_phone_search_mb" 
+                                                        placeholder="Enter email or phone number">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-warning w-100" id="btnFindClientDetailsManualBill">
+                                                <button class="btn btn-info w-100" id="btnFindClientDetailsManualBill">
                                                     <i class="fas fa-search me-1"></i> Search
                                                 </button>
                                             </div>
@@ -379,6 +426,21 @@
         </div>
     </div>
 </div>
+
+<style>
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+.card-hover.active {
+    border-width: 2px !important;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -1054,6 +1116,46 @@ document.addEventListener('DOMContentLoaded', function() {
         style.id = 'pdf-viewer-css';
         style.textContent = pdfViewerCSS;
         document.head.appendChild(style);
+    }
+
+    const cards = document.querySelectorAll('.card-hover');
+    
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Get the border color class from the current card
+            const borderClasses = Array.from(this.classList).filter(cls => 
+                cls.startsWith('border-') && !cls.includes('border-0')
+            );
+            const borderColor = borderClasses.length > 0 ? 
+                borderClasses[0].replace('border-', 'bg-') : 'bg-danger';
+            
+            // Remove active classes from all cards
+            cards.forEach(c => {
+                c.classList.remove('active');
+                // Remove all possible background color classes
+                c.classList.remove('bg-danger', 'bg-opacity-10');
+                c.classList.remove('bg-success', 'bg-opacity-10');
+                c.classList.remove('bg-warning', 'bg-opacity-10');
+                c.classList.remove('bg-info', 'bg-opacity-10');
+            });
+            
+            // Add active class with the appropriate background color
+            this.classList.add('active');
+            this.classList.add(borderColor, 'bg-opacity-10');
+        });
+    });
+    
+    // Initialize first card as active
+    if (cards.length > 0) {
+        const firstCard = cards[0];
+        const borderClasses = Array.from(firstCard.classList).filter(cls => 
+            cls.startsWith('border-') && !cls.includes('border-0')
+        );
+        const borderColor = borderClasses.length > 0 ? 
+            borderClasses[0].replace('border-', 'bg-') : 'bg-danger';
+        
+        firstCard.classList.add('active');
+        firstCard.classList.add(borderColor, 'bg-opacity-10');
     }
 });
 </script>

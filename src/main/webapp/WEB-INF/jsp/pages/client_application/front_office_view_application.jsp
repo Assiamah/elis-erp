@@ -65,9 +65,9 @@
                         <h5 class="mb-0">
                             <i class="bi bi-file-text me-2"></i>Case Summary
                         </h5>
-                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
+                        <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse" 
                                 data-bs-target="#caseSummaryCollapse" aria-expanded="true">
-                            <i class="bi bi-chevron-down"></i>
+                            <i class="bi bi-chevron-down"></i> Click to Expand
                         </button>
                     </div>
                     
@@ -75,7 +75,7 @@
                         <div class="card-body">
                             <!-- Parcel Attributes Section -->
 							<div class="card">
-								<div class="card-header justify-content-between">
+								<div class="card-header bg-success bg-opacity-10 justify-content-between">
 									<div class="card-title text-primary">
 										<i class="bi bi-geo-alt me-2"></i>Parcel Attributes
 									</div>
@@ -139,7 +139,7 @@
                             
                             <!-- Transaction Details Section -->
 							<div class="card">
-								<div class="card-header justify-content-between">
+								<div class="card-header bg-success bg-opacity-10 justify-content-between">
 									<div class="card-title text-primary">
 										<i class="bi bi-receipt me-2"></i>Transaction Details
 									</div>
