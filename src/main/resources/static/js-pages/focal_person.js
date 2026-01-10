@@ -1550,13 +1550,13 @@ $(document).on('click','#view_apps_recieved_completed_year',function(e){
               // );
           
               // applications received for the year
-              showDivisionSummary("#app-received-year", data.apps_rec_divisional, 'info');
+              showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
           
               // applications completed for the year
-              showDivisionSummary("#app-completed-year", data.apps_comp_divisional, 'success');
+              showDivisionSummaryUpdatedQ("#app-completed-year", data.apps_comp_divisional, 'success');
           
               // applications received and completed for the year
-              showDivisionSummary_new(
+              showDivisionSummaryUpdatedQ(
                 "#app-received-completed-year",
                 data.apps_comp_divisional_year,
           'default'
@@ -1666,7 +1666,7 @@ $(document).on('click','#view_apps_recieved_completed_year',function(e){
             </a>
             
           </h4>
-          <div class="progress mb-4">
+          <div class="progress progress-sm mb-4">
             <div class="progress-bar bg-${color}" role="progressbar" style="width: ${percent}%" aria-valuenow="${percent}"
               aria-valuemin="0" aria-valuemax="100"></div>
           </div>
@@ -1681,7 +1681,117 @@ $(document).on('click','#view_apps_recieved_completed_year',function(e){
 
 
 
+function showDivisionSummaryUpdatedQ(id, data, color) {
+    // Define all 4 divisions
+    const allDivisions = ['LRD', 'LVD', 'PVLMD', 'SMD'];
+    
+    // Find data for each division
+    const divisionData = {};
+    
+    allDivisions.forEach(division => {
+        const foundData = data.find(item => item.division === division);
+        divisionData[division] = foundData || { division: division, total: 0 };
+    });
+    
+    // Calculate total from actual data (not including zeros for empty divisions)
+    let total = data.reduce(function (sum, current) {
+        return sum + current.total;
+    }, 0);
+    
+    // Update total count
+    $(id).find(".count").html(new Intl.NumberFormat().format(total));
+    
+    let cardBody = $(id).find(".card-body");
+    let period = cardBody.data("period");
+    let method = cardBody.data("method");
+    let title = cardBody.data("title");
+    let url = cardBody.data("url");
+    let nextLevelModal = cardBody.data("next-level-modal");
+    let date = cardBody.data("date") ?? "";
+    
+    let periodToAdd = typeof period === "undefined" ? "" : `_${period}`;
+    
+    // Clear existing progress bars and list
+    $(id).find(".progress-animate").empty();
+    $(id).find(".top-referral-pages").empty();
+    
+    // Color classes for different segments
+    const colorClasses = ['primary', 'info', 'warning', 'success'];
+    
+    // Generate progress bars and list items for all 4 divisions
+    allDivisions.forEach(function (division, index) {
+        const current = divisionData[division];
+        let percent = total > 0 ? ((current.total / total) * 100).toFixed(2) : 0;
+        const colorClass = colorClasses[index % colorClasses.length];
+        
+        // Add progress bar segment (show zero width as minimum 1% for visibility)
+        let progressWidth = current.total > 0 ? percent : 1;
+        let progressBar = `<div class="progress-bar bg-${colorClass}" 
+            role="progressbar" 
+            style="width: ${progressWidth}%" 
+            aria-valuenow="${percent}" 
+            aria-valuemin="0" 
+            aria-valuemax="100"
+            title="${current.division}: ${current.total} (${percent}%)"
+            data-bs-toggle="tooltip"></div>`;
+        
+        $(id).find(".progress-animate").append(progressBar);
+        
+        // Add list item
+        let listItem = `<li class="${colorClass}">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <a href="#" 
+                       data-method="${method}" 
+                       data-url="${url}" 
+                       ${typeof period === "undefined" ? "" : `data-period="${period}"`}
+                       data-action="report_dashboard_${method}${periodToAdd}" 
+                       data-type="${current.division}" 
+                       data-date="${date}" 
+                       data-title="${title}" 
+                       class="${nextLevelModal} text-decoration-none ${current.total === 0 ? 'text-muted' : ''}">
+                        ${current.division}
+                    </a>
+                </div>
+                <div class="fs-12 ${current.total === 0 ? 'text-muted opacity-50' : 'text-muted'}">
+                    ${current.total.toLocaleString()} ${total > 0 ? `(${percent}%)` : ''}
+                </div>
+            </div>
+        </li>`;
+        
+        $(id).find(".top-referral-pages").append(listItem);
+    });
+    
+    // Initialize tooltips
+    $('[data-bs-toggle="tooltip"]').tooltip();
+}
 
+// Optional: Function to calculate and update trend indicator
+function updateTrendIndicator(id, currentData) {
+    // This is a placeholder - you'll need to implement actual trend calculation
+    // based on previous period data
+    let currentTotal = currentData.reduce((sum, item) => sum + item.total, 0);
+    
+    // Mock trend calculation - replace with actual comparison logic
+    let trendPercentage = 1.02; // Example: 1.02 means 2% increase
+    let trendIcon = trendPercentage >= 1 ? 'ri-arrow-up-s-fill' : 'ri-arrow-down-s-fill';
+    let trendColor = trendPercentage >= 1 ? 'success' : 'danger';
+    
+    $(id).find(".bg-success-transparent").removeClass("bg-success-transparent").addClass("bg-" + trendColor + "-transparent");
+    $(id).find(".ri-arrow-up-s-fill, .ri-arrow-down-s-fill").remove();
+    
+    let trendBadge = `<span class="badge bg-${trendColor}-transparent">${trendPercentage.toFixed(2)}
+        <i class="${trendIcon} align-middle ms-1"></i>
+    </span>`;
+    
+    $(id).find(".badge").replaceWith(trendBadge);
+}
+
+// Helper function to get color class based on index
+function getColorClass(index) {
+    const colors = ['primary', 'info', 'warning', 'success', 'danger', 'secondary', 'dark', 'purple'];
+    return colors[index % colors.length];
+}
 
 
 
@@ -1726,7 +1836,7 @@ $(document).on('click','#view_apps_recieved_completed_year',function(e){
 
         //console.log(lrd_Data);
 
-        document.getElementById('total_rec_comp_year').innerHTML = newtotal;
+        //document.getElementById('total_rec_comp_year').innerHTML = newtotal;
   
        // console.log(percent);
   
@@ -1945,7 +2055,7 @@ $(document).on('click','#view_apps_recieved_completed_year',function(e){
         cache: false,
         success: function (response) {
         var reccc = JSON.parse(response);
-        console.log(reccc);
+        //console.log(reccc);
 
         firmList = reccc;
         
@@ -1973,41 +2083,224 @@ $(document).on('click','#view_apps_recieved_completed_year',function(e){
 
 $(document).ready(function() {
 
-    $('#apps_received_today').on('click', function(e) {
-        e.preventDefault();
+    // Click handler for the button
+$('#apps_received_today').on('click', function(e) {
+    e.preventDefault();
+    
+    // Show modal using Bootstrap 5
+    const userDivisionModal = new bootstrap.Modal(document.getElementById('user_divisionModal'));
+    userDivisionModal.show();
+    
+    // Load data
+    loadDivisionData();
+});
 
-     $("#user_divisionModal").modal("show");  
-
-        var regional_code = $('#director_regional_code').val();
-        var division = $('#director_division').val();
-        console.log(regional_code,division);
-
-
-        $.ajax({
-            type : "POST",
-            url : "focal_compliance",
-            data : {
-                request_type : 'compliance_focal_report_dashboard_created_today',
-                region_id : regional_code.trim(),
-                user_division:division
-            },
-            cache: false,
-            success: function(response) {
-
+// Function to load division data
+function loadDivisionData() {
+    const modal = $('#user_divisionModal');
+    const loadingState = modal.find('#loadingState');
+    const dataContent = modal.find('#dataContent');
+    const errorState = modal.find('#errorState');
+    
+    // Show loading, hide other states
+    loadingState.removeClass('d-none');
+    dataContent.addClass('d-none');
+    errorState.addClass('d-none');
+    
+    var regional_code = $('#director_regional_code').val();
+    var division = $('#director_division').val();
+    
+    console.log('Loading data for:', regional_code, division);
+    
+    $.ajax({
+        type: "POST",
+        url: "focal_compliance",
+        data: {
+            request_type: 'compliance_focal_report_dashboard_created_today',
+            region_id: regional_code.trim(),
+            user_division: division
+        },
+        cache: false,
+        success: function(response) {
+            try {
                 var json_result = JSON.parse(response);
-               
-              var count =  json_result.apps_at_division[0].total;
-              var current_division =  json_result.apps_at_division[0].division;
-
-                 document.getElementById('user_division').innerHTML = current_division;
-                 document.getElementById('div_count').innerHTML = count;
-
-
-                // console.log(count);
-
+                
+                // Hide loading
+                loadingState.addClass('d-none');
+                dataContent.removeClass('d-none');
+                
+                // Update last updated time
+                updateLastUpdatedTime();
+                
+                // Process and display data
+                if (json_result.apps_at_division && json_result.apps_at_division.length > 0) {
+                    displayDivisionData(json_result);
+                } else {
+                    showNoDataState();
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                showErrorState();
             }
-        })
-    })
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            showErrorState();
+        }
+    });
+}
+
+// Function to display division data
+function displayDivisionData(data) {
+    // Update main division card
+    if (data.apps_at_division && data.apps_at_division[0]) {
+        const divisionData = data.apps_at_division[0];
+        const count = divisionData.total || 0;
+        const current_division = divisionData.division || 'N/A';
+        
+        $('#user_division').text(current_division);
+        $('#div_count').text(count.toLocaleString());
+        
+        // Update all divisions (if available)
+        if (data.all_divisions) {
+            displayAllDivisions(data.all_divisions);
+        } else {
+            // If no all_divisions data, show just the main division
+            $('#allDivisionsGrid').html(`
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="ri-information-line me-2"></i>
+                        Only your division data is available.
+                    </div>
+                </div>
+            `);
+        }
+    }
+}
+
+// Function to display all divisions
+function displayAllDivisions(divisionsData) {
+    const divisionsGrid = $('#allDivisionsGrid');
+    divisionsGrid.empty();
+    
+    // Division configuration with colors and icons
+    const divisionConfig = {
+        'LRD': { name: 'Land Resources', color: 'primary', icon: 'ri-landscape-line' },
+        'LVD': { name: 'Livestock', color: 'success', icon: 'ri-road-map-line' },
+        'PVLMD': { name: 'Public & Veterinary', color: 'warning', icon: 'ri-home-5-line' },
+        'SMD': { name: 'Support Services', color: 'danger', icon: 'ri-building-line' }
+    };
+    
+    // Calculate total for percentages
+    const total = divisionsData.reduce((sum, div) => sum + (div.total || 0), 0);
+    
+    // Create cards for each division
+    divisionsData.forEach(division => {
+        const config = divisionConfig[division.division] || { 
+            name: division.division, 
+            color: 'secondary', 
+            icon: 'ri-question-line' 
+        };
+        
+        const count = division.total || 0;
+        const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+        
+        const cardHtml = `
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="card border-0 shadow-sm h-100 transition-all">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-${config.color} bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="${config.icon} text-${config.color} fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">${division.division}</h6>
+                                <small class="text-muted">${config.name}</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="display-6 fw-bold mb-1">${count.toLocaleString()}</h2>
+                            <div class="text-muted small">Applications</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">${percentage}% of total</div>
+                            <div class="badge bg-${config.color} rounded-pill px-3">${division.division}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        divisionsGrid.append(cardHtml);
+    });
+}
+
+// Function to show error state
+function showErrorState() {
+    const modal = $('#user_divisionModal');
+    modal.find('#loadingState').addClass('d-none');
+    modal.find('#dataContent').addClass('d-none');
+    modal.find('#errorState').removeClass('d-none');
+}
+
+// Function to show no data state
+function showNoDataState() {
+    const modal = $('#user_divisionModal');
+    modal.find('#loadingState').addClass('d-none');
+    modal.find('#dataContent').addClass('d-none');
+    
+    // Show empty state within data content
+    modal.find('#allDivisionsGrid').html(`
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="ri-folder-open-line display-1 text-muted opacity-25"></i>
+                </div>
+                <h5 class="text-muted mb-3">No Data Available</h5>
+                <p class="text-muted mb-0">No applications received today.</p>
+            </div>
+        </div>
+    `);
+    modal.find('#dataContent').removeClass('d-none');
+}
+
+// Function to update last updated time
+function updateLastUpdatedTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit' 
+    });
+    $('#lastUpdated').text(timeString);
+}
+
+// Event listeners for modal buttons
+$(document).ready(function() {
+    // Refresh button
+    $('#refreshButton').on('click', function() {
+        loadDivisionData();
+    });
+    
+    // Retry button
+    $('#retryButton').on('click', function() {
+        loadDivisionData();
+    });
+    
+    // Modal show event
+    $('#user_divisionModal').on('show.bs.modal', function() {
+        updateLastUpdatedTime();
+    });
+    
+    // Modal hidden event
+    $('#user_divisionModal').on('hidden.bs.modal', function() {
+        // Reset modal state if needed
+        const modal = $(this);
+        modal.find('#loadingState').removeClass('d-none');
+        modal.find('#dataContent').addClass('d-none');
+        modal.find('#errorState').addClass('d-none');
+    });
+});
 
 
 
@@ -2231,41 +2524,101 @@ $(document).ready(function() {
 
 
     $('#apps_received_this_month').on('click', function(e) {
-        e.preventDefault();
+    e.preventDefault();
+    
+    // Show modal using Bootstrap 5
+    const userDivisionMonthModal = new bootstrap.Modal(document.getElementById('user_divisionModal_this_month'));
+    userDivisionMonthModal.show();
+    
+    // Load data
+    loadMonthlyDivisionData();
+});
 
-     $("#user_divisionModal_this_month").modal("show");  
-
-        var regional_code = $('#director_regional_code').val();
-        var division = $('#director_division').val();
-        console.log(regional_code,division);
-
-
-        $.ajax({
-            type : "POST",
-            url : "focal_compliance",
-            data : {
-                request_type : 'compliance_focal_report_dashboard_created_this_month',
-                region_id : regional_code.trim(),
-                user_division:division
-            },
-            cache: false,
-            success: function(response) {
-
+// Function to load monthly division data
+function loadMonthlyDivisionData() {
+    const modal = $('#user_divisionModal_this_month');
+    const loadingState = modal.find('#loadingStateMonth');
+    const dataContent = modal.find('#dataContentMonth');
+    const errorState = modal.find('#errorStateMonth');
+    
+    // Show loading, hide other states
+    loadingState.removeClass('d-none');
+    dataContent.addClass('d-none');
+    errorState.addClass('d-none');
+    
+    var regional_code = $('#director_regional_code').val();
+    var division = $('#director_division').val();
+    
+    console.log('Loading monthly data for:', regional_code, division);
+    
+    $.ajax({
+        type: "POST",
+        url: "focal_compliance",
+        data: {
+            request_type: 'compliance_focal_report_dashboard_created_this_month',
+            region_id: regional_code.trim(),
+            user_division: division
+        },
+        cache: false,
+        success: function(response) {
+            try {
                 var json_result = JSON.parse(response);
-                //console.log(json_result);
-               
-              var count =  json_result.apps_at_division[0].total;
-              var current_division =  json_result.apps_at_division[0].division;
-
-                 document.getElementById('user_division_month').innerHTML = current_division;
-                 document.getElementById('div_count_month').innerHTML = count;
-
-
-                // console.log(count);
-
+                
+                // Hide loading
+                loadingState.addClass('d-none');
+                dataContent.removeClass('d-none');
+                
+                // Process and display data
+                if (json_result.apps_at_division && json_result.apps_at_division.length > 0) {
+                    displayMonthlyDivisionData(json_result);
+                } else {
+                    showNoMonthlyDataState();
+                }
+            } catch (e) {
+                console.error('Error parsing monthly response:', e);
+                showMonthlyErrorState();
             }
-        })
-    })
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error (monthly):', error);
+            showMonthlyErrorState();
+        }
+    });
+}
+
+// Function to display monthly division data
+function displayMonthlyDivisionData(data) {
+    // Update main division card
+    if (data.apps_at_division && data.apps_at_division[0]) {
+        const divisionData = data.apps_at_division[0];
+        const count = divisionData.total || 0;
+        const current_division = divisionData.division || 'N/A';
+        
+        $('#user_division_month').text(current_division);
+        $('#div_count_month').text(count.toLocaleString());
+        
+        // Calculate and display additional stats
+        calculateMonthlyStats(count, data);
+        
+        // Update all divisions (if available)
+        if (data.all_divisions) {
+            displayAllMonthlyDivisions(data.all_divisions);
+        }
+    }
+}
+
+// Add event listeners for the monthly modal
+$(document).ready(function() {
+    // Refresh button for monthly modal
+    $('#refreshButtonMonth').on('click', function() {
+        loadMonthlyDivisionData();
+    });
+    
+    // Retry button for monthly modal
+    $('#retryButtonMonth').on('click', function() {
+        loadMonthlyDivisionData();
+    });
+});
 
 
 
@@ -2274,7 +2627,7 @@ $(document).ready(function() {
     $('#user_division_this_month').on('click', function(e) {
       e.preventDefault();
 
-   $("#serviceTypeModalMonth").modal("show");  
+   $("#serviceTypeModal").modal("show");  
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   const currentDate = new Date();
   const day = currentDate.getDate();
@@ -2288,7 +2641,7 @@ $(document).ready(function() {
 
       var title  = division+"'"+'s'+" "+"Applications Received This Month"+" "+"("+formattedDate+")";
 
-      document.getElementById('serviceTypeModalLabelMonth').innerHTML = title;
+      document.getElementById('serviceTypeModalLabel').innerHTML = title;
 
       
      //console.log(regional_code,division);
@@ -2320,20 +2673,20 @@ $(document).ready(function() {
       let dataSet2 = [];
       let num2 = 0;
 
-    $('#created_by_services_month').DataTable().clear().destroy();
+    $('#serviceTypeTable').DataTable().clear().destroy();
 
       for(let i=0; i<json_result.apps_at_division.length; i++) {
           let html = [];
           num2 = +num2 + 1;
 
-          let service_type = json_result.apps_at_division[i].service_type;
+          let name = json_result.apps_at_division[i].service_type;
           let total = json_result.apps_at_division[i].total;
           let action = `<a href="javascript:void(0)" data-id="${json_result.apps_at_division[i].service_type}"  id="view_recieved_month_by_service"  
           class="btn btn-secondary">View <i class="fa fa-eye"></i></a> `
 
           // let payment_status = e[i].payment_status;
           // let buttons = e[i].buttons;
-          html.push(service_type);
+          html.push(name);
           html.push(total);
           html.push(action);
 
@@ -2346,9 +2699,9 @@ $(document).ready(function() {
       //     data: dataSet1
       //   })
 
-        $('#created_by_services_month').DataTable().clear().destroy();
+        $('#serviceTypeTable').DataTable().clear().destroy();
                       
-        $('#created_by_services_month').DataTable({ data: dataSet2,
+        $('#serviceTypeTable').DataTable({ data: dataSet2,
           dom : 'Bfrtip',
           lengthMenu : [
               [ 10, 25, 50, -1 ],
@@ -2485,44 +2838,221 @@ const formattedDate = `${day} ${months[monthIndex]} ${year}`;
 
 
 
-  $('#apps_completed_today_division').on('click', function(e) {
+$('#apps_completed_today_division').on('click', function(e) {
     e.preventDefault();
+    
+    // Show modal using Bootstrap 5
+    const completedDivisionModal = new bootstrap.Modal(document.getElementById('user_completed_divison_today'));
+    completedDivisionModal.show();
+    
+    // Load data
+    loadCompletedTodayData();
+});
 
- $("#user_completed_divison_today").modal("show");  
-
+// Function to load completed today data
+function loadCompletedTodayData() {
+    const modal = $('#user_completed_divison_today');
+    const loadingState = modal.find('#loadingStateCompletedToday');
+    const dataContent = modal.find('#dataContentCompletedToday');
+    const errorState = modal.find('#errorStateCompletedToday');
+    
+    // Show loading, hide other states
+    loadingState.removeClass('d-none');
+    dataContent.addClass('d-none');
+    errorState.addClass('d-none');
+    
     var regional_code = $('#director_regional_code').val();
     var division = $('#director_division').val();
-    console.log(regional_code,division);
-
-
+    
+    console.log('Loading completed today data for:', regional_code, division);
+    
     $.ajax({
-        type : "POST",
-        url : "director_dashboard",
-        data : {
-            request_type : 'director_report_dashboard_completed_today',
-            region_id : regional_code.trim(),
-            user_division:division
+        type: "POST",
+        url: "director_dashboard",
+        data: {
+            request_type: 'director_report_dashboard_completed_today',
+            region_id: regional_code.trim(),
+            user_division: division
         },
         cache: false,
         success: function(response) {
-
-            var json_result = JSON.parse(response);
-                  console.log(json_result);
-
-
-           
-          var count =  json_result.apps_at_division[0].total;
-          var current_division =  json_result.apps_at_division[0].division;
-
-             document.getElementById('user_division_completed_today').innerHTML = current_division;
-             document.getElementById('div_count_completed_toda').innerHTML = count;
-
-
-            // console.log(count);
-
+            try {
+                var json_result = JSON.parse(response);
+                console.log('Completed today data:', json_result);
+                
+                // Hide loading
+                loadingState.addClass('d-none');
+                dataContent.removeClass('d-none');
+                
+                // Process and display data
+                if (json_result.apps_at_division && json_result.apps_at_division.length > 0) {
+                    displayCompletedTodayData(json_result);
+                } else {
+                    showNoCompletedDataState();
+                }
+            } catch (e) {
+                console.error('Error parsing completed today response:', e);
+                showCompletedErrorState();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error (completed today):', error);
+            showCompletedErrorState();
         }
-    })
-})
+    });
+}
+
+// Function to display completed today data
+function displayCompletedTodayData(data) {
+    // Update main division card
+    if (data.apps_at_division && data.apps_at_division[0]) {
+        const divisionData = data.apps_at_division[0];
+        const count = divisionData.total || 0;
+        const current_division = divisionData.division || 'N/A';
+        
+        $('#user_division_completed_today').text(current_division);
+        $('#div_count_completed_today').text(count.toLocaleString());
+        
+        // Calculate completion rate if received data is available
+        if (data.received_today && data.received_today > 0) {
+            const completionRate = Math.round((count / data.received_today) * 100);
+            $('#completionProgress').css('width', completionRate + '%');
+            $('#completionPercentage').text(completionRate + '%');
+        } else {
+            $('#completionRateSection').addClass('d-none');
+        }
+        
+        // Update performance stats if available
+        updatePerformanceStats(data);
+        
+        // Update all divisions completed
+        if (data.all_divisions_completed) {
+            displayAllDivisionsCompleted(data.all_divisions_completed);
+        }
+        
+        // Update service type breakdown
+        if (data.service_types) {
+            displayServiceTypeBreakdown(data.service_types);
+        }
+    }
+}
+
+// Function to display all divisions completed
+function displayAllDivisionsCompleted(divisionsData) {
+    const grid = $('#allDivisionsCompletedGrid');
+    grid.empty();
+    
+    const divisionConfig = {
+        'LRD': { name: 'Land Resources', color: 'primary', icon: 'ri-landscape-line' },
+        'LVD': { name: 'Livestock', color: 'success', icon: 'ri-road-map-line' },
+        'PVLMD': { name: 'Public & Veterinary', color: 'warning', icon: 'ri-home-5-line' },
+        'SMD': { name: 'Support Services', color: 'danger', icon: 'ri-building-line' }
+    };
+    
+    // Calculate total for percentages
+    const total = divisionsData.reduce((sum, div) => sum + (div.total || 0), 0);
+    
+    divisionsData.forEach(division => {
+        const config = divisionConfig[division.division] || { 
+            name: division.division, 
+            color: 'secondary', 
+            icon: 'ri-question-line' 
+        };
+        
+        const count = division.total || 0;
+        const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+        
+        const cardHtml = `
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="card border-0 shadow-sm h-100 transition-all">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-${config.color} bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="${config.icon} text-${config.color} fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">${division.division}</h6>
+                                <small class="text-muted">${config.name}</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="display-6 fw-bold mb-1">${count.toLocaleString()}</h2>
+                            <div class="text-muted small">Completed</div>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-${config.color}" 
+                                 role="progressbar" 
+                                 style="width: ${percentage}%"
+                                 aria-valuenow="${percentage}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="text-muted small">${percentage}% of total</span>
+                            <span class="badge bg-${config.color}">${division.division}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        grid.append(cardHtml);
+    });
+}
+
+// Function to display service type breakdown
+function displayServiceTypeBreakdown(serviceTypes) {
+    const table = $('#serviceTypeCompletedTable');
+    table.empty();
+    
+    serviceTypes.forEach(service => {
+        const statusClass = service.avg_days <= 5 ? 'success' : 
+                           service.avg_days <= 10 ? 'warning' : 'danger';
+        const statusText = service.avg_days <= 5 ? 'Fast' : 
+                          service.avg_days <= 10 ? 'Moderate' : 'Slow';
+        
+        const rowHtml = `
+            <tr>
+                <td class="fw-medium">${service.service_type}</td>
+                <td class="text-center">
+                    <span class="badge bg-success rounded-pill px-3">${service.total}</span>
+                </td>
+                <td class="text-center fw-bold">${service.avg_days || '--'} days</td>
+                <td class="text-center">
+                    <span class="badge bg-${statusClass}">${statusText}</span>
+                </td>
+            </tr>
+        `;
+        
+        table.append(rowHtml);
+    });
+}
+
+// Function to update performance stats
+function updatePerformanceStats(data) {
+    if (data.avg_processing_time) {
+        $('#avgProcessingTime').text(data.avg_processing_time + ' days');
+    }
+    if (data.fastest_completion) {
+        $('#fastestCompletion').text(data.fastest_completion + ' days');
+    }
+    if (data.on_time_rate) {
+        $('#onTimeRate').text(data.on_time_rate + '%');
+    }
+}
+
+// Add event listeners for the completed today modal
+$(document).ready(function() {
+    // Refresh button
+    $('#refreshButtonCompletedToday').on('click', function() {
+        loadCompletedTodayData();
+    });
+    
+    // Retry button
+    $('#retryButtonCompletedToday').on('click', function() {
+        loadCompletedTodayData();
+    });
+});
 
 
 
@@ -2863,47 +3393,500 @@ $('#view_applications_completed_today_by_service_type').DataTable().clear().dest
 
 
 $('#apps_completed_month_division').on('click', function(e) {
-  e.preventDefault();
+    e.preventDefault();
+    
+    // Show modal using Bootstrap 5
+    const completedMonthModal = new bootstrap.Modal(document.getElementById('user_completed_divison_month'));
+    completedMonthModal.show();
+    
+    // Load data
+    loadCompletedMonthData();
+});
 
-$("#user_completed_divison_month").modal("show");  
+// Function to load completed month data
+function loadCompletedMonthData() {
+    const modal = $('#user_completed_divison_month');
+    const loadingState = modal.find('#loadingStateCompletedMonth');
+    const dataContent = modal.find('#dataContentCompletedMonth');
+    const errorState = modal.find('#errorStateCompletedMonth');
+    
+    // Show loading, hide other states
+    loadingState.removeClass('d-none');
+    dataContent.addClass('d-none');
+    errorState.addClass('d-none');
+    
+    var regional_code = $('#director_regional_code').val();
+    var division = $('#director_division').val();
+    
+    console.log('Loading completed month data for:', regional_code, division);
+    
+    $.ajax({
+        type: "POST",
+        url: "focal_compliance",
+        data: {
+            request_type: 'compliance_focal_report_dashboard_completed_month',
+            region_id: regional_code.trim(),
+            user_division: division
+        },
+        cache: false,
+        success: function(response) {
+            try {
+                var json_result = JSON.parse(response);
+                console.log('Completed month data:', json_result);
+                
+                // Hide loading
+                loadingState.addClass('d-none');
+                dataContent.removeClass('d-none');
+                
+                // Process and display data
+                if (json_result.apps_at_division && json_result.apps_at_division.length > 0) {
+                    displayCompletedMonthData(json_result);
+                } else {
+                    showNoCompletedMonthDataState();
+                }
+            } catch (e) {
+                console.error('Error parsing completed month response:', e);
+                showCompletedMonthErrorState();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error (completed month):', error);
+            showCompletedMonthErrorState();
+        }
+    });
+}
 
-  var regional_code = $('#director_regional_code').val();
-  var division = $('#director_division').val();
-  console.log(regional_code,division);
+// Function to display completed month data
+function displayCompletedMonthData(data) {
+    // Update main division card
+    if (data.apps_at_division && data.apps_at_division[0]) {
+        const divisionData = data.apps_at_division[0];
+        const count = divisionData.total || 0;
+        const current_division = divisionData.division || 'N/A';
+        
+        $('#user_division_completed_month').text(current_division);
+        $('#div_count_completed_month').text(count.toLocaleString());
+        
+        // Update monthly stats in footer
+        $('#totalMonthlyCompleted').text(count.toLocaleString());
+        
+        // Update monthly performance stats
+        updateMonthlyPerformanceStats(data, count);
+        
+        // Update monthly chart if data available
+        if (data.monthly_trend) {
+            updateMonthlyChart(data.monthly_trend);
+        }
+        
+        // Update all divisions monthly completion
+        if (data.all_divisions_monthly) {
+            updateMonthlyDivisionsTable(data.all_divisions_monthly);
+        }
+        
+        // Update weekly breakdown
+        if (data.weekly_breakdown) {
+            updateWeeklyBreakdown(data.weekly_breakdown);
+        }
+    }
+}
+
+// Function to update monthly performance stats
+function updateMonthlyPerformanceStats(data, currentCount) {
+    // Monthly trend
+    if (data.previous_month && data.previous_month > 0) {
+        const trend = Math.round(((currentCount - data.previous_month) / data.previous_month) * 100);
+        const trendIcon = trend >= 0 ? 'ri-arrow-up-line text-success' : 'ri-arrow-down-line text-danger';
+        const trendClass = trend >= 0 ? 'text-success' : 'text-danger';
+        
+        $('#monthlyCompletionTrend').html(`
+            ${Math.abs(trend)}%
+            <i class="${trendIcon}"></i>
+        `).removeClass('text-success text-danger').addClass(trendClass);
+    }
+    
+    // Daily average
+    if (data.working_days && data.working_days > 0) {
+        const dailyAvg = Math.round(currentCount / data.working_days);
+        $('#monthlyDailyAverage').text(dailyAvg);
+    }
+    
+    // Completion rate
+    if (data.received_month && data.received_month > 0) {
+        const completionRate = Math.round((currentCount / data.received_month) * 100);
+        $('#monthlyCompletionRate').text(completionRate + '%');
+        
+        // Update progress bar
+        if (data.monthly_target) {
+            const targetPercentage = Math.min(Math.round((currentCount / data.monthly_target) * 100), 100);
+            $('#monthlyCompletionProgress').css('width', targetPercentage + '%');
+            $('#monthlyCompletionPercentage').text(targetPercentage + '%');
+        }
+    }
+    
+    // Average time
+    if (data.avg_completion_time) {
+        $('#monthlyAvgTime').text(data.avg_completion_time + ' days');
+    }
+}
+
+// Function to update monthly chart
+function updateMonthlyChart(trendData) {
+    const ctx = document.getElementById('monthlyCompletionChart').getContext('2d');
+    
+    // Destroy existing chart if exists
+    if (window.monthlyCompletionChart) {
+        window.monthlyCompletionChart.destroy();
+    }
+    
+    // Create new chart
+    window.monthlyCompletionChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: trendData.labels || ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Completed Applications',
+                data: trendData.data || [0, 0, 0, 0],
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Completed: ${context.raw}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        drawBorder: false
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString();
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Function to update monthly divisions table
+function updateMonthlyDivisionsTable(divisionsData) {
+    const table = $('#monthlyDivisionsTable');
+    table.empty();
+    
+    const divisionConfig = {
+        'LRD': { name: 'Land Resources', color: 'primary' },
+        'LVD': { name: 'Livestock', color: 'success' },
+        'PVLMD': { name: 'Public & Veterinary', color: 'warning' },
+        'SMD': { name: 'Support Services', color: 'danger' }
+    };
+    
+    divisionsData.forEach(division => {
+        const config = divisionConfig[division.division] || { name: division.division, color: 'secondary' };
+        const achievement = division.target > 0 ? Math.round((division.total / division.target) * 100) : 0;
+        const trend = division.previous_month > 0 ? 
+            Math.round(((division.total - division.previous_month) / division.previous_month) * 100) : 0;
+        
+        const statusClass = achievement >= 100 ? 'success' : 
+                           achievement >= 80 ? 'warning' : 'danger';
+        const statusText = achievement >= 100 ? 'On Target' : 
+                          achievement >= 80 ? 'Near Target' : 'Below Target';
+        
+        const trendIcon = trend >= 0 ? 
+            `<i class="ri-arrow-up-line text-success"></i> ${Math.abs(trend)}%` : 
+            `<i class="ri-arrow-down-line text-danger"></i> ${Math.abs(trend)}%`;
+        const trendClass = trend >= 0 ? 'text-success' : 'text-danger';
+        
+        const rowHtml = `
+            <tr>
+                <td class="fw-medium">
+                    <i class="ri-building-2-line text-${config.color} me-2"></i>
+                    ${division.division}
+                    <small class="text-muted d-block">${config.name}</small>
+                </td>
+                <td class="text-center">
+                    <span class="badge bg-${config.color} rounded-pill px-3">${division.total.toLocaleString()}</span>
+                </td>
+                <td class="text-center fw-medium">${division.target.toLocaleString()}</td>
+                <td class="text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="progress flex-grow-1 me-2" style="height: 6px; max-width: 80px;">
+                            <div class="progress-bar bg-${config.color}" 
+                                 style="width: ${Math.min(achievement, 100)}%"></div>
+                        </div>
+                        <span class="fw-bold">${achievement}%</span>
+                    </div>
+                </td>
+                <td class="text-center ${trendClass} fw-medium">
+                    ${trendIcon}
+                </td>
+                <td class="text-center">
+                    <span class="badge bg-${statusClass}">${statusText}</span>
+                </td>
+            </tr>
+        `;
+        
+        table.append(rowHtml);
+    });
+}
+
+// Function to update weekly breakdown
+function updateWeeklyBreakdown(weeklyData) {
+    const grid = $('#weeklyBreakdownGrid');
+    grid.empty();
+    
+    const weekColors = ['primary', 'success', 'warning', 'danger'];
+    let total = 0;
+    
+    weeklyData.forEach((week, index) => {
+        total += week.total || 0;
+        const color = weekColors[index % weekColors.length];
+        const percentage = weeklyData.reduce((sum, w) => sum + (w.total || 0), 0) > 0 ? 
+            Math.round((week.total / weeklyData.reduce((sum, w) => sum + (w.total || 0), 0)) * 100) : 0;
+        
+        const cardHtml = `
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-${color} bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="ri-calendar-line text-${color} fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">${week.week || 'Week ' + (index + 1)}</h6>
+                                <small class="text-muted">${week.date_range || ''}</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="display-6 fw-bold mb-1">${week.total.toLocaleString()}</h2>
+                            <div class="text-muted small">Completed</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">${percentage}% of month</div>
+                            <div class="badge bg-${color}">Week ${index + 1}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        grid.append(cardHtml);
+    });
+}
+
+// Add event listeners for the completed month modal
+$(document).ready(function() {
+    // Refresh button
+    $('#refreshButtonCompletedMonth').on('click', function() {
+        loadCompletedMonthData();
+    });
+    
+    // Retry button
+    $('#retryButtonCompletedMonth').on('click', function() {
+        loadCompletedMonthData();
+    });
+    
+    // Export button
+    $('#exportMonthlyData').on('click', function() {
+        exportMonthlyData();
+    });
+    
+    // Chart type buttons
+    $('[data-chart-type]').on('click', function() {
+        $('[data-chart-type]').removeClass('active');
+        $(this).addClass('active');
+        const chartType = $(this).data('chart-type');
+        if (window.monthlyCompletionChart) {
+            window.monthlyCompletionChart.config.type = chartType;
+            window.monthlyCompletionChart.update();
+        }
+    });
+});
+
+// Function to export monthly data
+function exportMonthlyData() {
+    // Implement export functionality here
+    alert('Export monthly data functionality would be implemented here');
+}
 
 
-  $.ajax({
-      type : "POST",
-      url : "focal_compliance",
-      data : {
-          request_type : 'compliance_focal_report_dashboard_completed_month',
-          region_id : regional_code.trim(),
-          user_division:division
-      },
-      cache: false,
-      success: function(response) {
 
-          var json_result = JSON.parse(response);
-                console.log(json_result);
+// Function to calculate monthly statistics
+function calculateMonthlyStats(count, data) {
+    // Update monthly trend
+    if (data.previous_month_count) {
+        const previousCount = data.previous_month_count || 0;
+        const trend = previousCount > 0 ? 
+            Math.round(((count - previousCount) / previousCount) * 100) : 
+            (count > 0 ? 100 : 0);
+        
+        const trendIcon = trend >= 0 ? 'ri-arrow-up-line' : 'ri-arrow-down-line';
+        const trendColor = trend >= 0 ? 'success' : 'danger';
+        
+        $('#monthlyTrend').html(`
+            ${Math.abs(trend)}%
+            <i class="${trendIcon}"></i>
+        `).removeClass('text-success text-danger').addClass('text-' + trendColor);
+    }
+    
+    // Calculate daily average (assuming 30 days in month for simplicity)
+    // In real implementation, you'd calculate based on actual working days
+    const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    const daysPassed = Math.min(new Date().getDate(), daysInMonth);
+    const dailyAverage = daysPassed > 0 ? (count / daysPassed).toFixed(1) : 0;
+    
+    $('#dailyAverage').text(dailyAverage);
+    
+    // Update last updated time
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit' 
+    });
+    $('#lastUpdatedMonth').text(timeString);
+}
 
+// Function to display all monthly divisions
+function displayAllMonthlyDivisions(divisionsData) {
+    const grid = $('#allDivisionsGridMonth');
+    grid.empty();
+    
+    const divisionConfig = {
+        'LRD': { name: 'Land Resources', color: 'primary', icon: 'ri-landscape-line' },
+        'LVD': { name: 'Livestock', color: 'success', icon: 'ri-road-map-line' },
+        'PVLMD': { name: 'Public & Veterinary', color: 'warning', icon: 'ri-home-5-line' },
+        'SMD': { name: 'Support Services', color: 'danger', icon: 'ri-building-line' }
+    };
+    
+    // Calculate total for percentages
+    const total = divisionsData.reduce((sum, div) => sum + (div.total || 0), 0);
+    
+    divisionsData.forEach(division => {
+        const config = divisionConfig[division.division] || { 
+            name: division.division, 
+            color: 'secondary', 
+            icon: 'ri-question-line' 
+        };
+        
+        const count = division.total || 0;
+        const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
+        
+        const cardHtml = `
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="card border-0 shadow-sm h-100 transition-all">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-${config.color} bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="${config.icon} text-${config.color} fs-4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">${division.division}</h6>
+                                <small class="text-muted">${config.name}</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="display-6 fw-bold mb-1">${count.toLocaleString()}</h2>
+                            <div class="text-muted small">Applications</div>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-${config.color}" 
+                                 role="progressbar" 
+                                 style="width: ${percentage}%"
+                                 aria-valuenow="${percentage}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="text-muted small">${percentage}% of total</span>
+                            <span class="badge bg-${config.color}">${division.division}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        grid.append(cardHtml);
+    });
+}
 
-         
-        var count =  json_result.apps_at_division[0].total;
-        var current_division =  json_result.apps_at_division[0].division;
+// Function to show monthly error state
+function showMonthlyErrorState() {
+    const modal = $('#user_divisionModal_this_month');
+    modal.find('#loadingStateMonth').addClass('d-none');
+    modal.find('#dataContentMonth').addClass('d-none');
+    modal.find('#errorStateMonth').removeClass('d-none');
+}
 
-           document.getElementById('user_division_completed_month').innerHTML = current_division;
-           document.getElementById('div_count_completed_momth').innerHTML = count;
+// Function to show no monthly data state
+function showNoMonthlyDataState() {
+    const modal = $('#user_divisionModal_this_month');
+    modal.find('#loadingStateMonth').addClass('d-none');
+    modal.find('#dataContentMonth').addClass('d-none');
+    
+    // Show empty state
+    modal.find('#allDivisionsGridMonth').html(`
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="ri-folder-open-line display-1 text-muted opacity-25"></i>
+                </div>
+                <h5 class="text-muted mb-3">No Data Available</h5>
+                <p class="text-muted mb-0">No applications received this month.</p>
+            </div>
+        </div>
+    `);
+    modal.find('#dataContentMonth').removeClass('d-none');
+}
 
+// Function to show completed month error state
+function showCompletedMonthErrorState() {
+    const modal = $('#user_completed_divison_month');
+    modal.find('#loadingStateCompletedMonth').addClass('d-none');
+    modal.find('#dataContentCompletedMonth').addClass('d-none');
+    modal.find('#errorStateCompletedMonth').removeClass('d-none');
+}
 
-          // console.log(count);
-
-      }
-  })
-})
-
-
-
-
+// Function to show no completed month data state
+function showNoCompletedMonthDataState() {
+    const modal = $('#user_completed_divison_month');
+    modal.find('#loadingStateCompletedMonth').addClass('d-none');
+    modal.find('#dataContentCompletedMonth').removeClass('d-none');
+    
+    // Show empty state within the table
+    modal.find('#monthlyDivisionsTable').html(`
+        <tr>
+            <td colspan="6" class="text-center py-5">
+                <div class="mb-3">
+                    <i class="ri-folder-open-line display-1 text-muted opacity-25"></i>
+                </div>
+                <h5 class="text-muted mb-3">No Data Available</h5>
+                <p class="text-muted mb-0">No applications completed this month.</p>
+            </td>
+        </tr>
+    `);
+}
 
 
 $('#completed_month_service').on('click', function(e) {

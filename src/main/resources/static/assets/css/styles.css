@@ -25383,6 +25383,20 @@ input.form-control.otp-input {
   background: rgba(0, 0, 0, 0.06);
 }
 
+#officerModal.modal {
+  z-index: 1030;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+#serviceTypeModal.modal {
+  z-index: 1030;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  background: rgba(0, 0, 0, 0.06);
+}
+
 #previewModal.modal {
   z-index: 1030;
   backdrop-filter: blur(3px) !important;

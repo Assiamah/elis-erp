@@ -790,7 +790,7 @@ console.log("selection made " + $(this).val() );
             );
         
             // applications received for the year
-            showDivisionSummary("#app-received-year", data.apps_rec_divisional, 'info');
+            showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
         
             // applications completed for the year
             showDivisionSummary("#app-completed-year", data.apps_comp_divisional, 'success');
@@ -1113,7 +1113,82 @@ if ($("#page_name").text() === "compliance_no_login") {
   }
 
 
+function showDivisionSummaryUpdatedQ(id, data, color) {
+    // Calculate total
+    let total = data.reduce(function (sum, current) {
+        return (sum += current.total);
+    }, 0);
 
+    console.log('kjdnfjnfdejk')
+    
+    // Update total count
+    $(id).find(".count").html(new Intl.NumberFormat().format(total));
+    
+    let cardBody = $(id).find(".card-body");
+    let period = cardBody.data("period");
+    let method = cardBody.data("method");
+    let title = cardBody.data("title");
+    let url = cardBody.data("url");
+    let nextLevelModal = cardBody.data("next-level-modal");
+    let date = cardBody.data("date") ?? "";
+    
+    let periodToAdd = typeof period === "undefined" ? "" : `_${period}`;
+    
+    // Clear existing progress bars and list
+    $(id).find(".progress-animate").empty();
+    $(id).find(".top-referral-pages").empty();
+    
+    // Generate progress bars and list items
+    data.forEach(function (current, index) {
+        let percent = ((current.total / total) * 100).toFixed(2);
+        
+        // Color classes for different segments
+        const colorClasses = ['primary', 'info', 'warning', 'success', 'danger', 'secondary'];
+        const colorClass = colorClasses[index % colorClasses.length];
+        
+        // Add progress bar segment
+        let progressBar = `<div class="progress-bar bg-${colorClass}" 
+            role="progressbar" 
+            style="width: ${percent}%" 
+            aria-valuenow="${percent}" 
+            aria-valuemin="0" 
+            aria-valuemax="100"
+            title="${current.division}: ${current.total} (${percent}%)"
+            data-bs-toggle="tooltip"></div>`;
+        
+        $(id).find(".progress-animate").append(progressBar);
+        
+        // Add list item
+        let listItem = `<li class="${colorClass}">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <a href="#" 
+                       data-method="${method}" 
+                       data-url="${url}" 
+                       ${typeof period === "undefined" ? "" : `data-period="${period}"`}
+                       data-action="report_dashboard_${method}${periodToAdd}" 
+                       data-type="${current.division}" 
+                       data-date="${date}" 
+                       data-title="${title}" 
+                       class="${nextLevelModal} text-decoration-none">
+                        ${current.division}
+                    </a>
+                </div>
+                <div class="fs-12 text-muted">
+                    ${current.total.toLocaleString()} (${percent}%)
+                </div>
+            </div>
+        </li>`;
+        
+        $(id).find(".top-referral-pages").append(listItem);
+    });
+    
+    // Update trend badge (optional - you might want to calculate this separately)
+    updateTrendIndicator(id, data);
+    
+    // Initialize tooltips
+    $('[data-bs-toggle="tooltip"]').tooltip();
+}
 
 
   function showDivisionSummaryUpdated(id, data,color) {
@@ -1263,7 +1338,32 @@ if ($("#page_name").text() === "compliance_no_login") {
   }
 
 
+// Optional: Function to calculate and update trend indicator
+function updateTrendIndicator(id, currentData) {
+    // This is a placeholder - you'll need to implement actual trend calculation
+    // based on previous period data
+    let currentTotal = currentData.reduce((sum, item) => sum + item.total, 0);
+    
+    // Mock trend calculation - replace with actual comparison logic
+    let trendPercentage = 1.02; // Example: 1.02 means 2% increase
+    let trendIcon = trendPercentage >= 1 ? 'ri-arrow-up-s-fill' : 'ri-arrow-down-s-fill';
+    let trendColor = trendPercentage >= 1 ? 'success' : 'danger';
+    
+    $(id).find(".bg-success-transparent").removeClass("bg-success-transparent").addClass("bg-" + trendColor + "-transparent");
+    $(id).find(".ri-arrow-up-s-fill, .ri-arrow-down-s-fill").remove();
+    
+    let trendBadge = `<span class="badge bg-${trendColor}-transparent">${trendPercentage.toFixed(2)}
+        <i class="${trendIcon} align-middle ms-1"></i>
+    </span>`;
+    
+    $(id).find(".badge").replaceWith(trendBadge);
+}
 
+// Helper function to get color class based on index
+function getColorClass(index) {
+    const colors = ['primary', 'info', 'warning', 'success', 'danger', 'secondary', 'dark', 'purple'];
+    return colors[index % colors.length];
+}
   
   var firmList; // global variable
 

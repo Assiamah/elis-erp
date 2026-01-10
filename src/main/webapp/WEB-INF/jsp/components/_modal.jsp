@@ -6722,3 +6722,991 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" data-position="0" id="divisionModal" tabindex="-1" aria-labelledby="divisionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white border-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="modal-icon-container me-3">
+                        <div class="icon-wrapper bg-white bg-opacity-25 rounded-circle px-2 py-1">
+                            <i class="ri-bar-chart-2-fill fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title mb-0" id="divisionModalLabel"></h5>
+                        <div class="small opacity-75" id="divisionModalSubtitle"></div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Stats Summary -->
+                <div class="row mb-4" id="divisionStats">
+                    <!-- Stats will be loaded here -->
+                </div>
+                
+                <!-- Filter Bar -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-body py-3">
+                                <div class="row align-items-center g-3">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ri-filter-3-line text-primary me-2"></i>
+                                            <span class="fw-medium text-dark">Showing results for: </span>
+                                            <span class="ms-2 badge bg-primary" id="currentPeriod"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <div class="text-muted small">
+                                            <i class="ri-information-line me-1"></i>
+                                            Click on any division card for detailed breakdown
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Divisions Grid -->
+                <div class="row g-4" id="divisionGrid">
+                    <!-- Division cards will be loaded here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div class="text-center py-5 d-none" id="emptyDivisionState">
+                    <div class="mb-4">
+                        <i class="ri-folder-open-line display-1 text-muted opacity-25"></i>
+                    </div>
+                    <h4 class="text-muted mb-3">No Data Available</h4>
+                    <p class="text-muted mb-0">There are no applications recorded for the selected period.</p>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer border-top bg-light">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-muted small">
+                        <i class="ri-refresh-line me-1"></i>
+                        Data loaded: <span id="dataLoadTime">Just now</span>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-1"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-primary" id="exportDivisionData">
+                            <i class="ri-download-line me-1"></i> Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-fade modal-blur" data-position="0" id="serviceTypeModal" tabindex="-1" aria-labelledby="serviceTypeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serviceTypeModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover w-100" 
+                                       id="serviceTypeTable"
+                                       data-responsive="true"
+                                       data-order='[[1, "desc"]]'
+                                       data-dom="<'row'<'col-sm-4 text-start'l><'col-sm-4 text-start'B><'col-sm-4 text-end'f>>
+                                                 <'row'<'col-sm-12'tr>>
+                                                 <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th data-data="name" data-name="name">Service Name</th>
+                                            <th data-data="total" data-name="total">Count</th>
+                                            <th data-data="action" data-name="action" data-orderable="false" data-searchable="false">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-12">
+							<div class="chart"></div>
+						</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100 align-items-center">
+                    <div class="col-md-6">
+                        <form class="generate-chart row g-2 align-items-center">
+                            <div class="col-auto">
+                                <label for="chart_type" class="col-form-label">Generate Chart: <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select" name="chart_type" id="chart_type">
+                                    <option value="">Select Chart Type</option>
+                                    <option value="pie">Pie Chart</option>
+                                    <option value="doughnut">Doughnut Chart</option>
+                                    <option value="bar">Bar Chart</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Generate</button>
+                                <button type="button" class="btn btn-outline-danger clear-chart ms-2">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-fade modal-blur" data-position="0" id="unitModal" tabindex="-1" role="dialog"
+	aria-labelledby="unitModalLabel" aria-hidden="true" data-bs-backdrop="static">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="unitModalLabel"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 table-responsive">
+							<table class="table" data-dom="<'row'<'col-sm-4 text-left'l><'col-sm-4 text-left'B><'col-sm-4 text-right'f>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'p>>" style="width: 100%" data-responsive="true" data-buttons='{
+                        "buttons": [
+                            { "extend": "excel", "exportOptions": { "columns": [ ":visible" ] } },
+                            { "extend": "print", "exportOptions": { "columns": [ ":visible" ] } },
+                            "colvis"
+                        ]
+                   }' data-order='[[ 1, "desc" ]]'>
+								<thead>
+									<tr>
+										<th data-name="name" data-data="name">Unit</th>
+										<th data-name="total" data-data="total">Count</th>
+										<th data-data="action" data-name="action" data-orderable="false" data-searchable="false">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-12">
+							<div class="chart"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+                <div class="row w-100 align-items-center">
+                    <div class="col-md-6">
+                        <form class="generate-chart row g-2 align-items-center">
+                            <div class="col-auto">
+                                <label for="chart_type" class="col-form-label">Generate Chart: <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select" name="chart_type" id="chart_type">
+                                    <option value="">Select Chart Type</option>
+                                    <option value="pie">Pie Chart</option>
+                                    <option value="doughnut">Doughnut Chart</option>
+                                    <option value="bar">Bar Chart</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">Generate</button>
+                                <button type="button" class="btn btn-outline-danger clear-chart ms-2">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="user_divisionModal" tabindex="-1" aria-labelledby="userDivisionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="icon-wrapper bg-white bg-opacity-25 rounded-circle px-2 py-1">
+                            <i class="ri-calendar-event-line fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title mb-0" id="userDivisionModalLabel">
+                            Applications Received
+                        </h5>
+                        <small class="opacity-75">Today (<fmt:formatDate value="${now}" type="date" />)</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Loading State -->
+                <div id="loadingState" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-3">Loading division data...</p>
+                </div>
+                
+                <!-- Error State -->
+                <div id="errorState" class="text-center py-5 d-none">
+                    <div class="mb-4">
+                        <i class="ri-error-warning-line display-1 text-danger opacity-50"></i>
+                    </div>
+                    <h5 class="text-danger mb-3">Unable to Load Data</h5>
+                    <p class="text-muted">Please try again later.</p>
+                    <button class="btn btn-primary mt-2" id="retryButton">
+                        <i class="ri-refresh-line me-2"></i>Retry
+                    </button>
+                </div>
+                
+                <!-- Data Content -->
+                <div id="dataContent" class="d-none">
+                    <div class="row">
+                        <!-- Main Division Card -->
+                        <div class="col-xl-12 mb-4">
+                            <div class="card border-start-primary border-start-4 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <div class="text-muted small text-uppercase fw-semibold mb-1">
+                                                Your Division
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <h2 class="mb-0 me-3 fw-bold" id="div_count">0</h2>
+                                                <div>
+                                                    <div class="h5 mb-0 fw-bold" id="user_division">-</div>
+                                                    <div class="text-muted small">Applications received today</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                                                <i class="ri-building-2-line text-primary fs-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- All Divisions Section -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="ri-bar-chart-2-line text-primary me-2"></i>
+                                        All Divisions Today
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3" id="allDivisionsGrid">
+                                        <!-- All division cards will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-muted small">
+                        <i class="ri-time-line me-1"></i>
+                        Last updated: <span id="lastUpdated">Just now</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-2"></i>Close
+                        </button>
+                        <button class="btn btn-primary ms-2" type="button" id="refreshButton">
+                            <i class="ri-refresh-line me-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="user_divisionModal_this_month" tabindex="-1" aria-labelledby="userDivisionMonthModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="icon-wrapper bg-white bg-opacity-25 rounded-circle px-2 py-1">
+                            <i class="ri-calendar-2-line fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title mb-0" id="userDivisionMonthModalLabel">
+                            Applications Received
+                        </h5>
+                        <small class="opacity-75">This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Loading State -->
+                <div id="loadingStateMonth" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-3">Loading monthly division data...</p>
+                </div>
+                
+                <!-- Error State -->
+                <div id="errorStateMonth" class="text-center py-5 d-none">
+                    <div class="mb-4">
+                        <i class="ri-error-warning-line display-1 text-danger opacity-50"></i>
+                    </div>
+                    <h5 class="text-danger mb-3">Unable to Load Monthly Data</h5>
+                    <p class="text-muted">Please try again later.</p>
+                    <button class="btn btn-primary mt-2" id="retryButtonMonth">
+                        <i class="ri-refresh-line me-2"></i>Retry
+                    </button>
+                </div>
+                
+                <!-- Data Content -->
+                <div id="dataContentMonth" class="d-none">
+                    <div class="row">
+                        <!-- Main Division Card -->
+                        <div class="col-xl-12 mb-4">
+                            <div class="card border-start-primary border-start-4 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="row align-items-center mb-2">
+                                        <div class="col">
+                                            <div class="text-muted small text-uppercase fw-semibold mb-1">
+                                                Your Division - This Month
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <h2 class="mb-0 me-3 fw-bold" id="div_count_month">0</h2>
+                                                <div>
+                                                    <div class="h5 mb-0 fw-bold" id="user_division_month">-</div>
+                                                    <div class="text-muted small">Applications received this month</div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3">
+                                                <div class="text-muted small mb-1">
+                                                    <i class="ri-calendar-line me-1"></i>
+                                                    Month of <span class="fw-medium"><fmt:formatDate value="${now}" pattern="MMMM yyyy" /></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="bg-primary bg-opacity-10 rounded-circle py-x px-3">
+                                                <i class="ri-calendar-2-line text-primary fs-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="position-absolute bottom-0 start-0 m-3 mt-3" id="user_division_this_month" style="cursor: pointer;">
+                                        <span class="btn btn-sm btn-warning px-3">
+                                            View Details <i class="ri-arrow-right-line ms-1"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Stats -->
+                        <div class="col-12 mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-arrow-up-down-line text-info fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Monthly Trend</div>
+                                                    <h4 class="mb-0 fw-bold" id="monthlyTrend">--</h4>
+                                                    <div class="text-success small">
+                                                        <i class="ri-arrow-up-line me-1"></i>
+                                                        <span>Compared to last month</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-file-chart-line text-success fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Daily Average</div>
+                                                    <h4 class="mb-0 fw-bold" id="dailyAverage">--</h4>
+                                                    <div class="text-muted small">Applications per day</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- All Divisions Section -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="ri-bar-chart-horizontal-line text-primary me-2"></i>
+                                        All Divisions This Month
+                                    </h6>
+                                    <small class="text-muted">Comparison across all divisions</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3" id="allDivisionsGridMonth">
+                                        <!-- All division cards will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-muted small">
+                        <i class="ri-calendar-event-line me-1"></i>
+                        Month: <span class="fw-medium"><fmt:formatDate value="${now}" pattern="MMMM yyyy" /></span>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-2"></i>Close
+                        </button>
+                        <button class="btn btn-primary ms-2" type="button" id="refreshButtonMonth">
+                            <i class="ri-refresh-line me-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="user_completed_divison_today" tabindex="-1" aria-labelledby="userCompletedDivisionTodayLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="icon-wrapper bg-white bg-opacity-25 rounded-circle px-2 py-1">
+                            <i class="ri-checkbox-circle-line fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title mb-0" id="userCompletedDivisionTodayLabel">
+                            Applications Completed
+                        </h5>
+                        <small class="opacity-75">Today (<fmt:formatDate value="${now}" type="date" />)</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Loading State -->
+                <div id="loadingStateCompletedToday" class="text-center py-5">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-3">Loading completed applications data...</p>
+                </div>
+                
+                <!-- Error State -->
+                <div id="errorStateCompletedToday" class="text-center py-5 d-none">
+                    <div class="mb-4">
+                        <i class="ri-error-warning-line display-1 text-danger opacity-50"></i>
+                    </div>
+                    <h5 class="text-danger mb-3">Unable to Load Completed Data</h5>
+                    <p class="text-muted">Please try again later.</p>
+                    <button class="btn btn-success mt-2" id="retryButtonCompletedToday">
+                        <i class="ri-refresh-line me-2"></i>Retry
+                    </button>
+                </div>
+                
+                <!-- Data Content -->
+                <div id="dataContentCompletedToday" class="d-none">
+                    <div class="row">
+                        <!-- Main Division Card -->
+                        <div class="col-xl-12 mb-4">
+                            <div class="card border-start-success border-start-4 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <div class="text-muted small text-uppercase fw-semibold mb-1">
+                                                <i class="ri-checkbox-circle-line text-success me-1"></i>
+                                                Your Division - Completed Today
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <h2 class="mb-0 me-3 fw-bold" id="div_count_completed_today">0</h2>
+                                                <div>
+                                                    <div class="h5 mb-0 fw-bold" id="user_division_completed_today">-</div>
+                                                    <div class="text-muted small">Applications completed today</div>
+                                                </div>
+                                            </div>
+                                            <!-- Completion Rate (if available) -->
+                                            <div class="mt-3" id="completionRateSection">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                                        <div class="progress-bar bg-success" role="progressbar" 
+                                                             style="width: 0%" 
+                                                             id="completionProgress"
+                                                             aria-valuenow="0" 
+                                                             aria-valuemin="0" 
+                                                             aria-valuemax="100"></div>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <div class="text-success fw-bold" id="completionPercentage">0%</div>
+                                                        <div class="text-muted x-small">Completion Rate</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                                <i class="ri-checkbox-circle-line text-success fs-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Performance Stats -->
+                        <div class="col-12 mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-time-line text-success fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Processing Time</div>
+                                                    <h4 class="mb-0 fw-bold" id="avgProcessingTime">--</h4>
+                                                    <div class="text-muted small">Average days</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-timer-flash-line text-info fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Fastest Completion</div>
+                                                    <h4 class="mb-0 fw-bold" id="fastestCompletion">--</h4>
+                                                    <div class="text-muted small">Days taken</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-alarm-warning-line text-warning fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">On-Time Rate</div>
+                                                    <h4 class="mb-0 fw-bold" id="onTimeRate">--</h4>
+                                                    <div class="text-muted small">Completed on time</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- All Divisions Completed Today -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="ri-check-double-line text-success me-2"></i>
+                                        All Divisions - Completed Today
+                                    </h6>
+                                    <small class="text-muted">Completion performance across divisions</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3" id="allDivisionsCompletedGrid">
+                                        <!-- All division completion cards will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Service Type Breakdown -->
+                        <div class="col-12 mt-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="ri-file-list-line text-success me-2"></i>
+                                        Completed by Service Type
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Service Type</th>
+                                                    <th class="text-center">Completed</th>
+                                                    <th class="text-center">Avg. Days</th>
+                                                    <th class="text-center">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="serviceTypeCompletedTable">
+                                                <!-- Service type data will be loaded here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-muted small">
+                        <i class="ri-bar-chart-box-line me-1"></i>
+                        Performance metrics for completed applications
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-2"></i>Close
+                        </button>
+                        <button class="btn btn-success ms-2" type="button" id="refreshButtonCompletedToday">
+                            <i class="ri-refresh-line me-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="user_completed_divison_month" tabindex="-1" aria-labelledby="userCompletedDivisionMonthLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="icon-wrapper bg-white bg-opacity-25 rounded-circle px-2 py-1">
+                            <i class="ri-calendar-check-line fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title mb-0" id="userCompletedDivisionMonthLabel">
+                            Applications Completed
+                        </h5>
+                        <small class="opacity-75">This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Loading State -->
+                <div id="loadingStateCompletedMonth" class="text-center py-5">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mt-3">Loading monthly completion data...</p>
+                </div>
+                
+                <!-- Error State -->
+                <div id="errorStateCompletedMonth" class="text-center py-5 d-none">
+                    <div class="mb-4">
+                        <i class="ri-error-warning-line display-1 text-danger opacity-50"></i>
+                    </div>
+                    <h5 class="text-danger mb-3">Unable to Load Monthly Completion Data</h5>
+                    <p class="text-muted">Please try again later.</p>
+                    <button class="btn btn-success mt-2" id="retryButtonCompletedMonth">
+                        <i class="ri-refresh-line me-2"></i>Retry
+                    </button>
+                </div>
+                
+                <!-- Data Content -->
+                <div id="dataContentCompletedMonth" class="d-none">
+                    <div class="row">
+                        <!-- Main Division Card -->
+                        <div class="col-xl-12 mb-4">
+                            <div class="card border-start-success border-start-4 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <div class="text-muted small text-uppercase fw-semibold mb-1">
+                                                <i class="ri-calendar-check-line text-success me-1"></i>
+                                                Your Division - Completed This Month
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <h2 class="mb-0 me-3 fw-bold" id="div_count_completed_month">0</h2>
+                                                <div>
+                                                    <div class="h5 mb-0 fw-bold" id="user_division_completed_month">-</div>
+                                                    <div class="text-muted small">
+                                                        Applications completed in <span class="fw-medium"><fmt:formatDate value="${now}" pattern="MMMM" /></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Monthly Completion Trend -->
+                                            <div class="mt-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                                        <div class="progress-bar bg-success" role="progressbar" 
+                                                             style="width: 0%" 
+                                                             id="monthlyCompletionProgress"
+                                                             aria-valuenow="0" 
+                                                             aria-valuemin="0" 
+                                                             aria-valuemax="100"></div>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <div class="text-success fw-bold" id="monthlyCompletionPercentage">0%</div>
+                                                        <div class="text-muted x-small">of monthly target</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                                <i class="ri-calendar-check-line text-success fs-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Performance Stats -->
+                        <div class="col-12 mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-bar-chart-2-line text-success fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Monthly Trend</div>
+                                                    <h4 class="mb-0 fw-bold" id="monthlyCompletionTrend">--</h4>
+                                                    <div class="text-success small">
+                                                        <i class="ri-arrow-up-line me-1"></i>
+                                                        <span>vs last month</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-calendar-schedule-line text-info fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Daily Average</div>
+                                                    <h4 class="mb-0 fw-bold" id="monthlyDailyAverage">--</h4>
+                                                    <div class="text-muted small">Per working day</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-speed-line text-warning fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Completion Rate</div>
+                                                    <h4 class="mb-0 fw-bold" id="monthlyCompletionRate">--</h4>
+                                                    <div class="text-muted small">vs received</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                                    <i class="ri-timer-line text-primary fs-3"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-muted small">Avg. Time</div>
+                                                    <h4 class="mb-0 fw-bold" id="monthlyAvgTime">--</h4>
+                                                    <div class="text-muted small">Days per app</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Chart Section -->
+                        <div class="col-12 mb-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0 fw-bold">
+                                            <i class="ri-line-chart-line text-success me-2"></i>
+                                            Monthly Completion Trend
+                                        </h6>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-outline-success active" data-chart-type="line">
+                                                <i class="ri-line-chart-line me-1"></i>Line
+                                            </button>
+                                            <button type="button" class="btn btn-outline-success" data-chart-type="bar">
+                                                <i class="ri-bar-chart-2-line me-1"></i>Bar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container" style="position: relative; height: 250px; width: 100%">
+                                        <canvas id="monthlyCompletionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- All Divisions Monthly Completion -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="ri-building-2-line text-success me-2"></i>
+                                        All Divisions - Monthly Completion
+                                    </h6>
+                                    <small class="text-muted">Performance comparison for <fmt:formatDate value="${now}" pattern="MMMM" /></small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Division</th>
+                                                    <th class="text-center">Completed</th>
+                                                    <th class="text-center">Monthly Target</th>
+                                                    <th class="text-center">Achievement</th>
+                                                    <th class="text-center">Trend</th>
+                                                    <th class="text-center">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="monthlyDivisionsTable">
+                                                <!-- Monthly division data will be loaded here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Weekly Breakdown -->
+                        <div class="col-12 mt-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-transparent border-bottom py-3">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="ri-calendar-2-line text-success me-2"></i>
+                                        Weekly Completion Breakdown
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3" id="weeklyBreakdownGrid">
+                                        <!-- Weekly breakdown cards will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-muted small">
+                        <i class="ri-calendar-2-line me-1"></i>
+                        Month: <span class="fw-medium"><fmt:formatDate value="${now}" pattern="MMMM yyyy" /></span>
+                        <span class="mx-2">•</span>
+                        <i class="ri-pie-chart-line me-1"></i>
+                        <span id="totalMonthlyCompleted">0</span> total completed
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-2"></i>Close
+                        </button>
+                        <button class="btn btn-success ms-2" type="button" id="refreshButtonCompletedMonth">
+                            <i class="ri-refresh-line me-2"></i>Refresh
+                        </button>
+                        <button class="btn btn-outline-success ms-2" type="button" id="exportMonthlyData">
+                            <i class="ri-download-line me-2"></i>Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

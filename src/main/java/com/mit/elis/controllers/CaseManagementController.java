@@ -10167,6 +10167,31 @@ request.setAttribute("rq_id",rq_id);
 	@GetMapping
 	public String compliance_cst(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 		// HttpSession session = request.getSession();
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+		// System.out.println(servletName + ' ' + assigenedmenus);
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+		
 		try {
 
 			cls_casemgt casemgt_web_service = new cls_casemgt();
@@ -10229,6 +10254,30 @@ request.setAttribute("rq_id",rq_id);
 	@GetMapping
 	public String corporate_frrv_cst_compliance(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 		// HttpSession session = request.getSession();
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+		// System.out.println(servletName + ' ' + assigenedmenus);
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
 		try {
 
 			cls_casemgt casemgt_web_service = new cls_casemgt();
@@ -10297,40 +10346,29 @@ request.setAttribute("rq_id",rq_id);
 	@GetMapping
 	public String compliance_1(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 
-		// //HttpSession session = request.getSession();
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+		// System.out.println(servletName + ' ' + assigenedmenus);
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
-		// String servletName = request.getServletPath();
-		// servletName = servletName.replace("/", "");
-		// String assigenedmenus = (String) session.getAttribute("menus_com");
-		// boolean isFound = false;
-		// try {
-		// isFound = assigenedmenus.contains(servletName); // true
-		// } catch (Exception e) {
-		// }
-		//
-		// // Log User out if the user tries to access right not assigned
-		// if (!isFound) {
-		// request.setAttribute("login", "Please this is not alllowed");
-		// //
-		//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
-		//
-		// }
-		// if ((String) session.getAttribute("userid") != null || (String)
-		// session.getAttribute("userid") != "") {
+		}
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
-		// cls_casemgt casemgt_web_service = new cls_casemgt();
-		/*
-		 * String web_service_response_menu = null;
-		 * web_service_response_menu = casemgt_web_service
-		 * .load_application_batched_to_user((String)
-		 * session.getAttribute("userid")); JSONObject menu_obj; menu_obj =
-		 * new JSONObject(web_service_response_menu); String all_menus =
-		 * menu_obj.get("data").toString();
-		 * 
-		 * Gson googleJson = new Gson(); ArrayList javaArrayListFromGSON =
-		 * googleJson.fromJson(all_menus, ArrayList.class);
-		 * request.setAttribute("applicationlist", javaArrayListFromGSON);
-		 */
+		}
 
 		String office_region_list = (String) session.getAttribute("office_region_list");
 		// System.out.println(office_region_list);

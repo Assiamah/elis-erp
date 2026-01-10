@@ -213,71 +213,280 @@ $(function () {
     event.preventDefault();
 
     let item = $(this);
-    let iconClass = item.data("icon");
+    let iconClass = item.data("icon") || "ri-bar-chart-2-fill";
     let modal = $("#divisionModal");
-
     let title = item.data("title");
-    let date = item.data("date") ?? "";
-
+    let date = item.data("date") || "";
     let url = item.data("url");
-
     let method = item.data("method");
     let period = item.data("period");
-
     let by = item.data("by");
 
-    let action =
-      method +
-      (period ? `_${period}` : "") +
-      (typeof by === "undefined" ? "" : `_${by}`);
+    // Update modal header
+    modal.find("#divisionModalLabel").html(title);
+    modal.find("#divisionModalSubtitle").html(date);
+    modal.find("#currentPeriod").text(period ? period.charAt(0).toUpperCase() + period.slice(1) : "All Time");
+    
+    // Update load time
+    const now = new Date();
+    modal.find("#dataLoadTime").text(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
 
-    submitAjax(url, action, {}, function (data) {
-      divisionsNotFound = divisions.filter(function (division) {
-        return !data.apps_at_division.some(function (item) {
-          return item.division == division.division;
-        });
-      });
-
-      let newColors = [...colors];
-
-      divisionHtml = [...data.apps_at_division, ...divisionsNotFound].reduce(
-        function (sum, current) {
-          let selectedColorIndex = Math.floor(Math.random() * newColors.length);
-          let color = newColors[selectedColorIndex];
-          newColors.splice(selectedColorIndex, 1);
-
-          let html = `<div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-${color} shadow ">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> ${current.division}</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">${current.total}</div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-2x text-gray-300 ${iconClass}"></i>
-                      </div>
-                      <a href="#" data-method="${method}" data-period="${period}" data-by="service_type" data-url="${url}" data-type="${current.division}" data-title="${title}" data-date="${date}" class="showServiceTypeModal text-decoration-none stretched-link">
-            </a>
+    // Show loading state
+    modal.find("#divisionGrid").html(`
+        <div class="col-12">
+            <div class="card border-light shadow-sm">
+                <div class="card-body text-center py-5">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
                     </div>
-                  </div>
+                    <p class="text-muted mb-0">Loading division data...</p>
                 </div>
-              </div>`;
+            </div>
+        </div>
+    `);
+    modal.find("#emptyDivisionState").addClass("d-none");
+    modal.find("#divisionStats").html("");
 
-          return (sum += html);
-        },
-        ""
-      );
+    // Prepare action
+    let action = method + 
+        (period ? `_${period}` : "") + 
+        (typeof by === "undefined" ? "" : `_${by}`);
 
-      modal.find(".modal-body > .row").html(divisionHtml);
+    // Fetch data
+    submitAjax(url, action, {}, function (data) {
+        // Calculate totals
+        const totalApplications = data.apps_at_division.reduce((sum, item) => sum + parseInt(item.total), 0);
+        const totalDivisions = data.apps_at_division.length;
+        
+        // Update stats
+        updateDivisionStats(modal, totalApplications, totalDivisions, period);
+        
+        // Handle empty data
+        if (data.apps_at_division.length === 0) {
+            modal.find("#divisionGrid").html("");
+            modal.find("#emptyDivisionState").removeClass("d-none");
+            return;
+        }
+        
+        // Prepare division data
+        const allDivisions = ['LRD', 'LVD', 'PVLMD', 'SMD', 'RLO'];
+        const divisionsData = allDivisions.map(division => {
+            const found = data.apps_at_division.find(item => item.division === division);
+            return {
+                division: division,
+                total: found ? found.total : 0,
+                color: getDivisionColor(division),
+                icon: getDivisionIcon(division)
+            };
+        });
+        
+        // Generate division cards
+        const divisionHtml = divisionsData.reduce((html, current) => {
+            const percentage = totalApplications > 0 ? 
+                Math.round((current.total / totalApplications) * 100) : 0;
+            
+            return html + `
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card division-card border-0 shadow-sm h-100 transition-all ${current.total === 0 ? 'opacity-75' : ''}"
+                         data-division="${current.division}"
+                         data-count="${current.total}">
+                        <div class="card-body position-relative">
+                            <!-- Division Header -->
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="division-icon ${current.color} rounded-circle p-2 me-3">
+                                    <i class="${current.icon} fs-4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">${current.division}</h6>
+                                    <span class="text-muted small">${getDivisionFullName(current.division)}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Count Display -->
+                            <div class="mb-3">
+                                <h4 class="fw-bold mb-1">${current.total.toLocaleString()}</h4>
+                                <div class="text-muted small">Applications</div>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small text-muted">Percentage</span>
+                                    <span class="badge fw-bold ${current.color}">${percentage}%</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar ${current.color}" 
+                                         role="progressbar" 
+                                         style="width: ${percentage}%"
+                                         aria-valuenow="${percentage}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Stats -->
+                            <div class="d-flex justify-content-between small text-muted mb-3 mt-3 pt-3 border-top">
+                                <span>Rank: #${getDivisionRank(current.division, divisionsData)}</span>
+                                <span>Avg: ${calculateAverage(current.division, divisionsData)}</span>
+                            </div>
+                            
+                            <!-- View Details Link -->
+                            ${current.total > 0 ? `
+                                <a href="#" 
+                                   data-method="${method}" 
+                                   data-period="${period}" 
+                                   data-by="service_type" 
+                                   data-url="${url}" 
+                                   data-type="${current.division}" 
+                                   data-title="${title}" 
+                                   data-date="${date}" 
+                                   class="showServiceTypeModal stretched-link text-decoration-none">
+                                    <div class="position-absolute bottom-0 end-0 m-3 mt-2">
+                                        <span class="btn btn-sm ${current.color} px-3">
+                                            View Details <i class="ri-arrow-right-line ms-1"></i>
+                                        </span>
+                                    </div>
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }, "");
+
+        // Update modal content
+        modal.find("#divisionGrid").html(divisionHtml);
+        modal.find("#emptyDivisionState").addClass("d-none");
+        
+        // Initialize division card interactions
+        initializeDivisionCards();
     });
 
-    modal
-      .find("#divisionModalLabel")
-      .html(`${title} <span class="text-primary">${date}</span>`);
-
+    // Show modal
     modal.modal("show");
-  });
+});
+
+// Helper Functions
+function updateDivisionStats(modal, totalApplications, totalDivisions, period) {
+    const periodText = period ? period.charAt(0).toUpperCase() + period.slice(1) : "All Time";
+    
+    modal.find("#divisionStats").html(`
+        <div class="col-lg-4">
+            <div class="card custom-card testimonial-style-2-card danger border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar bg-danger bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="ri-file-text-line text-danger fs-3"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Total Applications</div>
+                            <h5 class="mb-0 fw-bold">${totalApplications.toLocaleString()}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card custom-card testimonial-style-2-card success border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="ri-building-line text-success fs-3"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Active Divisions</div>
+                            <h5 class="mb-0 fw-bold">${totalDivisions}/5</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card custom-card testimonial-style-2-card info border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                            <i class="ri-calendar-line text-info fs-3"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small">Period</div>
+                            <h5 class="mb-0 fw-bold">${periodText}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+}
+
+function getDivisionColor(division) {
+    const colorMap = {
+        'LRD': 'bg-primary',
+        'LVD': 'bg-success',
+        'PVLMD': 'bg-warning',
+        'SMD': 'bg-danger',
+        'RLO': 'bg-info'
+    };
+    return colorMap[division] || 'bg-secondary';
+}
+
+function getDivisionIcon(division) {
+    const iconMap = {
+        'LRD': 'ri-landscape-line',
+        'LVD': 'ri-road-map-line',
+        'PVLMD': 'ri-home-5-line',
+        'SMD': 'ri-building-line',
+        'RLO': 'ri-rocket-line'
+    };
+    return iconMap[division] || 'ri-question-line';
+}
+
+function getDivisionFullName(division) {
+    const nameMap = {
+        'LRD': 'Land Registration Division',
+        'LVD': 'Land Valuation Division',
+        'PVLMD': 'Public & Vested Land Management Division',
+        'SMD': 'Survey & Mapping Division',
+        'RLO': 'Regional Lands Officer'
+    };
+    return nameMap[division] || 'Unknown Division';
+}
+
+function getDivisionRank(division, divisionsData) {
+    const sorted = [...divisionsData].sort((a, b) => b.total - a.total);
+    return sorted.findIndex(item => item.division === division) + 1;
+}
+
+function calculateAverage(division, divisionsData) {
+    const divisionData = divisionsData.find(item => item.division === division);
+    const total = divisionsData.reduce((sum, item) => sum + item.total, 0);
+    return total > 0 ? Math.round(divisionData.total / (total / divisionsData.length)) : 0;
+}
+
+function initializeDivisionCards() {
+    // Add hover effects and click handlers
+    $('.division-card').hover(
+        function() {
+            $(this).addClass('shadow-lg').css('transform', 'translateY(-4px)');
+        },
+        function() {
+            $(this).removeClass('shadow-lg').css('transform', 'translateY(0)');
+        }
+    );
+    
+    // Add click tracking
+    $('.division-card').on('click', function() {
+        const division = $(this).data('division');
+        const count = $(this).data('count');
+        console.log(`Clicked on ${division} with ${count} applications`);
+    });
+}
+
+// Export functionality
+$('#exportDivisionData').on('click', function() {
+    // Implement export logic here
+    alert('Export feature would be implemented here');
+});
 
   $(document).on("click", ".showServiceTypeModal", function (event) {
     event.preventDefault();
@@ -303,10 +512,10 @@ $(function () {
     submitAjax(url, action, { division: type }, function (data) {
       let serviceTypeData = data.apps_at_division.map(function (item) {
         return {
-          name: item.service_type,
-          total: item.total,
+          name: `<span class="small">${item.service_type}</span>`,
+          total: `<span class="small">${item.total}</span>`,
           action: `<a href="#" 
-            class="modalButton showApplicationsModal text-decoration-none"
+            class="modalButton btn btn-sm btn-outline-primary showApplicationsModal text-decoration-none"
             data-method="${method}" 
           ${typeof period === "undefined" ? "" : `data-period="${period}"`}
           data-url="${url}"
@@ -316,7 +525,7 @@ $(function () {
           data-type="${item.service_type}"
           data-title="${title}" 
           data-date="${date}" 
-        >View</a>`,
+        ><i class="ri-eye-line me-2"></i>View</a>`,
         };
       });
 
@@ -363,7 +572,7 @@ $(function () {
           name: item.unit,
           total: item.total,
           action: `<a href="#" 
-            class="modalButton showOfficerModal text-decoration-none"
+            class="modalButton btn btn-sm btn-outline-primary showOfficerModal text-decoration-none"
             data-method="${method}" 
             data-count="${item.total}" 
           ${typeof period === "undefined" ? "" : `data-period="${period}"`}
@@ -374,7 +583,7 @@ $(function () {
           data-date="${date}" 
             data-unit-id="${item.unit_id}"
           data-division="${type}"
-        >View</a>`,
+        ><i class="ri-eye-line me-2"></i>View</a>`,
         };
       });
 
@@ -492,7 +701,7 @@ $(document).on("click", ".showOfficerModal", function (event) {
                 name: item.staff,
                 total: item.total,
                 action: `<a href="#" 
-                    class="btn btn-sm btn-info showApplicationsModal"
+                    class="btn btn-sm btn-outline-primary showApplicationsModal"
                     data-staff='${JSON.stringify(item)}'
                     data-method="${method}" 
                     ${typeof period === "undefined" ? "" : `data-period="${period}"`}
@@ -503,7 +712,7 @@ $(document).on("click", ".showOfficerModal", function (event) {
                     data-date="${date}"
                     data-key="staff"
                     data-value="${item.staff_id}"
-                >View</a>`,
+                ><i class="ri-eye-line me-2"></i>View</a>`,
             };
         });
 
@@ -666,11 +875,11 @@ $(document).on("click", ".showApplicationsModal", function (event) {
       data = data.apps_with_staff || data.apps_at_division || [];
 
         let applicationsData = data.map(function (app) {
-            let actionButton = `<a href="job-details?job_number=${app.job_number}" class="btn btn-sm btn-outline-primary" target="_blank">
+            let actionButton = `<a href="#" onclick="viewApplicationDetails('${app.job_number}','${app.transaction_number}','${app.case_number}','${app.business_process_sub_name}')" class="btn btn-sm btn-outline-primary">
               <i class="ri-eye-line"></i>
             </a>`;
 
-            console.log(staff)
+            // console.log(staff)
             
             // Add send message button if staff data is available
             if (staff && staff.staff_id) {
@@ -738,7 +947,7 @@ $(document).on("click", ".showApplicationsModal", function (event) {
                     data: "action", 
                     className: "text-end",
                     render: function(data, type, row) {
-                        return `<div class="button-group">${data}</div>`;
+                        return `<div class="d-flex justify-content-end gap-2">${data}</div>`;
                     }
                 }
             ];
@@ -796,7 +1005,7 @@ $(document).on("click", ".showApplicationsModal", function (event) {
                     data: "action", 
                     className: "text-end",
                     render: function(data, type, row) {
-                        return  `<div class="button-group">${data}</div>`;
+                        return  `<div class="d-flex justify-content-end gap-2">${data}</div>`;
                     }
                 }
             ];
@@ -848,7 +1057,7 @@ $(document).on("click", ".showApplicationsModal", function (event) {
                     data: "action", 
                     className: "text-end",
                     render: function(data, type, row) {
-                        return `<div class="button-group">${data}</div>`;
+                        return `<div class="d-flex justify-content-end gap-2">${data}</div>`;
                     }
                 }
             ];
@@ -880,6 +1089,48 @@ $(document).on("click", ".showApplicationsModal", function (event) {
         }
     });
 });
+
+window.viewApplicationDetails = function(job_number, transaction_number, case_number, business_process_sub_name) {
+     
+      // Create a form dynamically
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'front_office_view_application';
+      form.target = '_blank'
+      form.style.display = 'none'; // Hide the form
+      
+      // Add the case number as an input field
+      const caseNumberInput = document.createElement('input');
+      caseNumberInput.type = 'hidden';
+      caseNumberInput.name = 'search_text';
+      caseNumberInput.value = case_number;
+      form.appendChild(caseNumberInput);
+
+      // Add the case number as an input field
+      const jobNumberInput = document.createElement('input');
+      jobNumberInput.type = 'hidden';
+      jobNumberInput.name = 'search_text';
+      jobNumberInput.value = job_number;
+      form.appendChild(jobNumberInput);
+
+      // Add the case number as an input field
+      const transactionNumberInput = document.createElement('input');
+      transactionNumberInput.type = 'hidden';
+      transactionNumberInput.name = 'search_text';
+      transactionNumberInput.value = transaction_number;
+      form.appendChild(transactionNumberInput);
+
+      // Add the case number as an input field
+      const businessProcessSubNameInput = document.createElement('input');
+      businessProcessSubNameInput.type = 'hidden';
+      businessProcessSubNameInput.name = 'search_text';
+      businessProcessSubNameInput.value = business_process_sub_name;
+      form.appendChild(businessProcessSubNameInput);
+      
+      // Add the form to the body and submit it
+      document.body.appendChild(form);
+      form.submit();
+};
 
   let chart;
 
@@ -1141,13 +1392,13 @@ $(document).on("click", ".showApplicationsModal", function (event) {
       );
 
       // applications received for the year
-      showDivisionSummary("#app-received-year", data.apps_rec_divisional, 'info');
+      showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
 
       // applications completed for the year
-      showDivisionSummary("#app-completed-year", data.apps_comp_divisional, 'success');
+      showDivisionSummaryUpdatedQ("#app-completed-year", data.apps_comp_divisional, 'success');
 
       // applications received and completed for the year
-      showDivisionSummaryUpdated(
+      showDivisionSummaryUpdatedQ(
         "#app-received-completed-year",
         data.apps_comp_divisional_year,
         'default'
@@ -1200,13 +1451,13 @@ $(document).on("click", ".showApplicationsModal", function (event) {
           );
 
           // applications received for the year
-          showDivisionSummary("#app-received-year", data.apps_rec_divisional, 'info');
+          showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
 
           // applications completed for the year
-          showDivisionSummary("#app-completed-year", data.apps_comp_divisional, 'success');
+          showDivisionSummaryUpdatedQ("#app-completed-year", data.apps_comp_divisional, 'success');
 
           // applications received and completed for the year
-          showDivisionSummaryUpdated(
+          showDivisionSummaryUpdatedQ(
             "#app-received-completed-year",
             data.apps_comp_divisional_year,
             'default'
@@ -1236,37 +1487,38 @@ $(document).on("click", ".showApplicationsModal", function (event) {
 
 
 
-  if ($("#page_name").text() === "compliance") {
-    setTimeout(
-      function () {
-        submitAjax("ComplianceReport", "report_dashboard_all", {}, function (data) {
-          let totalRec = data.total_apps_rec[0].total;
-          let totalRecComp = data.total_comp_divisional_year[0].total;
-          let totalpercentage = ((totalRecComp / totalRec) * 100).toFixed(2) + '%';
-          $("#app-received-today").html(new Intl.NumberFormat().format(data.apps_rec_day[0].total));
-          $("#app-received-month").html(new Intl.NumberFormat().format(data.apps_rec_month[0].total));
-          $("#app-completed-today").html(new Intl.NumberFormat().format(data.apps_comp_day[0].total));
-          $("#app-completed-month").html(new Intl.NumberFormat().format(data.apps_comp_month[0].total));
 
-          // applications received for the year
-          showDivisionSummary("#app-received-year", data.apps_rec_divisional, 'info');
+  // if ($("#page_name").text() === "compliance") {
+  //   setTimeout(
+  //     function () {
+  //       submitAjax("ComplianceReport", "report_dashboard_all", {}, function (data) {
+  //         let totalRec = data.total_apps_rec[0].total;
+  //         let totalRecComp = data.total_comp_divisional_year[0].total;
+  //         let totalpercentage = ((totalRecComp / totalRec) * 100).toFixed(2) + '%';
+  //         $("#app-received-today").html(new Intl.NumberFormat().format(data.apps_rec_day[0].total));
+  //         $("#app-received-month").html(new Intl.NumberFormat().format(data.apps_rec_month[0].total));
+  //         $("#app-completed-today").html(new Intl.NumberFormat().format(data.apps_comp_day[0].total));
+  //         $("#app-completed-month").html(new Intl.NumberFormat().format(data.apps_comp_month[0].total));
 
-          // applications completed for the year
-          showDivisionSummary("#app-completed-year", data.apps_comp_divisional, 'success');
+  //         // applications received for the year
+  //         showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
 
-          // applications received and completed for the year
-          showDivisionSummaryUpdated("#app-received-completed-year", data.apps_comp_divisional_year, 'default');
+  //         // applications completed for the year
+  //         showDivisionSummaryUpdatedR("#app-completed-year", data.apps_comp_divisional, 'success');
 
-          // applications past due for the year
-          showDivisionSummary("#app-past-due-year", data.apps_past_due_dates_divisional, 'danger');
+  //         // applications received and completed for the year
+  //         showDivisionSummaryUpdated("#app-received-completed-year", data.apps_comp_divisional_year, 'default');
 
-          // applications with divisions
-          showDivisionSummary("#app-with-divisions", data.apps_at_division, 'warning');
+  //         // applications past due for the year
+  //         showDivisionSummary("#app-past-due-year", data.apps_past_due_dates_divisional, 'danger');
 
-          document.getElementById('pec_id').innerHTML = totalpercentage;
-        });
-      }, 5000); // 60000 milliseconds = 1 minute
-  }
+  //         // applications with divisions
+  //         showDivisionSummary("#app-with-divisions", data.apps_at_division, 'warning');
+
+  //         document.getElementById('pec_id').innerHTML = totalpercentage;
+  //       });
+  //     }, 5000); // 60000 milliseconds = 1 minute
+  // }
 
 
 
@@ -1305,7 +1557,7 @@ $(document).on("click", ".showApplicationsModal", function (event) {
           </a>
           <span class="float-right">${percent}%</span>
         </h4>
-        <div class="progress mb-4">
+        <div class="progress progress-sm mb-4">
           <div class="progress-bar bg-${color}" role="progressbar" style="width: ${percent}%" aria-valuenow="${percent}"
             aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -1318,6 +1570,117 @@ $(document).on("click", ".showApplicationsModal", function (event) {
   }
 
 
+function showDivisionSummaryUpdatedQ(id, data, color) {
+    // Define all 4 divisions
+    const allDivisions = ['LRD', 'LVD', 'PVLMD', 'SMD'];
+    
+    // Find data for each division
+    const divisionData = {};
+    
+    allDivisions.forEach(division => {
+        const foundData = data.find(item => item.division === division);
+        divisionData[division] = foundData || { division: division, total: 0 };
+    });
+    
+    // Calculate total from actual data (not including zeros for empty divisions)
+    let total = data.reduce(function (sum, current) {
+        return sum + current.total;
+    }, 0);
+    
+    // Update total count
+    $(id).find(".count").html(new Intl.NumberFormat().format(total));
+    
+    let cardBody = $(id).find(".card-body");
+    let period = cardBody.data("period");
+    let method = cardBody.data("method");
+    let title = cardBody.data("title");
+    let url = cardBody.data("url");
+    let nextLevelModal = cardBody.data("next-level-modal");
+    let date = cardBody.data("date") ?? "";
+    
+    let periodToAdd = typeof period === "undefined" ? "" : `_${period}`;
+    
+    // Clear existing progress bars and list
+    $(id).find(".progress-animate").empty();
+    $(id).find(".top-referral-pages").empty();
+    
+    // Color classes for different segments
+    const colorClasses = ['primary', 'info', 'warning', 'success'];
+    
+    // Generate progress bars and list items for all 4 divisions
+    allDivisions.forEach(function (division, index) {
+        const current = divisionData[division];
+        let percent = total > 0 ? ((current.total / total) * 100).toFixed(2) : 0;
+        const colorClass = colorClasses[index % colorClasses.length];
+        
+        // Add progress bar segment (show zero width as minimum 1% for visibility)
+        let progressWidth = current.total > 0 ? percent : 1;
+        let progressBar = `<div class="progress-bar bg-${colorClass}" 
+            role="progressbar" 
+            style="width: ${progressWidth}%" 
+            aria-valuenow="${percent}" 
+            aria-valuemin="0" 
+            aria-valuemax="100"
+            title="${current.division}: ${current.total} (${percent}%)"
+            data-bs-toggle="tooltip"></div>`;
+        
+        $(id).find(".progress-animate").append(progressBar);
+        
+        // Add list item
+        let listItem = `<li class="${colorClass}">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <a href="#" 
+                       data-method="${method}" 
+                       data-url="${url}" 
+                       ${typeof period === "undefined" ? "" : `data-period="${period}"`}
+                       data-action="report_dashboard_${method}${periodToAdd}" 
+                       data-type="${current.division}" 
+                       data-date="${date}" 
+                       data-title="${title}" 
+                       class="${nextLevelModal} text-decoration-none ${current.total === 0 ? 'text-muted' : ''}">
+                        ${current.division}
+                    </a>
+                </div>
+                <div class="fs-12 ${current.total === 0 ? 'text-muted opacity-50' : 'text-muted'}">
+                    ${current.total.toLocaleString()} ${total > 0 ? `(${percent}%)` : ''}
+                </div>
+            </div>
+        </li>`;
+        
+        $(id).find(".top-referral-pages").append(listItem);
+    });
+    
+    // Initialize tooltips
+    $('[data-bs-toggle="tooltip"]').tooltip();
+}
+
+// Optional: Function to calculate and update trend indicator
+function updateTrendIndicator(id, currentData) {
+    // This is a placeholder - you'll need to implement actual trend calculation
+    // based on previous period data
+    let currentTotal = currentData.reduce((sum, item) => sum + item.total, 0);
+    
+    // Mock trend calculation - replace with actual comparison logic
+    let trendPercentage = 1.02; // Example: 1.02 means 2% increase
+    let trendIcon = trendPercentage >= 1 ? 'ri-arrow-up-s-fill' : 'ri-arrow-down-s-fill';
+    let trendColor = trendPercentage >= 1 ? 'success' : 'danger';
+    
+    $(id).find(".bg-success-transparent").removeClass("bg-success-transparent").addClass("bg-" + trendColor + "-transparent");
+    $(id).find(".ri-arrow-up-s-fill, .ri-arrow-down-s-fill").remove();
+    
+    let trendBadge = `<span class="badge bg-${trendColor}-transparent">${trendPercentage.toFixed(2)}
+        <i class="${trendIcon} align-middle ms-1"></i>
+    </span>`;
+    
+    $(id).find(".badge").replaceWith(trendBadge);
+}
+
+// Helper function to get color class based on index
+function getColorClass(index) {
+    const colors = ['primary', 'info', 'warning', 'success', 'danger', 'secondary', 'dark', 'purple'];
+    return colors[index % colors.length];
+}
 
 
 

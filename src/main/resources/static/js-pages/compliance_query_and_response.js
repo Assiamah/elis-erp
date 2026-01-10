@@ -137,7 +137,7 @@ $(document).ready(function(){
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
                             let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
-                                            <button class="btn btn-sm btn-light btn-icon border-0" 
+                                            <button class="btn btn-sm btn-primary btn-icon border-0" 
                                                     type="button" 
                                                     id="actionMenu${i}" 
                                                     data-bs-toggle="dropdown" 
@@ -351,7 +351,7 @@ $(document).ready(function(){
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
                             let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
-                                            <button class="btn btn-sm btn-light btn-icon border-0" 
+                                            <button class="btn btn-sm btn-primary btn-icon border-0" 
                                                     type="button" 
                                                     id="actionMenu${i}" 
                                                     data-bs-toggle="dropdown" 
@@ -562,7 +562,7 @@ $(document).ready(function(){
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
                             let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
-                                            <button class="btn btn-sm btn-light btn-icon border-0" 
+                                            <button class="btn btn-sm btn-primary btn-icon border-0" 
                                                     type="button" 
                                                     id="actionMenu${i}" 
                                                     data-bs-toggle="dropdown" 
@@ -774,7 +774,7 @@ $(document).ready(function(){
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
                            let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
-                                            <button class="btn btn-sm btn-light btn-icon border-0" 
+                                            <button class="btn btn-sm btn-primary btn-icon border-0" 
                                                     type="button" 
                                                     id="actionMenu${i}" 
                                                     data-bs-toggle="dropdown" 
