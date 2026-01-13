@@ -887,6 +887,12 @@ $(document).on("click", ".showApplicationsModal", function (event) {
                   <i class="ri-send-plane-line"></i>
                 </button>`;
             }
+
+            if ($("#page_name").text() === "unit_case_management_revised") {
+                actionButton += ` <button class="btn btn-sm btn-info" id="btnAddToBatchlist-${app.job_number}" data-bs-toggle="modal" data-bs-target="#askForPurposeOfBatching"  data-job_number="${app.job_number}" data-ar_name="${app.ar_name}" data-business_process_sub_name="${app.business_process_sub_name}" data-application_stage_name="${app.application_stage_name}" data-application_stage_baby_step="${app.application_stage_baby_step}">
+                  <i class="ri-add-line"></i>
+                </button>`;
+            }
             
             return {
                 job_number: app.job_number,
@@ -2720,14 +2726,14 @@ function createActionButtons(item, userId) {
                         <input type="hidden" name="job_number" value="${item.job_number}">
                         <input type="hidden" name="business_process_sub_name" value="${item.business_process_sub_name}">
                         <button type="submit" class="dropdown-item">
-                            <i class="ri-eye-line me-2"></i>View Application
+                            <i class="ri-eye-line text-primary me-2"></i>View Application
                         </button>
                     </form>
                 </li>
                 <li>
                     <button type="button" class="dropdown-item view-messages" 
                             data-notice_id="${item.notice_id}">
-                        <i class="ri-message-2-line me-2"></i>View Messages
+                        <i class="ri-message-2-line text-info me-2"></i>View Messages
                     </button>
                 </li>
                 <li>
@@ -2736,14 +2742,35 @@ function createActionButtons(item, userId) {
                             data-officer_name="${item.receiver_name_}"
                             data-job_number="${item.job_number}"
                             data-officer_id="${item.receiver_id}">
-                        <i class="ri-send-plane-line me-2"></i>Send Message
+                        <i class="ri-send-plane-line text-success me-2"></i>Send Message
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item" 
+                     data-bs-toggle="modal" data-bs-target="#viewNotificationModal"
+                            data-notice_id="${item.notice_id}"
+                            data-notice_type="${item.notice_type}"
+                            data-status="${item.status}"
+                            data-case_number="${item.case_number}"
+                            data-job_number="${item.job_number}"
+                            data-transaction_number="${item.transaction_number}"
+                            data-created_by="${item.created_by}"
+                            data-details="${item.details}"
+                            data-created_date="${item.created_date}"
+                            data-notification_replies="${item.notification_replies}">
+                        <i class="ri-reply-line text-secondary me-2"></i>Reply Message
                     </button>
                 </li>
                 ${isOwner ? `
+                <li><hr class="dropdown-divider my-1"></li>
                 <li>
-                    <button type="button" class="dropdown-item set-inactive" 
-                            data-job-number="${item.job_number}">
-                        <i class="ri-toggle-line me-2"></i>Set To Inactive
+                    <button type="button" 
+                            class="dropdown-item d-flex align-items-center gap-2 px-3 py-2 text-danger"
+                            data-job_number="${item.job_number}"
+                            data-bs-target="#changequerystatusModal"
+                            data-bs-toggle="modal">
+                        <i class="ri-toggle-line"></i>
+                        <span>Set To Inactive</span>
                     </button>
                 </li>
                 ` : ''}

@@ -137,6 +137,10 @@ ${page_name == "application_review_details_advanced" ? "<script src='js-pages/ga
 ${page_name == "page_enquiry_backoffice" ? "<script src='js-pages/enquiry_backoffice.js'></script>" : ""}
 ${page_name == "page_enquiry_desk" ? "<script src='js-pages/enquiry_collections.js'></script>" : ""}
 ${page_name == "page_enquiry_desk_stamping" ? "<script src='js-pages/enquiry_collections_stamping.js'></script>" : ""}
+${page_name == "page_enquiry_teller" ? "<script src='js-pages/enquiry_teller.js'></script>" : ""}
+${page_name == "page_bulk_csau_collection" ? "<script src='js-pages/bulk_csau_collection.js'></script>" : ""}
+${page_name == "page_bulk_csau_receiving" ? "<script src='js-pages/bulk_csau_receiving.js'></script>" : ""}
+${page_name == "page_bulk_collection_for_payment" ? "<script src='js-pages/bulk_collection_for_payment.js'></script>" : ""}
 
 ${page_name == "user_management" ? "<script src='js-pages/user_mgt.js'></script>" : ""}
 

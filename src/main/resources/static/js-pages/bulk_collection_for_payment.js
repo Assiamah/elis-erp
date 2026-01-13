@@ -1,268 +1,407 @@
-$(document)
-		.ready(
-				function() {
+$(document).ready(function() {
+    const SEARCH_MIN_LENGTH = 8;
+    
+    // Cache DOM elements for better performance
+    const $searchForm = $('#frmEnquiryJobSearch');
+    const $searchValue = $('#enq_search_value');
+    const $resultsSection = $('#enq-search-results-section');
+    const $resultsTable = $('#tbl-bulk-collection-table tbody');
+    const $processBtn = $('#btn_process_bulk_collection');
+    const $collectorName = $('#bcd_collected_by');
+    const $idType = $('#bcd_id_type');
+    const $idNumber = $('#bcd_id_number');
+    const $phoneNumber = $('#bcd_phone_number');
 
-					
-					
-					$('#frmEnquiryJobSearch')
-							.on(
-									'submit',
-									function(e) {
+    // SweetAlert notification helper
+    async function showAlert(title, text, icon = 'error', confirmButtonText = 'OK') {
+        return Swal.fire({
+            title,
+            text,
+            icon,
+            confirmButtonText,
+            confirmButtonColor: '#3085d6',
+            timer: icon === 'success' ? 3000 : undefined,
+            timerProgressBar: icon === 'success',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        });
+    }
 
-										// validation code here
-										e.preventDefault();
-										 //console.log('how are your search');
-										
-										var enq_search_type = "";
-										var selected_rbtn = $("input[name='rbtn_search_type']:checked");
-										if (selected_rbtn.length > 0) {
-											enq_search_type = selected_rbtn.val();
-											//console.log("selected " + enq_search_type);
-										}
-										
-										
-										var enq_search_value = $("#enq_search_value").val();
-										//console.log('Search Value: ' + enq_search_value);
+    // Confirmation dialog
+    async function showConfirm(title, text, icon = 'question') {
+        return Swal.fire({
+            title,
+            text,
+            icon,
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, proceed',
+            cancelButtonText: 'Cancel',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            reverseButtons: true
+        });
+    }
 
-										if (enq_search_value.length < 4) {
-											$.notify({
-												message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter 8 or more characters to search </span>',
-											}, { type : 'danger' , z_index: 9999  });
-											
-										} else if (enq_search_type.length <= 0){
-											$.notify({
-												message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please select the type of field for your search</span>',
-											}, { type : 'danger' , z_index: 9999  });
-											
-										}else {
+    // Loading indicator
+    function showLoading(title = 'Processing...') {
+        Swal.fire({
+            title,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
 
-											$("#enq-search-results-section").hide();
+    // Helper function to validate required fields
+    function validateFields(fields) {
+        for (const [field, value] of Object.entries(fields)) {
+            if (!value || value.trim() === '' || value === '-1') {
+                return false;
+            }
+        }
+        return true;
+    }
 
-											$.ajax({
-														type : "POST",
-														url : "Case_Management_Serv",
-														data : {
-															request_type : 'load_application_details_for_enquiries',
-															job_number : enq_search_value,
-															search_type: enq_search_type
-														},
-														cache : false,
-														
-														success: function(jobdetails) {
-															if (!jobdetails) {
-																$.notify({
-																	message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">No records found!</span>',
-																}, { type: 'danger', z_index: 9999 });
-																$('#enquiry_alert').removeClass('d-none');
-																return;
-															}
+    // Helper function to check for duplicate job numbers
+    function isDuplicateJobNumber(jobNumber) {
+        let isDuplicate = false;
+        $resultsTable.find('tr').each(function() {
+            const existingJobNumber = $(this).find('td').eq(2).text().trim();
+            if (existingJobNumber === jobNumber) {
+                isDuplicate = true;
+                return false; // Break loop
+            }
+        });
+        return isDuplicate;
+    }
 
-															$("#enq-search-results-section").show();
+    // Extract table data
+    function extractTableData() {
+        const tableData = [];
+        
+        $('#tbl-bulk-collection-table tbody tr').each(function() {
+            const $row = $(this);
+            tableData.push({
+                ar_name: $row.find('td:eq(0)').text().trim(),
+                job_number: $row.find('td:eq(2)').text().trim()
+            });
+        });
+        
+        return tableData;
+    }
 
-															var table = $('#tbl-bulk-collection-table');
+    // Handle search form submission
+    $searchForm.on('submit', async function(e) {
+        e.preventDefault();
+        
+        const selectedRadio = $("input[name='rbtn_search_type']:checked");
+        const searchType = selectedRadio.val() || '';
+        const searchValue = $searchValue.val().trim();
 
-															if (jobdetails.includes('no search type')) {
-																alert('Reference Number has not been acknowledged or does not exist');
-																return false;
-															} else {
-																var json_p = JSON.parse(jobdetails);
+        // Validate input
+        if (searchValue.length < SEARCH_MIN_LENGTH) {
+            await showAlert(
+                'Search Error',
+                `Please enter ${SEARCH_MIN_LENGTH} or more characters to search`,
+                'warning'
+            );
+            return;
+        }
+        
+        if (!searchType) {
+            await showAlert(
+                'Search Type Required',
+                'Please select the type of field for your search',
+                'warning'
+            );
+            return;
+        }
 
-																$(json_p).each(function() {
-																	var jobNumber = this.job_number;
+        //showLoading('Searching...');
 
-																	// Check if this job number already exists in any row
-																	var alreadyExists = false;
-																	table.find('tbody tr').each(function() {
-																		var existingJobNumber = $(this).find('td').eq(2).text().trim(); // Assuming job_number is in the 3rd column (index 2)
-																		if (existingJobNumber === jobNumber) {
-																			alreadyExists = true;
-																			return false; // break loop
-																		}
-																	});
+        // Perform AJAX search
+        try {
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'Case_Management_Serv',
+                data: {
+                    request_type: 'load_application_details_for_enquiries',
+                    job_number: searchValue,
+                    search_type: searchType
+                },
+                cache: false
+            });
 
-																	if (alreadyExists) {
-																		// Optional: Notify user if duplicate is skipped
-																		$.notify({
-																			message: '<i class="fa fa-info-circle fa-3x fa-fw"></i><span class="text-bold">Job number ' + jobNumber + ' is already in the table and will not be added again.</span>',
-																		}, { type: 'info', z_index: 9999 });
-																		return; // Skip adding
-																	}
+            Swal.close();
+            await handleSearchResponse(response);
+        } catch (error) {
+            Swal.close();
+            console.error('Search error:', error);
+            await showAlert(
+                'Search Failed',
+                'An error occurred while searching. Please try again.',
+                'error'
+            );
+        }
+    });
 
-																	// Add row if not duplicate
-																	table.append("<tr><td>"
-																		+ this.ar_name + "</td><td>"
-																		+ this.case_number + "</td><td>"
-																		+ this.job_number + "</td><td>"
-																		+ this.glpin + "</td><td>"
-																		+ this.locality + "</td><td>"
-																		+ this.regional_number + "</td></tr>");
-																});
-															}
-														}
-													});
-										}
-									});
+    // Handle search response
+    async function handleSearchResponse(response) {
+        if (!response || response.trim() === '') {
+            await showAlert('No Results', 'No records found!', 'info');
+            return;
+        }
 
-				
-									function storeTblValues() {
-										var TableData = new Array();
+        if (response.includes('no search type')) {
+            await showAlert(
+                'Invalid Reference',
+                'Reference Number has not been acknowledged or does not exist',
+                'warning'
+            );
+            return;
+        }
 
-										$('#tbl-bulk-collection-table tr')
-												.each(
-														function(row, tr) {
-															TableData[row] = {
-																"ar_name" : $(
-																		tr)
-																		.find(
-																				'td:eq(0)')
-																		.text()
-																		.trim(),
-																"job_number" : $(
-																		tr)
-																		.find(
-																				'td:eq(2)')
-																		.text()
-																		.trim(),
-															
-															}
-														});
-										TableData.shift(); // first row
-										// will be empty
-										// - so remove
-										return TableData;
-									}
+        try {
+            const data = JSON.parse(response);
+            let hasNewResults = false;
+            let duplicatesCount = 0;
 
-					
-									$("#btn_process_bulk_collection_for_payment")
-									.click(
-											function(event) {
-		
-												// alert(JSON.stringify(table));
-												//let request_type = "";
-												//var list_of_application_new = JSON.stringify(table)
-												//var lbl_batch_type = $("#lbl_batch_type").val();
-												
-	
-												//var table = $('#tbl-bulk-collection-table');
-												var table = storeTblValues();
-												list_of_application_new = JSON.stringify(table);
-												console.log(list_of_application_new);
-		
-												var bcd_collected_by = $("#bcd_collected_by").val();
-												var bcd_id_type = $("#bcd_id_type").val();
-												var bcd_id_number = $("#bcd_id_number").val();
-												var bcd_phone_number = $("#bcd_phone_number").val();
+            data.forEach(item => {
+                if (isDuplicateJobNumber(item.job_number)) {
+                    duplicatesCount++;
+                    return;
+                }
 
-												if(!bcd_collected_by || !bcd_id_type || !bcd_id_number || !bcd_phone_number) {
-													$.notify({
-														message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please fill up all the fields</span>',
-													}, { type : 'danger' , z_index: 9999  });
-													return;
-												}
-		
-												$
-														.ajax({
-															type : "POST",
-															url : "Case_Management_Serv",
-															data : {
-																request_type : 'process_batch_list_issue_for_payment_collection',
-																list_of_application : list_of_application_new,
-																bcd_collected_by : bcd_collected_by,
-																bcd_id_type : bcd_id_type,
-																bcd_id_number : bcd_id_number,
-																bcd_phone_number : bcd_phone_number
-															},
-															cache : false,
-															
-															success : function(response) {
-																console.log(response)
-		
-																var json_p = JSON.parse(response);
-		
-																$('#request_type')
-																		.val(
-																				'request_to_generate_batch_list');
-																$(
-																		'#list_of_application')
-																		.val(
-																				list_of_application_new);
-																$('#batch_number')
-																		.val(
-																				json_p.batch_number);
-		
-																$('#modified_by')
-																		.val(
-																				$(
-																						"#user_to_send_to")
-																						.val());
-																				$('#modified_by_id')
-																		.val(
-																				localStorage
-																						.getItem('userid'));
-																// $('#downloadForm').submit();
-		
-																$
-																		.ajax({
-																			type : "POST",
-																			url : "GenerateCaseReports",
-																			target : '_blank',
-																			data : {
-																				request_type : 'request_to_generate_batch_list_bulk_correction',
-																				list_of_application : list_of_application_new,
-																				batch_number : json_p.batch_number,
-																				modified_by : localStorage
-																						.getItem('fullname'),
-																				modified_by_id : localStorage
-																						.getItem('userid'),
-																				
-																			},
-																			cache : false,
-																			xhrFields : {
-																				responseType : 'blob'
-																			},
-																		
-																			success : function(
-																					data) {
-																				console
-																						.log(data)
-		
-																				$(
-																						'#elisDocumentPreview')
-																						.modal(
-																								{
-																									backdrop : 'static',
-																								});
-		
-																				var blob = new Blob(
-																						[ data ],
-																						{
-																							type : "application/pdf"
-																						});
-																				var objectUrl = URL
-																						.createObjectURL(blob);
-																				 //window.open(objectUrl);
-																				console.log("success ajax");
-		
-																				$(
-																						'#elisdovumentpreviewblobfile')
-																						.attr(
-																								'src',
-																								objectUrl);
-		
-																			},
-																			complete : function() {
-																			
-		
-																			}
-																		});
-		
-															}
-														});
-		
-											});
+                // Add row to table
+                const rowHtml = `
+                    <tr>
+                        <td>${item.ar_name || ''}</td>
+                        <td>${item.case_number || ''}</td>
+                        <td>${item.job_number || ''}</td>
+                        <td>${item.glpin || ''}</td>
+                        <td>${item.locality || ''}</td>
+                        <td>${item.regional_number || ''}</td>
+                    </tr>
+                `;
+                
+                $resultsTable.append(rowHtml);
+                hasNewResults = true;
+            });
 
-			
-					
-				
-					// ------ end of $(doc).ready
-				});
+            if (hasNewResults) {
+                $resultsSection.show();
+                let successMessage = `Successfully added ${data.length - duplicatesCount} record(s) to the batch.`;
+                
+                if (duplicatesCount > 0) {
+                    successMessage += ` ${duplicatesCount} duplicate(s) were skipped.`;
+                }
+                
+                await showAlert(
+                    'Search Successful',
+                    successMessage,
+                    'success'
+                );
+            } else if (duplicatesCount > 0) {
+                await showAlert(
+                    'Duplicate Records',
+                    `All ${duplicatesCount} record(s) found are already in the batch.`,
+                    'info'
+                );
+            } else {
+                await showAlert('No Results', 'No valid records found!', 'info');
+            }
+        } catch (error) {
+            console.error('Error parsing response:', error);
+            await showAlert('Processing Error', 'Error processing search results', 'error');
+        }
+    }
+
+    // Handle batch processing with confirmation
+    $processBtn.on('click', async function() {
+        // Validate collector details
+        const collectorDetails = {
+            bcd_collected_by: $collectorName.val(),
+            bcd_id_type: $idType.val(),
+            bcd_id_number: $idNumber.val(),
+            bcd_phone_number: $phoneNumber.val()
+        };
+
+        if (!validateFields(collectorDetails)) {
+            await showAlert(
+                'Missing Information',
+                'Please fill up all the fields in Collector\'s Details',
+                'warning'
+            );
+            return;
+        }
+
+        // Extract and validate table data
+        const tableData = extractTableData();
+        
+        if (tableData.length === 0) {
+            await showAlert('Empty Batch', 'No applications to process. Please search and add applications first.', 'warning');
+            return;
+        }
+
+        // Show confirmation dialog with details
+        const confirmationResult = await showConfirm(
+            'Confirm Batch Processing',
+            `You are about to process ${tableData.length} application(s) for collection.\n\n` +
+            `Collector: ${collectorDetails.bcd_collected_by}\n` +
+            `ID Type: ${collectorDetails.bcd_id_type}\n` +
+            `ID Number: ${collectorDetails.bcd_id_number}\n\n` +
+            'Are you sure you want to proceed?',
+            'question'
+        );
+
+        if (!confirmationResult.isConfirmed) {
+            await showAlert('Cancelled', 'Batch processing was cancelled.', 'info');
+            return;
+        }
+
+        showLoading('Processing batch...');
+
+        const listOfApplications = JSON.stringify(tableData);
+        console.log('Processing batch:', listOfApplications);
+
+        try {
+            const response = await $.ajax({
+                type: 'POST',
+                url: 'Case_Management_Serv',
+                data: {
+                    request_type: 'process_batch_list_issue_for_payment_collection',
+                    list_of_application: listOfApplications,
+                    ...collectorDetails
+                },
+                cache: false
+            });
+
+            Swal.close();
+            await handleBatchResponse(response, listOfApplications);
+        } catch (error) {
+            Swal.close();
+            console.error('Batch processing error:', error);
+            await showAlert(
+                'Processing Failed',
+                'An error occurred while processing the batch. Please try again.',
+                'error'
+            );
+        }
+    });
+
+    // Handle batch processing response
+    async function handleBatchResponse(response, listOfApplications) {
+        try {
+            const result = JSON.parse(response);
+            const batchNumber = result.batch_number;
+            
+            if (!batchNumber) {
+                throw new Error('Invalid batch response');
+            }
+
+            // Ask user if they want to generate PDF
+            const pdfConfirmation = await showConfirm(
+                'Batch Processed Successfully',
+                `Batch #${batchNumber} has been processed successfully!\n\nWould you like to generate and download the batch list PDF?`,
+                'success'
+            );
+
+            if (pdfConfirmation.isConfirmed) {
+                await generatePdfReport(listOfApplications, batchNumber);
+            } else {
+                await showAlert(
+                    'Batch Complete',
+                    `Batch #${batchNumber} has been processed successfully.\nYou can generate the PDF later if needed.`,
+                    'info'
+                );
+            }
+            
+        } catch (error) {
+            console.error('Error processing batch response:', error);
+            await showAlert('Processing Error', 'Error processing batch response', 'error');
+        }
+    }
+
+    // Generate PDF report
+    async function generatePdfReport(listOfApplications, batchNumber) {
+        showLoading('Generating PDF...');
+
+        try {
+            const pdfData = await $.ajax({
+                type: 'POST',
+                url: 'GenerateCaseReports',
+                data: {
+                    request_type: 'request_to_generate_batch_list_bulk_correction',
+                    list_of_application: listOfApplications,
+                    batch_number: batchNumber,
+                    modified_by: localStorage.getItem('fullname'),
+                    modified_by_id: localStorage.getItem('userid')
+                },
+                cache: false,
+                xhrFields: {
+                    responseType: 'blob'
+                }
+            });
+
+            Swal.close();
+            await displayPdfPreview(pdfData, batchNumber);
+        } catch (error) {
+            Swal.close();
+            console.error('PDF generation error:', error);
+            await showAlert('PDF Generation Failed', 'Error generating PDF report', 'error');
+        }
+    }
+
+    // Display PDF preview in new tab
+    async function displayPdfPreview(pdfData, batchNumber) {
+        const blob = new Blob([pdfData], { type: 'application/pdf' });
+        const objectUrl = URL.createObjectURL(blob);
+        
+        // Open PDF in new tab
+        const newWindow = window.open(objectUrl, '_blank');
+        
+        if (newWindow) {
+            await showAlert(
+                'PDF Generated',
+                `Batch list PDF for Batch #${batchNumber} has been opened in a new tab.`,
+                'success'
+            );
+        } else {
+            // If popup blocked, show download option
+            const downloadResult = await showConfirm(
+                'PDF Ready',
+                `Batch list PDF for Batch #${batchNumber} is ready.\n\nPop-up was blocked. Would you like to download it instead?`,
+                'warning'
+            );
+
+            if (downloadResult.isConfirmed) {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = objectUrl;
+                downloadLink.download = `batch-${batchNumber}-list.pdf`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                await showAlert(
+                    'Download Started',
+                    `PDF for Batch #${batchNumber} is downloading.`,
+                    'success'
+                );
+            }
+        }
+
+        // Clean up object URL after some time
+        setTimeout(() => {
+            URL.revokeObjectURL(objectUrl);
+        }, 10000);
+    }
+});

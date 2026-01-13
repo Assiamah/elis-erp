@@ -7710,3 +7710,132 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade effect-scale modal-blur" id="filefileRegionalNumberUploadModal" tabindex="-1"
+     aria-labelledby="filefileRegionalNumberUploadModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="fileRegionalNumberUploadModalLabel">
+                    <i class="fas fa-file-upload me-2"></i>Upload Regional Numbers CSV File
+                </h5>
+                <button type="button" class="btn-close btn-close-white" 
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- File Upload Form -->
+                <form class="row g-3" method="POST" enctype="multipart/form-data" id="id_formeb">
+                    <!-- File Upload Section -->
+                    <div class="col-12">
+                        <div class="card border">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="fileUploadFormregionalnumber" class="form-label fw-bold">
+                                        <i class="fas fa-file-csv me-1"></i>Select CSV File
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" 
+                                               id="fileUploadFormregionalnumber" 
+                                               name="fileUploadFormregionalnumber"
+                                               accept=".csv, .xlsx, .xls"
+                                               required>
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                onclick="document.getElementById('fileUploadFormregionalnumber').value=''">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">
+                                        Supported formats: CSV, Excel (.xlsx, .xls). Max size: 10MB
+                                    </div>
+                                </div>
+                                
+                                <!-- File Preview (optional) -->
+                                <div class="mt-3 d-none" id="filePreviewSection">
+                                    <div class="alert alert-info d-flex align-items-center">
+                                        <i class="fas fa-file-excel fa-2x me-3 text-success"></i>
+                                        <div>
+                                            <strong id="fileName">No file selected</strong>
+                                            <div class="text-muted small" id="fileSize">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Instructions -->
+                    <div class="col-12">
+                        <div class="card border">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Instructions</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 class="text-primary">Required Columns:</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Applicant Name</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Locality</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Gender</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>District</li>
+                                            <li><i class="fas fa-check-circle text-success me-2"></i>Region</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="text-primary">Format Guidelines:</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>UTF-8 encoding</li>
+                                            <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>No empty rows</li>
+                                            <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>First row as headers</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Button -->
+                    <div class="col-12 text-center mt-4">
+                        <button type="button" id="btn_upload_rn_file" 
+                                class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>Upload File
+                        </button>
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-sync-alt me-1"></i>Processing may take a few moments
+                            </small>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Progress Bar (optional) -->
+                <div class="mt-4 d-none" id="uploadProgressSection">
+                    <div class="progress" style="height: 10px;">
+                        <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" style="width: 0%" 
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <small class="text-muted" id="uploadProgressText">Uploading...</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" 
+                        data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-outline-primary" 
+                        id="btnDownloadTemplate">
+                    <i class="fas fa-download me-2"></i>Download Template
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

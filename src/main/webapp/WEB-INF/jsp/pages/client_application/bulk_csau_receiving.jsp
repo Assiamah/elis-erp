@@ -10,402 +10,355 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-  
- <div class="content-wrapper">
-    <div class="container-fluid">
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+      <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <h1 class="page-title fw-medium fs-18 mb-0">Bulk Receiving</h1>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bulk Receiving</li>
+                </ol>
+            </div>
+        </div>
       <!-- Breadcrumbs-->
            
-          <div class="row">
-	        <div class="col">
-	          <!-- Example Bar Chart Card-->
-	          <div class="card mb-3">
-	            <div class="card-header h3">
-	              Search Section</div>
-	            <div class="card-body">
-	              	<!--  The Form starts here -->
-	              	<form id="frmEnquiryJobSearch"  method="post">
-					  <div class="form-group">
-					  	
-					  		<label><b>Search By: </b></label>
-					  	
-					  </div>
-					  
-					    <div class="custom-control custom-radio custom-control-inline">
-						  <input type="radio" id="rbtn_search_type1" name="rbtn_search_type" class="custom-control-input" value="job_number" required>
-						  <label class="custom-control-label" for="rbtn_search_type1">Job number</label>
+         <div class="row g-4">
+			<!-- Search Section -->
+			<div class="col-lg-6">
+				<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-primary bg-gradient text-white">
+					<h5 class="mb-0"><i class="fas fa-search text-warning me-2"></i>Search Section</h5>
+				</div>
+				<div class="card-body">
+					<form id="frmEnquiryJobSearch" method="post">
+					<!-- Search Type -->
+					<div class="mb-4">
+						<label class="form-label fw-bold mb-3">Search By:</label>
+						<div class="d-flex flex-wrap gap-4">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="rbtn_search_type" id="rbtn_search_type1" value="job_number" required checked>
+							<label class="form-check-label fw-medium" for="rbtn_search_type1">
+							<i class="fas fa-hashtag me-1"></i>Job Number
+							</label>
 						</div>
+						<!-- Add more radio options here if needed -->
+						</div>
+					</div>
 
-						
-					  <br><br>
-			          
-					 
-					 
-					  <div class="form-group">
-			            <div class="form-row">
-			            
-			              <div class="col-md-8">
-			                
-			                <input class="form-control" id="enq_search_value"  name="enq_search_value"  type="text" aria-describedby="" placeholder="Enter search inputs" required >
-			              </div>
-			              <div class="col-md-4">
-			              	
-			                <button type="submit" class="btn btn-primary btn-block" value="Search" id="btnEnquiryJobSearch" > Search </button>
-			                
-			              </div>
-			            </div>
-			          </div>
+					<!-- Search Input -->
+					<div class="mb-4">
+						<label for="enq_search_value" class="form-label fw-bold mb-2">Search Term</label>
+						<div class="input-group input-group-lg">
+						<input type="text" class="form-control form-control-lg" 
+								id="enq_search_value" name="enq_search_value" 
+								placeholder="Enter job number to search" required>
+						<button type="submit" class="btn btn-primary btn-lg" id="btnEnquiryJobSearch">
+							<i class="fas fa-search me-2"></i>Search
+						</button>
+						</div>
+						<div class="form-text">Enter at least 8 characters for better results</div>
+					</div>
+					</form>
 
+					<!-- Alert - Can be removed since we're using SweetAlert -->
+					<div class="alert alert-danger d-none mt-3" id="enquiry_alert" role="alert">
+					<i class="fas fa-exclamation-circle me-2"></i>No Results Found
+					</div>
+				</div>
+				</div>
+			</div>
 
-			        </form>
-	            
-	            <!-- The form Ends Hers -->
+			<!-- Depositor's Details Section -->
+			<div class="col-lg-6">
+				<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-info bg-gradient text-white">
+					<h5 class="mb-0"><i class="fas fa-user-circle text-warning me-2"></i>Depositor's Details</h5>
+				</div>
+				<div class="card-body">
+					<form id="frmEnquiryBatchlist" method="post">
+					<!-- Depositor's Name -->
+					<div class="mb-3">
+						<label for="bcd_depositor_by" class="form-label fw-bold">Full Name</label>
+						<div class="input-group">
+						<span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+						<input type="text" class="form-control" id="bcd_depositor_by" 
+								placeholder="Enter depositor's full name" required>
+						</div>
+					</div>
 
-				<div class="alert alert-danger d-none" id="enquiry_alert" role="alert">
-					No Results Found
-				  </div>
-	
-	            </div>
-	           <!--  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
-	          </div>
-	
-	          
-	         
-	        </div>
-        
-	      	<!--   Here is the right Table -->
-	        <div class="col-sm-6">
-	          <!-- Example Pie Chart Card-->
-	          <div class="card mb-3">
-	            <div class="card-header h3">
-	              Depositor's Details</div>
-	            <div class="card-body">
-	            
-	            	<form id="frmEnquiryBatchlist"  method="post">
-						<!-- <h5 class="border-bottom border-gray pb-2">Details Confirmation</h5> -->
-						<div class="form-group row">
-							<div class="col">
-								<input type="text"  required class="form-control" id="bcd_depositor_by" placeholder="Enter Depositor's Name">
-						
-							</div>
-							
-						 </div>
+					<!-- ID Type and Number -->
+					<div class="row g-3 mb-3">
+						<div class="col-md-6">
+						<label for="bcd_depositor_id_type" class="form-label fw-bold">ID Type</label>
+						<select class="form-select" id="bcd_depositor_id_type" required data-trigger>
+							<option value="" selected disabled>Select ID Type</option>
+							<option value="NATIONAL ID">National ID</option>
+							<option value="PASSPORT">Passport</option>
+							<option value="DRIVERS LICENSE">Driver's License</option>
+							<option value="NHIS CARD">NHIS Card</option>
+							<option value="VOTERS ID">Voter's ID</option>
+							<option value="SSNIT ID CARD">SSNIT ID Card</option>
+						</select>
+						</div>
+						<div class="col-md-6">
+						<label for="bcd_depositor_id_number" class="form-label fw-bold">ID Number</label>
+						<div class="input-group">
+							<span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
+							<input type="text" class="form-control" id="bcd_depositor_id_number" 
+								placeholder="Enter ID number" required>
+						</div>
+						</div>
+					</div>
 
+					<!-- Contact Information -->
+					<div class="row g-3 mb-3">
+						<div class="col-md-6">
+						<label for="bcd_depositor_phone_number" class="form-label fw-bold">Phone Number</label>
+						<div class="input-group">
+							<span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+							<input type="text" class="form-control" id="bcd_depositor_phone_number" 
+								placeholder="Enter phone number" required>
+						</div>
+						</div>
+						<div class="col-md-6">
+						<label for="bcd_depositor_email" class="form-label fw-bold">Email Address</label>
+						<div class="input-group">
+							<span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+							<input type="email" class="form-control" id="bcd_depositor_email" 
+								placeholder="Enter email address" required>
+						</div>
+						</div>
+					</div>
 
-						 <div class="form-group row">
-						  
-							<div class="col">
-							
-						
-							
-									<select id="bcd_depositor_id_type" required  class="form-control" >
-										<option value="" selected disabled>--Select ID Type--</option>
-										<option value="NATIONAL ID">NATIONAL ID</option>
-										<option value="PASSPORT">PASSPORT</option>
-										<option value="DRIVERS LICENSE">DRIVERS LICENSE</option>
-										<option value="NHIS CARD">NHIS CARD</option>
-										<option value="VOTERS ID">VOTERS ID</option>
-										<option value="SSNIT ID CARD">SSNIT ID CARD</option>
-									</select>
-								
-							</div>
+					<!-- Submission Type -->
+					<div class="mb-4">
+						<label for="bcd_submission_type" class="form-label fw-bold">Submission Type</label>
+						<select class="form-select" id="bcd_submission_type" required data-trigger>
+						<option value="" selected disabled>Select Re-Submission Type</option>
+						<option value="First Time Hard Copy Submission">First Time Hard Copy Submission</option>
+						<option value="Resolved Query">Resolved Query</option>
+						<option value="Payment">Payment</option>
+						<option value="Correction">Correction</option>
+						<option value="No Payment Details">No Payment Details</option>
+						<option value="Re-assessment">Re-assessment</option>
+						<option value="Other">Other</option>
+						</select>
+					</div>
 
-							<div class="col">
-								  <input type="text" required  class="form-control" id="bcd_depositor_id_number" placeholder="Enter ID Number">
-								
-							</div>
+					<!-- Process Button -->
+					<div class="d-grid">
+						<button type="button" class="btn btn-success btn-lg" id="btnBatchBulkReceiving">
+						<i class="fas fa-play-circle me-2"></i>Process List
+						</button>
+					</div>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
 
-						 </div>
-						
-						 <div class="form-group row">
-
-							<div class="col">
-								
-								  <input type="text" required  class="form-control" id="bcd_depositor_phone_number" placeholder="Enter Phone Number">
-								
-							</div>
-
-                            <div class="col">
-								<input type="text" required  class="form-control" id="bcd_depositor_email" placeholder="Enter Email">
-                              
-                            </div>
-						  
-						 </div>
-
-                         <div class="form-group row">
-
-                            <div class="col">
-								
-                                <select class="form-control selectpicker " id="bcd_submission_type" name="res_bill_type">
-                                    <option value="" selected disabled>-- Select Re-Submission Type --</option>
-                                   
-                                    <option value="First Time Hard Copy Submission">First Time Hard Copy Submission</option>
-                                    <option value="Resolved Query">Resolved Query</option>
-                                    <option value="Payment">Payment</option>
-                                    <option value="Correction">Correction</option>
-									<option value="No Payment Details">No Payment Details</option>
-									<option value="Re-assessment">Re-assessment</option>
-                                    <option value="Other">Other</option>
-                               
-                                    
-                                 </select>
-                              
-                            </div>
-						  
-						 </div>
-
-             <!-- <div class="form-group row">
-
-                              <div class="col">
-                  
-                                  <select class="form-control selectpicker " id="txt_general_job_purpose" name="txt_general_job_purpose">
-                                      <option value="" selected disabled>-- Select Purpose --</option>
-                                    
-                                      <option value="Re-submission">Re-submission</option>
-                                
-                                      
-                                  </select>
-                                
-                              </div>
-
-                </div> -->
-
-                         <div class="form-group row">
-                            <div class="col">
-								
-                                <button type="button" class="btn btn-primary btn-block" value="Search" id="btnBatchBulkReceiving" > Process List </button>
-                              
-                            </div>
-                            
-                        </div>
-			         
-			        </form>
-	            
-	          </div>
-	        </div>
-	      <!--   Here is the end of right table -->
-      
-      
-   
-      </div>
-       
-      	  </div>
-    
-    
-    <div class="row">
-     <div class="col-lg-12">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3" style="display:none" id="enq-search-results-section">
-            <div class="card-header">
-              <i class="fa fa-bar-chart"></i>Search Results (The result is only 10 records)</div>
-            <div class="card-body">
-            
-         
-            
-	             <!--  Here is where the fee list comes -->
-	             
-	             <div class="table-responsive" >
-			           <table class="table table-bordered " id="tbl-bulk-receiving-table" style="min-height:500px">
-			              <thead>
-			                <tr>
-			                 <th>Applicant Name</th>
-			                  <th>Case Number</th>
-			                  <th>Job Number</th>
-							  <th>Application Type</th>
-			                  <th>GLPIN</th>
-			                  
-			                  <th>Locality</th>
-			                  <th>Regional Number</th>
-			                  
-			                <th>Actions</th>
-			                  
-			                  
-			                
-			                 </tr>
-			              </thead>
-			              
-			              <tbody>
-			               	
-			                              
-						     
-			              </tbody> 
-			            </table>
-	          	</div>
-             
-              <!--  End Of Table -->
-             </div>
-            <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
-          </div>
-          
-     <!-- Example Bar Chart Card-->
-          
-        
-    
-       </div>
-        
-      </div>
-     </div>
-     
-     
-    
- </div>
- 
- 
- <!-- <div class="modal fade" id="batch_purpose" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 class="modal-title" id="exampleModalLabel">ADD PURPOSE</h6>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        
-        <div class="modal-body">
-           <div class="form-group mb-3">
-             <label class="col-form-label">Purpose: <span class="text-danger">*</span></label>
-             <textarea class="form-control" rows="7" id="txt_general_job_purpose"></textarea>
-           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn-close">Close</button>
-          <button type="submit" class="btn btn-success" id="btnBatchBulkReceiving">Confirm</button>
-        </div>
-      
-      </div>
+			<!-- Search Results Section -->
+			<div class="row mt-4">
+			<div class="col-12">
+				<div class="card border-0 shadow-sm" id="enq-search-results-section" style="display: none">
+				<div class="card-header bg-secondary bg-gradient text-white d-flex justify-content-between align-items-center">
+					<div>
+					<h5 class="mb-0"><i class="fas fa-list-check me-2"></i>Search Results</h5>
+					</div>
+					<div>
+					<span class="badge bg-light text-dark fs-6 me-2">
+						<i class="fas fa-file-alt me-1"></i>Showing 10 records
+					</span>
+					<button type="button" class="btn btn-light btn-sm" id="btnClearResults">
+						<i class="fas fa-trash-alt me-1"></i>Clear Results
+					</button>
+					</div>
+				</div>
+				<div class="card-body p-0">
+					<div class="table-responsive">
+					<table class="table table-hover table-striped mb-0" id="tbl-bulk-receiving-table">
+						<thead class="table-dark">
+						<tr>
+							<th><i class="fas fa-user me-1"></i>Applicant Name</th>
+							<th><i class="fas fa-file-alt me-1"></i>Case Number</th>
+							<th><i class="fas fa-hashtag me-1"></i>Job Number</th>
+							<th><i class="fas fa-tag me-1"></i>Application Type</th>
+							<th><i class="fas fa-key me-1"></i>GLPIN</th>
+							<th><i class="fas fa-map-marker-alt me-1"></i>Locality</th>
+							<th><i class="fas fa-flag me-1"></i>Regional Number</th>
+							<th class="text-center"><i class="fas fa-cogs me-1"></i>Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						<!-- Results will be populated here -->
+						</tbody>
+					</table>
+					</div>
+				</div>
+				<div class="card-footer bg-light border-top py-3">
+					<div class="d-flex justify-content-between align-items-center">
+					<small class="text-muted">
+						<i class="fas fa-info-circle me-1"></i>Select records for batch processing
+					</small>
+					<div class="badge bg-info text-dark">
+						<span id="selectedCount">0</span> selected
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
     </div>
-  </div> -->
+     
+ </div>
 
+ <div class="modal fade effect-scale modal-blur" id="publicViewFileModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="publicViewFileModal_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+                        <i class="bi bi-folder2-open fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white mb-1" id="publicViewFileModal_label">
+                            Review Documents
+                        </h5>
+                        <p class="mb-0 small opacity-75">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Manage and review case documents
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
 
-  <!-- <div class="modal fade" id="viewBatchlistModal" tabindex="-1"
-   role="dialog" aria-labelledby="viewBatchlistModal" aria-hidden="true">
-   <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="viewBatchlistModalLabel">Batch List Processing</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-         </div>
-         <div class="modal-body modal-body_lg">
-         
-          <input id="lbl_batch_type" name="lbl_batch_type" type="hidden" value="normal">
-           
-               <%-- <input id="bl_modified_by" name="bl_modified_by" type="hidden" value="${fullname}"> 
-               <input id="bl_modified_by_id" name="bl_modified_by_id" type="hidden" value="${userid}"> --%>
-               <div class="container">
-                  <div class="col-sm-12 col-xs-12">
-                     <div class="form-group">
-                     
-                     	<div class="form-group row">
-							
-							<div class='${unit_name == "CSAU" ? "col-sm-5" : "col-sm-4"}'>
-							<label class="col-form-label" style="text-align: left"><h5>Batch To :</h5></label>
-								<div class="input-group">
-									<div id="radioBtnBatching" class="btn-group ">
-										<a class="btn btn-secondary btn-sm notActive" data-toggle="batch_type" data-title="Unit"><h6>Unit</h6></a> 
-										<a class="btn btn-secondary btn-sm notActive" data-toggle="batch_type" data-title="Individual"><h6>Individual</h6></a>
-										${unit_name == "CSAU" ? "<a class='btn btn-secondary btn-sm notActive' data-toggle='batch_type' data-title='Cabinet'><h6>Cabinet</h6></a>" : ""}
-										
-										
-									</div>
-									<input type="hidden" name="batch_type" id="batch_type">
-								</div>
-							</div>
-							<div class="col">
-								<div class="form-row" id="unit-batching" style="background-color:#123456; padding:15px; display:none">
-									<div class="col-12"><h5 style="" class="text-white">Batching to a Unit</h5></div>
-								    <div class="col">
-								      <label for="" class="col-form-label text-white">Division :</label>
-		                              <select id="unit_division_to_send_to" class="form-control" >
-		                                 <option value="none">---Select Division---</option>
-		                                 <option value="LVD">LVD</option>
-		                                 <option value="LRD">LRD</option>
-		                                 <option value="PVLMD">PVLMD</option>
-		                                 <option value="SMD">SMD</option>
-		                                  <option value="RLO">RLO</option>
-		                              </select>
-								      
-								    </div>
-								    <div class="col">
-								    <label for="" class="col-form-label text-white">Unit :</label>
-								      <input autocomplete="off" class="form-control" id="unit_to_send_to"  type="text"  list="listofunitsbatching" class=""  placeholder="Select/Enter Unit" required  >
-		                              <datalist id="listofunitsbatching"></datalist>
-								    </div>
-								</div>
-								
-								<div class="form-row"  style="background-color:#654321; padding:15px; display:none" id="individual-batching" >
-		                           <div class="col-12"><h5 style="" class="text-white">Batching to an Individual</h5></div>
-		                           <div class="col-sm-3">
-		                              <label for="" class="col-form-label text-light">Division/Unit :</label>
-		                              <input class="form-control" type="text" value="${unit_name}" id="division_to_send_to" readonly>
-		                           </div>
-		                           <div class="col-sm-9">
-		                              <label for="" class="col-form-label text-light">User :</label>
-		                              
-		                              <input class="form-control" id="user_to_send_to"  name="user_to_send_to" type="text" autocomplete="off" 
-		                                 list="listofusersbatching" class="autocomplat"  placeholder="Enter Username" required  onmousedown="value = '';" >
-		                              <datalist id="listofusersbatching"></datalist>
-		                           </div>
-		                        </div>
-		                        <form id="frmBatchToCabinet">
-		                        <div class="form-row"  style="background-color:#32a852; padding:15px; display:none " id="cabinet-batching" >
-		                           <div class="col-12"><h5 style="" class="text-white">Batching to Cabinet</h5></div>
-		                           
-			                           <div class="col-auto">
-			                              <label for="" class="col-form-label text-white">Cabinet Name :</label>
-			                              
-			                              <input class="form-control" type="text"  id="cabinet_to_send_to" required>
-			                           </div>
-			                           <div class="col-sm-4">
-			                              <label for="" class="col-form-label text-light">&nbsp;</label>
-			                             
-			                              <button class="form-control btn btn-primary" type="Submit" >Batch to Cabinet</button>
-			                             
-			                           </div>
-		                           
-		                        </div>
-								</form>
-								
-							  &nbsp;
-							</div>
-						</div>
-                     	
-                        
-                        
-                     </div>
-                  </div>
-               </div>
-               <br/>
-               <div class="container">
-                  <div class="col-sm-12 col-xs-12">
-                        <table id="batchlistdataTable" class="table table-bordered table-hover">
-                        	<tr>
-		                        <th>Reference No.</th>
-		                        <th>Application Name</th>
-		                        <th>Location</th>
-		                        <th>Purpose</th>
-		                        <th class="text-center">Action</th>
-		                    </tr>
-                        </table>
-                  </div>
-               </div>
-               <br/> <br/> <br/>
-               <div class="modal-footer">
-               		<button type="button" class="btn btn-danger float-left  mr-auto" id="remove_all_from_list" onclick="remove_all_from_list();">Remove all from list</button>
-               	
-                  <button type="button" class="btn btn-secondary" id="btn_close_process"
-                     data-dismiss="modal">Close</button>
-                  <button type="button" id="btn_process_batchlist_ft"  class="btn btn-primary" style="display:none">Process Batch List</button>
-               </div>
-            
-         </div>
-      </div>
-   </div>
-</div> -->
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Loading Indicator -->
+                <div id="documentsLoading" class="d-none mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <small class="text-muted">Loading documents...</small>
+                    </div>
+                </div>
 
- 
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
+                <!-- Action Buttons -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button type="button" class="btn btn-primary btn-sm" id="btn_load_scanned_documents_public_gated_workflow">
+                        <i class="bi bi-eye me-1"></i> Load Documents
+                    </button>
+                    
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" 
+                            data-bs-target="#publicFileUploadModal">
+                        <i class="bi bi-plus-circle me-1"></i> Add Documents
+                    </button>
+                    
+                    <button type="button" class="btn btn-info btn-sm" id="btn_refresh_documents">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+                    </button>
+                    
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btn_export_documents">
+                        <i class="bi bi-download me-1"></i> Export
+                    </button>
+                </div>
 
+                <!-- Case Information -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="bi bi-info-circle me-2"></i>Case Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-file-text me-1"></i>Case Number
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" 
+                                           class="form-control bg-light" 
+                                           id="cs_main_case_number" 
+                                           value="${case_number}" 
+                                           readonly>
+                                    <button class="btn btn-outline-secondary" type="button" 
+                                            onclick="copyToClipboard('cs_main_case_number')">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-person me-1"></i>Applicant Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control bg-light" 
+                                       id="cs_main_applicant_name"
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Table -->
+                <div class="table-responsive border rounded mb-4">
+                    <table class="table table-hover table-sm mb-0" id="lc_public_documents_dataTable_gated_workflow">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="40%">
+                                    <i class="bi bi-file-earmark-text me-1"></i>Document Name
+                                </th>
+                                <th width="25%">
+                                    <i class="bi bi-tag me-1"></i>Document Type
+                                </th>
+                                <th width="15%" class="text-center">
+                                    <i class="bi bi-filetype-pdf me-1"></i>Format
+                                </th>
+                                <th width="20%" class="text-center">
+                                    <i class="bi bi-gear me-1"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentsTableBody_gated_workflow">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                        <!-- <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showApprovalButton">
+                            <label class="form-check-label small" for="showApprovalButton">
+                                Show Final Approval
+                            </label>
+                        </div> -->
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Close
+                        </button>
+                        <!-- <button type="button" id="btn_update_app_status_ffrv" style="display:none"
+                                class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i> Confirm Final Approval
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
   <script>
 

@@ -134,7 +134,9 @@ $(document).ready(function(){
                             let reply = response.data[i].reply;
                             let tat = response.data[i].tat;
                             let notice_type = response.data[i].notice_type;
-                            let created_at = convertDate(response.data[i].created_date.slice(0,10));	
+                            let created_at = convertDate(response.data[i].created_date.slice(0,10));
+                            let modified_by = response.data[i].modified_by;
+                            let modified_date = !response.data[i].modified_date ? '' : 	convertDate(response.data[i].modified_date.slice(0,10));
                             let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
                                             <button class="btn btn-sm btn-primary btn-icon border-0" 
@@ -221,10 +223,10 @@ $(document).ready(function(){
                                             <i class="ri-user-line text-muted"></i>
                                         </div>
                                         <div>
-                                            <div class="fw-medium small">${created_by}</div>
+                                            <div class="fw-medium small">${!modified_by ? created_by : modified_by}</div>
                                         </div>
                                     </div>`);
-                            html.push(`<span class="small">${created_at}</span>`); 
+                            html.push(`<span class="small">${!modified_date ? created_at : modified_date}</span>`); 
                             html.push(`<span class="small">${tat} days</span>`); 
                             html.push(action); 
                             html.push(reply); 
@@ -349,6 +351,8 @@ $(document).ready(function(){
                             let tat = response.data[i].tat;
                             let notice_type = response.data[i].notice_type;
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
+                            let modified_by = response.data[i].modified_by;
+                            let modified_date = !response.data[i].modified_date ? '' : 	convertDate(response.data[i].modified_date.slice(0,10));
                             let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
                                             <button class="btn btn-sm btn-primary btn-icon border-0" 
@@ -434,10 +438,10 @@ $(document).ready(function(){
                                             <i class="ri-user-line text-muted"></i>
                                         </div>
                                         <div>
-                                            <div class="fw-medium small">${created_by}</div>
+                                            <div class="fw-medium small">${!modified_by ? created_by : modified_by}</div>
                                         </div>
                                     </div>`);
-                            html.push(`<span class="small">${created_at}</span>`); 
+                            html.push(`<span class="small">${!modified_date ? created_at : modified_date}</span>`); 
                             html.push(`<span class="small">${tat} days</span>`); 
                             html.push(action); 
                             html.push(reply); 
@@ -560,6 +564,8 @@ $(document).ready(function(){
                             let tat = response.data[i].tat;
                             let notice_type = response.data[i].notice_type;
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
+                            let modified_by = response.data[i].modified_by;
+                            let modified_date = !response.data[i].modified_date ? '' : 	convertDate(response.data[i].modified_date.slice(0,10));
                             let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
                                             <button class="btn btn-sm btn-primary btn-icon border-0" 
@@ -645,10 +651,10 @@ $(document).ready(function(){
                                             <i class="ri-user-line text-muted"></i>
                                         </div>
                                         <div>
-                                            <div class="fw-medium small">${created_by}</div>
+                                            <div class="fw-medium small">${!modified_by ? created_by : modified_by}</div>
                                         </div>
                                     </div>`);
-                            html.push(`<span class="small">${created_at}</span>`); 
+                            html.push(`<span class="small">${!modified_date ? created_at : modified_date}</span>`); 
                             html.push(`<span class="small">${tat} days</span>`); 
                                             html.push(action); 
                                             html.push(reply); 
@@ -772,6 +778,8 @@ $(document).ready(function(){
                             let notice_type = response.data[i].notice_type;
                             let tat = response.data[i].tat;
                             let created_at = convertDate(response.data[i].created_date.slice(0,10));	
+                            let modified_by = response.data[i].modified_by;
+                            let modified_date = !response.data[i].modified_date ? '' : 	convertDate(response.data[i].modified_date.slice(0,10));
                            let action = `<!-- Action Menu Button -->
                                         <div class="dropdown action-menu";">
                                             <button class="btn btn-sm btn-primary btn-icon border-0" 
@@ -859,10 +867,10 @@ $(document).ready(function(){
                                             <i class="ri-user-line text-muted"></i>
                                         </div>
                                         <div>
-                                            <div class="fw-medium small">${created_by}</div>
+                                            <div class="fw-medium small">${!modified_by ? created_by : modified_by}</div>
                                         </div>
                                     </div>`);
-                            html.push(`<span class="small">${created_at}</span>`); 
+                            html.push(`<span class="small">${!modified_date ? created_at : modified_date}</span>`); 
                             html.push(`<span class="small">${tat} days</span>`); 
                             html.push(action); 
                             html.push(reply); 

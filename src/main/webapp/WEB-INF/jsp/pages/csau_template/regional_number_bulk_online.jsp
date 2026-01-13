@@ -1,569 +1,318 @@
-  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
 <%@ page import="ws.casemgt.Ws_client_application"%>
 <%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.google.gson.GsonBuilder"%>
-  <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-       
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Bulk Regional Number Dashboard - ${fullname}</h1>
-<!--             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Test Generate Report</a>
- -->          </div>
-          
-    <!--       <div class="row">
+  <!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
-           
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Job Processed Today</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">Bulk Regional Number</h1>
+                    <!-- <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Search and verify stamp duty payment</p> -->
                 </div>
-              </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bulk Regional Number</li>
+                </ol>
             </div>
-
-           
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Bills Processed Today</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-           
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Paid Bills ready for Processing</div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
-                        </div>
-                       
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">8</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            
-             
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Accounts Created Today</div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
-                        </div>
-                       
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            
-          </div> -->
-          <hr>
-          
-          
+        </div>
+        <!-- End::page-header -->
         
-        
-
-       <div class="row">
-     
-     
-     
-     <div class="col-lg-8">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3">
-           
-           <%-- <div class="card-header">
-				<h4 class='float-left'>
-				<i class="fas fa-stamp"></i>Front Desk Templates - ${fullname}</h4>
-				<form action="${pageContext.request.contextPath}/client_application" >
-				
-				<button type="submit"  class="btn btn-primary btn-icon-split float-right" >
-				<span class="icon text-white-50"> <i class="fas fa-angle-double-left"></i></span><span class="text">Back</span>
-				</button>
-				</form>
-		</div> --%>
-            <div class="card-body">
-
-
-	   
-  
-  
-   <div class="card">
-
-		        <h5 class="card-header" role="tab" id="headingThree">
-		            <a class="collapsed d-block" data-toggle="collapse" data-parent="#accordion" href="#collapseacknowledgeofterPayment" aria-expanded="false" aria-controls="collapseThree">
-		                <i class="fa fa-chevron-down pull-right"></i> <i class="fas fa-file-alt"></i>Bulk Regional Number
-		            </a>
-		        </h5>
-		        <div id="collapseacknowledgeofterPayment" class="collapse show" role="tabpanel" aria-labelledby="headingThree">
-		            <div class="card-body">
-
-			   	          
-				          <div class="form-row">
-				      
-				     
-				     
-				      		      
-				              <div class="col-lg-12">
-				          <!-- Example Pie Chart Card-->
-				          <div class="card mb-3">
-				           <div class="card-header">
-				           Regional Number
-				            </div>
-				            <div class="card-body">
-				               <!--  The Form starts here -->
-				             
-				                       
-						      <div class="form-group">
-								
-								<div class="row">
-			<div class="col-lg-6">
-				<!-- Example Bar Chart Card-->
-				<div class="card mb-3">
-					<div class="card-header bg-dark text-white">
-						<i class="fa fa-bar-chart"></i>Service Selection
+       <div class="row g-4">
+			<!-- Main Content Area -->
+			<div class="col-lg-8">
+				<div class="card border-0 shadow-sm">
+				<div class="card-body p-4">
+					<!-- Bulk Regional Number Section -->
+					<div class="card border-0 shadow-sm mb-4">
+					<div class="card-header bg-primary bg-gradient text-white d-flex justify-content-between align-items-center" 
+						data-bs-toggle="collapse" data-bs-target="#collapseBulkRegional" 
+						aria-expanded="true" aria-controls="collapseBulkRegional">
+						<h5 class="mb-0">
+						<i class="fas fa-file-alt me-2"></i>Bulk Regional Number Processing
+						</h5>
+						<i class="fas fa-chevron-down transition-rotate"></i>
 					</div>
-					<div class="card-body">
-						<form action="${pageContext.request.contextPath}/bill_switcher"
-							method="post">
-
-
-							<div class="form-group">
-								<!-- <label for="main_service">Main Service</label> -->
-								<select id="main_service_cp" class="form-control input-sm" readonly>
-									
-									<option value="1.0-APPLICATION FOR REGIONAL NUMBER" selected>APPLICATION FOR REGIONAL NUMBER</option>
-									<!-- <option value="-1">Select Main Service</option> -->
-									
-               <%--  <c:forEach items="${main_services}" var="main_service">
-                  
-               
-                   <c:if test="${main_service.business_process_on_case == 'No'}"> 
-                          <option value="${main_service.business_process_id}-${main_service.business_process_name}">${main_service.business_process_name}</option> 
-			                  
-			                    </c:if>  
-
-			                     
-			                  </c:forEach> --%>
-									
-								</select>
+					<div id="collapseBulkRegional" class="collapse show">
+						<div class="card-body p-4">
+						<!-- Service Selection Card -->
+						<div class="card border mb-4">
+							<div class="card-header bg-dark bg-opacity-10 border-bottom">
+							<h6 class="mb-0"><i class="fas fa-cogs me-2"></i>Service Selection</h6>
 							</div>
-							<div class="form-group">
-								<!--  <label for="sub_service">Sub Service</label> -->
-								<select name="sub_service_cp" id="sub_service_cp"
-									class="form-control input-sm" readonly>
-									<option value="1-APPLICATION FOR REGIONAL NUMBER">APPLICATION FOR REGIONAL NUMBER</option>
-									<!-- <option value="-1">Select Sub Service</option> -->
-									
+							<div class="card-body">
+							<div class="row g-3">
+								<div class="col-md-6">
+								<label class="form-label fw-bold">Main Service</label>
+								<select id="main_service_cp" class="form-select" disabled>
+									<option value="1.0-APPLICATION FOR REGIONAL NUMBER" selected>
+									APPLICATION FOR REGIONAL NUMBER
+									</option>
 								</select>
+								</div>
+								<div class="col-md-6">
+								<label class="form-label fw-bold">Sub Service</label>
+								<select name="sub_service_cp" id="sub_service_cp" class="form-select" disabled>
+									<option value="1-APPLICATION FOR REGIONAL NUMBER" selected>
+									APPLICATION FOR REGIONAL NUMBER
+									</option>
+								</select>
+								</div>
 							</div>
-
-							
-						</form>
-
-					</div>
-					<!--  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
-				</div>
-
-
-
-			</div>
-
-
-
-			<!--   Here is the right Table -->
-			<div class="col-lg-6">
-				<!-- Example Pie Chart Card-->
-				<div class="card mb-3">
-					<div class="card-header bg-dark text-white">
-						<i class="fa fa-pie-chart"></i>License Surveyor's Details
-					</div>
-					<div class="card-body">
-						<!--  The Form starts here -->
-						<%--  <form action="${pageContext.request.contextPath}/processing_after_payment"  method="post">
- --%>
-						<div class="form-group">
-									<!--   <label for="job_number">Job Number</label> -->
-									
-								
-								
-							<div class="form-row">
-				              <div class="col-md-8">
-				               <input class="form-control" id="txt_brn_licenced_number"
-										name="job_number" type="text" aria-describedby="nameHelp"
-										placeholder="Enter  Number" required>
-										
-				              </div>
-				                <div class="col-md-4">
-				               <button class="btn btn-primary btn-block"
-										id="btn_brn_licenced_number_search">
-										<span
-											class="text" >Search</span>
-									</button>
-				              </div>
-				              
-				             
-				            </div>
-								
-								
-								
-								
-								   <div class="form-row">
-				              <div class="col-md-6">
-				                <label for="txt_brn_licenced_name">Name </label>
-				                <input  id="txt_brn_licenced_name" class="form-control" type="text" aria-describedby="nameHelp"   >
-				              </div>
-				                
-				                <div class="col-md-6">
-				                <label for="search_value">Status</label>
-				                <input  class="form-control" id="txt_brn_licenced_status_new"  type="text" aria-describedby="nameHelp"  readonly >
-				              </div>
-				             
-				            </div>
-								
-					</div>
-				</div>
-				<!--   Here is the end of right table -->
-
-			</div>
-		
-				
-
-			</div>
-
-
-
-	<!--   Here is the right Table -->
-			<div class="col-lg-6">
-				<!-- Example Pie Chart Card-->
-				<div class="card mb-3">
-					<div class="card-header bg-dark text-white">
-						<i class="fa fa-pie-chart"></i>Bill Generations
-					</div>
-					<div class="card-body">
-						<!--  The Form starts here -->
-						<%--  <form action="${pageContext.request.contextPath}/processing_after_payment"  method="post">
- --%>
-						<div class="form-group">
-									<!--   <label for="job_number">Job Number</label> -->
-									
-								
-								
-							<div class="form-row">
-				              <div class="col-md-6">
-				               <input class="form-control" id="txt_brn_bill_application_qty"
-										name="job_number" type="text" aria-describedby="nameHelp"
-										placeholder="Quantity" required>
-										
-				              </div>
-				                <div class="col-md-6">
-				               <button class="btn btn-primary btn-block"
-										id="btn_brn_generate_bill">
-										<span
-											class="text" >Generate Bill</span>
-									</button>
-				              </div>
-				              
-				             
-				            </div>
-								
-								
-									<div class="form-row">
-
-							<div class="col-md-12">
-								<label for="locality">Office Region</label> <select
-									name="new_bill_application_office_region_reg_no"
-									id="new_bill_application_office_region_reg_no"
-									class="form-control input-sm" data-style="btn-info"
-									data-live-search="true"
-								>
-									<option value="-1">Select Office Region</option>
-								
-									<c:forEach items="${officeregionlist}" var="officeregion">
-										<option  value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
-							  </c:forEach>
-			 
-								</select>
-
 							</div>
 						</div>
-							
-								
-					</div>
-				</div>
-				<!--   Here is the end of right table -->
 
-			</div>
-		
-				
-
-			</div>
-			
-			
-				<!--   Here is the right Table -->
-			<div class="col-lg-6">
-				<!-- Example Pie Chart Card-->
-				<div class="card mb-3">
-					<div class="card-header bg-dark text-white">
-						<i class="fa fa-pie-chart"></i>Process Acknowledgement
-					</div>
-					<div class="card-body">
-						<!--  The Form starts here -->
-						<%--  <form action="${pageContext.request.contextPath}/processing_after_payment"  method="post">
- --%>
-						<div class="form-group">
-									<!--   <label for="job_number">Job Number</label> -->
-									
+						<!-- Two Column Layout -->
+						<div class="row g-4">
+							<!-- License Surveyor's Details -->
+							<div class="col-lg-6">
+							<div class="card border h-100">
+								<div class="card-header bg-dark bg-opacity-10 border-bottom">
+								<h6 class="mb-0"><i class="fas fa-user-tie me-2"></i>License Surveyor's Details</h6>
+								</div>
+								<div class="card-body">
+								<!-- Search Input -->
+								<div class="mb-3">
+									<label class="form-label fw-bold">License Number Search</label>
+									<div class="input-group">
+									<input type="text" class="form-control" id="txt_brn_licenced_number" 
+											placeholder="Enter license number" required>
+									<button class="btn btn-primary" type="button" id="btn_brn_licenced_number_search">
+										<i class="fas fa-search"></i>
+									</button>
+									</div>
+								</div>
 								
-								
-							<div class="form-row">
-				              <div class="col-md-8">
-				               <input class="form-control" id="txt_ref_number_for_brn"
-										name="txt_ref_number_for_brn" type="text" aria-describedby="nameHelp"
-										placeholder="Enter Reference Number" required>
-										
-				              </div>
-				               
-				               <div class="col-md-4">
-				                <button type="button" class="btn btn-primary"  id="btn_load_bill_details_after_payment_bulk_regional_number"  data-toggle="tooltip" title="CHECK BILL Status">
-										            <i class="fa fa-search-dollar"></i>
-										        </button>
-				              </div>
-				             
-				            </div><br><br>
-								
-								
-								
-								
-								   <div class="form-row">
-				              
-				               <div class="col-auto">
-				                <button type="button" class="btn btn-icon-split btn-info btn-lg"  id="btn_upload_regional_by_csv" data-placement="top" data-toggle="modal" data-target="#filefileRegionalNumberUploadModal" data-toggle="tooltip" title="Upload CSV">
-										           <span class="icon text-white-50"> <i class="fas fa-file-upload"></i></span>
-										           <!-- <span class="text">Upload Data</span> -->
-										        </button>
-				              </div>
-				              
-				              <div class="col">
-				               <button class="btn btn-success btn-icon-split float-right  btn-lg" id="btn_process_bulk_regional_number" >
-												<span class="icon text-white-50"> <i class="fas fa-search"></i></span><span class="text">Process Data</span>
-								</button>
-				              </div>
-				                
-				                
-				             
-				            </div>
-								
-					</div>
-				</div>
-				<!--   Here is the end of right table -->
-
-			</div>
-		
-				
-
-			</div>
-						
-							
-									
+								<!-- Surveyor Details -->
+								<div class="row g-3">
+									<div class="col-md-6">
+									<label class="form-label fw-bold">Name</label>
+									<input type="text" class="form-control bg-light" id="txt_brn_licenced_name" style="cursor: not-allowed;" readonly>
+									</div>
+									<div class="col-md-6">
+									<label class="form-label fw-bold">Status</label>
+									<input type="text" class="form-control bg-light" id="txt_brn_licenced_status_new" style="cursor: not-allowed;" readonly>
+									</div>
+								</div>
+								</div>
 							</div>
-				             
-						
-						         
-						         
-						         
-						   <div  class="table-responsive">
-				           <table class="table table-bordered table-hover table-sm" id="bulk_regional_number_list_dataTable_smd" >
-				           
-				              <thead>
-				                <tr>
-				                <th>ID</th>
-				                <th>Applicant Name</th>
-				                <th>Locality</th>
-				                <th>Gender</th>
-				          		<th>District</th> 
-				          		<th>Region</th> 
-				                 
-				                  </tr>
-				              </thead>
-				              
-				                <tbody>
+							</div>
+
+							<!-- Bill Generation -->
+							<div class="col-lg-6">
+							<div class="card border h-100">
+								<div class="card-header bg-dark bg-opacity-10 border-bottom">
+								<h6 class="mb-0"><i class="fas fa-file-invoice-dollar me-2"></i>Bill Generation</h6>
+								</div>
+								<div class="card-body">
+								<!-- Quantity Input -->
+								<div class="mb-3">
+									<label class="form-label fw-bold">Application Quantity</label>
+									<div class="input-group">
+									<input type="number" class="form-control" id="txt_brn_bill_application_qty" 
+											placeholder="Enter quantity" min="1" required>
+									<button class="btn btn-primary" type="button" id="btn_brn_generate_bill">
+										<i class="fas fa-file-invoice me-2"></i>Generate Bill
+									</button>
+									</div>
+								</div>
 								
-				  				</tbody>
-				    
-				            
-				            </table>
-				          </div>
-				    
-				    
-				            
-				            <!-- The form Ends Hers -->
-				            
-				          </div>
-				         
-				        </div>
-				      <!--   Here is the end of right table -->
-				  
-				      </div>
-				      
-				      
-				      
+								<!-- Office Region Selection -->
+								<div class="mb-3">
+									<label class="form-label fw-bold">Office Region</label>
+									<select name="new_bill_application_office_region_reg_no" 
+											id="new_bill_application_office_region_reg_no" 
+											class="form-select" data-style="btn-info">
+									<option value="-1">Select Office Region</option>
+									<c:forEach items="${officeregionlist}" var="officeregion">
+										<option value="${officeregion.ord_region_code}">
+										${officeregion.ord_region_name}
+										</option>
+									</c:forEach>
+									</select>
+								</div>
+								</div>
+							</div>
+							</div>
+						</div>
 
-				     
-				     
-				      </div>
-				      
-				      
-				     
-				      
-		                
-		            </div>
-		        </div>
- </div>
-      
-				  
-				     
+						<!-- Process Acknowledgement Section -->
+						<div class="row g-4 mt-3">
+							<div class="col-12">
+							<div class="card border">
+								<div class="card-header bg-dark bg-opacity-10 border-bottom">
+								<h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Process Acknowledgement</h6>
+								</div>
+								<div class="card-body">
+								<!-- Reference Number Input -->
+								<div class="mb-4">
+									<label class="form-label fw-bold">Reference Number Check</label>
+									<div class="input-group">
+									<input type="text" class="form-control" id="txt_ref_number_for_brn" 
+											placeholder="Enter reference number" required>
+									<button class="btn btn-primary" type="button" 
+											id="btn_load_bill_details_after_payment_bulk_regional_number"
+											data-bs-toggle="tooltip" title="Check Bill Status">
+										<i class="fas fa-search"></i> Check Status
+									</button>
+									</div>
+								</div>
+								
+								<!-- Action Buttons -->
+								<div class="d-flex flex-wrap gap-3">
+									<button type="button" class="btn btn-info btn-lg px-4" 
+											id="btn_upload_regional_by_csv"
+											data-bs-toggle="modal" data-bs-target="#filefileRegionalNumberUploadModal"
+											data-bs-tooltip="tooltip" title="Upload CSV File">
+									<i class="fas fa-file-upload me-2"></i>Upload CSV
+									</button>
+									<button class="btn btn-success btn-lg px-4 ms-auto" 
+											id="btn_process_bulk_regional_number">
+									<i class="fas fa-play-circle me-2"></i>Process Data
+									</button>
+								</div>
+								</div>
+							</div>
+							</div>
+						</div>
 
-          
-			
-      
+						<!-- Data Table Section -->
+						<div class="mt-4">
+							<div class="card border">
+							<div class="card-header bg-dark bg-opacity-10 border-bottom d-flex justify-content-between align-items-center">
+								<h6 class="mb-0"><i class="fas fa-table me-2"></i>Applications List</h6>
+								<span class="badge bg-primary rounded-pill" id="tableCount">0</span>
+							</div>
+							<div class="card-body p-0">
+								<div class="table-responsive">
+								<table class="table table-hover table-striped mb-0" id="bulk_regional_number_list_dataTable_smd">
+									<thead class="table-light">
+									<tr>
+										<th>ID</th>
+										<th>Applicant Name</th>
+										<th>Locality</th>
+										<th>Gender</th>
+										<th>District</th>
+										<th>Region</th>
+									</tr>
+									</thead>
+									<tbody>
+									<!-- Data will be populated here -->
+									</tbody>
+								</table>
+								</div>
+							</div>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
 
-  <br>
-  
-  
+			<!-- Right Sidebar -->
+			<div class="col-lg-4">
+				<!-- Instructions Card -->
+				<div class="card border-0 shadow-sm mb-4">
+				<div class="card-header bg-info bg-gradient text-white d-flex justify-content-between align-items-center"
+					data-bs-toggle="collapse" data-bs-target="#collapseInstructions" 
+					aria-expanded="true" aria-controls="collapseInstructions">
+					<h5 class="mb-0">
+					<i class="fas fa-info-circle me-2"></i>Instructions
+					</h5>
+					<i class="fas fa-chevron-down transition-rotate"></i>
+				</div>
+				<div id="collapseInstructions" class="collapse show">
+					<div class="card-body">
+					<div class="alert alert-info mb-3">
+						<i class="fas fa-lightbulb me-2"></i>
+						<strong>Quick Guide:</strong> Follow these steps to process bulk regional numbers.
+					</div>
+					
+					<ol class="list-group list-group-numbered list-group-flush">
+						<li class="list-group-item d-flex align-items-start">
+						<div class="ms-2 me-auto">
+							<div class="fw-bold">Search License Surveyor</div>
+							Enter license number to verify surveyor details
+						</div>
+						</li>
+						<li class="list-group-item d-flex align-items-start">
+						<div class="ms-2 me-auto">
+							<div class="fw-bold">Generate Bill</div>
+							Specify quantity and select office region
+						</div>
+						</li>
+						<li class="list-group-item d-flex align-items-start">
+						<div class="ms-2 me-auto">
+							<div class="fw-bold">Upload Data</div>
+							Upload CSV file with applicant details
+						</div>
+						</li>
+						<li class="list-group-item d-flex align-items-start">
+						<div class="ms-2 me-auto">
+							<div class="fw-bold">Process Applications</div>
+							Verify reference number and process data
+						</div>
+						</li>
+					</ol>
+					
+					<!-- Important Notes -->
+					<div class="alert alert-warning mt-3">
+						<h6><i class="fas fa-exclamation-triangle me-2"></i>Important Notes:</h6>
+						<ul class="mb-0 ps-3">
+						<li>Ensure all data is validated before processing</li>
+						<li>Keep reference numbers for tracking</li>
+						<li>Verify bill status before final processing</li>
+						</ul>
+					</div>
+					</div>
+				</div>
+				</div>
 
+				<!-- Quick Actions Card -->
+				<div class="card border-0 shadow-sm">
+				<div class="card-header bg-secondary bg-gradient text-white">
+					<h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+				</div>
+				<div class="card-body">
+					<div class="d-grid gap-2">
+					<button class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-start">
+						<i class="fas fa-file-export me-3"></i>
+						<div class="text-start">
+						<div class="fw-bold">Export Data</div>
+						<small class="text-muted">Download current list</small>
+						</div>
+					</button>
+					<button class="btn btn-outline-success btn-lg d-flex align-items-center justify-content-start">
+						<i class="fas fa-history me-3"></i>
+						<div class="text-start">
+						<div class="fw-bold">Recent Processes</div>
+						<small class="text-muted">View last 10 operations</small>
+						</div>
+					</button>
+					<button class="btn btn-outline-info btn-lg d-flex align-items-center justify-content-start">
+						<i class="fas fa-question-circle me-3"></i>
+						<div class="text-start">
+						<div class="fw-bold">Help & Support</div>
+						<small class="text-muted">Get assistance</small>
+						</div>
+					</button>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
 
-
- 
-      
-
-      
-            
-          
-            </div>
-          
-          </div>
-          
-         
-        
-    
-   
-        
-      </div>
-      
-      
-      
-      
-    <!--   Here is the right Table -->
-        <div class="col-lg-4">
-          <!-- Example Pie Chart Card-->
-          
-          
-          
-          	    <div class="card">
-		        <h5 class="card-header" role="tab" id="headingThree">
-		            <a class="collapsed d-block" data-toggle="collapse" data-parent="#accordion" href="#collapselistofservices" aria-expanded="false" aria-controls="collapseFive">
-		                <i class="fa fa-chevron-down pull-right"></i> <i class="fa fa-users"></i>Instructions
-		            </a>
-		        </h5>
-		        <div id="collapselistofservices" class="collapse show" role="tabpanel" aria-labelledby="headingThree">
-		            <div class="card-body">
-		                
-		               
-		       
-		            </div>
-		        </div>
-		    </div>
-		  
-		  
-		  
-		  
-		  
-	
-		  
-		  
-		    <br>
-          
-          
-          
-          <div id="accordion" role="tablist" aria-multiselectable="true">
-		   
-		   
-		   
-		 
-		    
-		    <br>
-		    
-		    
-		    
-		    
-		    
-		      
-		    
-	
-
-		    
-		</div>
-
-      </div>
-      
-     </div>
-      
-       
-
-           
-        
-
-        </div>
-        <!-- /.container-fluid -->
-
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
-  
-  
-  
+	</div>
+</div>
   
   
 

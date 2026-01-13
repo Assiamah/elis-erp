@@ -2239,93 +2239,185 @@ $(document)
 
 
 
-			$(
-				'#btn_load_bill_details_after_payment_bulk_regional_number')
-				.on(
-					'click',
-					function (e) {
-
-						var client_phone_search = $(
-							"#txt_ref_number_for_brn")
-							.val();
-
-						$
-							.ajax({
-								type: "POST",
-								url: "payment_serv",
-								// target:'_blank',
-
-								data: {
-									request_type: 'lc_payment_verification_for_bill_revised',
-									ref_number: client_phone_search
-								},
-								cache: false,
-								// responseType:
-								// 'arraybuffer',
-								// dataType:'blob',
-								/*
-								 * xhrFields : {
-								 * responseType : 'blob' },
-								 */
-								beforeSend: function () {
-									// $('#district').html('<img
-									// src="img/loading.gif"
-									// alt="" width="24"
-									// height="24">');
-								},
-								success: function (
-									jobdetails) {
-									// console.log(jobdetails);
-									// alert(jobdetails);
-
-									var table = $('#bill_for_payment_list_dataTable');
-									table.find("tbody tr")
-										.remove();
-
-									//console.log(jobdetails);
-									var json_p = JSON
-										.parse(jobdetails);
-
-									$(json_p.data)
-										.each(
-											function () {
-
-												// data-toggle="modal"
-												// data-target="#accountDetailsModal"
-												// 
-												console
-													.log(this.payment_confiration_status);
-												if (this.payment_confiration_status === 0) {
-													alert('Bill has not been paid. It cannot be acknowledge');
-													$(
-														"#btn_upload_regional_by_csv")
-														.prop(
-															'disabled',
-															true);
-													$(
-														"#btn_process_bulk_regional_number")
-														.prop(
-															'disabled',
-															true);
-												} else {
-													$(
-														"#btn_upload_regional_by_csv")
-														.prop(
-															'disabled',
-															false);
-													$(
-														"#btn_process_bulk_regional_number")
-														.prop(
-															'disabled',
-															false);
-												}
-
-											});
-
-								}
-							});
-
+			$('#btn_load_bill_details_after_payment_bulk_regional_number').on('click', async function(e) {
+				const refNumber = $("#txt_ref_number_for_brn").val().trim();
+				
+				// Validate input
+				if (!refNumber) {
+					await Swal.fire({
+						title: 'Missing Information',
+						text: 'Please enter a reference number',
+						icon: 'warning',
+						confirmButtonText: 'OK',
+						confirmButtonColor: '#3085d6'
 					});
+					return;
+				}
+
+				// Show loading indicator
+				Swal.fire({
+					title: 'Checking Bill Status',
+					text: 'Please wait while we verify the payment status...',
+					icon: 'info',
+					showConfirmButton: false,
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					didOpen: () => {
+						Swal.showLoading();
+					}
+				});
+
+				try {
+					const response = await $.ajax({
+						type: "POST",
+						url: "payment_serv",
+						data: {
+							request_type: 'lc_payment_verification_for_bill_revised',
+							ref_number: refNumber
+						},
+						cache: false
+					});
+
+					Swal.close();
+
+					// Parse the response
+					const result = JSON.parse(response);
+					const table = $('#bill_for_payment_list_dataTable');
+					table.find("tbody tr").remove();
+
+					let hasUnpaidBills = false;
+					let paidBillsCount = 0;
+					let unpaidBillsCount = 0;
+
+					// Process each bill
+					result.data.forEach(function(bill) {
+						console.log('Payment status:', bill.payment_confirmation_status);
+						
+						if (bill.payment_confirmation_status === 0) {
+							hasUnpaidBills = true;
+							unpaidBillsCount++;
+						} else {
+							paidBillsCount++;
+						}
+					});
+
+					// Update buttons based on payment status
+					if (hasUnpaidBills) {
+						$("#btn_upload_regional_by_csv").prop('disabled', true);
+						$("#btn_process_bulk_regional_number").prop('disabled', true);
+						
+						// Show warning for unpaid bills
+						await Swal.fire({
+							title: 'Payment Required',
+							html: `Bill payment verification failed!<br><br>
+								<div class="text-start">
+									<p><i class="fas fa-times-circle text-danger me-2"></i> <strong>${unpaidBillsCount}</strong> bill(s) have not been paid</p>
+									<p><i class="fas fa-check-circle text-success me-2"></i> <strong>${paidBillsCount}</strong> bill(s) are paid</p>
+								</div>`,
+							icon: 'error',
+							confirmButtonText: 'Understand',
+							confirmButtonColor: '#d33',
+							showCancelButton: true,
+							cancelButtonText: 'View Details',
+							cancelButtonColor: '#3085d6'
+						}).then((result) => {
+							if (result.dismiss === Swal.DismissReason.cancel) {
+								// Show detailed bill information
+								showBillDetails(result.data, refNumber);
+							}
+						});
+					} else {
+						$("#btn_upload_regional_by_csv").prop('disabled', false);
+						$("#btn_process_bulk_regional_number").prop('disabled', false);
+						
+						// Show success message
+						await Swal.fire({
+							title: 'Payment Verified!',
+							html: `All bills have been successfully paid.<br><br>
+								<div class="text-center">
+									<i class="fas fa-check-circle text-success fa-3x mb-3"></i><br>
+									<strong>${paidBillsCount}</strong> bill(s) verified and paid
+								</div>`,
+							icon: 'success',
+							confirmButtonText: 'Continue Processing',
+							confirmButtonColor: '#28a745',
+							showCancelButton: true,
+							cancelButtonText: 'View Details',
+							cancelButtonColor: '#3085d6'
+						}).then((result) => {
+							if (result.dismiss === Swal.DismissReason.cancel) {
+								// Show detailed bill information
+								// showBillDetails(result.data, refNumber);
+							}
+						});
+					}
+
+				} catch (error) {
+					Swal.close();
+					
+					console.error('Error checking bill status:', error);
+					
+					await Swal.fire({
+						title: 'Verification Failed',
+						text: 'An error occurred while checking the bill status. Please try again.',
+						icon: 'error',
+						confirmButtonText: 'Try Again',
+						confirmButtonColor: '#d33'
+					});
+				}
+			});
+
+			// Helper function to show detailed bill information
+			async function showBillDetails(bills, refNumber) {
+				// Create HTML table for bill details
+				let billDetailsHtml = `
+					<div class="table-responsive mt-3">
+						<table class="table table-sm table-bordered">
+							<thead class="table-light">
+								<tr>
+									<th>Bill Ref</th>
+									<th>Amount</th>
+									<th>Payment Date</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+				`;
+				
+				bills.forEach(bill => {
+					const statusClass = bill.payment_confirmation_status === 0 ? 'danger' : 'success';
+					const statusText = bill.payment_confirmation_status === 0 ? 'Unpaid' : 'Paid';
+					const statusIcon = bill.payment_confirmation_status === 0 ? 'fa-times-circle' : 'fa-check-circle';
+					
+					billDetailsHtml += `
+						<tr>
+							<td>${bill.bill_reference || refNumber}</td>
+							<td>${bill.amount || 'N/A'}</td>
+							<td>${bill.payment_date || 'N/A'}</td>
+							<td>
+								<span class="badge bg-${statusClass}">
+									<i class="fas ${statusIcon} me-1"></i>${statusText}
+								</span>
+							</td>
+						</tr>
+					`;
+				});
+				
+				billDetailsHtml += `
+							</tbody>
+						</table>
+					</div>
+				`;
+				
+				await Swal.fire({
+					title: 'Bill Details',
+					html: billDetailsHtml,
+					icon: 'info',
+					confirmButtonText: 'Close',
+					confirmButtonColor: '#3085d6',
+					width: '800px'
+				});
+			}
 
 			$('#btnAddNewUser').on('show.bs.modal', function (e) {
 
@@ -8742,6 +8834,17 @@ $(document)
 							.val();
 
 						// console.log(id_number);
+
+						if(!ls_number) {
+							swal.fire({
+								title: 'Error!',
+								text: 'Please enter a valid Licensed Surveyor Number',
+								icon: 'error',
+								showConfirmButton: true,
+								confirmButtonText: 'OK'
+							});
+							return;
+						}
 						$
 							.ajax({
 								type: "POST",
@@ -8826,7 +8929,13 @@ $(document)
 							.val();
 
 						if (office_region === "") {
-							alert('Please select office Region');
+							swal.fire({
+								title: 'Error!',
+								text: 'Please select office region',
+								icon: 'error',
+								showConfirmButton: true,
+								confirmButtonText: 'OK'
+							});
 							$(
 								"#new_bill_application_office_region_reg_no")
 								.focus();
@@ -8834,7 +8943,13 @@ $(document)
 						}
 
 						if (office_region === "null") {
-							alert('Please select office Region');
+							swal.fire({
+								title: 'Error!',
+								text: 'Please select office region',
+								icon: 'error',
+								showConfirmButton: true,
+								confirmButtonText: 'OK'
+							});
 							$(
 								"#new_bill_application_office_region_reg_no")
 								.focus();
@@ -8842,7 +8957,13 @@ $(document)
 						}
 
 						if (office_region === "-1") {
-							alert('Please select office Region');
+							swal.fire({
+								title: 'Error!',
+								text: 'Please select office region',
+								icon: 'error',
+								showConfirmButton: true,
+								confirmButtonText: 'OK'
+							});
 							$(
 								"#new_bill_application_office_region_reg_no")
 								.focus();

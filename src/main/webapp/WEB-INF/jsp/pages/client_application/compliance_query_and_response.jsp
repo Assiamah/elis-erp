@@ -390,9 +390,9 @@
                                         <th>Details</th>
                                         <th>Receiver</th>
 										<th>Unit</th>
-                                        <th>Created By</th>							        
+                                        <th>Added By</th>							        
                                         <!-- <th>Region</th> -->
-                                        <th>Date Created</th>
+                                        <th>Added On</th>
 										<th>TAT</th>
                                         <th class="text-end">Actions</th>
                                     </tr>

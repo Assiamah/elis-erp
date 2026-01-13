@@ -10,210 +10,165 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-  
- <div class="content-wrapper">
-    <div class="container-fluid">
-      <!-- Breadcrumbs-->
-      <ol class="breadcrumb">
-        <!-- <li class="breadcrumb-item">
-          <a href="index.html">Case Management</a>
-        </li>
-        <li class="breadcrumb-item active">Create New case</li> -->
-      </ol>
-           
-          <div class="row">
-	        <div class="col">
-	          <!-- Example Bar Chart Card-->
-	          <div class="card mb-3">
-	            <div class="card-header">
-	              <i class="fa fa-bar-chart"></i>Search Section</div>
-	            <div class="card-body">
-	              	<!--  The Form starts here -->
-	              	<form id="frmEnquiryJobSearch"  method="post">
-					  <div class="form-group">
-					  	
-					  		<label><b>Search By: </b></label>
-					  	
-					  </div>
-					  
-					    <div class="custom-control custom-radio custom-control-inline">
-						  <input type="radio" id="rbtn_search_type1" name="rbtn_search_type" class="custom-control-input" value="job_number" required>
-						  <label class="custom-control-label" for="rbtn_search_type1">Job number</label>
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+      <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <h1 class="page-title fw-medium fs-18 mb-0">Bulk Collection</h1>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bulk Collection</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
+         <div class="row g-4">
+			<!-- Search Section -->
+			<div class="col-lg-6">
+				<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-primary text-white d-flex align-items-center">
+					<i class="fas fa-search text-warning me-2"></i>
+					<h5 class="mb-0">Search Section</h5>
+				</div>
+				<div class="card-body">
+					<form id="frmEnquiryJobSearch" method="post">
+					<!-- Search Type -->
+					<div class="mb-4">
+						<label class="form-label fw-bold">Search By:</label>
+						<div class="d-flex flex-wrap gap-3">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="rbtn_search_type" id="rbtn_search_type1" value="job_number" required>
+							<label class="form-check-label" for="rbtn_search_type1"><i class="fas fa-hashtag me-1"></i>Job Number</label>
 						</div>
+						<!-- Add more radio buttons here if needed -->
+						</div>
+					</div>
 
-						
-					  <br><br>
-			          
-					 
-					 
-					  <div class="form-group">
-			            <div class="form-row">
-			            
-			              <div class="col-md-8">
-			                
-			                <input class="form-control" id="enq_search_value"  name="enq_search_value"  type="text" aria-describedby="" placeholder="Enter search inputs" required >
-			              </div>
-			              <div class="col-md-4">
-			              	
-			                <button type="submit" class="btn btn-primary btn-block" value="Search" id="btnEnquiryJobSearch" > Search </button>
-			                
-			              </div>
-			            </div>
-			          </div>
+					<!-- Search Input -->
+					<div class="mb-3">
+						<div class="input-group">
+						<input type="text" class="form-control form-control-lg" id="enq_search_value" name="enq_search_value" placeholder="Enter search term" required>
+						<button type="submit" class="btn btn-primary btn-lg" id="btnEnquiryJobSearch">
+							<i class="fas fa-search me-2"></i>Search
+						</button>
+						</div>
+						<div class="form-text">Enter at least 8 characters for better results</div>
+					</div>
+					</form>
 
+					<!-- Alert -->
+					<div class="alert alert-danger d-none mt-3" id="enquiry_alert" role="alert">
+					<i class="fas fa-exclamation-circle me-2"></i>No Results Found
+					</div>
+				</div>
+				</div>
+			</div>
 
-			        </form>
-	            
-	            <!-- The form Ends Hers -->
+			<!-- Batch List Section -->
+			<div class="col-lg-6">
+				<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-info text-white d-flex align-items-center">
+					<i class="fas fa-list-check text-warning me-2"></i>
+					<h5 class="mb-0">Batch List & Collector's Details</h5>
+				</div>
+				<div class="card-body">
+					<form id="frmEnquiryBatchlist" method="post">
+					<!-- Collector's Name -->
+					<div class="row g-2 mb-3">
+						<label class="form-label fw-bold">Collector's Information</label>
+						<div class="col-md-6">
+							<div class="input-group">
+						<span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+						<input type="text" class="form-control" id="bcd_collected_by" 
+								placeholder="Enter collector's full name" required>
+						</div>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group">
+							<span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+							<input type="text" class="form-control" id="bcd_phone_number" 
+								placeholder="Enter phone number" required>
+						</div>
+						</div>
+					</div>
 
-				<div class="alert alert-danger d-none" id="enquiry_alert" role="alert">
-					No Results Found
-				  </div>
-	
-	            </div>
-	           <!--  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
-	          </div>
-	
-	          
-	         
-	        </div>
-        
-	      	<!--   Here is the right Table -->
-	        <div class="col-sm-6">
-	          <!-- Example Pie Chart Card-->
-	          <div class="card mb-3">
-	            <div class="card-header">
-	              <i class="fas fa-pie-chart"></i> Batch List and Collector's Details</div>
-	            <div class="card-body">
-	            
-	            	<form id="frmEnquiryBatchlist"  method="post">
-						<!-- <h5 class="border-bottom border-gray pb-2">Details Confirmation</h5> -->
-						<div class="form-group row">
-							<div class="col">
-								<input type="text"  required class="form-control" id="bcd_collected_by" placeholder="Enter Collector's Name">
-						
-							</div>
-							
-						 </div>
+					<!-- ID Type and Number -->
+					<div class="row g-2 mb-3">
+						<div class="col-md-6">
+						<select class="form-select" id="bcd_id_type" required data-trigger>
+							<option value="" disabled selected>Select ID Type</option>
+							<option value="NATIONAL ID">National ID</option>
+							<option value="PASSPORT">Passport</option>
+							<option value="DRIVERS LICENSE">Driver's License</option>
+							<option value="NHIS CARD">NHIS Card</option>
+							<option value="VOTERS ID">Voter's ID</option>
+							<option value="SSNIT ID CARD">SSNIT ID Card</option>
+						</select>
+						</div>
+						<div class="col-md-6">
+						<div class="input-group">
+							<span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
+							<input type="text" class="form-control" id="bcd_id_number" 
+								placeholder="Enter ID number" required>
+						</div>
+						</div>
+					</div>
 
+					<!-- Phone Number and Process Button -->
+					<div class="row g-2">
+						<div class="col-md-12">
+						<button type="button" class="btn btn-lg btn-danger w-100" id="btn_process_bulk_collection">
+							<i class="fas fa-play-circle me-2"></i>Process List
+						</button>
+						</div>
+					</div>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
 
-						 <div class="form-group row">
-						  
-							<div class="col">
-							
-						
-							
-									<select id="bcd_id_type" required  class="form-control" >
-										<option value="-1">--Select ID Type--</option>
-										<option value="NATIONAL ID">NATIONAL ID</option>
-										<option value="PASSPORT">PASSPORT</option>
-										<option value="DRIVERS LICENSE">DRIVERS LICENSE</option>
-										<option value="NHIS CARD">NHIS CARD</option>
-										<option value="VOTERS ID">VOTERS ID</option>
-										<option value="SSNIT ID CARD">SSNIT ID CARD</option>
-									</select>
-								
-							</div>
-
-							<div class="col">
-								  <input type="text" required  class="form-control" id="bcd_id_number" placeholder="Enter ID Number">
-								
-							</div>
-
-						 </div>
-						
-						 <div class="form-group row">
-
-							<div class="col">
-								
-								  <input type="text" required  class="form-control" id="bcd_phone_number" placeholder="Enter Phone Number">
-								
-							</div>
-
-							<div class="col">
-								<button type="button" class="btn btn-primary btn-block" value="Search" id="btn_process_bulk_collection" > Process List </button>
-			                
-							</div>
-						  
-						 </div>
-			         
-			        </form>
-	            
-	          </div>
-	              <br><br>
-	        </div>
-	      <!--   Here is the end of right table -->
-      
-      
-   
-      </div>
-       
-      	  </div>
-    
-    
-    <div class="row">
-     <div class="col-lg-12">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3" style="display:none" id="enq-search-results-section">
-            <div class="card-header">
-              <i class="fa fa-bar-chart"></i>Search Results (The result is only 10 records)</div>
-            <div class="card-body">
-            
-         
-            
-	             <!--  Here is where the fee list comes -->
-	             
-	             <div class="table-responsive" >
-			           <table class="table table-bordered " id="tbl-bulk-collection-table" style="min-height:500px">
-			              <thead>
-			                <tr>
-			                 <th>Applicant Name</th>
-			                  <th>Case Number</th>
-			                  <th>Job Number</th>
-			                  <th>GLPIN</th>
-			                  
-			                  <th>Locality</th>
-			                  <th>Regional Number</th>
-			                  
-			                  <!-- <th>Actions</th> -->
-			                  
-			                  
-			                
-			                 </tr>
-			              </thead>
-			              
-			              <tbody>
-			               	
-			                              
-						     
-			              </tbody> 
-			            </table>
-	          	</div>
-             
-              <!--  End Of Table -->
-             </div>
-            <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
-          </div>
-          
-     <!-- Example Bar Chart Card-->
-          
-        
-    
-       </div>
-        
-      </div>
-     </div>
+			<!-- Search Results Section -->
+			<div class="row mt-4">
+			<div class="col-12">
+				<div class="card border-0 shadow-sm" id="enq-search-results-section" style="display: none">
+				<div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+					<div>
+					<i class="fas fa-table me-2"></i>
+					<h5 class="mb-0">Search Results</h5>
+					</div>
+					<span class="badge bg-light text-dark">Showing 10 records</span>
+				</div>
+				<div class="card-body p-0">
+					<div class="table-responsive">
+					<table class="table table-hover table-striped mb-0" id="tbl-bulk-collection-table">
+						<thead class="table-light">
+						<tr>
+							<th>Applicant Name</th>
+							<th>Case Number</th>
+							<th>Job Number</th>
+							<th>GLPIN</th>
+							<th>Locality</th>
+							<th>Regional Number</th>
+						</tr>
+						</thead>
+						<tbody>
+						<!-- Results will be populated here -->
+						</tbody>
+					</table>
+					</div>
+				</div>
+				<div class="card-footer bg-light border-top">
+					<small class="text-muted">Click on a row to select for batch processing</small>
+				</div>
+				</div>
+			</div>
+			</div>
+    </div>
      
      
     
  </div>
  
- 
- 
- 
- 
- 
- 
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>

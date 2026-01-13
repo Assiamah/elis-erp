@@ -25356,7 +25356,7 @@ input.form-control.otp-input {
 }
 
 #applicationsModal.modal {
-  z-index: 1030;
+  z-index: 1031;
   backdrop-filter: blur(3px) !important;
   -webkit-backdrop-filter: blur(3px) !important;
   background: rgba(0, 0, 0, 0.06);
@@ -25364,6 +25364,20 @@ input.form-control.otp-input {
 
 #newApplicationModal.modal {
   z-index: 1030;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+#askForPurposeOfBatching.modal {
+  z-index: 1032;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+#viewBatchlistModal.modal {
+  z-index: 1033;
   backdrop-filter: blur(3px) !important;
   -webkit-backdrop-filter: blur(3px) !important;
   background: rgba(0, 0, 0, 0.06);
