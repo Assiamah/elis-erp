@@ -632,7 +632,7 @@
                                         <option value="Economic Rent">Economic Rent</option>
                                         <option value="Subsidized Rent">Subsidized Rent</option>
                                         <option value="Peppercorn Rent">Peppercorn Rent</option>
-                                        <option value="Ground Rent">Ground Rent</option>
+                                        <!-- <option value="Ground Rent">Ground Rent</option> -->
                                         <option value="Commercial Rent">Commercial Rent</option>
                                     </select>
                                 </div>
@@ -1720,6 +1720,16 @@
                 <div class="text-center mb-4">
                     <button class="btn btn-primary btn-lg px-5 py-2" id="btn_generate_rent_demand_note">
                         <i class="fas fa-cogs me-2"></i>Generate Rent Demand Notice
+                    </button>
+                    <div class="mt-2 text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Click to calculate rent assessment based on current rates
+                    </div>
+                </div>
+
+                 <div class="text-center mb-4">
+                    <button class="btn btn-primary btn-lg px-5 py-2" id="btn_generate_rent_demand_note_current_year">
+                        <i class="fas fa-cogs me-2"></i>Generate Rent Demand Notice(Current Year)
                     </button>
                     <div class="mt-2 text-muted small">
                         <i class="fas fa-info-circle me-1"></i>

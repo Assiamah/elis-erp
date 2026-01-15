@@ -3305,7 +3305,7 @@ cbAddress.showText(bdAccountNumber);
         document.add(p3);
 
         // QR Code
-        BarcodeQRCode barcodeQRCode = new BarcodeQRCode(bdFileNumber, 1000, 1000, null);
+        BarcodeQRCode barcodeQRCode = new BarcodeQRCode(bdAccountNumber, 1000, 1000, null);
         Image codeQrImage = barcodeQRCode.getImage();
         codeQrImage.scaleAbsolute(100, 100);
         codeQrImage.setAbsolutePosition(35, 720);

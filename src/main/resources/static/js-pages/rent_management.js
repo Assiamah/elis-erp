@@ -111,7 +111,6 @@ $(document).ready(function() {
     })
 
 
-    
     $('#btn_generate_rent_demand_note').on('click', (e) => {
     e.preventDefault();
     
@@ -486,6 +485,382 @@ $(document).ready(function() {
     });
 });
 
+
+
+    $('#btn_generate_rent_demand_note_current_year').on('click', (e) => {
+    e.preventDefault();
+    
+    var rdn_rent_id = $('#rdn_rent_id').val();
+    var rdn_account_number = $('#rdn_account_number').val();
+    var rdn_leasee_name = $('#rdn_leasee_name').val();
+    var rdn_plot_number = $('#rdn_plot_number').val() || 'N/A';
+    var rdn_estate = $('#rdn_estate').val() || 'N/A';
+    
+    // Validate required fields
+    if (!rdn_rent_id || rdn_rent_id === '0') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Information',
+            text: 'Please select a valid lease record to generate demand notice.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    
+    if (!rdn_leasee_name) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Information',
+            text: 'Please enter the lessee name.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    
+    // Show confirmation dialog
+    Swal.fire({
+        title: 'Generate Rent Demand Notice',
+        html: `
+            <div class="text-start">
+                <p class="mb-3">Are you sure you want to generate a rent demand notice?</p>
+                
+                <div class="alert alert-info py-2 mb-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-circle fa-lg me-3"></i>
+                        <div>
+                            <div class="fw-bold">${rdn_leasee_name}</div>
+                            <small class="text-muted">
+                                <i class="fas fa-hashtag me-1"></i>Plot: ${rdn_plot_number} | 
+                                <i class="fas fa-warehouse me-1 ms-2"></i>Estate: ${rdn_estate}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <table class="table table-sm table-bordered bg-light">
+                        <tbody>
+                            <!--<tr>
+                                <td class="fw-semibold" style="width: 40%">Lease ID:</td>
+                                <td>${rdn_rent_id}</td>
+                            </tr>-->
+                            <tr>
+                                <td class="fw-semibold">Account Number:</td>
+                                <td>${rdn_account_number || 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Generation Type:</td>
+                                <td>
+                                    <span class="badge bg-primary">Single Assessment</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmGeneration">
+                    <label class="form-check-label" for="confirmGeneration">
+                        I confirm all details are correct
+                    </label>
+                </div>
+                
+                <div class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    This will calculate rent assessments based on current rates and outstanding amounts.
+                </div>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: '<i class="fas fa-cogs me-1"></i> Generate Now',
+        cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            const checkbox = document.getElementById('confirmGeneration');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Please confirm that all details are correct');
+                return false;
+            }
+            return true;
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+        width: '500px'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading animation
+            let timerInterval;
+            Swal.fire({
+                title: 'Generating Demand Notice',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-file-invoice-dollar fa-spin fa-2x text-primary"></i>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <p class="mt-2 mb-0 text-muted" id="swal-progress-text">Calculating assessments...</p>
+                    </div>
+                `,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    const progressBar = Swal.getHtmlContainer().querySelector('.progress-bar');
+                    const progressText = Swal.getHtmlContainer().querySelector('#swal-progress-text');
+                    let progress = 0;
+                    
+                    timerInterval = setInterval(() => {
+                        progress += 10;
+                        if (progress <= 80) {
+                            progressBar.style.width = `${progress}%`;
+                            if (progress < 30) {
+                                progressText.textContent = 'Calculating assessments...';
+                            } else if (progress < 60) {
+                                progressText.textContent = 'Applying rates and charges...';
+                            } else {
+                                progressText.textContent = 'Finalizing calculations...';
+                            }
+                        }
+                    }, 300);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            });
+            
+            // Disable generate button during processing
+            $('#btn_generate_rent_demand_note_current_year').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Generating...');
+            
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "rent_mgt_serv",
+                data: {
+                    request_type: 'select_prepare_rent_demand_notice_single_v1',
+                    rdn_rent_id: rdn_rent_id,
+                    rdn_account_number: rdn_account_number
+                },
+                cache: false,
+                success: function(jobdetails) {
+                    Swal.close();
+                    
+                    try {
+                        var json_p = JSON.parse(jobdetails);
+                        var table = $('#tbl_rent_assessment_details');
+                        
+                        // Clear existing rows
+                        table.find("tbody tr").remove();
+                        
+                        // Check if we have data
+                        if (!json_p.rent_assessment || json_p.rent_assessment.length === 0) {
+                            // Show empty state
+                            table.find('tbody').append(`
+                                <tr id="noAssessmentData">
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+                                            <p class="mb-2 fw-semibold">No Assessment Data Available</p>
+                                            <small>No rent assessments found for this period</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `);
+                            
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'No Assessments Found',
+                                text: 'No rent assessments were generated for this period.',
+                                confirmButtonColor: '#3085d6'
+                            });
+                        } else {
+                            // Calculate total amount
+                            let totalAmount = 0;
+                            
+                            // Populate table with data
+                            $(json_p.rent_assessment).each(function (index) {
+                                const amountAssessed = parseFloat(this.rc_amount_assessed || 0);
+                                totalAmount += amountAssessed;
+                                
+                                const row = `
+                                    <tr>
+                                        <td class="text-center">
+                                            <span class="fw-semibold">${this.rc_period || 'N/A'}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            ${this.rc_amount_of_one_cedi || '0.00'}
+                                        </td>
+                                        <td class="text-end">
+                                            ${this.rc_amount_of_one_cedi_pa || '0.00'}
+                                        </td>
+                                        <td class="text-end fw-semibold">
+                                            ${parseFloat(this.rc_annual_rent || 0).toFixed(2)}
+                                        </td>
+                                        <td class="text-end fw-bold text-primary">
+                                            ${amountAssessed.toFixed(2)}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-file-alt text-secondary me-2"></i>
+                                                <span>${this.rc_description || 'Rent Assessment'}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+
+                                $('#assessmentCount').text(json_p.rent_assessment.length + ' Items');
+                                
+                                table.find('tbody').append(row);
+                            });
+                            
+                            // Add total row if we have data
+                            if (json_p.rent_assessment.length > 0) {
+                                table.find('tbody').append(`
+                                    <tr class="table-light">
+                                        <td colspan="4" class="text-end fw-bold">Total Amount Due:</td>
+                                        <td colspan="2" class="text-start fw-bold text-success">
+                                            GHS ${totalAmount.toFixed(2)}
+                                        </td>
+                                    </tr>
+                                `);
+                            }
+                            
+                            // Show success message with options
+                            Swal.fire({
+                                title: 'Demand Notice Generated!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle fa-3x text-success"></i>
+                                        </div>
+                                        <p class="mb-2"><strong>Rent demand notice generated successfully!</strong></p>
+                                        <div class="alert alert-success py-2">
+                                            <small>
+                                                <i class="fas fa-calculator me-1"></i>
+                                                Generated ${json_p.rent_assessment.length} assessment(s) for ${rdn_leasee_name}
+                                            </small>
+                                        </div>
+                                        <div class="alert alert-info py-2">
+                                            <small>
+                                                <i class="fas fa-money-bill-wave me-1"></i>
+                                                Total Amount Due: <strong>GHS ${totalAmount.toFixed(2)}</strong>
+                                            </small>
+                                        </div>
+                                    </div>
+                                `,
+                                showCancelButton: true,
+                                confirmButtonColor: '#198754',
+                                cancelButtonColor: '#6c757d',
+                                confirmButtonText: '<i class="fas fa-print me-1"></i> View & Print',
+                                cancelButtonText: '<i class="fas fa-eye me-1"></i> View Details',
+                                //showDenyButton: true,
+                                //denyButtonText: '<i class="fas fa-envelope me-1"></i> Send Email',
+                                //denyButtonColor: '#0d6efd',
+                                width: '500px'
+                            }).then((result) => {
+                                // Enable print button if exists
+                                $('#btn_print_rent_demand_note').prop('disabled', false);
+                                
+                                if (result.isConfirmed) {
+                                    // Generate print/PDF view
+                                    generatePrintView(rdn_rent_id, rdn_account_number);
+                                } else if (result.isDenied) {
+                                    // Send email
+                                    const email = $('#rdn_email').val();
+                                    if (email) {
+                                        sendDemandNoticeEmail(email, rdn_leasee_name, rdn_rent_id);
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Email Required',
+                                            text: 'Please enter an email address to send the demand notice.',
+                                            confirmButtonColor: '#3085d6'
+                                        });
+                                    }
+                                }
+                                // If cancelled (view details), just keep modal open
+                            });
+                        }
+                        
+                        // Update generation info
+                        if (json_p.generation_date) {
+                            $('#generationDate').text(json_p.generation_date);
+                        }
+                        
+                        if (json_p.assessment_period) {
+                            $('#assessmentPeriod').text(json_p.assessment_period);
+                        }
+                        
+                        // Show summary if it exists
+                        if (json_p.summary) {
+                            $('#assessmentSummary').show();
+                        }
+                        
+                    } catch (e) {
+                        console.error('Error parsing response:', e);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Data Error',
+                            text: 'Failed to parse server response. Please try again.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.close();
+                    console.error('AJAX Error:', error);
+                    
+                    let errorMessage = 'Failed to generate demand notice. ';
+                    if (xhr.status === 0) {
+                        errorMessage += 'No network connection.';
+                    } else if (xhr.status === 404) {
+                        errorMessage += 'Server endpoint not found.';
+                    } else if (xhr.status === 500) {
+                        errorMessage += 'Server error. Please try again later.';
+                    } else {
+                        errorMessage += 'Please check your connection.';
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Generation Failed',
+                        html: `
+                            <div class="text-start">
+                                <p class="mb-2">${errorMessage}</p>
+                                <div class="alert alert-danger py-2 mt-2">
+                                    <small>
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        <strong>Error Details:</strong> ${error}
+                                    </small>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="retryDemandNoticeGeneration()">
+                                        <i class="fas fa-redo me-1"></i> Retry
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="Swal.close()">
+                                        <i class="fas fa-times me-1"></i> Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'OK',
+                        showConfirmButton: false,
+                        width: '500px'
+                    });
+                },
+                complete: function() {
+                    // Re-enable generate button
+                    $('#btn_generate_rent_demand_note_current_year').prop('disabled', false).html('<i class="fas fa-cogs me-2"></i> Generate Rent Demand Notice');
+                }
+            });
+        }
+    });
+});
+
 // Function to retry demand notice generation
 function retryDemandNoticeGeneration() {
     Swal.close();
@@ -514,7 +889,7 @@ function generatePrintView(rentId, accountNumber) {
     // Make AJAX request for print
     $.ajax({
         type: "POST",
-        url: "rent_mgt_serv",
+        url: "rent_mgt_pdf_serv",
         data: {
             request_type: 'print_rent_demand_notice',
             rdn_rent_id: rentId,
@@ -2559,7 +2934,7 @@ $(document).on("click", ".viewLedgerBtn", function () {
     
     // Populate Property Details
     $("#view_plot_number").text(currentLedgerData.all?.plot_number || "-");
-    $("#view_plot_size").text(currentLedgerData.all?.plot_size ? `${currentLedgerData.all?.plot_size} sqm` : "-");
+    $("#view_plot_size").text(currentLedgerData.all?.plot_size ? `${currentLedgerData.all?.plot_size}` : "-");
     $("#view_estate").text(currentLedgerData.all?.estate || "-");
     $("#view_ls_number").text(currentLedgerData.all?.ls_number || "-");
     $("#view_parcel_address").text(currentLedgerData.all?.parcel_address || "-");
