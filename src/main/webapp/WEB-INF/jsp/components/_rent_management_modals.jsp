@@ -1840,138 +1840,288 @@
 </div>
 
 <!-- Rent Transaction History Modal -->
-<div class="modal fade" data-position="0" id="rentTransactionhistory" tabindex="-1" aria-labelledby="rentTransactionhistoryLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="rentTransactionhistoryLabel">Transaction History</h5>
-				<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<button class="btn btn-warning mb-2 d-none" id="xloadRt" onclick="loadTransactionHistory()"><i class="fa fa-undo"></i></button>
-				<button class="btn btn-danger btn-sm mb-2 d-none" id="btnAddNewLessee" data-bs-toggle="modal" data-bs-target="#addlegder">Add New Lessee</button>
-				<button class="btn btn-success btn-sm mb-2" id="btnAddTransaction">Add Transaction</button>
-				<input id="rth_m_idxxx" type="hidden" />
-				<input id="rth_plot_numberxxx" type="hidden" />
-				<div class="table-responsive small mt-2">
-					<table class="table table-striped table-bordered table-hover"
-						id="tbl_rent_transaction_history" width="100%" cellspacing="0">
-						<thead>
-							<tr>
-								<th>Plot Number</th>
-								<th>Name of Lessee</th>
-								<th>Nature of Interest</th>
-								<th>Consent Date</th>
-								<th>Term</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
+<div class="modal fade modal-blur effect-scale" data-position="0" id="rentTransactionhistory" tabindex="-1" aria-labelledby="rentTransactionhistoryLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="rentTransactionhistoryLabel">
+                    <i class="fas fa-history me-2"></i>Transaction History
+                </h5>
+                <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-0">
+                <!-- Action Buttons Section -->
+                <div class="bg-light px-4 py-3 border-bottom">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-warning d-none" id="xloadRt" onclick="loadTransactionHistory()">
+                                <i class="fas fa-redo me-2"></i>Reload
+                            </button>
+                            <button class="btn btn-outline-danger d-none" id="btnAddNewLessee" 
+                                    data-bs-toggle="modal" data-bs-target="#addlegder">
+                                <i class="fas fa-user-plus me-2"></i>Add New Lessee
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-success px-4" id="btnAddTransaction">
+                                <i class="fas fa-plus-circle me-2"></i>Add Transaction
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden Inputs -->
+                <div class="d-none">
+                    <input id="rth_m_idxxx" type="hidden" />
+                    <input id="rth_plot_numberxxx" type="hidden" />
+                </div>
+                
+                <!-- Table Section -->
+                <div class="p-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h6 class="mb-0 text-primary fw-semibold">
+                                <i class="fas fa-table me-2"></i>Transaction Records
+                            </h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0" id="tbl_rent_transaction_history" 
+                                       width="100%" cellspacing="0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="ps-4">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-hashtag text-primary"></i>
+                                                    <span>Plot Number</span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-user text-primary"></i>
+                                                    <span>Name of Lessee</span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-file-contract text-primary"></i>
+                                                    <span>Nature of Interest</span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-calendar-alt text-primary"></i>
+                                                    <span>Consent Date</span>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-clock text-primary"></i>
+                                                    <span>Term</span>
+                                                </div>
+                                            </th>
+                                            <th class="text-center pe-4">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <i class="fas fa-cogs text-primary"></i>
+                                                    <span>Actions</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="border-top-0">
+                                        <!-- Data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Empty State -->
+                        <div class="text-center py-5 d-none" id="emptyTableState">
+                            <div class="mb-3">
+                                <i class="fas fa-inbox fa-3x text-muted opacity-25"></i>
+                            </div>
+                            <h5 class="text-muted mb-2">No Transactions Found</h5>
+                            <p class="text-muted mb-4">Add your first transaction to get started</p>
+                            <button class="btn btn-primary" id="btnAddTransactionEmpty">
+                                <i class="fas fa-plus me-2"></i>Add First Transaction
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Showing <span id="recordCount">0</span> records
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Add Transaction Modal -->
-<div class="modal fade" data-position="0" id="addtransactionModal" tabindex="-1" aria-labelledby="addtransactionModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="addtransactionModalLabel">Add New Transaction</h5>
-				<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div class="card card-body">
-					<form id="transactionhistoryForm">
-						<div class="card">
-							<div class="card-header bg-secondary text-white">
-								Lessee's Details
-							</div>
-							<div class="card-body">
-								<input id="rth_rent_id" value="0" type="hidden"/>
-								<input id="rth_m_id" value="0" type="hidden"/>
-								<input id="rth_account_number" value="0" type="hidden"/>
-								<div class="row">
-									<div class="col-6">
-										<div class="mb-2">
-											<label for="rth_lessee_name" class="form-label">Name: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="rth_lessee_name" required />
-										</div>
-										<div class="mb-2">
-											<label for="rth_lessee_address" class="form-label">Address: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="rth_lessee_address" required />
-										</div>
-										<div class="mb-2">
-											<label for="rth_mobile_phone_1" class="form-label">Mobile Phone: <span class="text-danger">*</span></label>
-											<input type="tel" class="form-control" id="rth_mobile_phone_1" required/>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="mb-2">
-											<label for="rth_mobile_phone_2" class="form-label">Mobile Phone 2: </label>
-											<input type="tel" class="form-control" id="rth_mobile_phone_2"/>
-										</div>
-										<div class="mb-2">
-											<label for="rth_email" class="form-label">Email: </label>
-											<input type="email" class="form-control" id="rth_email" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="card mt-4">
-							<div class="card-header bg-secondary text-white">
-								Parcel's Details
-							</div>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-6">
-										<div class="mb-2">
-											<label for="rth_plot_number" class="form-label">Plot Number: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="rth_plot_number" required/>
-										</div>
-										<div class="mb-2">
-											<label for="rth_plot_size" class="form-label">Plot Size: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="rth_plot_size" required/>
-										</div>
-										<div class="mb-2">
-											<label for="rth_remarks" class="form-label">Remarks: </label>
-											<textarea class="form-control" id="rth_remarks"></textarea>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="mb-2">
-											<label for="rth_nature_of_instrument" class="form-label">Nature of Instrument: <span class="text-danger">*</span></label>
-											<select class="form-control" id="rth_nature_of_instrument" required>
-												<option selected disabled value="">-- select --</option>
-												<c:forEach items="${nature_of_instrument_list}" var="natureofinstrumentlist">
-													<option value="${natureofinstrumentlist.nt_name}">${natureofinstrumentlist.nt_name}</option>
-												</c:forEach>
-											</select>
-										</div>
-										<div class="mb-2">
-											<label for="rth_term" class="form-label">Term: <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" id="rth_term" required/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button class="btn btn-success btn-sm mt-2" id="rth_save_btn">Save Details</button>
-					</form>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
+<div class="modal fade effect-scale modal-blur" data-position="0" id="addtransactionModal" tabindex="-1" aria-labelledby="addtransactionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="addtransactionModalLabel">
+                    <i class="fas fa-plus-circle me-2"></i>Add New Transaction
+                </h5>
+                <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-0">
+                <div class="p-4">
+                    <form id="transactionhistoryForm">
+                        <input type="hidden" id="rht_is_edit" value="0"/>
+                        <!-- Hidden Inputs -->
+                        <div class="d-none">
+                            <input id="rth_rent_id" value="0" type="hidden"/>
+                            <input id="rth_m_id" value="0" type="hidden"/>
+                            <input id="rth_account_number" value="0" type="hidden"/>
+                        </div>
+                        
+                        <!-- Lessee's Details Card -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary bg-opacity-10 border-success text-primary py-3">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="fas fa-user me-2"></i>Lessee's Details
+                                </h6>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="rth_lessee_name" 
+                                                   placeholder="Full Name" required />
+                                            <label for="rth_lessee_name">
+                                                Name <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="rth_lessee_address" 
+                                                   placeholder="Complete Address" required />
+                                            <label for="rth_lessee_address">
+                                                Address <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="tel" class="form-control" id="rth_mobile_phone_1" 
+                                                   placeholder="Primary Mobile Number" required />
+                                            <label for="rth_mobile_phone_1">
+                                                Mobile Phone <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="tel" class="form-control" id="rth_mobile_phone_2" 
+                                                   placeholder="Secondary Mobile Number" />
+                                            <label for="rth_mobile_phone_2">Mobile Phone 2</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" id="rth_email" 
+                                                   placeholder="Email Address" />
+                                            <label for="rth_email">Email Address</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Parcel's Details Card -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary bg-opacity-10 border-success text-primary py-3">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="fas fa-map me-2"></i>Parcel's Details
+                                </h6>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="rth_plot_number" 
+                                                   placeholder="Plot Number" required />
+                                            <label for="rth_plot_number">
+                                                Plot Number <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="rth_plot_size" 
+                                                   placeholder="Plot Size" required />
+                                            <label for="rth_plot_size">
+                                                Plot Size <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="rth_nature_of_instrument" required>
+                                                <option selected disabled value="">-- Select Nature of Instrument --</option>
+                                                <c:forEach items="${nature_of_instrument_list}" var="natureofinstrumentlist">
+                                                    <option value="${natureofinstrumentlist.nt_name}">${natureofinstrumentlist.nt_name}</option>
+                                                </c:forEach>
+                                            </select>
+                                            <label for="rth_nature_of_instrument">
+                                                Nature of Instrument <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="rth_term" 
+                                                   placeholder="Term" required />
+                                            <label for="rth_term">
+                                                Term <span class="text-danger">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" id="rth_remarks" 
+                                                      placeholder="Additional Remarks" 
+                                                      style="height: 100px"></textarea>
+                                            <label for="rth_remarks">Remarks</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            
+                        </div> -->
+                    </form>
+                </div>
+            </div>
+            
+            <div class="modal-footer bg-light">
+                <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+                <button type="submit" class="btn btn-success px-4 py-2" id="rth_save_btn">
+                    <i class="fas fa-save me-2"></i>Save Details
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Rent Documents Modal -->
