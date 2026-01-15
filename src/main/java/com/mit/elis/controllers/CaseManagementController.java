@@ -4933,6 +4933,7 @@ public class CaseManagementController {
 			obj.put("case_number", transaction_number);
 			obj.put("job_number", job_number);
 			obj.put("job_purpose", job_purpose);
+			obj.put("rq_id", rq_id);
 			String batchlistdivison = obj.toString();
 			 System.out.println(batchlistdivison);
 		
