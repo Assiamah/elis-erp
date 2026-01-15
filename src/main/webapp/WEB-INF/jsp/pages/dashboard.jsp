@@ -2,259 +2,253 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
-  /* ────────────────────────────────────────────────
-   Modern Color Palette (2025/2026 inspired)
-   Primary   : #2c5282 → #3182ce (deep blue → vibrant blue)
-   Success   : #38a169 → #48bb78 (fresh green)
-   Warning   : #dd6b20 → #ed8936 (warm orange)
-   Danger    : #c53030 → #f56565 (soft red)
-   Accent 1  : #6b46c1 (purple)
-   Accent 2  : #ed64a6 (pink-magenta)
-   Neutral   : #1a202c (dark bg), #f7fafc (light bg)
-   ──────────────────────────────────────────────── */
+ /* ==============================
+   ROOT VARIABLES (OTP THEME)
+================================ */
+:root {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #14b8a6;
+    --accent: #84cc16;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+}
+
+/* ==============================
+   GLOBAL
+================================ */
+body {
+    font-family: 'Rubik', sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+}
 
 .gcsez-dashboard {
-    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-    min-height: calc(100vh - 70px);
-    margin-top: 70px;
-    margin-left: 260px;
-    padding: 28px;
-    font-family: 'Rubik', sans-serif;
-    color: #2d3748;
+    padding: 24px;
+}
+
+/* ==============================
+   BREADCRUMB
+================================ */
+.gcsez-breadcrumb {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
 .gcsez-breadcrumb-title {
-    color: #1a202c;
-    font-size: 1.75rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, #3182ce, #667eea);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
 }
 
 .gcsez-breadcrumb-nav a {
-    color: #4a5568;
-    transition: color 0.2s ease;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.gcsez-breadcrumb-nav a:hover {
-    color: #3182ce;
+.gcsez-breadcrumb-nav span {
+    margin: 0 6px;
+    color: var(--text-muted);
 }
 
-/* ── Stat Cards ── */
-.gcsez-stat-card {
-    border: none;
-    border-radius: 16px;
-    background: white;
-    padding: 24px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.gcsez-stat-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-}
-
-.gcsez-stat-card::after {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--card-color), transparent);
-}
-
-.gcsez-stat-card:nth-child(1) { --card-color: #667eea; }  /* indigo */
-.gcsez-stat-card:nth-child(2) { --card-color: #48bb78; }  /* green  */
-.gcsez-stat-card:nth-child(3) { --card-color: #ed8936; }  /* orange */
-.gcsez-stat-card:nth-child(4) { --card-color: #ed64a6; }  /* pink   */
-
-.gcsez-stat-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    color: white;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    background: var(--card-color);
-    transition: transform 0.3s ease;
-}
-
-.gcsez-stat-card:hover .gcsez-stat-icon {
-    transform: scale(1.1) rotate(5deg);
-}
-
-.gcsez-stat-number {
-    font-size: 2.25rem;
-    font-weight: 800;
-    color: #1a202c;
-    background: linear-gradient(90deg, #2d3748, #4a5568);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* ── Sections ── */
-.gcsez-section {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 28px;
-    border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+/* ==============================
+   STATS CARDS
+================================ */
+.gcsez-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
     margin-bottom: 32px;
 }
 
-.gcsez-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(49,130,206,0.08), rgba(102,126,234,0.05));
-    z-index: -1;
-}
-
-.gcsez-section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, #3182ce, #667eea);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* ── Table Enhancements ── */
-.gcsez-table th {
-    background: linear-gradient(90deg, #edf2f7, #e2e8f0);
-    color: #2d3748;
-    font-weight: 600;
-}
-
-.gcsez-table tr:hover {
-    background: rgba(49,130,206,0.08);
-}
-
-/* ── Badges ── */
-.gcsez-badge.success  { background: #d4f4e2; color: #2f855a; }
-.gcsez-badge.warning  { background: #fefcbf; color: #b7791f; }
-.gcsez-badge.danger   { background: #fed7d7; color: #c53030; }
-.gcsez-badge.info     { background: #bee3f8; color: #2b6cb0; }
-.gcsez-badge.primary  { background: #e9d8fd; color: #6b46c1; }
-
-/* ── Buttons ── */
-.gcsez-btn {
-    background: linear-gradient(135deg, #3182ce, #667eea);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
+.gcsez-stat-card {
+    padding: 22px;
+    border-radius: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.35);
     transition: all 0.3s ease;
 }
 
-.gcsez-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(49,130,206,0.3);
+.gcsez-stat-card:hover {
+    transform: translateY(-6px);
+}
+
+/* OTP matched gradients */
+.gcsez-stat-card:nth-child(1) {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+.gcsez-stat-card:nth-child(2) {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+}
+.gcsez-stat-card:nth-child(3) {
+    background: linear-gradient(135deg, #14b8a6, #0f766e);
+}
+.gcsez-stat-card:nth-child(4) {
+    background: linear-gradient(135deg, #84cc16, #3f6212);
+}
+
+.gcsez-stat-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.gcsez-stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.gcsez-stat-title {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* ==============================
+   SECTIONS
+================================ */
+.gcsez-section {
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.gcsez-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.gcsez-section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* ==============================
+   BUTTONS
+================================ */
+.gcsez-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 .gcsez-btn-outline {
-    border: 2px solid #cbd5e0;
-    color: #4a5568;
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.gcsez-btn-outline:hover {
-    background: #edf2f7;
-    border-color: #a0aec0;
+.gcsez-btn-sm {
+    padding: 6px 10px;
 }
 
-/* ── Quick Actions ── */
-.gcsez-quick-actions button {
-    background: white;
-    border: 1px solid #e2e8f0;
-    color: #4a5568;
-    border-radius: 12px;
-    padding: 14px 20px;
-    transition: all 0.25s ease;
+/* ==============================
+   TABLES
+================================ */
+.gcsez-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.gcsez-quick-actions button:hover {
-    background: linear-gradient(135deg, #667eea22, #ed64a622);
-    border-color: #667eea;
-    color: #2d3748;
-    transform: translateY(-2px);
+.gcsez-table thead {
+    background: #f1f5f9;
 }
 
-/* Mobile adjustments remain similar */
-@media (max-width: 768px) {
-    .gcsez-dashboard {
-        margin-left: 0;
-        padding: 20px;
-    }
-    .gcsez-stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
-/* Avatar + transparent background utilities */
-.avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    width: 3rem;
-    height: 3rem;
+.gcsez-table th {
+    text-align: left;
+    font-size: 0.8rem;
+    padding: 12px;
+    color: var(--text-muted);
 }
 
-.avatar-lg {
-    width: 4rem;
-    height: 4rem;
-    font-size: 1.75rem;
+.gcsez-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
 }
 
-.avatar-rounded {
-    border-radius: 0.75rem; /* or 50% for circle */
+/* ==============================
+   BADGES
+================================ */
+.gcsez-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-.bg-primary-transparent {
-    background-color: rgba(49, 130, 206, 0.12) !important;
-    color: #3182ce;
+.gcsez-badge.success { background: #dcfce7; color: #166534; }
+.gcsez-badge.warning { background: #fef3c7; color: #92400e; }
+.gcsez-badge.danger  { background: #fee2e2; color: #991b1b; }
+.gcsez-badge.info    { background: #e0f2fe; color: #075985; }
+.gcsez-badge.primary { background: #d1fae5; color: #065f46; }
+
+/* ==============================
+   SEARCH
+================================ */
+.gcsez-search {
+    position: relative;
 }
 
-.bg-success-transparent {
-    background-color: rgba(56, 161, 105, 0.12) !important;
-    color: #38a169;
+.gcsez-search-input {
+    padding: 8px 12px 8px 34px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
 }
 
-.bg-info-transparent {
-    background-color: rgba(43, 108, 176, 0.12) !important;
-    color: #2b6cb0;
+.gcsez-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
 }
 
-.bg-warning-transparent {
-    background-color: rgba(221, 107, 32, 0.12) !important;
-    color: #dd6b20;
+/* ==============================
+   MINI STATS
+================================ */
+.gcsez-stats-overview {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
 }
 
-.svg-primary { color: #3182ce; }
-.svg-success { color: #38a169; }
-.svg-info    { color: #2b6cb0; }
-.svg-warning { color: #dd6b20; }
-
-/* Card variations for visual separation */
-.dashboard-main-card.primary   { border-left: 4px solid #3182ce; }
-.dashboard-main-card.success   { border-left: 4px solid #38a169; }
-.dashboard-main-card.info      { border-left: 4px solid #2b6cb0; }
-.dashboard-main-card.warning   { border-left: 4px solid #dd6b20; }
-
-/* Optional: subtle hover effect */
-.custom-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-    transition: all 0.25s ease;
+.gcsez-stat-mini-value {
+    font-weight: 700;
+    color: var(--primary);
 }
+
+.gcsez-stat-mini-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">

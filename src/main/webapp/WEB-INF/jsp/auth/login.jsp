@@ -180,34 +180,133 @@
         background-color: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
     }
+
+    .auth-left-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+}
+
+.auth-left-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(16,185,129,0.06),
+        rgba(16,185,129,0.02)
+    );
+    transform: rotate(30deg);
+}
+
+.auth-card {
+    max-width: 460px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 45px rgba(0,0,0,0.1);
+    border: 1px solid rgba(16,185,129,0.15);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.auth-card-header {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 28px;
+    text-align: center;
+}
+
+.auth-card-body {
+    padding: 36px;
+}
+
+
+.auth-logo {
+    background: #ffffff;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+     margin: 0 auto 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.auth-logo img {
+    border-radius: 50%;
+}
+
+
+
+
+.auth-title {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: 0.5px;
+    font-family: "Inter", "Segoe UI", "Roboto", system-ui, -apple-system, sans-serif;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.auth-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+.auth-subtitle::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    margin: 8px auto 6px;
+    border-radius: 2px;
+}
 </style>
 
 <div class="container-fluid min-vh-100 p-0">
     <div class="row g-0 h-100">
         <!-- Left Side - Login Form -->
-        <div class="col-lg-6 d-flex align-items-center justify-content-center p-4 p-lg-5">
-            <div class="w-100" style="max-width: 420px;">
-                <!-- Logo & Brand -->
-                <div class="text-center mb-5">
-                    <div class="d-inline-block p-3 rounded-circle bg-light mb-3 pulse-animation">
-                        <img src="${pageContext.request.contextPath}/assets/images/NewLogo.jpg" 
-                             width="70" alt="logo" class="rounded-circle">
-                    </div>
-                    <h1 class="h4 fw-semibold text-dark mb-1">Enterprise Land Information System</h1>
-                    <!-- <p class="text-muted fs-14">Secure Access Portal</p> -->
+       <div class="col-lg-6 p-0">
+    <div class="auth-left-container">
+        <div class="auth-card">
+
+            <!-- Header -->
+            <div class="auth-card-header">
+                <div class="auth-logo">
+                    <img src="${pageContext.request.contextPath}/assets/images/NewLogo.jpg"
+                         width="42" class="rounded-circle" alt="logo">
+                </div>
+              <h1 class="auth-title mb-1">Enterprise Land Information System</h1>
+<p class="auth-subtitle mb-0">Secure Access Portal</p>
+            </div>
+
+            <!-- Body -->
+            <div class="auth-card-body">
+
+                <div class="text-center mb-4">
+                    <h2 class="h5 fw-semibold text-dark mb-1">Welcome Back</h2>
+                    <p class="text-muted fs-14 mb-0">
+                        Sign in with your official credentials
+                    </p>
                 </div>
 
-                <!-- Login Card -->
-                <div class="card border-0 shadow-lg glass-effect">
-                    <div class="card-body p-4 p-lg-5">
+                <!-- 🔴 KEEP YOUR EXISTING LOGIN FORM HERE -->
+                <!-- (email, password, remember me, submit button) -->
 
-                        <!-- Welcome Text -->
-                        <div class="text-center mb-4">
-                            <h2 class="h5 fw-semibold text-dark mb-2">Welcome Back</h2>
-                            <p class="text-muted fs-14">Please sign in to continue</p>
-                        </div>
-
-                        <!-- Error Alert -->
+                <!-- Error Alert -->
                         <c:if test="${login == 'failed'}">
                             <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4" role="alert">
                                 <div class="flex-shrink-0">
@@ -293,53 +392,13 @@
                                 </button>
                             </div>
 
-                            <!-- Divider -->
-                            <!-- <div class="position-relative text-center my-4">
-                                <hr class="text-muted">
-                                <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted fs-12">
-                                    OR
-                                </span>
-                            </div> -->
-
-                            <!-- Alternative Login -->
-                            <!-- <div class="text-center">
-                                <p class="text-muted fs-14 mb-3">Sign in with</p>
-                                <div class="d-flex justify-content-center gap-3">
-                                    <a href="#" class="btn btn-outline-light border text-dark rounded-circle p-2">
-                                        <i class="ri-google-fill fs-18"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-light border text-dark rounded-circle p-2">
-                                        <i class="ri-microsoft-fill fs-18"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-outline-light border text-dark rounded-circle p-2">
-                                        <i class="ri-github-fill fs-18"></i>
-                                    </a>
-                                </div>
-                            </div> -->
+                        
                         </form>
-                    </div>
-                </div>
 
-                <!-- Help Link -->
-                <div class="text-center mt-4">
-                    <p class="text-muted fs-13 mb-0">
-                        Need help signing in?
-                        <a href="#" class="text-primary fw-medium text-decoration-none ms-1 alternate-link">
-                            Contact Support
-                        </a>
-                    </p>
-                </div>
-
-                <!-- Footer -->
-                <div class="text-center mt-5">
-                    <p class="text-muted fs-12 mb-0">
-                        © <script>document.write(new Date().getFullYear())</script> Lands Commission. All rights reserved.
-                        <a href="#" class="text-muted text-decoration-underline ms-1">Privacy Policy</a>
-                    </p>
-                </div>
             </div>
         </div>
-
+    </div>
+</div>
         <!-- Right Side - Welcome Panel -->
         <div class="col-lg-6 auth-sidebar d-none d-lg-flex align-items-center justify-content-center position-relative ">
             <!-- Background Pattern -->

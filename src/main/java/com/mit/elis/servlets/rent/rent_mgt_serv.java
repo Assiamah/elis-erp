@@ -99,7 +99,26 @@ public class rent_mgt_serv {
 				}
 
 			}
+			
+if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
+				
+				System.out.println("dddddddd");
+				String ge_id = request.getParameter("rdn_rent_id");
+				JSONObject obj_d = new JSONObject();
 
+				obj_d.put("rl_id", ge_id);
+				System.out.println(obj_d.toString());
+				web_service_response = rent_mgt_cl
+						.select_prepare_rent_demand_notice_single_v1(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
+							////System.out.println("web_service_response");
+				if (web_service_response != null) {
+					 System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+			}
 
 			if (request_type.equals("select_rent_leasee_details")) {
 

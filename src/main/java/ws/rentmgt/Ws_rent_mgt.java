@@ -315,6 +315,32 @@ public String select_rent_leasee_details_by_account_number(String web_service_ur
 
 	}
 
+	public String select_prepare_rent_demand_notice_single_v1(String web_service_url, String web_service_api_key,
+			String estate_code)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "rent_mgt_service/select_prepare_rent_demand_notice_single_v1");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, estate_code);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
 	public String select_prepare_rent_demand_notice_bulk(String web_service_url, String web_service_api_key,
 			String estate_code)
 
