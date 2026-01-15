@@ -2174,6 +2174,19 @@ if (!$('#add-form-styles').length) {
                                 <li><hr class="dropdown-divider my-1"></li>
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center py-2" href="#"
+                                        data-bs-toggle="modal" data-bs-target="#rentTransactionhistory"
+                                        data-rent_id="${this.rl_id}"
+                                        data-account_number="${this.account_number}"
+                                        data-plot_number="${this.plot_number}">
+                                        <i class="fas fa-list text-danger me-2"></i>
+                                        <div>
+                                            <div class="fw-medium">Transaction History</div>
+                                            <small class="text-muted">View all transactions</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="#"
                                         data-bs-toggle="modal" data-bs-target="#paymenthistory"
                                         data-m_id="${this.rl_id}">
                                         <i class="fas fa-history text-secondary me-2"></i>
@@ -2477,11 +2490,11 @@ console.log (fileExtension);
                                                         + "</td><td>"
                                                         + this.nature_of_instrument
                                                         + "</td><td>"
-                                                        + this.consent_date
+                                                        + (this.consent_date ? this.consent_date : "--")
                                                         + "</td><td>"
                                                         + this.term
                                                         + "</td><td>"
-                                                        +'<button class="btn btn-primary" type="button" onclick="getTransactionDetails('+this.id+')"><i class="fas fa-eye"></i></button>'
+                                                        +'<button class="btn btn-sm btn-outline-primary" type="button" onclick="getTransactionDetails('+this.id+')"><i class="fas fa-eye"></i></button>'
                                                         // +'<button class="btn btn-success" type="button" onclick="addNewTranscationHistory('+this.id+')"><i class="fas fa-plus"></i></button>'
                                                         +"</td>"
                                                         + "</tr>");
@@ -3510,102 +3523,182 @@ $("#btn_upload_rent_data_file")
 
         $("#rth_save_btn").click(function (e) {
             e.preventDefault(); // Prevent default form submission
-    
+
             let isValid = true;
-    
-            // Array of required field IDs
+            let emptyFields = [];
+
+            // Array of required field IDs with labels
             let requiredFields = [
-                "#rth_lessee_name",
-                "#rth_lessee_address",
-                "#rth_mobile_phone_1",
-                "#rth_plot_number",
-                "#rth_plot_size",
-                "#rth_nature_of_instrument",
-                "#rth_term",
-                //"#rth_consent_date",
+                { id: "#rth_lessee_name", label: "Lessee Name" },
+                { id: "#rth_lessee_address", label: "Address" },
+                { id: "#rth_mobile_phone_1", label: "Mobile Phone" },
+                { id: "#rth_plot_number", label: "Plot Number" },
+                { id: "#rth_plot_size", label: "Plot Size" },
+                { id: "#rth_nature_of_instrument", label: "Nature of Instrument" },
+                { id: "#rth_term", label: "Term" }
             ];
-    
+
             // Loop through required fields and validate
             requiredFields.forEach(function (field) {
-                if ($(field).val().trim() === "") {
-                    $(field).addClass("border-danger"); // Add red border
+                if ($(field.id).val().trim() === "") {
+                    $(field.id).addClass("border-danger");
                     isValid = false;
+                    emptyFields.push(field.label);
                 } else {
-                    $(field).removeClass("border-danger"); // Remove red border if filled
+                    $(field.id).removeClass("border-danger");
                 }
             });
-    
+
             if (!isValid) {
-                alert("Please fill all required fields.");
+                let errorMessage = "Please fill all required fields:<br><br>";
+                emptyFields.forEach(field => {
+                    errorMessage += `• ${field}<br>`;
+                });
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    html: errorMessage,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545',
+                    showClass: {
+                        popup: 'animate__animated animate__shakeX'
+                    }
+                });
                 return;
             }
 
-            let m_id = $("#rth_m_idxxx").val();
+            // Show confirmation dialog
+            const is_edit = $("#rht_is_edit").val();
+            const actionText = is_edit == 1 ? "update" : "save";
+            
+            Swal.fire({
+                title: 'Confirm ' + (is_edit == 1 ? 'Update' : 'Save'),
+                text: `Are you sure you want to ${actionText} this transaction?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, ' + actionText + ' it!',
+                cancelButtonText: 'Cancel',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    let m_id = $("#rth_m_idxxx").val();
+                    if (!m_id) {
+                        m_id = 0;
+                    }
 
-             if (!m_id) {
-               m_id=0
-            }
-    
-            // Collect form data
-            let formData = {
-                rent_id: $("#rth_rent_id").val(),
-                account_number: $("#rth_account_number").val(),
-                lessee_name: $("#rth_lessee_name").val(),
-                address: $("#rth_lessee_address").val(),
-                mobile_1: $("#rth_mobile_phone_2").val(),
-                mobile: $("#rth_mobile_phone_1").val(),
-                email: $("#rth_email").val(),
-                plot_number: $("#rth_plot_number").val(),
-                plot_size: $("#rth_plot_size").val(),
-                comm_date: $("#rth_comm_date").val(),
-                nature_of_instrument: $("#rth_nature_of_instrument").val(),
-                consent_date: $("#rth_consent_date").val(),
-                term: $("#rth_term").val(),
-                remarks: $("#rth_remarks").val(),
-                m_id: m_id,
-                request_type: 'add_update_rent_transaction_history'
-            };
-    
-            // Send AJAX request
-            $.ajax({
-                url: "rent_mgt_serv", // Change this to your Laravel/PHP route
-                type: "POST",
-                data: formData,
-                dataType: "json",
-                success: function (response) {
-                    //console.log(response)
-                   // try {
-                        const json_p = response;
-                        if (json_p.success) {
-                            $('#addtransactiondiv').collapse('hide');
-                            document.getElementById("transactionhistoryForm").reset();
-                            //$('#transactionhistory').modal('hide');
-                            loadTransactionHistory(m_id)
-                           // $.notify({ message: '<i class="fa fa-check-circle fa-fw"></i><span class="text-bold">Data saved successfully.</span>' }, { type: 'success',z_index: 9999 });
-                        } else {
-                            //$.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">Error occurred, try again.</span>' }, { type: 'danger',z_index: 9999 });
-                        }
-                    // } catch (e) {
-                    //     console.error('Error parsing response:', e);
-                    //     $.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">An error occurred while processing the response.</span>' }, { type: 'danger',z_index: 9999 });
-                    // }
+                    // Collect form data
+                    let formData = {
+                        rent_id: $("#rth_rent_id").val(),
+                        account_number: $("#rth_account_number").val(),
+                        lessee_name: $("#rth_lessee_name").val(),
+                        address: $("#rth_lessee_address").val(),
+                        mobile_1: $("#rth_mobile_phone_2").val(),
+                        mobile: $("#rth_mobile_phone_1").val(),
+                        email: $("#rth_email").val(),
+                        plot_number: $("#rth_plot_number").val(),
+                        plot_size: $("#rth_plot_size").val(),
+                        comm_date: $("#rth_comm_date").val(),
+                        nature_of_instrument: $("#rth_nature_of_instrument").val(),
+                        consent_date: $("#rth_consent_date").val(),
+                        term: $("#rth_term").val(),
+                        remarks: $("#rth_remarks").val(),
+                        m_id: m_id,
+                        request_type: 'add_update_rent_transaction_history'
+                    };
+
+                    return $.ajax({
+                        url: "rent_mgt_serv",
+                        type: "POST",
+                        data: formData,
+                        dataType: "json"
+                    }).then(response => {
+                        return response;
+                    }).catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error.statusText || 'Server error'}`
+                        );
+                    });
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('AJAX Error:', textStatus, errorThrown);
-                    $.notify({ message: '<i class="fa fa-times-circle fa-fw"></i><span class="text-bold">AJAX request failed: ' + textStatus + '</span>' }, { type: 'danger',z_index: 9999 });
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const response = result.value;
+                    
+                    if (response && response.success) {
+                        // Success
+                        $('#addtransactiondiv').collapse('hide');
+                        if (is_edit == 0) {
+                            document.getElementById("transactionhistoryForm").reset();
+                            // Reset form-floating labels
+                            $('.form-floating input, .form-floating textarea, .form-floating select').each(function() {
+                                if ($(this).val()) {
+                                    $(this).removeClass('border-danger').closest('.form-floating').addClass('is-valid');
+                                } else {
+                                    $(this).removeClass('border-danger').closest('.form-floating').removeClass('is-valid');
+                                }
+                            });
+                        }
+                        
+                        loadTransactionHistory($("#rth_m_idxxx").val());
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: `Transaction has been ${is_edit == 1 ? 'updated' : 'saved'} successfully.`,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#28a745',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showClass: {
+                                popup: 'animate__animated animate__fadeInDown'
+                            },
+                            hideClass: {
+                                popup: 'animate__animated animate__fadeOutUp'
+                            }
+                        });
+                    } else {
+                        // Error from server
+                        let errorMessage = 'An error occurred while saving the transaction.';
+                        if (response && response.message) {
+                            errorMessage = response.message;
+                        } else if (response && response.errors) {
+                            errorMessage = Object.values(response.errors).join('<br>');
+                        }
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Save Failed',
+                            html: errorMessage,
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Cancelled',
+                        text: 'Transaction was not saved.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#6c757d',
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
                 }
             });
         });
 
         $("#btnAddTransaction").click(function (e) {
             e.preventDefault();
+            // console.log("btnAddTransaction clicked");
             var t_id = $("#rth_m_idxxx").val();
             var plot_number = $("#rth_plot_numberxxx").val();
             document.getElementById("transactionhistoryForm").reset();
             $("#rth_m_id").val(t_id);
               $("#rth_plot_number").val(plot_number);
             $("#rtModalLabelx").text("Add New Transaction");
-            $("#addtransactionModal").modal();
+            $("#addtransactionModal").modal('show');
         });
     
         // Remove red border when user starts typing
@@ -3817,6 +3910,7 @@ $("#btn_upload_rent_data_file")
         window.getTransactionDetails = function (t_id) {
 
             $("#rth_m_id").val(t_id);
+            $("#rht_is_edit").val(1);
 
             $.ajax({
                 url: "rent_mgt_serv", // Change this to your Laravel/PHP route
