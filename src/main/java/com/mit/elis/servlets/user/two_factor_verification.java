@@ -334,7 +334,7 @@ System.out.println(password);
 						web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_usr_log.toString());
 
-					     request.setAttribute("otp_code", "Check your Phone");
+					     request.setAttribute("otp_code", "");
 						// request.setAttribute("pass", password);
 						  model.addAttribute("content", "../auth/login_2fa.jsp");
         return "layouts/guest";
