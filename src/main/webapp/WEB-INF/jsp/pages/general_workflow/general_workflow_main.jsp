@@ -337,11 +337,15 @@
                             <p class="text-muted small mb-0 filter-status"></p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-secondary d-none" id="btn_add_request_all">
-                                <i class="ri-checkbox-circle-line me-1"></i> Add All To Request List
+                            <button class="btn btn-warning label-btn" id="btnViewRequestlist">
+                                <i class="ri-list-check label-btn-icon"></i>
+                                View Request List
                             </button>
-                            <button class="btn btn-sm btn-outline-secondary d-none" id="btn_add_archive_all">
-                                <i class="ri-delete-bin-line me-1"></i> Add All To Archive List
+                            <button class="btn btn-secondary label-btn d-none" id="btn_add_request_all">
+                                <i class="ri-checkbox-circle-line label-btn-icon"></i> Add All To Request List
+                            </button>
+                            <button class="btn btn-danger label-btn d-none" id="btn_add_archive_all">
+                                <i class="ri-delete-bin-line label-btn-icon"></i> Add All To Archive List
                             </button>
                             <button class="btn btn-sm btn-info btnLoadData" data-id="2">
                                 <i class="ri-group-line me-1"></i> Request With Officers 
@@ -858,6 +862,10 @@
                 ? $("#btn_add_archive_all").removeClass('d-none')
                 : $("#btn_add_archive_all").addClass('d-none');
 
+            // data_id === 3
+            //     ? $("#btn_add_archive_all").removeClass('d-none')
+            //     : $("#btn_add_archive_all").addClass('d-none');
+
             data_id === 2 ? $('.filter-status').text('[Showing: REQUESTS WITH OFFICERS]') : $('.filter-status').text('[Showing: ' + $(this).find('.stat-title').text() + ']');
 
             highlightActiveCard(data_id);
@@ -989,7 +997,7 @@
                     `<div class="d-flex justify-content-start align-items-start">
                         <div class="btn-group" role="group">
                            
-                             <button class="btn btn-icon btn-sm me-1 btn-info btn-wave waves-effect waves-light btn-add-batch" 
+                             <!--<button class="btn btn-icon btn-sm me-1 btn-info btn-wave waves-effect waves-light btn-add-batch" 
                                 data-job_number="`+item.job_number+`" 
                                 data-case_number="`+item.case_number+`" 
                                 data-job_purpose="`+item.job_purpose+`"
@@ -1005,7 +1013,7 @@
                                 data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal"
                             >
                                 <i class="fas fa-edit ml-2"></i>
-                            </button>
+                            </button> -->
                             <button class="btn btn-sm btn-info btn-view-job" data-id="`+item.case_number+`">
                                 <i class="fas fa-eye ml-2"></i>
                             </button>
@@ -1024,6 +1032,7 @@
                                 <i class="fas fa-paper-plane ml-2"></i>
                             </button>
                             <button class="btn btn-sm btn-success btn-work-job" 
+                                data-rq_id="`+item.rq_id+`"
                                 data-job_number="`+item.job_number+`" 
                                 data-case_number="`+item.case_number+`" 
                                 data-transaction_number="`+item.transaction_number+`"
@@ -1064,6 +1073,7 @@
                                 <i class="fas fa-paper-plane ml-2"></i>
                             </button>
                             <button class="btn btn-sm btn-success btn-work-job" 
+                                data-rq_id="`+item.rq_id+`"
                                 data-job_number="`+item.job_number+`" 
                                 data-case_number="`+item.case_number+`" 
                                 data-transaction_number="`+item.transaction_number+`"
@@ -1080,6 +1090,11 @@
                 
                 // Store the full item data in the row for later access
                 $(rowNode).data('job-data', item);
+
+                // ✅ Add success background if inbox_type = 3 and remarks = COMPLETED
+                if (inbox_type == 4 && item.remarks && item.remarks.toUpperCase() === "COMPLETED") {
+                    $(rowNode).addClass("table-success");
+                }
             });
 
             // Add click handler for paper-plane buttons
@@ -1097,7 +1112,7 @@
                 // Create a form dynamically
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'view_application_details';
+                form.action = 'front_office_view_application';
                 form.style.display = 'none'; // Hide the form
                 
                 // Add the case number as an input field
@@ -1120,11 +1135,12 @@
                 const jobPurpose = $(this).data('job_purpose');
                 const businessProcessSubName = $(this).data('business_process_sub_name');
                 const reviewInstruction = $(this).data('review_instruction');
+                const rqId = $(this).data('rq_id');
                 
                 // Create a form dynamically
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'new_request_application_progress_details';
+                form.action = 'request_application_progress_details_ai';
                 form.style.display = 'none'; // Hide the form
                 
                 // Add the case number as an input field
@@ -1168,6 +1184,20 @@
                 inputReviewInstruction.name = 'review_instruction';
                 inputReviewInstruction.value = reviewInstruction;
                 form.appendChild(inputReviewInstruction);
+
+                // Add the rq_id as an input field
+                const inputRqId = document.createElement('input');
+                inputRqId.type = 'hidden';
+                inputRqId.name = 'rq_id';
+                inputRqId.value = rqId;
+                form.appendChild(inputRqId);
+
+                //Add the review type as an input field
+                const inputReviewType = document.createElement('input');
+                inputReviewType.type = 'hidden';
+                inputReviewType.name = 'review_type';
+                inputReviewType.value = 'SpecificWorkRequest';
+                form.appendChild(inputReviewType);
 
                 // Add the form to the body and submit it
                 document.body.appendChild(form);
@@ -1254,18 +1284,46 @@
                     var ar_name = row.cells[3].innerHTML;
                     var business_process_sub_name = row.cells[4].innerHTML;
                     var job_purpose = row.cells[5].innerHTML;
-                    addRequestToListxx(
-                        job_number,
-                        ar_name,
-                        business_process_sub_name,
-                        "",
-                        job_purpose,
-                        remarks_notes
-                    );
+                    // addRequestToListxx(
+                    //     job_number,
+                    //     ar_name,
+                    //     business_process_sub_name,
+                    //     "",
+                    //     job_purpose,
+                    //     remarks_notes
+                    // );
 
                     // Show the jobs list modal
                     // showJobsListModal();
                     // updateRequestListCount();
+
+                    selectedJobsList.push({
+                        jobNumberPlain: job_number,
+                        jobNumberHtml: job_number,
+                        applicantNameHtml: ar_name,
+                        applicationType: business_process_sub_name,
+                        batchingPurpose: job_purpose,
+                        remarksNotes: remarks_notes
+                        // created_on: jobData.created_on,
+                        // job_status: jobData.job_status
+                    });
+                    
+                    // Update localStorage
+                    localStorage.setItem('requestlistdata', JSON.stringify(selectedJobsList));
+                    
+                    // Update UI
+                    updateRequestListCount();
+                    
+                    // Swal.fire({
+                    //     title: 'Added!',
+                    //     text: `Job ${job_number} has been added to your request list.`,
+                    //     icon: 'success',
+                    //     confirmButtonText: 'OK'
+                    // });
+
+                    addJobToRequestlist();
+
+                    prepareRequestlistModal();
                     
                 });
             }
@@ -1906,17 +1964,18 @@ function showJobsListModal() {
             if (result.isConfirmed) {
                 // Add job to list with remarks
                 selectedJobsList.push({
-                    job_number: jobData.job_number,
-                    ar_name: jobData.ar_name,
-                    business_process_sub_name: jobData.business_process_sub_name,
-                    job_purpose: jobData.job_purpose,
-                    remarks_notes: result.value,
-                    created_on: jobData.created_on,
-                    job_status: jobData.job_status
+                    jobNumberPlain: jobData.job_number,
+                    jobNumberHtml: jobData.job_number,
+                    applicantNameHtml: jobData.ar_name,
+                    applicationType: jobData.business_process_sub_name,
+                    batchingPurpose: jobData.job_purpose,
+                    remarksNotes: result.value
+                    // created_on: jobData.created_on,
+                    // job_status: jobData.job_status
                 });
                 
                 // Update localStorage
-                localStorage.setItem('requestBatchingListData', JSON.stringify(selectedJobsList));
+                localStorage.setItem('requestlistdata', JSON.stringify(selectedJobsList));
                 
                 // Update UI
                 updateRequestListCount();
@@ -1927,6 +1986,12 @@ function showJobsListModal() {
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
+
+                addJobToRequestlist();
+
+                prepareRequestlistModal();
+
+                // window.addJobToRequestlist(jobData.job_number, jobData.ar_name, jobData.business_process_sub_name, jobData.job_purpose, result.value);
             }
         });
     }
@@ -2118,9 +2183,9 @@ function showJobsListModal() {
         }
 
         // 2. Update the button click handler (use event delegation)
-        $(document).off('click', '#btnViewRequestList').on('click', '#btnViewRequestList', function() {
-            showJobsListModal();
-        });
+        // $(document).off('click', '#btnViewRequestList').on('click', '#btnViewRequestList', function() {
+        //     showJobsListModal();
+        // });
 
         $('#jobsListModal').on('hidden.bs.modal', function() {
             // Save the current list to localStorage
@@ -2128,17 +2193,17 @@ function showJobsListModal() {
         });
     });
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-        }
-    });
+    // const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     timer: 3000,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //         toast.addEventListener('mouseenter', Swal.stopTimer);
+    //         toast.addEventListener('mouseleave', Swal.resumeTimer);
+    //     }
+    // });
     
     // Add click handler for the archive all button
     $('#btn_add_archive_all').on('click', function(e) {
