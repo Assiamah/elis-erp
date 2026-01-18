@@ -11,18 +11,6 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-  
-
-  <% 
-
-
-	  
-%>
-
-  
-  
-
 
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -478,5 +466,3 @@
 
  
     
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
-  

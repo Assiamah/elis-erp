@@ -692,6 +692,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     </div>
                                                 </td>
 
+                                                
                                                 <!-- Party Type -->
                                                 <td class="align-middle">
                                                     <span class="badge ${partyBadgeClass}">

@@ -11,6 +11,36 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
+<style>
+        .table-responsive {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        }
+        
+        .table thead th {
+            background-color: #0d6efd;
+            color: white;
+            border-bottom: none;
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+        
+        .red-alert-row {
+            background-color: #f8d7da !important;
+            color: #842029 !important;
+        }
+        
+        .tooltip-inner {
+            max-width: 300px;
+        }
+        
+        .card-header {
+            background: linear-gradient(90deg, #0d6efd 0%, #0b5ed7 100%);
+        }
+    </style>
 
     <div class="container-fluid">
       <!-- Breadcrumbs-->

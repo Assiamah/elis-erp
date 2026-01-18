@@ -1290,8 +1290,7 @@
  
  
  
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
+
   
   <script>
 

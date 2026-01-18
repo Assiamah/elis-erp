@@ -10,16 +10,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
 
-  <jsp:include page="../includes/_header.jsp"></jsp:include>
-  
 
-  <% 
-
-
-	  
-%>
-
-  
   
 
  <div class="content-wrapper">
@@ -277,5 +268,4 @@
  
  
  
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
+ 

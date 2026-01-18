@@ -12,14 +12,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
   <jsp:include page="../includes/_header.jsp"></jsp:include>
-  
-
-  <% 
-
-
-	  
-%>
-
+ 
 
 
     <div class="container-fluid">
@@ -207,6 +200,3 @@
 
  
  
-    
-  <jsp:include page="../includes/_footer.jsp"></jsp:include>
-  

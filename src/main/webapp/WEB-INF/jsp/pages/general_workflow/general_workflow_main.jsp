@@ -247,6 +247,7 @@
                                                 <span class="fs-12 d-block text-muted"><span class="text-success me-1 d-inline-flex align-items-center fw-semibold"><i class="ti ti-trending-up me-1 fw-semibold align-middle"></i>0.45%</span>this month</span>
                                             </div> -->
                                         </div>
+
                                         <div>
                                             <span class="avatar avatar-md bg-info-transparent svg-info">
                                                 <i class="ri-download-2-line fa-2x"></i>
@@ -987,9 +988,28 @@
                     inbox_type == 1 ?
                     `<div class="d-flex justify-content-start align-items-start">
                         <div class="btn-group" role="group">
+                           
+                             <button class="btn btn-icon btn-sm me-1 btn-info btn-wave waves-effect waves-light btn-add-batch" 
+                                data-job_number="`+item.job_number+`" 
+                                data-case_number="`+item.case_number+`" 
+                                data-job_purpose="`+item.job_purpose+`"
+                                data-ar_name="`+item.ar_name+`"
+                                data-business_process_sub_name="General Workflow Request"
+                                data-review_instruction="`+item.review_instruction+`"
+                            
+                                  data-application_stage="General Workflow Request"
+                                   data-application_stage_name="General Workflow Request"
+
+                                    data-application_stage_baby_step="General Workflow Request"
+                                    data-application_stage_name_baby_step="General Workflow Request"
+                                data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal"
+                            >
+                                <i class="fas fa-edit ml-2"></i>
+                            </button>
                             <button class="btn btn-sm btn-info btn-view-job" data-id="`+item.case_number+`">
                                 <i class="fas fa-eye ml-2"></i>
                             </button>
+                            
                             <button class="btn btn-sm btn-warning btn-add-to-list" data-id="`+item.job_number+`">
                                 <i class="fas fa-paper-plane ml-2"></i>
                             </button>

@@ -377,20 +377,18 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <div class="mb-4">
-                                <button type="submit" 
-                                        id="btn-login" 
-                                        class="btn btn-primary btn-lg w-100 ">
-                                    <span class="login-text">
-                                        <i class="ri-login-box-line me-2"></i>
-                                        Sign In
-                                    </span>
-                                    <span class="loading-text d-none">
-                                        <span class="mdi mdi-spin mdi-loading me-1" role="status"></span>
-                                        Authenticating...
-                                    </span>
-                                </button>
-                            </div>
+                          <!-- Submit Button -->
+                        <button type="submit" 
+                                id="btn-login" 
+                                class="btn btn-primary-gradient btn-lg w-100 shadow-lg">
+                            <span class="login-text">
+                                <i class="ri-login-circle-line me-2"></i> Sign In
+                            </span>
+                            <span class="loading-text d-none">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                Authenticating...
+                            </span>
+                        </button>
 
                         
                         </form>
@@ -400,137 +398,96 @@
     </div>
 </div>
         <!-- Right Side - Welcome Panel -->
-        <div class="col-lg-6 auth-sidebar d-none d-lg-flex align-items-center justify-content-center position-relative ">
-            <!-- Background Pattern -->
-            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10">
-                <div class="pattern-dots"></div>
-            </div>
-            
-            <div class="auth-sidebar-content text-center p-4 p-lg-5" style="max-width: 650px;">
+                    <!-- Right Side - Welcome / Branding Panel -->
+                <div class="col-lg-6 p-0 d-none d-lg-flex flex-column">
+                    <!-- Top 75% - Hero Image Section -->
+                    <div class="flex-grow-1 position-relative overflow-hidden" style="flex: 3;">
+                        <!-- Background Image -->
+                        <div class="position-absolute inset-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80"
+                                alt="Modern land management & geospatial technology"
+                                class="w-100 h-100 object-fit-cover"
+                                style="filter: brightness(0.85) contrast(1.05);"
+                            >
+                            <!-- Overlay gradient -->
+                            <div class="position-absolute inset-0" 
+                                style="background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(5,150,105,0.65) 100%);">
+                            </div>
+                        </div>
 
-                <!-- Four White Cards Grid -->
-                <div class="row g-4 mb-5">
-                    <!-- Card 1: Security -->
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-lg h-100 glass-card">
-                            <div class="card-body p-4 text-center">
-                                <div class="icon-wrapper bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                    <i class="ri-shield-check-line fs-32 text-success"></i>
-                                </div>
-                                <h6 class="fw-medium mb-2">Military-Grade Security</h6>
-                                <p class="text-muted fw-light fs-13 mb-0">
-                                    Advanced encryption and multi-factor authentication protect your sensitive data
+                        <!-- Text overlay on image -->
+                        <div class="position-relative h-100 d-flex align-items-center justify-content-center text-center text-white z-2 p-5">
+                            <div class="max-w-3xl">
+                                <h2 class="display-5 fw-bold mb-4" style="text-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                                    Transforming Land Administration<br>Through Spatial Intelligence
+                                </h2>
+                                <p class="lead fs-4 opacity-90 mb-0" style="text-shadow: 0 2px 8px rgba(0,0,0,0.4);">
+                                    Innovative • Secure • Future-Ready
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 2: Reliability -->
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-lg h-100 glass-card">
-                            <div class="card-body p-4 text-center">
-                                <div class="icon-wrapper bg-info bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                    <i class="ri-server-line fs-32 text-info"></i>
+                    <!-- Bottom 25% - Company Info -->
+                    <div class="bg-white flex-shrink-0 p-4 p-lg-5 d-flex align-items-center" style="flex: 1; border-top: 4px solid #059669;">
+                        <div class="w-100">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="me-3">
+                                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                        style="width: 64px; height: 64px; font-size: 1.8rem;">
+                                        <i class="ri-map-pin-line"></i>
+                                    </div>
                                 </div>
-                                <h6 class="fw-medium mb-2">99.9% Uptime</h6>
-                                <p class="text-muted fw-light fs-13 mb-0">
-                                    Guaranteed system availability with real-time monitoring and automatic failover
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Data Management -->
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-lg h-100 glass-card">
-                            <div class="card-body p-4 text-center">
-                                <div class="icon-wrapper bg-warning bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                    <i class="ri-database-2-line fs-32 text-warning"></i>
+                                <div>
+                                    <h4 class="fw-bold mb-1 text-dark">SpatialEdge Company Limited</h4>
+                                    <p class="text-muted mb-0 fs-6">Geospatial Technology & Land Information Solutions</p>
                                 </div>
-                                <h6 class="fw-medium mb-2">Centralized Data Hub</h6>
-                                <p class="text-muted fw-light fs-13 mb-0">
-                                    Unified platform for all land records with advanced search and analytics capabilities
-                                </p>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Card 4: Support -->
-                    <div class="col-md-6">
-                        <div class="card border-0 shadow-lg h-100 glass-card">
-                            <div class="card-body p-4 text-center">
-                                <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
-                                    <i class="ri-customer-service-2-line fs-32 text-primary"></i>
-                                </div>
-                                <h6 class="fw-medium mb-2">24/7 Expert Support</h6>
-                                <p class="text-muted fw-light fs-13 mb-0">
-                                    Dedicated support team available round the clock for immediate assistance
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- System Stats -->
-                <div class="row g-3 mb-5">
-                    <div class="col-4">
-                        <div class="text-center">
-                            <h3 class="text-white fw-bold mb-1">1.2K+</h3>
-                            <p class="text-white opacity-75 fs-12 mb-0">Active Users</p>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="text-center">
-                            <h3 class="text-white fw-bold mb-1">100K+</h3>
-                            <p class="text-white opacity-75 fs-12 mb-0">Records</p>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="text-center">
-                            <h3 class="text-white fw-bold mb-1">99.9%</h3>
-                            <p class="text-white opacity-75 fs-12 mb-0">Satisfaction</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Security Banner -->
-                <div class="alert alert-light border-0 shadow-sm mb-4" role="alert">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 me-3">
-                            <i class="ri-shield-flash-fill fs-20 text-danger"></i>
-                        </div>
-                        <div class="flex-grow-1 text-start">
-                            <h6 class="alert-heading mb-1 fw-medium text-dark">Security Reminder</h6>
-                            <p class="mb-0 fw-light fs-13 text-dark">
-                                Your security is our priority. Always verify you're on the official ELIS portal before entering credentials.
+                            <p class="text-muted mb-4 fs-6">
+                                SpatialEdge Company Limited is a leading Ghanaian technology firm specializing in geospatial solutions, 
+                                enterprise land information systems, cadastral mapping, and digital land administration platforms.
                             </p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Footer -->
-                <div class="border-top border-white border-opacity-25 pt-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                            <p class="text-white opacity-75 fs-12 mb-1">
-                                <i class="ri-shield-check-line me-1"></i>
-                                <span class="fw-medium">Verified Secure Connection</span>
-                            </p>
-                            <p class="text-white opacity-75 fs-12 mb-0">
-                                <i class="ri-time-line me-1"></i>
-                                Last updated: Just now
-                            </p>
-                        </div>
-                        <div class="text-end">
-                            <div class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-25 py-2 px-3">
-                                <i class="ri-checkbox-circle-fill me-1"></i>
-                                All Systems Operational
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ri-building-line text-success me-2"></i>
+                                        <span class="fw-medium">Headquartered in Accra</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ri-global-line text-success me-2"></i>
+                                        <span class="fw-medium">Nationwide Impact</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ri-shield-check-line text-success me-2"></i>
+                                        <span class="fw-medium">ISO 27001 Compliant</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ri-calendar-check-line text-success me-2"></i>
+                                        <span class="fw-medium">Est. 2018</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-3">
+                                <a href="#" class="btn btn-outline-success btn-sm">
+                                    <i class="ri-linkedin-box-fill me-1"></i> LinkedIn
+                                </a>
+                                <a href="#" class="btn btn-outline-success btn-sm">
+                                    <i class="ri-globe-line me-1"></i> Website
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </div>
 </div>
 
