@@ -279,217 +279,196 @@
 <div class="container-fluid min-vh-100 p-0">
     <div class="row g-0 h-100">
         <!-- Left Side - Login Form -->
-       <div class="col-lg-6 p-0">
-    <div class="auth-left-container">
-        <div class="auth-card">
+        <div class="col-lg-6 p-0">
+            <div class="auth-left-container">
+                <div class="auth-card">
 
-            <!-- Header -->
-            <div class="auth-card-header">
-                <div class="auth-logo">
-                    <img src="${pageContext.request.contextPath}/assets/images/NewLogo.jpg"
-                         width="42" class="rounded-circle" alt="logo">
+                    <!-- Header -->
+                    <div class="auth-card-header">
+                        <div class="auth-logo">
+                            <img src="${pageContext.request.contextPath}/assets/images/NewLogo.jpg"
+                                width="42" class="rounded-circle" alt="logo">
+                        </div>
+                    <h1 class="auth-title mb-1">Enterprise Land Information System</h1>
+                        <p class="auth-subtitle mb-0">Secure Access Portal</p>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="auth-card-body">
+
+                        <div class="text-center mb-4">
+                            <h2 class="h5 fw-semibold text-dark mb-1">Welcome Back</h2>
+                            <p class="text-muted fs-14 mb-0">
+                                Sign in with your official credentials
+                            </p>
+                        </div>
+
+                        <!-- 🔴 KEEP YOUR EXISTING LOGIN FORM HERE -->
+                        <!-- (email, password, remember me, submit button) -->
+
+                        <!-- Error Alert -->
+                                <c:if test="${login == 'failed'}">
+                                    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4" role="alert">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-error-warning-line fs-20"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="alert-heading fw-semibold mb-1">Authentication Failed</h6>
+                                            <p class="mb-0 fs-13">Invalid credentials. Please check your email and password.</p>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </c:if>
+
+                                <!-- Login Form -->
+                                <form name="loginForm" id="loginForm" method="POST" action="two_factor_verification" novalidate>
+                                    <!-- Email Field -->
+                                    <div class="mb-3">
+                                        <div class="position-relative">
+                                            <input type="email" 
+                                                class="form-control floating-input ps-4" 
+                                                name="email" 
+                                                id="email" 
+                                                placeholder=""
+                                                pattern="[a-zA-Z0-9._%+-]+@lc\.gov\.gh$"
+                                                title="Email must be a valid @lc.gov.gh address"
+                                                required>
+                                            <label for="email" class="floating-label">
+                                                <i class="ri-user-line me-2"></i>User ID
+                                            </label>
+                                            <!-- <div class="position-absolute end-0 top-50 translate-middle-y me-4">
+                                                <i class="ri-user-3-line text-muted"></i>
+                                            </div> -->
+                                        </div>
+                                        <small class="text-muted fw-light small"><i class="ri-information-line me-1"></i>User ID is your official email address</small>
+                                    </div>
+
+                                    <!-- Password Field -->
+                                    <div class="mb-4">
+                                        <div class="position-relative">
+                                            <input type="password" 
+                                                class="form-control floating-input ps-4" 
+                                                name="password" 
+                                                id="password" 
+                                                placeholder=" "
+                                                required>
+                                            <label for="password" class="floating-label">
+                                                <i class="ri-lock-line me-2"></i>Password
+                                            </label>
+                                            <button type="button" 
+                                                    class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-decoration-none"
+                                                    onclick="togglePassword('password', this)">
+                                                <i class="ri-eye-off-line align-middle text-muted"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Remember Me & Forgot Password -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                                            <label class="form-check-label fs-14" for="rememberMe">
+                                                Remember this device
+                                            </label>
+                                        </div>
+                                        <a href="forgot_password" class="text-decoration-none fs-14 text-primary fw-medium">
+                                            Forgot Password?
+                                        </a>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                <!-- Submit Button -->
+                                <button type="submit" 
+                                        id="btn-login" 
+                                        class="btn btn-primary btn-lg w-100 shadow-lg">
+                                    <span class="login-text">
+                                        <i class="ri-login-circle-line me-2"></i> Sign In
+                                    </span>
+                                    <span class="loading-text d-none">
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        Authenticating...
+                                    </span>
+                                </button>
+
+                                
+                                </form>
+
+                    </div>
                 </div>
-              <h1 class="auth-title mb-1">Enterprise Land Information System</h1>
-<p class="auth-subtitle mb-0">Secure Access Portal</p>
             </div>
-
-            <!-- Body -->
-            <div class="auth-card-body">
-
-                <div class="text-center mb-4">
-                    <h2 class="h5 fw-semibold text-dark mb-1">Welcome Back</h2>
-                    <p class="text-muted fs-14 mb-0">
-                        Sign in with your official credentials
+        </div>
+        <!-- Right Side - Welcome Panel -->
+        <div class="col-lg-6 p-0 d-none d-lg-flex flex-column position-relative">
+            <!-- Background Image with Overlay -->
+            <div class="position-absolute top-0 start-0 w-100 h-100">
+                <img src="${pageContext.request.contextPath}/assets/images/login/login-bg.jpg" 
+                     alt="Enterprise Land Information System Dashboard" 
+                     class="w-100 h-100 object-fit-cover">
+                <!-- Dark Overlay on Top of Image -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 0.6;"></div>
+            </div>
+            
+            <!-- Content Container -->
+            <div class="position-relative z-1 d-flex flex-column justify-content-center align-items-center text-white h-100 p-5">
+                <!-- System Description -->
+                <div class="text-start mb-5">
+                    <h2 class="display-5 fw-bold mb-3 text-white">Enterprise Land Management</h2>
+                    <p class="fs-6 fw-light mb-4" style="max-width: 600px;">
+                        A comprehensive platform for managing land records, property information, 
+                        and spatial data across municipalities. Streamline operations with our 
+                        secure, integrated land information system.
                     </p>
                 </div>
 
-                <!-- 🔴 KEEP YOUR EXISTING LOGIN FORM HERE -->
-                <!-- (email, password, remember me, submit button) -->
+                <!-- Features/Highlights -->
+                <div class="row g-4 mt-4" style="max-width: 800px;">
+                    <div class="col-md-4 text-center">
+                        <div class="p-4 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                            <i class="ri-map-pin-line fs-1 mb-3 text-primary"></i>
+                            <h4 class="h5 fw-semibold text-warning mb-2">Spatial Data</h4>
+                            <p class="small opacity-75 mb-0">Advanced GIS mapping and spatial analysis tools</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-4 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                            <i class="ri-database-2-line fs-1 mb-3 text-primary"></i>
+                            <h4 class="h5 fw-semibold text-warning mb-2">Centralized Records</h4>
+                            <p class="small opacity-75 mb-0">Unified land registry and property database</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-4 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                            <i class="ri-shield-check-line fs-1 mb-3 text-primary"></i>
+                            <h4 class="h5 fw-semibold text-warning mb-2">Secure Access</h4>
+                            <p class="small opacity-75 mb-0">Role-based permissions and audit trails</p>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Error Alert -->
-                        <c:if test="${login == 'failed'}">
-                            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4" role="alert">
-                                <div class="flex-shrink-0">
-                                    <i class="ri-error-warning-line fs-20"></i>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="alert-heading fw-semibold mb-1">Authentication Failed</h6>
-                                    <p class="mb-0 fs-13">Invalid credentials. Please check your email and password.</p>
-                                </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        </c:if>
-
-                        <!-- Login Form -->
-                        <form name="loginForm" id="loginForm" method="POST" action="two_factor_verification" novalidate>
-                            <!-- Email Field -->
-                            <div class="mb-3">
-                                <div class="position-relative">
-                                    <input type="email" 
-                                        class="form-control floating-input ps-4" 
-                                        name="email" 
-                                        id="email" 
-                                        placeholder=""
-                                        pattern="[a-zA-Z0-9._%+-]+@lc\.gov\.gh$"
-                                        title="Email must be a valid @lc.gov.gh address"
-                                        required>
-                                    <label for="email" class="floating-label">
-                                        <i class="ri-user-line me-2"></i>User ID
-                                    </label>
-                                    <!-- <div class="position-absolute end-0 top-50 translate-middle-y me-4">
-                                        <i class="ri-user-3-line text-muted"></i>
-                                    </div> -->
-                                </div>
-                                <small class="text-muted fw-light small"><i class="ri-information-line me-1"></i>User ID is your official email address</small>
-                            </div>
-
-                            <!-- Password Field -->
-                            <div class="mb-4">
-                                <div class="position-relative">
-                                    <input type="password" 
-                                           class="form-control floating-input ps-4" 
-                                           name="password" 
-                                           id="password" 
-                                           placeholder=" "
-                                           required>
-                                    <label for="password" class="floating-label">
-                                        <i class="ri-lock-line me-2"></i>Password
-                                    </label>
-                                    <button type="button" 
-                                            class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-decoration-none"
-                                            onclick="togglePassword('password', this)">
-                                        <i class="ri-eye-off-line align-middle text-muted"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Remember Me & Forgot Password -->
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                                    <label class="form-check-label fs-14" for="rememberMe">
-                                        Remember this device
-                                    </label>
-                                </div>
-                                <a href="forgot_password" class="text-decoration-none fs-14 text-primary fw-medium">
-                                    Forgot Password?
-                                </a>
-                            </div>
-
-                            <!-- Submit Button -->
-                          <!-- Submit Button -->
-                        <button type="submit" 
-                                id="btn-login" 
-                                class="btn btn-primary-gradient btn-lg w-100 shadow-lg">
-                            <span class="login-text">
-                                <i class="ri-login-circle-line me-2"></i> Sign In
-                            </span>
-                            <span class="loading-text d-none">
-                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                Authenticating...
-                            </span>
-                        </button>
-
-                        
-                        </form>
-
+                <!-- Additional Information -->
+                <div class="text-center mt-5 pt-4 border-top border-white-25" style="max-width: 700px;">
+                    <p class="mb-2 opacity-75">
+                        <i class="ri-government-line me-2"></i>
+                        Official Land Commission System
+                    </p>
+                    <p class="small opacity-50 mb-0">
+                        Version 5.0 • For authorized personnel only
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-        <!-- Right Side - Welcome Panel -->
-                    <!-- Right Side - Welcome / Branding Panel -->
-                <div class="col-lg-6 p-0 d-none d-lg-flex flex-column">
-                    <!-- Top 75% - Hero Image Section -->
-                    <div class="flex-grow-1 position-relative overflow-hidden" style="flex: 3;">
-                        <!-- Background Image -->
-                        <div class="position-absolute inset-0">
-                            <img 
-                                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80"
-                                alt="Modern land management & geospatial technology"
-                                class="w-100 h-100 object-fit-cover"
-                                style="filter: brightness(0.85) contrast(1.05);"
-                            >
-                            <!-- Overlay gradient -->
-                            <div class="position-absolute inset-0" 
-                                style="background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(5,150,105,0.65) 100%);">
-                            </div>
-                        </div>
 
-                        <!-- Text overlay on image -->
-                        <div class="position-relative h-100 d-flex align-items-center justify-content-center text-center text-white z-2 p-5">
-                            <div class="max-w-3xl">
-                                <h2 class="display-5 fw-bold mb-4" style="text-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-                                    Transforming Land Administration<br>Through Spatial Intelligence
-                                </h2>
-                                <p class="lead fs-4 opacity-90 mb-0" style="text-shadow: 0 2px 8px rgba(0,0,0,0.4);">
-                                    Innovative • Secure • Future-Ready
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom 25% - Company Info -->
-                    <div class="bg-white flex-shrink-0 p-4 p-lg-5 d-flex align-items-center" style="flex: 1; border-top: 4px solid #059669;">
-                        <div class="w-100">
-                            <div class="d-flex align-items-center mb-4">
-                                <div class="me-3">
-                                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" 
-                                        style="width: 64px; height: 64px; font-size: 1.8rem;">
-                                        <i class="ri-map-pin-line"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="fw-bold mb-1 text-dark">SpatialEdge Company Limited</h4>
-                                    <p class="text-muted mb-0 fs-6">Geospatial Technology & Land Information Solutions</p>
-                                </div>
-                            </div>
-
-                            <p class="text-muted mb-4 fs-6">
-                                SpatialEdge Company Limited is a leading Ghanaian technology firm specializing in geospatial solutions, 
-                                enterprise land information systems, cadastral mapping, and digital land administration platforms.
-                            </p>
-
-                            <div class="row g-3 mb-4">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ri-building-line text-success me-2"></i>
-                                        <span class="fw-medium">Headquartered in Accra</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ri-global-line text-success me-2"></i>
-                                        <span class="fw-medium">Nationwide Impact</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ri-shield-check-line text-success me-2"></i>
-                                        <span class="fw-medium">ISO 27001 Compliant</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ri-calendar-check-line text-success me-2"></i>
-                                        <span class="fw-medium">Est. 2018</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex gap-3">
-                                <a href="#" class="btn btn-outline-success btn-sm">
-                                    <i class="ri-linkedin-box-fill me-1"></i> LinkedIn
-                                </a>
-                                <a href="#" class="btn btn-outline-success btn-sm">
-                                    <i class="ri-globe-line me-1"></i> Website
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    </div>
-</div>
+<!-- Optional: Add some custom CSS if needed -->
+<style>
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    .border-white-25 {
+        border-color: rgba(255, 255, 255, 0.25) !important;
+    }
+</style>
 
 <script>
     $(document).ready(function() {
