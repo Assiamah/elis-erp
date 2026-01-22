@@ -1773,29 +1773,29 @@
                                     <div class="d-flex gap-2">
                                         <!-- Visualize Polygon Button -->
                                         <button type="button" class="btn btn-warning btn-sm" 
-                                            id="lc_btn_visualise_wkt" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Visualise Polygon">
+                                            id="lc_btn_visualise_wkt">
                                             <i class="fas fa-map-marked-alt me-1"></i>
                                             Visualize Polygon
                                         </button>
                                         
                                         <!-- Plot Parcels Button -->
                                         <button type="button" class="btn btn-success btn-sm" 
-                                            id="lc_btn_visualise_search" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Plot Parcels">
+                                            id="lc_btn_visualise_search">
                                             <i class="fas fa-object-ungroup me-1"></i>
                                             Plot Parcels
                                         </button>
                                         
                                         <!-- Print Map Button -->
                                         <button type="button" class="btn btn-info btn-sm" 
-                                            id="lc_btnprintmap" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Print Map">
+                                            id="lc_btnprintmap">
                                             <i class="fas fa-print me-1"></i>
                                             Print
+                                        </button>
+
+                                        <button type="button" class="btn btn-danger btn-sm" 
+                                            id="lc_btn_check_related_jobs">
+                                            <i class="fas fa-eye me-1"></i>
+                                            Check Related Jobs
                                         </button>
                                     </div>
                                     
@@ -1869,7 +1869,34 @@
                 </div>
             </div>
             <div class="col-md-4">
-                
+                <div class="card border">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-list-alt me-2 text-primary"></i>Related Jobs
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover table-sm table-striped" id="lc_fit_related_jobs_table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Job Number</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>LRDGAR61145672021</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>
+                                            View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         

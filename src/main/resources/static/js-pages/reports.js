@@ -1,6 +1,37 @@
 $(document)
 		.ready(
 				function() {
+						$('#main_service_rpt').on('change', function () {
+						if ($(this).val() === '0') { // Check if 'All Services' is selected
+						  $('#subServ').hide(); // Hide the dropdown
+						} else {
+						  $('#subServ').show(); // Show the dropdown
+						}
+					  });
+
+
+					  $('#type_of_report_name_rpt').on('change', function () {
+						if ($(this).val() === 'Unit') { // Check if 'All Services' is selected
+						  $('#userSelect').hide(); // Hide the dropdown
+						} else {
+						  $('#userSelect').show(); // Show the dropdown
+						}
+					  });
+
+
+					  $('#report_count_main_service_rpt').on('change', function () {
+						if ($(this).val() === '0') { // Check if 'All Services' is selected
+						  $('#countSubServ').hide(); // Hide the dropdown
+						} else {
+						  $('#countSubServ').show(); // Show the dropdown
+						}
+					  });
+
+
+
+
+
+					  
 
 					var datatable_cordinator = $(
 							"#job_casemgtdetailsdataTable_elis_reports")
@@ -361,7 +392,23 @@ $(document)
 														.split('-');
 		
 												var main_service_id = main_service_name_id[0];
-												var main_service_name = main_service_name_id[1];
+
+												var MAINSERV = $("#report_count_main_service_rpt").val();
+
+												console.log(MAINSERV + "Miain");
+
+												if (MAINSERV == "0") {
+
+													 var main_service_name = "All Services"
+
+													}else {
+
+
+												   var main_service_name = main_service_name_id[1];
+
+
+													}
+
 		
 												var sub_select_id = document
 														.getElementById("report_count_sub_service_rpt");
@@ -464,7 +511,7 @@ $(document)
 	
 															var jsonp = JSON
 																	.parse(job_details);
-																	//console.log(jsonp);
+																	console.log(jsonp);
 														
 
 																	if (jsonp.data == null){
@@ -476,16 +523,25 @@ $(document)
 
 												 let pending_count = jsonp?.data?.[0]?.total ?? 0;
                                                  let completed_count = jsonp?.data?.[1]?.total ?? 0;
+
+												 let total = pending_count + completed_count;
 														    // let pending_count = jsonp.data[0].total;
 															// let completed_count = jsonp.data[1].total;
 
 															//console.log(pending_count);
+															Swal.fire(
+																	'Successful!',
+																	'Your Report has been Generated.',
+																	'success'
+																);
 
-															$("#report_count_modal").modal("show");  
+															$("#reportCountModal").modal("show");  
 															document.getElementById('app-pending').innerHTML = pending_count;
 															document.getElementById('app-completed').innerHTML = completed_count;
+															
+															document.getElementById('totalApps').innerHTML = total;
 														
-															var report_Count  = main_service_name+ "  " +"Report Count Between"+" "+date_from+ " "+"and"+" "+date_to;
+															var report_Count  = (main_service_name+ "  " +"Report Count Between"+" "+date_from+ " "+"and"+" "+date_to).toUpperCase();
 															document.getElementById('reportCountModalLabel').innerHTML = report_Count;
 
 
@@ -791,7 +847,7 @@ $(document)
 										var selected_division = $(this).val();
 
 										$("#unit_to_send_to_rpt").val("");
-										$("#get_change_region_compliance").val("");
+										// $("#get_change_region_compliance").val("");
 										// $("#btn_process_batchlist").hide();
 										$
 												.ajax({
@@ -804,7 +860,7 @@ $(document)
 													success : function(
 															jobdetails) {
 
-														// console.log(jobdetails);
+														console.log(jobdetails);
 														var json_p = JSON
 																.parse(jobdetails);
 														var datalist = $("#listofunitsbatching_rpt");
@@ -852,8 +908,12 @@ $(document)
 										var region_cod = $(
 											"#get_change_region_compliance").val();
 								  let region_code = Math.trunc(region_cod);
+								  var division_name = $(
+											"#unit_division_to_send_to_rpt").val();
+									var unit_id = $(
+											"#unit_to_send_to_rpt").val();
 
-								  console.log(region_code);
+								  console.log(region_code,division_name,unit_id);
 										$("#user_to_send_to_rpt").val("");
 										
 										// $("#btn_process_batchlist").hide();
@@ -863,40 +923,59 @@ $(document)
 													url : "Case_Management_Serv",
 													data : {
 														request_type : 'get_lc_list_of_users_rpt',
-														region_code : region_code
+														region_code : region_code,
+														division_name : division_name,
+														unit_id : unit_id
 													},
 													cache : false,
 													success : function(
 															jobdetails) {
 
-														
-														var json_p = JSON
-																.parse(jobdetails);
-																console.log(json_p.users);
-														var datalist = $("#listofusersbatching_rpt");
-														datalist.empty();
+																var json_p = JSON.parse(jobdetails);
+																	console.log(json_p);
 
-														$(json_p.users)
-																.each(
-																		function() {
-																			// if (selected_division == this.unit_name) {
-																				if (selected_division == this.unit_name) {
+																	var datalist = $("#listofusersbatching_rpt");
+																	datalist.empty();
 
-																				// console.log(this.division
-																				// + "
-																				// - "
-																				// +
-																				// this.userid);
-																				datalist
-																						.append('<option data-name="'
-																								+ this.fullname
-																								+ '" data-id="'
-																								+ this.userid
-																								+ '" value="'
-																								+ this.fullname
-																								+ '" ></option>');
-																			}
+																	if (json_p.success && json_p.data.length > 0) {
+																		$.each(json_p.data, function () {
+																			datalist.append(
+																				`<option 
+																					value="${this.fullname}" 
+																					data-userid="${this.userid}"
+																				></option>`
+																			);
 																		});
+																	}
+
+														
+														// var json_p = JSON
+														// 		.parse(jobdetails);
+														// 		console.log(json_p);
+														// var datalist = $("#listofusersbatching_rpt");
+														// datalist.empty();
+
+														// $(json_p.users)
+														// 		.each(
+														// 				function() {
+														// 					// if (selected_division == this.unit_name) {
+														// 						if (selected_division == this.unit_name) {
+
+														// 						// console.log(this.division
+														// 						// + "
+														// 						// - "
+														// 						// +
+														// 						// this.userid);
+														// 						datalist
+														// 								.append('<option data-name="'
+														// 										+ this.fullname
+														// 										+ '" data-id="'
+														// 										+ this.userid
+														// 										+ '" value="'
+														// 										+ this.fullname
+														// 										+ '" ></option>');
+														// 					}
+														// 				});
 													}
 												});
 
@@ -921,8 +1000,17 @@ $(document)
 										var type_of_report_name_rpt = $(
 												"#type_of_report_name_rpt")
 												.val();
-										btn_process_batchlist
+										// btn_process_batchlist
 										if ($('#type_of_report_name_rpt').val() === 'Unit') {
+
+											 $('#user_to_send_to_rpt').hide();
+
+												// if ($(this).val() === '0') { // Check if 'All Services' is selected
+						//   $('#subServ').hide(); // Hide the dropdown
+						// } else {
+						//   $('#subServ').show(); // Show the dropdown
+						// }
+
 
 											request_type = 'report_dashboard_unit_for_each_staff';
 											var userid_1 = $(
@@ -937,6 +1025,8 @@ $(document)
 															function() {
 																return this.value == userid_1;
 															}).data('id');
+
+											console.log(send_to_id + "Unit")				
 											var send_to_name = $(
 													'#listofunitsbatching_rpt option')
 													.filter(
@@ -952,18 +1042,43 @@ $(document)
 											// "#user_to_send_to
 											// option:selected"_rpt
 											// ).text();
-											var send_to_id = $(
-													'#listofusersbatching_rpt option')
-													.filter(
-															function() {
-																return this.value == userid_1;
-															}).data('id');
-											var send_to_name = $(
-													'#listofusersbatching_rpt option')
-													.filter(
-															function() {
-																return this.value == userid_1;
-															}).data('name');
+											// var send_to_id = $(
+											// 		'#listofusersbatching_rpt option')
+											// 		.filter(
+											// 				function() {
+											// 					return this.value == userid_1;
+											// 				}).data('id');
+
+															
+												
+												
+												var inputVal = $("#user_to_send_to_rpt").val();
+
+												// Find the matching option in the datalist
+												var option = document.querySelector(
+													`#listofusersbatching_rpt option[value="${inputVal}"]`
+												);
+
+												if (!option) {
+													console.warn("No matching user found for:", inputVal);
+													return;
+												}
+
+												// ✅ Extract userid
+												var send_to_id = option.dataset.userid;
+												var send_to_name = inputVal;
+
+
+												// console.log(send_to_id + "Else")	
+												// console.log(send_to_name + "Else")	
+
+
+											// var send_to_name = $(
+											// 		'#listofusersbatching_rpt option')
+											// 		.filter(
+											// 				function() {
+											// 					return this.value == userid_1;
+											// 				}).data('name');
 
 										}
 

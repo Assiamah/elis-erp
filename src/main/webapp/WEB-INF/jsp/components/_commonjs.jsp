@@ -91,6 +91,7 @@
 
 <!-- Echarts-->
 ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name == "account-reports") || (page_name=="compliance_no_login") || (page_name == "focal_compliance_person") ? "<script src='assets/libs/echarts/dist/echarts.min.js'></script> " : ""}
+${page_name == "executive_dashboard" ? "<script src='assets/libs/chart.js/Chart.min.js'></script>" : ""}
 
 <!-- Datatables Cdn -->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -146,4 +147,14 @@ ${page_name == "user_management" ? "<script src='js-pages/user_mgt.js'></script>
 
 ${(page_name == "compliance_query_and_response") || (page_name == "regional_compliance_query_and_response") || (page_name == "compliance_notice_report") ? "<script src='js-pages/compliance_query_and_response.js'></script> " : ""}
 
-${(page_name == "focal_compliance_person") ? "<script src='js-pages/focal_person.js'></script> " : ""}
+${page_name == "focal_compliance_person" ? "<script src='js-pages/focal.js'></script>" : ""}
+
+${page_name == "executive_dashboard" ? "<script src='js-pages/executive_compliance.js'></script>" : ""}
+
+
+
+${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
+
+${page_name == "account-reports" ? "<script src='js-pages/audit_report.js'></script>" : ""}
+
+${page_name == "account-reports" ? "<script src='js-pages/account_reports.js'></script>" : ""}

@@ -212,8 +212,14 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
             
             // Set the formatted amount to the element
             document.getElementById('total_revenue').innerHTML = total_amount;
-            document.getElementById('total_transactions').innerHTML = total_count;
-            document.getElementById('total_revenue').innerHTML = total_amount;
+
+
+           
+              document.getElementById('total_transactions').innerHTML = total_count;
+              document.getElementById('total_revenue').innerHTML = total_amount;
+
+
+
         }
     })
 

@@ -1,3 +1,5 @@
+var title = '';
+
 $(document).ready(function() {
 	
 	//Draw graph
@@ -9,7 +11,12 @@ $(document).ready(function() {
 		const type = $('#type').val();
 		const limit = parseInt($('#limit').val());
 		const x_desc = type ==='count' ? "Total Quantities": "Total Amounts in GHS";
-		const title = "Report from " + $('#date_from').val()+" to "+ $('#date_to').val();
+		const regionName = $('#region_id option:selected').data('name');
+		// const title = regionName + "Report from " + $('#date_from').val()+" to "+ $('#date_to').val();
+		 title =
+			regionName + " Report from " +
+			$('#date_from').val() + " to " +
+			$('#date_to').val();
 		const sub_title= "Only top "+ $('#limit').val()+" are selected to show";
 		
 
@@ -126,9 +133,49 @@ $(document).ready(function() {
 	 $("#tbl_transactions_result")
 	.DataTable({
 		dom: 'Bfrtip',						
-        buttons: [
-        	'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+        // buttons: [
+        // 	'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+        // ]
+		         buttons: [
+            {
+              extend: 'copy',
+              title: title
+            },
+            {
+              extend: 'csv',
+              title: title,
+              filename: title
+            },
+            {
+              extend: 'excel',
+              title: title,
+              filename: title
+            },
+            {
+              extend: 'pdf',
+              title: title,
+              filename: title
+            },
+            {
+              extend: 'print',
+              text: 'Print',
+              title: '',
+              customize: function (win) {
+                $(win.document.body)
+                  .prepend(`
+                    <h3 style="text-align:center; font-weight:bold; margin-bottom:20px;">${title}</h3>
+                    <p style="text-align:center; font-weight:bold; margin-bottom:30px;">
+                      This report is generated using the Enterprise Land Information System
+                    </p>`)
+                  .css('font-size', '18px');
+                $(win.document.body).find('table')
+                  .addClass('compact')
+                  .css('font-size', '16px')
+                  .css('width', '100%');
+              }
+            },
+            'pageLength'
+          ]
 	});
 	
 	$("#btn_export_data").click(function(e) {

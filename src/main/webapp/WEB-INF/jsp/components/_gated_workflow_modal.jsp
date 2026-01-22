@@ -855,7 +855,7 @@
 </div>
 
 <div class="modal fade effect-scale modal-blur" id="addeditpartyGeneral" tabindex="-1" aria-labelledby="addEditPartyGeneralLabel" aria-hidden="true" data-bs-backdrop="static">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg">
       <!-- Modal Header -->
       <div class="modal-header bg-primary text-white">
@@ -878,6 +878,8 @@
 
       <!-- Modal Body -->
       <div class="modal-body p-4">
+        <div class="row" style="height: 100vh;">
+          <div class="col-md-6  d-flex flex-column scrollable-col">
         <input type="hidden" id="party_id_gen" value="">
         
         <!-- Validation Summary -->
@@ -1101,6 +1103,12 @@
                    placeholder="Enter region">
           </div>
         </div>
+            
+          </div>
+          <div class="col-md-6 d-flex flex-column scrollable-col">
+            <div class="_gated_workflow_documents"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Modal Footer -->
@@ -1127,7 +1135,7 @@
 </div>
 
 <div class="modal fade effect-scale modal-blur" id="further_entry" tabindex="-1" aria-labelledby="furtherEntryLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg">
       <!-- Modal Header -->
       <div class="modal-header bg-primary text-white">
@@ -1150,6 +1158,9 @@
 
       <!-- Modal Body -->
       <div class="modal-body p-4">
+        <div class="row" style="height: 100vh;">
+          <div class="col-md-6 d-flex flex-column scrollable-col">
+            
         <form id='frmFurtherEntries_only_' novalidate>
           <div class="row g-4">
             <!-- Left Column -->
@@ -1423,6 +1434,11 @@
             </button>
           </div>
         </form>
+          </div>
+          <div class="col-md-6  d-flex flex-column scrollable-col">
+            <div class="_gated_workflow_documents"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

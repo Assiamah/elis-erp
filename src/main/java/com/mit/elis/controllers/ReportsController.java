@@ -282,6 +282,8 @@ public class ReportsController {
 							division_list != "" ? division_list : (String) session.getAttribute("division"));
 					request.setAttribute("t_date_from", date_from);
 					request.setAttribute("t_date_to", date_to);
+					request.setAttribute("region_id", region_id);
+
 
 					request.setAttribute("t_applicationlist", javaArrayListFromGSON);
 
@@ -339,6 +341,8 @@ public class ReportsController {
 					request.setAttribute("limit", limit);
 					request.setAttribute("type", type);
 					request.setAttribute("active", "graph");
+					request.setAttribute("region_id", region_id);
+
 
 					request.setAttribute("applicationlist", javaArrayListFromGSON);
 
@@ -366,6 +370,7 @@ public class ReportsController {
 
 		}
 	}
+
 
 	@RequestMapping("/stamp_duty_payments_reports")
 	@GetMapping

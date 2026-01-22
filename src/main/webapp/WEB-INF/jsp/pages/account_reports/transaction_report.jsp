@@ -1,1000 +1,840 @@
-
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <style>
+    .transaction-report-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-.blur-background {
-    filter: blur(8px);
-    transition: filter 0.3s ease; /* Smooth transition */
-}
+    .transaction-report-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
 
+    .stat-card {
+        border-left: 4px solid transparent;
+        transition: all 0.3s ease;
+    }
 
-	body {
-		margin-top: 20px;
-		background: #FAFAFA;
-	}
-	
-	.order-card {
-		color: #fff;
-	}
-	
-	.card {
-	
-		border-radius: 15px !important; /* Ensures rounded edges */
-		overflow: hidden; /* Ensures child elements follow the border-radius */
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-	
-	
-		
-		/* border-radius: 15px; Increased for smoother rounded edges */
-		/* border-radius: 5px; */
-		-webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
-		box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
-		border: none;
-		margin-bottom: 30px;
-		-webkit-transition: all 0.3s ease-in
-	}
-	
-	
-	.card .card-block {
-		padding: 25px;
-	}
-	
-	/* Softer Gradients */
-	
-	.bg-c-blue {
-		background: linear-gradient(135deg, #3a7bd5, #3a6073);
-		color: white;
-	}
-	
-	.bg-c-green {
-		background: linear-gradient(135deg, #A8E063, #56AB2F); /* Lime green to deep leaf green */
-		color: white;
-	}
-	
-	.bg-c-yellow {
-		background: linear-gradient(135deg, #ffb347, #ffcc33);
-		color: white;
-	}
-	
-	.bg-c-pink {
-		background: linear-gradient(135deg, #4CAF50, #2E8B57); /* Lighter to deeper green */
-		color: white;
-	}
-	
-	/* Card Styling */
-	.order-card {
-		border-radius: 10px;
-		box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-	}
-	
-	.card-block {
-		padding: 20px;
-	}
-	
-	/* Float helpers */
-	.f-left {
-		float: left;
-	}
-	
-	.f-right {
-		float: right;
-	}
-	.card:hover {
-		transform: translateY(-10px); /* Moves the card slightly up */
-		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
-	}
-	
-	</style>
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
 
+    .stat-card.border-warning { border-left-color: #ffc107; }
+    .stat-card.border-info { border-left-color: #17a2b8; }
+    .stat-card.border-primary { border-left-color: #667eea; }
+    .stat-card.border-success { border-left-color: #28a745; }
 
+    .nav-tabs .nav-link {
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        border-radius: 8px 8px 0 0;
+    }
 
+    .nav-tabs .nav-link.active {
+        color: #667eea;
+        background-color: white;
+        border-bottom: 3px solid #667eea;
+    }
 
+    .nav-tabs .nav-link:hover:not(.active) {
+        color: #495057;
+        background-color: rgba(102, 126, 234, 0.05);
+    }
 
+    .form-control-sm {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
 
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .action-btn {
+        border-radius: 8px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .data-table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .data-table thead th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        color: #495057;
+        padding: 1rem;
+    }
+
+    .data-table tbody td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+    }
+
+    .stats-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    .stats-icon.bg-warning { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
+    .stats-icon.bg-info { background-color: rgba(23, 162, 184, 0.1); color: #17a2b8; }
+    .stats-icon.bg-primary { background-color: rgba(102, 126, 234, 0.1); color: #667eea; }
+    .stats-icon.bg-success { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
+
+    .chart-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header-dark {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+    }
+
+    .modal-header.bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px 12px 0 0;
+    }
+
+    @media (max-width: 768px) {
+        .nav-tabs .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+        
+        .chart-container {
+            padding: 15px;
+        }
+        
+        .filter-card {
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-4">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div class="d-flex align-center gap-2">
+                    <div>
+                        <h1 class="page-title fw-medium fs-20 mb-1"><i class="ri-pie-chart-line me-2 text-primary"></i>Transaction Reports</h1>
+                        <p class="text-muted fs-14 mb-0">Comprehensive revenue tracking and financial analytics</p>
+                    </div>
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Transaction Reports</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
 
+        <!-- Hidden data for charts -->
+        <div id="acct_graph_data_values" style="display:none">${data}</div>
 
+        <!-- Tab Navigation -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-transparent border-0 px-4 pt-4 pb-0">
+                <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link ${(active == 'graph') ? 'active' : ''}" data-bs-toggle="tab" data-bs-target="#summarized-revenue" type="button" role="tab">
+                            <i class="ri-pie-chart-line me-2"></i>Summarized Revenues
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link ${(active == 'trans') ? 'active' : ''}" data-bs-toggle="tab" data-bs-target="#transactions-report" type="button" role="tab">
+                            <i class="ri-list-check me-2"></i>Transactions Report
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#bill-item-report" type="button" role="tab">
+                            <i class="ri-file-list-line me-2"></i>Report Per Bill Item
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card-body px-4 pt-4">
+                <div class="tab-content">
+                    
+                    <!-- Tab 1: Summarized Revenues -->
+                    <div class="tab-pane fade ${(active == 'graph') ? 'show active' : ''}" id="summarized-revenue" role="tabpanel">
+                        <div class="row">
+                            <!-- Filter Column -->
+                            <div class="col-lg-3 mb-4">
+                                <div class="card transaction-report-card h-100 filter-card">
+                                    <div class="card-header bg-light border-0 py-3">
+                                        <h5 class="mb-0 fw-semibold">
+                                            <i class="ri-filter-line text-primary me-2"></i>
+                                            Filter Options
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post">
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label class="form-label">Date From</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </span>
+                                                        <input type="date" class="form-control form-control-sm" name="date_from" id="date_from" value="${date_from}">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <label class="form-label">Date To</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </span>
+                                                        <input type="date" class="form-control form-control-sm" name="date_to" id="date_to" value="${date_to}">
+                                                    </div>
+                                                </div>
 
-    <div id="acct_graph_data_values" style="display:none">${data}</div>
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-			  <li class="nav-item">
-			    <a class='text-uppercase nav-link  ${(active == "graph") ? " active bg-dark text-white" : "" }' id="summarize-tab" data-toggle="tab" href="#tab_summarized_revenue" role="tab"
-			     aria-controls="tab_gra_payments" aria-selected="true">SUMMARIZED REVENUES PER SERVICE</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class='text-uppercase nav-link  ${(active == "trans") ? " active  bg-dark text-white" : "" }' id="profile-tab" data-toggle="tab" href="#tab_revenue" 
-			    role="tab" aria-controls="profile" aria-selected="false">TRANSACTIONS REPORT</a>
-			  </li>
+                                                <div class="col-12">
+                                                    <label class="form-label">Region</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">
+                                                            <i class="ri-map-pin-line"></i>
+                                                        </span>
+                                                        <select id="region_id" name="region_id" class="form-select form-control-sm" required>
+                                                            <option value="-1">-- select --</option>
+                                                            <c:forEach items="${officeregionlist}" var="officeregion">
+                                                                <option value="${officeregion.ord_region_code}"
+                                                                        data-name="${officeregion.ord_region_name}"
+                                                                        ${region_id == officeregion.ord_region_code ? 'selected' : ''}>
+                                                                    ${officeregion.ord_region_name}
+                                                                </option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <label class="form-label">Summarize by</label>
+                                                    <select class="form-select form-control-sm" name="type" id="type" required>
+                                                        <option value="values" ${(type == "values") ? "selected" : ""}>Value</option>
+                                                        <option value="count" ${(type == "count") ? "selected" : ""}>Count</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <label class="form-label">Division</label>
+                                                    <select class="form-select form-control-sm" name="division" id="division" multiple required>
+                                                        <option value="PVLMD" ${fn:contains(division, 'PVLMD') ? 'selected' : ''}>PVLMD</option>
+                                                        <option value="SMD" ${fn:contains(division, 'SMD') ? 'selected' : ''}>SMD</option>
+                                                        <option value="LVD" ${fn:contains(division, 'LVD') ? 'selected' : ''}>LVD</option>
+                                                        <option value="LRD" ${fn:contains(division, 'LRD') ? 'selected' : ''}>LRD</option>
+                                                    </select>
+                                                    <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <label class="form-label">Cut-Off Point on Graph</label>
+                                                    <input type="number" step="1" class="form-control form-control-sm" name="limit" value="${limit}" min="3" id="limit" required>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-grid gap-2 mt-4">
+                                                <button type="submit" class="btn btn-primary action-btn">
+                                                    <i class="ri-filter-3-line me-2"></i>Apply Filter
+                                                </button>
+                                            </div>
+                                            
+                                            <hr class="my-4">
+                                            
+                                            <div class="export-section">
+                                                <label class="form-label">Export Type</label>
+                                                <div class="d-grid gap-2 mb-3">
+                                                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="export_type" data-title="PDF">
+                                                        <i class="ri-file-pdf-line me-2"></i>Export as PDF
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="export_type" data-title="CSV">
+                                                        <i class="ri-file-excel-line me-2"></i>Export as CSV
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" name="export_type" id="export_type">
+                                                
+                                                <div class="d-grid">
+                                                    <button class="btn btn-outline-dark action-btn" id="btn_export_data">
+                                                        <i class="ri-download-line me-2"></i>Export Data
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Chart Column -->
+                            <div class="col-lg-9">
+                                <!-- Stats Row -->
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="card stat-card border-primary h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="stats-icon bg-primary me-3">
+                                                        <i class="ri-money-dollar-circle-line fs-4"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="text-muted small fw-semibold mb-1">Total Amount</div>
+                                                        <h3 class="fw-bold text-primary mb-0">
+                                                            GHS <fmt:formatNumber type="number" maxFractionDigits="3" minFractionDigits="2" value="${total_amount}" />
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card stat-card border-success h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="stats-icon bg-success me-3">
+                                                        <i class="ri-file-list-line fs-4"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="text-muted small fw-semibold mb-1">Total Payment Count</div>
+                                                        <h3 class="fw-bold text-success mb-0">
+                                                            <fmt:formatNumber type="number" maxFractionDigits="2" value="${total_count}" />
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chart Card -->
+                                <div class="card transaction-report-card">
+                                    <div class="card-header card-header-dark d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 fw-semibold">
+                                            <i class="ri-pie-chart-line me-2"></i>
+                                            Revenue per Service
+                                        </h5>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-light" title="Toggle fullscreen">
+                                                <i class="ri-fullscreen-line"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <div id="main-echart" style="width: 100%; height: 500px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 2: Transactions Report -->
+                    <div class="tab-pane fade ${(active == 'trans') ? 'show active' : ''}" id="transactions-report" role="tabpanel">
+                        <div class="row">
+                            <!-- Filter Column -->
+                            <div class="col-lg-3 mb-4">
+                                <div class="card transaction-report-card h-100 filter-card">
+                                    <div class="card-header bg-light border-0 py-3">
+                                        <h5 class="mb-0 fw-semibold">
+                                            <i class="ri-filter-line text-primary me-2"></i>
+                                            Filter Options
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post">
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label class="form-label">Date From</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </span>
+                                                        <input type="date" class="form-control form-control-sm" name="t_date_from" id="t_date_from" value="${t_date_from}">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <label class="form-label">Date To</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">
+                                                            <i class="ri-calendar-line"></i>
+                                                        </span>
+                                                        <input type="date" class="form-control form-control-sm" name="t_date_to" id="t_date_to" value="${t_date_to}">
+                                                    </div>
+                                                </div>
 
-
-
-
-			  <li class="nav-item">
-			    <a class='text-uppercase nav-link bg-info text-white' id="new_summarize-tab" data-toggle="tab" href="#new_tab_revenue" 
-			    role="tab" aria-controls="profile" aria-selected="false">REPORT PER BILL ITEM</a>
-			  </li>
-
-
-
-			  
-			 
-			</ul>
-			<div class="tab-content" id="myTabContent">
-			  <div class='tab-pane fade  ${(active == "graph")  ? "show active" : "" } ' id="tab_summarized_revenue" role="tabpanel" aria-labelledby="summarize-tab">
-			  		<br>
-			  		<div class="row">
-						<div class="col-lg-3">
-							<div class="card">
-								<div class="card-header bg-white">
-									<h1 class="h3 mb-0 text-gray-800">FILTER</h1>
-				
-									</div>
-									<div class="card-body">
-										<form method="post" >
-										
-					
-										<div class="form-group">
-											<label>Date</label>
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<span class="input-group-text"><i
-														class="fa fa-calendar-alt"></i></span>
-												</div>
-												<input type="date" class="form-control"
-													data-inputmask-alias="datetime"
-													data-inputmask-inputformat="dd/mm/yyyy" data-mask name="date_from" id="date_from" value="${date_from}">
-											</div>
-										</div>
-										<div class="form-group ">
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<span class="input-group-text"><i
-														class="far fa-calendar-alt"></i></span>
-												</div>
-												<input type="date" class="form-control"
-													data-inputmask-alias="datetime"
-													data-inputmask-inputformat="dd/mm/yyyy" data-mask name="date_to" id="date_to" value="${date_to}">
-											</div>
-										</div>
-										<!-- <div class="form-group">
-											<label>Transaction Type</label>
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<button type="button" class="btn btn-danger">Volume</button>
-												</div>
-												<button type="button" class="btn btn-danger">Count</button>
-											</div>
-										</div> -->
-										<div class="form-group">
-											<label>Summarize by</label> 
-											<select class="form-control filter" name="type" id="type" required>
-												<option value="values" ${(type =="values") ? "selected='selected'":""}>Value</option>
-												<option value="count"  ${(type =="count") ? "selected='selected'":""}>Count</option>
-											</select>
-										</div>
-										<div class="form-group">
-											<label>Division</label> <br>
-											<select class="form-control filter" name="division" id="division" multiple required>
-												<option value="PVLMD" 
-												  <c:if test = "${fn:contains(division, 'PVLMD')}">
-											        selected
-											      </c:if>>PVLMD</option>
-												<option value="SMD" 
-												  <c:if test = "${fn:contains(division, 'SMD')}">
-											        selected
-											      </c:if>>SMD</option>
-												<option value="LVD" 
-												  <c:if test = "${fn:contains(division, 'LVD')}">
-											        selected
-											      </c:if>
-												>LVD</option>
-												<option value="LRD"  
-												  <c:if test = "${fn:contains(division, 'LRD')}">
-											        selected
-											      </c:if>>LRD</option>
-											</select>
-										</div>
-					           			<div class="form-group">
-					                  			<label>Cut-Off Point on Graph</label>
-					                  			<input type="number" step = "1" class="form-control" name = "limit" value="${limit}" min="3" id="limit" required>
-					                	</div>
-					                	<br>
-										<div class="form-group">
-											<button type = "submit"class="btn btn-dark btn-block">Apply Filter</button>
-										</div>
-										<br><br>
-					
-											<div class="form-group">
-												<label>Export Type</label>
-												
-															<div class="input-group">
-																<div id="rdb_export_type" class="btn-group">
-																	<button class="btn btn-outline-dark  " 
-																		data-toggle="export_type" data-title="PDF" 
-																	> &nbsp; &nbsp; &nbsp; &nbsp; PDF &nbsp; &nbsp; &nbsp; &nbsp; </button> 
-																	<button class="btn btn-outline-dark  "
-																		data-toggle="export_type" data-title="CSV"
-																	> &nbsp; &nbsp; &nbsp; &nbsp; CSV &nbsp; &nbsp; &nbsp; &nbsp; </button>
-																</div>
-																<input type="hidden" name="export_type" id="export_type">
-															</div>
-															
-														
-											</div>
-											<div class="form-group">
-												<button class="btn btn-outline-dark btn-block " id="btn_export_data">Export Data</button>
-											</div>
-										
-										</form>
-									</div>
-								</div>
-							</div>
-					
-							<div class="col-lg-9">
-					
-					
-								<div class="row">
-									<div class="col col-6">
-										<!-- Card -->
-										<div class="card ">
-											<div class="card-body">
-					
-												<h3 id="md_total_amt">GHS <fmt:formatNumber type = "number"  maxFractionDigits = "3" minFractionDigits = "2" value = "${total_amount}" /> </h3>
-												<p>Total Amount</p>
-					
-											</div>
-										</div>
-									</div>
-					
-									<div class="col col-6">
-										<!-- Card -->
-										<div class="card ">
-											<div class="card-body">
-					
-												<h3 id="md_total_amt"><fmt:formatNumber type = "number"   maxFractionDigits = "2"  value = "${total_count}" /></h3>
-												<p>Total Payment Count</p>
-					
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /.row -->
-								<br>
-								<div class="card">
-									<div class="card-header bg-white">Revenue per Service
-										<ul class="float-right card-actions">
-					                        <li><a href="#" class="card-btn" role="button" title="Toggle fullscreen">
-					                        <i class="fas fa-expand-arrows-alt"></i></a></li>
-					                    </ul>
-									</div>
-									<div class="card-body">
-										<div id="main-echart" style="width: 100%; height:500px;"></div>
-									</div>
-								</div>
-								
-					
-					
-							</div>
-							<!-- col -->
-						</div>
-						<!-- row -->
-			  </div>
-
-
-
-
-
-
-
-
-			  <div class='tab-pane fade  ${(active == "new_graph")  ? "show active" : "" } ' id="new_tab_revenue" role="tabpanel" aria-labelledby="new_summarize-tab">
-				<br>
-				
-
-
-				<div class="container-fluid">				
-					<div class="row">
-				
-						<div class="col-sm-4">
-							<div class="card">
-							  <div class="card-body">
-								  <label for="">Date From</label> 
-								  <input type="text" id="datefrom" class="form-control"  placeholder="Select Date Range">
-								  <!-- <div id="reportrange" style="background: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%">
-									<i class="fa fa-calendar"></i>&nbsp;
-									<span></span> <i class="fa fa-caret-down"></i>
-								</div> -->
-							  </div>
-							</div>
-						  </div>
-
-
-						  <div class="col-sm-4">
-							<div class="card">
-							  <div class="card-body">
-								  <label for="">Date To</label> 
-								  <input type="text" id="dateto" class="form-control"  placeholder="Select Date Range">
-								  <!-- <div id="reportrange" style="background: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%">
-									<i class="fa fa-calendar"></i>&nbsp;
-									<span></span> <i class="fa fa-caret-down"></i>
-								</div> -->
-							  </div>
-							</div>
-						  </div>
-
-				
-				
-						<div class="col-sm-4">
-						  <div class="card">
-							<div class="card-body">
-								<label for="">Office Region</label> 
-								<select id="sel_change_region_compliance" class="form-control selectpicker"  required>
-										<option selected value="-1">-- select --</option>		
-										<option  value="0">Nationwide</option>						
-										<c:forEach items="${officeregionlist}" var="officeregion">
-											<option  value="${officeregion.ord_region_code}" data-name="${officeregion.ord_region_name}">${officeregion.ord_region_name}</option>
-				
-										
-								  </c:forEach>
-											</select>
-							</div>
-						  </div>
-						</div>
-				
-				
-					
-				
-					
-				
-					  </div>
-					  <br>
-				
-				
-					  <input type="hidden" id="start_date">
-					  <input type="hidden" id="end_date">
-				
-					  <input type="hidden" id="region_select">
-				
-				
-					  
-				
-				
-				
-				
-				<!--
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item text-uppercase text-gray-800">Applications Count | year</li>
-						 <li class="breadcrumb-item active">${unit_name}</li> 
-					</ol>
-				
-					-->
-				
-					<div class="row">
-						<!-- Application Received (Today) -->
-						<div class="col-xl-6 col-md-6 mb-4" id="totalrevenue">
-							<div class="card border-left-warning shadow h-100 py-2">
-								<div class="card-body">
-									<div class="row no-gutters align-items-center">
-										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">  <span class="text-dark"></span>
-												Total Revenue </div>
-											<!-- <div class="text-xs  text-dark text-uppercase">today (
-												<fmt:formatDate value="${now}" type="date" />)</div> -->
-											<!-- <div id="total_revenue" class="h5 mb-0 font-weight-bold text-gray-800">GHS <fmt:formatNumber type = "number"  maxFractionDigits = "3" minFractionDigits = "2" value = "${total_amount}"></fmt:formatNumber>
-											</div> -->
-											<h3 id="total_revenue">GHS 0.00 </h3>
-				
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-file fa-2x text-gray-300"></i>
-										</div>
-										<a href="#" data-method="summary_created" data-period="day" 
-										data-url="DashboardDivisionSummary" data-icon="fa-file" 
-										data-title="Applications Received" data-date="Today (<fmt:formatDate value="${now}" type="date" />)" 
-										class="showDivisionModal text-decoration-none stretched-link">
-										</a>
-									</div>
-									<hr>					  
-								</div>
-							</div>
-							
-						</div>
-				
-				
-				
-						<div class="col-xl-6 col-md-6 mb-4" id="totalTransactions">
-							<div class="card border-left-info shadow h-100 py-2">
-								<div class="card-body">
-									<div class="row no-gutters align-items-center">
-										<div class="col mr-2">
-											<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">  <span class="text-dark"></span>
-												Total Transactions </div>
-											<!-- <div class="text-xs  text-dark text-uppercase">today (
-												<fmt:formatDate value="${now}" type="date" />)</div> -->
-											
-				
-											<h3 id="total_transactions">0 </h3>
-				
-				
-				
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-file fa-2x text-gray-300"></i>
-										</div>
-										<a href="#" data-method="summary_created" data-period="day" 
-										data-url="DashboardDivisionSummary" data-icon="fa-file" 
-										data-title="Applications Received" data-date="Today (<fmt:formatDate value="${now}" type="date" />)" 
-										class="showDivisionModal text-decoration-none stretched-link">
-										</a>
-									</div>
-									<hr>					  
-								</div>
-							</div>
-						</div>
-				
-				
-				
-					
-				
-				
-				
-					
-				
-					</div>
-				
-				
-				
-				
-				<div class="modal fade" id="sub_service_modal" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-xl" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="sub_service_modalLabel"></h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true"> <i class="fa fa-times"></i></span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="table-responsive">
-									<table class="table table-bordered table-hover" id="sub_service_table" width="100%" cellspacing="0">
-									<!-- <table id="batching_apps_worked_on_thisyear_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
-									   <thead>
-											<th>Sub Service Name</th>
-											<th>Amount</th>
-											<th>Count</th>
-											<th>Action</th>
-									  </thead>
-										  <tbody>        
-										  </tbody>
-									</table>
-								</div> 
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" type="button" data-dismiss="modal">Close <i class="fa fa-times"></i></button>
-							</div>
-						</div>
-					</div>
-					</div>
-				
-				
-				
-				
-				<div class="modal fade" id="bill_items" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-xl" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="banks_modalLabel">Applications Recieved </h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true"> <i class="fa fa-times"></i></span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<!-- Application Received -->
-									<div id="bills_created_and_paid_today" class="col-lg-6 mb-4">
-										<div class="card shadow mb-4">
-											<div class="card-header py-3">
-												<h6 class="m-0 font-weight-bold text-black">Total :<span class="count text-primary" id="total_span1"></span>
-												</h6>
-											</div>
-											<!-- <div data-method="apps_created" data-period="year" data-url="DashboardAppsReceived" data-next-level-modal="showServiceTypeModal" data-title="Applications Received" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div> -->
-										</div>
-									</div>
-											
-								</div>
-
-
-								<div class="table-responsive">
-									<input type="hidden" id="subprocessid">
-									<input type="hidden" id="completed_subprocessid">
-									<input type="hidden" id="service_to_bank_name">
-									<table class="table table-bordered table-hover" id="banks_table" width="100%" cellspacing="0">
-									<!-- <table id="batching_apps_worked_on_thisyear_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
-									   <thead>
-											<th>Bill Item Name</th>
-											<th>Amount</th>
-											<th>Action</th>
-									  </thead>
-										  <tbody>        
-										  </tbody>
-									</table>
-								</div> 
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" type="button" data-dismiss="modal">Close <i class="fa fa-times"></i></button>
-							</div>
-						</div>
-					</div>
-					</div>
-
-
-
-
-			<div class="modal fade" id="bill_items_new" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-xl" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="banks_modalLabel_1">Applications Recieved </h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true"> <i class="fa fa-times"></i></span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<!-- Application Received -->
-									<div id="bills_created_and_paid_today" class="col-lg-6 mb-4">
-										<div class="card shadow mb-4">
-											<div class="card-header py-3">
-												<h6 class="m-0 font-weight-bold text-black">Total :<span class="count text-primary" id="total_span2"></span>
-												</h6>
-											</div>
-											<!-- <div data-method="apps_created" data-period="year" data-url="DashboardAppsReceived" data-next-level-modal="showServiceTypeModal" data-title="Applications Received" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div> -->
-										</div>
-									</div>
-											
-								</div>
-
-								<div class="table-responsive">
-									<input type="hidden" id="subprocessid">
-									<input type="hidden" id="completed_subprocessid">
-									<input type="hidden" id="service_to_bank_name">
-									<table class="table table-bordered table-hover" id="banks_table_1" width="100%" cellspacing="0">
-									<!-- <table id="batching_apps_worked_on_thisyear_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
-									   <thead>
-											<th>Bill Item Name</th>
-											<th>Amount</th>
-									  </thead>
-										  <tbody>        
-										  </tbody>
-									</table>
-								</div> 
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" type="button" data-dismiss="modal">Close <i class="fa fa-times"></i></button>
-							</div>
-						</div>
-					</div>
-					</div>
-
-
-
-		
-					<div class="modal fade" id="bill_items_regional_modal" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-xl" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="bill_items_regional_Label"></h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true"> <i class="fa fa-times"></i></span>
-								</button>
-							</div>
-
-							<div class="modal-body">
-
-								<div class="row">
-									<!-- Application Received -->
-									<div id="bills_created_and_paid_today" class="col-lg-6 mb-4">
-										<div class="card shadow mb-4">
-											<div class="card-header py-3">
-												<h6 class="m-0 font-weight-bold text-black">Total :<span class="count text-primary" id="total_span"></span>
-												</h6>
-											</div>
-											<!-- <div data-method="apps_created" data-period="year" data-url="DashboardAppsReceived" data-next-level-modal="showServiceTypeModal" data-title="Applications Received" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div> -->
-										</div>
-									</div>
-											
-								</div>
-
-
-								<div class="table-responsive">
-									<input type="hidden" id="subprocessid">
-									<input type="hidden" id="completed_subprocessid">
-									<input type="hidden" id="service_to_bank_name">
-									<table class="table table-bordered table-hover" id="bill_items_regional_table" width="100%" cellspacing="0">
-									<!-- <table id="batching_apps_worked_on_thisyear_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
-									   <thead>
-											<th>Bill Item Name</th>
-											<th>Amount</th>
-									  </thead>
-										  <tbody>        
-										  </tbody>
-									</table>
-								</div> 
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" type="button" data-dismiss="modal">Close <i class="fa fa-times"></i></button>
-							</div>
-						</div>
-					</div>
-					</div>
-
-					  
-					
-				
-				
-				
-					<div class="modal fade" id="transactions_modal" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-fullscreen" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="transactions_Label"></h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true"> <i class="fa fa-times"></i></span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="table-responsive">
-									<table class="table table-bordered table-hover" id="transactions_table" width="100%" cellspacing="0">
-									<!-- <table id="batching_apps_worked_on_thisyear_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
-									   <thead>
-											<th>Applicant Name</th>
-											<th>Job Number</th>
-											<th>Application Type</th>
-											<th>Bill Number</th>
-											<th>Bill Amount</th>
-											<th>Amount Paid</th>
-											<th>GHANA.GOV Ref Number</th>
-											<th>EGRC Number</th>
-											<th>Payment Mode</th>
-											<th>Payment Date</th>
-											<th>Action</th>
-									  </thead>
-										  <tbody>        
-										  </tbody>
-									</table>
-								</div> 
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" type="button" data-dismiss="modal">Close <i class="fa fa-times"></i></button>
-							</div>
-						</div>
-					</div>
-					</div>
-				
-				
-				
-				
-				
-				
-				
-				
-				<div class="modal fade" id="job_numberbill_items" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-xl" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="job_numberbillLabel"></h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true"> <i class="fa fa-times"></i></span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="table-responsive">
-									<!-- <input type="text" id="ref_number" readonly>
-									<input type="hidden" id="completed_subprocessid">
-									<input type="hidden" id="service_to_bank_name"> -->
-									<hr>
-									
-									<div class="form-group row">
-									<div class="col-sm-6">
-										  <label  class="form-label">Bill Number</label>
-										<input type="text" id="bill_number" disabled class="form-control"  value="">
-									  </div>
-									  
-									  <div class="col-sm-6">
-										<label  class="form-label">Bill Amount</label>
-										<input type="text" id="bill_amount" disabled class="form-control"  value="">
-									  </div>
-									</div>
-									<div class="form-group row">
-									  <label class="col form-label">Applicant Name</label>
-									  <div class="col-sm-12">
-										<input type="text" id="applicant_name" disabled class="form-control"  value="">
-									  </div>
-									</div>
-				
-				
-									<table class="table table-bordered table-hover" id="job_numberbill_table" width="100%" cellspacing="0">
-									<!-- <table id="batching_apps_worked_on_thisyear_table" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"> -->
-									   <thead>
-											<th>Bill Item Name</th>
-											<th>Amount</th>
-											<!-- <th>Action</th> -->
-									  </thead>
-										  <tbody>        
-										  </tbody>
-									</table>
-								</div> 
-							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" type="button" data-dismiss="modal">Close <i class="fa fa-times"></i></button>
-							</div>
-						</div>
-					</div>
-					</div>
-				
-				
-				
-					
-				
-				</div>
-
-
-		</div>
-
-
-
-
-
-
-
-
-
-			  
-			  
-			  
-			  
-			  <div class='tab-pane fade  ${(active == "trans") ? "show active" : "" } ' id="tab_revenue" role="tabpanel" aria-labelledby="payments-tab">
-			  		<br>
-			  		<div class="row">
-						<div class="col-lg-3">
-							<div class="card">
-								<div class="card-header bg-white">
-									<h1 class="h3 mb-0 text-gray-800">FILTER</h1>
-				
-									</div>
-									<div class="card-body">
-									 <form method="post" >
-										
-					
-										<div class="form-group">
-											<label>Date</label>
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<span class="input-group-text"><i
-														class="fa fa-calendar-alt"></i></span>
-												</div>
-												<input type="date" class="form-control"
-													data-inputmask-alias="datetime"
-													data-inputmask-inputformat="dd/mm/yyyy" data-mask name="t_date_from" id="t_date_from" value="${t_date_from}">
-											</div>
-										</div>
-										<div class="form-group ">
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<span class="input-group-text"><i
-														class="far fa-calendar-alt"></i></span>
-												</div>
-												<input type="date" class="form-control"
-													data-inputmask-alias="datetime"
-													data-inputmask-inputformat="dd/mm/yyyy" data-mask name="t_date_to" id="t_date_to" value="${t_date_to}">
-											</div>
-										</div>
-										<!-- <div class="form-group">
-											<label>Transaction Type</label>
-											<div class="input-group">
-												<div class="input-group-prepend">
-													<button type="button" class="btn btn-danger">Volume</button>
-												</div>
-												<button type="button" class="btn btn-danger">Count</button>
-											</div>
-										</div> -->
-										<%-- <div class="form-group">
-											<label>Summarize by</label> 
-											<select class="form-control filter" name="type" id="type" required>
-												<option value="values" ${(type =="values") ? "selected='selected'":""}>Value</option>
-												<option value="count"  ${(type =="count") ? "selected='selected'":""}>Count</option>
-											</select>
-										</div> --%>
-										<div class="form-group">
-											<label>Division</label> <br>
-											<select class="form-control filter" name="t_division" id="t_division" multiple required>
-												<option value="PVLMD" 
-												  <c:if test = "${fn:contains(t_division, 'PVLMD')}">
-											        selected
-											      </c:if>>PVLMD</option>
-												<option value="SMD" 
-												  <c:if test = "${fn:contains(t_division, 'SMD')}">
-											        selected
-											      </c:if>>SMD</option>
-												<option value="LVD" 
-												  <c:if test = "${fn:contains(t_division, 'LVD')}">
-											        selected
-											      </c:if>
-												>LVD</option>
-												<option value="LRD"  
-												  <c:if test = "${fn:contains(t_division, 'LRD')}">
-											        selected
-											      </c:if>>LRD</option>
-											</select>
-										</div>
-					           			<%-- <div class="form-group">
-					                  			<label>Cut-Off Point on Graph</label>
-					                  			<input type="number" step = "1" class="form-control" name = "limit" value="${limit}" min="3" id="limit" required>
-					                	</div> --%>
-					
-											<!-- <div class="form-group">
-												<label>Export Type</label>
-												
-															<div class="input-group">
-																<div id="rdb_export_type_t" class="btn-group">
-																	<button class="btn btn-outline-dark  " 
-																		data-toggle="export_type" data-title="PDF" 
-																	> &nbsp; &nbsp; &nbsp; &nbsp; PDF &nbsp; &nbsp; &nbsp; &nbsp; </button> 
-																	<button class="btn btn-outline-dark  "
-																		data-toggle="export_type" data-title="CSV"
-																	> &nbsp; &nbsp; &nbsp; &nbsp; CSV &nbsp; &nbsp; &nbsp; &nbsp; </button>
-																</div>
-																<input type="hidden" name="t_export_type" id="t_export_type">
-															</div>
-															
-														
-											</div>
-											<div class="form-group">
-												<button class="btn btn-outline-dark btn-block " id="btn_export_data_t">Export Data</button>
-											</div> -->
-										<br>
-										<div class="form-group">
-											<button type = "submit" name = "transactions_form" value="1" class="btn btn-dark btn-block">Apply Filter</button>
-										</div>
-										</form>
-									</div>
-								</div>
-							</div>
-
-							
-
-					
-							<div class="col-lg-9">
-					
-					
-								<div class="row">
-									<div class="col col-6">
-										<!-- Card -->
-										<div class="card ">
-											<div class="card-body">
-					
-												<h3 id="mt_total_amt">GHS <fmt:formatNumber type = "number"  maxFractionDigits = "3" minFractionDigits = "2" value = "${t_total_amount}" /> </h3>
-												<p>Total Amount</p>
-					
-											</div>
-										</div>
-									</div>
-					
-									<div class="col col-6">
-										<!-- Card -->
-										<div class="card ">
-											<div class="card-body">
-					
-												<h3 id="mt_total_amt"><fmt:formatNumber type = "number"   maxFractionDigits = "2"  value = "${t_total_count}" /></h3>
-												<p>Total Payment Count</p>
-												
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /.row -->
-								<br>
-								<div class="card">
-									<div class="card-header bg-white">Revenue Transactions list
-										<ul class="float-right card-actions">
-					                        <li><a href="#" class="card-btn" role="button" title="Toggle fullscreen">
-					                        <i class="fas fa-expand-arrows-alt"></i></a></li>
-					                    </ul>
-									</div>
-									<div class="card-body">
-										<div id="seconday-echart" class="table-responsive">
-										
-											<table class="table table-bordered table-hover table-sm tbl_transactions_result" id="tbl_transactions_result">
-												<thead>
-													<tr>
-														<th>Bill Number</th>
-														<th>GOG Invoice No.</th>
-														<th>Created Date</th>
-														<th>Payment Date</th>
-														<th>Bill Amount</th>
-														<th>Payment Amount</th>
-														<th>Payment Slip number</th>
-														<th>Payment Mode</th>
-														<th>Related Job number</th>
-														<th>Application Type</th>
-														<!-- <th>Division</th> -->
-													</tr>
-												</thead>
-												<tbody>
-													<c:forEach items='${t_applicationlist}' var="row">
-													<tr>
-														<td>${row.ref_number}</td>
-														<td>${row.gog_invoice_number}</td>
-														<td>${row.created_date}</td>
-														<td>${row.payment_date}</td>
-														<td>${row.bill_amount}</td>
-														<td>${row.payment_amount}</td>
-														<td>${row.payment_slip_number}</td>
-														<td>${row.payment_mode}</td>
-														<td>${row.job_number}</td>
-														<td>${row.business_process_sub_name}</td>
-													</tr>
-													  <a:dropdownOption value="${category.key}">${category.key} </a:dropdownOption>
-													</c:forEach>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-								
-					
-					
-							</div>
-
-
-
-							<!-- col -->
-						</div>
-						<!-- row -->
-			  </div>
-			</div>
-			  
-	
-
+                                                <div class="col-12">
+                                                    <label class="form-label">Region</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">
+                                                            <i class="ri-map-pin-line"></i>
+                                                        </span>
+                                                        <select id="t_region_id" name="t_region_id" class="form-select form-control-sm" required>
+                                                            <option value="-1">-- select --</option>
+                                                            <c:forEach items="${officeregionlist}" var="officeregion">
+                                                                <option value="${officeregion.ord_region_code}"
+                                                                        data-name="${officeregion.ord_region_name}"
+                                                                        ${region_id == officeregion.ord_region_code ? 'selected' : ''}>
+                                                                    ${officeregion.ord_region_name}
+                                                                </option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <label class="form-label">Division</label>
+                                                    <select class="form-select form-control-sm" name="t_division" id="t_division" multiple required>
+                                                        <option value="PVLMD" ${fn:contains(t_division, 'PVLMD') ? 'selected' : ''}>PVLMD</option>
+                                                        <option value="SMD" ${fn:contains(t_division, 'SMD') ? 'selected' : ''}>SMD</option>
+                                                        <option value="LVD" ${fn:contains(t_division, 'LVD') ? 'selected' : ''}>LVD</option>
+                                                        <option value="LRD" ${fn:contains(t_division, 'LRD') ? 'selected' : ''}>LRD</option>
+                                                    </select>
+                                                    <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-grid mt-4">
+                                                <button type="submit" name="transactions_form" value="1" class="btn btn-primary action-btn">
+                                                    <i class="ri-filter-3-line me-2"></i>Apply Filter
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Data Column -->
+                            <div class="col-lg-9">
+                                <!-- Stats Row -->
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="card stat-card border-primary h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="stats-icon bg-primary me-3">
+                                                        <i class="ri-money-dollar-circle-line fs-4"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="text-muted small fw-semibold mb-1">Total Amount</div>
+                                                        <h3 class="fw-bold text-primary mb-0">
+                                                            GHS <fmt:formatNumber type="number" maxFractionDigits="3" minFractionDigits="2" value="${t_total_amount}" />
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card stat-card border-success h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="stats-icon bg-success me-3">
+                                                        <i class="ri-file-list-line fs-4"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="text-muted small fw-semibold mb-1">Total Payment Count</div>
+                                                        <h3 class="fw-bold text-success mb-0">
+                                                            <fmt:formatNumber type="number" maxFractionDigits="2" value="${t_total_count}" />
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Data Table Card -->
+                                <div class="card transaction-report-card">
+                                    <div class="card-header card-header-dark d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0 fw-semibold">
+                                            <i class="ri-list-check me-2"></i>
+                                            Revenue Transactions List
+                                        </h5>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-light" title="Toggle fullscreen">
+                                                <i class="ri-fullscreen-line"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover data-table" id="tbl_transactions_result">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Bill Number</th>
+                                                        <th>GOG Invoice No.</th>
+                                                        <th>Created Date</th>
+                                                        <th>Payment Date</th>
+                                                        <th>Bill Amount</th>
+                                                        <th>Payment Amount</th>
+                                                        <th>Payment Slip No.</th>
+                                                        <th>Payment Mode</th>
+                                                        <th>Job Number</th>
+                                                        <th>Application Type</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items='${t_applicationlist}' var="row">
+                                                    <tr>
+                                                        <td>${row.ref_number}</td>
+                                                        <td>${row.gog_invoice_number}</td>
+                                                        <td>${row.created_date}</td>
+                                                        <td>${row.payment_date}</td>
+                                                        <td>${row.bill_amount}</td>
+                                                        <td>${row.payment_amount}</td>
+                                                        <td>${row.payment_slip_number}</td>
+                                                        <td>${row.payment_mode}</td>
+                                                        <td>${row.job_number}</td>
+                                                        <td>${row.business_process_sub_name}</td>
+                                                    </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab 3: Report Per Bill Item -->
+                    <div class="tab-pane fade" id="bill-item-report" role="tabpanel">
+                        <div class="container-fluid">
+                            <!-- Filter Row -->
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <div class="card transaction-report-card">
+                                        <div class="card-body">
+                                            <label class="form-label">Date From</label>
+                                            <input type="date" id="datefrom" class="form-control form-control-sm" placeholder="Select Date">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card transaction-report-card">
+                                        <div class="card-body">
+                                            <label class="form-label">Date To</label>
+                                            <input type="date" id="dateto" class="form-control form-control-sm" placeholder="Select Date">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card transaction-report-card">
+                                        <div class="card-body">
+                                            <label class="form-label">Office Region</label>
+                                            <select id="sel_change_region_compliance" class="form-select form-control-sm" required>
+                                                <option selected value="-1">-- select --</option>
+                                                <option value="0">Nationwide</option>
+                                                <c:forEach items="${officeregionlist}" var="officeregion">
+                                                    <option value="${officeregion.ord_region_code}" data-name="${officeregion.ord_region_name}">
+                                                        ${officeregion.ord_region_name}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Hidden Fields -->
+                            <input type="hidden" id="start_date">
+                            <input type="hidden" id="end_date">
+                            <input type="hidden" id="region_select">
+                            
+                            <!-- Stats Row -->
+                            <div class="row mb-4">
+                                <div class="col-md-6" id="totalrevenue">
+                                    <div class="card stat-card border-warning h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="stats-icon bg-warning me-3">
+                                                    <i class="ri-money-dollar-circle-line fs-4"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="text-muted small fw-semibold mb-1">Total Revenue</div>
+                                                    <h3 id="total_revenue" class="fw-bold text-warning mb-0">GHS 0.00</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6" id="totalTransactions">
+                                    <div class="card stat-card border-info h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="stats-icon bg-info me-3">
+                                                    <i class="ri-file-list-line fs-4"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="text-muted small fw-semibold mb-1">Total Transactions</div>
+                                                    <h3 id="total_transactions" class="fw-bold text-info mb-0">0</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- Container -->
 
-<!-- /.container-fluid -->
+<!-- Modals (Bootstrap 5 Structure) -->
+<div class="modal fade" id="sub_service_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-white" id="sub_service_modalLabel"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover data-table" id="sub_service_table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sub Service Name</th>
+                                <th>Amount</th>
+                                <th>Count</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Content loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="bill_items" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-white">Bill Items</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover data-table" id="banks_table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bill Item Name</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Content loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="transactions_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-white" id="transactions_Label"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover data-table" id="transactions_table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Applicant Name</th>
+                                <th>Job Number</th>
+                                <th>Application Type</th>
+                                <th>Bill Number</th>
+                                <th>Bill Amount</th>
+                                <th>Amount Paid</th>
+                                <th>GHANA.GOV Ref Number</th>
+                                <th>EGRC Number</th>
+                                <th>Payment Mode</th>
+                                <th>Payment Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Content loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="job_numberbill_items" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-white" id="job_numberbillLabel"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Bill Number</label>
+                        <input type="text" id="bill_number" disabled class="form-control" value="">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Bill Amount</label>
+                        <input type="text" id="bill_amount" disabled class="form-control" value="">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <label class="form-label">Applicant Name</label>
+                        <input type="text" id="applicant_name" disabled class="form-control" value="">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover data-table" id="job_numberbill_table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bill Item Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Content loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Modals (Minimal Structure) -->
+<div class="modal fade" id="bill_items_new" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-white">Bill Items Detail</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Content loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bill_items_regional_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <h5 class="modal-title text-white" id="bill_items_regional_Label"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Content loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="client_application/audit_report.js"></script>
-<!-- <script>
 
-</script> -->
-
-
-
-<script type="text/javascript">
-
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Initialize Bootstrap popovers
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
+    
+    // Initialize select elements (if using selectpicker)
+    if ($('.selectpicker').length) {
+        $('.selectpicker').selectpicker();
+    }
+});
 </script>
-
-
-

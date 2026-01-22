@@ -10,721 +10,632 @@
 
 <jsp:useBean id="now" class="java.util.Date" />
 
-<!-- Start::app-content -->
-<div class="main-content app-content">
-    <div class="container-fluid page-container">
-
-        <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-3">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <div>
-                    <h1 class="page-title fw-medium fs-18 mb-1">ELIS Reports</h1>
-                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Comprehensive reporting system for ${fullname}</p>
-                </div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Reports</li>
-                </ol>
-            </div>
-        </div>
-        <!-- End::page-header -->
-
-        <!-- Start::row-1 -->
-        <div class="row">
-            <!-- Service Type Reports -->
-            <div class="col-xl-6 col-lg-6 mb-4">
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <i class="ri-database-2-line text-primary me-2"></i>
-                            <h5 class="card-title mb-0">Report by Service Types</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="accordion custom-accordion" id="serviceReportsAccordion">
-                            <div class="accordion-item">
-                                <div class="accordion-header" id="serviceHeading">
-                                    <button class="accordion-button" type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#serviceCollapse">
-                                        <i class="ri-settings-3-line me-2"></i>Service Reports Configuration
-                                    </button>
-                                </div>
-                                <div id="serviceCollapse" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="mb-3">
-                                            <label class="form-label">Application Status</label>
-                                            <select name="type_of_report_name" id="type_of_report_name" 
-                                                    class="form-select">
-                                                <option value="All" selected>All</option>
-                                                <option value="Completed">Completed</option>
-                                                <option value="Pending">Pending</option>
-                                                <option value="KEEP IN VIEW">Keep In View</option>
-                                                <option value="gra_stamp_duty_report">GRA Stamp Duty Report</option>
-                                                <option value="lrd_plotting_report">LRD Plotting Report</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Select Region</label>
-                                            <select id="sel_change_region_compliance" class="form-select">
-                                                <option selected value="0">All Regions</option>
-                                                <c:forEach items="${officeregionlist}" var="officeregion">
-                                                    <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Main Service</label>
-                                            <select name="main_service_rpt" id="main_service_rpt" class="form-select">
-                                                <option selected value="-1">Select Main Service</option>
-                                                <option value="0">All Services</option>
-                                                <c:forEach items="${main_services}" var="main_service">
-                                                    <option value="${main_service.business_process_id}-${main_service.business_process_name}">
-                                                        ${main_service.business_process_name}
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Sub Service</label>
-                                            <select name="sub_service_rpt" id="sub_service_rpt" class="form-select">
-                                                <option value="-1">Select Sub Service</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Date From</label>
-                                                <input type="date" name="date_from" id="date_from" 
-                                                       class="form-control">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Date To</label>
-                                                <input type="date" name="date_to" id="date_to" 
-                                                       class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-info flex-fill" 
-                                                    id="btn_generate_details_reports_new">
-                                                <i class="ri-eye-line me-1"></i>View Report Result
-                                            </button>
-                                            <button type="button" class="btn btn-success flex-fill" 
-                                                    id="btn_generate_details_reports_new_csv">
-                                                <i class="ri-download-line me-1"></i>Download Report
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Division/User Reports -->
-            <div class="col-xl-6 col-lg-6 mb-4">
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <i class="ri-user-line text-primary me-2"></i>
-                            <h5 class="card-title mb-0">Report by Division/Users</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="accordion custom-accordion" id="divisionReportsAccordion">
-                            <div class="accordion-item">
-                                <div class="accordion-header" id="divisionHeading">
-                                    <button class="accordion-button" type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#divisionCollapse">
-                                        <i class="ri-group-line me-2"></i>Division Reports Configuration
-                                    </button>
-                                </div>
-                                <div id="divisionCollapse" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="mb-3">
-                                            <label class="form-label">Report Type</label>
-                                            <select name="type_of_report_name_rpt" id="type_of_report_name_rpt" 
-                                                    class="form-select">
-                                                <option value="individual_audit_trails">Individual Audit Trails</option>
-                                                <option value="Division">Division</option>
-                                                <option value="Unit" selected>Unit</option>
-                                                <option value="Staff">Staff</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Select Region</label>
-                                            <select id="get_change_region_compliance" class="form-select" required>
-                                                <option selected disabled>Please Select Region</option>
-                                                <c:forEach items="${officeregionlist}" var="officeregion">
-                                                    <option value="${officeregion.ord_region_code}">
-                                                        ${officeregion.ord_region_name}
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Division</label>
-                                            <select id="unit_division_to_send_to_rpt" class="form-select">
-                                                <option value="none">---Select Division---</option>
-                                                <option value="LVD">LVD</option>
-                                                <option value="LRD">LRD</option>
-                                                <option value="PVLMD">PVLMD</option>
-                                                <option value="SMD">SMD</option>
-                                                <option value="RLO">RLO</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Unit</label>
-                                            <input autocomplete="off" class="form-control" 
-                                                   id="unit_to_send_to_rpt" type="text" 
-                                                   list="listofunitsbatching_rpt" 
-                                                   placeholder="Select/Enter Unit" required>
-                                            <datalist id="listofunitsbatching_rpt"></datalist>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">User</label>
-                                            <input class="form-control" id="user_to_send_to_rpt" 
-                                                   name="user_to_send_to_rpt" type="text" autocomplete="off"
-                                                   list="listofusersbatching_rpt" 
-                                                   placeholder="Enter Username" required>
-                                            <datalist id="listofusersbatching_rpt"></datalist>
-                                        </div>
-
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-primary flex-fill" 
-                                                    id="btn_generate_details_based_on_users">
-                                                <i class="ri-eye-line me-1"></i>View Report
-                                            </button>
-                                            <button type="button" class="btn btn-success flex-fill" 
-                                                    id="btn_generate_details_based_on_users_csv">
-                                                <i class="ri-download-line me-1"></i>Download Report
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--End::row-1 -->
-
-        <!-- Start::row-2 - Report Results -->
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <i class="ri-file-list-line text-primary me-2"></i>
-                            <h5 class="card-title mb-0">Report Results</h5>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="accordion custom-accordion" id="resultsAccordion">
-                            <!-- Review Section -->
-                            <div class="accordion-item">
-                                <div class="accordion-header" id="reviewHeading">
-                                    <button class="accordion-button" type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#reviewCollapse">
-                                        <i class="ri-search-line me-2"></i>Review Results
-                                    </button>
-                                </div>
-                                <div id="reviewCollapse" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover align-middle mb-0" 
-                                                   id="job_casemgtdetailsdataTable_elis_reports">
-                                                <thead class="bg-light">
-                                                    <tr>
-                                                        <th>Job Number</th>
-                                                        <th>Applicant Name</th>
-                                                        <th>Application Type</th>
-                                                        <th>Date Received</th>
-                                                        <th>Job Status</th>
-                                                        <th>Case Number</th>
-                                                        <th>Days(Received)</th>
-                                                        <th>Days(Batched)</th>
-                                                        <th>Date(Completed)</th>
-                                                        <th>Days(Completed)</th>
-                                                        <th>Date(Collected)</th>
-                                                        <th width="80">View</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Audit Report Section -->
-                            <div class="accordion-item mt-3">
-                                <div class="accordion-header" id="auditHeading">
-                                    <button class="accordion-button collapsed" type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#auditCollapse">
-                                        <i class="ri-history-line me-2"></i>Audit Report
-                                    </button>
-                                </div>
-                                <div id="auditCollapse" class="accordion-collapse collapse">
-                                    <div class="accordion-body">
-                                        <div class="d-flex gap-2 mb-3">
-                                            <button type="button" class="btn btn-primary" 
-                                                    id="btn_generate_details_based_on_users_audit">
-                                                <i class="ri-eye-line me-1"></i>View Report
-                                            </button>
-                                            <button type="button" class="btn btn-success" 
-                                                    id="btn_generate_details_based_on_users_csv_audit">
-                                                <i class="ri-download-line me-1"></i>Download Report
-                                            </button>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover align-middle mb-0" 
-                                                   id="job_casemgtdetailsdataTable_elis_reports_audit">
-                                                <thead class="bg-light">
-                                                    <tr>
-                                                        <th>Job Number</th>
-                                                        <th>Applicant Name</th>
-                                                        <th>Application Type</th>
-                                                        <th>Date Received</th>
-                                                        <th>Job Status</th>
-                                                        <th>Case Number</th>
-                                                        <th>Days(Received)</th>
-                                                        <th>Days(Batched)</th>
-                                                        <th>Date(Completed)</th>
-                                                        <th>Days(Completed)</th>
-                                                        <th>Date(Collected)</th>
-                                                        <th width="80">View</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--End::row-2 -->
-
-        <!-- Start::row-3 - Count Reports -->
-        <div class="row mt-4">
-            <div class="col-xl-12">
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <i class="ri-bar-chart-line text-primary me-2"></i>
-                            <h5 class="card-title mb-0">Report Count by Service Types</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="accordion custom-accordion" id="countReportsAccordion">
-                            <div class="accordion-item">
-                                <div class="accordion-header" id="countHeading">
-                                    <button class="accordion-button" type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#countCollapse">
-                                        <i class="ri-settings-3-line me-2"></i>Count Report Configuration
-                                    </button>
-                                </div>
-                                <div id="countCollapse" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <label class="form-label">Select Region</label>
-                                                <select id="report_count_sel_change_region_compliance" 
-                                                        class="form-select">
-                                                    <option selected value="0">All Regions</option>
-                                                    <c:forEach items="${officeregionlist}" var="officeregion">
-                                                        <option value="${officeregion.ord_region_code}">
-                                                            ${officeregion.ord_region_name}
-                                                        </option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Main Service</label>
-                                                <select name="main_service_rpt" id="report_count_main_service_rpt" 
-                                                        class="form-select">
-                                                    <option value="-1">Select Main Service</option>
-                                                    <c:forEach items="${main_services}" var="main_service">
-                                                        <option value="${main_service.business_process_id}-${main_service.business_process_name}">
-                                                            ${main_service.business_process_name}
-                                                        </option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Sub Service</label>
-                                                <select name="sub_service_rpt" id="report_count_sub_service_rpt" 
-                                                        class="form-select">
-                                                    <option value="-1">Select Sub Service</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Date From</label>
-                                                <input type="date" name="date_from" id="report_count_date_from" 
-                                                       class="form-control">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Date To</label>
-                                                <input type="date" name="date_to" id="report_count_date_to" 
-                                                       class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-info flex-fill" 
-                                                    id="btn_generate_count_reports">
-                                                <i class="ri-eye-line me-1"></i>View Report Count Result
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--End::row-3 -->
-
-    </div>
-</div>
-
-<!-- Report Count Modal -->
-<div class="modal fade" id="report_count_modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reportCountModalLabel">Report Count Summary</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <!-- Applications Pending -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card custom-card bg-primary-transparent border-0 shadow-none">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start gap-3 flex-wrap">
-                                    <div class="lh-1">
-                                        <span class="avatar avatar-lg avatar-rounded bg-primary svg-white">
-                                            <i class="ri-time-line fs-5"></i>
-                                        </span>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <span class="d-block mb-1">Applications Pending</span>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <h5 class="fw-semibold mb-0" id="app-pending">0</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Applications Completed -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card custom-card bg-success-transparent border-0 shadow-none">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start gap-3 flex-wrap">
-                                    <div class="lh-1">
-                                        <span class="avatar avatar-lg avatar-rounded bg-success svg-white">
-                                            <i class="ri-checkbox-circle-line fs-5"></i>
-                                        </span>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <span class="d-block mb-1">Applications Completed</span>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <h5 class="fw-semibold mb-0" id="app-completed">0</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Applications Queried -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card custom-card bg-danger-transparent border-0 shadow-none">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start gap-3 flex-wrap">
-                                    <div class="lh-1">
-                                        <span class="avatar avatar-lg avatar-rounded bg-danger svg-white">
-                                            <i class="ri-error-warning-line fs-5"></i>
-                                        </span>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <span class="d-block mb-1">Applications Queried</span>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <h5 class="fw-semibold mb-0" id="app-queried">0</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Keep In View Applications -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card custom-card bg-warning-transparent border-0 shadow-none">
-                            <div class="card-body">
-                                <div class="d-flex align-items-start gap-3 flex-wrap">
-                                    <div class="lh-1">
-                                        <span class="avatar avatar-lg avatar-rounded bg-warning svg-white">
-                                            <i class="ri-eye-line fs-5"></i>
-                                        </span>
-                                    </div>
-                                    <div class="flex-fill">
-                                        <span class="d-block mb-1">Keep In View Applications</span>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <h5 class="fw-semibold mb-0" id="app-kiv">0</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
-    /* Custom Accordion Styles */
-    .custom-accordion .accordion-item {
-        border: 1px solid #e9ecef;
-        border-radius: 0.375rem;
-        margin-bottom: 1rem;
-        background-color: #fff;
-    }
-    
-    .custom-accordion .accordion-header .accordion-button {
-        background-color: #f9fafc;
-        color: #3c4d62;
-        font-weight: 500;
-        padding: 1rem 1.25rem;
+    .report-card {
+        transition: all 0.3s ease;
         border: none;
-        border-radius: 0.375rem;
-        box-shadow: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    
-    .custom-accordion .accordion-header .accordion-button:not(.collapsed) {
-        background-color: #f0f7ff;
-        color: #3a7bd5;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+
+    .report-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
     }
-    
-    .custom-accordion .accordion-header .accordion-button:focus {
-        box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
+
+    .report-card .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-bottom: none;
+        padding: 1.25rem 1.5rem;
     }
-    
-    /* Form Styles */
-    .form-label {
-        font-weight: 500;
-        color: #3c4d62;
-        font-size: 0.875rem;
-        margin-bottom: 0.5rem;
+
+    .report-card .card-header h4 {
+        color: white;
+        margin: 0;
     }
-    
-    .form-select, .form-control {
-        border-radius: 0.375rem;
-        border: 1px solid #e9ecef;
-        font-size: 0.875rem;
+
+    .section-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        margin-right: 15px;
+    }
+
+    .section-icon.service {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+    }
+
+    .section-icon.division {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+
+    .section-icon.count {
+        background: rgba(23, 162, 184, 0.1);
+        color: #17a2b8;
+    }
+
+    .form-control-sm {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
         padding: 0.5rem 0.75rem;
-    }
-    
-    .form-select:focus, .form-control:focus {
-        border-color: #3a7bd5;
-        box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
-    }
-    
-    /* Table Styles */
-    .table {
         font-size: 0.875rem;
     }
-    
-    .table th {
+
+    .form-label {
         font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #6c757d;
-        background-color: #f9fafc;
-        border-bottom: 2px solid #e9ecef;
-        padding: 0.75rem 1rem;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
     }
-    
-    .table td {
+
+    .action-buttons .btn {
+        border-radius: 8px;
+        padding: 0.5rem 1.25rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .action-buttons .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .data-table {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .data-table thead th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        color: #495057;
+        padding: 1rem;
+    }
+
+    .data-table tbody td {
         padding: 0.75rem 1rem;
         vertical-align: middle;
-        border-color: #e9ecef;
     }
-    
-    .table-hover tbody tr:hover {
-        background-color: #f8f9fa;
-    }
-    
-    /* Button Styles */
-    .btn {
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        transition: all 0.2s ease;
-    }
-    
-    .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .btn-primary {
-        background-color: #3a7bd5;
-        border-color: #3a7bd5;
-    }
-    
-    .btn-info {
-        background-color: #0dcaf0;
-        border-color: #0dcaf0;
-    }
-    
-    .btn-success {
-        background-color: #198754;
-        border-color: #198754;
-    }
-    
-    /* Card Styles */
-    .card.custom-card {
-        border: none;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        border-radius: 0.5rem;
-    }
-    
-    .card-header {
-        background-color: #fff;
-        border-bottom: 1px solid #e9ecef;
+
+    .accordion-button {
+        border-radius: 8px !important;
         padding: 1rem 1.25rem;
-    }
-    
-    .card-title {
-        color: #3c4d62;
         font-weight: 600;
-        font-size: 1rem;
     }
-    
-    /* Modal Styles */
-    .modal-content {
-        border-radius: 0.5rem;
-        border: none;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        box-shadow: none;
     }
-    
-    .modal-header {
-        background-color: #f9fafc;
-        border-bottom: 1px solid #e9ecef;
-        padding: 1rem 1.5rem;
+
+    .accordion-button:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
     }
-    
-    .modal-body {
-        padding: 1.5rem;
+
+    .stats-card {
+        border-left: 4px solid transparent;
+        border-radius: 8px;
+        transition: all 0.3s ease;
     }
-    
-    .modal-footer {
-        border-top: 1px solid #e9ecef;
-        padding: 1rem 1.5rem;
+
+    .stats-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     }
-    
-    /* Stat Cards */
-    .bg-primary-transparent {
-        background-color: rgba(58, 123, 213, 0.1) !important;
+
+    .stats-card.border-primary {
+        border-left-color: #667eea;
     }
-    
-    .bg-success-transparent {
-        background-color: rgba(25, 135, 84, 0.1) !important;
+
+    .stats-card.border-success {
+        border-left-color: #28a745;
     }
-    
-    .bg-danger-transparent {
-        background-color: rgba(220, 53, 69, 0.1) !important;
+
+    .stats-card.border-danger {
+        border-left-color: #dc3545;
     }
-    
-    .bg-warning-transparent {
-        background-color: rgba(255, 193, 7, 0.1) !important;
+
+    .stats-card.border-info {
+        border-left-color: #17a2b8;
     }
-    
-    .svg-white {
-        color: white;
+
+    .modal-header.bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px 12px 0 0;
     }
-    
-    /* Responsive Adjustments */
+
+    .stats-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    .stats-icon.bg-primary {
+        background-color: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+    }
+
+    .stats-icon.bg-success {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+
+    .stats-icon.bg-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+
+    .stats-icon.bg-info {
+        background-color: rgba(23, 162, 184, 0.1);
+        color: #17a2b8;
+    }
+
     @media (max-width: 768px) {
-        .row {
-            flex-direction: column;
+        .report-card .card-header {
+            padding: 1rem;
         }
         
-        .d-flex.gap-2 {
-            flex-direction: column;
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
         }
         
-        .btn {
+        .stats-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-buttons .btn {
             width: 100%;
-            margin-bottom: 0.5rem;
-        }
-        
-        .modal-dialog.modal-xl {
-            margin: 0.5rem;
-        }
-        
-        .table-responsive {
-            font-size: 0.8125rem;
         }
     }
 </style>
 
+<!-- Begin Page Content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-4">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div class="d-flex align-center gap-2">
+                    <div>
+                        <h1 class="page-title fw-medium fs-20 mb-1"><i class="ri-bar-chart-line me-2 text-primary"></i>Reports Dashboard</h1>
+                        <p class="text-muted fs-14 mb-0">Comprehensive reporting and analytics for ELIS system</p>
+                    </div>
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS Report</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Report User - ${fullname}</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Report by Service Types -->
+            <div class="col-lg-6 mb-4">
+                <div class="card report-card h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="section-icon service">
+                            <i class="ri-database-line fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">Report by Service Types</h4>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="accordion" id="serviceReportAccordion">
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header" id="serviceReportHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#serviceReportCollapse">
+                                        <i class="ri-filter-line me-2"></i>Filter Options
+                                    </button>
+                                </h2>
+                                <div id="serviceReportCollapse" class="accordion-collapse collapse show" data-bs-parent="#serviceReportAccordion">
+                                    <div class="accordion-body p-0 pt-3">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label">Application Status</label>
+                                                <select name="type_of_report_name" id="type_of_report_name" class="form-select form-select-sm">
+                                                    <option value="All" selected>All</option>
+                                                    <option value="Completed">Completed</option>
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="KEEP IN VIEW">Keep In View</option>
+                                                    <option value="gra_stamp_duty_report">GRA Stamp Duty Report</option>
+                                                    <option value="lrd_plotting_report">LRD Plotting Report</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <label class="form-label">Select Region</label>
+                                                <select id="sel_change_region_compliance" class="form-select form-select-sm">
+                                                    <option selected value="0">All Regions</option>
+                                                    <c:forEach items="${officeregionlist}" var="officeregion">
+                                                        <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <label class="form-label">Main Service</label>
+                                                <select name="main_service_rpt" id="main_service_rpt" class="form-select form-select-sm">
+                                                    <option selected value="-1">Select Main Service</option>
+                                                    <option value="0">All Services</option>
+                                                    <c:forEach items="${main_services}" var="main_service">
+                                                        <option value="${main_service.business_process_id}-${main_service.business_process_name}">${main_service.business_process_name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12" id="subServ">
+                                                <label class="form-label">Sub Service</label>
+                                                <select name="sub_service_rpt" id="sub_service_rpt" class="form-select form-select-sm">
+                                                    <option value="-1">Select Sub Service</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label class="form-label">Date From</label>
+                                                <input type="date" name="date_from" id="date_from" class="form-control form-control-sm">
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label class="form-label">Date To</label>
+                                                <input type="date" name="date_to" id="date_to" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="action-buttons mt-4 d-flex gap-2">
+                                            <button type="button" class="btn btn-primary" id="btn_generate_details_reports_new">
+                                                <i class="ri-eye-line me-1"></i>View Report Result
+                                            </button>
+                                            <button type="button" class="btn btn-success" id="btn_generate_details_reports_new_csv">
+                                                <i class="ri-download-line me-1"></i>Download Report
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report by Division/Users -->
+            <div class="col-lg-6 mb-4">
+                <div class="card report-card h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="section-icon division">
+                            <i class="ri-user-line fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">Report by Division/Users</h4>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="accordion" id="divisionReportAccordion">
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header" id="divisionReportHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#divisionReportCollapse">
+                                        <i class="ri-filter-line me-2"></i>Filter Options
+                                    </button>
+                                </h2>
+                                <div id="divisionReportCollapse" class="accordion-collapse collapse show" data-bs-parent="#divisionReportAccordion">
+                                    <div class="accordion-body p-0 pt-3">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label">Report Type</label>
+                                                <select name="type_of_report_name_rpt" id="type_of_report_name_rpt" class="form-select form-select-sm">
+                                                    <option value="Unit">Unit</option>
+                                                    <option value="Staff" selected>Staff</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <label class="form-label">Select Region</label>
+                                                <select id="get_change_region_compliance" class="form-select form-select-sm" required>
+                                                    <option selected disabled>Please Select</option>
+                                                    <c:forEach items="${officeregionlist}" var="officeregion">
+                                                        <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <label class="form-label">Division</label>
+                                                <select id="unit_division_to_send_to_rpt" class="form-select form-select-sm">
+                                                    <option value="none">---Select Division---</option>
+                                                    <option value="LVD">LVD</option>
+                                                    <option value="LRD">LRD</option>
+                                                    <option value="PVLMD">PVLMD</option>
+                                                    <option value="SMD">SMD</option>
+                                                    <option value="RLO">RLO</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <label class="form-label">Unit</label>
+                                                <input autocomplete="off" class="form-control form-control-sm" id="unit_to_send_to_rpt" type="text" list="listofunitsbatching_rpt" placeholder="Select/Enter Unit" required>
+                                                <datalist id="listofunitsbatching_rpt"></datalist>
+                                            </div>
+                                            
+                                            <div class="col-12" id="userSelect">
+                                                <label class="form-label">User</label>
+                                                <input class="form-control form-control-sm" id="user_to_send_to_rpt" name="user_to_send_to_rpt" type="text" autocomplete="off" list="listofusersbatching_rpt" placeholder="Enter Username" required>
+                                                <datalist id="listofusersbatching_rpt"></datalist>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="action-buttons mt-4 d-flex gap-2">
+                                            <button type="button" class="btn btn-primary" id="btn_generate_details_based_on_users">
+                                                <i class="ri-eye-line me-1"></i>View Report
+                                            </button>
+                                            <button type="button" class="btn btn-success" id="btn_generate_details_based_on_users_csv">
+                                                <i class="ri-download-line me-1"></i>Download Report
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review and Audit Reports Section -->
+        <div class="row">
+            <div class="col-12">
+                <!-- Review Report -->
+                <div class="card report-card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="section-icon service">
+                                <i class="ri-eye-line fs-4"></i>
+                            </div>
+                            <h4 class="mb-0">Application Review</h4>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#reviewCollapse">
+                            <i class="ri-arrow-down-s-line"></i> Toggle
+                        </button>
+                    </div>
+                    
+                    <div class="collapse show" id="reviewCollapse">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover data-table" id="job_casemgtdetailsdataTable_elis_reports">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Number</th>
+                                            <th>Applicant Name</th>
+                                            <th>Application Type</th>
+                                            <th>Date Received</th>
+                                            <th>Job Status</th>
+                                            <th>Case Number</th>
+                                            <th>Days (Received)</th>
+                                            <th>Days (Batched)</th>
+                                            <th>Date (Completed)</th>
+                                            <th>Days (Completed)</th>
+                                            <th>Date (Collected)</th>
+                                            <th>View</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Report -->
+                
+            </div>
+        </div>
+
+        <!-- Report Count by Service Types -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card report-card">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="section-icon count">
+                            <i class="ri-bar-chart-2-line fs-4"></i>
+                        </div>
+                        <h4 class="mb-0">Report Count by Service Types</h4>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="accordion" id="countReportAccordion">
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header" id="countReportHeading">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#countReportCollapse">
+                                        <i class="ri-filter-line me-2"></i>Filter Options
+                                    </button>
+                                </h2>
+                                <div id="countReportCollapse" class="accordion-collapse collapse show" data-bs-parent="#countReportAccordion">
+                                    <div class="accordion-body p-0 pt-3">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label class="form-label">Select Region</label>
+                                                <select id="report_count_sel_change_region_compliance" class="form-select form-select-sm">
+                                                    <option selected value="0">All Regions</option>
+                                                    <c:forEach items="${officeregionlist}" var="officeregion">
+                                                        <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label class="form-label">Main Service</label>
+                                                <select name="main_service_rpt" id="report_count_main_service_rpt" class="form-select form-select-sm">
+                                                    <option value="-1">Select Main Service</option>
+                                                    <option value="0">All Services</option>
+                                                    <c:forEach items="${main_services}" var="main_service">
+                                                        <option value="${main_service.business_process_id}-${main_service.business_process_name}">${main_service.business_process_name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-md-6" id="countSubServ">
+                                                <label class="form-label">Sub Service</label>
+                                                <select name="sub_service_rpt" id="report_count_sub_service_rpt" class="form-select form-select-sm">
+                                                    <option value="-1">Select Sub Service</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label class="form-label">Date From</label>
+                                                <input type="date" name="date_from" id="report_count_date_from" class="form-control form-control-sm">
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label class="form-label">Date To</label>
+                                                <input type="date" name="date_to" id="report_count_date_to" class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="action-buttons mt-4 d-flex gap-2">
+                                            <button type="button" class="btn btn-info" id="btn_generate_count_reports">
+                                                <i class="ri-eye-line me-1"></i>View Report Count Result
+                                            </button>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reportCountModal">
+                                                <i class="ri-dashboard-line me-1"></i>View Statistics
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Report Count Statistics Modal -->
+<div class="modal fade" id="reportCountModal" tabindex="-1" aria-labelledby="reportCountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-primary">
+                <div class="d-flex align-items-center w-100">
+                    <div class="modal-icon-container me-3">
+                        <div class="avatar avatar-lg bg-white">
+                            <i class="ri-bar-chart-2-line text-primary fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="modal-title text-white" id="reportCountModalLabel">Report Statistics Summary</h5>
+                        <p class="text-white-50 mb-0">Application count overview</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Total Applications -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card border-info h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-info me-3">
+                                        <i class="ri-file-list-line fs-4"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small fw-semibold mb-1">Total Applications</div>
+                                        <div id="totalApps" class="h4 fw-bold text-info mb-0">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Applications Pending -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card border-primary h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-primary me-3">
+                                        <i class="ri-time-line fs-4"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small fw-semibold mb-1">Applications Pending</div>
+                                        <div id="app-pending" class="h4 fw-bold text-primary mb-0">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Applications Completed -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card border-success h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-success me-3">
+                                        <i class="ri-checkbox-circle-line fs-4"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small fw-semibold mb-1">Applications Completed</div>
+                                        <div id="app-completed" class="h4 fw-bold text-success mb-0">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Applications Queried -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card border-danger h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon bg-danger me-3">
+                                        <i class="ri-question-line fs-4"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="text-muted small fw-semibold mb-1">Applications Queried</div>
+                                        <div id="app-queried" class="h4 fw-bold text-danger mb-0">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="printStatistics()">
+                    <i class="ri-printer-line me-1"></i>Print Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Initialize Bootstrap components
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize all tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-        
-        // Initialize all popovers
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-        var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl);
-        });
-        
-        // Modal instances
-        var reportCountModal = new bootstrap.Modal(document.getElementById('report_count_modal'));
-        
-        // You can add your JavaScript functionality here
-        console.log('ELIS Reports page loaded');
-    });
+    function printStatistics() {
+        // Implementation for printing statistics
+        window.print();
+    }
 </script>

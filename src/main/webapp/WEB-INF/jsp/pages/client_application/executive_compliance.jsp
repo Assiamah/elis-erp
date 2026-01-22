@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<%-- <%@ page import="com.report_class.cls_reports" %> --%>
 <%@ page import="org.codehaus.jettison.json.*" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.GsonBuilder" %>
@@ -10,656 +8,882 @@
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
-<jsp:include page="../includes/_header.jsp"></jsp:include>
+
 <jsp:useBean id="now" class="java.util.Date" />
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script> -->
-
-<script src="../assets/libs/chart.js/Chart.min.js"></script>
-
-
 <style>
-    /* Previous CSS styles remain exactly the same */
-	.card:hover {
-        transform: translateY(-10px); /* Moves the card slightly up */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
-    }   .card {
-    
-        border-radius: 15px !important; /* Ensures rounded edges */
-        overflow: hidden; /* Ensures child elements follow the border-radius */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    .dashboard-card {
+        border-radius: 15px !important;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    
-        
-        /* border-radius: 15px; Increased for smoother rounded edges */
-        /* border-radius: 5px; */
-        -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
-        box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
         border: none;
         margin-bottom: 30px;
-        -webkit-transition: all 0.3s ease-in
+        cursor: pointer;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .stat-card .value {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .stat-card .label {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    
+    .bg-c-blue { 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        color: white; 
+    }
+    
+    .bg-c-green { 
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%); 
+        color: white; 
+    }
+    
+    .bg-c-yellow { 
+        background: linear-gradient(135deg, #ffc107 0%, #ffb347 100%); 
+        color: white; 
+    }
+    
+    .bg-c-orange { 
+        background: linear-gradient(135deg, #fd7e14 0%, #ff9a3d 100%); 
+        color: white; 
+    }
+    
+    .bg-c-purple { 
+        background: linear-gradient(135deg, #6f42c1 0%, #a370f7 100%); 
+        color: white; 
+    }
+    
+    .bg-c-pink { 
+        background: linear-gradient(135deg, #e83e8c 0%, #ff4d4d 100%); 
+        color: white; 
+    }
+    
+    .bg-c-teal { 
+        background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%); 
+        color: white; 
+    }
+    
+    .bg-c-red { 
+        background: linear-gradient(135deg, #dc3545 0%, #ff4d4d 100%); 
+        color: white; 
     }
 
-        .bg-c-blue {
-        background: linear-gradient(135deg, #3a7bd5, #3a6073);
-        color: white;
+    .bg-c-completed { 
+        background: linear-gradient(135deg, #2E8B57 0%, #4CAF50 100%); 
+        color: white; 
+    }
+
+    .dashboard-title { 
+        font-size: 1.75rem; 
+        font-weight: 700; 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
-    .bg-c-green {
-        background: linear-gradient(135deg, #A8E063, #56AB2F); /* Lime green to deep leaf green */
-        color: white;
+    .dashboard-subtitle { 
+        color: #6c757d; 
+        font-size: 1rem; 
+        line-height: 1.6;
     }
-    
-    .bg-c-yellow {
-        background: linear-gradient(135deg, #ffb347, #ffcc33);
-        color: white;
+
+    .modal-glass {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
     }
-    
-    .bg-c-pink {
-    background: linear-gradient(135deg, #ff4d4d, #b30000); /* Lighter to deeper red */
-        color: white;
+
+    .bg-light-gray { 
+        background-color: #f8f9fa; 
     }
-        .bg-c-completed {
-        background: linear-gradient(135deg, #4CAF50, #2E8B57); /* Lighter to deeper green */
-        color: white;
-    }
-     .dashboard-subtitle {
-      color: #6c757d;
-        font-size: 1.0rem;
-    }
-     .dashboard-header {
+
+    .icon-container {
+        width: 48px;
+        height: 48px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #e3e6f0;
+        justify-content: center;
+        border-radius: 12px;
     }
 
-     @media (max-width: 768px) {
+    .bg-opacity-20 { 
+        background-color: rgba(255, 255, 255, 0.2); 
+    }
+    
+    .hover-bg-opacity-30:hover { 
+        background-color: rgba(255, 255, 255, 0.3); 
+    }
+
+    .chart-container {
+        width: 100%;
+        height: 300px;
+        position: relative;
+    }
+
+    .division-performance-card {
+        border-left: 4px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .division-performance-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .border-left-primary { border-left-color: #667eea !important; }
+    .border-left-success { border-left-color: #28a745 !important; }
+    .border-left-info { border-left-color: #17a2b8 !important; }
+    .border-left-warning { border-left-color: #ffc107 !important; }
+
+    .progress-thin {
+        height: 8px;
+        border-radius: 4px;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .dropdown-item {
+        border-radius: 5px;
+        margin: 2px 8px;
+        width: auto;
+    }
+
+    .dropdown-item:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
         .dashboard-header {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: flex-start !important;
         }
         
-        .quick-actions {
-            flex-direction: column;
+        .stat-card .value {
+            font-size: 1.5rem;
+        }
+        
+        .chart-container {
+            height: 250px;
         }
     }
-    .text-success {
-  color: #2E8B57 !important;
-}
-#send_message {
-  transition: all 0.2s ease-in-out;
+    .dashboard-stat-card {
+    border-radius: 16px;
+    border: none;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+    height: 100%;
 }
 
-#send_message:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 123, 255, 0.25);
+.dashboard-stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
+
+.dashboard-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--card-color) 0%, rgba(var(--card-color-rgb), 0.7) 100%);
+}
+
+/* Card Color Variants */
+.stat-card-primary {
+    --card-color: #667eea;
+    --card-color-rgb: 102, 126, 234;
+    --card-bg: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.stat-card-success {
+    --card-color: #28a745;
+    --card-color-rgb: 40, 167, 69;
+    --card-bg: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(23, 162, 184, 0.05) 100%);
+}
+
+/* Icon Container */
+.stat-icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--card-color-rgb), 0.1);
+    color: var(--card-color);
+    font-size: 26px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-icon-container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--card-color-rgb), 0.05);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-icon-container:hover::before {
+    transform: scale(2);
+}
+
+/* Stat Content */
+.stat-content {
+    position: relative;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.stat-value {
+    font-size: 2.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #1e293b;
+    margin-bottom: 12px;
+    position: relative;
+    display: inline-block;
+}
+
+.stat-value::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--card-color);
+    border-radius: 2px;
+}
+
+.stat-meta {
+    font-size: 0.875rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.stat-meta i {
+    font-size: 0.75rem;
+    color: var(--card-color);
+}
+
+/* Trend Indicator */
+.trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(var(--card-color-rgb), 0.1);
+    color: var(--card-color);
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 12px;
+    vertical-align: middle;
+}
+
+.trend-indicator.positive {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.trend-indicator.negative {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.trend-indicator i {
+    margin-right: 4px;
+    font-size: 0.625rem;
+}
+
+/* Optional: Add a subtle background pattern */
+.dashboard-stat-card .card-body {
+    background-image: 
+        radial-gradient(circle at 90% 10%, rgba(var(--card-color-rgb), 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 10% 90%, rgba(var(--card-color-rgb), 0.03) 0%, transparent 50%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stat-value {
+        font-size: 2.25rem;
+    }
+    
+    .stat-icon-container {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-stat-card {
+        text-align: center;
+    }
+    
+    .stat-icon-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .stat-value::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* Animation for count updates */
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-value.updated {
+    animation: countUp 0.5s ease-out;
+}
+  #sub_service_modal {
+    z-index: 1080 !important;
+}
+  #apps_modal {
+    z-index: 1085 !important;
+}
+  #cabinetModal {
+    z-index: 1090 !important;
+}
+
+  #completed_apps_modal {
+    z-index: 1085 !important;
+}
+  #regional_modal {
+    z-index: 1085 !important;
+}
+  #units_modal {
+    z-index: 1086 !important;
+}
+  #officers_modal
+ {
+    z-index: 1087 !important;
+}
+  #staffapps_modal
+ {
+    z-index: 1088 !important;
+}
+  #sendMessageModal_FocalCompliance
+ {
+    z-index: 1090 !important;
+}
+  #sendMessageModal
+ {
+    z-index: 1090 !important;
+}
+
+
+
 
 </style>
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
-
-    <div class="dashboard-header">
-        <div>
-           <h1 class="h3 mb-1 text-gray-800 dashboard-title">Executive Management Dashboard</h1>
-<p class="dashboard-subtitle">
-    This Dashboard provides a strategic overview of key operational metrics and performance indicators. 
-    It enables management to monitor application trends, assess divisional efficiency, and make data-driven decisions 
-    that enhance performance and service delivery.
-</p>
-        </div>
-
-        
-        
-    </div>
-
-              <input type="hidden" id = "startdate">
-			  <input type="hidden" id = "start_date">
-			  <input type="hidden" id = "enddate">
-			  <input type="hidden" id = "end_date">
-
-    <!-- Page Heading -->
-    
-
-    
 
 
-    <div class="row row-cols-5">
-    <!-- Applications Received -->
-    <div class="col mb-6">
-        <div class="card bg-c-blue shadow h-100 py-2" data-toggle="tooltip" 
-     title="All Applications Received">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Total Applications Received (All Time)</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="alltime-app-received" data-target="1842">0</div>
-                        <!-- <div class="mt-2 mb-0 text-muted text-xs">
-                            <span class="text-white mr-2">
-  <i class="fas fa-arrow-up"></i> 
-  <span id="recieved_percentage"></span>
-</span>
-<span class="text-white">vs last year</span>
-                        </div> -->
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-file-import fa-2x text-white-300"></i>
-                    </div>
+
+
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+        <!-- Start::page-header -->
+        <!-- <div class="page-header-breadcrumb mb-4">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-24 mb-1">
+                        <i class="ri-dashboard-line me-2"></i>Executive Management Dashboard
+                    </h1>
+                    <p class="dashboard-subtitle">
+                        Strategic overview of key operational metrics and performance indicators for data-driven decision making.
+                    </p>
                 </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Executive Dashboard</li>
+                </ol>
+            </div>
+        </div> -->
+
+        <!-- Hidden date fields -->
+        <input type="hidden" id="startdate">
+        <input type="hidden" id="start_date">
+        <input type="hidden" id="enddate">
+        <input type="hidden" id="end_date">
+
+        <!-- Dashboard Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div>
+                <h1 class="h4 mb-1 dashboard-title">Executive Performance Dashboard</h1>
+                <p class="dashboard-subtitle fw-light">
+                    Monitor application trends, assess divisional efficiency, and make data-driven decisions 
+                    that enhance performance and service delivery.
+                </p>
             </div>
         </div>
-    </div>
 
+        <!-- All Time Summary -->
+        <div class="row mb-4 g-4">
 
-    <!-- Applications Pending -->
-    
-    
-
-    <!-- Applications Completed -->
-    <div class="col mb-6">
-        <div class="card bg-c-green shadow h-100 py-2"  data-toggle="tooltip" 
-     title="All Applications Completed.">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Completed (All Time)</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="alltime-app-completed" data-target="1156">0</div>
-                        <!-- <div class="mt-2 mb-0 text-muted text-xs">
-                            <span class="text-white mr-2"><i class="fas fa-arrow-up" id="completed_percentage"></i> 15%</span>
-                            <span class="text-white">vs last year</span>
-                        </div> -->
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-check-circle fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
- 
-
-</div>
-
-<hr>
-
-
-   
-
-
-               
-                <div class="row">
-                    
-				
-                    <div class="col-sm-4">
-                        <div class="card">
-                          <div class="card-body">
-                              <label for="">Date From</label> 
-                              <input type="text" id="datefrom" class="form-control"  placeholder="Select Date Range">
-                              <!-- <div id="reportrange" style="background: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span></span> <i class="fa fa-caret-down"></i>
+            <!-- <div class="col-xl-2 col-lg-4 col-md-6" id="received_apps">
+                                <div class="dashboard-card bg-c-blue shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Received</div>
+                                                <div class="h4 mb-0 fw-bold counter" id="app-received">0</div>
+                                            </div>
+                                            <i class="fas fa-file-import fa-2x text-white opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div> -->
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div class="col-sm-4">
-                        <div class="card">
-                          <div class="card-body">
-                              <label for="">Date To</label> 
-                              <input type="text" id="dateto" class="form-control"  placeholder="Select Date Range">
-                              <!-- <div id="reportrange" style="background: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span></span> <i class="fa fa-caret-down"></i>
-                            </div> -->
-                          </div>
-                        </div>
-                      </div>
-
-                      </div>
-                
-
-
-                <hr>
 
 
 
-    <!-- Filter Row -->
-    <!-- Previous filter row HTML remains exactly the same -->
-
-    <!-- Key Metrics Summary -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow mb-4 loaded">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary">
-                    <h6 class="m-0 font-weight-bold text-white">Applications Summary - <span id="displayDateRange"><span></h6>
-                    <!-- Dropdown menu remains the same -->
-                </div>
-                <div class="card-body position-relative">
-                    <!-- <div class="loadingoverlay" id="metrics-loading">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div> -->
-<div class="row row-cols-5">
-    <!-- Applications Received -->
-    <div class="col mb-4" id="received_apps">
-        <div class="card bg-c-blue shadow h-100 py-2" data-toggle="tooltip" 
-     title="Applications Received within the selected date range.">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Received</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="app-received" data-target="1842">0</div>
-                        <!-- <div class="mt-2 mb-0 text-muted text-xs">
-                            <span class="text-white mr-2">
-  <i class="fas fa-arrow-up"></i> 
-  <span id="recieved_percentage"></span>
-</span>
-<span class="text-white">vs last year</span>
-                        </div> -->
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-file-import fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Applications Pending -->
-    <div class="col mb-4" id="pending_apps">
-        <div class="card bg-c-yellow shadow h-100 py-2" data-toggle="tooltip" 
-         title="Applications Pending within the selected date range.">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Pending</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="app-pending" data-target="527">0</div>
-                        <!-- <div class="mt-2 mb-0 text-muted text-xs">
-                            <span class="text-white mr-2"><i class="fas fa-arrow-down" id="pending_percentage"></i> 8%</span>
-                            <span class="text-white">vs last year</span>
-                        </div> -->
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-hourglass-half fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-        <!-- Applications Received & Completed -->
-    <div class="col mb-4" id="received_completed_apps">
-        <div class="card bg-c-completed shadow h-100 py-2" data-toggle="tooltip" 
-     title="Applications both received and completed within the selected date range.">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Recieved & Completed</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="app-received-completed" data-target="159">0</div>
-                        <!-- <div class="mt-2 mb-0 text-muted text-xs">
-                            <span class="text-white mr-2"><i class="fas fa-arrow-down" id="recievedcompleted_percentage"></i> 5%</span>
-                            <span class="text-white">vs last year</span>
-                        </div> -->
-                    </div>
-                    <div class="col-auto">
-                        <i class="fa fa-calendar-check f-right fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
-    <!-- Applications Completed -->
-    <div class="col mb-4" id="completed_apps">
-        <div class="card bg-c-green shadow h-100 py-2"  data-toggle="tooltip" 
-     title="Applications completed within the selected date range but received earlier.">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Completed</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="app-completed" data-target="1156">0</div>
-                        <!-- <div class="mt-2 mb-0 text-muted text-xs">
-                            <span class="text-white mr-2"><i class="fas fa-arrow-up" id="completed_percentage"></i> 15%</span>
-                            <span class="text-white">vs last year</span>
-                        </div> -->
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-check-circle fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Applications Queried -->
-     <div class="col mb-4" id="pastdue_apps">
-        <div class="card bg-c-pink shadow h-100 py-2" data-toggle="tooltip" 
-     title="Applications Pastdue within the selected date range.">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Past Due Date</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="app-pastdue" data-target="159">0</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-question-circle fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> 
-
-
-    <!-- <div class="col mb-4" id="queried_apps">
-        <div class="card bg-c-pink shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-white text-uppercase mb-1">Applications Queried</div>
-                        <div class="h5 mb-0 font-weight-bold text-white-800 counter" id="app-queried" data-target="159">0</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-question-circle fa-2x text-white-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Monthly Trends Section -->
-    <div class="row mb-4">
-<div class="col-lg-9" data-toggle="tooltip" 
-     title="This section displays the Top 5 Service Distribution Chart and Statuses within the selected date range.">
-    <div class="card shadow mb-4 loaded">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-info">
-            <h6 class="m-0 font-weight-bold text-white">Top Services Trend</h6>
-            <!-- Chart Options Dropdown -->
-            <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="trendDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="trendDropdownMenuLink">
-                    <div class="dropdown-header">Chart Options:</div>
-                    <!-- <a class="dropdown-item" href="#" id="toggle-line"><i class="fas fa-chart-line mr-2"></i>Line Chart</a> -->
-                    <!-- <a class="dropdown-item" href="#" id="toggle-bar"><i class="fas fa-chart-bar mr-2"></i>Bar Chart</a> -->
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" id="export-trend-chart"><i class="fas fa-download mr-2"></i>Export as PNG</a>
-                </div>
-            </div>
-        </div>
-        <div class="card-body position-relative">
-            <!-- <div class="loadingoverlay" id="trend-loading">
-                <div class="spinner-border text-info" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div> -->
-            <div class="chart-container" id="monthlyTrendContainer" style="height: 300px;">
-                <canvas id="monthlyTrendChart"></canvas>
-            </div>
-            <!-- <div style="position: relative; height: 60vh; width: 100%;">
-    <canvas id="monthlyTrendChart"></canvas>
-</div> -->
-
-        </div>
-    </div>
-</div>
-
-		<div class="col-lg-3" data-toggle="tooltip" 
-     title="This chart illustrates the distribution of application statuses within the chosen date range, providing an overview of operational progress.">
-			<div class="card shadow mb-4 loaded">
-				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-success">
-					<h6 class="m-0 font-weight-bold text-white">Status Distribution</h6>
-					<div class="dropdown no-arrow">
-						<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-							<div class="dropdown-header">Chart Options:</div>
-							<a class="dropdown-item" href="#" id="toggle-doughnut"><i class="fas fa-chart-pie mr-2"></i>Doughnut</a>
-							<a class="dropdown-item" href="#" id="toggle-pie"><i class="fas fa-circle-notch mr-2"></i>Pie</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#" id="export-pie-chart"><i class="fas fa-download mr-2"></i>Export Image</a>
-						</div>
-					</div>
-				</div>
-				<div class="card-body position-relative">
-					<!-- <div class="loadingoverlay" id="pie-loading" style="display: none;">
-						<div class="spinner-border text-success" role="status">
-							<span class="sr-only">Loading...</span>
-						</div>
-					</div> -->
-					<div class="chart-container" id="statusPieContainer" style="height: 300px;">
-						<canvas id="statusPieChart"></canvas>
-					</div>
-					<!-- <div class="mt-4 text-center small">
-						<span class="mr-3">
-							<i class="fas fa-circle text-primary"></i> Received (42%)
-						</span>
-						<span class="mr-3">
-							<i class="fas fa-circle text-warning"></i> Pending (23%)
-						</span>
-						<span class="mr-3">
-							<i class="fas fa-circle text-success"></i> Completed (31%)
-						</span>
-						<span class="mr-3">
-							<i class="fas fa-circle text-danger"></i> Queried (4%)
-						</span>
-					</div> -->
-				</div>
-			</div>
-		</div>
-
-    </div>
-
-    <!-- Division Performance -->
-    <div class="row mb-4">
-        <div class="col-12"  data-toggle="tooltip" 
-     title="This Section illustrates the distribution of application statuses within the chosen date range by divisions.">
-            <div class="card shadow mb-4 loaded">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary">
-                    <h6 class="m-0 font-weight-bold text-white">Division Performance</h6>
-                    <!-- Dropdown menu remains the same -->
-                </div>
-                <div class="card-body position-relative">
-                    <!-- <div class="loadingoverlay" id="division-loading">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div> -->
-                    <div class="row">
-                        <!-- PVLMD Division -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 division-card">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                    <h6 class="m-0 font-weight-bold text-primary">PVLMD</h6>
-                                    <i class="fas fa-landmark text-primary"></i>
-                                    
+           <div class="row mb-4">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="dashboard-stat-card stat-card-primary">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div class="flex-grow-1">
+                                <div class="stat-icon-container mb-3">
+                                    <i class="fas fa-file-import"></i>
                                 </div>
-                                <div class="card-body">
-                                    <div class="text-center mb-3">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter" id="pvlmdtotal_rec" data-target="642">0</div>
-                                        <small class="text-muted">Total Applications</small>
+                                <div class="stat-content">
+                                    <div class="stat-label text-uppercase small fw-semibold text-muted mb-1">
+                                        Total Applications Received
                                     </div>
-
-                                                                <div class="progress progress-thin mb-3">
-                                <div id="pvlmdPendingBar" class="progress-bar" role="progressbar"
-                                    style="width:0%; background-color:#ff4d4d;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                    0%
-                                </div>
-                                <div id="pvlmdCompletedBar" class="progress-bar" role="progressbar"
-                                    style="width:0%; background-color:#2E8B57;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                    0%
-                                </div>
-                            </div>
-                                                                
-                                    <div class="row text-center">
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase">Pending</div>
-                                            <div class="h6 mb-0 text-gray-800 counter" id="pvlmdtotal_pending" data-target="141">0</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase">Completed</div>
-                                            <div class="h6 mb-0 text-gray-800 counter" id="pvlmdtotal_completed" data-target="501">0</div>
-                                        </div>
+                                    <div class="stat-value text-dark mb-2" id="alltime-app-received">0</div>
+                                    <div class="stat-meta text-muted small">
+                                        <i class="fas fa-clock me-1"></i> All Time
                                     </div>
-                                </div>
-                                <div class="card-footer bg-light">
-                                    <small class="text-muted">Last updated: <fmt:formatDate value="${now}" pattern="hh:mm a" /></small>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- LRD Division -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 division-card">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                    <h6 class="m-0 font-weight-bold text-success">LRD</h6>
-                                    <i class="fas fa-map-marked-alt text-success"></i>
+            <div class="col-md-6">
+                <div class="dashboard-stat-card stat-card-success">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div class="flex-grow-1">
+                                <div class="stat-icon-container mb-3">
+                                    <i class="fas fa-check-circle"></i>
                                 </div>
-                                <div class="card-body">
-                                    <div class="text-center mb-3">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter" id="lrdtotal_rec" data-target="587">0</div>
-                                        <small class="text-muted">Total Applications</small>
+                                <div class="stat-content">
+                                    <div class="stat-label text-uppercase small fw-semibold text-muted mb-1">
+                                        Applications Completed
                                     </div>
-
-                                    <!-- <div class="progress progress-thin mb-3">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width:31%" aria-valuenow="31" aria-valuemin="0" aria-valuemax="100"></div>
-                                        <div class="progress-bar bg-success" role="progressbar" style="width:69%" aria-valuenow="69" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div> -->
-
-
-
-                                    <div class="progress progress-thin mb-3">
-                                        <div id="lrdPendingBar" class="progress-bar" role="progressbar"
-                                            style="width:0%; background-color:#ff4d4d;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                            0%
-                                        </div>
-                                        <div id="lrdCompletedBar" class="progress-bar" role="progressbar"
-                                            style="width:0%; background-color:#2E8B57;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                            0%
-                                        </div>
+                                    <div class="stat-value text-dark mb-2" id="alltime-app-completed">0</div>
+                                    <div class="stat-meta text-muted small">
+                                        <i class="fas fa-clock me-1"></i> All Time
                                     </div>
-
-                                    <div class="row text-center">
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase">Pending</div>
-                                            <div class="h6 mb-0 text-gray-800 counter"  id="lrdtotal_pending"  data-target="182">0</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase">Completed</div>
-                                            <div class="h6 mb-0 text-gray-800 counter" id="lrdtotal_completed"  data-target="405">0</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-light">
-                                    <small class="text-muted">Last updated: <fmt:formatDate value="${now}" pattern="hh:mm a" /></small>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- LVD Division -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 division-card">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                    <h6 class="m-0 font-weight-bold text-info">LVD</h6>
-                                    <i class="fas fa-file-contract text-info"></i>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center mb-3">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter" id="lvdtotal_rec" data-target="423">0</div>
-                                        <small class="text-muted">Total Applications</small>
+        </div>
+
+        <!-- Date Filters -->
+        <div class="row mb-4">
+            <div class="col-md-6" >
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <label class="form-label fw-semibold">Date From</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-calendar-alt text-primary"></i>
+                            </span>
+                            <input type="text" id="datefrom" class="form-control" placeholder="Select Date From">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <label class="form-label fw-semibold">Date To</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-calendar-alt text-primary"></i>
+                            </span>
+                            <input type="text" id="dateto" class="form-control" placeholder="Select Date To">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient-primary text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 fw-bold">Applications Summary - <span id="displayDateRange">All Time</span></h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" 
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" id="refresh-summary"><i class="fas fa-sync-alt me-2"></i>Refresh</a></li>
+                                    <li><a class="dropdown-item" href="#" id="export-summary"><i class="fas fa-download me-2"></i>Export</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <!-- Received -->
+                            <div class="col-xl-2 col-lg-4 col-md-6" id="received_apps">
+                                <div class="dashboard-card bg-c-blue shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Received</div>
+                                                <div class="h4 mb-0 fw-bold counter" id="app-received">0</div>
+                                            </div>
+                                            <i class="fas fa-file-import fa-2x text-white opacity-75"></i>
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
 
+                            <!-- Pending -->
+                            <div class="col-xl-2 col-lg-4 col-md-6" id="pending_apps">
+                                <div class="dashboard-card bg-c-yellow shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Pending</div>
+                                                <div class="h4 mb-0 fw-bold counter" id="app-pending">0</div>
+                                            </div>
+                                            <i class="fas fa-hourglass-half fa-2x text-white opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Received & Completed -->
+                            <div class="col-xl-2 col-lg-4 col-md-6" id="received_completed_apps">
+                                <div class="dashboard-card bg-c-completed shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Received & Completed</div>
+                                                <div class="h4 mb-0 fw-bold counter" id="app-received-completed">0</div>
+                                            </div>
+                                            <i class="fas fa-calendar-check fa-2x text-white opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Completed -->
+                            <div class="col-xl-2 col-lg-4 col-md-6" id="completed_apps">
+                                <div class="dashboard-card bg-c-green shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Completed</div>
+                                                <div class="h4 mb-0 fw-bold counter" id="app-completed">0</div>
+                                            </div>
+                                            <i class="fas fa-check-circle fa-2x text-white opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Past Due -->
+                            <div class="col-xl-2 col-lg-4 col-md-6" id="pastdue_apps">
+                                <div class="dashboard-card bg-c-red shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Past Due</div>
+                                                <div class="h4 mb-0 fw-bold counter" id="app-pastdue">0</div>
+                                            </div>
+                                            <i class="fas fa-exclamation-triangle fa-2x text-white opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Completion Rate -->
+                            <div class="col-xl-2 col-lg-4 col-md-6">
+                                <div class="dashboard-card bg-c-purple shadow h-100 py-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div class="text-xs fw-bold text-uppercase mb-1">Completion Rate</div>
+                                                <div class="h4 mb-0 fw-bold" id="completion-rate">0%</div>
+                                            </div>
+                                            <i class="fas fa-chart-line fa-2x text-white opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mb-4 g-4">
+            <!-- Top Services Trend -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-gradient-info text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 fw-bold">Top Services Trend</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" 
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" id="toggle-line"><i class="fas fa-chart-line me-2"></i>Line Chart</a></li>
+                                    <li><a class="dropdown-item" href="#" id="toggle-bar"><i class="fas fa-chart-bar me-2"></i>Bar Chart</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" id="export-trend-chart"><i class="fas fa-download me-2"></i>Export PNG</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="monthlyTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Distribution -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-gradient-success text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 fw-bold">Status Distribution</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" 
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" id="toggle-doughnut"><i class="fas fa-chart-pie me-2"></i>Doughnut</a></li>
+                                    <li><a class="dropdown-item" href="#" id="toggle-pie"><i class="fas fa-circle me-2"></i>Pie Chart</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" id="export-pie-chart"><i class="fas fa-download me-2"></i>Export</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="statusPieChart"></canvas>
+                        </div>
+                        <div class="mt-3 text-center small">
+                            <div class="d-flex justify-content-center flex-wrap gap-3">
+                                <span><i class="fas fa-circle text-primary me-1"></i> Received</span>
+                                <span><i class="fas fa-circle text-warning me-1"></i> Pending</span>
+                                <span><i class="fas fa-circle text-success me-1"></i> Completed</span>
+                                <span><i class="fas fa-circle text-danger me-1"></i> Past Due</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Division Performance -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient-primary text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 fw-bold">Division Performance</h6>
+                            <small class="opacity-75">Updated: <fmt:formatDate value="${now}" pattern="hh:mm a" /></small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <!-- PVLMD -->
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card division-performance-card border-left-primary h-100">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 fw-bold text-primary">PVLMD</h6>
+                                        <i class="fas fa-landmark text-primary"></i>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center mb-3">
+                                            <h4 class="fw-bold text-dark counter" id="pvlmdtotal_rec">0</h4>
+                                            <small class="text-muted">Total Applications</small>
+                                        </div>
                                         <div class="progress progress-thin mb-3">
-                                        <div id="lvdPendingBar" class="progress-bar" role="progressbar"
-                                            style="width:0%; background-color:#ff4d4d;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                            0%
+                                            <div id="pvlmdPendingBar" class="progress-bar bg-warning" style="width:0%">0%</div>
+                                            <div id="pvlmdCompletedBar" class="progress-bar bg-success" style="width:0%">0%</div>
                                         </div>
-                                        <div id="lvdCompletedBar" class="progress-bar" role="progressbar"
-                                            style="width:0%; background-color:#2E8B57;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                            0%
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="row text-center">
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase">Pending</div>
-                                            <div class="h6 mb-0 text-gray-800 counter"  id="lvdtotal_pending" data-target="161">0</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase">Completed</div>
-                                            <div class="h6 mb-0 text-gray-800 counter" id="lvdtotal_completed"  data-target="262">0</div>
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Pending</small>
+                                                <h6 class="fw-bold text-dark counter" id="pvlmdtotal_pending">0</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Completed</small>
+                                                <h6 class="fw-bold text-dark counter" id="pvlmdtotal_completed">0</h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer bg-light">
-                                    <small class="text-muted">Last updated: <fmt:formatDate value="${now}" pattern="hh:mm a" /></small>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- SMD Division -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 division-card">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-light">
-                                    <h6 class="m-0 font-weight-bold text-warning">SMD</h6>
-                                    <i class="fas fa-search-location text-warning"></i>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center mb-3">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter" id="smdtotal_rec" data-target="290">0</div>
-                                        <small class="text-muted">Total Applications</small>
+                            <!-- LRD -->
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card division-performance-card border-left-success h-100">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 fw-bold text-success">LRD</h6>
+                                        <i class="fas fa-map-marked-alt text-success"></i>
                                     </div>
-
-                                         <div class="progress progress-thin mb-3">
-                                        <div id="smdPendingBar" class="progress-bar" role="progressbar"
-                                            style="width:0%; background-color:#ff4d4d;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                            0%
+                                    <div class="card-body">
+                                        <div class="text-center mb-3">
+                                            <h4 class="fw-bold text-dark counter" id="lrdtotal_rec">0</h4>
+                                            <small class="text-muted">Total Applications</small>
                                         </div>
-                                        <div id="smdCompletedBar" class="progress-bar" role="progressbar"
-                                            style="width:0%; background-color:#2E8B57;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                            0%
+                                        <div class="progress progress-thin mb-3">
+                                            <div id="lrdPendingBar" class="progress-bar bg-warning" style="width:0%">0%</div>
+                                            <div id="lrdCompletedBar" class="progress-bar bg-success" style="width:0%">0%</div>
                                         </div>
-                                    </div>
-
-                                    
-                                    <div class="row text-center">
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase">Pending</div>
-                                            <div class="h6 mb-0 text-gray-800 counter"  id="smdtotal_pending" data-target="43">0</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase">Completed</div>
-                                            <div class="h6 mb-0 text-gray-800 counter" id="smdtotal_completed"  data-target="247">0</div>
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Pending</small>
+                                                <h6 class="fw-bold text-dark counter" id="lrdtotal_pending">0</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Completed</small>
+                                                <h6 class="fw-bold text-dark counter" id="lrdtotal_completed">0</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer bg-light">
-                                    <small class="text-muted">Last updated: <fmt:formatDate value="${now}" pattern="hh:mm a" /></small>
+                            </div>
+
+                            <!-- LVD -->
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card division-performance-card border-left-info h-100">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 fw-bold text-info">LVD</h6>
+                                        <i class="fas fa-file-contract text-info"></i>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center mb-3">
+                                            <h4 class="fw-bold text-dark counter" id="lvdtotal_rec">0</h4>
+                                            <small class="text-muted">Total Applications</small>
+                                        </div>
+                                        <div class="progress progress-thin mb-3">
+                                            <div id="lvdPendingBar" class="progress-bar bg-warning" style="width:0%">0%</div>
+                                            <div id="lvdCompletedBar" class="progress-bar bg-success" style="width:0%">0%</div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Pending</small>
+                                                <h6 class="fw-bold text-dark counter" id="lvdtotal_pending">0</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Completed</small>
+                                                <h6 class="fw-bold text-dark counter" id="lvdtotal_completed">0</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SMD -->
+                            <div class="col-xl-3 col-lg-6">
+                                <div class="card division-performance-card border-left-warning h-100">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="m-0 fw-bold text-warning">SMD</h6>
+                                        <i class="fas fa-search-location text-warning"></i>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center mb-3">
+                                            <h4 class="fw-bold text-dark counter" id="smdtotal_rec">0</h4>
+                                            <small class="text-muted">Total Applications</small>
+                                        </div>
+                                        <div class="progress progress-thin mb-3">
+                                            <div id="smdPendingBar" class="progress-bar bg-warning" style="width:0%">0%</div>
+                                            <div id="smdCompletedBar" class="progress-bar bg-success" style="width:0%">0%</div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Pending</small>
+                                                <h6 class="fw-bold text-dark counter" id="smdtotal_pending">0</h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted d-block">Completed</small>
+                                                <h6 class="fw-bold text-dark counter" id="smdtotal_completed">0</h6>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -667,165 +891,72 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Regional Performance -->
-    <div class="row">
-          <!-- <div class="col-lg-6 mb-4" id="pending_received_apps"> -->
-  <div class="col-lg-12 mb-4" data-toggle="tooltip" 
-     title="Displays a comparative analysis of applications received, pending, and completed across all regions within the selected date range.">
-    <div class="card shadow mb-4 loaded">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-info">
-            <h6 class="m-0 font-weight-bold text-white">Regional Applications Received Vrs Pending Vrs Completed</h6>
-            <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink2">
-                    <div class="dropdown-header">Chart Options:</div>
-                    <a class="dropdown-item" href="#" id="export-regional-png"><i class="fas fa-download mr-2"></i>Export PNG</a>
-                    <a class="dropdown-item" href="#" id="export-regional-pdf"><i class="fas fa-file-pdf mr-2"></i>Export PDF</a>
-                </div>
-            </div>
-        </div>
-        <div class="card-body position-relative">
-            <!-- <div class="loadingoverlay" id="regional-received-loading">
-                <div class="spinner-border text-secondary" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div> -->
-            <div class="chart-container" id="regionalReceivedContainer" style="height: 300px;">
-                <canvas id="regionalReceivedChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
- <!-- <div class="col-lg-6 mb-4" id="com_received_apps"> -->
- <!-- <div class="col-lg-6 mb-4">
-    <div class="card shadow mb-4 loaded">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-info">
-            <h6 class="m-0 font-weight-bold text-white">Regional Applications Completed</h6>
-            <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink3">
-                    <div class="dropdown-header">Chart Options:</div>
-                    <a class="dropdown-item" href="#" id="export-completed-png"><i class="fas fa-download mr-2"></i>Export PNG</a>
-                    <a class="dropdown-item" href="#" id="export-completed-pdf"><i class="fas fa-file-pdf mr-2"></i>Export PDF</a>
-                </div>
-            </div>
-        </div>
-        <div class="card-body position-relative">
-            
-            <div class="chart-container" id="regionalCompletedContainer" style="height: 300px;">
-                <canvas id="regionalCompletedChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-    </div>
-
-    <!-- Recent Activity -->
-    <!-- <div class="row">
-        <div class="col-12">
-            <div class="card shadow mb-4 loaded">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-gradient-primary">
-                    <h6 class="m-0 font-weight-bold text-white">Recent Activity</h6>
-                </div>
-                <div class="card-body position-relative">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-sm" id="recentActivityTable" width="100%" cellspacing="0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Timestamp</th>
-                                    <th>Activity</th>
-                                    <th>Application ID</th>
-                                    <th>Division</th>
-                                    <th>Region</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>New Application Received</td>
-                                    <td>PVLMDGAR1321212025</td>
-                                    <td>PVLMD</td>
-                                    <td>Greater Accra</td>
-                                    <td><span class="badge badge-primary">Received</span></td>
-                                </tr>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>Application Completed</td>
-                                    <td>LRDAS3232122025</td>
-                                    <td>LRD</td>
-                                    <td>Ashanti</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>Application Queried</td>
-                                    <td>LVD482283282025</td>
-                                    <td>LVD</td>
-                                    <td>Eastern</td>
-                                    <td><span class="badge badge-danger">Queried</span></td>
-                                </tr>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>Document Completed</td>
-                                    <td>SMDCR20290392932025</td>
-                                    <td>SMD</td>
-                                    <td>Central</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>Application Completed</td>
-                                    <td>PVLMDWRN22332222025</td>
-                                    <td>PVLMD</td>
-                                    <td>Western</td>
-                                    <td><span class="badge badge-success">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>Payment Received</td>
-                                    <td>LRDVR94949292025</td>
-                                    <td>LRD</td>
-                                    <td>Volta</td>
-                                    <td><span class="badge badge-secondary">Received</span></td>
-                                </tr>
-                                <tr>
-                                    <td><fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm" /></td>
-                                    <td>Application Received</td>
-                                    <td>LVDNR482283282025</td>
-                                    <td>LVD</td>
-                                    <td>Northern</td>
-                                    <td><span class="badge badge-primary">Received</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <!-- Regional Performance -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-gradient-info text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 fw-bold">Regional Performance Analysis</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" 
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-download me-1"></i> Export
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" id="export-regional-png"><i class="fas fa-image me-2"></i>PNG</a></li>
+                                    <li><a class="dropdown-item" href="#" id="export-regional-pdf"><i class="fas fa-file-pdf me-2"></i>PDF</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="regionalReceivedChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>    
-    </div> -->
+        </div>
 
+    </div>
 </div>
-<!-- /.container-fluid -->
+ <!-- Start::app-content -->
 
-<jsp:include page="../includes/_footer.jsp"></jsp:include>
+
+<!-- Repeat similar updates for other modals: newactivityDetailsModal, addParcelDetailsModal, transactionUpdateModal, etc. -->
+<!-- They follow the same structure: btn-close-white, data-bs-dismiss, proper flex utilities, etc. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script type="text/javascript" src="client_application/executive_compliance.js"></script>
 
-<script>
-    $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-});
-</script>
+    <jsp:include page="../../components/_executive_modal.jsp"></jsp:include>
 
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
 
+        // Initialize date pickers
+        $('#datefrom, #dateto').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        // Refresh button functionality
+        $('#refresh-summary').on('click', function(e) {
+            e.preventDefault();
+            location.reload();
+        });
+
+        // Export functionality
+        $('#export-summary').on('click', function(e) {
+            e.preventDefault();
+            // Add export logic here
+            alert('Export functionality to be implemented');
+        });
+    });
+</script> -->

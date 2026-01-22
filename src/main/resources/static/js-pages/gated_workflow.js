@@ -3462,6 +3462,10 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#newEncumberancesModal ._gated_workflow_documents');
         } else if (modalType === 'lrd_initial_approval') {
             container = document.querySelector('#lrd_initial_approval ._gated_workflow_documents');
+        } else if (modalType === 'addeditpartyGeneral') {
+            container = document.querySelector('#addeditpartyGeneral ._gated_workflow_documents');
+        } else if (modalType === 'further_entry') {
+            container = document.querySelector('#further_entry ._gated_workflow_documents');
         }
         
         if (!container) {
@@ -3776,6 +3780,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (accordionId.includes('encumbrance')) {
                 modalType = 'encumbrance';
+            }
+
+            if (accordionId.includes('addeditpartyGeneral')) {
+                modalType = 'addeditpartyGeneral';
+            }
+
+            if (accordionId.includes('lrd_initial_approval')) {
+                modalType = 'lrd_initial_approval';
+            }
+
+            if (accordionId.includes('further_entry')) {
+                modalType = 'further_entry';
             }
         }
         
@@ -13116,6 +13132,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('#lrd_initial_approval').on('show.bs.modal', function () {
         window.loadGatedWorkFlowDocuments('lrd_initial_approval');
+    });
+
+    $('#addeditpartyGeneral').on('show.bs.modal', function () {
+        window.loadGatedWorkFlowDocuments('addeditpartyGeneral');
+    });
+
+    $('#further_entry').on('show.bs.modal', function () {
+        window.loadGatedWorkFlowDocuments('further_entry');
     });
 
     // $('#viewNotesModal').on('shown.bs.modal', function () {
