@@ -412,7 +412,7 @@
             <div class="position-relative z-1 d-flex flex-column justify-content-center align-items-center text-white h-100 p-5">
                 <!-- System Description -->
                 <div class="text-start mb-5">
-                    <h2 class="display-5 fw-bold mb-3 text-white">Enterprise Land Management</h2>
+                    <h2 class="display-5 fw-bold mb-3 text-white">Enterprise Land Information System</h2>
                     <p class="fs-6 fw-light mb-4" style="max-width: 600px;">
                         A comprehensive platform for managing land records, property information, 
                         and spatial data across municipalities. Streamline operations with our 
