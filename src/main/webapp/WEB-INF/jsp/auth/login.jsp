@@ -274,6 +274,43 @@
     margin: 8px auto 6px;
     border-radius: 2px;
 }
+
+.env-card-banner {
+    width: 100%;
+    padding: 8px 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+/* TEST */
+.env-test {
+    background: linear-gradient(90deg, #ff9800, #f44336);
+    animation: blink 1.2s infinite;
+}
+
+/* PRE-PROD */
+.env-preprod {
+    background: linear-gradient(90deg, #fb8c00, #e53935);
+    animation: blink 1.2s infinite;
+}
+
+/* PROD – no blinking */
+.env-prod {
+    background: linear-gradient(90deg, #2e7d32, #66bb6a);
+}
+
+/* Blink */
+@keyframes blink {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
 </style>
 
 <div class="container-fluid min-vh-100 p-0">
@@ -282,7 +319,8 @@
         <div class="col-lg-6 p-0">
             <div class="auth-left-container">
                 <div class="auth-card">
-
+<!-- 🔴 ENV BANNER -->
+    <div class="env-card-banner env-test">${server_version}</div>
                     <!-- Header -->
                     <div class="auth-card-header">
                         <div class="auth-logo">
