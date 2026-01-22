@@ -1213,3 +1213,513 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="upload_pdf_plan" tabindex="-1"
+     aria-labelledby="review_documents_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="review_documents_label">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Uploaf PDF Plan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Documents Accordion -->
+                <div class="accordion" id="documentsAccordion">
+                    
+                    <!-- Application Documents Card -->
+                    <div class="accordion-item border rounded mb-3">
+                        <h2 class="accordion-header" id="headingApplication">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseApplication" 
+                                    aria-expanded="false" aria-controls="collapseApplication">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="me-3">
+                                        <i class="fas fa-folder-open fa-lg text-primary"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Application Documents</h6>
+                                        <small class="text-muted">Private application documents</small>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill ms-2" id="appDocsCount">0</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapseApplication" class="accordion-collapse collapse" 
+                             aria-labelledby="headingApplication" data-bs-parent="#documentsAccordion">
+                            <div class="accordion-body">
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-sm me-2" 
+                                                onclick="loadUploadPDFApplicationDocuments()">
+                                            <i class="fas fa-sync-alt me-1"></i>
+                                            Refresh
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-bs-toggle="modal" data-bs-target="#fileUploadModal"
+                                                data-bs-placement="top" title="Add Documents">
+                                            <i class="fas fa-plus-circle me-1"></i>
+                                            Add Document
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_export_app_docs">
+                                            <i class="fas fa-download me-1"></i>
+                                            Export
+                                        </button> -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Documents Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lc_upload_pdf_scanned_documents_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="55%">Document Name</th>
+                                                <th width="30%">Document Type</th>
+                                                <!-- <th width="15%">Size</th> -->
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div id="appDocsEmpty" class="text-center py-5 d-none">
+                                    <div class="mb-3">
+                                        <i class="fas fa-file-alt fa-3x text-muted"></i>
+                                    </div>
+                                    <h6 class="text-muted">No Application Documents</h6>
+                                    <p class="text-muted small mb-0">Click "Add Document" to upload files</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Public Documents Card -->
+                    <div class="accordion-item border rounded">
+                        <h2 class="accordion-header" id="headingPublic">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapsePublic" 
+                                    aria-expanded="false" aria-controls="collapsePublic">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="me-3">
+                                        <i class="fas fa-users fa-lg text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Public Documents</h6>
+                                        <small class="text-muted">Publicly accessible documents</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill ms-2" id="publicDocsCount">0</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapsePublic" class="accordion-collapse collapse" 
+                             aria-labelledby="headingPublic" data-bs-parent="#documentsAccordion">
+                            <div class="accordion-body">
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-sm me-2" onclick="loadUploadPDFPublicDocuments()">
+                                            <i class="fas fa-sync-alt me-1"></i>
+                                            Refresh
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-bs-toggle="modal" data-bs-target="#publicFileUploadModal"
+                                                data-bs-placement="top" title="Add Public Documents">
+                                            <i class="fas fa-plus-circle me-1"></i>
+                                            Add Public Document
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_export_public_docs">
+                                            <i class="fas fa-download me-1"></i>
+                                            Export
+                                        </button> -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Public Documents Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lc_upload_pdf_public_documents_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="55%">Document Name</th>
+                                                <th width="30%">Document Type</th>
+                                                <!-- <th width="15%">Size</th> -->
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div id="publicDocsEmpty" class="text-center py-5 d-none">
+                                    <div class="mb-3">
+                                        <i class="fas fa-users fa-3x text-muted"></i>
+                                    </div>
+                                    <h6 class="text-muted">No Public Documents</h6>
+                                    <p class="text-muted small mb-0">Click "Add Public Document" to upload files</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Total Documents: 
+                        <span class="fw-medium" id="totalDocumentsCount">0</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="button" id="btn_update_app_status_ffrv" style="display:none"
+                                class="btn btn-success">
+                            <i class="fas fa-check me-1"></i>
+                            Confirm Final Approval
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="upload_final_pdf_plan" tabindex="-1"
+     aria-labelledby="review_documents_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="review_documents_label">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Uploaf Final PDF Plan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Documents Accordion -->
+                <div class="accordion" id="documentsAccordion">
+                    
+                    <!-- Application Documents Card -->
+                    <div class="accordion-item border rounded mb-3">
+                        <h2 class="accordion-header" id="headingApplication">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseApplication" 
+                                    aria-expanded="false" aria-controls="collapseApplication">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="me-3">
+                                        <i class="fas fa-folder-open fa-lg text-primary"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Application Documents</h6>
+                                        <small class="text-muted">Private application documents</small>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill ms-2" id="appDocsCount">0</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapseApplication" class="accordion-collapse collapse" 
+                             aria-labelledby="headingApplication" data-bs-parent="#documentsAccordion">
+                            <div class="accordion-body">
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-sm me-2" 
+                                                onclick="loadUploadFinalPDFApplicationDocuments()">
+                                            <i class="fas fa-sync-alt me-1"></i>
+                                            Refresh
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-bs-toggle="modal" data-bs-target="#fileUploadModal"
+                                                data-bs-placement="top" title="Add Documents">
+                                            <i class="fas fa-plus-circle me-1"></i>
+                                            Add Document
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_export_app_docs">
+                                            <i class="fas fa-download me-1"></i>
+                                            Export
+                                        </button> -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Documents Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lc_upload_final_pdf_scanned_documents_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="55%">Document Name</th>
+                                                <th width="30%">Document Type</th>
+                                                <!-- <th width="15%">Size</th> -->
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div id="appDocsEmpty" class="text-center py-5 d-none">
+                                    <div class="mb-3">
+                                        <i class="fas fa-file-alt fa-3x text-muted"></i>
+                                    </div>
+                                    <h6 class="text-muted">No Application Documents</h6>
+                                    <p class="text-muted small mb-0">Click "Add Document" to upload files</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Public Documents Card -->
+                    <div class="accordion-item border rounded">
+                        <h2 class="accordion-header" id="headingPublic">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapsePublic" 
+                                    aria-expanded="false" aria-controls="collapsePublic">
+                                <div class="d-flex align-items-center w-100">
+                                    <div class="me-3">
+                                        <i class="fas fa-users fa-lg text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Public Documents</h6>
+                                        <small class="text-muted">Publicly accessible documents</small>
+                                    </div>
+                                    <span class="badge bg-success rounded-pill ms-2" id="publicDocsCount">0</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapsePublic" class="accordion-collapse collapse" 
+                             aria-labelledby="headingPublic" data-bs-parent="#documentsAccordion">
+                            <div class="accordion-body">
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-sm me-2" onclick="loadUploadFinalPDFPublicDocuments()">
+                                            <i class="fas fa-sync-alt me-1"></i>
+                                            Refresh
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                data-bs-toggle="modal" data-bs-target="#publicFileUploadModal"
+                                                data-bs-placement="top" title="Add Public Documents">
+                                            <i class="fas fa-plus-circle me-1"></i>
+                                            Add Public Document
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_export_public_docs">
+                                            <i class="fas fa-download me-1"></i>
+                                            Export
+                                        </button> -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Public Documents Table -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lc_upload_final_pdf_public_documents_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="55%">Document Name</th>
+                                                <th width="30%">Document Type</th>
+                                                <!-- <th width="15%">Size</th> -->
+                                                <th width="15%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Empty State -->
+                                <div id="publicDocsEmpty" class="text-center py-5 d-none">
+                                    <div class="mb-3">
+                                        <i class="fas fa-users fa-3x text-muted"></i>
+                                    </div>
+                                    <h6 class="text-muted">No Public Documents</h6>
+                                    <p class="text-muted small mb-0">Click "Add Public Document" to upload files</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Total Documents: 
+                        <span class="fw-medium" id="totalDocumentsCount">0</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="button" id="btn_update_app_status_ffrv" style="display:none"
+                                class="btn btn-success">
+                            <i class="fas fa-check me-1"></i>
+                            Confirm Final Approval
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="plot_transaction_to_smd_layer" tabindex="-1" 
+     aria-labelledby="confirmOtpModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title text-white" id="confirmOtpModalLabel">
+          <i class="fas fa-shield-alt me-2"></i>
+          Request OTP For Approval
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>OTP Required</strong>
+              <p class="mb-0 mt-1 fw-light">You need to generate a One-Time Password to proceed with final signing.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Optional Volume and Folio Display -->
+        <!-- 
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="form-label fw-medium">
+                <i class="fas fa-book me-1"></i>
+                Volume Number
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-hashtag"></i>
+                </span>
+                <input type="text" class="form-control" readonly value="${volume_number}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="form-label fw-medium">
+                <i class="fas fa-file-alt me-1"></i>
+                Folio Number
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-hashtag"></i>
+                </span>
+                <input type="text" class="form-control" readonly value="${folio_number}">
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+        
+        <!-- Generate OTP Button -->
+        <div class="text-center py-3">
+          <button type="button" id="lc_btn_approve_for_plot_transaction_to_smd_layer" 
+                  class="btn btn-danger btn-lg w-100 py-3">
+            <i class="fas fa-key me-2"></i>
+            Generate OTP
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-lock me-1"></i>
+            Secure one-time password will be sent for verification
+          </div>
+        </div>
+        
+        <!-- OTP Instructions -->
+        <div class="alert alert-light border mt-4">
+          <div class="d-flex">
+            <i class="fas fa-lightbulb text-warning me-3 mt-1"></i>
+            <div>
+              <strong class="text-dark">How it works:</strong>
+              <ul class="mb-0 mt-2 ps-3 fw-light">
+                <li class="text-muted">Click "Generate OTP" to create a one-time password</li>
+                <li class="text-muted">The OTP will be sent to authorized personnel</li>
+                <li class="text-muted">Use the OTP to complete certificate approval</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+review_application_against_fifo

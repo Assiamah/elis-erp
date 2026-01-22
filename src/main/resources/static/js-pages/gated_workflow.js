@@ -12167,6 +12167,99 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	});
 
+    $('#main_service_on_tc_e').change(function() {
+        var select_id = document.getElementById("main_service_on_tc_e");
+        var main_service = select_id.options[select_id.selectedIndex].value;
+
+        const main_service_name_id = main_service.split('-');
+
+        var main_service_id = main_service_name_id[0];
+        var main_service_name = main_service_name_id[1];
+
+        $.ajax({
+            type : "POST",
+            url : "Case_Management_Serv",
+            data : {
+                request_type : 'get_lc_sub_service',
+            },
+            cache : false,
+            beforeSend : function() {
+                // $('#district').html('<img
+                // src="img/loading.gif"
+                // alt="" width="24"
+                // height="24">');
+            },
+            success : function(jobdetails) {
+                console.log(jobdetails);
+                var json_p = JSON.parse(jobdetails);
+                var options = $("#sub_service_on_tc_e");
+
+                options.empty();
+                options.append(new Option("-- Select --", 0));
+
+                $(json_p).each(function() {
+                    console.log(select_id);
+                    console.log(this.business_process_id);
+
+                    if (main_service_id == this.business_process_id) {
+                        $('#sub_service_on_tc_e').append('<option value="'
+                                + this.business_process_sub_id
+                                + '-'
+                                + this.business_process_sub_name
+                            + '">' + this.business_process_sub_name
+                            + '</option>');
+                    }
+                });
+            }
+        });
+    });
+
+    $('#office_region_on_tc_e').change(function() {
+		var sub_service = $(this).val();
+
+		const sub_service_name_id = sub_service.split('_');
+
+		var main_service_id = sub_service_name_id[0];
+		var main_service_name = sub_service_name_id[1];
+
+		$.ajax({
+			type : "POST",
+			url : "Case_Management_Serv",
+			data : {
+				request_type : 'get_list_of_locality',
+				region_id : main_service_id
+			},
+			cache : false,
+			beforeSend : function() {
+				// $('#district').html('<img
+				// src="img/loading.gif"
+				// alt="" width="24"
+				// height="24">');
+			},
+			success : function(jobdetails) {
+
+				// console.log(jobdetails);
+				var json_p = JSON.parse(jobdetails);
+				var options = $("#locality_on_tc_e");
+
+                // var options =
+                // $("#selector");
+                options.empty();
+                options.append(new Option("-- Select --", 0));
+
+				$(json_p).each(function() {
+					$('#locality_on_tc_e').append('<option value="'
+                        + this.location_name
+                        + '">'
+                        + this.location_name
+                        + '</option>');
+
+				});
+			}
+	    });
+
+	});
+
     $('#btn_create_new_job_and_case_number').on('click', function(e) {
         e.preventDefault();
         
@@ -12653,6 +12746,365 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`Error: ${message}`);
         }
     }
+
+    $('#btn_create_new_job_and_case_number_e').on('click', function(e) {
+        e.preventDefault();
+        
+        var select_id = document.getElementById("main_service_on_tc_e");
+        var main_service = select_id.options[select_id.selectedIndex].value;
+        
+        var sub_select_id = document.getElementById("sub_service_on_tc_e");
+        var sub_service = sub_select_id.options[sub_select_id.selectedIndex].value;
+        
+        const main_service_name_id = main_service.split('-');
+        const sub_service_name_id = sub_service.split('-');
+        
+        var main_service_id = main_service_name_id[0];
+        var main_service_name = main_service_name_id[1];
+        
+        var sub_service_id = sub_service_name_id[0];
+        var sub_service_name = sub_service_name_id[1];
+        
+        main_service_id = main_service_id.replace('.0', '');
+        
+        var new_land_size = '0';
+        var applicant_name_on_tc = $("#applicant_name_on_tc_e").val();
+        var land_size_on_tc = $("#land_size_on_tc_e").val();
+        var office_region_on_tc = $("#office_region_on_tc_e").val();
+        
+        const office_region_name_id = office_region_on_tc.split('_');
+        var office_region_id = office_region_name_id[0];
+        var office_region_name = office_region_name_id[1];
+        
+        var locality_on_tc = $("#locality_on_tc_e").val();
+        var type_of_use_on_tc = $("#type_of_use_on_tc_e").val();
+        var type_of_interest_on_tc = $("#type_of_interest_on_tc_e").val();
+        var nature_of_instrument_on_tc = $("#nature_of_instrument_on_tc_e").val();
+        var job_number_on_tc = $("#job_number_on_tc_e").val();
+        var case_number_on_tc = $("#case_number_on_tc_e").val();
+        
+        // Validate required fields
+        if (!applicant_name_on_tc) {
+            Swal.fire({
+                title: 'Missing Information',
+                text: 'Please enter applicant name',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+        
+        if (!main_service_id || main_service_id === '0') {
+            Swal.fire({
+                title: 'Missing Information',
+                text: 'Please select a main service',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+        
+        if (!sub_service_id || sub_service_id === '0') {
+            Swal.fire({
+                title: 'Missing Information',
+                text: 'Please select a sub service',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Create New Job & Case Number',
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">Are you sure you want to create a new Job and Case number with the following details?</p>
+                    
+                    <div class="card border mb-3">
+                        <div class="card-body p-3">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <small class="text-muted">Applicant Name</small>
+                                    <p class="mb-0 fw-semibold">${applicant_name_on_tc}</p>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Land Size</small>
+                                    <p class="mb-0 fw-semibold">${land_size_on_tc || 'Not specified'}</p>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Main Service</small>
+                                    <p class="mb-0 fw-semibold">${main_service_name}</p>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Sub Service</small>
+                                    <p class="mb-0 fw-semibold">${sub_service_name}</p>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Office Region</small>
+                                    <p class="mb-0 fw-semibold">${office_region_name}</p>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Locality</small>
+                                    <p class="mb-0 fw-semibold">${locality_on_tc}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning py-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        This action will generate new Job and Case numbers and cannot be undone.
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-plus-circle me-2"></i>Create New',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            width: '600px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading dialog
+                Swal.fire({
+                    title: 'Processing...',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mb-1">Creating new Job and Case numbers</p>
+                            <p class="text-muted small mb-0">Please wait while we process your request...</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'online_select_process_acknowledgement_not_on_case_exist_cj',
+                        main_service_id: main_service_id,
+                        main_service_sub_id: sub_service_id,
+                        main_service_desc: main_service_name,
+                        main_service_sub_desc: sub_service_name,
+                        client_name: applicant_name_on_tc,
+                        land_size: land_size_on_tc,
+                        locality: locality_on_tc,
+                        type_of_use: type_of_use_on_tc,
+                        type_of_interest: type_of_interest_on_tc,
+                        job_number: job_number_on_tc,
+                        case_number: case_number_on_tc,
+                        nature_of_instrument: nature_of_instrument_on_tc,
+                        office_region_id: office_region_id,
+                        office_region_name: office_region_name
+                    },
+                    cache: false,
+                    timeout: 30000, // 30 second timeout
+                    success: function(jobdetails) {
+                        console.log('Response:', jobdetails);
+                        
+                        try {
+                            var json_p = JSON.parse(jobdetails);
+                            
+                            if (json_p.error) {
+                                // Handle error response
+                                Swal.fire({
+                                    title: 'Error!',
+                                    html: `
+                                        <div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-exclamation-triangle fa-4x text-danger"></i>
+                                            </div>
+                                            <p class="mb-2">Failed to create Job and Case numbers</p>
+                                            <div class="alert alert-danger mt-3" role="alert">
+                                                <i class="fas fa-bug me-2"></i>
+                                                <strong>Error:</strong> ${json_p.error}
+                                            </div>
+                                        </div>
+                                    `,
+                                    icon: 'error',
+                                    confirmButtonText: '<i class="fas fa-redo me-2"></i>Try Again',
+                                    confirmButtonColor: '#dc3545',
+                                    buttonsStyling: false,
+                                    customClass: {
+                                        confirmButton: 'btn btn-danger'
+                                    }
+                                });
+                                return;
+                            }
+                            
+                            // Success response - Show success message
+                            Swal.fire({
+                                title: 'Success!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle fa-4x text-success"></i>
+                                        </div>
+                                        <p class="mb-3">New Job and Case numbers created successfully!</p>
+                                        
+                                        <div class="row g-3">
+                                            <div class="col-6">
+                                                <div class="card border-success">
+                                                    <div class="card-body text-center py-3">
+                                                        <small class="text-muted d-block">Job Number</small>
+                                                        <h4 class="text-success mb-0">${json_p.job_number}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card border-primary">
+                                                    <div class="card-body text-center py-3">
+                                                        <small class="text-muted d-block">Case Number</small>
+                                                        <h4 class="text-primary mb-0">${json_p.case_number}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="alert alert-info mt-4 mb-0">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            The numbers have been automatically populated in the form.
+                                        </div>
+                                    </div>
+                                `,
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: '<i class="fas fa-file-alt me-2"></i>View Details',
+                                cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+                                confirmButtonColor: '#0d6efd',
+                                cancelButtonColor: '#6c757d',
+                                reverseButtons: true,
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn btn-primary',
+                                    cancelButton: 'btn btn-secondary'
+                                },
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                // Update form fields with new values
+                                $("#job_number_on_tc_e").val(json_p.job_number);
+                                $("#case_number_on_tc_e").val(json_p.case_number);
+                                
+                                if (result.isConfirmed) {
+                                    // Redirect to details page or show more info
+                                    // window.location.href = `case_details.jsp?job=${json_p.job_number}&case=${json_p.case_number}`;
+                                    
+                                    // Or show a toast notification
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                        }
+                                    });
+                                    
+                                    Toast.fire({
+                                        icon: 'info',
+                                        title: 'Redirecting to case details...'
+                                    });
+                                }
+                            });
+                            
+                        } catch (e) {
+                            console.error('JSON Parse Error:', e);
+                            
+                            // Handle non-JSON response
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Job and Case numbers created successfully',
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#198754'
+                            }).then(() => {
+                                // Try to extract job and case numbers from plain text
+                                const jobMatch = jobdetails.match(/Job Number:\s*(\S+)/i);
+                                const caseMatch = jobdetails.match(/Case Number:\s*(\S+)/i);
+                                
+                                if (jobMatch && jobMatch[1]) {
+                                    $("#job_number_on_tc_e").val(jobMatch[1]);
+                                }
+                                if (caseMatch && caseMatch[1]) {
+                                    $("#case_number_on_tc_e").val(caseMatch[1]);
+                                }
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        
+                        Swal.fire({
+                            title: 'Connection Error!',
+                            html: `
+                                <div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-wifi fa-4x text-warning"></i>
+                                    </div>
+                                    <p class="mb-2">Failed to connect to server</p>
+                                    <div class="alert alert-warning mt-3" role="alert">
+                                        <i class="fas fa-exclamation-circle me-2"></i>
+                                        <strong>Status:</strong> ${status}<br>
+                                        <strong>Error:</strong> ${error || 'Unknown error'}
+                                    </div>
+                                    <p class="text-muted small mb-0 mt-3">Please check your connection and try again.</p>
+                                </div>
+                            `,
+                            icon: 'error',
+                            showCancelButton: true,
+                            confirmButtonText: '<i class="fas fa-redo me-2"></i>Retry',
+                            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                            confirmButtonColor: '#fd7e14',
+                            cancelButtonColor: '#6c757d',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-warning',
+                                cancelButton: 'btn btn-secondary'
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Retry the action
+                                $('#btn_create_new_job_and_case_number_e').click();
+                            }
+                        });
+                    },
+                    complete: function() {
+                        // Any cleanup if needed
+                    }
+                });
+            }
+        });
+    });
 
     $('input[name="fe_renewal_term_check"]').on('change', function() {
         if ($(this).val() == 'yes') {
@@ -13496,6 +13948,558 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
+        });
+    });
+
+    window.loadUploadPDFApplicationDocuments = function(){
+        var table_docs = $('#lc_upload_pdf_scanned_documents_dataTable');
+        table_docs.find("tbody tr").remove(); 	
+
+        var case_number = $("#cs_main_case_number").val();
+
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+            request_type: 'load_case_scanned_document_new',
+            case_number:case_number},
+            cache: false,
+            beforeSend: function () {},
+            success: function(serviceresponse) {
+                if(!serviceresponse){
+                    return;
+                }
+                try{
+                    var json_p = JSON.parse(serviceresponse);              
+                    
+                    $(json_p).each(function () {
+                            
+                        table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                                                "data-document-path='" + this.document_file + "'" +
+                                                +"data-document-name='" + this.doc_description + "'>" +
+                                                "<i class='bi bi-eye'></i>" +
+                                        "</button></td>"
+                            + "</tr>");
+
+                    });
+
+                    $("#appDocsCount").text(json_p.length);
+
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        });
+    }
+
+    window.loadUploadPDFPublicDocuments = function(){
+        var table_docs = $('#lc_upload_pdf_public_documents_dataTable');
+        table_docs.find("tbody tr").remove(); 	
+
+        var case_number = $("#cs_main_case_number").val();
+
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+            request_type: 'load_case_scanned_document_public_new',
+            case_number:case_number},
+            cache: false,
+            beforeSend: function () {},
+            success: function(serviceresponse) {
+                if(!serviceresponse){
+                    return;
+                }
+                try{
+                    var json_p = JSON.parse(serviceresponse);              
+                    
+                    $(json_p).each(function () {
+                            
+                        table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                                                "data-document-path='" + this.document_file + "'" +
+                                                +"data-document-name='" + this.doc_description + "'>" +
+                                                "<i class='bi bi-eye'></i>" +
+                                        "</button></td>"
+                            + "</tr>");
+
+                    });
+
+                    $("#publicDocsCount").text(json_p.length);
+
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        });
+    }
+
+    window.loadUploadFinalPDFApplicationDocuments = function(){
+        var table_docs = $('#lc_upload_final_pdf_scanned_documents_dataTable');
+        table_docs.find("tbody tr").remove(); 	
+
+        var case_number = $("#cs_main_case_number").val();
+
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+            request_type: 'load_case_scanned_document_new',
+            case_number:case_number},
+            cache: false,
+            beforeSend: function () {},
+            success: function(serviceresponse) {
+                if(!serviceresponse){
+                    return;
+                }
+                try{
+                    var json_p = JSON.parse(serviceresponse);              
+                    
+                    $(json_p).each(function () {
+                            
+                        table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                                                "data-document-path='" + this.document_file + "'" +
+                                                +"data-document-name='" + this.doc_description + "'>" +
+                                                "<i class='bi bi-eye'></i>" +
+                                        "</button></td>"
+                            + "</tr>");
+
+                    });
+
+                    $("#appDocsCount").text(json_p.length);
+
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        });
+    }
+
+    window.loadUploadFinalPDFPublicDocuments = function(){
+        var table_docs = $('#lc_upload_final_pdf_public_documents_dataTable');
+        table_docs.find("tbody tr").remove(); 	
+
+        var case_number = $("#cs_main_case_number").val();
+
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+            request_type: 'load_case_scanned_document_public_new',
+            case_number:case_number},
+            cache: false,
+            beforeSend: function () {},
+            success: function(serviceresponse) {
+                if(!serviceresponse){
+                    return;
+                }
+                try{
+                    var json_p = JSON.parse(serviceresponse);              
+                    
+                    $(json_p).each(function () {
+                            
+                        table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                                                "data-document-path='" + this.document_file + "'" +
+                                                +"data-document-name='" + this.doc_description + "'>" +
+                                                "<i class='bi bi-eye'></i>" +
+                                        "</button></td>"
+                            + "</tr>");
+
+                    });
+
+                    $("#publicDocsCount").text(json_p.length);
+
+                }catch(e){
+                    console.log(e)
+                }
+            }
+        });
+    }
+
+    $('#lc_btn_approve_for_plot_transaction_to_smd_layer').click(function(event) {
+        event.preventDefault();
+        
+        // Collect data
+        const case_number = $("#cs_main_case_number").val();
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        const send_by_id = localStorage.getItem('userid');
+        const send_by_name = localStorage.getItem('fullname');
+        
+        // Validation
+        if (!case_number || !job_number || !transaction_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Case information is incomplete</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <ul class="mb-0 text-start">
+                                ${!case_number ? '<li>Case Number is required</li>' : ''}
+                                ${!job_number ? '<li>Job Number is required</li>' : ''}
+                                ${!transaction_number ? '<li>Transaction Number is required</li>' : ''}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show initial confirmation
+        Swal.fire({
+            title: 'Generate OTP?',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-shield-alt text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-2">Secure Verification Required</h5>
+                    <p class="text-muted">You are about to generate a one-time password for final signing</p>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div class="text-start">
+                                <strong>Transaction Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job:</strong> ${job_number}</li>
+                                    <li><strong>Case:</strong> ${case_number}</li>
+                                    <li><strong>Transaction:</strong> ${transaction_number}</li>
+                                    <li><strong>Action:</strong> Approval for SMD Layer Plotting</li>
+                                    <!--<li><strong>Requested By:</strong> ${send_by_name || 'Current User'}</li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Security Notice:</strong> OTP will be required to complete the approval
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-key me-1"></i>Generate OTP',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            width: 550,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'online_select_verification_code_create',
+                            case_number: case_number,
+                            job_number: job_number,
+                            transaction_number: transaction_number,
+                            type_of_transaction: 'approval_of_sm_plot_transaction'
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const otpResponse = result.value;
+                // console.log('OTP Generation Response:', otpResponse);
+
+                $("#plot_transaction_to_smd_layer").modal('hide');
+                
+                // Try to extract OTP from response if it's in the response
+                let extractedOTP = '';
+                const otpMatch = otpResponse.match(/\b\d{6}\b/); // Look for 6-digit number
+                if (otpMatch) {
+                    extractedOTP = otpMatch[0];
+                }
+
+                const parsedOTPResponse = JSON.parse(otpResponse);
+
+                if(parsedOTPResponse.success == false) {
+
+                    Swal.fire({
+                        title: 'Generation Failed',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <h6 class="mb-2">Unable to generate otp</h6>
+                                <p class="text-danger small">This transaction has already been approved.</p>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    Please try again or contact system administrator
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Retry',
+                        confirmButtonColor: '#dc3545'
+                    });
+
+                    return;
+                }
+                
+                // Show OTP entry dialog
+                Swal.fire({
+                    title: 'Enter Verification Code',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-mobile-alt text-primary fa-3x"></i>
+                            </div>
+                            <h6 class="mb-2">Secure Authentication</h6>
+                            <p class="text-muted">Enter the 6-digit verification code to approve the smd layer plotting</p>
+                            
+                            <div class="alert alert-success bg-success bg-opacity-10 border-success mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <div class="text-center">
+                                        <strong>OTP Generated Successfully</strong>
+                                        <div class="small text-muted">
+                                            Verification code has been created
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="otp-input-container" style="max-width: 300px; margin: 0 auto;">
+                                    <input type="text" 
+                                        id="swalOTPInput" 
+                                        class="form-control form-control-lg text-center fs-2 fw-bold" 
+                                        placeholder="- - - - - -" 
+                                        maxlength="6" 
+                                        inputmode="numeric"
+                                        pattern="\d{6}"
+                                        style="letter-spacing: 10px; padding: 15px;">
+                                    <div class="form-text mt-2">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the 6-digit code received
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info bg-info bg-opacity-10 border-info small">
+                                <i class="fas fa-clock me-2"></i>
+                                <strong>Time-sensitive:</strong> OTP is valid for a limited time only
+                            </div>
+                        </div>`,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check-circle me-1"></i>Verify & Approve',
+                    cancelButtonText: '<i class="fas fa-redo me-1"></i>Resend OTP',
+                    confirmButtonColor: '#198754',
+                    cancelButtonColor: '#0dcaf0',
+                    width: 500,
+                    reverseButtons: true,
+                    preConfirm: () => {
+                        const otpValue = document.getElementById('swalOTPInput').value;
+
+                        if (!otpValue || otpValue.length !== 6 || !/^\d{6}$/.test(otpValue)) {
+                            Swal.showValidationMessage('Please enter a valid 6-digit code');
+                            return false;
+                        }
+                        
+                        return otpValue;
+                    }
+                }).then((otpResult) => {
+                    if (otpResult.isConfirmed) {
+                        const enteredOTP = otpResult.value;
+                        
+                        // Show verifying message
+                        Swal.fire({
+                            title: 'Verifying...',
+                            text: 'Please wait while we verify your code',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        
+                        // Verify OTP via AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: "Case_Management_Serv", // Adjust URL as needed
+                            data: {
+                                request_type: 'online_select_verification_code_final_approval',
+                                case_number: case_number,
+                                job_number: job_number,
+                                transaction_number: transaction_number,
+                                full_code: enteredOTP,
+                                type_of_transaction: 'approval_of_sm_plot_transaction',
+                                ta_id: parsedOTPResponse.ta_id
+                            },
+                            cache: false,
+                            success: function(verificationResponse) {
+                                Swal.close();
+                                
+                                // Show verification result
+                                const isVerified = verificationResponse.toLowerCase().includes('success') || 
+                                                verificationResponse.toLowerCase().includes('verified') ||
+                                                verificationResponse.toLowerCase().includes('approved');
+                                
+                                Swal.fire({
+                                    title: isVerified ? 'Approved!' : 'Verification Failed',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="${isVerified ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger'} fa-3x"></i>
+                                            </div>
+                                            <h6 class="mb-2">${isVerified ? 'Certificate Approved' : 'Unable to Approve'}</h6>
+                                            <p class="text-muted">Verification Failed</p>
+                                            
+                                            ${isVerified ? 
+                                                `<div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-certificate me-2"></i>
+                                                        <div>
+                                                            <strong>Certificate Approved</strong>
+                                                            <div class="small text-muted">
+                                                                Approved by ${send_by_name || 'user'} • ${new Date().toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>` : 
+                                                `<div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                                        <div>
+                                                            <strong>Verification Failed</strong>
+                                                            <div class="small text-muted">
+                                                                Please check the OTP and try again
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`
+                                            }
+                                        </div>`,
+                                    icon: isVerified ? 'success' : 'error',
+                                    confirmButtonText: isVerified ? 'Continue' : 'Try Again',
+                                    confirmButtonColor: isVerified ? '#198754' : '#dc3545',
+                                    showCancelButton: !isVerified,
+                                    cancelButtonText: 'Generate New OTP'
+                                }).then((finalResult) => {
+                                    if (!isVerified && finalResult.dismiss === Swal.DismissReason.cancel) {
+                                        // Regenerate OTP
+                                        $('#lc_btn_approve_for_plot_transaction_to_smd_layer').click();
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.close();
+                                
+                                Swal.fire({
+                                    title: 'Verification Error',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                            </div>
+                                            <h6 class="mb-2">Unable to Verify</h6>
+                                            <p class="text-danger small">Connection error</p>
+                                            <div class="alert alert-warning mt-3">
+                                                <i class="fas fa-lightbulb me-2"></i>
+                                                Please try again or contact system administrator
+                                            </div>
+                                        </div>`,
+                                    icon: 'error',
+                                    confirmButtonText: 'Retry',
+                                    confirmButtonColor: '#dc3545'
+                                });
+                            }
+                        });
+                    } else if (otpResult.dismiss === Swal.DismissReason.cancel) {
+                        // User clicked "Resend OTP"
+                        Swal.fire({
+                            title: 'Resending OTP...',
+                            text: 'Generating a new verification code',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        
+                        // Regenerate OTP
+                        $.ajax({
+                            type: "POST",
+                            url: "Case_Management_Serv",
+                            data: {
+                                request_type: 'online_select_verification_code_create',
+                                case_number: case_number,
+                                job_number: job_number,
+                                transaction_number: transaction_number,
+                                type_of_transaction: 'approval_of_sm_plot_transaction'
+                            },
+                            cache: false,
+                            success: function(newOtpResponse) {
+                                Swal.close();
+                                
+                                Swal.fire({
+                                    title: 'New OTP Generated',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-redo text-primary fa-3x"></i>
+                                            </div>
+                                            <h6 class="mb-2">New Code Sent</h6>
+                                            <p class="text-muted">A new verification code has been generated</p>
+                                            <div class="alert alert-info mt-3">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                New verification code has been created
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'Enter New Code',
+                                    confirmButtonColor: '#0dcaf0'
+                                }).then(() => {
+                                    // Show OTP entry dialog again
+                                    $('#lc_btn_approve_for_plot_transaction_to_smd_layer').click();
+                                });
+                            }
+                        });
+                    }
+                });
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled OTP generation
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'OTP generation was cancelled',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error during OTP generation
+            Swal.fire({
+                title: 'Generation Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h6 class="mb-2">Unable to Generate OTP</h6>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
         });
     });
 });
