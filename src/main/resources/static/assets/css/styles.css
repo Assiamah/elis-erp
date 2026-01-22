@@ -25418,6 +25418,23 @@ input.form-control.otp-input {
   background: rgba(0, 0, 0, 0.06);
 }
 
+#viewNotesModal.modal {
+  z-index: 1030;
+  /* backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important; */
+  /* background: rgba(0, 0, 0, 0.06); */
+}
+
+#noteDetailsContainer {
+    min-height: 400px;
+}
+
+.note-content {
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 /* Make sure inputs are clickable */
 .swal2-container {
     z-index: 20000 !important;

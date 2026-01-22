@@ -948,7 +948,7 @@
           <div class="col-md-6">
             <label for="party_ar_cell_phone_gen" class="form-label fw-semibold">
               <i class="bi bi-phone me-1"></i>Phone Number
-              <span class="text-danger">*</span>
+              <!-- <span class="text-danger">*</span> -->
             </label>
             <div class="input-group">
               <span class="input-group-text">
@@ -957,6 +957,9 @@
               <input type="tel" class="form-control" placeholder="Enter phone number" 
                      id="party_ar_cell_phone_gen" required>
             </div>
+            <small class="form-text text-muted">
+              <i class="bi bi-info-circle me-1"></i>This field is required for applicant
+            </small>
           </div>
           
           <div class="col-md-6">
@@ -1325,11 +1328,29 @@
               <!-- Option to Renew -->
               <div class="mb-3">
                 <label for="fe_renewal_term" class="form-label fw-semibold">
-                  <i class="bi bi-arrow-repeat me-2"></i>Option to Renew
+                  <i class="bi bi-arrow-repeat me-2"></i>Option to Renew?
                   <span class="text-danger">*</span>
                 </label>
-                <input type="text" class="form-control" id="fe_renewal_term" 
-                       value="${renewal_term}" required>
+                <div class="form-check ">
+                  <input class="form-check-input" type="radio" name="fe_renewal_term_check" id="fe_renewal_term_yes" value="yes" ${renewal_term > 0 ? 'checked' : ''}>
+                  <label class="form-check-label" for="fe_renewal_term_yes">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="fe_renewal_term_check" id="fe_renewal_term_no" value="no" ${renewal_term < 1 ? 'checked' : ''}>
+                  <label class="form-check-label" for="fe_renewal_term_no">
+                    No
+                  </label>
+                </div>
+                <div id="fe_renewal_term_div" class="mt-2 ${renewal_term < 1 ? 'd-none' : ''}">
+                  <label for="fe_renewal_term" class="form-label fw-semibold">
+                    <i class="bi bi-arrow-repeat me-2"></i>Renewal Term (Years)
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="fe_renewal_term" 
+                         value="${renewal_term}" required>
+                </div>
               </div>
 
               <!-- Hidden Family Fields -->
@@ -2194,7 +2215,7 @@
         <div class="modal-content border-0 shadow-lg">
             
             <!-- Modal Header -->
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-primary text-white" style="cursor: move;">
                 <h5 class="modal-title text-white" id="viewNotesModalLabel">
                     <i class="fas fa-sticky-note me-2"></i>
                     View Note Details

@@ -424,21 +424,21 @@
                 <div class="row g-4 mt-4" style="max-width: 800px;">
                     <div class="col-md-4 text-center">
                         <div class="p-4 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                            <i class="ri-map-pin-line fs-1 mb-3 text-primary"></i>
+                            <i class="ri-map-pin-line fs-1 mb-3 text-success"></i>
                             <h4 class="h5 fw-semibold text-warning mb-2">Spatial Data</h4>
                             <p class="small opacity-75 mb-0">Advanced GIS mapping and spatial analysis tools</p>
                         </div>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="p-4 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                            <i class="ri-database-2-line fs-1 mb-3 text-primary"></i>
+                            <i class="ri-database-2-line fs-1 mb-3 text-success"></i>
                             <h4 class="h5 fw-semibold text-warning mb-2">Centralized Records</h4>
                             <p class="small opacity-75 mb-0">Unified land registry and property database</p>
                         </div>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="p-4 rounded-3" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                            <i class="ri-shield-check-line fs-1 mb-3 text-primary"></i>
+                            <i class="ri-shield-check-line fs-1 mb-3 text-success"></i>
                             <h4 class="h5 fw-semibold text-warning mb-2">Secure Access</h4>
                             <p class="small opacity-75 mb-0">Role-based permissions and audit trails</p>
                         </div>
@@ -449,7 +449,7 @@
                 <div class="text-center mt-5 pt-4 border-top border-white-25" style="max-width: 700px;">
                     <p class="mb-2 opacity-75">
                         <i class="ri-government-line me-2"></i>
-                        Official Land Commission System
+                        Official Lands Commission System
                     </p>
                     <p class="small opacity-50 mb-0">
                         Version 5.0 • For authorized personnel only

@@ -5780,6 +5780,7 @@ request.setAttribute("rq_id",rq_id);
 				// System.out.println(arr_r_public.toString());
 
 				// System.out.println(business_process_sub_name);
+				
 
 				model.addAttribute("content", "../pages/client_application/_request_application_progress_details_advance.jsp"); 
 						
