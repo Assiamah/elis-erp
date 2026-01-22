@@ -271,16 +271,14 @@
                                         
                                         <!-- Actions -->
                                         <td class="text-center">
-                                            <form action="${appfiles.request_category == 'SpecificWorkRequest' ? 'request_application_progress_details_ai' : 'request_application_progress_details_advance'}" method="post" class="d-inline">
+                                            <form action="request_application_progress_details_advance" method="post" class="d-inline">
                                                 <input type="hidden" name="case_number" value="${appfiles.case_number}">
                                                 <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
                                                 <input type="hidden" name="job_number" value="${appfiles.job_number}">
                                                 <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
-                                                <input type="hidden" name="review_type" value="${appfiles.request_category}">
-                                                <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
-                                                <button type="submit" class="btn btn-warning label-btn">
-                                                    <i class="ri-folder-open-line label-btn-icon me-2"></i>
-                                                    Work
+                                                <input type="hidden" name="review_type" value="GeneralWorkRequest">
+                                                <button type="submit" class="btn btn-sm btn-warning">
+                                                    <i class="ri-folder-open-line"></i>
                                                 </button>
                                             </form>
                                         </td>

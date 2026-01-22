@@ -1722,4 +1722,167 @@
   </div>
 </div>
 
-review_application_against_fifo
+<div class="modal fade effect-scale modal-blur" id="review_application_against_fifo" tabindex="-1" 
+     aria-labelledby="confirmOtpModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="confirmOtpModalLabel">
+          <i class="fas fa-eye me-2"></i>
+          First In Time Review
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card border">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-map-marked-alt me-2 text-primary"></i>Map Visualization & Controls
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="${pageContext.request.contextPath}/processing_after_payment" method="post">
+                            <!-- WKT Polygon Input -->
+                            <div class="mb-4">
+                                <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
+                                    <i class="fas fa-draw-polygon me-1 text-muted"></i>WKT Polygon
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-code text-primary"></i>
+                                    </span>
+                                    <textarea class="form-control bg-light" id="lc_bl_wkt_polygon" 
+                                        name="lc_bl_wkt_polygon" rows="2" 
+                                        placeholder="Enter WKT polygon coordinates" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
+                                </div>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="fas fa-info-circle me-1"></i>Well-Known Text format for polygon coordinates
+                                </small>
+                            </div>
+                            
+                            <!-- Map Control Buttons -->
+                            <div class="mb-4">
+                                <div class="mb-3">
+                                    <div class="d-flex gap-2">
+                                        <!-- Visualize Polygon Button -->
+                                        <button type="button" class="btn btn-warning btn-sm" 
+                                            id="lc_btn_visualise_wkt" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Visualise Polygon">
+                                            <i class="fas fa-map-marked-alt me-1"></i>
+                                            Visualize Polygon
+                                        </button>
+                                        
+                                        <!-- Plot Parcels Button -->
+                                        <button type="button" class="btn btn-success btn-sm" 
+                                            id="lc_btn_visualise_search" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Plot Parcels">
+                                            <i class="fas fa-object-ungroup me-1"></i>
+                                            Plot Parcels
+                                        </button>
+                                        
+                                        <!-- Print Map Button -->
+                                        <button type="button" class="btn btn-info btn-sm" 
+                                            id="lc_btnprintmap" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Print Map">
+                                            <i class="fas fa-print me-1"></i>
+                                            Print
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Scale Controls -->
+                                    <div class="mt-3 d-flex align-items-center gap-2">
+                                        <span class="fw-medium text-muted">
+                                            <i class="fas fa-search me-1"></i>Scale:
+                                        </span>
+                                        
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <span class="input-group-text bg-light">
+                                                <i class="fas fa-ruler text-secondary"></i>
+                                            </span>
+                                            <select class="form-select" name="lc_scale_value" id="lc_scale_value">
+                                                <option value="500">1:500</option>
+                                                <option value="1107">1:1,107</option>
+                                                <option value="1250">1:1,250</option>
+                                                <option value="2140">1:2,140</option>
+                                                <option value="2215">1:2,215</option>
+                                                <option value="2500">1:2,500</option>
+                                                <option value="2670">1:2,670</option>
+                                                <option value="2825">1:2,825</option>
+                                                <option value="5000">1:5,000</option>
+                                                <option value="10000">1:10,000</option>
+                                                <option value="15000">1:15,000</option>
+                                                <option value="20000">1:20,000</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- Custom Scale Input -->
+                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                            <input type="text" class="form-control" 
+                                                id="lc_scale_value_e" 
+                                                placeholder="Custom scale">
+                                        </div>
+                                        
+                                        <!-- Lock Scale & Zoom -->
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input form-check-input-danger" type="checkbox" 
+                                                    id="lc_lockmapscale" checked>
+                                                <label class="form-check-label small" for="lc_lockmapscale">
+                                                    Lock Scale
+                                                </label>
+                                            </div>
+                                            
+                                            <button type="button" class="btn btn-info btn-sm" 
+                                                id="lc_btn_scale_zoom" 
+                                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                                title="Zoom to Scale">
+                                                <i class="fas fa-search-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Container -->
+                                <div class="map-container border rounded" 
+                                    id="lc-map______" 
+                                    style="height: 400px; min-height: 300px;">
+                                    <!-- <div class="d-flex justify-content-center align-items-center h-100 bg-light">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-map fa-3x mb-3"></i>
+                                            <p class="mb-0">Map visualization will appear here</p>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                
+            </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

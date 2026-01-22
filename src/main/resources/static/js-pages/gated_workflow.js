@@ -14502,5 +14502,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    $("#review_application_against_fifo").on('shown.bs.modal', function() {
+        window.initializeMap('lc-map______');
+    })
+
+    $("#review_plan_details").on('shown.bs.modal', function() {
+        window.initializeMap('lc-map_____');
+    })
 });
 
