@@ -664,6 +664,7 @@ $(document).ready(function() {
 						// 8: Type of Plotting
 						'<span class="small">' + (this.plotting_type || this.smd_type_of_plotting || '') + '</span>',
 
+						
 						// 9: Actions
 						'<div class="d-flex justify-content-center">' +
 							'<button class="btn btn-icon btn-sm me-1 btn-outline-info btn-wave waves-effect waves-light btn-add-batch" ' +
