@@ -1,0 +1,1215 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="ws.casemgt.Ws_client_application"%>
+<%@ page import="ws.users.Ws_users"%>
+<%@ page import="org.codehaus.jettison.json.*"%>
+<%@ page import="com.google.gson.Gson"%>
+<%@ page import="com.google.gson.GsonBuilder"%>
+
+<%@ page import="org.codehaus.jettison.json.JSONArray"%>
+<%@ page import="org.codehaus.jettison.json.JSONException"%>
+<%@ page import="org.codehaus.jettison.json.JSONObject"%>
+
+<!-- Create New Job and Case Number Modal -->
+<div class="modal fade modal-blur effect-scale" id="CreateJobNumberModal" tabindex="-1"
+    aria-labelledby="CreateJobNumberModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="CreateJobNumberModalLabel">
+                    <i class="bi bi-file-earmark-plus me-2"></i>Create New Job and Case Number
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="main_service_on_tc" class="form-label">
+                                <i class="bi bi-list-task me-1"></i>Main Service
+                            </label>
+                            <select name="main_service_on_case" id="main_service_on_tc" 
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="sub_service_on_tc" class="form-label">
+                                <i class="bi bi-list-nested me-1"></i>Sub Service
+                            </label>
+                            <select name="sub_service_on_case" id="sub_service_on_tc" 
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                                <option value="-1">Select Sub Service</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <label for="applicant_name_on_tc" class="form-label">
+                            <i class="bi bi-person me-1"></i>Client Name
+                        </label>
+                        <input class="form-control" id="applicant_name_on_tc"
+                            name="applicant_name_on_tc" type="text"
+                            aria-describedby="nameHelp" placeholder="Enter Client Name" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="office_region_on_tc" class="form-label">
+                                <i class="bi bi-building me-1"></i>Office Region
+                            </label>
+                            <select class="form-control form-select" id="office_region_on_tc" required>
+                                <option value="-1">Select Office Region</option>
+                                <c:forEach items="${officeregionlist}" var="officeregion">
+                                    <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="locality_on_tc" class="form-label">
+                                <i class="bi bi-geo-alt me-1"></i>Locality
+                            </label>
+                            <select name="locality_on_tc" id="locality_on_tc"
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                                <option value="-1">-- Select --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="land_size_on_tc" class="form-label">
+                                <i class="bi bi-rulers me-1"></i>Land Size (Acre(s))
+                            </label>
+                            <input class="form-control" id="land_size_on_tc"
+                                name="land_size_on_tcland_size_on_tc" type="text"
+                                aria-describedby="nameHelp" placeholder="Enter land Size" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type_of_use_on_tc" class="form-label">
+                                <i class="bi bi-tags me-1"></i>Type of Use
+                            </label>
+                            <select name="type_of_use" id="type_of_use_on_tc"
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                                <option value="-1">-- Select --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type_of_interest_on_tc" class="form-label">
+                                <i class="bi bi-briefcase me-1"></i>Type of Interest
+                            </label>
+                            <select class="form-control form-select" id="type_of_interest_on_tc" required>
+                                <option>Select Type of Interest</option>
+                                <option>LEASEHOLD</option>
+                                <option>FREEHOLD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nature_of_instrument_on_tc" class="form-label">
+                                <i class="bi bi-file-text me-1"></i>Nature of Instrument
+                            </label>
+                            <select class="form-control form-select" id="nature_of_instrument_on_tc" required>
+                                <option>Nature of Instrument</option>
+                                <option>Leasehold</option>
+                                <option>Assignment</option>
+                                <option>Sub-Lease</option>
+                                <option>Conveyance</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="file_number_on_tc" class="form-label">
+                                <i class="bi bi-folder me-1"></i>File Number
+                            </label>
+                            <input class="form-control" id="file_number_on_tc"
+                                name="file_number_on_tc" type="text"
+                                aria-describedby="nameHelp" placeholder="Enter File Number" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="job_number_on_tc" class="form-label">
+                                <i class="bi bi-hash me-1"></i>Job Number
+                            </label>
+                            <input class="form-control" id="job_number_on_tc"
+                                name="applicant_name_on_tc" type="text"
+                                aria-describedby="nameHelp" placeholder="" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="case_number_on_tc" class="form-label">
+                                <i class="bi bi-123 me-1"></i>Case Name
+                            </label>
+                            <input class="form-control" id="case_number_on_tc"
+                                name="applicant_name_on_tc" type="text"
+                                aria-describedby="nameHelp" placeholder="" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+                <button type="button" id="btn_create_new_job_and_case_number" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i>Generate Job Number
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Job Number Modal for Existing -->
+<div class="modal fade modal-blur effect-scale" id="CreateJobNumberModalExisting" tabindex="-1"
+    aria-labelledby="CreateJobNumberModalExistingLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="CreateJobNumberModalExistingLabel">
+                    <i class="bi bi-file-earmark-arrow-up me-2"></i>Insert Existing Job and New Case Number
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="main_service_on_tc_e" class="form-label">
+                                <i class="bi bi-list-task me-1"></i>Main Service
+                            </label>
+                            <select name="main_service_on_tc_e" id="main_service_on_tc_e" 
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="sub_service_on_tc_e" class="form-label">
+                                <i class="bi bi-list-nested me-1"></i>Sub Service
+                            </label>
+                            <select name="sub_service_on_tc_e" id="sub_service_on_tc_e" 
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                                <option value="-1">Select Sub Service</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <label for="applicant_name_on_tc_e" class="form-label">
+                            <i class="bi bi-person me-1"></i>Client Name
+                        </label>
+                        <input class="form-control" id="applicant_name_on_tc_e"
+                            name="applicant_name_on_tc_e" type="text"
+                            aria-describedby="nameHelp" placeholder="Enter Client Name" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="office_region_on_tc_e" class="form-label">
+                                <i class="bi bi-building me-1"></i>Office Region
+                            </label>
+                            <select class="form-control form-select" id="office_region_on_tc_e" required>
+                                <option value="-1">Select Office Region</option>
+                                <c:forEach items="${officeregionlist}" var="officeregion">
+                                    <option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="locality_on_tc_e" class="form-label">
+                                <i class="bi bi-geo-alt me-1"></i>Locality
+                            </label>
+                            <select name="locality_on_tc_e" id="locality_on_tc_e"
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                                <option value="-1"> -- Select Locality --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="land_size_on_tc_e" class="form-label">
+                                <i class="bi bi-rulers me-1"></i>Land Size (Acre(s))
+                            </label>
+                            <input class="form-control" id="land_size_on_tc_e"
+                                name="land_size_on_tcland_size_on_tc_e" type="text"
+                                aria-describedby="nameHelp" placeholder="Enter land Size" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type_of_use_on_tc_e" class="form-label">
+                                <i class="bi bi-tags me-1"></i>Type of Use
+                            </label>
+                            <select name="type_of_use_e" id="type_of_use_on_tc_e"
+                                class="form-control form-select" data-style="btn-info" data-live-search="true">
+                                <option value="-1"> -- Select --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type_of_interest_on_tc_e" class="form-label">
+                                <i class="bi bi-briefcase me-1"></i>Type of Interest
+                            </label>
+                            <select class="form-control form-select" id="type_of_interest_on_tc_e" required>
+                                <option>Select Type of Interest</option>
+                                <option>LEASEHOLD</option>
+                                <option>FREEHOLD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nature_of_instrument_on_tc_e" class="form-label">
+                                <i class="bi bi-file-text me-1"></i>Nature of Instrument
+                            </label>
+                            <select class="form-control form-select" id="nature_of_instrument_on_tc_e" required>
+                                <option>Nature of Instrument</option>
+                                <option>Leasehold</option>
+                                <option>Assignment</option>
+                                <option>Sub-Lease</option>
+                                <option>Conveyance</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="file_number_on_tc_e" class="form-label">
+                                <i class="bi bi-folder me-1"></i>File Number
+                            </label>
+                            <input class="form-control" id="file_number_on_tc_e"
+                                name="file_number_on_tc" type="text"
+                                aria-describedby="nameHelp" placeholder="Enter File number" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="job_number_on_tc_e" class="form-label">
+                                <i class="bi bi-hash me-1"></i>Job Number
+                            </label>
+                            <input class="form-control" id="job_number_on_tc_e"
+                                name="applicant_name_on_tc_e" type="text"
+                                aria-describedby="nameHelp" placeholder="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="case_number_on_tc_e" class="form-label">
+                                <i class="bi bi-123 me-1"></i>Case Number
+                            </label>
+                            <input class="form-control" id="case_number_on_tc_e">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+                <button type="button" id="btn_create_new_job_and_case_number_e" class="btn btn-info">
+                    <i class="bi bi-arrow-repeat me-1"></i>Generate Existing Application
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="lrd_initial_approval" tabindex="-1" aria-labelledby="lrd_initial_approvalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <h5 class="modal-title text-white" id="lrd_initial_approvalLabel">
+                        <i class="fas fa-user-tie me-2"></i>
+                        Initial Approval
+                    </h5>
+                    <button type="button" class="btn btn-warning ms-auto btn_send_request" 
+                        data-job_number="${job_number}" 
+                        data-ar_name="${ar_name}" 
+                        data-business_process_sub_name="${business_process_sub_name}" 
+                        data-locality="${locality}" 
+                        data-bs-desc="${babyStep.bse_description}">
+                        <i class="ri-send-plane-line me-1"></i>Send Request
+                    </button>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="row g-4" style="height: 100vh;">
+                    
+                    <!-- Left Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-sticky-note me-2"></i>
+                                    Records Information
+                                </h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Records Info.</th>
+                                                <th>Entered By</th>
+                                                <th>Entered Date</th>
+                                                <th>Division</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${application_notes}" var="application_notes_row">
+                                            <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                                ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-comment text-muted me-2"></i>
+                                                        <span class="text-truncate" style="max-width: 200px;">
+                                                            ${application_notes_row.an_description}
+                                                        </span>
+                                                        ${application_notes_row.an_status == false ? 
+                                                            '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-user-circle text-muted me-2"></i>
+                                                        <span>${application_notes_row.created_by}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                                        <span>${application_notes_row.created_date}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                        ${application_notes_row.division}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-outline-primary btn-sm open-view-notes" 
+                                                            data-target-id="${application_notes_row.an_id}"
+                                                            data-an_description="${application_notes_row.an_description}"
+                                                            data-created_by="${application_notes_row.created_by}"
+                                                            data-created_date="${application_notes_row.created_date}"
+                                                            data-modified_by="${application_notes_row.created_by}"
+                                                            data-modified_date="${application_notes_row.created_date}"
+                                                            data-division="${application_notes_row.division}"
+                                                            data-job_number="${application_notes_row.job_number}"
+                                                            data-case_number="${application_notes_row.case_number}"
+                                                            ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                        <i class="fas fa-eye me-1"></i>
+                                                        View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="_gated_workflow_view_notes">
+                            <div class="card border">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-sticky-note me-2"></i>
+                                        Note Details
+                                    </h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <!-- Note details will be dynamically inserted here -->
+                                    <div id="noteDetailsContainer" class="p-3">
+                                        <div class="text-center text-muted py-5">
+                                            <i class="fas fa-sticky-note fa-3x mb-3"></i>
+                                            <p class="mb-0">Select a note to view details</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        
+                        <div class="_gated_workflow_documents"></div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="instruction_from_lrd_to_smd" tabindex="-1"
+    aria-labelledby="instruction_from_lrd_to_smdLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="instruction_from_lrd_to_smdLabel">
+                    <i class="bi bi-file-earmark-arrow-up me-2"></i>Title Plan Instructions
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Quill Editor Container -->
+                <div class="mb-3">
+                    <label for="lrd_smd_instruction" class="form-label fw-medium">
+                        <i class="bi bi-chat-left-text me-1"></i>Instructions Content
+                    </label>
+                    <!-- Hidden input to store the HTML content -->
+                    <input type="hidden" id="lrd_smd_instruction_input" name="lrd_smd_instruction">
+                    
+                    <!-- Quill Editor Container -->
+                    <div id="lrd_smd_instruction_editor" style="height: 300px;"></div>
+                    
+                    <!-- Character Count -->
+                    <div class="text-muted small mt-2">
+                        <span id="charCount">0</span> characters
+                    </div>
+                </div>
+                
+                <!-- Preview Section (Optional) -->
+                <div class="mt-4" id="instruction_preview" style="display: none;">
+                    <label class="form-label fw-medium">
+                        <i class="bi bi-eye me-1"></i>Preview
+                    </label>
+                    <div class="border rounded p-3 bg-light" id="preview_content" style="min-height: 100px;">
+                        <!-- Preview will appear here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+                <button type="button" id="btn_preview_instruction" class="btn btn-outline-warning">
+                    <i class="bi bi-eye me-1"></i>Preview
+                </button>
+                <button type="button" id="btn_instruction_from_lrd_to_smd" class="btn btn-primary">
+                    <i class="bi bi-save me-1"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal map-modal fade modal-blur effect-scale" id="generate_smd_number" tabindex="-1"
+    role="dialog" aria-labelledby="generateSMDNumberLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="generateSMDNumberLabel">
+                    <i class="fas fa-hashtag me-2"></i>Generate SMD Numbers
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Property Information Card -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-info-circle me-2 text-danger"></i>Property Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <!-- Row 1 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-fingerprint me-1 text-muted"></i>GLPIN
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-id-card text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_glpin" type="text" 
+                                            value="${glpin}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-drafting-compass me-1 text-muted"></i>Type of Plotting
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marked-alt text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_smd_type_of_plotting" 
+                                            name="txt_lc_smd_type_of_plotting" type="text" 
+                                            value="${smd_type_of_plotting}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-hashtag me-1 text-muted"></i>SMD Reference Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-file-signature text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_smd_reference_number" 
+                                            name="txt_lc_smd_reference_number" type="text" 
+                                            value="${smd_reference_number}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 2 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-pin me-1 text-muted"></i>Registration District
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-city text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registration_district_number" 
+                                            name="txt_lc_registration_district_number" type="text" 
+                                            value="${registration_district_number}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-th-large me-1 text-muted"></i>Section Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-layer-group text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registration_section_number" 
+                                            name="search_value" type="text" 
+                                            value="${registration_section_number}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-cube me-1 text-muted"></i>Block Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-cubes text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registration_block_number" 
+                                            name="search_value" type="text" 
+                                            value="${registration_block_number}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 3 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-ruler-combined me-1 text-muted"></i>Land Size
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-expand-arrows-alt text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_size_of_land" 
+                                            name="search_value" type="text" 
+                                            value="${size_of_land}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map me-1 text-muted"></i>Plan Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marked text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_plan_no" 
+                                            name="search_value" type="text" 
+                                            value="${plan_no}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-file-alt me-1 text-muted"></i>LTR Plan Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-file-contract text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="ltr_plan_no" 
+                                            name="search_value" type="text" 
+                                            value="${ltr_plan_no}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 4 -->
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-signs me-1 text-muted"></i>Registry Map No
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-landmark text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registry_mapref" 
+                                            name="search_value" type="text" 
+                                            value="${registry_mapref}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-file-certificate me-1 text-muted"></i>CC No
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-certificate text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_cc_no" 
+                                            name="search_value" type="text" 
+                                            value="${cc_no}" readonly style="cursor: not-allowed;">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Map Controls and Visualization Card -->
+                <div class="card border">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-map-marked-alt me-2 text-primary"></i>Map Visualization & Controls
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="${pageContext.request.contextPath}/processing_after_payment" method="post">
+                            <!-- WKT Polygon Input -->
+                            <div class="mb-4">
+                                <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
+                                    <i class="fas fa-draw-polygon me-1 text-muted"></i>WKT Polygon
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-code text-primary"></i>
+                                    </span>
+                                    <textarea class="form-control bg-light" id="lc_bl_wkt_polygon" 
+                                        name="lc_bl_wkt_polygon" rows="2" 
+                                        placeholder="Enter WKT polygon coordinates" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
+                                </div>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="fas fa-info-circle me-1"></i>Well-Known Text format for polygon coordinates
+                                </small>
+                            </div>
+                            
+                            <!-- Map Control Buttons -->
+                            <div class="mb-4">
+                                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                    <div class="d-flex gap-2">
+                                        <!-- Visualize Polygon Button -->
+                                        <button type="button" class="btn btn-warning btn-sm" 
+                                            id="lc_btn_visualise_wkt" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Visualise Polygon">
+                                            <i class="fas fa-map-marked-alt me-1"></i>
+                                            Visualize Polygon
+                                        </button>
+                                        
+                                        <!-- Plot Parcels Button -->
+                                        <button type="button" class="btn btn-success btn-sm" 
+                                            id="lc_btn_visualise_search" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Plot Parcels">
+                                            <i class="fas fa-object-ungroup me-1"></i>
+                                            Plot Parcels
+                                        </button>
+                                        
+                                        <!-- Print Map Button -->
+                                        <button type="button" class="btn btn-info btn-sm" 
+                                            id="lc_btnprintmap" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Print Map">
+                                            <i class="fas fa-print me-1"></i>
+                                            Print
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Scale Controls -->
+                                    <div class="ms-auto d-flex align-items-center gap-2">
+                                        <span class="fw-medium text-muted">
+                                            <i class="fas fa-search me-1"></i>Scale:
+                                        </span>
+                                        
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <span class="input-group-text bg-light">
+                                                <i class="fas fa-ruler text-secondary"></i>
+                                            </span>
+                                            <select class="form-select" name="lc_scale_value" id="lc_scale_value">
+                                                <option value="500">1:500</option>
+                                                <option value="1107">1:1,107</option>
+                                                <option value="1250">1:1,250</option>
+                                                <option value="2140">1:2,140</option>
+                                                <option value="2215">1:2,215</option>
+                                                <option value="2500">1:2,500</option>
+                                                <option value="2670">1:2,670</option>
+                                                <option value="2825">1:2,825</option>
+                                                <option value="5000">1:5,000</option>
+                                                <option value="10000">1:10,000</option>
+                                                <option value="15000">1:15,000</option>
+                                                <option value="20000">1:20,000</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- Custom Scale Input -->
+                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                            <input type="text" class="form-control" 
+                                                id="lc_scale_value_e" 
+                                                placeholder="Custom scale">
+                                        </div>
+                                        
+                                        <!-- Lock Scale & Zoom -->
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input form-check-input-danger" type="checkbox" 
+                                                    id="lc_lockmapscale" checked>
+                                                <label class="form-check-label small" for="lc_lockmapscale">
+                                                    Lock Scale
+                                                </label>
+                                            </div>
+                                            
+                                            <button type="button" class="btn btn-info btn-sm" 
+                                                id="lc_btn_scale_zoom" 
+                                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                                title="Zoom to Scale">
+                                                <i class="fas fa-search-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Container -->
+                                <div class="map-container border rounded" 
+                                    id="lc-map____" 
+                                    style="height: 400px; min-height: 300px;">
+                                    <!-- <div class="d-flex justify-content-center align-items-center h-100 bg-light">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-map fa-3x mb-3"></i>
+                                            <p class="mb-0">Map visualization will appear here</p>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Generate Button -->
+                <div class="mt-4">
+                    <button class="btn btn-success w-100 py-3 fw-semibold" 
+                        id="btn_generate_smd_title_plan_numbers">
+                        <i class="fas fa-cogs me-2"></i>
+                        Generate SMD Title Plan Numbers
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="review_plan_details" tabindex="-1"
+    role="dialog" aria-labelledby="reviewPlanDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="reviewPlanDetailsLabel">
+                    <i class="fas fa-search me-2"></i>Review Plan Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Property Information Card -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-info-circle me-2 text-danger"></i>Plan Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <!-- Row 1 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-fingerprint me-1 text-muted"></i>GLPIN
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-id-card text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_glpin" type="text" style="cursor: not-allowed;"
+                                            value="${glpin}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-drafting-compass me-1 text-muted"></i>Type of Plotting
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marked-alt text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_smd_type_of_plotting" 
+                                            name="txt_lc_smd_type_of_plotting" type="text" style="cursor: not-allowed;"
+                                            value="${smd_type_of_plotting}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-hashtag me-1 text-muted"></i>SMD Reference Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-file-signature text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_smd_reference_number" 
+                                            name="txt_lc_smd_reference_number" type="text" style="cursor: not-allowed;"
+                                            value="${smd_reference_number}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 2 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-pin me-1 text-muted"></i>Registration District
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-city text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registration_district_number" 
+                                            name="txt_lc_registration_district_number" type="text" style="cursor: not-allowed;"
+                                            value="${registration_district_number}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-th-large me-1 text-muted"></i>Section Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-layer-group text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registration_section_number" 
+                                            type="text" style="cursor: not-allowed;" value="${registration_section_number}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-cube me-1 text-muted"></i>Block Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-cubes text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registration_block_number" 
+                                            type="text" style="cursor: not-allowed;" value="${registration_block_number}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 3 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-ruler-combined me-1 text-muted"></i>Land Size
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-expand-arrows-alt text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_size_of_land" 
+                                            type="text" style="cursor: not-allowed;" value="${size_of_land}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map me-1 text-muted"></i>Plan Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marked text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_plan_no" 
+                                            type="text" style="cursor: not-allowed;" value="${plan_no}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-file-alt me-1 text-muted"></i>LTR Plan Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-file-contract text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="ltr_plan_no" 
+                                            type="text" style="cursor: not-allowed;" value="${ltr_plan_no}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 4 -->
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-signs me-1 text-muted"></i>Registry Map No
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-landmark text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_registry_mapref" 
+                                            type="text" style="cursor: not-allowed;" value="${registry_mapref}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-file-certificate me-1 text-muted"></i>CC No
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-certificate text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" id="txt_lc_cc_no" 
+                                            type="text" style="cursor: not-allowed;" value="${cc_no}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Map Controls and Visualization Card -->
+                <div class="card border">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-map-marked-alt me-2 text-primary"></i>Map Visualization
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="${pageContext.request.contextPath}/processing_after_payment" method="post">
+                            <!-- WKT Polygon Input -->
+                            <div class="mb-4">
+                                <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
+                                    <i class="fas fa-draw-polygon me-1 text-muted"></i>WKT Polygon
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-code text-secondary"></i>
+                                    </span>
+                                    <textarea class="form-control bg-light" id="lc_bl_wkt_polygon" 
+                                        name="lc_bl_wkt_polygon" rows="3" style="cursor: not-allowed;" 
+                                        placeholder="Enter WKT polygon coordinates" readonly>${parcel_wkt}</textarea>
+                                </div>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="fas fa-info-circle me-1"></i>Well-Known Text format for polygon coordinates
+                                </small>
+                            </div>
+                            
+                            <!-- Map Control Buttons -->
+                            <div class="mb-4">
+                                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                    <div class="d-flex gap-2">
+                                        <!-- Visualize Polygon Button -->
+                                        <button type="button" class="btn btn-warning btn-sm" 
+                                            id="lc_btn_visualise_wkt" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Visualise Polygon">
+                                            <i class="fas fa-map-marked-alt me-1"></i>
+                                            Visualize Polygon
+                                        </button>
+                                        
+                                        <!-- Plot Parcels Button -->
+                                        <button type="button" class="btn btn-success btn-sm" 
+                                            id="lc_btn_visualise_search" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Plot Parcels">
+                                            <i class="fas fa-object-ungroup me-1"></i>
+                                            Plot Parcels
+                                        </button>
+                                        
+                                        <!-- Print Map Button -->
+                                        <button type="button" class="btn btn-info btn-sm" 
+                                            id="lc_btnprintmap" 
+                                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                                            title="Print Map">
+                                            <i class="fas fa-print me-1"></i>
+                                            Print
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Scale Controls -->
+                                    <div class="ms-auto d-flex align-items-center gap-2">
+                                        <span class="fw-medium text-muted">
+                                            <i class="fas fa-search me-1"></i>Scale:
+                                        </span>
+                                        
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <span class="input-group-text bg-light">
+                                                <i class="fas fa-ruler text-secondary"></i>
+                                            </span>
+                                            <select class="form-select" name="lc_scale_value" id="lc_scale_value">
+                                                <option value="500">1:500</option>
+                                                <option value="1107">1:1,107</option>
+                                                <option value="1250">1:1,250</option>
+                                                <option value="2140">1:2,140</option>
+                                                <option value="2215">1:2,215</option>
+                                                <option value="2500">1:2,500</option>
+                                                <option value="2670">1:2,670</option>
+                                                <option value="2825">1:2,825</option>
+                                                <option value="5000">1:5,000</option>
+                                                <option value="10000">1:10,000</option>
+                                                <option value="15000">1:15,000</option>
+                                                <option value="20000">1:20,000</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- Custom Scale Input -->
+                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                            <input type="text" class="form-control" 
+                                                id="lc_scale_value_e" 
+                                                placeholder="Custom scale">
+                                        </div>
+                                        
+                                        <!-- Lock Scale & Zoom -->
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" 
+                                                    id="lc_lockmapscale" checked>
+                                                <label class="form-check-label small" for="lc_lockmapscale">
+                                                    Lock Scale
+                                                </label>
+                                            </div>
+                                            
+                                            <button type="button" class="btn btn-info btn-sm" 
+                                                id="lc_btn_scale_zoom" 
+                                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                                title="Zoom to Scale">
+                                                <i class="fas fa-search-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Container -->
+                                <div class="map-container border rounded" 
+                                    id="lc-map_____" 
+                                    style="height: 400px; min-height: 300px;">
+                                    <!-- <div class="d-flex justify-content-center align-items-center h-100 bg-light">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-map fa-3x mb-3"></i>
+                                            <p class="mb-0">Click "Visualize Polygon" to display the map</p>
+                                            <p class="small">Map will appear here after visualization</p>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            
+                            <!-- Review Actions -->
+                            <!-- <div class="mt-4 pt-3 border-top">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="alert alert-info mb-0">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <strong>Review Status:</strong> All plan details are loaded and ready for review.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <button type="button" class="btn btn-success" id="btn_approve_plan">
+                                            <i class="fas fa-check me-1"></i>
+                                            Approve Plan
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger ms-2" id="btn_reject_plan">
+                                            <i class="fas fa-times me-1"></i>
+                                            Request Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close Review
+                </button>
+                <button type="button" class="btn btn-outline-primary" id="btn_export_plan_details">
+                    <i class="fas fa-download me-1"></i>Export Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

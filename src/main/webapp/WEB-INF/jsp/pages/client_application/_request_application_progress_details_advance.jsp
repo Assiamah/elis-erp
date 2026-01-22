@@ -623,9 +623,7 @@
                                                     </button>
                                                 
                                                     <!-- Send Request Button -->
-                                                    <button class="btn btn-sm btn-primary"
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#askForPurposeOfSendingRequest"
+                                                    <button class="btn btn-sm btn-primary btn_send_request"
                                                         data-job_number="${job_number}" 
                                                         data-ar_name="${ar_name}" 
                                                         data-business_process_sub_name="${business_process_sub_name}" 
@@ -1880,3 +1878,4 @@
 </script>
 
 <jsp:include page="../../components/_gated_workflow_modal.jsp"></jsp:include>
+<jsp:include page="../../components/_gated_workflow_modal_2.jsp"></jsp:include>

@@ -523,7 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (!formData.ar_cell_phone) {
+        if (!formData.ar_cell_phone && (formData.ar_type_of_party === "Applicant" || formData.ar_type_of_party === "Assignee" || formData.ar_type_of_party === "Lessee")) {
             Swal.fire({
                 title: 'Validation Error',
                 text: 'Please enter phone number',
@@ -1094,7 +1094,7 @@ document.addEventListener('DOMContentLoaded', function() {
             date_of_registration: $("#fe_date_of_registration").val(),
             stool_family_name: $("#fe_family_name").val(),
             family_of_grantor: $("#fe_grantor_family").val(),
-            renewal_term: $("#fe_renewal_term").val(),
+            renewal_term: $("input[name='fe_renewal_term_check']:checked").val() == 'yes' ? $("#fe_renewal_term").val() : 0,
             term: $("#fe_term").val(),
             date_of_document: $("#fe_date_of_document").val(),
             consideration_fee: $("#fe_consideration_fee").val(),
@@ -3460,6 +3460,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#newMemorialsModal ._gated_workflow_documents');
         } else if (modalType === 'encumbrance') {
             container = document.querySelector('#newEncumberancesModal ._gated_workflow_documents');
+        } else if (modalType === 'lrd_initial_approval') {
+            container = document.querySelector('#lrd_initial_approval ._gated_workflow_documents');
         }
         
         if (!container) {
@@ -11438,7 +11440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    $("#askForPurposeOfSendingRequest").on('shown.bs.modal', function (e) {
+    $("#askForPurposeOfSendingRequest_").on('shown.bs.modal', function (e) {
 
         $('#req_job_number').val($(e.relatedTarget).data('job_number'));
         $('#req_ar_name').val($(e.relatedTarget).data('ar_name'));
@@ -11909,4 +11911,1592 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    $('#CreateJobNumberModal').on('show.bs.modal', function(event) {
+        // Create an array of promises for all AJAX requests
+        const promises = [
+            // Promise for getting LC temporal service
+            new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: { request_type: 'get_lc_temporal_service' },
+                    cache: false,
+                    beforeSend: function() {
+                        // Show loading state if needed
+                    },
+                    success: function(jobdetails) {
+                        resolve({
+                            type: 'main_service',
+                            data: jobdetails
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        reject(new Error(`Failed to load main service: ${error}`));
+                    }
+                });
+            }),
+            
+            // Promise for getting type of use list
+            new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: { request_type: 'get_type_of_use_list' },
+                    cache: false,
+                    beforeSend: function() {
+                        // Show loading state if needed
+                    },
+                    success: function(jobdetails) {
+                        resolve({
+                            type: 'type_of_use',
+                            data: jobdetails
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        reject(new Error(`Failed to load type of use: ${error}`));
+                    }
+                });
+            }),
+            
+            // Promise for getting office region
+            new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    url: "app_modal_fills_serv",
+                    data: { request_type: 'get_all_office_region' },
+                    cache: false,
+                    beforeSend: function() {
+                        // Show loading state if needed
+                    },
+                    success: function(jobdetails) {
+                        resolve({
+                            type: 'office_region',
+                            data: jobdetails
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        reject(new Error(`Failed to load office region: ${error}`));
+                    }
+                });
+            })
+        ];
+        
+        // Execute all promises in parallel
+        Promise.all(promises)
+            .then(results => {
+                console.log('All data loaded successfully');
+                
+                // Process each result
+                results.forEach(result => {
+                    const jsonData = JSON.parse(result.data);
+                    
+                    switch(result.type) {
+                        case 'main_service':
+                            console.log('Processing main service data');
+                            populateMainServiceDropdown(jsonData);
+                            break;
+                            
+                        case 'type_of_use':
+                            console.log('Processing type of use data');
+                            populateTypeOfUseDropdown(jsonData);
+                            break;
+                            
+                        case 'office_region':
+                            console.log('Processing office region data');
+                            populateOfficeRegionDropdown(jsonData);
+                            break;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                // Show error message to user
+                showErrorMessage('Failed to load form data. Please try again.');
+            });
+        
+        // Helper functions to populate dropdowns
+        function populateMainServiceDropdown(data) {
+            const $dropdown = $('#main_service_on_tc');
+            $dropdown.empty();
+            $dropdown.append(new Option("-- Select --", 0));
+            
+            data.forEach(item => {
+                $dropdown.append(
+                    `<option value="${item.business_process_id}-${item.business_process_name}">
+                        ${item.business_process_name}
+                    </option>`
+                );
+            });
+            
+            // Initialize selectpicker if you're using bootstrap-select
+            if ($dropdown.hasClass('selectpicker')) {
+                $dropdown.selectpicker('refresh');
+            }
+        }
+        
+        function populateTypeOfUseDropdown(data) {
+            const $dropdown = $('#type_of_use_on_tc');
+            $dropdown.empty();
+            $dropdown.append(new Option("-- Select --", 0));
+            
+            data.forEach(item => {
+                $dropdown.append(
+                    `<option value="${item.typeofuse_id}_${item.typeofuse_name}">
+                        ${item.typeofuse_name}
+                    </option>`
+                );
+            });
+            
+            // Initialize selectpicker if you're using bootstrap-select
+            if ($dropdown.hasClass('selectpicker')) {
+                $dropdown.selectpicker('refresh');
+            }
+        }
+        
+        function populateOfficeRegionDropdown(data) {
+            const $dropdown = $('#office_region_on_tc');
+            $dropdown.empty();
+            $dropdown.append(new Option("-- Select --", 0));
+            
+            data.forEach(item => {
+                $dropdown.append(
+                    `<option value="${item.ord_region_code}_${item.ord_region_name}">
+                        ${item.ord_region_name}
+                    </option>`
+                );
+            });
+            
+            // Initialize selectpicker if you're using bootstrap-select
+            if ($dropdown.hasClass('selectpicker')) {
+                $dropdown.selectpicker('refresh');
+            }
+        }
+
+    });
+
+    $('#main_service_on_tc').change(function() {
+        var select_id = document.getElementById("main_service_on_tc");
+        var main_service = select_id.options[select_id.selectedIndex].value;
+
+        const main_service_name_id = main_service.split('-');
+
+        var main_service_id = main_service_name_id[0];
+        var main_service_name = main_service_name_id[1];
+
+        $.ajax({
+            type : "POST",
+            url : "Case_Management_Serv",
+            data : {
+                request_type : 'get_lc_sub_service',
+            },
+            cache : false,
+            beforeSend : function() {
+                // $('#district').html('<img
+                // src="img/loading.gif"
+                // alt="" width="24"
+                // height="24">');
+            },
+            success : function(jobdetails) {
+                console.log(jobdetails);
+                var json_p = JSON.parse(jobdetails);
+                var options = $("#sub_service_on_tc");
+
+                options.empty();
+                options.append(new Option("-- Select --", 0));
+
+                $(json_p).each(function() {
+                    console.log(select_id);
+                    console.log(this.business_process_id);
+
+                    if (main_service_id == this.business_process_id) {
+                        $('#sub_service_on_tc').append('<option value="'
+                                + this.business_process_sub_id
+                                + '-'
+                                + this.business_process_sub_name
+                            + '">' + this.business_process_sub_name
+                            + '</option>');
+                    }
+                });
+            }
+        });
+    });
+
+    $('#office_region_on_tc').change(function() {
+		var sub_service = $(this).val();
+
+		const sub_service_name_id = sub_service.split('_');
+
+		var main_service_id = sub_service_name_id[0];
+		var main_service_name = sub_service_name_id[1];
+
+		$.ajax({
+			type : "POST",
+			url : "Case_Management_Serv",
+			data : {
+				request_type : 'get_list_of_locality',
+				region_id : main_service_id
+			},
+			cache : false,
+			beforeSend : function() {
+				// $('#district').html('<img
+				// src="img/loading.gif"
+				// alt="" width="24"
+				// height="24">');
+			},
+			success : function(jobdetails) {
+
+				// console.log(jobdetails);
+				var json_p = JSON.parse(jobdetails);
+				var options = $("#locality_on_tc");
+
+                // var options =
+                // $("#selector");
+                options.empty();
+                options.append(new Option("-- Select --", 0));
+
+				$(json_p).each(function() {
+					$('#locality_on_tc').append('<option value="'
+                        + this.location_name
+                        + '">'
+                        + this.location_name
+                        + '</option>');
+
+				});
+			}
+	    });
+
+	});
+
+    $('#btn_create_new_job_and_case_number').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const selectId = document.getElementById("main_service_on_tc");
+        const mainService = selectId.options[selectId.selectedIndex].value;
+        
+        const subSelectId = document.getElementById("sub_service_on_tc");
+        const subService = subSelectId.options[subSelectId.selectedIndex].value;
+        
+        const mainServiceParts = mainService.split('-');
+        const subServiceParts = subService.split('-');
+        
+        const mainServiceId = mainServiceParts[0]?.replace('.0', '') || '';
+        const mainServiceName = mainServiceParts[1] || '';
+        
+        const subServiceId = subServiceParts[0] || '';
+        const subServiceName = subServiceParts[1] || '';
+        
+        const applicantName = $("#applicant_name_on_tc").val().trim();
+        const landSize = $("#land_size_on_tc").val().trim();
+        const officeRegion = $("#office_region_on_tc").val();
+        const locality = $("#locality_on_tc").val();
+        const typeOfUse = $("#type_of_use_on_tc").val();
+        const typeOfInterest = $("#type_of_interest_on_tc").val();
+        const natureOfInstrument = $("#nature_of_instrument_on_tc").val();
+        const fileNumber = $("#file_number_on_tc").val().trim();
+        
+        // Split office region if it contains the format
+        let officeRegionId = '';
+        let officeRegionName = '';
+        if (officeRegion && officeRegion.includes('_')) {
+            const officeRegionParts = officeRegion.split('_');
+            officeRegionId = officeRegionParts[0] || '';
+            officeRegionName = officeRegionParts[1] || '';
+        }
+        
+        // Split type of use if it contains the format
+        let typeOfUseId = '';
+        let typeOfUseName = '';
+        if (typeOfUse && typeOfUse.includes('_')) {
+            const typeOfUseParts = typeOfUse.split('_');
+            typeOfUseId = typeOfUseParts[0] || '';
+            typeOfUseName = typeOfUseParts[1] || '';
+        }
+        
+        // Validate required fields
+        if (!validateFormFields(mainServiceId, subServiceId, applicantName, officeRegionId, locality, typeOfUseId, typeOfInterest, natureOfInstrument)) {
+            return;
+        }
+        
+        // Prepare data for confirmation
+        const confirmationData = {
+            mainService: mainServiceName,
+            subService: subServiceName,
+            clientName: applicantName,
+            officeRegion: officeRegionName,
+            locality: locality,
+            landSize: landSize || 'Not specified',
+            typeOfUse: typeOfUseName,
+            typeOfInterest: typeOfInterest,
+            natureOfInstrument: natureOfInstrument,
+            fileNumber: fileNumber
+        };
+        
+        // Show confirmation dialog
+        showConfirmationDialog(confirmationData)
+            .then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, proceed with AJAX call
+                    createJobAndCaseNumber({
+                        mainServiceId: mainServiceId,
+                        subServiceId: subServiceId,
+                        mainServiceName: mainServiceName,
+                        subServiceName: subServiceName,
+                        clientName: applicantName,
+                        landSize: landSize,
+                        locality: locality,
+                        typeOfUse: typeOfUseId, // Send ID only
+                        typeOfUseName: typeOfUseName,
+                        typeOfInterest: typeOfInterest,
+                        natureOfInstrument: natureOfInstrument,
+                        officeRegionId: officeRegionId,
+                        officeRegionName: officeRegionName,
+                        fileNumber: fileNumber
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Confirmation error:', error);
+            });
+    });
+
+    // Validation function
+    function validateFormFields(mainServiceId, subServiceId, applicantName, officeRegionId, 
+                                locality, typeOfUseId, typeOfInterest, natureOfInstrument) {
+        const errors = [];
+        
+        if (!mainServiceId || mainServiceId === '0' || mainServiceId === '-1') {
+            errors.push('Main Service is required');
+        }
+        
+        if (!subServiceId || subServiceId === '0' || subServiceId === '-1') {
+            errors.push('Sub Service is required');
+        }
+        
+        if (!applicantName) {
+            errors.push('Client Name is required');
+        }
+        
+        if (!officeRegionId || officeRegionId === '-1') {
+            errors.push('Office Region is required');
+        }
+        
+        if (!locality || locality === '-1') {
+            errors.push('Locality is required');
+        }
+        
+        if (!typeOfUseId || typeOfUseId === '-1') {
+            errors.push('Type of Use is required');
+        }
+        
+        if (!typeOfInterest || typeOfInterest === 'Select Type of Interest') {
+            errors.push('Type of Interest is required');
+        }
+        
+        if (!natureOfInstrument || natureOfInstrument === 'Nature of Instrument') {
+            errors.push('Nature of Instrument is required');
+        }
+        
+        // if (!fileNumber) {
+        //     errors.push('File Number is required');
+        // }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                html: `<ul style="text-align: left; padding-left: 20px;">${errors.map(error => `<li>${error}</li>`).join('')}</ul>`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+            return false;
+        }
+        
+        return true;
+    }
+
+    // Confirmation dialog function
+    function showConfirmationDialog(data) {
+        const htmlContent = `
+            <div class="confirmation-details">
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Main Service:</strong></div>
+                    <div class="col-md-6">${data.mainService}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Sub Service:</strong></div>
+                    <div class="col-md-6">${data.subService}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Client Name:</strong></div>
+                    <div class="col-md-6">${data.clientName}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Office Region:</strong></div>
+                    <div class="col-md-6">${data.officeRegion}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Locality:</strong></div>
+                    <div class="col-md-6">${data.locality}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Land Size:</strong></div>
+                    <div class="col-md-6">${data.landSize} Acre(s)</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Type of Use:</strong></div>
+                    <div class="col-md-6">${data.typeOfUse}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Type of Interest:</strong></div>
+                    <div class="col-md-6">${data.typeOfInterest}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Nature of Instrument:</strong></div>
+                    <div class="col-md-6">${data.natureOfInstrument}</div>
+                </div>
+                <!--<div class="row mb-2">
+                    <div class="col-md-6"><strong>File Number:</strong></div>
+                    <div class="col-md-6">${data.fileNumber}</div>
+                </div>-->
+            </div>
+            <div class="alert alert-warning mt-3" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i> 
+                Are you sure you want to create this Job and Case Number? This action cannot be undone.
+            </div>
+        `;
+        
+        return Swal.fire({
+            title: 'Confirm Job Creation',
+            html: htmlContent,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Create Job',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve) => {
+                    // Additional validation can go here
+                    resolve();
+                });
+            },
+            customClass: {
+                container: 'confirmation-modal',
+                popup: 'swal-popup',
+                title: 'swal-title',
+                htmlContainer: 'swal-html',
+                confirmButton: 'swal-confirm',
+                cancelButton: 'swal-cancel'
+            }
+        });
+    }
+
+    // Function to create job and case number
+    function createJobAndCaseNumber(data) {
+        // Show loading state
+        Swal.fire({
+            title: 'Creating Job...',
+            text: 'Please wait while we generate the job and case numbers.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_process_acknowledgement_not_on_case_exist',
+                main_service_id: data.mainServiceId,
+                main_service_sub_id: data.subServiceId,
+                main_service_desc: data.mainServiceName,
+                main_service_sub_desc: data.subServiceName,
+                client_name: data.clientName,
+                land_size: data.landSize,
+                locality: data.locality,
+                type_of_use: data.typeOfUse,
+                type_of_interest: data.typeOfInterest,
+                nature_of_instrument: data.natureOfInstrument,
+                office_region_id: data.officeRegionId,
+                office_region_name: data.officeRegionName,
+                file_number: data.fileNumber // Added file number if needed
+            },
+            cache: false,
+            success: function(response) {
+                try {
+                    const jsonResponse = JSON.parse(response);
+                    
+                    // Update form fields
+                    $("#job_number_on_tc").val(jsonResponse.job_number || '');
+                    $("#case_number_on_tc").val(jsonResponse.case_number || '');
+                    
+                    // Close loading and show success message
+                    Swal.close();
+                    
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Job Created Successfully',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Job Number:</strong> ${jsonResponse.job_number || 'N/A'}
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Case Number:</strong> ${jsonResponse.case_number || 'N/A'}
+                                </div>
+                                <div class="alert alert-info mt-3">
+                                    <i class="bi bi-info-circle"></i> 
+                                    The job has been created successfully. You can now use these numbers for further processing.
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: '#28a745'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Optional: Close modal or reset form
+                            // $('#CreateJobNumberModal').modal('hide');
+                            
+                            // Optional: Trigger other actions
+                            // if (typeof onJobCreated === 'function') {
+                            //     onJobCreated(jsonResponse);
+                            // }
+                        }
+                    });
+                    
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Parse Error',
+                        text: 'Failed to parse server response.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Request Failed',
+                    html: `
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-x-circle-fill text-danger" style="font-size: 4rem;"></i>
+                            </div>
+                            <div class="mb-2">
+                                Failed to create job. Please try again.
+                            </div>
+                            <div class="text-muted small">
+                                Error: ${error || 'Unknown error occurred'}
+                            </div>
+                        </div>
+                    `,
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        });
+    }
+
+    $('#CreateJobNumberModalExisting').on('show.bs.modal', async function(event) {
+        try {
+            // Show loading state
+            showLoadingState(this, true);
+            
+            // Execute all requests in parallel using Promise.all
+            const [mainServiceData, typeOfUseData, officeRegionData] = await Promise.all([
+                fetchData('Case_Management_Serv', 'get_lc_main_service'),
+                fetchData('Case_Management_Serv', 'get_type_of_use_list'),
+                fetchData('app_modal_fills_serv', 'get_all_office_region')
+            ]);
+            
+            // Parse JSON responses
+            const mainServiceJson = JSON.parse(mainServiceData);
+            const typeOfUseJson = JSON.parse(typeOfUseData);
+            const officeRegionJson = JSON.parse(officeRegionData);
+            
+            // Populate all dropdowns
+            await Promise.all([
+                populateDropdown('#main_service_on_tc_e', mainServiceJson, 
+                    item => `<option value="${item.business_process_id}-${item.business_process_name}">
+                            ${item.business_process_name}
+                            </option>`),
+                populateDropdown('#type_of_use_on_tc_e', typeOfUseJson,
+                    item => `<option value="${item.typeofuse_id}_${item.typeofuse_name}">
+                            ${item.typeofuse_name}
+                            </option>`),
+                populateDropdown('#office_region_on_tc_e', officeRegionJson,
+                    item => `<option value="${item.ord_region_code}_${item.ord_region_name}">
+                            ${item.ord_region_name}
+                            </option>`)
+            ]);
+            
+            console.log('All dropdowns populated successfully for existing job modal');
+            
+        } catch (error) {
+            console.error('Error loading existing job modal data:', error);
+            showErrorMessage(`Failed to load form data: ${error.message}`);
+        } finally {
+            // Hide loading state
+            showLoadingState(this, false);
+        }
+    });
+
+    // Reusable helper functions (can be shared with other modals)
+
+    /**
+     * Fetch data from server
+     * @param {string} url - Server endpoint URL
+     * @param {string} requestType - Type of request
+     * @returns {Promise<string>} - Promise resolving with response data
+     */
+    function fetchData(url, requestType) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { request_type: requestType },
+                cache: false,
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function(xhr, status, error) {
+                    reject(new Error(`Failed to load ${requestType}: ${error}`));
+                }
+            });
+        });
+    }
+
+    /**
+     * Populate a dropdown with data
+     * @param {string} selector - jQuery selector for the dropdown
+     * @param {Array} data - Array of data items
+     * @param {Function} itemTemplate - Function to generate option HTML
+     * @returns {Promise<void>} - Promise that resolves when dropdown is populated
+     */
+    function populateDropdown(selector, data, itemTemplate) {
+        return new Promise((resolve) => {
+            const $dropdown = $(selector);
+            if (!$dropdown.length) {
+                console.warn(`Dropdown not found: ${selector}`);
+                resolve();
+                return;
+            }
+            
+            $dropdown.empty();
+            $dropdown.append('<option value="0">-- Select --</option>');
+            
+            data.forEach(item => {
+                $dropdown.append(itemTemplate(item));
+            });
+            
+            // Refresh selectpicker if used
+            if ($dropdown.hasClass('selectpicker')) {
+                $dropdown.selectpicker('refresh');
+            }
+            
+            resolve();
+        });
+    }
+
+    /**
+     * Show/hide loading state for modal
+     * @param {HTMLElement} modalElement - Modal DOM element
+     * @param {boolean} show - Whether to show loading state
+     */
+    function showLoadingState(modalElement, show) {
+        const $modal = $(modalElement);
+        const $body = $modal.find('.modal-body');
+        
+        if (show) {
+            $body.addClass('loading');
+            $body.css('min-height', '200px');
+            
+            // Disable all form elements
+            $modal.find('input, select, button').prop('disabled', true);
+        } else {
+            $body.removeClass('loading');
+            $body.css('min-height', '');
+            
+            // Enable all form elements
+            $modal.find('input, select, button').prop('disabled', false);
+        }
+    }
+
+    /**
+     * Show error message
+     * @param {string} message - Error message to display
+     */
+    function showErrorMessage(message) {
+        // You can use SweetAlert, Bootstrap alert, or console
+        console.error(message);
+        
+        // Example with SweetAlert:
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Loading Error',
+                text: message,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+        } else {
+            // Fallback to browser alert
+            alert(`Error: ${message}`);
+        }
+    }
+
+    $('input[name="fe_renewal_term_check"]').on('change', function() {
+        if ($(this).val() == 'yes') {
+            $('#fe_renewal_term_div').removeClass('d-none');
+        } else {
+            $('#fe_renewal_term_div').addClass('d-none');
+        }
+    });
+
+    $('#lrd_initial_approval').on('show.bs.modal', function () {
+        window.loadGatedWorkFlowDocuments('lrd_initial_approval');
+    });
+
+    // $('#viewNotesModal').on('shown.bs.modal', function () {
+    //     const $dialog = $(this).find('.modal-dialog');
+    //     const $header = $(this).find('.modal-header');
+
+    //     $header.css('cursor', 'move').on('mousedown', function (e) {
+    //         const pos = $dialog.offset();
+    //         const dx = e.pageX - pos.left;
+    //         const dy = e.pageY - pos.top;
+
+    //         $(document).on('mousemove.draggable', function (e) {
+    //             $dialog.offset({
+    //                 left: e.pageX - dx,
+    //                 top: e.pageY - dy
+    //             });
+    //         });
+
+    //         $(document).on('mouseup.draggable', function () {
+    //             $(document).off('.draggable');
+    //         });
+    //     });
+
+    // }); 
+
+    $(document).on('click', '.open-view-notes', function(e) {
+        e.preventDefault();
+        
+        // Get data from the clicked button
+        const noteId = $(this).data('target-id');
+        const description = $(this).data('an_description');
+        const createdBy = $(this).data('created_by');
+        const createdDate = $(this).data('created_date');
+        const modifiedBy = $(this).data('modified_by') || createdBy; // Fallback to createdBy if not modified
+        const modifiedDate = $(this).data('modified_date') || createdDate; // Fallback to createdDate if not modified
+        const division = $(this).data('division');
+        const job_number = $(this).data('job_number');
+        const case_number = $(this).data('case_number');
+        
+        // Create the note details HTML
+        const noteDetailsHTML = `
+            <form id="form_view_notes">
+                <!-- Hidden Fields -->
+                <input type="hidden" id="vi_note_id" name="vi_note_id" value="${noteId}">
+                <input type="hidden" id="vi_an_job_number" value="${job_number}">
+                <input type="hidden" id="vi_an_case_number" value="${case_number}">
+                <input type="hidden" id="vi_an_type" value="Normal">
+                
+                <!-- Division Badge -->
+                <div class="mt-3 mb-3">
+                    <label class="form-label small text-muted mb-1">Division</label>
+                    <div>
+                        <span class="badge bg-secondary bg-opacity-10 text-dark p-2">
+                            <i class="fas fa-building me-1"></i>
+                            ${division}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Description Section -->
+                <div class="mb-4">
+                    <div class="form-group">
+                        <label for="vi_note_description" class="form-label fw-medium">
+                            <i class="fas fa-align-left me-1"></i>
+                            Note Description
+                        </label>
+                        <div class="border rounded p-3 bg-light" style="min-height: 150px;">
+                            <div id="vi_note_description" class="note-content">
+                                ${formatNoteDescription(description) || 'No description available'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Metadata Section -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-user-plus me-1"></i>
+                                    Creation Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Created By</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-user text-primary"></i>
+                                        </div>
+                                        <span id="vi_created_by" class="fw-medium">${createdBy}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Created Date</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-calendar text-success"></i>
+                                        </div>
+                                        <span id="vi_created_date" class="fw-medium">${createdDate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-user-edit me-1"></i>
+                                    Modification Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Modified By</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-user-edit text-info"></i>
+                                        </div>
+                                        <span id="vi_modified_by" class="fw-medium">
+                                            ${modifiedBy === createdBy ? 'No modifications' : modifiedBy}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Modified Date</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-calendar-alt text-warning"></i>
+                                        </div>
+                                        <span id="vi_modified_date" class="fw-medium">
+                                            ${modifiedDate === createdDate ? 'Not modified' : modifiedDate}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="mt-4 pt-3 border-top">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="btn_print_note">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button>
+                        <!--
+                        <button type="button" class="btn btn-primary btn-sm" id="btn_edit_note">
+                            <i class="fas fa-edit me-1"></i>
+                            Edit Note
+                        </button>
+                        -->
+                    </div>
+                </div>
+            </form>
+        `;
+        
+        // Insert the note details into the container
+        $('#noteDetailsContainer').html(noteDetailsHTML);
+        
+        // Add active state to the clicked row
+        $('#lrd_notes_dataTable tbody tr').removeClass('table-active');
+        $(this).closest('tr').addClass('table-active');
+        
+        // Scroll to the note details section
+        $('html, body').animate({
+            scrollTop: $('._gated_workflow_view_notes').offset().top
+        }, 500);
+        
+        // Initialize tooltips for new content
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+    
+    // Handle Print button click
+    $(document).on('click', '#btn_print_note', function() {
+        printNoteDetails();
+    });
+    
+    // Print function
+    function printNoteDetails() {
+        const printContent = document.getElementById('noteDetailsContainer').innerHTML;
+        const originalContent = document.body.innerHTML;
+        
+        document.body.innerHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Note Details - Print</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+                <style>
+                    body { padding: 20px; }
+                    .card { border: 1px solid #dee2e6; }
+                    .badge { padding: 0.5em 0.75em; }
+                    @media print {
+                        .no-print { display: none; }
+                        body { font-size: 12pt; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Note Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    ${printContent}
+                                </div>
+                            </div>
+                            <div class="text-center no-print mt-4">
+                                <button onclick="window.print()" class="btn btn-primary me-2">
+                                    <i class="fas fa-print me-1"></i>Print
+                                </button>
+                                <button onclick="window.close()" class="btn btn-secondary">
+                                    <i class="fas fa-times me-1"></i>Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    window.onload = function() {
+                        // Auto-print option (uncomment if needed)
+                        // window.print();
+                    }
+                <\/script>
+            </body>
+            </html>
+        `;
+        
+        window.print();
+        document.body.innerHTML = originalContent;
+        location.reload(); // Reload to restore event listeners
+    }
+
+    $(document).on('click', '.btn_send_request', function() {
+        const jobNumber = $(this).data('job_number');
+        const arName = $(this).data('ar_name');
+        const businessProcessSubName = $(this).data('business_process_sub_name');
+        const locality = $(this).data('locality');
+        const description = $(this).data('bs-desc');
+
+        // Open the modal with the data
+        $('#askForPurposeOfSendingRequest').modal('show');
+        $('#req_job_number').val(jobNumber);
+        $('#req_ar_name').val(arName);
+        $('#req_business_process_sub_name').val(businessProcessSubName);
+        $('#req_locality').val(locality);
+        $('#req_description').val(description);
+
+        $.ajax({
+                type : "POST",
+                url : "Case_Management_Serv",
+                data : {
+                    request_type : 'get_request_purpose',
+                },
+                cache : false,
+                beforeSend : function() {
+                },
+                success : function(jobdetails) {
+                    //console.log(jobdetails);
+                    var json_p = JSON.parse(jobdetails);
+                    var options = $("#req_job_purpose");
+                    options.empty();
+                    options.append(new Option("-- select Purpose --",0));
+                    $(json_p).each(function() {
+                        $('#req_job_purpose').append(
+                                                    '<option value="'
+                                                            + this.request_name
+                                                            + '">'
+                                                            + this.request_name
+                                                            + '</option>');
+                        // switch (description) {
+                        //     case 'Further Entry (Enter Details)':
+                        //         if (this._id == 3) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Upload Coordinate and Save':
+                        //         if (this._id == 2) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Send for Records Information':
+                        //         if (this._id == 1 || this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Verify Records Information':
+                        //         if (this._id == 1 || this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Review Records Information':
+                        //         if (this._id == 1) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Inspection of Site (IF applicable)':
+                        //         if (this._id == 23) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Send for Publication':
+                        //         if (this._id == 21) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Send for Title Plan Preparation':
+                        //         if (this._id == 22 || this._id == 15) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check for Objection':
+                        //         if (this._id == 19) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check for Polygon':
+                        //         if (this._id == 2) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     // case 'Generate interest Number':
+                        //     // 	if (this._id == 14) {
+                        //     // 		$('#req_job_purpose').append(
+                        //     // 						'<option value="'
+                        //     // 								+ this.request_name
+                        //     // 								+ '">'
+                        //     // 								+ this.request_name
+                        //     // 								+ '</option>');
+                        //     // 	}
+                        //     // 	break;
+                        //     // case 'Generate sub Interest Number':
+                        //     // 	if (this._id == 18) {
+                        //     // 		$('#req_job_purpose').append(
+                        //     // 						'<option value="'
+                        //     // 								+ this.request_name
+                        //     // 								+ '">'
+                        //     // 								+ this.request_name
+                        //     // 								+ '</option>');
+                        //     // 	}
+                        //     // 	break;
+                        //     case 'Enter Root of Title':
+                        //         if (this._id == 4 || this._id == 20) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Generate Certificate Number':
+                        //         if (this._id == 16) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Generate Volume and Folio':
+                        //         if (this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check Certificate':
+                        //         if (this._id == 4 || this._id == 16 || this._id == 3 || this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check Register':
+                        //         if (this._id == 4 || this._id == 20 || this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check/Review Documents':
+                        //         if (this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Review Documents':
+                        //         if (this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check availability of Mother File':
+                        //         if (this._id == 25) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Link to Mother File':
+                        //         if (this._id == 25) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;	
+                        //     case 'Preview Certificate':
+                        //         if (this._id == 4 || this._id == 16 || this._id == 3 || this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Enter Mortgage Transaction':
+                        //         if (this._id == 17) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break; 
+                        //     case 'View Register':
+                        //         if (this._id == 4) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break; 
+                        //     case 'Check Parcel Details':
+                        //         if (this._id == 3) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break; 
+                        //     case 'openall':
+                        //         // if (this._id == 17) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         //}
+                        //         break;
+                        // }
+                        
+                    });
+                }
+            });
+    });
+
+    let quillEditor_;
+
+    $('#instruction_from_lrd_to_smd').on('shown.bs.modal', function() {
+        if (!quillEditor_) {
+            initQuillEditor();
+        }
+    });
+    
+    // Initialize Quill Editor
+    function initQuillEditor() {
+        // Define custom toolbar options
+        const toolbarOptions = [
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],
+            [{ 'indent': '-1'}, { 'indent': '+1' }],
+            [{ 'direction': 'rtl' }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['link', 'image', 'video', 'formula'],
+            ['clean']
+        ];
+        
+        // Initialize Quill
+        quillEditor_ = new Quill('#lrd_smd_instruction_editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow',
+            placeholder: 'Type your instructions here...'
+        });
+        
+        // Update character count
+        quillEditor_.on('text-change', function() {
+            const text = quillEditor_.getText().trim();
+            const charCount = text.length;
+            $('#charCount').text(charCount);
+            
+            // Update hidden input with HTML content
+            const htmlContent = quillEditor_.root.innerHTML;
+            $('#lrd_smd_instruction_input').val(htmlContent);
+        });
+        
+        // Add custom styling
+        $('.ql-toolbar').addClass('rounded-top');
+        $('.ql-container').addClass('rounded-bottom');
+        
+        // Initial character count
+        const initialText = quillEditor_.getText().trim();
+        $('#charCount').text(initialText.length);
+    }
+    
+    // Preview button handler
+    $('#btn_preview_instruction').on('click', function() {
+        const content = quillEditor_.root.innerHTML;
+        const plainText = quillEditor_.getText().trim();
+        
+        if (!plainText) {
+            showToast('Please enter some content first', 'warning');
+            return;
+        }
+        
+        // Show preview
+        $('#preview_content').html(content);
+        $('#instruction_preview').slideDown();
+        
+        // Scroll to preview
+        $('html, body').animate({
+            scrollTop: $('#instruction_preview').offset().top - 20
+        }, 500);
+    });
+
+    // Clear editor when modal is hidden
+    $('#instruction_from_lrd_to_smd').on('hidden.bs.modal', function() {
+        if (quillEditor_) {
+            quillEditor_.setText('');
+            $('#instruction_preview').slideUp();
+            $('#charCount').text('0');
+        }
+    });
+
+    $("#btn_generate_smd_title_plan_numbers").on('click', function(e) {
+        e.preventDefault();
+        
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var glpin = $("#txt_glpin").val();
+        
+        // Get additional data if needed
+        var smd_type_of_plotting = $("#txt_lc_smd_type_of_plotting").val();
+        var smd_reference_number = $("#txt_lc_smd_reference_number").val();
+        var wkt_polygon = $("#lc_bl_wkt_polygon").val();
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Generate SMD Title Plan Numbers',
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">Are you sure you want to generate SMD Title Plan Numbers?</p>
+                    <div class="alert alert-info py-2 mb-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Details:</strong>
+                        <ul class="mb-0 mt-2 ps-3">
+                            <li>Job Number: <strong>${job_number}</strong></li>
+                            <li>Case Number: <strong>${case_number}</strong></li>
+                            <li>GLPIN: <strong>${glpin}</strong></li>
+                        </ul>
+                    </div>
+                    <p class="text-muted small mb-0">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        This action cannot be undone.
+                    </p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-cogs me-2"></i>Generate',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Generating...',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mb-1">Processing SMD Title Plan Numbers</p>
+                            <p class="text-muted small mb-0">Please wait while we generate the numbers...</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_generate_smd_title_plan_numbers',
+                        job_number: job_number,
+                        case_number: case_number,
+                        transaction_number: transaction_number,
+                        glpin: glpin,
+                        smd_type_of_plotting: smd_type_of_plotting,
+                        smd_reference_number: smd_reference_number,
+                        wkt_polygon: wkt_polygon
+                    },
+                    cache: false,
+                    timeout: 30000, // 30 second timeout
+                    success: function(response) {
+                        console.log('Response:', response);
+                        
+                        // Parse response if it's JSON
+                        let jobdetails;
+                        try {
+                            jobdetails = typeof response === 'string' ? JSON.parse(response) : response;
+                        } catch (e) {
+                            jobdetails = response;
+                        }
+                        
+                        if (!jobdetails || (typeof jobdetails === 'object' && Object.keys(jobdetails).length === 0)) {
+                            Swal.fire({
+                                title: 'Already Generated',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-exclamation-circle fa-4x text-warning"></i>
+                                        </div>
+                                        <p class="mb-2">SMD Title Plan Numbers have already been generated for this case.</p>
+                                        <p class="text-muted small mb-0">No further action is required.</p>
+                                    </div>
+                                `,
+                                icon: 'warning',
+                                confirmButtonText: '<i class="fas fa-check me-2"></i>Understood',
+                                confirmButtonColor: '#0d6efd',
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                }
+                            });
+                        } else {
+                            // Success response
+                            Swal.fire({
+                                title: 'Success!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle fa-4x text-success"></i>
+                                        </div>
+                                        <p class="mb-2">SMD Title Plan Numbers generated successfully!</p>
+                                        <div class="alert alert-success mt-3" role="alert">
+                                            <i class="fas fa-file-alt me-2"></i>
+                                            <strong>Reference:</strong> ${job_number}/${case_number}
+                                        </div>
+                                        <p class="text-muted small mb-0 mt-3">
+                                            <i class="fas fa-clock me-1"></i>
+                                            Generated at ${new Date().toLocaleTimeString()}
+                                        </p>
+                                    </div>
+                                `,
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: '<i class="fas fa-eye me-2"></i>View Details',
+                                cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+                                confirmButtonColor: '#0d6efd',
+                                cancelButtonColor: '#6c757d',
+                                reverseButtons: true,
+                                buttonsStyling: false,
+                                customClass: {
+                                    confirmButton: 'btn btn-primary',
+                                    cancelButton: 'btn btn-secondary'
+                                },
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Redirect or show details
+                                    window.location.href = `case_details.jsp?job=${job_number}&case=${case_number}`;
+                                } else {
+                                    // Close modal if open
+                                    $('#generate_smd_number').modal('hide');
+                                    
+                                    // Refresh page or update UI
+                                    location.reload(); // or update specific elements
+                                }
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        
+                        Swal.fire({
+                            title: 'Error!',
+                            html: `
+                                <div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-triangle fa-4x text-danger"></i>
+                                    </div>
+                                    <p class="mb-2">Failed to generate SMD Title Plan Numbers</p>
+                                    <div class="alert alert-danger mt-3" role="alert">
+                                        <i class="fas fa-bug me-2"></i>
+                                        <strong>Error:</strong> ${error || 'Unknown error occurred'}
+                                    </div>
+                                    <p class="text-muted small mb-0 mt-3">Please try again or contact support.</p>
+                                </div>
+                            `,
+                            icon: 'error',
+                            confirmButtonText: '<i class="fas fa-redo me-2"></i>Try Again',
+                            confirmButtonColor: '#dc3545',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-danger'
+                            }
+                        });
+                    },
+                    complete: function() {
+                        // Any cleanup if needed
+                    }
+                });
+            }
+        });
+    });
 });
+
