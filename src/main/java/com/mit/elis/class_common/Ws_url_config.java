@@ -56,5 +56,7 @@ public class Ws_url_config {
     
     String lc_temp_folder;
     String lc_deleted_case;
+
+    String server_version;
  
 }

@@ -195,7 +195,12 @@ public class AppController {
 	// }
 @GetMapping("/")
 	public String gethome(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
-          model.addAttribute("content", "../auth/login.jsp");
+           String server_version = cls_url_config.getServer_version() ;
+
+	  // model.addAttribute("content", "../auth/login.jsp");
+	  System.out.println(server_version);
+	   request.setAttribute("server_version", server_version);
+		model.addAttribute("content", "../auth/login.jsp");
         return "layouts/guest";
 	///	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 	}
