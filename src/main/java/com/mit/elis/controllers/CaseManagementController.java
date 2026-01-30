@@ -4966,7 +4966,7 @@ public class CaseManagementController {
 				String transaction_details = case_obj.get("transaction_details").toString();
 				String job_detail = case_obj.get("job_detail").toString();
 
-				//String job_details = case_obj.get("job_details").toString();
+				String job_details = case_obj.get("job_details").toString();
 				String parcels_coordinates = case_obj.get("parcels_coordinates").toString();
 				String lrd_valuation_section = case_obj.get("lrd_valuation_section").toString();
 				String lrd_memorials_section = case_obj.get("lrd_memorials_section").toString();
@@ -4975,18 +4975,18 @@ public class CaseManagementController {
 				String lrd_proprietorship_section = case_obj.get("lrd_proprietorship_section").toString();
 
 				String lrd_reservation_section = case_obj.get("lrd_reservation_section").toString();
-				String outgoing_sms = case_obj.get("outgoing_sms").toString();
+				//String outgoing_sms = case_obj.get("outgoing_sms").toString();
 
 				String application_requests = case_obj.get("application_requests").toString();
 String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString();
 
 				
-				String collection_checklist = case_obj.get("collection_checklist").toString();
+				//String collection_checklist = case_obj.get("collection_checklist").toString();
 				String application_munites = case_obj.get("application_munites").toString();
 				String application_notes = case_obj.get("application_notes").toString();
 				String payment_bill = case_obj.get("payment_bill").toString();
 				String payment_invoice = case_obj.get("payment_invoice").toString();
-				String comments_on_application = case_obj.get("comments_on_application").toString();
+				//String comments_on_application = case_obj.get("comments_on_application").toString();
 				String parties = case_obj.get("parties").toString();
 				String active_case_queries = case_obj.get("active_case_query").toString();
 				String active_case_objection = case_obj.get("active_case_objection").toString();
@@ -5010,7 +5010,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				// ArrayList main_details_list =
 				// googleJson.fromJson(main_details, ArrayList.class);
-				//ArrayList job_details_list = googleJson.fromJson(job_details, ArrayList.class);
+				ArrayList job_details_list = googleJson.fromJson(job_details, ArrayList.class);
 				ArrayList parcels_coordinates_list = googleJson.fromJson(parcels_coordinates, ArrayList.class);
 				ArrayList lrd_valuation_section_list = googleJson.fromJson(lrd_valuation_section, ArrayList.class);
 				ArrayList lrd_memorials_section_list = googleJson.fromJson(lrd_memorials_section, ArrayList.class);
@@ -5035,12 +5035,12 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 						
 
-						ArrayList outgoing_sms_list = googleJson.fromJson(outgoing_sms, ArrayList.class);
-				ArrayList collection_checklist_list = googleJson.fromJson(collection_checklist, ArrayList.class);
+						//ArrayList outgoing_sms_list = googleJson.fromJson(outgoing_sms, ArrayList.class);
+				//ArrayList collection_checklist_list = googleJson.fromJson(collection_checklist, ArrayList.class);
 				ArrayList application_munites_list = googleJson.fromJson(application_munites, ArrayList.class);
 				ArrayList application_notes_list = googleJson.fromJson(application_notes, ArrayList.class);
 				ArrayList payment_bill_list = googleJson.fromJson(payment_bill, ArrayList.class);
-				ArrayList comments_on_application_list = googleJson.fromJson(comments_on_application, ArrayList.class);
+				//ArrayList comments_on_application_list = googleJson.fromJson(comments_on_application, ArrayList.class);
 				ArrayList parties_list = googleJson.fromJson(parties, ArrayList.class);
 				ArrayList payment_invoice_list = googleJson.fromJson(payment_invoice, ArrayList.class);
 
@@ -5062,7 +5062,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						System.out.println(baby_step_milestone_list);
 
 				// request.setAttribute("transaction_details", main_details);
-				//request.setAttribute("job_details", job_details_list);
+				request.setAttribute("job_details", job_details_list);
 				// request.setAttribute("parcels_coordinates",
 				// parcels_coordinates_list);
 				request.setAttribute("lrd_valuation_section", lrd_valuation_section_list);
@@ -5075,11 +5075,11 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("active_digital_workflow_step_list", active_digital_workflow_step_list);
 
 				
-				request.setAttribute("collection_checklist", collection_checklist_list);
+				//request.setAttribute("collection_checklist", collection_checklist_list);
 				request.setAttribute("application_munites", application_munites_list);
 				request.setAttribute("application_notes", application_notes_list);
 				request.setAttribute("payment_bill", payment_bill_list);
-				request.setAttribute("comments_on_application", comments_on_application_list);
+				//request.setAttribute("comments_on_application", comments_on_application_list);
 				request.setAttribute("parties", parties_list);
 				request.setAttribute("payment_invoice", payment_invoice_list);
 				request.setAttribute("application_requests", application_requests_list);
@@ -5094,7 +5094,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("baby_step_milestone_list", baby_step_milestone_list);
 				
 
-				request.setAttribute("outgoing_sms", outgoing_sms_list);
+			//	request.setAttribute("outgoing_sms", outgoing_sms_list);
 
 				request.setAttribute("parcel_wkt", case_obj.get("parcel_wkt").toString());
 				request.setAttribute("certificete_approval_status",
@@ -5113,18 +5113,18 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				new_case_number = parcel_details_obj.get("case_number").toString();
 				request.setAttribute("glpin", parcel_details_obj.get("glpin").toString());
-				request.setAttribute("licensed_surveyor_number", parcel_details_obj.get("licensed_no").toString());
+				//request.setAttribute("licensed_surveyor_number", parcel_details_obj.get("licensed_no").toString());
 				request.setAttribute("regional_number", parcel_details_obj.get("regional_number").toString());
 				request.setAttribute("locality", parcel_details_obj.get("locality").toString());
-				request.setAttribute("district", parcel_details_obj.get("district").toString());
-				request.setAttribute("region", parcel_details_obj.get("region").toString());
+				//request.setAttribute("district", parcel_details_obj.get("district").toString());
+				//request.setAttribute("region", parcel_details_obj.get("region").toString());
 				request.setAttribute("size_of_land", parcel_details_obj.get("land_size").toString());
-				request.setAttribute("extent", parcel_details_obj.get("extent").toString());
+				//request.setAttribute("extent", parcel_details_obj.get("extent").toString());
 				request.setAttribute("registry_mapref", parcel_details_obj.get("registry_mapref").toString());
 				request.setAttribute("plan_no", parcel_details_obj.get("plan_no").toString());
 				request.setAttribute("cc_no", parcel_details_obj.get("cc_no").toString());
 				request.setAttribute("ltr_plan_no", parcel_details_obj.get("ltr_plan_no").toString());
-				request.setAttribute("locality_class", parcel_details_obj.get("locality_class").toString());
+				//request.setAttribute("locality_class", parcel_details_obj.get("locality_class").toString());
 				request.setAttribute("registration_district_number",
 						parcel_details_obj.get("registration_district_number").toString());
 				request.setAttribute("registration_section_number",
@@ -5132,11 +5132,9 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("registration_block_number",
 						parcel_details_obj.get("registration_block_number").toString());
 
-				request.setAttribute("need_for_new_transaction",
-						parcel_details_obj.get("need_for_new_transaction").toString());
+				//request.setAttribute("need_for_new_transaction",parcel_details_obj.get("need_for_new_transaction").toString());
 
-				request.setAttribute("parcel_remarks",
-						parcel_details_obj.get("remarks").toString());
+				//request.setAttribute("parcel_remarks",parcel_details_obj.get("remarks").toString());
 
 				request.setAttribute("smd_reference_number",
 						parcel_details_obj.get("smd_reference_number").toString());
@@ -5247,65 +5245,23 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 	business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
 
 						
-				// JSONArray arr_r = new JSONArray();
-				// String folderpath = cls_url_config.getCase_upload_location() + new_case_number;
-				// // System.out.println("folderpath: " +folderpath);
-				// // List All Files In a Folder
-				// File subdir = new File(folderpath.toString());
-				// String[] children = subdir.list();
-				// if (children == null) {
-				// 	// System.out.println("Either dir does not exist or is not a
-				// 	// directory");
-				// } else {
-				// 	for (int j = 0; j < children.length; j++) {
-				// 		String filename_doc = children[j];
-				// 		// System.out.println("case_number: " + case_number);
-				// 		// System.out.println("File: " + filename_doc);
-				// 		String path = folderpath.toString() + "/" + filename_doc;
+				// String get_gender_list = user_web_service.get_list_of_gender(
+				// 		cls_url_config.getWeb_service_url_ser(),
+				// 		cls_url_config.getWeb_service_url_ser_api_key());
+				// // web_service_response = get_gender_list;
+				// System.out.println(get_gender_list);
+				// JSONObject menu_obj_data;
+				// // menu_obj_data = new JSONObject(get_gender_list);
+				// // String all_menus_data = menu_obj_data.get("data").toString();
+				// // System.out.println(all_menus_data);
+				// // Gson googleJson = new Gson();
+				// ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
 
-				// 		String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
-				// 		JSONObject obj_r = new JSONObject();
-				// 		// obj_r.put( "d_id" , 0 );
-				// 		// obj_r.put( "job_number" , "SMDGARGA37542018" );
-				// 		// obj_r.put( "case_number" , "LCGARGACN37542018" );
-				// 		obj_r.put("document_name", filename_doc);
-				// 		obj_r.put("document_type", path);
-				// 		obj_r.put("document_extention", extension);
-				// 		obj_r.put("document_file", path);
-				// 		obj_r.put("uploaded_by", "");
-				// 		obj_r.put("uploaded_date", "");
-
-				// 		arr_r.put(obj_r);
-				// 	}
-
-				// }
-				// request.setAttribute("casescanneddocuments",
-				// arr_r.toString());
-
-			
-
-				String get_gender_list = user_web_service.get_list_of_gender(
-						cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key());
-				// web_service_response = get_gender_list;
-				System.out.println(get_gender_list);
-				JSONObject menu_obj_data;
-				// menu_obj_data = new JSONObject(get_gender_list);
-				// String all_menus_data = menu_obj_data.get("data").toString();
-				// System.out.println(all_menus_data);
-				// Gson googleJson = new Gson();
-				ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
-
-				request.setAttribute("genderlist", javaArrayListFromGSON);
-				// request.setAttribute("casescanneddocuments_public",
-				// arr_r_public.toString());
+			//	request.setAttribute("genderlist", javaArrayListFromGSON);
 				request.setAttribute("page_name", "case_processing");
 				request.setAttribute("page_name_", "review_application_progress_details");
                 request.setAttribute("page_name", "application_review_details_advanced");
-				
-				// System.out.println(arr_r.toString());
-				// System.out.println(arr_r_public.toString());
-
+	
 				// System.out.println(business_process_sub_name);
 						model.addAttribute("content", "../pages/client_application/_application_review_details_ai.jsp"); return "layouts/app";
 
@@ -5457,7 +5413,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				String application_notes = case_obj.get("application_notes").toString();
 				String payment_bill = case_obj.get("payment_bill").toString();
 				String payment_invoice = case_obj.get("payment_invoice").toString();
-				// String comments_on_application = case_obj.get("comments_on_application").toString();
+				String comments_on_application = case_obj.get("comments_on_application").toString();
 				String parties = case_obj.get("parties").toString();
 				String active_case_queries = case_obj.get("active_case_query").toString();
 				String active_case_objection = case_obj.get("active_case_objection").toString();
@@ -5511,7 +5467,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				ArrayList application_munites_list = googleJson.fromJson(application_munites, ArrayList.class);
 				ArrayList application_notes_list = googleJson.fromJson(application_notes, ArrayList.class);
 				ArrayList payment_bill_list = googleJson.fromJson(payment_bill, ArrayList.class);
-				//ArrayList comments_on_application_list = googleJson.fromJson(comments_on_application, ArrayList.class);
+				ArrayList comments_on_application_list = googleJson.fromJson(comments_on_application, ArrayList.class);
 				ArrayList parties_list = googleJson.fromJson(parties, ArrayList.class);
 				ArrayList payment_invoice_list = googleJson.fromJson(payment_invoice, ArrayList.class);
 
@@ -5550,7 +5506,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("application_munites", application_munites_list);
 				request.setAttribute("application_notes", application_notes_list);
 				request.setAttribute("payment_bill", payment_bill_list);
-				// request.setAttribute("comments_on_application", comments_on_application_list);
+				request.setAttribute("comments_on_application", comments_on_application_list);
 				request.setAttribute("parties", parties_list);
 				request.setAttribute("payment_invoice", payment_invoice_list);
 				request.setAttribute("application_requests", application_requests_list);

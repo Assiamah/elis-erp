@@ -1046,7 +1046,7 @@
                     </div>
 
                     <!-- AHistory Or Tracking Information -->
-                    <div class="accordion-item">
+                    <!-- <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
                                     data-bs-target="#collapseHistoryOrTrackingInformation">
@@ -1079,7 +1079,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Documents -->
                     <div class="accordion-item">
