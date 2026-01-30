@@ -533,7 +533,7 @@ $(document).ready(function() {
 									'<i class="fas fa-eye"></i>' +
 								'</button>' +
 							'</form>' +
-							'<form action="request_application_progress_details_advance" method="post" class="d-inline">' +
+							'<form action="request_application_progress_details_ai" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="transaction_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="job_number" value="' + this.job_number + '">' +
@@ -688,7 +688,7 @@ $(document).ready(function() {
 									'<i class="fas fa-eye"></i>' +
 								'</button>' +
 							'</form>' +
-							'<form action="request_application_progress_details_advance" method="post" class="d-inline">' +
+							'<form action="request_application_progress_details_ai" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="transaction_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="job_number" value="' + this.job_number + '">' +
