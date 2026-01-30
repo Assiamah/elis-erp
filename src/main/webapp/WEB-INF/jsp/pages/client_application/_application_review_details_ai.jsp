@@ -483,6 +483,14 @@
 											<div class="fw-medium text-dark">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
 										</div>
                                         <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Volume Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(volume_number) ? '--' : fn:trim(volume_number)}</div>
+										</div>
+                                        <div class="col-md-4">
+											<label class="form-label text-muted small mb-1">Folio Number</label>
+											<div class="fw-medium text-dark">${empty fn:trim(folio_number) ? '--' : fn:trim(folio_number)}</div>
+										</div>
+                                        <div class="col-md-4">
 											<label class="form-label text-muted small mb-1">Interest Number</label>
 											<div class="fw-medium text-dark">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
 										</div>

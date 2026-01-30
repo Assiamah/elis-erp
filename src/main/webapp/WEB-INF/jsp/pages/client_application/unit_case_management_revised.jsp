@@ -225,7 +225,7 @@
                             <div class="card-body p-0">
                                 <div class="row g-0">
                                     <div class="col-xl-6 ">
-                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-lg-end border-bottom mb-0 rounded-0">
+                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-lg-end border-bottom mb-0 rounded-0 h-100">
                                             <a href="javascript:void(0);" id="btn_load_resolved_queries">
                                                  <div class="card-body">
                                                     <div class="mb-3">
@@ -244,7 +244,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
-                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-bottom mb-0 rounded-0">
+                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-bottom mb-0 rounded-0 h-100">
                                             <a href="javascript:void(0);" class="loadReminderApps"
                                                 data-method="reminder_apps" 
                                                 data-url="DashboardAppsWithDivision" 
@@ -268,7 +268,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
-                                        <div class="card custom-card stat-card dashboard-main-card dashboard-main-border border-0 shadow-none border-lg-end mb-0 rounded-0">
+                                        <div class="card custom-card stat-card dashboard-main-card dashboard-main-border border-0 shadow-none border-lg-end mb-0 rounded-0 h-100">
                                             <a href="javascript:void(0);" class="loadWarningApps"
                                                 data-method="warning_apps" 
                                                 data-url="DashboardAppsWithDivision" 
@@ -292,7 +292,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-6">
-                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none mb-0 rounded-0">
+                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none mb-0 rounded-0 h-100">
                                             <a href="javascript:void(0);" class="loadComplianceQueriesApps"
                                                 data-method="compliance_queries_apps" 
                                                 data-url="DashboardAppsWithDivision" 

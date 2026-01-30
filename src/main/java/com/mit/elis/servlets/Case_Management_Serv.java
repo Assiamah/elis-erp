@@ -3411,7 +3411,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-		
+				System.out.println(obj.toString());
 
 				web_service_response = casemgt_cl_m.select_update_date_of_issue(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),

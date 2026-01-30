@@ -15786,5 +15786,260 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    $('#lc_btn_generate_certificate_number').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var certificate_number = $("#lc_xxx_certificate_number").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+        
+        // Use SweetAlert for confirmation
+        swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to update the certificate number for this case? This can not be undone.",
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Cancel",
+                    value: null,
+                    visible: true
+                },
+                confirm: {
+                    text: "Yes, update it!",
+                    value: true,
+                    visible: true
+                }
+            },
+            dangerMode: true,
+        })
+        .then((willUpdate) => {
+            if (willUpdate) {
+                // Proceed with AJAX call if user confirms
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_update_certificate_number_on_case',
+                        case_number: case_number,
+                        job_number: job_number,
+                        fullname: send_by_name,
+                        userid: send_by_id,
+                        certificate_number: certificate_number
+                    },
+                    cache: false,
+                    beforeSend: function () {
+                        // Show loading state if needed
+                        // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+                    },
+                    success: function(jobdetails) {
+                        console.log(jobdetails);
+                        $('#lc_txt_certificate_number').val(jobdetails);
+                        
+                        // Show success message
+                        swal.fire({
+                            title: "Success!",
+                            text: "Certificate number has been updated successfully.",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        }).then(() => {
+                            // Optional: Show your existing modal after success
+                            $("#general_message_dialog").modal();
+                            $('#general_message_dialog #general_message_dialog_msg_new').val(jobdetails);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Show error message
+                        swal.fire({
+                            title: "Error!",
+                            text: "Failed to update certificate number. Please try again.",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    $('#btn_save_lrd_certificate_update_details_').on('click', function(e) {
+        // Collect all values
+        var formData = {
+            job_number: $("#cs_main_job_number").val(),
+            case_number: $("#cs_main_case_number").val(),
+            //certificate_number: $("#lc_txt_certificate_number").val(),
+            volume_number: $("#lc_txt_volume_number_").val(),
+            folio_number: $("#lc_txt_folio_number_").val(),
+            //certificate_type: $("#lc_txt_type_of_certificate").val(),
+            transaction_number: $("#cs_main_transaction_number").val()
+        };
+
+        // Validate required fields
+        var missingFields = [];
+        //if (!formData.certificate_number) missingFields.push('Certificate Number');
+        if (!formData.volume_number) missingFields.push('Volume Number');
+        if (!formData.folio_number) missingFields.push('Folio Number');
+        //if (!formData.certificate_type) missingFields.push('Certificate Type');
+
+        if (missingFields.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                html: `Please fill in the following fields:<br><strong>${missingFields.join(', ')}</strong>`,
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        // Show confirmation with details
+        Swal.fire({
+            title: 'Save Changes?',
+            html: `
+                <div style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                    <p style="margin: 5px 0;"><strong>Job Number:</strong> ${formData.job_number}</p>
+                    <p style="margin: 5px 0;"><strong>Case Number:</strong> ${formData.case_number}</p>
+                    <!--<p style="margin: 5px 0;"><strong>Certificate:</strong> ${formData.certificate_number}</p>-->
+                    <p style="margin: 5px 0;"><strong>Volume:</strong> ${formData.volume_number}</p>
+                    <p style="margin: 5px 0;"><strong>Folio:</strong> ${formData.folio_number}</p>
+                   <!-- <p style="margin: 5px 0;"><strong>Type:</strong> ${formData.certificate_type}</p>-->
+                </div>
+                <p>Do you want to save these changes? This can not be undone.</p>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Save',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-secondary'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Add loading state to button
+                var button = $('#btn_save_lrd_certificate_update_details_');
+                var originalText = button.html();
+                button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_update_title_plan_certificate_details',
+                        ...formData
+                    },
+                    cache: false,
+                    success: function(response) {
+                        // Restore button state
+                        button.prop('disabled', false).html(originalText);
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: response,
+                            confirmButtonText: 'OK',
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Restore button state
+                        button.prop('disabled', false).html(originalText);
+                        
+                        // Show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Update Failed',
+                            text: 'An error occurred while saving. Please try again.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    $('#lc_btn_update_date_of_issue').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var date_of_issue = $("#lc_txt_date_of_issue").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+
+        // Validate date if needed
+        if (!date_of_issue) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Date',
+                text: 'Please enter a date of issue',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Update Date of Issue?',
+            html: `
+                <div style="text-align: left; margin: 15px 0;">
+                    <p><strong>Date of Issue:</strong> ${date_of_issue}</p>
+                    <p><strong>Case Number:</strong> ${case_number}</p>
+                    <p><strong>Job Number:</strong> ${job_number}</p>
+                </div>
+                <p>Are you sure you want to update the date of issue? This can not be undone.</p>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_update_date_of_issue',
+                        case_number: case_number,
+                        job_number: job_number,
+                        date_of_issue: date_of_issue,
+                        fullname: send_by_name,
+                        userid: send_by_id
+                    },
+                    cache: false,
+                    beforeSend: function() {
+                        // Show loading state if needed
+                        // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+                    },
+                    success: function(jobdetails) {
+                        console.log(jobdetails);
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Date of issue has been updated successfully',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Show your existing modal after SweetAlert
+                            $("#general_message_dialog").modal();
+                            $('#general_message_dialog #general_message_dialog_msg_new').val(jobdetails);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Failed to update date of issue. Please try again.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
 });
 

@@ -270,26 +270,29 @@
                                         </td>
                                         
                                         <!-- Actions -->
-                                        <td class=" gap-2">
-                                             <form action="front_office_view_application" method="post" class="d-inline">
-                                                <input type="hidden" name="case_number" value="${appfiles.case_number}">
-                                                <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
-                                                <input type="hidden" name="job_number" value="${appfiles.job_number}">
-                                                <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
-                                                <button type="submit" class="btn btn-sm btn-primary">
-                                                    <i class="ri-eye-line"></i>
-                                                </button>
-                                            </form>
-                                            <form action="request_application_progress_details_ai" method="post" class="d-inline">
-                                                <input type="hidden" name="case_number" value="${appfiles.case_number}">
-                                                <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
-                                                <input type="hidden" name="job_number" value="${appfiles.job_number}">
-                                                <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
-                                                <input type="hidden" name="review_type" value="${appfiles.request_category}">
-                                                <button type="submit" class="btn btn-sm btn-warning">
-                                                    <i class="ri-folder-open-line"></i>
-                                                </button>
-                                            </form>
+                                        <td class="">
+                                            <div class="d-flex gap-2">
+                                                <form action="front_office_view_application" method="post" class="d-inline">
+                                                    <input type="hidden" name="search_text" value="${appfiles.case_number}">
+                                                    <input type="hidden" name="case_number" value="${appfiles.transaction_number}">
+                                                    <input type="hidden" name="job_number" value="${appfiles.job_number}">
+                                                    <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
+                                                    <button type="submit" class="btn btn-sm btn-primary">
+                                                        <i class="ri-eye-line"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="request_application_progress_details_ai" method="post" class="d-inline">
+                                                    <input type="hidden" name="case_number" value="${appfiles.case_number}">
+                                                    <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
+                                                    <input type="hidden" name="job_number" value="${appfiles.job_number}">
+                                                    <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
+                                                    <input type="hidden" name="review_type" value="${appfiles.request_category}">
+                                                    <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
+                                                    <button type="submit" class="btn btn-sm btn-warning">
+                                                        <i class="ri-folder-open-line"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                     </c:forEach>

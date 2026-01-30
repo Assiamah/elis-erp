@@ -2593,7 +2593,7 @@
         <!-- Modal Header -->
         <div class="modal-header bg-primary text-white">
            <h5 class="modal-title text-white" id="update_motherfile_certificate_number_label">
-              <i class="fas fa-map-marked-alt me-2"></i>
+              <i class="fas fa-certificate me-2"></i>
               Update Motherfile Certificate Number
            </h5>
            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -2601,77 +2601,36 @@
         
         <!-- Modal Body -->
         <div class="modal-body">
-            <input  id="gid_pl_smd" name="gid_pl_smd" type="hidden" value="0" >
-            <input  id="lc_txt_transaction_number_pl_smd" name="lc_txt_transaction_number_pl_smd" type="hidden" value="0" >
-            <!-- Status Indicator -->
-            <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <div>
-                        <span class="fw-medium">Plan Status:</span>
-                        <span class="badge ms-2 ${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-') ? 'bg-success' : 'bg-warning'}">
-                            ${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-') ? 'Completed' : 'Pending'}
-                        </span>
-                    </div>
-                </div>
-            </div>
-           
             <!-- Form Fields -->
             <div class="mb-4">
                 <label for="txt_lc_plan_no_pl_smd" class="form-label fw-medium">
                     <i class="fas fa-hashtag me-1"></i>
-                    Plan Number
+                    Certificate Number
                 </label>
                 <div class="input-group">
                     <span class="input-group-text">
-                        <i class="fas fa-map"></i>
+                        <i class="fas fa-certificate"></i>
                     </span>
                     <c:choose>
-                        <c:when test="${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-')}">
-                            <input type="text" class="form-control bg-light" id="txt_lc_plan_no_pl_smd" 
-                                   value="${plan_no}" readonly />
+                        <c:when test="${not empty certificate_number and certificate_number != 'null' and not fn:contains(certificate_number, '-')}">
+                            <input type="text" class="form-control bg-light" id="lc_xxx_certificate_number" 
+                                   value="${certificate_number}" readonly />
                             <span class="input-group-text text-success">
                                 <i class="fas fa-check"></i>
                             </span>
                         </c:when>
                         <c:otherwise>
-                            <input type="text" class="form-control" id="txt_lc_plan_no_pl_smd" 
-                                   value="${plan_no}" placeholder="Enter plan number" />
+                            <input type="text" class="form-control" id="lc_xxx_certificate_number" 
+                                   value="${certificate_number}" placeholder="Enter certificate number" />
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <small class="form-text text-muted mt-1">Unique identifier for the title plan</small>
-            </div>
-            
-            <div class="mb-4">
-                <label for="txt_lc_registry_mapref_pl_smd" class="form-label fw-medium">
-                    <i class="fas fa-map-pin me-1"></i>
-                    Registry Map Reference
-                </label>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </span>
-                    <c:choose>
-                        <c:when test="${not empty registry_mapref and registry_mapref != 'null' and not fn:contains(registry_mapref, '-')}">
-                            <input type="text" class="form-control bg-light" id="txt_lc_registry_mapref_pl_smd" 
-                                   value="${registry_mapref}" readonly />
-                            <span class="input-group-text text-success">
-                                <i class="fas fa-check"></i>
-                            </span>
-                        </c:when>
-                        <c:otherwise>
-                            <input type="text" class="form-control" id="txt_lc_registry_mapref_pl_smd" 
-                                   value="${registry_mapref}" placeholder="Enter registry map reference" />
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <small class="form-text text-muted mt-1">Official map reference from registry</small>
+                <small class="form-text text-muted mt-1">Unique identifier for the certificate</small>
             </div>
             
             <!-- Update Button -->
             <div class="mt-4">
-                <button class="btn btn-primary w-100 py-3" id="btn_save_lrd_title_plan_update_details_smd_new_update">
+                <button class="btn btn-primary w-100 py-3" id="lc_btn_generate_certificate_number">
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="me-3">
                             <i class="fas fa-save fa-lg"></i>
@@ -2679,15 +2638,15 @@
                         <div class="text-start">
                             <div class="fw-medium">
                                 <c:choose>
-                                    <c:when test="${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-')}">
-                                        Update Plan Details
+                                    <c:when test="${not empty certificate_number and certificate_number != 'null' and not fn:contains(certificate_number, '-')}">
+                                        Update Certificate Number
                                     </c:when>
                                     <c:otherwise>
-                                        Save Plan Details
+                                        Save Certificate Number
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            <small class="d-block opacity-75">Save all plan information</small>
+                            <!-- <small class="d-block opacity-75">Save all plan information</small> -->
                         </div>
                     </div>
                 </button>
@@ -2700,7 +2659,7 @@
                     <div>
                         <h6 class="alert-heading mb-2">Instructions</h6>
                         <p class="small mb-0">
-                            Update the plan information if the title plan has already been prepared.
+                            Update the certificate number if the certificate number has not been created.
                         </p>
                     </div>
                 </div>
@@ -2709,8 +2668,8 @@
         
         <!-- Modal Footer -->
         <div class="modal-footer bg-light">
-            <div class="d-flex justify-content-between w-100 align-items-center">
-                <div class="text-muted small">
+            <div class="d-flex justify-content-end w-100 align-items-center">
+                <!-- <div class="text-muted small">
                     <i class="fas fa-history me-1"></i>
                     Last updated: <span id="planLastUpdated">
                         <c:choose>
@@ -2718,7 +2677,256 @@
                             <c:otherwise>Never</c:otherwise>
                         </c:choose>
                     </span>
+                </div> -->
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Close
+                    </button>
+                    <!-- <button type="button" class="btn btn-outline-info" id="btn_view_plan_preview">
+                        <i class="fas fa-eye me-1"></i>
+                        Preview
+                    </button> -->
                 </div>
+            </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="update_case_volume_and_folio" tabindex="-1"
+     aria-labelledby="update_case_volume_and_folio_label" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+     <div class="modal-content border-0 shadow-lg">
+        
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+           <h5 class="modal-title text-white" id="update_case_volume_and_folio_label">
+              <i class="fas fa-certificate me-2"></i>
+              Update Case Volume and Folio
+           </h5>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <!-- Form Fields -->
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-12">
+                    <div class="form-group">
+                    <label for="" class="form-label fw-medium">
+                        <i class="fas fa-book me-1"></i>
+                        Volume Number
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                        <i class="fas fa-hashtag"></i>
+                        </span>
+                        <c:choose>
+                        <c:when test="${not empty volume_number and volume_number != 'null' and not fn:contains(volume_number, '-')}">
+                            <input type="text" class="form-control bg-light" id="lc_txt_volume_number_" 
+                                   value="${volume_number}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="lc_txt_volume_number_" 
+                                   value="${volume_number}" placeholder="Enter volume number" />
+                        </c:otherwise>
+                    </c:choose>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                    <label for="" class="form-label fw-medium">
+                        <i class="fas fa-file-alt me-1"></i>
+                        Folio Number
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                        <i class="fas fa-hashtag"></i>
+                        </span>
+                        <c:choose>
+                        <c:when test="${not empty folio_number and folio_number != 'null' and not fn:contains(folio_number, '-')}">
+                            <input type="text" class="form-control bg-light" id="lc_txt_folio_number_" 
+                                   value="${folio_number}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="lc_txt_folio_number_" 
+                                   value="${folio_number}" placeholder="Enter folio number" />
+                        </c:otherwise>
+                    </c:choose>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            
+            <!-- Update Button -->
+            <div class="mt-4">
+                <button class="btn btn-primary w-100 py-3" id="btn_save_lrd_certificate_update_details_">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="me-3">
+                            <i class="fas fa-save fa-lg"></i>
+                        </div>
+                        <div class="text-start">
+                            <div class="fw-medium">
+                                <c:choose>
+                                    <c:when test="${not empty volume_number and volume_number != 'null' and not fn:contains(volume_number, '-')}">
+                                        Update Details
+                                    </c:when>
+                                    <c:otherwise>
+                                        Save Details
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <!-- <small class="d-block opacity-75">Save all plan information</small> -->
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+            <!-- Help Text -->
+            <div class="alert alert-light border mt-4">
+                <div class="d-flex">
+                    <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
+                    <div>
+                        <h6 class="alert-heading mb-2">Instructions</h6>
+                        <p class="small mb-0">
+                            Update the volume and folio number if the volume and folio number has not been created.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="modal-footer bg-light">
+            <div class="d-flex justify-content-end w-100 align-items-center">
+                <!-- <div class="text-muted small">
+                    <i class="fas fa-history me-1"></i>
+                    Last updated: <span id="planLastUpdated">
+                        <c:choose>
+                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
+                            <c:otherwise>Never</c:otherwise>
+                        </c:choose>
+                    </span>
+                </div> -->
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Close
+                    </button>
+                    <!-- <button type="button" class="btn btn-outline-info" id="btn_view_plan_preview">
+                        <i class="fas fa-eye me-1"></i>
+                        Preview
+                    </button> -->
+                </div>
+            </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+ 
+<div class="modal fade effect-scale modal-blur" id="update_case_date_of_issue" tabindex="-1"
+     aria-labelledby="update_case_date_of_issue_label" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+     <div class="modal-content border-0 shadow-lg">
+        
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+           <h5 class="modal-title text-white" id="update_case_date_of_issue_label">
+              <i class="fas fa-calendar me-2"></i>
+              Update Case Date of Issue
+           </h5>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <!-- Form Fields -->
+            <div class="mb-4">
+                <label for="txt_lc_plan_no_pl_smd" class="form-label fw-medium">
+                    <i class="fas fa-hashtag me-1"></i>
+                    Date of Issue
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-calendar"></i>
+                    </span>
+                    <c:choose>
+                        <c:when test="${not empty date_of_issue and date_of_issue != 'null' and not fn:contains(date_of_issue, '-')}">
+                            <input type="date" class="form-control bg-light" id="lc_txt_date_of_issue" 
+                                   value="${date_of_issue}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="date" class="form-control" id="lc_txt_date_of_issue" 
+                                   value="${date_of_issue}" placeholder="Enter date of issue" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <!-- <small class="form-text text-muted mt-1">Unique identifier for the certificate</small> -->
+            </div>
+            
+            <!-- Update Button -->
+            <div class="mt-4">
+                <button class="btn btn-primary w-100 py-3" id="lc_btn_update_date_of_issue">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="me-3">
+                            <i class="fas fa-save fa-lg"></i>
+                        </div>
+                        <div class="text-start">
+                            <div class="fw-medium">
+                                <c:choose>
+                                    <c:when test="${not empty date_of_issue and date_of_issue != 'null' and not fn:contains(date_of_issue, '-')}">
+                                        Update Date
+                                    </c:when>
+                                    <c:otherwise>
+                                        Save Date
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <!-- <small class="d-block opacity-75">Save all plan information</small> -->
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+            <!-- Help Text -->
+            <div class="alert alert-light border mt-4">
+                <div class="d-flex">
+                    <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
+                    <div>
+                        <h6 class="alert-heading mb-2">Instructions</h6>
+                        <p class="small mb-0">
+                            Update the date of issue if the date of issue has not been created.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="modal-footer bg-light">
+            <div class="d-flex justify-content-end w-100 align-items-center">
+                <!-- <div class="text-muted small">
+                    <i class="fas fa-history me-1"></i>
+                    Last updated: <span id="planLastUpdated">
+                        <c:choose>
+                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
+                            <c:otherwise>Never</c:otherwise>
+                        </c:choose>
+                    </span>
+                </div> -->
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>
