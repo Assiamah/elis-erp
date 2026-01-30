@@ -3155,8 +3155,8 @@ public byte[] create_lc_rent_demand_notice_for_rent_mgt_unit(String softwareFile
     Font tableHeaderFont = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.BOLD);
     Font tableCellFont = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL);
     Font boldTableCellFont = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.BOLD);
-	 Font boldTableCellFont10 = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.BOLD);
-	  Font TableCellFont10 = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.NORMAL);
+	 Font boldTableCellFont10 = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.BOLD);
+	  Font TableCellFont10 = new Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL);
 
     String bdCustomerName = "";
     String bdBusinessProcessId = "";
@@ -3247,10 +3247,10 @@ public byte[] create_lc_rent_demand_notice_for_rent_mgt_unit(String softwareFile
       
 
 		cbAddress.setTextMatrix(50, 720);
-        cbAddress.showText("My Ref No: " + bdFileNumber);
+        cbAddress.showText("Ref No: " + bdFileNumber);
 
-        cbAddress.setTextMatrix(50, 710);
-        cbAddress.showText("Your Ref No:");
+        // cbAddress.setTextMatrix(50, 710);
+        // cbAddress.showText("Your Ref No:");
 
 		BaseFont boldFont = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
 
@@ -3303,6 +3303,7 @@ cbAddress.showText(bdAccountNumber);
         p3.setAlignment(Element.ALIGN_CENTER);
        // p3.setSpacingAfter(20f);
         document.add(p3);
+		  document.add(new Phrase(Chunk.NEWLINE));
 
         // QR Code
         BarcodeQRCode barcodeQRCode = new BarcodeQRCode(bdAccountNumber, 1000, 1000, null);
@@ -3370,7 +3371,7 @@ document.add(addressParagraph);
 // Property Address and Account Number on the same line
 Paragraph propertyAndAccount = new Paragraph();
 propertyAndAccount.add(new Chunk("PLOT NO/LOC: ", TableCellFont10));
-propertyAndAccount.add(new Chunk(bdPlotNumber + ", "+ estate_name + "  / " + bdLocalityOfParcel + "    ", boldTableCellFont10));
+propertyAndAccount.add(new Chunk(bdPlotNumber + ", "+ estate_name + ",  " + bdLocalityOfParcel + "    ", boldTableCellFont10));
 
 // propertyAndAccount.add(new Chunk("ACCOUNT NUMBER: ", TableCellFont10));
 // propertyAndAccount.add(new Chunk(bdAccountNumber, boldTableCellFont10));
@@ -3556,7 +3557,7 @@ signTable.addCell(signCell);
 PdfPCell nameCell = new PdfPCell(new Phrase("NAME: " + wsLoginUser, bodyFont));
 nameCell.setBorder(Rectangle.NO_BORDER);
 nameCell.setPaddingTop(5f);
-nameCell.setPaddingBottom(5f);
+nameCell.setPaddingBottom(0f);
 signTable.addCell(nameCell);
 
 
@@ -3568,7 +3569,7 @@ forPhrase.add(new Chunk("REGIONAL LANDS OFFICER", boldBodyFont));
 forCell.addElement(forPhrase);
 forCell.setBorder(Rectangle.NO_BORDER);
 forCell.setPaddingTop(3f);
-forCell.setPaddingBottom(5f);
+forCell.setPaddingBottom(0f);
 
 PdfPCell contactCell = new PdfPCell();
 Phrase contactPhrase = new Phrase();
@@ -3577,7 +3578,7 @@ contactPhrase.add(new Chunk("( " + web_telephone + " )", italicBodyFont));
 contactCell.addElement(contactPhrase);
 contactCell.setBorder(Rectangle.NO_BORDER);
 contactCell.setPaddingTop(3f);
-contactCell.setPaddingBottom(5f);
+contactCell.setPaddingBottom(0f);
 
 signTable.addCell(forCell);
 signTable.addCell(contactCell);
@@ -3751,9 +3752,9 @@ document.add(signTable);
 
 
 			cbaddress.setTextMatrix(50, 710);
-			cbaddress.showText(("My Ref No: " + bd_file_number));
-			cbaddress.setTextMatrix(50, 700);
-			cbaddress.showText("Your Ref No:" + "");
+			cbaddress.showText(("Ref No: " + bd_file_number));
+			// cbaddress.setTextMatrix(50, 700);
+			// cbaddress.showText("Your Ref No:" + "");
 
 		
 			cbaddress.endText();

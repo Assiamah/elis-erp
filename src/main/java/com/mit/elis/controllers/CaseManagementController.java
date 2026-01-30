@@ -4966,7 +4966,7 @@ public class CaseManagementController {
 				String transaction_details = case_obj.get("transaction_details").toString();
 				String job_detail = case_obj.get("job_detail").toString();
 
-				String job_details = case_obj.get("job_details").toString();
+				//String job_details = case_obj.get("job_details").toString();
 				String parcels_coordinates = case_obj.get("parcels_coordinates").toString();
 				String lrd_valuation_section = case_obj.get("lrd_valuation_section").toString();
 				String lrd_memorials_section = case_obj.get("lrd_memorials_section").toString();
@@ -5010,7 +5010,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				// ArrayList main_details_list =
 				// googleJson.fromJson(main_details, ArrayList.class);
-				ArrayList job_details_list = googleJson.fromJson(job_details, ArrayList.class);
+				//ArrayList job_details_list = googleJson.fromJson(job_details, ArrayList.class);
 				ArrayList parcels_coordinates_list = googleJson.fromJson(parcels_coordinates, ArrayList.class);
 				ArrayList lrd_valuation_section_list = googleJson.fromJson(lrd_valuation_section, ArrayList.class);
 				ArrayList lrd_memorials_section_list = googleJson.fromJson(lrd_memorials_section, ArrayList.class);
@@ -5062,7 +5062,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						System.out.println(baby_step_milestone_list);
 
 				// request.setAttribute("transaction_details", main_details);
-				request.setAttribute("job_details", job_details_list);
+				//request.setAttribute("job_details", job_details_list);
 				// request.setAttribute("parcels_coordinates",
 				// parcels_coordinates_list);
 				request.setAttribute("lrd_valuation_section", lrd_valuation_section_list);
@@ -5244,43 +5244,41 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						job_detail_obj.get("smd_licensed_surveyor_name").toString());
 
 				request.setAttribute("rq_id",rq_id);
+	business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
 
 						
-				JSONArray arr_r = new JSONArray();
+				// JSONArray arr_r = new JSONArray();
+				// String folderpath = cls_url_config.getCase_upload_location() + new_case_number;
+				// // System.out.println("folderpath: " +folderpath);
+				// // List All Files In a Folder
+				// File subdir = new File(folderpath.toString());
+				// String[] children = subdir.list();
+				// if (children == null) {
+				// 	// System.out.println("Either dir does not exist or is not a
+				// 	// directory");
+				// } else {
+				// 	for (int j = 0; j < children.length; j++) {
+				// 		String filename_doc = children[j];
+				// 		// System.out.println("case_number: " + case_number);
+				// 		// System.out.println("File: " + filename_doc);
+				// 		String path = folderpath.toString() + "/" + filename_doc;
 
-				business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
+				// 		String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
+				// 		JSONObject obj_r = new JSONObject();
+				// 		// obj_r.put( "d_id" , 0 );
+				// 		// obj_r.put( "job_number" , "SMDGARGA37542018" );
+				// 		// obj_r.put( "case_number" , "LCGARGACN37542018" );
+				// 		obj_r.put("document_name", filename_doc);
+				// 		obj_r.put("document_type", path);
+				// 		obj_r.put("document_extention", extension);
+				// 		obj_r.put("document_file", path);
+				// 		obj_r.put("uploaded_by", "");
+				// 		obj_r.put("uploaded_date", "");
 
-				String folderpath = cls_url_config.getCase_upload_location() + new_case_number;
-				// System.out.println("folderpath: " +folderpath);
-				// List All Files In a Folder
-				File subdir = new File(folderpath.toString());
-				String[] children = subdir.list();
-				if (children == null) {
-					// System.out.println("Either dir does not exist or is not a
-					// directory");
-				} else {
-					for (int j = 0; j < children.length; j++) {
-						String filename_doc = children[j];
-						// System.out.println("case_number: " + case_number);
-						// System.out.println("File: " + filename_doc);
-						String path = folderpath.toString() + "/" + filename_doc;
+				// 		arr_r.put(obj_r);
+				// 	}
 
-						String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
-						JSONObject obj_r = new JSONObject();
-						// obj_r.put( "d_id" , 0 );
-						// obj_r.put( "job_number" , "SMDGARGA37542018" );
-						// obj_r.put( "case_number" , "LCGARGACN37542018" );
-						obj_r.put("document_name", filename_doc);
-						obj_r.put("document_type", path);
-						obj_r.put("document_extention", extension);
-						obj_r.put("document_file", path);
-						obj_r.put("uploaded_by", "");
-						obj_r.put("uploaded_date", "");
-
-						arr_r.put(obj_r);
-					}
-
-				}
+				// }
 				// request.setAttribute("casescanneddocuments",
 				// arr_r.toString());
 
@@ -5404,8 +5402,10 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 			obj.put("job_number", job_number);
 			obj.put("job_purpose", job_purpose);
 			String batchlistdivison = obj.toString();
-			 System.out.println(batchlistdivison);
-		
+			  System.out.println(batchlistdivison);
+
+			   System.out.println("review_type");
+		  System.out.println(review_type);
 			if (review_type.equals("GeneralWorkRequest")) {
 	         web_service_response = vas_cl.select_review_digital_workflow(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),

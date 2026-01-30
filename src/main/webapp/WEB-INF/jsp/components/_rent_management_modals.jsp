@@ -1084,7 +1084,7 @@
                                     <label for="rt_e_period_in_arrears" class="form-label">
                                         <i class="fas fa-exclamation-triangle me-1"></i>Periods in Arrears <span class="text-danger">*</span>
                                     </label>
-                                    <input type="number" class="form-control" id="rt_e_period_in_arrears" min="0" value="0" required>
+                                    <input type="text" class="form-control" id="rt_e_period_in_arrears" required>
                                     <div class="invalid-feedback">Please enter periods in arrears.</div>
                                 </div>
                                 

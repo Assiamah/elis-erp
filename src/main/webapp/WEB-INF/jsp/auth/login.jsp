@@ -328,7 +328,7 @@
                                 width="42" class="rounded-circle" alt="logo">
                         </div>
                     <h1 class="auth-title mb-1">Enterprise Land Information System</h1>
-                        <p class="auth-subtitle mb-0">Secure Access Portal</p>
+                        <p class="auth-subtitle mb-0">Secure Access</p>
                     </div>
 
                     <!-- Body -->
