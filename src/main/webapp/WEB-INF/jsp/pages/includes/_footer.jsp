@@ -2318,7 +2318,7 @@ var list_of_application_new = JSON.stringify(table)
    		                 	business_process_sub_name:business_process_sub_name,
    		                 signature:'No'
          				 },
-         				 cache: false,
+         				 cache: false, 
          				xhrFields:{
          	                responseType: 'blob'
          	            },

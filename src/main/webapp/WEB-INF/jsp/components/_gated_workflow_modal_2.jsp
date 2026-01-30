@@ -1913,3 +1913,824 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade modal-blur effect-scale" id="compose_search_report" tabindex="-1"
+	role="dialog" aria-labelledby="compose_search_reportmodal" aria-hidden="true"
+>
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="review_records_verification_label">
+                    <i class="fas fa-edit me-2"></i>
+                    Compose Search Report
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+			<div class="modal-body">
+				<div class="card border">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Records Information
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Records Info.</th>
+                                        <th>Entered By</th>
+                                        <th>Entered Date</th>
+                                        <th>Division</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${application_notes}" var="application_notes_row">
+                                    <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                        ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-comment text-muted me-2"></i>
+                                                <span class="text-truncate" style="max-width: 200px;">
+                                                    ${application_notes_row.an_description}
+                                                </span>
+                                                ${application_notes_row.an_status == false ? 
+                                                    '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user-circle text-muted me-2"></i>
+                                                <span>${application_notes_row.created_by}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                                <span>${application_notes_row.created_date}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                ${application_notes_row.division}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-outline-primary btn-sm viewNotesModal" 
+                                                    data-target-id="${application_notes_row.an_id}"
+                                                    data-an_description="${application_notes_row.an_description}"
+                                                    data-created_by="${application_notes_row.created_by}"
+                                                    data-created_date="${application_notes_row.created_date}"
+                                                    data-modified_by="${application_notes_row.created_by}"
+                                                    data-modified_date="${application_notes_row.created_date}"
+                                                    data-division="${application_notes_row.division}"
+                                                    ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                <i class="fas fa-eye me-1"></i>
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i> Summarize Search Reports
+                    </div>
+                    <div class="card-body">
+                        <!-- The Form starts here -->
+                        <div class="form-group">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="lc_search_report_summary_details_2" class="form-label">Report Summary</label>
+                                    <!-- <textarea id="lc_search_report_summary_details_2" 
+                                        name="lc_search_report_summary_details" 
+                                        class="form-control" 
+                                        required 
+                                        rows="7" 
+                                        style="padding:50px !important;">${remark_or_comment}</textarea>
+                                    </div> -->
+                                    <div class="position-relative">
+                                        <!-- <textarea id="lc_search_report_summary_details" 
+                                                    name="lc_search_report_summary_details" 
+                                                    class="form-control" 
+                                                    required 
+                                                    rows="7"
+                                                    style="min-height: 200px; padding: 1.5rem !important;"
+                                                    placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                        </textarea> -->
+                                        <div id="lc_search_report_summary_details_2" class="quill-editor" style="height: 300px;">
+                                            ${remark_or_comment}
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            <div class="row g-3 mt-2">
+                                <div class="col-auto">
+                                <button type="button" 
+                                    name="btn_compose_certificate_template_2" 
+                                    id="btn_compose_certificate_template_2" 
+                                    class="btn btn-warning btn-icon-split">
+                                    <span class="icon text-white-50"> 
+                                    <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Compose Template</span>
+                                </button>
+                                </div>
+                                
+                                <div class="col-auto">
+                                <button type="button" 
+                                    name="lc_btn_save_search_report_2" 
+                                    id="lc_btn_save_search_report_2" 
+                                    class="btn btn-success btn-icon-split">
+                                    <span class="icon text-white-50"> 
+                                    <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="text">Save Report</span>
+                                </button>
+                                </div>
+                                
+                                <div class="col">
+                                <button type="button" 
+                                    name="btn_preview_search_report" 
+                                    id="btn_preview_search_report" 
+                                    class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50"> 
+                                    <i class="fas fa-print"></i>
+                                    </span>
+                                    <span class="text">Preview Search Report</span>
+                                </button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" 
+					class="btn btn-danger btn-icon-split"
+					data-bs-dismiss="modal">
+					<span class="icon text-white-50"> 
+						<i class="fas fa-times"></i>
+					</span>
+					<span class="text">Close</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade modal-blur effect-scale" id="check_search_report_details" tabindex="-1"
+	role="dialog" aria-labelledby="check_search_report_details" aria-hidden="true"
+>
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="check_search_report_details">
+                    <i class="fas fa-edit me-2"></i>
+                    Check Search Report Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+			<div class="modal-body">
+				<div class="card border">
+                    <div class="card-header bg-light py-2">
+                        <h6 class="mb-0">
+                            <i class="fas fa-sticky-note me-2"></i>
+                            Records Information
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Records Info.</th>
+                                        <th>Entered By</th>
+                                        <th>Entered Date</th>
+                                        <th>Division</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${application_notes}" var="application_notes_row">
+                                    <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                        ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-comment text-muted me-2"></i>
+                                                <span class="text-truncate" style="max-width: 200px;">
+                                                    ${application_notes_row.an_description}
+                                                </span>
+                                                ${application_notes_row.an_status == false ? 
+                                                    '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user-circle text-muted me-2"></i>
+                                                <span>${application_notes_row.created_by}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                                <span>${application_notes_row.created_date}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                ${application_notes_row.division}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-outline-primary btn-sm viewNotesModal" 
+                                                    data-target-id="${application_notes_row.an_id}"
+                                                    data-an_description="${application_notes_row.an_description}"
+                                                    data-created_by="${application_notes_row.created_by}"
+                                                    data-created_date="${application_notes_row.created_date}"
+                                                    data-modified_by="${application_notes_row.created_by}"
+                                                    data-modified_date="${application_notes_row.created_date}"
+                                                    data-division="${application_notes_row.division}"
+                                                    ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                <i class="fas fa-eye me-1"></i>
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i> Summarize Search Reports
+                    </div>
+                    <div class="card-body">
+                        <!-- The Form starts here -->
+                        <div class="form-group">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="lc_search_report_summary_details_2" class="form-label">Report Summary</label>
+                                    <!-- <textarea id="lc_search_report_summary_details_2" 
+                                        name="lc_search_report_summary_details" 
+                                        class="form-control" 
+                                        required 
+                                        rows="7" 
+                                        style="padding:50px !important;">${remark_or_comment}</textarea>
+                                    </div> -->
+                                    <div class="position-relative">
+                                        <!-- <textarea id="lc_search_report_summary_details" 
+                                                    name="lc_search_report_summary_details" 
+                                                    class="form-control" 
+                                                    required 
+                                                    rows="7"
+                                                    style="min-height: 200px; padding: 1.5rem !important;"
+                                                    placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                        </textarea> -->
+                                        <div id="lc_search_report_summary_details_3" class="quill-editor" style="height: 300px;">
+                                            ${remark_or_comment}
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            <div class="row g-3 mt-2">
+                                <!-- <div class="col-auto">
+                                <button type="button" 
+                                    name="btn_compose_certificate_template_2" 
+                                    id="btn_compose_certificate_template_2" 
+                                    class="btn btn-warning btn-icon-split">
+                                    <span class="icon text-white-50"> 
+                                    <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Compose Template</span>
+                                </button>
+                                </div> -->
+                                
+                                <div class="col-auto">
+                                <button type="button" 
+                                    name="lc_btn_save_search_report_3" 
+                                    id="lc_btn_save_search_report_3" 
+                                    class="btn btn-success btn-icon-split">
+                                    <span class="icon text-white-50"> 
+                                    <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="text">Save Report</span>
+                                </button>
+                                </div>
+                                
+                                <div class="col">
+                                <button type="button" 
+                                    name="btn_preview_search_report" 
+                                    id="btn_preview_search_report_3" 
+                                    class="btn btn-info btn-icon-split">
+                                    <span class="icon text-white-50"> 
+                                    <i class="fas fa-print"></i>
+                                    </span>
+                                    <span class="text">Preview Search Report</span>
+                                </button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" 
+					class="btn btn-danger btn-icon-split"
+					data-bs-dismiss="modal">
+					<span class="icon text-white-50"> 
+						<i class="fas fa-times"></i>
+					</span>
+					<span class="text">Close</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="preview_composed_report" tabindex="-1"
+	role="dialog" aria-labelledby="compose_search_reportmodal" aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="review_records_verification_label">
+                    <i class="fas fa-eye me-2"></i>
+                    Review Search Report
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+			
+			<div class="modal-body">
+				<!-- Description Section -->
+				<div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+					<div class="d-flex">
+						<i class="fas fa-info-circle fa-lg me-3 mt-1 text-info"></i>
+						<div>
+							<h6 class="alert-heading mb-2">About Search Report Preview</h6>
+							<p class="mb-2">Use this feature to review the composed search report before final submission. The preview will display the formatted report exactly as it will appear when generated.</p>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Report Summary Section -->
+				<!-- <div class="card border-0 shadow-sm mb-4">
+					<div class="card-header bg-light py-3">
+						<h6 class="mb-0">
+							<i class="fas fa-file-alt me-2"></i>
+							Report Details
+						</h6>
+					</div>
+					<div class="card-body">
+						<div class="row g-3">
+							<div class="col-md-6">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-hashtag me-1"></i> Job Number
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_job_number">
+									<span class="text-muted">Not specified</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-file-code me-1"></i> Case Number
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_case_number">
+									<span class="text-muted">Not specified</span>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-tasks me-1"></i> Process Type
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_process_type">
+									<span class="text-muted">Not specified</span>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-calendar-check me-1"></i> Last Modified
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_last_modified">
+									<span class="text-muted">Just now</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> -->
+				
+				<!-- Preview Action Section -->
+				<div class="text-center p-4 border-dashed rounded-3 bg-light">
+					<i class="fas fa-file-pdf text-warning fa-3x mb-3"></i>
+					<h5 class="mb-3">Ready to Preview Search Report</h5>
+					<p class="text-muted mb-4">
+						Click the button below to generate and view a preview of the search report. 
+						The preview will open in a new window for easy review and printing.
+					</p>
+					
+					<div class="d-grid gap-2 d-md-flex justify-content-center">
+						<button type="button" id="btn_preview_search_report_2" class="btn btn-warning btn-lg px-4">
+							<i class="fas fa-eye me-2"></i> 
+							<span class="fw-semibold">View Search Report</span>
+						</button>
+					</div>
+					
+					<small class="text-muted d-block mt-3">
+						<i class="fas fa-exclamation-circle me-1"></i>
+						Note: Any unsaved changes will not appear in the preview.
+					</small>
+				</div>
+			</div>
+			
+			<div class="modal-footer bg-light">
+				<button type="button" 
+					class="btn btn-outline-danger"
+					data-bs-dismiss="modal">
+					<i class="fas fa-times me-2"></i>
+					Close Preview
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="confirm_otp_for_approval_search" tabindex="-1" 
+     aria-labelledby="confirmOtpModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title text-white" id="confirmOtpModalLabel">
+          <i class="fas fa-shield-alt me-2"></i>
+          Request OTP For Approval
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>OTP Required</strong>
+              <p class="mb-0 mt-1 fw-light">You need to generate a One-Time Password to proceed with search report approval.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Optional Volume and Folio Display -->
+        <!-- 
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="form-label fw-medium">
+                <i class="fas fa-book me-1"></i>
+                Volume Number
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-hashtag"></i>
+                </span>
+                <input type="text" class="form-control" readonly value="${volume_number}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="form-label fw-medium">
+                <i class="fas fa-file-alt me-1"></i>
+                Folio Number
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-hashtag"></i>
+                </span>
+                <input type="text" class="form-control" readonly value="${folio_number}">
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+        
+        <!-- Generate OTP Button -->
+        <div class="text-center py-3">
+          <button type="button" id="lc_btn_approve_search_for_signature" 
+                  class="btn btn-danger btn-lg w-100 py-3">
+            <i class="fas fa-key me-2"></i>
+            Generate OTP
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-lock me-1"></i>
+            Secure one-time password will be sent for verification
+          </div>
+        </div>
+        
+        <!-- OTP Instructions -->
+        <div class="alert alert-light border mt-4">
+          <div class="d-flex">
+            <i class="fas fa-lightbulb text-warning me-3 mt-1"></i>
+            <div>
+              <strong class="text-dark">How it works:</strong>
+              <ul class="mb-0 mt-2 ps-3 fw-light">
+                <li class="text-muted">Click "Generate OTP" to create a one-time password</li>
+                <li class="text-muted">The OTP will be sent to authorized personnel</li>
+                <li class="text-muted">Use the OTP to complete certificate approval</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="check_signed_report" tabindex="-1"
+	role="dialog" aria-labelledby="check_signed_report_modal" aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="check_signed_report_modal">
+                    <i class="fas fa-eye me-2"></i>
+                    Check Signed Search Report
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+			
+			<div class="modal-body">
+				<!-- Description Section -->
+				<div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+					<div class="d-flex">
+						<i class="fas fa-info-circle fa-lg me-3 mt-1 text-info"></i>
+						<div>
+							<h6 class="alert-heading mb-2">About Search Report Preview</h6>
+							<p class="mb-2">Use this feature to review the composed search report before final submission. The preview will display the formatted report exactly as it will appear when generated.</p>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Report Summary Section -->
+				<!-- <div class="card border-0 shadow-sm mb-4">
+					<div class="card-header bg-light py-3">
+						<h6 class="mb-0">
+							<i class="fas fa-file-alt me-2"></i>
+							Report Details
+						</h6>
+					</div>
+					<div class="card-body">
+						<div class="row g-3">
+							<div class="col-md-6">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-hashtag me-1"></i> Job Number
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_job_number">
+									<span class="text-muted">Not specified</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-file-code me-1"></i> Case Number
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_case_number">
+									<span class="text-muted">Not specified</span>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-tasks me-1"></i> Process Type
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_process_type">
+									<span class="text-muted">Not specified</span>
+								</div>
+							</div>
+							<div class="col-12">
+								<label class="form-label text-muted small mb-1">
+									<i class="fas fa-calendar-check me-1"></i> Last Modified
+								</label>
+								<div class="form-control-plaintext border-bottom pb-2" id="preview_last_modified">
+									<span class="text-muted">Just now</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> -->
+				
+				<!-- Preview Action Section -->
+				<div class="text-center p-4 border-dashed rounded-3 bg-light">
+					<i class="fas fa-file-pdf text-warning fa-3x mb-3"></i>
+					<h5 class="mb-3">Ready to Preview Search Report</h5>
+					<p class="text-muted mb-4">
+						Click the button below to generate and view a preview of the search report. 
+						The preview will open in a new window for easy review and printing.
+					</p>
+					
+					<div class="d-grid gap-2 d-md-flex justify-content-center">
+						<button type="button" id="btn_preview_search_report_4" class="btn btn-warning btn-lg px-4">
+							<i class="fas fa-eye me-2"></i> 
+							<span class="fw-semibold">View Search Report</span>
+						</button>
+					</div>
+					
+					<!-- <small class="text-muted d-block mt-3">
+						<i class="fas fa-exclamation-circle me-1"></i>
+						Note: Any unsaved changes will not appear in the preview.
+					</small> -->
+				</div>
+			</div>
+			
+			<div class="modal-footer bg-light">
+				<button type="button" 
+					class="btn btn-outline-danger"
+					data-bs-dismiss="modal">
+					<i class="fas fa-times me-2"></i>
+					Close Preview
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="update_motherfile_certificate_number" tabindex="-1"
+     aria-labelledby="update_motherfile_certificate_number_label" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+     <div class="modal-content border-0 shadow-lg">
+        
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+           <h5 class="modal-title text-white" id="update_motherfile_certificate_number_label">
+              <i class="fas fa-map-marked-alt me-2"></i>
+              Update Motherfile Certificate Number
+           </h5>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <input  id="gid_pl_smd" name="gid_pl_smd" type="hidden" value="0" >
+            <input  id="lc_txt_transaction_number_pl_smd" name="lc_txt_transaction_number_pl_smd" type="hidden" value="0" >
+            <!-- Status Indicator -->
+            <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <div>
+                        <span class="fw-medium">Plan Status:</span>
+                        <span class="badge ms-2 ${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-') ? 'bg-success' : 'bg-warning'}">
+                            ${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-') ? 'Completed' : 'Pending'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+           
+            <!-- Form Fields -->
+            <div class="mb-4">
+                <label for="txt_lc_plan_no_pl_smd" class="form-label fw-medium">
+                    <i class="fas fa-hashtag me-1"></i>
+                    Plan Number
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-map"></i>
+                    </span>
+                    <c:choose>
+                        <c:when test="${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-')}">
+                            <input type="text" class="form-control bg-light" id="txt_lc_plan_no_pl_smd" 
+                                   value="${plan_no}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="txt_lc_plan_no_pl_smd" 
+                                   value="${plan_no}" placeholder="Enter plan number" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <small class="form-text text-muted mt-1">Unique identifier for the title plan</small>
+            </div>
+            
+            <div class="mb-4">
+                <label for="txt_lc_registry_mapref_pl_smd" class="form-label fw-medium">
+                    <i class="fas fa-map-pin me-1"></i>
+                    Registry Map Reference
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <c:choose>
+                        <c:when test="${not empty registry_mapref and registry_mapref != 'null' and not fn:contains(registry_mapref, '-')}">
+                            <input type="text" class="form-control bg-light" id="txt_lc_registry_mapref_pl_smd" 
+                                   value="${registry_mapref}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="text" class="form-control" id="txt_lc_registry_mapref_pl_smd" 
+                                   value="${registry_mapref}" placeholder="Enter registry map reference" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <small class="form-text text-muted mt-1">Official map reference from registry</small>
+            </div>
+            
+            <!-- Update Button -->
+            <div class="mt-4">
+                <button class="btn btn-primary w-100 py-3" id="btn_save_lrd_title_plan_update_details_smd_new_update">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="me-3">
+                            <i class="fas fa-save fa-lg"></i>
+                        </div>
+                        <div class="text-start">
+                            <div class="fw-medium">
+                                <c:choose>
+                                    <c:when test="${not empty plan_no and plan_no != 'null' and not fn:contains(plan_no, '-')}">
+                                        Update Plan Details
+                                    </c:when>
+                                    <c:otherwise>
+                                        Save Plan Details
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <small class="d-block opacity-75">Save all plan information</small>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+            <!-- Help Text -->
+            <div class="alert alert-light border mt-4">
+                <div class="d-flex">
+                    <i class="fas fa-lightbulb text-warning me-2 mt-1"></i>
+                    <div>
+                        <h6 class="alert-heading mb-2">Instructions</h6>
+                        <p class="small mb-0">
+                            Update the plan information if the title plan has already been prepared.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="modal-footer bg-light">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+                <div class="text-muted small">
+                    <i class="fas fa-history me-1"></i>
+                    Last updated: <span id="planLastUpdated">
+                        <c:choose>
+                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
+                            <c:otherwise>Never</c:otherwise>
+                        </c:choose>
+                    </span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Close
+                    </button>
+                    <!-- <button type="button" class="btn btn-outline-info" id="btn_view_plan_preview">
+                        <i class="fas fa-eye me-1"></i>
+                        Preview
+                    </button> -->
+                </div>
+            </div>
+        </div>
+     </div>
+  </div>
+</div>

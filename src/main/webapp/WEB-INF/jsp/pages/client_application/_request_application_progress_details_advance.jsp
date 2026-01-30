@@ -1057,6 +1057,11 @@
                         <div id="collapseHistoryOrTrackingInformation" class="accordion-collapse collapse" 
                              data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body" style="max-height: 500px; overflow-y: auto;">
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_history_or_tracking_information">
+                                        <i class="bi bi-eye"></i> Load Docs
+                                    </button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead>
@@ -1067,13 +1072,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${comments_on_application}" var="comments_on_application_row">
+                                            <!-- <c:forEach items="${comments_on_application}" var="comments_on_application_row">
                                                 <tr>
                                                     <td>${comments_on_application_row.officers_general_comments}</td>
                                                     <td>${comments_on_application_row.created_by}</td>
                                                     <td>${comments_on_application_row.created_date}</td>
                                                 </tr>
-                                            </c:forEach>
+                                            </c:forEach> -->
                                         </tbody>
                                     </table>
                                 </div>
