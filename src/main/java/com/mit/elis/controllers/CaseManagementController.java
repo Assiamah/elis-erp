@@ -5457,7 +5457,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				String application_notes = case_obj.get("application_notes").toString();
 				String payment_bill = case_obj.get("payment_bill").toString();
 				String payment_invoice = case_obj.get("payment_invoice").toString();
-				String comments_on_application = case_obj.get("comments_on_application").toString();
+				// String comments_on_application = case_obj.get("comments_on_application").toString();
 				String parties = case_obj.get("parties").toString();
 				String active_case_queries = case_obj.get("active_case_query").toString();
 				String active_case_objection = case_obj.get("active_case_objection").toString();
@@ -5511,7 +5511,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				ArrayList application_munites_list = googleJson.fromJson(application_munites, ArrayList.class);
 				ArrayList application_notes_list = googleJson.fromJson(application_notes, ArrayList.class);
 				ArrayList payment_bill_list = googleJson.fromJson(payment_bill, ArrayList.class);
-				ArrayList comments_on_application_list = googleJson.fromJson(comments_on_application, ArrayList.class);
+				//ArrayList comments_on_application_list = googleJson.fromJson(comments_on_application, ArrayList.class);
 				ArrayList parties_list = googleJson.fromJson(parties, ArrayList.class);
 				ArrayList payment_invoice_list = googleJson.fromJson(payment_invoice, ArrayList.class);
 
@@ -5550,7 +5550,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("application_munites", application_munites_list);
 				request.setAttribute("application_notes", application_notes_list);
 				request.setAttribute("payment_bill", payment_bill_list);
-				request.setAttribute("comments_on_application", comments_on_application_list);
+				// request.setAttribute("comments_on_application", comments_on_application_list);
 				request.setAttribute("parties", parties_list);
 				request.setAttribute("payment_invoice", payment_invoice_list);
 				request.setAttribute("application_requests", application_requests_list);
