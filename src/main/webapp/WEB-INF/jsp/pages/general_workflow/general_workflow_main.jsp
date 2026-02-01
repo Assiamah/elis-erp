@@ -258,6 +258,7 @@
                             </div>
                         </a>
                     </div>
+
                     <div class="col-xl-12 col-md-6">
                         <a href="#" class="stat-card-link btnLoadData btnLoadDataCompleted" data-status="completed" data-id="3">
                             <div class="card custom-card dashboard-main-card overflow-hidden primary" id="card-completed">
@@ -1030,6 +1031,9 @@
                             </button>
                             <button class="btn btn-sm btn-warning btn-add-to-list" data-id="`+item.job_number+`">
                                 <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                             <button class="btn btn-sm btn-danger btn-archive-job" data-id="`+item.rq_id+`">
+                                <i class="fas fa-archive ml-2"></i>
                             </button>
                             <button class="btn btn-sm btn-success btn-work-job" 
                                 data-rq_id="`+item.rq_id+`"
