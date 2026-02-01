@@ -5242,8 +5242,8 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						job_detail_obj.get("smd_licensed_surveyor_name").toString());
 
 				request.setAttribute("rq_id",rq_id);
-	business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
-
+				business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
+				request.setAttribute("review_type",review_type);
 						
 				// String get_gender_list = user_web_service.get_list_of_gender(
 				// 		cls_url_config.getWeb_service_url_ser(),

@@ -7756,6 +7756,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String send_to_name = request.getParameter("send_to_name");
 
 				String division = (String) session.getAttribute("division");
+				String request_id = request.getParameter("request_id");
+				String is_general_request = request.getParameter("is_general_request");
 
 				// System.out.println(list_of_application);
 
@@ -7771,6 +7773,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				 */
 				obj.put("division", division);
 				obj.put("list_of_application", list_of_application);
+				obj.put("request_id", request_id);
+				obj.put("is_general_request", is_general_request);
 
 				// String batchlistdivison = obj.toString();
 
@@ -8474,6 +8478,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = request.getParameter("job_number");
 				String rq_id = request.getParameter("rq_id");
 				String note = request.getParameter("note");
+				String is_general_request = request.getParameter("is_general_request");
 				// String collected_by_id_number = request.getParameter("collected_by_id_number");
 				// String collected_by_phone_number = request.getParameter("collected_by_phone_number");
 
@@ -8488,6 +8493,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("note", note);
 				obj.put("modified_by_id", modified_by_id);
 				obj.put("modified_by", modified_by);
+				obj.put("is_general_request", is_general_request);
 
 				System.out.println(obj.toString());
 

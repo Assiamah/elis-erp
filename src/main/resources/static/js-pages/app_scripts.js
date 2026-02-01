@@ -2708,7 +2708,9 @@ function processBatch() {
         list_of_application: listOfApplications,
         send_to_name: recipient.name,
         send_to_id: recipient.id,
-        is_map_plotting: $("#is_map_plotting").val() || 'no'
+       //is_map_plotting: $("#is_map_plotting").val() || 'no'
+       is_general_request: $("#is_general_request").val() || 'no',
+       request_id: parseInt($("#request_id").val()) || 0
     };
 
     // First AJAX call to process batch
@@ -2906,6 +2908,13 @@ function displayPdfInModal(pdfData, batchNumber) {
     // Clean up URL when modal is closed
     $('#pdfModal').on('hidden.bs.modal', function () {
         URL.revokeObjectURL(objectUrl);
+
+        // Close batch list modal
+        const is_general_request = $("#is_general_request").val();
+        if (is_general_request) {
+            window.location.href = "/case_movement_module";
+        }
+        
     });
 }
 

@@ -11760,6 +11760,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const jobNumber = $(element).data('job_number');
         const applicantName = $(element).data('ar_name');
         const requestId = $(element).data('req_id');
+        const isGeneralRequest = $("#is_general_request").val();
         
         Swal.fire({
             title: 'Complete Request?',
@@ -11851,7 +11852,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_archive_application_request',
                             rq_id: cleanedRequestId,
                             job_number: jobNumber,
-                            note: note
+                            note: note,
+                            is_general_request: isGeneralRequest
                         },
                         cache: false,
                         success: function(response) {

@@ -280,6 +280,8 @@
         <input class="form-control" type="hidden" id="txt_new_lc_registration_district_number" name="txt_new_lc_registration_district_number" value="${registration_district_number}">
         <input class="form-control" type="hidden"  id="txt_new_lc_registration_section_number" name="txt_new_lc_registration_section_number" value="${registration_section_number}">
         <input class="form-control" type="hidden" id="txt_new_lc_registration_block_number" name="txt_new_lc_registration_block_number" value="${registration_block_number}">
+        <input class="form-control" type="hidden" id="is_general_request" name="is_general_request" value="${review_type == 'SpecificWorkRequest' ? 'no' : 'yes'}">
+        <input class="form-control" type="hidden" id="request_id" name="request_id" value="${rq_id}">
         
         <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
             <div class="form-group">
@@ -533,7 +535,7 @@
                                     <i class="bi bi-check-circle label-btn-icon"></i>
                                     Complete Request
                                 </button>
-                                <button class="btn btn-warning label-btn"
+                                <button class="btn btn-warning label-btn ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
                                         data-bs-toggle="modal" 
                                         data-bs-target="#askForPurposeOfBatching"
                                         data-job_number="${job_number}" 
