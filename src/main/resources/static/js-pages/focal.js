@@ -117,6 +117,9 @@ const dateToPicker = flatpickr("#dateto", {
     $(function () {
 
 
+
+
+
 function getServiceTypeButtons(title_) {
   return [
     {
@@ -204,46 +207,153 @@ function getServiceTypeButtons(title_) {
 
   let colors = ["danger", "warning", "default", "info", "success", "secondary"];
 
-  $(document).on("click", ".sendMessage", function (event) {
-    event.preventDefault();
+ 
 
-    let sendMessageModal = $("#sendMessageModal");
 
-    let staff = $(this).data("staff");
-    console.log(staff)
+    $(document).on("click", ".sendMessage", function (event) {
+  event.preventDefault();
 
-    let jobNumbers = $(this).data("job-number");
-    jobNumbers =
-      typeof jobNumbers === "undefined" ? [] : [{ job_number: jobNumbers }];
+  const table = $("#applicationsTable").DataTable();
 
-    if (jobNumbers.length <= 0) {
-      jobNumbers = $(this)
-        .parents(".modal")
-        .find("table")
-        .DataTable()
-        .rows()
-        .data()
-        .toArray()
-        .map((currentItem) => {
-          return { job_number: currentItem.job_number };
-        });
-    }
+  // ✅ Collect all selected rows using existing checkboxes
+  const selectedRows = [];
+  $(".app-checkbox:checked").each(function () {
+    const row = $(this).closest("tr");
+    const rowData = table.row(row).data();
 
-    // set hidden job_numbers input to job number array
-    sendMessageModal.find("#job_numbers").val(JSON.stringify(jobNumbers));
+    // Assuming DataTable columns: [checkbox, job_number, ar_name, ...]
+    const jobNumber = rowData.job_number || rowData[1];
+    const arName = rowData.ar_name || rowData[2];
+    const pendingDays = rowData.days_due || rowData[5];
 
-    // set hidden staff input to staff id
-    sendMessageModal.find("#officer_id").val(staff.staff_id);
-    sendMessageModal.find("#officer_name").val(staff.staff);
-
-    sendMessageModal
-      .find("#sendMessageModalLabel")
-      .html(`Send Message To <span class="text-primary">${staff.staff}</span>`);
-
-    console.log(staff.staff_id, staff.staff, jobNumbers)
-
-    sendMessageModal.modal("show");
+    selectedRows.push({
+      job_number: jobNumber,
+      ar_name: arName,
+      pendindays: pendingDays,
+    });
   });
+
+  // ✅ If nothing selected, show professional alert and stop
+  if (selectedRows.length === 0) {
+    Swal.fire({
+      icon: "warning",
+      title: "No Applications Selected",
+      text: "Please select at least one application before sending a message.",
+      confirmButtonColor: "#0d6efd",
+      confirmButtonText: "OK",
+    });
+    return;
+  }
+
+  // ✅ Get staff details
+  const staff = $(this).data("receiver_name");
+  const staffid = $(this).data("officer_id");
+
+
+  //  data-receiver_name="${StaffName}" 
+  //                data-officer_name="${StaffName}"
+  //                 data-receiver_name="${StaffName}"
+  //                 data-="${staffID}"> 
+
+  console.log(staff);
+
+  // ✅ Populate modal hidden fields
+  const sendMessageModal = $("#sendMessageModal");
+  sendMessageModal.find("#officer_id").val(staffid);
+  sendMessageModal.find("#officer_name").val(staff);
+  sendMessageModal.find("#job_numbers").val(JSON.stringify(selectedRows));
+
+
+
+  //  console.log(data);
+    
+        // Update modal title
+    const titleText = staff ? 
+        `Send Message to <span class="text-primary">${staff}</span>` : 
+        'Send Message';
+    sendMessageModal.find("#modalTitleText").html(titleText);
+    
+    // Update recipient info card
+    if (staff) {
+        sendMessageModal.find("#recipientNameDisplay").text(staff);
+    } else if (staff) {
+        sendMessageModal.find("#recipientNameDisplay").text(staff);
+    } else {
+        sendMessageModal.find("#recipientNameDisplay").text('Select a recipient');
+    }
+    
+    // Update recipient info
+    if (staffid) {
+        sendMessageModal.find("#recipientInfo").text(`ID: ${staffid}`);
+    } else {
+        sendMessageModal.find("#recipientInfo").text('No ID available');
+    }
+    
+    // Update job count badge
+    const jobCount = Array.isArray(selectedRows) ? selectedRows.length : 0;
+    sendMessageModal.find("#jobCountBadge").text(`${jobCount} ${jobCount === 1 ? 'job' : 'jobs'}`);
+    
+    // Reset form to clean state    
+    // Show the modal (Bootstrap 5)
+    // const bsModal = new bootstrap.Modal(modal);
+    // bsModal.show();
+
+
+
+  
+
+  // ✅ Build HTML table for selected applications
+  let selectedTable = `
+    <div class="alert alert-info shadow-sm">
+      <strong>Selected Applications (${selectedRows.length}):</strong>
+      <div class="table-responsive mt-2">
+        <table class="table table-sm table-bordered align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Job Number</th>
+              <th>Applicant Name</th>
+              <th>Pending Days</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${selectedRows
+              .map(
+                (item) => `
+              <tr>
+                <td><code>${item.job_number}</code></td>
+                <td>${item.ar_name}</td>
+                 <td>${item.pendindays}</td>
+              </tr>
+            `
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  // ✅ Replace previous list/table if reopening
+  sendMessageModal.find(".modal-body .alert-info").remove();
+  sendMessageModal.find(".rec-table").prepend(selectedTable);
+
+  // ✅ Update modal title and show
+  sendMessageModal
+    .find("#sendMessageModalLabel")
+    .html(`Send Message To <span class="text-primary">${staff}</span>`);
+
+  sendMessageModal.modal("show");
+
+
+    resetMessageForm();
+
+});
+
+
+
+
+
+
 
   $(document).on("click", ".sendMessageToAll", function (event) {
     event.preventDefault();
@@ -461,7 +571,7 @@ function getServiceTypeButtons(title_) {
         const totalDivisions = data.apps_at_division.length;
         
         // Update stats
-        updateDivisionStats(modal, totalApplications, totalDivisions, period);
+        updateDivisionStats(modal, totalApplications, totalDivisions, date);
         
         // Handle empty data
         if (data.apps_at_division.length === 0) {
@@ -572,8 +682,8 @@ function getServiceTypeButtons(title_) {
 });
 
 // Helper Functions
-function updateDivisionStats(modal, totalApplications, totalDivisions, period) {
-    const periodText = period ? period.charAt(0).toUpperCase() + period.slice(1) : "All Time";
+function updateDivisionStats(modal, totalApplications, totalDivisions, date) {
+    // const periodText = period ? period.charAt(0).toUpperCase() + period.slice(1) : "All Time";
     
     modal.find("#divisionStats").html(`
         <div class="col-lg-4">
@@ -615,7 +725,7 @@ function updateDivisionStats(modal, totalApplications, totalDivisions, period) {
                         </div>
                         <div>
                             <div class="text-muted small">Period</div>
-                            <h5 class="mb-0 fw-bold">${periodText}</h5>
+                            <h5 class="mb-0 fw-bold">${date}</h5>
                         </div>
                     </div>
                 </div>
@@ -1263,9 +1373,21 @@ $(document).on("click", ".showApplicationsModal", function (event) {
             //     </button>`;
             
             if (staff && staff.staff_id) {
-                actionButton += ` <button class="btn btn-sm btn-outline-warning sendMessage_unit_case" data-receiver_name="${staff.staff}" data-officer_name="${staff.staff}" data-officer_id="${staff.staff_id}" data-job_number="${app.job_number}">
-                  <i class="ri-send-plane-line"></i>
-                </button>`;
+                // actionButton += ` <button class="btn btn-sm btn-outline-warning sendMessage_unit_case" data-receiver_name="${staff.staff}" data-officer_name="${staff.staff}" data-officer_id="${staff.staff_id}" data-job_number="${app.job_number}">
+                //   <i class="ri-send-plane-line"></i>
+                // </button>`;
+
+                                actionButton += `
+<button 
+  class="btn btn-sm btn-outline-warning messageReply"
+  data-receiver_name="${staff.staff}" 
+  data-officer_name="${staff.staff}" 
+  data-officer_id="${staff.staff_id}" 
+  data-job_number="${app.job_number}"
+  title="Notices & Replies">
+    <i class="ri-reply-line"></i>
+</button>`;
+
             }
 
             
@@ -1290,8 +1412,15 @@ $(document).on("click", ".showApplicationsModal", function (event) {
                             day: 'numeric'
                         });
                     }
+
+                     const checkbox = `
+          <div class="text-center">
+            <input type="checkbox" class="app-checkbox" value="${app.job_number}">
+          </div>`;
+
                                             
             return {
+                 checkbox :checkbox,
                 job_number: app.job_number,
                 ar_name: app.ar_name,
                 business_process_sub_name: app.business_process_sub_name,
@@ -1416,6 +1545,12 @@ $(document).on("click", ".showApplicationsModal", function (event) {
             ];
         } else {
             columns = [
+                 { 
+                  data: "checkbox",
+                  render: function(data, type, row) {
+                      return `<span class="fw-medium text-primary small">${data}</span>`;
+                  }
+                },
                 { 
                   data: "job_number",
                   render: function(data, type, row) {
@@ -1483,17 +1618,17 @@ $(document).on("click", ".showApplicationsModal", function (event) {
         // Add send message button to modal header if staff data exists
         if (staff && staff.staff_id) {
             let sendMessageBtn = $(`
-                <button class="btn btn-primary ms-auto sendMessageToAll" 
+                <button class="btn btn-primary ms-auto sendMessage" 
                         data-officer_id="${staff.staff_id}"
                         data-receiver_name="${staff.staff || 'Officer'}"
                         data-officer_name="${staff.staff || 'Officer'}"
                   >
-                    <i class="bi bi-chat-text"></i> Send Message to All
+                    <i class="bi bi-chat-text"></i> Select & Send Message
                 </button>
             `);
             
             // Remove existing send message button if any
-            modal.find(".sendMessageToAll").remove();
+            modal.find(".sendMessage").remove();
             
             // Add new button to modal header
             modal.find(".modal-header").append(sendMessageBtn);
@@ -1993,60 +2128,60 @@ function generateChart(modalBody, title, type, tableData) {
 
 
 
-  $('#sel_change_region_compliance').change(function () {
-    //console.log("selection made " + $(this).val() );
+//   $('#sel_change_region_compliance').change(function () {
+//     //console.log("selection made " + $(this).val() );
 
 
-    submitAjax("ComplianceReport", "report_dashboard_all", {}, function (data) {
+//     submitAjax("ComplianceReport", "report_dashboard_all", {}, function (data) {
 
 
-      let totalRec = data.total_apps_rec[0].total;
-      let totalRecComp = data.total_comp_divisional_year[0].total;
+//       let totalRec = data.total_apps_rec[0].total;
+//       let totalRecComp = data.total_comp_divisional_year[0].total;
 
-      let totalpercentage = ((totalRecComp / totalRec) * 100).toFixed(2) + '%';
-      //console.log(totalpercentage);
+//       let totalpercentage = ((totalRecComp / totalRec) * 100).toFixed(2) + '%';
+//       //console.log(totalpercentage);
 
 
-      $("#app-received-today").html(
-        new Intl.NumberFormat().format(data.apps_rec_day[0].total)
-      );
-      $("#app-received-month").html(
-        new Intl.NumberFormat().format(data.apps_rec_month[0].total)
-      );
-      $("#app-completed-today").html(
-        new Intl.NumberFormat().format(data.apps_comp_day[0].total)
-      );
-      $("#app-completed-month").html(
-        new Intl.NumberFormat().format(data.apps_comp_month[0].total)
-      );
+//       $("#app-received-today").html(
+//         new Intl.NumberFormat().format(data.apps_rec_day[0].total)
+//       );
+//       $("#app-received-month").html(
+//         new Intl.NumberFormat().format(data.apps_rec_month[0].total)
+//       );
+//       $("#app-completed-today").html(
+//         new Intl.NumberFormat().format(data.apps_comp_day[0].total)
+//       );
+//       $("#app-completed-month").html(
+//         new Intl.NumberFormat().format(data.apps_comp_month[0].total)
+//       );
 
-      // applications received for the year
-      showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
+//       // applications received for the year
+//       showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
 
-      // applications completed for the year
-      showDivisionSummaryUpdatedQ("#app-completed-year", data.apps_comp_divisional, 'success');
+//       // applications completed for the year
+//       showDivisionSummaryUpdatedQ("#app-completed-year", data.apps_comp_divisional, 'success');
 
-      // applications received and completed for the year
-      showDivisionSummaryUpdatedQ(
-        "#app-received-completed-year",
-        data.apps_comp_divisional_year,
-        'default'
-      );
+//       // applications received and completed for the year
+//       showDivisionSummaryUpdatedQ(
+//         "#app-received-completed-year",
+//         data.apps_comp_divisional_year,
+//         'default'
+//       );
 
-      // applications past due for the year
-      showDivisionSummary(
-        "#app-past-due-year",
-        data.apps_past_due_dates_divisional,
-        'danger'
-      );
+//       // applications past due for the year
+//       showDivisionSummary(
+//         "#app-past-due-year",
+//         data.apps_past_due_dates_divisional,
+//         'danger'
+//       );
 
-      // applications with divisions
-      showDivisionSummary("#app-with-divisions", data.apps_at_division, 'warning');
+//       // applications with divisions
+//       showDivisionSummary("#app-with-divisions", data.apps_at_division, 'warning');
 
-      document.getElementById('pec_id').innerHTML = totalpercentage;
+//       document.getElementById('pec_id').innerHTML = totalpercentage;
 
-    });
-  });
+//     });
+//   });
 
 
 
@@ -3757,6 +3892,172 @@ $(document).on("click", ".sendMessage_unit_case", function (event) {
     });
 });
 
+
+
+$(document).on("click", ".messageReply", function (event) {
+  event.preventDefault();
+
+  const staffName = $(this).data('staffName');
+  const staffId = $(this).data('staff_id');
+  const jobNumber = $(this).data('job_number');
+
+  console.log("Job Number:", jobNumber);
+  console.log("Modal element exists:", $("#previousNoticesModal").length > 0);
+
+   let title = "Notice(s) sent on Appication With Job Number "+jobNumber
+  document.getElementById('previousNoticesModalLabel').innerHTML = title;
+
+//   sendMessageModal.find("#modalTitleText").html(titleText);
+
+
+  previousNoticesModalLabel
+  
+  // Try showing modal
+  var modalElement = document.getElementById('previousNoticesModal');
+  if (modalElement) {
+    var modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  } else {
+    console.error("Modal element not found!");
+  }
+
+  fetchPreviousNotices(jobNumber);
+});
+
+
+
+function fetchPreviousNotices(jobNumber) {
+  // Show loading message
+  $("#messagesContainer").html('<p class="text-muted mb-0">Loading previous messages...</p>');
+
+  $.ajax({
+    url: "director_dashboard", // your backend endpoint
+    type: "POST",
+    data: { 
+      request_type: 'select_application_notices_by_job_number',
+      job_number: jobNumber // ✅ send job number directly
+    },
+    success: function (response) {
+      console.log(response);
+
+    var json_response = JSON.parse(response);
+
+      if (json_response.success && json_response.cabinet_tracking && json_response.cabinet_tracking.length > 0) {
+        let html = `<ul class="list-group">`;
+        json_response.cabinet_tracking.forEach(msg => {
+  const typeColor =
+    msg.notice_type.toLowerCase() === "query"
+      ? "bg-warning text-dark"
+      : msg.notice_type.toLowerCase() === "warning"
+      ? "bg-danger text-white"
+      : "bg-secondary text-white";
+
+  html += `
+    <li class="list-group-item border-0 shadow-sm mb-3 rounded-3 p-3" style="background: #f9fafb;">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <span class="badge ${typeColor} px-3 py-1 rounded-pill text-capitalize">${msg.notice_type}</span>
+        <small class="text-muted fw-light">
+          <i class="far fa-clock me-1"></i>${new Date(msg.created_date).toLocaleString()}
+        </small>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="mb-2 text-dark flex-grow-1" style="font-size: 0.95rem;">
+          ${msg.details}
+        </p>
+        <button class="btn btn-sm btn-outline-primary ms-2 view-replies-btn"
+        data-notice-id="${msg.notice_id}"
+        title="View Replies">
+  <i class="fas fa-comments"></i>
+</button>
+      </div>
+
+      <div class="text-muted small">
+        <i class="fas fa-user-circle me-1 text-secondary"></i>
+        <b>${msg.created_by}</b> → <span>${msg.receiver_name}</span>
+      </div>
+    </li>
+  `;
+});
+
+
+        html += `</ul>`;
+        $("#messagesContainer").html(html);
+      } else {
+        $("#messagesContainer").html('<p class="text-muted mb-0">No previous messages found for this application.</p>');
+      }
+    },
+    error: function () {
+      $("#messagesContainer").html('<p class="text-danger mb-0">Failed to load previous messages.</p>');
+    }
+  });
+}
+
+
+
+// use the container that holds the messages (example: #messagesContainer)
+$('#messagesContainer').on('click', '.view-replies-btn', function () {
+  const noticeId = $(this).data('notice-id');
+
+  $('#repliesModal').modal('show');
+  $('#repliesModalBody').html('<p class="text-muted text-center my-3"><i class="fas fa-spinner fa-spin"></i> Loading replies...</p>');
+
+  $.ajax({
+    url: "director_dashboard",
+    type: "POST",
+    data: { 
+      request_type: 'select_application_notice_replies',
+      notice_id: noticeId
+    },
+    success: function (response) {
+      const json_response = JSON.parse(response);
+      console.log(json_response);
+
+      if (json_response.success && json_response.notice_info && json_response.notice_info.length > 0) {
+        let repliesHtml = `
+          <div class="list-group list-group-flush">
+        `;
+
+        json_response.notice_info.forEach(reply => {
+          repliesHtml += `
+            <div class="list-group-item border-0 border-bottom py-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="fw-semibold mb-0 text-primary">
+                  <i class="fas fa-user-circle me-1 text-secondary"></i> ${reply.created_by}
+                </h6>
+                <small class="text-muted">
+                  <i class="far fa-clock me-1"></i> ${new Date(reply.created_date).toLocaleString()}
+                </small>
+              </div>
+              <p class="mb-0 text-dark" style="font-size: 0.95rem; line-height: 1.4;">
+                ${reply.reply_details}
+              </p>
+            </div>
+          `;
+        });
+
+        repliesHtml += `</div>`;
+        $('#repliesModalBody').html(repliesHtml);
+      } else {
+        $('#repliesModalBody').html(`
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-comments fa-2x mb-2"></i>
+            <p class="mb-0">No replies found for this notice.</p>
+          </div>
+        `);
+      }
+    },
+    error: function () {
+      $('#repliesModalBody').html('<p class="text-danger text-center mb-0 py-3">Failed to load replies.</p>');
+    }
+  });
+});
+
+
+
+
+
+
 // Function to update the send message modal with data
 function updateSendMessageModal(data) {
     const modal = document.getElementById('sendMessageModal');
@@ -4656,14 +4957,30 @@ $(document).on('keydown', function(e) {
 });
 
 
+
+  $(document).on('change', '#select-all', function() {
+  const isChecked = $(this).is(':checked');
+  $('.app-checkbox').prop('checked', isChecked);
+});
+
+// Handle individual checkbox changes (optional)
+$(document).on('change', '.app-checkbox', function() {
+  if (!$(this).is(':checked')) {
+    $('#select-all').prop('checked', false);
+  } else if ($('.app-checkbox:checked').length === $('.app-checkbox').length) {
+    $('#select-all').prop('checked', true);
   }
+});
+    
+
+
+
+
+  }
+
+  
 
 
 })
-
-
-
-
-
 
 

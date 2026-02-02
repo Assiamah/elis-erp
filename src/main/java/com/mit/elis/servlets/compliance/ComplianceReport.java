@@ -53,6 +53,9 @@ public class ComplianceReport {
 					? request.getParameter("region_id")
 					: (String) session.getAttribute("regional_code"));
 
+				String start_date = request.getParameter("start_date");
+				String end_date = request.getParameter("end_date");
+
 			// System.out.println(String.format("Log level: %s",
 			// request.getParameter("request_type")));
 
@@ -62,8 +65,10 @@ public class ComplianceReport {
 
 				JSONObject obj = new JSONObject();
 				obj.put("region_id", region_id);
+				   obj.put( "start_date" , start_date );
+                  obj.put( "end_date" , end_date );
 				String input_details = obj.toString();
-				// System.out.println(input_details + " Started @ : " + new java.util.Date());
+				System.out.println(input_details + " Shade @ : " + new java.util.Date());
 				web_service_response = cls_compliance.report_dashboard_all_post(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);

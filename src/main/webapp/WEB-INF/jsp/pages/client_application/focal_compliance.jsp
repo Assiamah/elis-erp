@@ -175,6 +175,17 @@
 .modal-backdrop.show:nth-of-type(2) {
     z-index: 1060 !important;
 }
+  #previousNoticesModal {
+    z-index: 1075 !important;
+}
+  #repliesModal {
+    z-index: 1080 !important;
+}
+  #completedapplicationsModal {
+    z-index: 1055 !important;
+}
+
+
 
 </style>
 
@@ -203,7 +214,9 @@
             </div>
         </div>
 
-		<input type="hidden" id="director_regional_code" value="${regional_code}" />
+		<input type="hidden" id="sel_change_region_compliance" value="${regional_code}" />
+    <!-- <input type="hidden" id="director_regional_code" value="${regional_code}" /> -->
+
         <input type="hidden" id="director_division" value="${division}" />
 		<input type="hidden" id="startdate">
     <input type="hidden" id="start_date">
@@ -238,7 +251,7 @@
                         </a>
                     </div>
                     <div class="col-xl-12 col-md-6">
-                        <a href="#" class="showDivisionModal" data-method="summary_created" data-period="month" data-url="focal_compliance" data-icon="fa-file" data-title="Applications Received" data-date='This Month (<fmt:formatDate value="${now}" type="date" />)'>
+                        <a href="#" class="showDivisionModal" data-method="summary_created" data-period="month" data-url="focal_compliance" data-icon="fa-file" data-title="Applications Received" data-date='This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)'>
                             <div class="card stat-card custom-card dashboard-main-card secondary school-card"> 
 								<div class="card-body">
 									<div class="d-flex align-items-start gap-3">
@@ -327,7 +340,7 @@
       <div class="d-flex align-items-center flex-wrap gap-3">
 
         <!-- Region Selector -->
-        <div class="card border shadow-sm flex-grow-1" style="min-width: 260px; max-width: 300px;">
+        <!-- <div class="card border shadow-sm flex-grow-1" style="min-width: 260px; max-width: 300px;">
           <div class="card-body py-2 px-3">
             <div class="d-flex align-items-center gap-3">
               <i class="ri-map-pin-2-fill text-primary fs-5"></i>
@@ -347,7 +360,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Date Range Container for better responsiveness -->
         <div class="d-flex align-items-center flex-wrap gap-3 flex-grow-1 flex-md-grow-0">
@@ -537,5 +550,12 @@
 	</div>
 </div>
 
- <jsp:include page="../../components/_modal.jsp"></jsp:include>
+ <jsp:include page="../../components/_compliance_modals.jsp"></jsp:include>
+
+ <script>
+	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+</script>
 

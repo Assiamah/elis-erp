@@ -349,7 +349,7 @@
                                 <!-- Chart Card -->
                                 <div class="card transaction-report-card">
                                     <div class="card-header card-header-dark d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0 fw-semibold">
+                                        <h5 class="mb-0 fw-semibold text-white">
                                             <i class="ri-pie-chart-line me-2"></i>
                                             Revenue per Service
                                         </h5>
@@ -489,7 +489,7 @@
                                 <!-- Data Table Card -->
                                 <div class="card transaction-report-card">
                                     <div class="card-header card-header-dark d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0 fw-semibold">
+                                        <h5 class="mb-0 fw-semibold text-white" >
                                             <i class="ri-list-check me-2"></i>
                                             Revenue Transactions List
                                         </h5>
@@ -783,37 +783,233 @@
 
 <!-- Additional Modals (Minimal Structure) -->
 <div class="modal fade" id="bill_items_new" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-gradient-primary">
-                <h5 class="modal-title text-white">Bill Items Detail</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header bg-gradient-primary">
+        <h5 class="modal-title text-white" id="banks_modalLabel_1">
+          Applications Received
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Summary Row -->
+        <div class="row mb-3">
+          <div id="bills_created_and_paid_today" class="col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header py-2">
+                <h6 class="m-0 fw-semibold text-dark">
+                  Total :
+                  <span class="count text-primary" id="total_span2"></span>
+                </h6>
+              </div>
             </div>
-            <div class="modal-body">
-                <!-- Content loaded dynamically -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
+          </div>
         </div>
+
+        <!-- Hidden Inputs -->
+        <input type="hidden" id="subprocessid">
+        <input type="hidden" id="completed_subprocessid">
+        <input type="hidden" id="service_to_bank_name">
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table
+            class="table table-bordered table-hover align-middle"
+            id="banks_table_1"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Bill Item Name</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+
     </div>
+  </div>
 </div>
 
+
 <div class="modal fade" id="bill_items_regional_modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header bg-gradient-primary">
-                <h5 class="modal-title text-white" id="bill_items_regional_Label"></h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header bg-gradient-primary">
+        <h5 class="modal-title text-white" id="bill_items_regional_Label"></h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Summary Row -->
+        <div class="row mb-3">
+          <div id="bills_created_and_paid_today" class="col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header py-2">
+                <h6 class="m-0 fw-semibold text-dark">
+                  Total :
+                  <span class="count text-primary" id="total_span"></span>
+                </h6>
+              </div>
             </div>
-            <div class="modal-body">
-                <!-- Content loaded dynamically -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
+          </div>
         </div>
+
+        <!-- Hidden Inputs -->
+        <input type="hidden" id="subprocessid">
+        <input type="hidden" id="completed_subprocessid">
+        <input type="hidden" id="service_to_bank_name">
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table
+            class="table table-bordered table-hover align-middle"
+            id="bill_items_regional_table"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Bill Item Name</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+
     </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="bill_items" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header bg-gradient-primary">
+        <h5 class="modal-title text-white" id="banks_modalLabel">
+          Applications Received
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Summary Row -->
+        <div class="row mb-3">
+          <div id="bills_created_and_paid_today" class="col-lg-6">
+            <div class="card shadow-sm">
+              <div class="card-header py-2">
+                <h6 class="m-0 fw-semibold text-dark">
+                  Total :
+                  <span class="count text-primary" id="total_span1"></span>
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden Inputs -->
+        <input type="hidden" id="subprocessid">
+        <input type="hidden" id="completed_subprocessid">
+        <input type="hidden" id="service_to_bank_name">
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table
+            class="table table-bordered table-hover align-middle"
+            id="banks_table"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead class="table-light">
+              <tr>
+                <th>Bill Item Name</th>
+                <th>Amount</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript" src="client_application/audit_report.js"></script>

@@ -54,13 +54,19 @@ public class DashboardAppsReceived {
 
 			if (requestType.equals("apps_created_year")) {
 				String division = request.getParameter("division");
+				 String start_date = request.getParameter("start_date");
+                 String end_date = request.getParameter("end_date");
 
 				// System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
 				obj.put("region_id", region_id);
+				obj.put( "start_date" , start_date );
+                obj.put( "end_date" , end_date );
 				String input_details = obj.toString();
+				System.out.println(start_date);
+
 
 				web_service_response = cls_compliance.report_dashboard_created_year_by_service_type_post(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
@@ -74,12 +80,16 @@ public class DashboardAppsReceived {
 
 			if (requestType.equals("apps_created_year_applications")) {
 				String service = request.getParameter("service");
+				String start_date = request.getParameter("start_date");
+                 String end_date = request.getParameter("end_date");
 
-				// System.out.println(service);
+				System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
 				obj.put("region_id", region_id);
+				obj.put( "start_date" , start_date );
+                obj.put( "end_date" , end_date );
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance

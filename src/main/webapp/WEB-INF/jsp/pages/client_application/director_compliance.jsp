@@ -10,53 +10,58 @@
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
-<jsp:include page="../includes/_header.jsp"></jsp:include>
 <jsp:useBean id="now" class="java.util.Date" />
 
 <style>
-
-
-body {
-    margin-top: 20px;
-    background: #FAFAFA;
-}
-
 .order-card {
     color: #fff;
 }
 
 .card {
-
-    border-radius: 15px !important; /* Ensures rounded edges */
-    overflow: hidden; /* Ensures child elements follow the border-radius */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 15px !important;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-
-    
-    /* border-radius: 15px; Increased for smoother rounded edges */
-    /* border-radius: 5px; */
-    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
-    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
     border: none;
     margin-bottom: 30px;
-    -webkit-transition: all 0.3s ease-in
+    -webkit-transition: all 0.3s ease-in;
 }
 
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
-.card .card-block {
-    padding: 25px;
+.stat-card {
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 /* Softer Gradients */
-
 .bg-c-blue {
     background: linear-gradient(135deg, #3a7bd5, #3a6073);
     color: white;
 }
 
 .bg-c-green {
-    background: linear-gradient(135deg, #A8E063, #56AB2F); /* Lime green to deep leaf green */
+    background: linear-gradient(135deg, #A8E063, #56AB2F);
     color: white;
 }
 
@@ -66,578 +71,652 @@ body {
 }
 
 .bg-c-pink {
-    background: linear-gradient(135deg, #4CAF50, #2E8B57); /* Lighter to deeper green */
+    background: linear-gradient(135deg, #4CAF50, #2E8B57);
     color: white;
 }
 
-/* Card Styling */
-.order-card {
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+.bg-c-red {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
 }
 
-.card-block {
-    padding: 20px;
+.bg-c-completed {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    color: white;
 }
 
-/* Float helpers */
-.f-left {
-    float: left;
-}
+/* .dashboard-main-card.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.dashboard-main-card.secondary { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.dashboard-main-card.success { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.dashboard-main-card.warning { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.dashboard-main-card.danger { background: linear-gradient(135deg, #ff6b6b, #ee5a52); } */
 
-.f-right {
-    float: right;
-}
-.card:hover {
-    transform: translateY(-10px); /* Moves the card slightly up */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
-}
-/* New CSS for enhanced components */
-.alert-list .alert {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-}
-
-.metric-trend {
-    font-size: 0.75rem;
-    font-weight: bold;
-}
-
-.trend-up {
-    color: #28a745;
-}
-
-.trend-down {
-    color: #dc3545;
-}
-
-.trend-neutral {
-    color: #6c757d;
-}
-
-.chart-container {
-    position: relative;
-    height: 100%;
-    min-height: 200px;
-}
-
-.small-chart {
-    height: 40px;
-    width: 100%;
-    margin: 10px 0;
-}
-
-.performance-metric {
-    text-align: center;
-    padding: 10px;
-}
-
-.metric-value {
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-.metric-label {
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-.region-bar {
-    display: flex;
-    align-items: center;
-    margin: 8px 0;
-    padding: 5px;
-}
-
-.region-name {
-    width: 120px;
-    font-size: 0.85rem;
-}
-
-.region-value {
+.avatar {
     width: 50px;
-    text-align: right;
-    font-size: 0.85rem;
-    font-weight: bold;
-}
-
-.region-chart-bar {
-    flex: 1;
-    height: 20px;
-    background: #e9ecef;
-    margin: 0 10px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.bar-fill {
-    height: 100%;
-    border-radius: 10px;
-}
-
-.trend-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.trend-item:last-child {
-    border-bottom: none;
-}
-
-.complexity-item {
+    height: 50px;
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    justify-content: center;
 }
 
-.complexity-label {
-    width: 150px;
-    font-size: 0.85rem;
+.avatar svg {
+    width: 24px;
+    height: 24px;
 }
 
-.complexity-bar {
-    flex: 1;
-    height: 15px;
-    background: #e9ecef;
-    margin: 0 10px;
-    border-radius: 5px;
-    overflow: hidden;
+.svg-white {
+    background-color: rgba(255, 255, 255, 0.2) !important;
 }
+
 #performance-alerts {
-  max-height: 350px;
-  overflow-y: auto;
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 #service-type-breakdown {
-  max-height: 350px; /* adjust height as needed */
-  overflow-y: auto;
-  padding-right: 5px;
-  scrollbar-width: thin;
-  scrollbar-color: #999 #f1f1f1;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #999 #f1f1f1;
 }
 
-/* For WebKit browsers (Chrome, Safari, Edge) */
 #service-type-breakdown::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
+
 #service-type-breakdown::-webkit-scrollbar-thumb {
-  background-color: #999;
-  border-radius: 3px;
+    background-color: #999;
+    border-radius: 3px;
 }
+
 #service-type-breakdown::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
-
-#repliesModalBody .list-group-item {
-  transition: background 0.2s ease-in-out;
-  border-radius: 0.5rem;
+#regionComparisonChart {
+    height: 400px;
 }
 
-#repliesModalBody .list-group-item:hover {
-  background-color: #f8f9fa;
-}
-  .timeline {
-  position: relative;
-  margin: 20px 0;
-  padding-left: 40px;
-  border-left: 2px solid #dee2e6;
+.card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
 }
 
-.timeline-item {
-  position: relative;
-  margin-bottom: 30px;
+.text-muted.fs-12 {
+    font-size: 12px;
+    opacity: 0.8;
 }
 
-.timeline-item:last-child {
-  margin-bottom: 0;
+.badge.bg-primary-transparent {
+    background-color: rgba(102, 126, 234, 0.1) !important;
+    color: #667eea !important;
+    border: 1px solid rgba(102, 126, 234, 0.2);
 }
 
-.timeline-icon {
-  position: absolute;
-  left: -24px;
-  top: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  box-shadow: 0 0 0 3px #fff;
+.progress-stacked {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
-.timeline-content {
-  background: #f8f9fa;
-  padding: 12px 16px;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.progress-animate {
+    animation: progressAnimation 2s ease-in-out;
 }
 
-.timeline-item.completed .timeline-icon {
-  background-color: #284ca7 !important;
+@keyframes progressAnimation {
+    0% { width: 0%; }
 }
 
-.timeline-item.active .timeline-icon {
-  background-color: #28a745 !important;
+.top-referral-pages li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.timeline-item.pending .timeline-icon {
-  background-color: #6c757d !important;
+.top-referral-pages li:last-child {
+    border-bottom: none;
 }
 
-.timeline h6 {
-  margin-bottom: 4px;
-  font-weight: 600;
+  #cabinetModal {
+    z-index: 1040 !important;
 }
 
-.timeline p {
-  margin-bottom: 4px;
-  font-size: 14px;
-  color: #555;
+/* Progress bar customization */
+.progress-bar.bg-primary { background-color: #667eea !important; }
+.progress-bar.bg-success { background-color: #28a745 !important; }
+.progress-bar.bg-warning { background-color: #ffc107 !important; }
+.progress-bar.bg-danger { background-color: #dc3545 !important; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-header .d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .modal-header .modal-icon-container {
+        margin-bottom: 10px;
+    }
+    
+    .modal-footer .d-flex {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-footer .text-muted {
+        text-align: center;
+    }
 }
-.timeline i {
-    margin-right: 1px;
+
+.region-name {
+    max-width: 65%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-/* #sendMessageModal .alert-info ul {
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: 10px;
-} */
+
+  #repliesModal {
+    z-index: 1045 !important;
+}
+
 
 </style>
 
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
-    <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">${division} Dashboard 
-    
-    <!-- <select id="sel_change_region_compliance" class="">
-        <option value=${regional_code}>${regional_name}</option>
-                                    
-        <c:forEach items="${officeregionlist}" var="officeregion">
-            <option  value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
-  </c:forEach>
-
-                                </select> -->
-    
-    
-    
-    </h1>
-
-    <input type="hidden" id="director_regional_code" value="${regional_code}" />
-	<input type="hidden" id="director_division" value="${division}" />
-
-
-     <input type="hidden" id = "startdate">
-			  <input type="hidden" id = "start_date">
-			  <input type="hidden" id = "enddate">
-			  <input type="hidden" id = "end_date">
-
-
-
-
-               <div class="row">
-
-            <div class="col-xl-4 col-md-6 mb-4" id="apps_received_today" data-toggle="tooltip" 
-     title="This Card Displays Applications Received Today. Click To View More Details">
-                <div class="card bg-c-blue order-card">
-                    <div class="card-block">
-                        <h6 class="m-b-20 text-uppercase">Applications
-                            Received </h6>
-
-                                <div class="text-xs text-uppercase">Today (
-                                    <fmt:formatDate value="${now}" type="date" />)</div>
-
-                                <h2  class="text-left"><i class="fa fa-calendar-day f-right"></i><span id="app-received-today">0</span></h2>
-                                <!-- <p class="m-b-0">Completed Orders<span class="f-right">351</span></p> -->
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div class="d-flex align-center gap-2">
+                    <div>
+                        <h1 class="page-title fw-medium fs-20 mb-1">
+                            <i class="ri-dashboard-line me-2 text-primary"></i>Director Compliance Dashboard - ${division}
+                        </h1>
                     </div>
                 </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Director</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Compliance Dashboard</li>
+                </ol>
             </div>
-
-            
-            <div class="col-xl-4 col-md-6 mb-4" id="apps_received_this_month"  data-toggle="tooltip" 
-     title="This Card Displays Applications Pending As At Today. Click To View More Details">
-                <div class="card bg-c-yellow order-card">
-                    <div class="card-block">
-                        <h6 class="m-b-20 text-uppercase">Applications Pending As At</h6>
-
-                            <div class="text-xs text-uppercase">Today (
-                                    <fmt:formatDate value="${now}" type="date" />)</div>
-
-
-                            <h2 class="text-left"><i class="fas fa-hourglass-half f-right"></i><span id="app-received-month">0</span></h2>
-                        </div>
-                </div>
-            </div>
-            
-            <div class="col-xl-4 col-md-6 mb-4" id="apps_completed_today_division"  data-toggle="tooltip" 
-     title="This Card Displays Applications Completed Today. Click To View More Details">
-                <div class="card bg-c-pink order-card">
-                    <div class="card-block">
-                        <h6 class="m-b-20 text-uppercase">Applications
-                            Completed </h6>
-                            <div class="text-xs text-uppercase">Today (
-                                <fmt:formatDate value="${now}" type="date" />)</div>
-
-                                <h2 class="text-left"><i class="fa fa-check-circle f-right"></i><span id="app-completed-today">0</span></h2>
-                            </div>
-                </div>
-            </div>
-            
         </div>
 
+        <input type="hidden" id="director_regional_code" value="${regional_code}" />
+        <input type="hidden" id="director_division" value="${division}" />
+        <input type="hidden" id="startdate">
+        <input type="hidden" id="start_date">
+        <input type="hidden" id="enddate">
+        <input type="hidden" id="end_date">
 
+        <div class="row">
+            <!-- Left Column: Quick Stats Cards -->
+            <div class="col-xl-2">
+                <div class="row">
+                    <!-- Applications Received Today -->
+                    <div class="col-xl-12 col-md-6 mb-4">
+                        <a href="#" id="apps_received_today" data-toggle="tooltip" 
+                           title="Applications Received Today. Click to view more details">
+                            <div class="card stat-card custom-card dashboard-main-card primary">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-primary svg-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-5h2v5zm4 0h-2v-3h2v3zm0-5h-2v-2h2v2zm4 5h-2V7h2v10z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Applications Received</span>
+                                            <h5 class="fw-semibold mb-1" id="app-received-today">0</h5>
+                                            <div class="text-muted fs-14">
+                                                <span class="text-success">as at today</span>
+                                                ( <fmt:formatDate value="${now}" type="date" /> )
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
+                    <!-- Applications Pending As At Today -->
+                    <div class="col-xl-12 col-md-6 mb-4">
+                        <a href="#" id="apps_received_this_month" data-toggle="tooltip" 
+                           title="Applications Pending as at Today. Click to view more details">
+                            <div class="card stat-card custom-card dashboard-main-card warning">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-warning svg-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Applications Pending</span>
+                                            <h5 class="fw-semibold mb-1" id="app-received-month">0</h5>
+                                            <div class="text-muted fs-14">
+                                                <span class="text-warning">as at today</span>
+                                                ( <fmt:formatDate value="${now}" type="date" /> )
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
-         <div class="row">
-                    
-				
-                    <div class="col-sm-4">
-                        <div class="card">
-                          <div class="card-body">
-                              <label for="">Date From</label> 
-                              <input type="text" id="datefrom" class="form-control"  placeholder="Select Date Range">
-                              <!-- <div id="reportrange" style="background: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span></span> <i class="fa fa-caret-down"></i>
-                            </div> -->
-                          </div>
-                        </div>
-                      </div>
+                    <!-- Applications Completed Today -->
+                    <div class="col-xl-12 col-md-6 mb-4">
+                        <a href="#" id="apps_completed_today_division" data-toggle="tooltip" 
+                           title="Applications Completed Today. Click to view more details">
+                            <div class="card stat-card custom-card dashboard-main-card success">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-success svg-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Applications Completed</span>
+                                            <h5 class="fw-semibold mb-1" id="app-completed-today">0</h5>
+                                            <div class="text-muted fs-14">
+                                                <span class="text-success">as at today</span>
+                                                ( <fmt:formatDate value="${now}" type="date" /> )
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
-
-                      <div class="col-sm-4">
-                        <div class="card">
-                          <div class="card-body">
-                              <label for="">Date To</label> 
-                              <input type="text" id="dateto" class="form-control"  placeholder="Select Date Range">
-                              <!-- <div id="reportrange" style="background: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%">
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                <span></span> <i class="fa fa-caret-down"></i>
-                            </div> -->
-                          </div>
-                        </div>
-                      </div>
-
-                      </div>
-
-
-
-
-
-         <!-- Trends & Forecasting -->
-    <div class="row">
-
-
-<div class="col-lg-7 mb-4" data-toggle="tooltip" 
-     title="Provides a breakdown of application Service types Received">
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-black">APPLICATION TYPES BREAKDOWN</h6>
-    </div>
-    <div class="card-body">
-      <div class="service-type-breakdown" id="service-type-breakdown"></div>
-    </div>
-  </div>
-</div>
-    
-
-      
-        
-        <div class="col-lg-5 mb-4" data-toggle="tooltip" 
-     title="Displays a summary of regional offices with high to low completion rates, highlighting areas that require attention or performance improvement.">
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-black">Performance Alerts</h6>
-    </div>
-    <div class="card-body">
-      <div id="performance-alerts" class="alert-list"></div>
-    </div>
-  </div>
-</div>
-
-
-
-    </div>
-
-    
-
-
-
-        
-
-
-
-   
-
-    <div class="row">
-        <!-- Application Received -->
-        <div id="app-received-year" class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Applications Received</h6>
-                    <span class="small text-primary"><span class="count">0</span> Applications from
-                        <span id="displayDateRange"></span></span>
-                        <!-- <div class="metric-trend trend-up">
-                        <i class="fas fa-arrow-up"></i> 12% increase from last year
+                    <!-- Applications Past Due -->
+                    <!-- <div class="col-xl-12 col-md-6 mb-4">
+                        <a href="#" id="pastdue_apps" data-toggle="tooltip" 
+                           title="Applications Past Due. Click to view more details">
+                            <div class="card stat-card custom-card dashboard-main-card danger">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-danger svg-white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Past Due Applications</span>
+                                            <h5 class="fw-semibold mb-1" id="app-pastdue">0</h5>
+                                            <div class="text-muted fs-12">
+                                                <span class="text-danger">requires attention</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </div> -->
                 </div>
-                
-
-                <div data-method="apps_created" data-period="year" data-url="DashboardAppsReceived" data-next-level-modal="showServiceTypeModal_apps_recieved" data-title="Applications Received" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div>
             </div>
-        </div>
-        
-        
-        <!-- Application Received and Completed -->
-        <div id="app-received-completed-year" class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Applications Received and Completed in
-                        <!-- <fmt:formatDate value="${now}" pattern="Y" /> -->
-                    </h6>
-                    <span class="small text-primary"><span class="count">0</span> Applications from
-                    <span id="displayDateRange1"></span></span>
-                    </span>
-                    <span class="small text-primary float-right" id="pec_id">0%</span>
-                </div>
-                <div data-method="apps_received_completed" data-period="year" data-url="DashboardAppsReceivedAndCompleted" data-next-level-modal="showServiceTypeModal_apps_recieved_and_completed" data-title="Applications Received and Completed" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div>
-            </div>
-            
-        </div>
-        
 
-        <!-- Application Completed -->
-        <div id="app-completed-year" class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Applications Completed</h6>
-                    <span class="small text-primary"><span class="count">0</span> Applications from
-                        <span id="displayDateRange2"></span></span>
-                </div>
-                <div data-method="apps_completed" data-period="year" data-url="DashboardAppsCompleted" data-next-level-modal="showServiceTypeModal_apps_completed" data-title="Applications Completed" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div>
-            </div>
-        </div>
+            <!-- Right Column: Main Dashboard Content -->
+            <div class="col-xl-10">
+                <!-- Dashboard Header with Filters -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <!-- Title -->
+                            <div>
+                                <h4 class="mb-2 text-gray-800">Director Dashboard Overview</h4>
+                                <p class="text-muted mb-0">Real-time application tracking and analytics for ${division}</p>
+                            </div>
 
-        <!-- <div id="app-completed-year" class="col-lg-3 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Applications Queried</h6>
-                    <span class="small text-primary"><span class="count">0</span> Applications
-                        <fmt:formatDate value="${now}" pattern="Y" />
-                    </span>
-                </div>
-                <div data-method="apps_completed" data-period="year" data-url="DashboardAppsCompleted" data-next-level-modal="showServiceTypeModal" data-title="Applications Completed" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div>
-            </div>
-        </div> -->
+                            <!-- Filters -->
+                            <div class="d-flex align-items-center flex-wrap gap-3">
+                                <!-- Region Selector -->
+                                <div class="card border shadow-sm flex-grow-1" style="min-width: 260px; max-width: 300px;">
+                                    <div class="card-body py-2 px-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <i class="ri-map-pin-2-fill text-primary fs-5"></i>
+                                            <div class="flex-grow-1">
+                                                <label class="form-label small text-muted mb-1">Region</label>
+                                                <select id="sel_change_region_compliance" 
+                                                    class="form-select form-select-sm border-0 p-0 bg-transparent fw-semibold text-dark">
+                                                    <option value="${regional_code}">${regional_name}</option>
+                                                    <c:forEach items="${officeregionlist}" var="officeregion">
+                                                        <option value="${officeregion.ord_region_code}">
+                                                            ${officeregion.ord_region_name}
+                                                        </option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-        
-    </div>
+                                <!-- Date Range -->
+                                <div class="d-flex align-items-center flex-wrap gap-3 flex-grow-1 flex-md-grow-0">
+                                    <!-- Date From -->
+                                    <div class="card border shadow-sm flex-grow-1" style="min-width: 180px; max-width: 220px;">
+                                        <div class="card-body py-2 px-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="ri-calendar-event-line text-primary"></i>
+                                                <div class="flex-grow-1">
+                                                    <label class="form-label small text-muted mb-1">Date From</label>
+                                                    <input type="text" id="datefrom" 
+                                                        class="form-control form-control-sm border-0 p-0 fw-semibold w-100"
+                                                        placeholder="Select start date" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-    <div class="row">
-        <!-- Past Due -->
-        <div id="app-past-due-year" class="col-lg-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Applications Past Due Date </h6>
-                    <span class="small text-primary"><span class="count">0</span> Applications from
-                         <span id="displayDateRange4"></span></span>
-                </div>
-                <div data-method="apps_past_due" data-period="year" data-url="DashboardAppsPastDueDate" data-next-level-modal="showServiceTypeModal_apps_pastdue" data-title="Applications Past Due Date" data-date="This Year (<fmt:formatDate value="${now}" pattern="Y" />)" class="content-body card-body"></div>
-            </div>
-        </div>
-        <div id="app-with-divisions" class="col-lg-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Applications With Regions </h6>
-                    <span class="small text-primary"><span class="count">0</span> Applications From
-                     <span id="displayDateRange5"></span></span>
-                </span>
-                </div>
-                <div data-method="apps_with_division" data-url="DashboardAppsWithDivision" data-next-level-modal="showServiceTypeModal_apps_with_divisions" data-title="Applications With Divisions" class="content-body card-body"></div>
-            </div>
-        </div>
+                                    <!-- Date Separator -->
+                                    <div class="text-muted d-none d-md-block">
+                                        <i class="ri-arrow-right-line"></i>
+                                    </div>
 
-        
-    </div>
-
-
-    
-
-        <!-- Original Metrics Row -->
-    
-
-
-    <!-- Regional Performance Comparison -->
-<div class="row">
-  <div class="col-lg-12 mb-4">
-    <div class="card shadow mb-4">
-      <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-black text-uppercase">Regional Performance Comparison</h6>
-        <select id="region-comparison-metric" class="form-control form-control-sm w-auto">
-          <option value="completion_rate">Completion Rate</option>
-          <option value="avg_processing_days">Processing Time</option>
-          <option value="total_received">Application Volume</option>
-        </select>
-      </div>
-      <div class="card-body">
-        <div id="regionComparisonChart" style="height: 450px;"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-   
-
-    <!-- Service Type Analysis -->
-    
-
-    <!-- Quick Actions & Export Features -->
-    <!-- <div class="row">
-        <div class="col-lg-12 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-black">Quick Actions & Reports</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 text-center">
-                            <button class="btn btn-outline-primary btn-sm mb-2" onclick="exportDashboardData()">
-                                <i class="fas fa-download"></i> Export Data
-                            </button>
+                                    <!-- Date To -->
+                                    <div class="card border shadow-sm flex-grow-1" style="min-width: 180px; max-width: 220px;">
+                                        <div class="card-body py-2 px-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="ri-calendar-event-fill text-primary"></i>
+                                                <div class="flex-grow-1">
+                                                    <label class="form-label small text-muted mb-1">Date To</label>
+                                                    <input type="text" id="dateto" 
+                                                        class="form-control form-control-sm border-0 p-0 fw-semibold w-100"
+                                                        placeholder="Select end date" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-3 text-center">
-                            <button class="btn btn-outline-info btn-sm mb-2" onclick="generatePerformanceReport()">
-                                <i class="fas fa-chart-line"></i> Performance Report
-                            </button>
+                    </div>
+                </div>
+
+                <!-- Application Types Breakdown & Performance Alerts -->
+                <div class="row mb-4">
+                    <!-- Application Types Breakdown -->
+                    <div class="col-lg-7 mb-4" data-toggle="tooltip" 
+                         title="Provides a breakdown of application Service types Received">
+                        <div class="card shadow">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-black">APPLICATION TYPES BREAKDOWN</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="service-type-breakdown" id="service-type-breakdown"></div>
+                            </div>
                         </div>
-                        <div class="col-md-3 text-center">
-                            <button class="btn btn-outline-warning btn-sm mb-2" onclick="viewBottleneckAnalysis()">
-                                <i class="fas fa-tachometer-alt"></i> Bottleneck Analysis
-                            </button>
+                    </div>
+
+                    <!-- Performance Alerts -->
+                    <div class="col-lg-5 mb-4" data-toggle="tooltip" 
+                         title="Displays a summary of regional offices with high to low completion rates">
+                        <div class="card shadow">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-black">Performance Alerts</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="performance-alerts" class="alert-list"></div>
+                            </div>
                         </div>
-                        <div class="col-md-3 text-center">
-                            <button class="btn btn-outline-success btn-sm mb-2" onclick="scheduleExecutiveBriefing()">
-                                <i class="fas fa-briefcase"></i> Executive Summary
-                            </button>
+                    </div>
+                </div>
+
+                <!-- Main Metrics Cards -->
+                <div class="row mb-4">
+                    <!-- Applications Received -->
+                    <div id="app-received-year" class="col-lg-4 mb-4">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title" id="RecTitle">
+                                    Applications Received from <span id="displayDateRange"></span>
+                                </div>
+                            </div>
+                            <div class="card-body"
+                                data-method="apps_created"
+                                data-period="year"
+                                data-url="DashboardAppsReceived"
+                                data-next-level-modal="showServiceTypeModal_apps_recieved"
+                                data-title="Applications Received"
+                                data-date='This Year (<fmt:formatDate value="${now}" pattern="Y" />)'>
+                                
+                                <div class="d-flex align-items-center mb-3 flex-wrap">
+                                    <h4 class="fw-bold mb-0"><span class="count">0</span></h4>
+                                    <div class="ms-2">
+                                        <span class="badge bg-primary-transparent">Applications</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-stacked progress-animate progress-sm mb-4">
+                                    <!-- Progress bars will be dynamically generated -->
+                                </div>
+                                
+                                <ul class="list-unstyled mb-0 pt-2 top-referral-pages">
+                                    <!-- List items will be dynamically generated -->
+                                </ul>
+                                <div class="text-center mt-3">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-primary show-more-btn d-none">
+                                    Show More
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Applications Received and Completed -->
+                    <div id="app-received-completed-year" class="col-lg-4 mb-4">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title" id="RecComp">
+                                    Applications Received and Completed from <span id="displayDateRange1"></span>
+                                </div>
+                            </div>
+                            <div class="card-body"
+                                data-method="apps_received_completed"
+                                data-period="year"
+                                data-url="DashboardAppsReceivedAndCompleted"
+                                data-next-level-modal="showServiceTypeModal_apps_recieved_and_completed"
+                                data-title="Applications Received and Completed"
+                                data-date='This Year (<fmt:formatDate value="${now}" pattern="Y" />)'>
+                                
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="fw-bold mb-0 me-2"><span class="count">0</span></h4>
+                                        <span class="badge bg-primary-transparent">Applications</span>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="text-muted fs-11 mb-1">Completion Rate 
+                                            <span class="fw-bold text-success" id="pec_id">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-stacked progress-animate progress-sm mb-4">
+                                    <!-- Progress bars will be dynamically generated -->
+                                </div>
+                                
+                                <ul class="list-unstyled mb-0 pt-2 top-referral-pages">
+                                    <!-- List items will be dynamically generated -->
+                                </ul>
+                                 <div class="text-center mt-3">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-primary show-more-btn d-none">
+                                    Show More
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Applications Completed -->
+                    <div id="app-completed-year" class="col-lg-4 mb-4">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title" id="CompTitle">
+                                    Applications Completed from <span id="displayDateRange2"></span>
+                                </div>
+                            </div>
+                            <div class="card-body"
+                                data-method="apps_completed"
+                                data-period="year"
+                                data-url="DashboardAppsCompleted"
+                                data-next-level-modal="showServiceTypeModal_apps_completed"
+                                data-title="Applications Completed"
+                                data-date='This Year (<fmt:formatDate value="${now}" pattern="Y" />)'>
+                                
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="fw-bold mb-0 me-2"><span class="count">0</span></h4>
+                                        <span class="badge bg-primary-transparent">Applications</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-stacked progress-animate progress-sm mb-4">
+                                    <!-- Progress bars will be dynamically generated -->
+                                </div>
+                                
+                                <ul class="list-unstyled mb-0 pt-2 top-referral-pages">
+                                    <!-- List items will be dynamically generated -->
+                                </ul>
+                                 <div class="text-center mt-3">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-primary show-more-btn d-none">
+                                    Show More
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Metrics Cards -->
+                <div class="row mb-4">
+                    <!-- Applications Past Due Date -->
+                    <div id="app-past-due-year" class="col-lg-6 mb-4">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Applications Past Due Date from <span id="displayDateRange4"></span>
+                                </div>
+                            </div>
+                            <div class="card-body"
+                                data-method="apps_past_due"
+                                data-period="year"
+                                data-url="DashboardAppsPastDueDate"
+                                data-next-level-modal="showServiceTypeModal_apps_pastdue"
+                                data-title="Applications Past Due Date"
+                                data-date='This Year (<fmt:formatDate value="${now}" pattern="Y" />)'>
+                                
+                                <div class="d-flex align-items-center mb-3 flex-wrap">
+                                    <h4 class="fw-bold mb-0"><span class="count">0</span></h4>
+                                    <div class="ms-2">
+                                        <span class="badge bg-danger-transparent">Past Due</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-stacked progress-animate progress-sm mb-4">
+                                    <!-- Progress bars will be dynamically generated -->
+                                </div>
+                                
+                                <ul class="list-unstyled mb-0 pt-2 top-referral-pages">
+                                    <!-- List items will be dynamically generated -->
+                                </ul>
+                                 <div class="text-center mt-3">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-primary show-more-btn d-none">
+                                    Show More
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Applications With Regions -->
+                    <div id="app-with-divisions" class="col-lg-6 mb-4">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Applications With Regions from <span id="displayDateRange5"></span>
+                                </div>
+                            </div>
+                            <div class="card-body"
+                                data-method="apps_with_division"
+                                data-url="DashboardAppsWithDivision"
+                                data-next-level-modal="showServiceTypeModal_apps_with_divisions"
+                                data-title="Applications With Divisions">
+                                
+                                <div class="d-flex align-items-center mb-3 flex-wrap">
+                                    <h4 class="fw-bold mb-0"><span class="count">0</span></h4>
+                                    <div class="ms-2">
+                                        <span class="badge bg-primary-transparent">With Regions</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-stacked progress-animate progress-sm mb-4">
+                                    <!-- Progress bars will be dynamically generated -->
+                                </div>
+                                
+                                <ul class="list-unstyled mb-0 pt-2 top-referral-pages">
+                                    <!-- List items will be dynamically generated -->
+                                </ul>
+                                 <div class="text-center mt-3">
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-primary show-more-btn d-none">
+                                    Show More
+                                </button>
+                            </div
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional Performance Comparison -->
+                <div class="row">
+                    <div class="col-lg-12 mb-4">
+                        <div class="card shadow">
+                            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="m-0 font-weight-bold text-black text-uppercase">Regional Performance Comparison</h6>
+                                <select id="region-comparison-metric" class="form-control form-control-sm w-auto">
+                                    <option value="completion_rate">Completion Rate</option>
+                                    <option value="avg_processing_days">Processing Time</option>
+                                    <option value="total_received">Application Volume</option>
+                                </select>
+                            </div>
+                            <div class="card-body">
+                                <div id="regionComparisonChart" style="height: 450px;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
-
+    </div>
 </div>
-<!-- /.container-fluid -->
-<!-- End of Main Content -->
-<jsp:include page="../includes/_footer.jsp"></jsp:include>
 
+ <jsp:include page="../../components/_director_modals.jsp"></jsp:include>
+
+<script>
+	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+</script>

@@ -10,7 +10,6 @@ let lastServiceType = null;
 
 
 
-
 // Handle select all checkbox
 // "Select All" checkbox logic
 // Handle select all checkbox
@@ -140,6 +139,7 @@ updateDisplayedDateRange();
 // Update automatically when date changes
 $('#datefrom, #dateto').on('change', function() {
   updateDisplayedDateRange();
+  
 });
 
 
@@ -187,27 +187,27 @@ $('#datefrom, #dateto').on('change', function() {
             );
 
             // applications received for the year
-            showDivisionSummary("#app-received-year", reccc.apps_rec_divisional, 'info');
+            showRegionSummary("#app-received-year", reccc.apps_rec_divisional, 'info');
 
             // applications completed for the year
-            showDivisionSummary("#app-completed-year", reccc.apps_comp_divisional, 'success');
+            showRegionSummary("#app-completed-year", reccc.apps_comp_divisional, 'success');
 
-            // applications received and completed for the year
-            showDivisionSummary(
+            // showRegionSummary received and completed for the year
+            showRegionSummary(
                 "#app-received-completed-year",
                 reccc.apps_comp_divisional_year,
                 'default'
             );
 
             // applications past due for the year
-            showDivisionSummary(
+            showRegionSummary(
                 "#app-past-due-year",
                 reccc.apps_past_due_dates_divisional,
                 'danger'
             );
 
             // applications with divisions
-            showDivisionSummary("#app-with-divisions", reccc.apps_at_division, 'warning');
+            showRegionSummary("#app-with-divisions", reccc.apps_at_division, 'warning');
 
             document.getElementById('pec_id').innerHTML = totalpercentage;
 
@@ -395,205 +395,99 @@ renderServiceTypeBreakdown(reccc);
 
 
 
-  $('#sendMessageModal').on('shown.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#past_due_apps_modal").css("z-index", "1029");
-  })
+  // $('#sendMessageModal').on('shown.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#past_due_apps_modal").css("z-index", "1029");
+  // })
   
-  $('#sendMessageModal').on('hidden.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#past_due_apps_modal").css("z-index", "");
-  })
-  
-  
-  
-  $('#sendMessageModal').on('shown.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#apps_with_division_officers_modal").css("z-index", "1029");
-  })
+  // $('#sendMessageModal').on('hidden.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#past_due_apps_modal").css("z-index", "");
+  // })
   
   
   
-   $('#sendMessageModal').on('hidden.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#apps_with_division_officers_modal").css("z-index", "");
-  })
-
-
-
-
-  $('#serviceTypeModal').on('shown.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#regionsModal").css("z-index", "1029");
-  })
+  // $('#sendMessageModal').on('shown.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#apps_with_division_officers_modal").css("z-index", "1029");
+  // })
   
   
   
-   $('#serviceTypeModal').on('hidden.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#regionsModal").css("z-index", "");
-  })
+  //  $('#sendMessageModal').on('hidden.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#apps_with_division_officers_modal").css("z-index", "");
+  // })
 
 
 
 
-
-  $('#completedTodayserviceTypeModal').on('shown.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#regionsModal").css("z-index", "1029");
-  })
+  // $('#serviceTypeModal').on('shown.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#regionsModal").css("z-index", "1029");
+  // })
   
   
   
-   $('#completedTodayserviceTypeModal').on('hidden.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#regionsModal").css("z-index", "");
-  })
+  //  $('#serviceTypeModal').on('hidden.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#regionsModal").css("z-index", "");
+  // })
 
 
 
 
 
-  $('#completedMonthserviceTypeModal').on('shown.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#regionsModal").css("z-index", "1029");
-  })
+  // $('#completedTodayserviceTypeModal').on('shown.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#regionsModal").css("z-index", "1029");
+  // })
   
   
   
-   $('#completedMonthserviceTypeModal').on('hidden.bs.modal', function () {
-    //$('#myInput').trigger('focus')
-    //$("#eventDetails").modal({backdrop: true});
-    $("#regionsModal").css("z-index", "");
-  })
+  //  $('#completedTodayserviceTypeModal').on('hidden.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#regionsModal").css("z-index", "");
+  // })
 
 
 
 
 
-
-
-
+  // $('#completedMonthserviceTypeModal').on('shown.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#regionsModal").css("z-index", "1029");
+  // })
   
   
-
-
   
+  //  $('#completedMonthserviceTypeModal').on('hidden.bs.modal', function () {
+  //   //$('#myInput').trigger('focus')
+  //   //$("#eventDetails").modal({backdrop: true});
+  //   $("#regionsModal").css("z-index", "");
+  // })
 
-              $('#cabinetModal')
-.on(
-    'show.bs.modal',
-    function(event) {
-      var job_number = $(event.relatedTarget)
-          .data('target-id') // Extract
-      // info from
-      // data-*
-      // attributes
-      var table = $('#cabinet-tracking');
-      table.find("tbody tr").remove();
 
-      $("#enq_applicant_name").val("");
-      $("#enq_applicant_type").val("");
-      $("#enq_cabinet_name").val("");
-      // $("#enq_job_purpose").val(this.job_purpose);
-      $("#enq_job_status").val("");
 
-      console.log(job_number);
 
-      $
-          .ajax({
-            type : "POST",
-            url : "Case_Management_Serv",
-            data : {
-              request_type : 'load_application_cabinet_details_by_job_number',
-              job_number : job_number
-            },
-            cache : false,
-            beforeSend : function() {
-              // $('#district').html('<img
-              // src="img/loading.gif"
-              // alt="" width="24"
-              // height="24">');
-            },
-            success : function(
-                jobdetails) {
 
-              // console.log(jobdetails);
-              var json_p = JSON
-                  .parse(jobdetails);
-
-              // console.log();
-              $(
-                  json_p.cabinet_tracking)
-                  .each(
-                      function() {
-
-                        table
-                            .append("<tr><td>"
-                                + this.officers_general_comments
-                                + "</td><td>"
-                                + this.division
-                                + "</td><td>"
-                                + this.created_by
-                                + "</td><td>"
-                                + this.created_date
-                                + '</tr>');
-
-                      });
-
-              $(json_p.cabinet_data)
-                  .each(
-                      function() {
-
-                        $(
-                            "#enq_applicant_name")
-                            .val(
-                                this.ar_name);
-                        $(
-                            "#enq_applicant_type")
-                            .val(
-                                this.business_process_sub_name);
-                        $(
-                            "#enq_cabinet_name")
-                            .val(
-                                this.file_number);
-                        $(
-                            "#enq_job_purpose")
-                            .val(
-                                this.job_purpose);
-                        $(
-                            "#enq_job_status")
-                            .val(
-                                this.job_status);
-
-                        $(
-                            "#enq_current_application_status")
-                            .val(
-                                this.current_application_status);
-
-                      });
-
-            }
-          });
-
-    });
 
 
 
   
-    
+  
 
 
-
+      
 
 
   $(document).on("click", ".showApplicationsModal", function (event) {
@@ -770,7 +664,7 @@ renderServiceTypeBreakdown(reccc);
     // });
   
 
-$(document).on("click", ".sendMessage", function (event) {
+    $(document).on("click", ".sendMessage", function (event) {
   event.preventDefault();
 
   const table = $("#past_due_apps_with_staff").DataTable();
@@ -784,7 +678,7 @@ $(document).on("click", ".sendMessage", function (event) {
     // Assuming DataTable columns: [checkbox, job_number, ar_name, ...]
     const jobNumber = rowData.job_number || rowData[1];
     const arName = rowData.ar_name || rowData[2];
-    const pendingDays = rowData.days_due || rowData[4];
+    const pendingDays = rowData.days_due || rowData[5];
 
     selectedRows.push({
       job_number: jobNumber,
@@ -806,14 +700,61 @@ $(document).on("click", ".sendMessage", function (event) {
   }
 
   // ✅ Get staff details
-  const staff = $(this).data("staff");
-  const staffid = $(this).data("staffid");
+  const staff = $(this).data("receiver_name");
+  const staffid = $(this).data("officer_id");
+
+
+  //  data-receiver_name="${StaffName}" 
+  //                data-officer_name="${StaffName}"
+  //                 data-receiver_name="${StaffName}"
+  //                 data-="${staffID}"> 
+
+  console.log(staff);
 
   // ✅ Populate modal hidden fields
   const sendMessageModal = $("#sendMessageModal");
   sendMessageModal.find("#officer_id").val(staffid);
   sendMessageModal.find("#officer_name").val(staff);
   sendMessageModal.find("#job_numbers").val(JSON.stringify(selectedRows));
+
+
+
+  //  console.log(data);
+    
+        // Update modal title
+    const titleText = staff ? 
+        `Send Message to <span class="text-primary">${staff}</span>` : 
+        'Send Message';
+    sendMessageModal.find("#modalTitleText").html(titleText);
+    
+    // Update recipient info card
+    if (staff) {
+        sendMessageModal.find("#recipientNameDisplay").text(staff);
+    } else if (staff) {
+        sendMessageModal.find("#recipientNameDisplay").text(staff);
+    } else {
+        sendMessageModal.find("#recipientNameDisplay").text('Select a recipient');
+    }
+    
+    // Update recipient info
+    if (staffid) {
+        sendMessageModal.find("#recipientInfo").text(`ID: ${staffid}`);
+    } else {
+        sendMessageModal.find("#recipientInfo").text('No ID available');
+    }
+    
+    // Update job count badge
+    const jobCount = Array.isArray(selectedRows) ? selectedRows.length : 0;
+    sendMessageModal.find("#jobCountBadge").text(`${jobCount} ${jobCount === 1 ? 'job' : 'jobs'}`);
+    
+    // Reset form to clean state    
+    // Show the modal (Bootstrap 5)
+    // const bsModal = new bootstrap.Modal(modal);
+    // bsModal.show();
+
+
+
+  
 
   // ✅ Build HTML table for selected applications
   let selectedTable = `
@@ -848,7 +789,7 @@ $(document).on("click", ".sendMessage", function (event) {
 
   // ✅ Replace previous list/table if reopening
   sendMessageModal.find(".modal-body .alert-info").remove();
-  sendMessageModal.find(".modal-body").prepend(selectedTable);
+  sendMessageModal.find(".rec-table").prepend(selectedTable);
 
   // ✅ Update modal title and show
   sendMessageModal
@@ -856,8 +797,11 @@ $(document).on("click", ".sendMessage", function (event) {
     .html(`Send Message To <span class="text-primary">${staff}</span>`);
 
   sendMessageModal.modal("show");
-});
 
+
+    resetMessageForm();
+
+});
 
 //         data = {
 //   "request_type": $("#sendMessageModal").find("#request_type").val(),
@@ -901,63 +845,202 @@ $(document).on("click", ".sendMessage", function (event) {
 // });
 
 
-
-$("#message-form").on("submit", function (event) {
-  event.preventDefault();
-
-  const form = $(this);
-  const sendMessageModal = $("#sendMessageModal");
-    const officerName = sendMessageModal.find("#officer_name").val();
-
-
-  const data = {
-    "request_type": "send_compliance_focal_person_message",
-    "officer_id": sendMessageModal.find("#officer_id").val(),
-    "officer_name": sendMessageModal.find("#officer_name").val(),
-    "job_numbers": sendMessageModal.find("#job_numbers").val(),
-    "message_type": sendMessageModal.find("#message_type").val(),
-    "message": sendMessageModal.find("#message").val()
-  };
-
-  // Show confirmation dialog before sending
-  Swal.fire({
-    title: "Send Message?",
-    text: `Are you sure you want to send this message to ${officerName}?`,
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: "#0d6efd",
-    cancelButtonColor: "#6c757d",
-    confirmButtonText: "Yes, Send",
-    cancelButtonText: "Cancel",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Proceed with AJAX submission
-      submitAjax(
-        form.attr("action"),
-        "send_compliance_focal_person_message",
-        data,
-        function () {
-          Swal.fire({
-            icon: "success",
-            title: "Message Sent!",
-            text: "Your message has been sent successfully.",
-            confirmButtonColor: "#0d6efd"
-          }).then(() => {
-            form.trigger("reset");
-            form.parents(".modal").modal("hide");
-          });
-        },
-        function () {
-          Swal.fire({
-            icon: "error",
-            title: "Message Failed",
-            text: "We were not able to send your message. Please contact IT support if issue persists.",
-            confirmButtonColor: "#0d6efd"
-          });
-        }
-      );
+$(document).on('submit', '#message-form', function(e) {
+    e.preventDefault();
+    
+    const form = $(this);
+    const officerId = form.find('#officer_id').val();
+    const officerName = form.find('#officer_name').val();
+    const jobNumbers = form.find('#job_numbers').val();
+    const messageType = form.find('input[name="message_type"]:checked').val();
+    const message = form.find('#message').val().trim();
+    
+    // Validation
+    if (!message) {
+        Swal.fire({
+            title: 'Message Required',
+            text: 'Please enter a message to send.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ffc107'
+        });
+        return false;
     }
-  });
+    
+    if (!officerId) {
+        Swal.fire({
+            title: 'No Recipient',
+            text: 'No recipient selected for the message.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ffc107'
+        });
+        return false;
+    }
+    
+    // Parse job numbers
+    let jobNumbersArray;
+    try {
+        jobNumbersArray = JSON.parse(jobNumbers);
+    } catch (error) {
+        console.error('Error parsing job numbers:', error);
+        jobNumbersArray = [];
+    }
+    
+    if (jobNumbersArray.length === 0) {
+        Swal.fire({
+            title: 'No Applications',
+            text: 'No applications selected to send message for.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ffc107'
+        });
+        return false;
+    }
+    
+    // Prepare confirmation message
+    const jobCount = jobNumbersArray.length;
+    const confirmationMessage = `
+        <div class="text-start">
+            <p>You are about to send a <strong>${messageType}</strong> to:</p>
+            <ul class="mb-2">
+                <li><strong>${officerName}</strong></li>
+                <li><strong>${jobCount}</strong> application(s)</li>
+            </ul>
+            <div class="alert alert-light border small mt-3">
+                <i class="ri-information-line me-1"></i>
+                Message: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"
+            </div>
+        </div>
+    `;
+    
+    // Show confirmation dialog
+    Swal.fire({
+        title: 'Send Message?',
+        html: confirmationMessage,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Send Message',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        reverseButtons: true,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return new Promise((resolve, reject) => {
+                // const formData = form.serialize();
+
+                const formData = {
+                  "request_type": $("#sendMessageModal").find("#request_type").val(),
+                  "officer_id": officerId,
+                  "officer_name": officerName,
+                  "job_numbers" : jobNumbers,
+                  "message_type" : messageType,
+                  "message" : message
+                }
+                
+                $.ajax({
+                    type: "POST",
+                    url: "SendComplianceMessage",
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response && response.success !== false) {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response?.message || 'Failed to send message'));
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        reject(new Error(`Server error: ${status}`));
+                    }
+                });
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Success handling
+            const response = result.value;
+            
+            Swal.fire({
+                title: 'Success!',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="ri-checkbox-circle-line text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        <h5 class="fw-semibold">Message Sent Successfully</h5>
+                        <p class="text-muted">
+                            Your ${messageType} has been sent to ${officerName}
+                        </p>
+                        ${response?.message_id ? `
+                        <div class="alert alert-light border small mt-3">
+                            <i class="ri-information-line me-1"></i>
+                            Reference ID: <strong>${response.message_id}</strong>
+                        </div>
+                        ` : ''}
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'Done',
+                confirmButtonColor: '#0d6efd',
+                timer: 4000,
+                timerProgressBar: true,
+                willClose: () => {
+                    // Close the modal after success
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('sendMessageModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    // Reset the form for next use
+                    resetMessageForm();
+                }
+            });
+            
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: 'Cancelled',
+                text: 'Message was not sent.',
+                icon: 'info',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#6c757d',
+                timer: 2000
+            });
+        }
+    }).catch((error) => {
+        // Error handling
+        console.error('Error sending message:', error);
+        
+        Swal.fire({
+            title: 'Sending Failed',
+            html: `
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="ri-error-warning-line text-danger" style="font-size: 4rem;"></i>
+                    </div>
+                    <h5 class="fw-semibold">Unable to Send Message</h5>
+                    <p class="text-muted">
+                        ${error.message || 'An unexpected error occurred. Please try again.'}
+                    </p>
+                    <div class="mt-3">
+                        <button class="btn btn-outline-secondary me-2" onclick="Swal.close()">
+                            Close
+                        </button>
+                        <button class="btn btn-primary" onclick="retrySendMessage()">
+                            <i class="ri-refresh-line me-1"></i> Try Again
+                        </button>
+                    </div>
+                </div>
+            `,
+            icon: 'error',
+            showConfirmButton: false,
+            showCancelButton: false
+        });
+    });
+    
+    return false;
 });
 
 
@@ -1176,6 +1259,7 @@ $(document).on("click", ".showServiceTypeModal_apps_recieved", function (event) 
         // Initialize DataTable with uppercase export title
     $('#apps_recieved_year_table').DataTable({
   data: dataSet10,
+  order: [[1, 'desc']],   // column index 1 = Total
   dom: 'Bfrtip',
   lengthMenu: [
     [10, 25, 50, -1],
@@ -1217,10 +1301,10 @@ $(document).on("click", ".showServiceTypeModal_apps_recieved", function (event) 
           .css('width', '100%');
       }
     },
-    {
-      extend: 'colvis',
-      text: 'Show / Hide Columns'
-    },
+    // {
+    //   extend: 'colvis',
+    //   text: 'Show / Hide Columns'
+    // },
     'pageLength'
   ]
 }).draw();
@@ -1263,6 +1347,21 @@ $(document).on("click", ".showServiceTypeModal_apps_recieved", function (event) 
 
 
 function loadDivisionApps(lastServiceType, regional_code, newdatestart, newdateend, status_filter) {
+
+
+
+
+  function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return unsafe;
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
 
 
   let statusLabel = "";
@@ -1313,36 +1412,51 @@ function loadDivisionApps(lastServiceType, regional_code, newdatestart, newdatee
       for (let i = 0; i < json_result.apps_at_division.length; i++) {
         let row = json_result.apps_at_division[i];
 
-        let action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
-            <button type="button" 
-        class="dropdown-item" 
-        id="btn_status"
-        data-job_number=""
-        data-id="${row.job_number}"
-        title="View Application Stages"
-        data-toggle="modal" 
-        data-target="#stagesModal">
-    Job Stages <i class="fas fa-hdd"></i>
-</button>
+         const action = `
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
 
-              <button type="button" class="dropdown-item" href="#" id="btn_cabinet" data-staff_name="" data-staff_id="" data-job_number="" title="View Application Progress" data-target-id="${row.job_number}" data-target="#cabinetModal" data-toggle="modal">Track <i class="fas fa-hdd"></i></button>
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${row.transaction_number}">
-                <input type="hidden" name="search_text" value="${row.case_number}">
-                <input type="hidden" name="job_number" value="${row.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${row.business_process_name}">
-                <button type="submit" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        `;
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
+
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(row.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${row.job_number}','${row.transaction_number}','${row.case_number}','${row.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
 
         dataSet11.push([
           row.job_number,
@@ -1402,10 +1516,10 @@ function loadDivisionApps(lastServiceType, regional_code, newdatestart, newdatee
                 .css('width', '100%');
             }
           },
-          {
-            extend: 'colvis',
-            text: 'Show / Hide Columns'
-          },
+          // {
+          //   extend: 'colvis',
+          //   text: 'Show / Hide Columns'
+          // },
           'pageLength'
         ]
       }).draw();
@@ -1502,6 +1616,7 @@ $(document).on("click", ".showServiceTypeModal_apps_recieved_and_completed", fun
         .DataTable({
           data: dataSet12,
           dom: "Bfrtip",
+          order: [[1, 'desc']],   // column index 1 = Total
           lengthMenu: [
             [10, 25, 50, -1],
             ["10 rows", "25 rows", "50 rows", "Show all"],
@@ -1544,10 +1659,10 @@ $(document).on("click", ".showServiceTypeModal_apps_recieved_and_completed", fun
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -1555,6 +1670,20 @@ $(document).on("click", ".showServiceTypeModal_apps_recieved_and_completed", fun
     },
   });
 });
+
+
+
+
+ function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return unsafe;
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
 
 
 
@@ -1608,26 +1737,51 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
       for (let i = 0; i < json_result.apps_at_division.length; i++) {
         const row = json_result.apps_at_division[i];
 
-        const action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
-              <button type="button" class="dropdown-item" href="#" id="btn_cabinet" data-staff_name="" data-staff_id="" data-job_number="" title="View Application Progress" data-target-id="${row.job_number}" data-target="#cabinetModal" data-toggle="modal">Track <i class="fas fa-hdd"></i></button>
+         const action = `
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
 
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${row.transaction_number}">
-                <input type="hidden" name="search_text" value="${row.case_number}">
-                <input type="hidden" name="job_number" value="${row.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${row.business_process_name}">
-                <button type="submit" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        `;
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
+
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(row.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${row.job_number}','${row.transaction_number}','${row.case_number}','${row.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
 
         dataSet13.push([
           row.job_number,
@@ -1685,10 +1839,10 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
                 .css('width', '100%');
             }
           },
-          {
-            extend: 'colvis',
-            text: 'Show / Hide Columns'
-          },
+          // {
+          //   extend: 'colvis',
+          //   text: 'Show / Hide Columns'
+          // },
           'pageLength'
         ]
       }).draw();
@@ -1774,6 +1928,7 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
       $("#apps_completed_year_table")
         .DataTable({
           data: dataSet14,
+            order: [[1, 'desc']],   // column index 1 = Total
           dom: "Bfrtip",
           lengthMenu: [
             [10, 25, 50, -1],
@@ -1818,10 +1973,10 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -1883,26 +2038,50 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
         const row = json_result.apps_at_division[i];
 
         const action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
 
-          <button type="button" class="dropdown-item" href="#" id="btn_cabinet" data-staff_name="" data-staff_id="" data-job_number="" title="View Application Progress" data-target-id="${row.job_number}" data-target="#cabinetModal" data-toggle="modal">Track <i class="fas fa-hdd"></i></button>
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
 
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${row.transaction_number}">
-                <input type="hidden" name="search_text" value="${row.case_number}">
-                <input type="hidden" name="job_number" value="${row.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${row.business_process_name}">
-                <button type="submit" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        `;
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(row.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${row.job_number}','${row.transaction_number}','${row.case_number}','${row.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
 
         dataSet13.push([
           row.job_number,
@@ -1960,10 +2139,10 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
                 .css('width', '100%');
             }
           },
-          {
-            extend: 'colvis',
-            text: 'Show / Hide Columns'
-          },
+          // {
+          //   extend: 'colvis',
+          //   text: 'Show / Hide Columns'
+          // },
           'pageLength'
         ]
       }).draw();
@@ -2291,12 +2470,12 @@ $(document).on('click', '#view_apps_recieved_completed_year', function (e) {
         $("body").addClass("modal-open");
       }
   
-      if (
-        !$("#applicationsModal").is(":visible") &&
-        $(".sendMessage").length > 0
-      ) {
-        $(".sendMessage").remove();
-      }
+      // if (
+      //   !$("#applicationsModal").is(":visible") &&
+      //   $(".sendMessage").length > 0
+      // ) {
+      //   $(".sendMessage").remove();
+      // }
     });
   
     function generateChart(modalBody, title, type, tableData) {
@@ -2942,6 +3121,127 @@ $("#message-form_focal_complaince").on("submit", function (event) {
 
 
 
+
+
+function showRegionSummary(id, data, color) {
+
+    const MAX_VISIBLE = 7;
+
+    // Calculate total
+    let total = data.reduce((sum, current) => sum + current.total, 0);
+
+    // Update total count
+    $(id).find(".count").html(new Intl.NumberFormat().format(total));
+
+    let cardBody = $(id).find(".card-body");
+    let period = cardBody.data("period");
+    let method = cardBody.data("method");
+    let title = cardBody.data("title");
+    let url = cardBody.data("url");
+    let nextLevelModal = cardBody.data("next-level-modal");
+    let date = cardBody.data("date") ?? "";
+
+    let periodToAdd = typeof period === "undefined" ? "" : `_${period}`;
+
+    let progressContainer = $(id).find(".progress-animate");
+    let listContainer = $(id).find(".top-referral-pages");
+    let showMoreBtn = $(id).find(".show-more-btn");
+
+    progressContainer.empty();
+    listContainer.empty();
+
+    const colorClasses = ['primary', 'info', 'warning', 'success', 'danger', 'secondary'];
+
+    /* ------------------ PROGRESS BARS ------------------ */
+    data.forEach(function (current, index) {
+
+        let percent = total > 0 ? ((current.total / total) * 100).toFixed(2) : 0;
+        const colorClass = colorClasses[index % colorClasses.length];
+        let progressWidth = current.total > 0 ? percent : 1;
+
+        let progressBar = `
+            <div class="progress-bar bg-${colorClass}"
+                role="progressbar"
+                style="width:${progressWidth}%"
+                title="${current.division}: ${current.total} (${percent}%)"
+                data-bs-toggle="tooltip">
+            </div>`;
+
+        progressContainer.append(progressBar);
+    });
+
+    /* ------------------ LIST ITEMS ------------------ */
+    data.forEach(function (current, index) {
+
+        let percent = total > 0 ? ((current.total / total) * 100).toFixed(2) : 0;
+        const colorClass = colorClasses[index % colorClasses.length];
+
+        let hiddenClass = index >= MAX_VISIBLE ? 'd-none extra-item' : '';
+
+        let listItem = `
+        <li class="${colorClass} ${hiddenClass}">
+            <div class="d-flex align-items-center justify-content-between w-100">
+                
+                <div class="region-name text-truncate">
+                    <a href="#"
+                       data-method="${method}"
+                       data-url="${url}"
+                       ${typeof period === "undefined" ? "" : `data-period="${period}"`}
+                       data-action="report_dashboard_${method}${periodToAdd}"
+                       data-date="${date}"
+                       data-title="${title}"
+                       data-type="${
+            current.division
+          }" data-regcode="${
+            current.region_code
+          }" data-regdivision="${
+            current.current_division_of_application
+          }"
+                       class="${nextLevelModal} text-decoration-none ${current.total === 0 ? 'text-muted' : ''}">
+                        ${current.division}
+                    </a>
+                </div>
+
+                <div class="fs-12 text-muted ms-2 text-end">
+                    ${current.total.toLocaleString()} ${total > 0 ? `(${percent}%)` : ''}
+                </div>
+
+            </div>
+        </li>`;
+
+        listContainer.append(listItem);
+    });
+
+    /* ------------------ SHOW MORE BUTTON ------------------ */
+    if (data.length > MAX_VISIBLE) {
+        showMoreBtn.removeClass("d-none").text("Show More");
+    } else {
+        showMoreBtn.addClass("d-none");
+    }
+
+    // Tooltips
+    $('[data-bs-toggle="tooltip"]').tooltip();
+}
+
+
+
+
+$(document).on("click", ".show-more-btn", function () {
+    let card = $(this).closest(".card-body");
+    let hiddenItems = card.find(".extra-item");
+
+    if ($(this).text() === "Show More") {
+        hiddenItems.removeClass("d-none");
+        $(this).text("Show Less");
+    } else {
+        hiddenItems.addClass("d-none");
+        $(this).text("Show More");
+    }
+});
+
+
+
+
 // Old Function
   // function showDivisionSummary(id, data, color) {
   //   // console.log(data[0]); // Logging the first data item
@@ -3217,7 +3517,18 @@ $(document).ready(function() {
   $('#apps_received_today').on('click', function (e) {
   e.preventDefault();
 
-  $("#regionsModal").modal("show");
+
+    var modalElement = document.getElementById('regionsModal');
+  if (modalElement) {
+    var modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  } else {
+    console.error("Modal element not found!");
+  }
+
+
+
+  // $("#").modal("show");
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -3284,6 +3595,7 @@ $(document).ready(function() {
         // Initialize DataTable with uppercase title for exports
         $('#region_table').DataTable({
           data: dataSet1,
+          ordering: false,   // <---- ADD THIS
           dom: 'Bfrtip',
           lengthMenu: [
             [10, 25, 50, -1],
@@ -3326,10 +3638,10 @@ $(document).ready(function() {
                   .css('width', '100%');
               }
             },
-            {
-              extend: 'colvis',
-              text: 'Show / Hide Columns'
-            },
+            // {
+            //   extend: 'colvis',
+            //   text: 'Show / Hide Columns'
+            // },
             'pageLength'
           ]
         }).draw();
@@ -3341,6 +3653,25 @@ $(document).ready(function() {
 
 
     
+// $('#apps_received_today').on('click', function (e) {
+//     e.preventDefault();
+//     console.log('Button clicked');
+    
+//     var modalElement = document.getElementById('regionsModal');
+//     console.log('Modal element found:', modalElement);
+    
+//     if (modalElement) {
+//         console.log('Modal classes:', modalElement.className);
+//         var modal = new bootstrap.Modal(modalElement);
+//         console.log('Bootstrap modal instance created:', modal);
+//         modal.show();
+//         console.log('Modal show called');
+//     } else {
+//         console.error("Modal element not found!");
+//     }
+    
+//     // Rest of your code...
+// });
 
 
 
@@ -3457,7 +3788,7 @@ $(document).ready(function() {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -3637,31 +3968,79 @@ $(document).ready(function() {
 
       // Build dataset
       const dataSet = json_result.apps_at_division.map(app => {
+
         const action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
-              <button type="button" class="dropdown-item"
-                id="btn_cabinet"
-                data-target-id="${app.job_number}"
-                data-toggle="modal"
-                data-target="#cabinetModal">
-                Track <i class="fas fa-hdd"></i>
-              </button>
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${app.transaction_number}">
-                <input type="hidden" name="search_text" value="${app.case_number}">
-                <input type="hidden" name="job_number" value="${app.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${app.business_process_name}">
-                <button type="submit" name="save" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        `;
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
+
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(app.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${app.job_number}','${app.transaction_number}','${app.case_number}','${app.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
+
+
+        // const action = `
+        //   <div class="btn-group" role="group">
+        //     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        //       Actions
+        //     </button>
+        //     <div class="dropdown-menu">
+        //       <button type="button" class="dropdown-item"
+        //         id="btn_cabinet"
+        //         data-target-id="${app.job_number}"
+        //         data-toggle="modal"
+        //         data-target="#cabinetModal">
+        //         Track <i class="fas fa-hdd"></i>
+        //       </button>
+        //       <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
+        //         <input type="hidden" name="case_number" value="${app.transaction_number}">
+        //         <input type="hidden" name="search_text" value="${app.case_number}">
+        //         <input type="hidden" name="job_number" value="${app.job_number}">
+        //         <input type="hidden" name="business_process_sub_name" value="${app.business_process_name}">
+        //         <button type="submit" name="save" class="dropdown-item">
+        //           Application Details <i class="fas fa-info-circle"></i>
+        //         </button>
+        //       </form>
+        //     </div>
+        //   </div>
+        // `;
 
         return [
           app.job_number,
@@ -3710,7 +4089,7 @@ $(document).ready(function() {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -3790,6 +4169,7 @@ $(document).ready(function() {
         // Initialize DataTable with export buttons using uppercase title
         $('#region_table').DataTable({
           data: dataSet1,
+          ordering: false,   // <---- ADD THIS
           dom: 'Bfrtip',
           lengthMenu: [
             [10, 25, 50, -1],
@@ -3832,10 +4212,10 @@ $(document).ready(function() {
                   .css('width', '100%');
               }
             },
-            {
-              extend: 'colvis',
-              text: 'Show / Hide Columns'
-            },
+            // {
+            //   extend: 'colvis',
+            //   text: 'Show / Hide Columns'
+            // },
             'pageLength'
           ]
         }).draw();
@@ -3962,7 +4342,7 @@ $(document).on('click', '#view_recieved_month_by_region', function (e) {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -4037,30 +4417,50 @@ $(document).on('click', '#view_recieved_month_by_service', function (e) {
       // Build dataset
       const dataSet = json_result.apps_at_division.map(app => {
         const action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
-              <button type="button" class="dropdown-item"
-                id="btn_cabinet"
-                data-target-id="${app.job_number}"
-                data-toggle="modal"
-                data-target="#cabinetModal">
-                Track <i class="fas fa-hdd"></i>
-              </button>
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${app.transaction_number}">
-                <input type="hidden" name="search_text" value="${app.case_number}">
-                <input type="hidden" name="job_number" value="${app.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${app.business_process_name}">
-                <button type="submit" name="save" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        `;
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
+
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(app.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${app.job_number}','${app.transaction_number}','${app.case_number}','${app.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
 
         return [
           app.job_number,
@@ -4109,7 +4509,7 @@ $(document).on('click', '#view_recieved_month_by_service', function (e) {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -4224,7 +4624,7 @@ $('#apps_completed_today_division').on('click', function (e) {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -4347,7 +4747,7 @@ $(document).on('click', '#view_completed_today_by_region', function (e) {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -4641,30 +5041,50 @@ $(document).on('click', '#apps_completed_today_servicetype', function (e) {
 
       const dataSet7 = json_result.apps_at_division.map(app => {
         const action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
-              <button type="button" class="dropdown-item"
-                id="btn_cabinet"
-                data-target-id="${app.job_number}"
-                data-toggle="modal"
-                data-target="#cabinetModal">
-                Track <i class="fas fa-hdd"></i>
-              </button>
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${app.transaction_number}">
-                <input type="hidden" name="search_text" value="${app.case_number}">
-                <input type="hidden" name="job_number" value="${app.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${app.business_process_name}">
-                <button type="submit" name="save" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        `;
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
+
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(app.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${app.job_number}','${app.transaction_number}','${app.case_number}','${app.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
 
         return [
           app.job_number,
@@ -4711,7 +5131,7 @@ $(document).on('click', '#apps_completed_today_servicetype', function (e) {
                 .css('width', '100%');
             }
           },
-          { extend: 'colvis', text: 'Show / Hide Columns' },
+          // { extend: 'colvis', text: 'Show / Hide Columns' },
           'pageLength'
         ]
       }).draw();
@@ -5156,6 +5576,8 @@ $(document).on("click", ".showServiceTypeModal_apps_pastdue", function (event) {
       // Initialize DataTable with export buttons and custom print header
       $("#apps_past_due_unit").DataTable({
         data: dataSet15,
+          order: [[1, 'desc']],   // column index 1 = Total
+
         dom: "Bfrtip",
         lengthMenu: [
           [10, 25, 50, -1],
@@ -5199,10 +5621,10 @@ $(document).on("click", ".showServiceTypeModal_apps_pastdue", function (event) {
                 .css("width", "100%");
             },
           },
-          {
-            extend: "colvis",
-            text: "Show / Hide Columns",
-          },
+          // {
+          //   extend: "colvis",
+          //   text: "Show / Hide Columns",
+          // },
           "pageLength",
         ],
       }).draw();
@@ -5297,6 +5719,7 @@ $(document).on("click", "#view_apps_pastdue_within_units", function (e) {
       $("#past_due_officers_table")
         .DataTable({
           data: dataSet16,
+            order: [[1, 'desc']],   // column index 1 = Total
           dom: "Bfrtip",
           lengthMenu: [
             [10, 25, 50, -1],
@@ -5340,10 +5763,10 @@ $(document).on("click", "#view_apps_pastdue_within_units", function (e) {
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -5430,28 +5853,68 @@ $(document).on("click", "#past_due_apps", function (e) {
     <input type="checkbox" class="app-checkbox form-check-input" value="${app.job_number}">
   `;
 
-        let action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
-                  <button type="button" class="dropdown-item" href="#" id="btn_cabinet" data-staff_name="" data-staff_id="" data-job_number="" title="View Application Progress" data-target-id="${app.job_number}" data-target="#cabinetModal" data-toggle="modal">Track <i class="fas fa-hdd"></i></button>
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${app.transaction_number}">
-                <input type="hidden" name="search_text" value="${app.case_number}">
-                <input type="hidden" name="job_number" value="${app.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${app.case_number}">
-                <button type="submit" name="save" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form> 
-              <button type="button" class="dropdown-item" data-staff_name="${staff_name}" data-staff_id="${staff_id}" data-job_number="${app.job_number}" data-target="#sendMessageModal_FocalCompliance" data-toggle="modal">
-                Send Message
-              </button>
-            </div>
-          </div>`;
+          const action = `
+        <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
 
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
+
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(app.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+
+               <li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+                data-receiver_name="${staff_name}" 
+                 data-officer_name="${staff_name}"
+                  data-officer_id="${staff_id}" 
+                  id="messageReply"
+                  data-job_number="${app.job_number}"> 
+								    <i class="ri-reply-line"></i>
+                  Notice & Replies
+								</a>
+							</li>
+
+						
+              	<li><hr class="dropdown-divider"></li>
+
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${app.job_number}','${app.transaction_number}','${app.case_number}','${app.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>`;
         dataSet17.push([
           checkbox,
           app.job_number,
@@ -5468,14 +5931,12 @@ $(document).on("click", "#past_due_apps", function (e) {
       // Generate Send Message Button
       let jobNumbersString = jobNumbers.join(",");
       let pdfBtn = `
-        <button class="sendMessage btn btn-primary ml-auto" 
-                id="send_message" 
-                data-staffid="${staff_id}" 
-                data-staff="${staff_name}" 
-                data-jobnumber="${jobNumbersString}" 
-                type="button">
-          Send Message
-        </button>`;
+       <button class="btn btn-primary ms-auto sendMessage" 
+                        data-officer_id="${staff_id}"
+                        data-receiver_name="${staff_name}"
+                        data-officer_name="${staff_name}">
+                    <i class="bi bi-chat-text"></i> Select & Send Message
+                </button>`;
       document.getElementById("sendmsg").innerHTML = pdfBtn;
 
       // Initialize DataTable with full export + print formatting
@@ -5525,10 +5986,10 @@ $(document).on("click", "#past_due_apps", function (e) {
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -5622,6 +6083,7 @@ $(document).on("click", ".showServiceTypeModal_apps_with_divisions", function (e
       $("#apps_past_due_unit")
         .DataTable({
           data: dataSet15,
+            order: [[1, 'desc']],   // column index 1 = Total
           dom: "Bfrtip",
           lengthMenu: [
             [10, 25, 50, -1],
@@ -5665,10 +6127,10 @@ $(document).on("click", ".showServiceTypeModal_apps_with_divisions", function (e
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -5768,6 +6230,7 @@ $(document).on("click", "#view_apps_withdivision_within_units", function (e) {
       $("#past_due_officers_table")
         .DataTable({
           data: dataSet16,
+            order: [[1, 'desc']],   // column index 1 = Total
           dom: "Bfrtip",
           lengthMenu: [
             [10, 25, 50, -1],
@@ -5811,10 +6274,10 @@ $(document).on("click", "#view_apps_withdivision_within_units", function (e) {
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -5903,34 +6366,69 @@ $(document).on("click", "#division_apps", function (e) {
         let days_since_batched = app.days_since_batched;
         let job_status = app.job_status;
 
-        let action = `
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Actions
-            </button>
-            <div class="dropdown-menu">
+         const action = `
+             <td class="text-end">
+					<div class="dropdown">
+						<a href="javascript:void(0);"
+						class="btn btn-icon btn-sm btn-primary border action-btn""
+						data-bs-toggle="dropdown"
+						data-bs-display="static"
+						aria-expanded="false">
+							<i class="ri-more-2-line"></i>
+						</a>
 
-      <button type="button" class="dropdown-item" href="#" id="btn_cabinet" data-staff_name="" data-staff_id="" data-job_number="" title="View Application Progress" data-target-id="${app.job_number}" data-target="#cabinetModal" data-toggle="modal">Track <i class="fas fa-hdd"></i></button>
+						<ul class="dropdown-menu dropdown-menu-end table-dropdown" data-popper-placement="bottom-end">
 
-              <form class="d-inline" target="_blank" action="front_office_view_application" method="post">
-                <input type="hidden" name="case_number" value="${app.transaction_number}">
-                <input type="hidden" name="search_text" value="${app.case_number}">
-                <input type="hidden" name="job_number" value="${app.job_number}">
-                <input type="hidden" name="business_process_sub_name" value="${app.case_number}">
-                <button type="submit" name="save" class="dropdown-item">
-                  Application Details <i class="fas fa-info-circle"></i>
-                </button>
-              </form>
-              <button type="button" class="dropdown-item"
-                data-staff_name="${staff_name}"
-                data-staff_id="${staff_id}"
-                data-job_number="${job_number}"
-                data-target="#sendMessageModal_FocalCompliance"
-                data-toggle="modal">
-                Send Message
-              </button>
-            </div>
-          </div>`;
+							<!-- Cabinet -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								data-bs-toggle="modal"
+								data-bs-target="#cabinetModal"
+								data-target-id="${escapeHtml(app.job_number || '')}">
+									<i class="ri-hard-drive-2-line me-2"></i>
+									Cabinet
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+
+               <li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+                data-receiver_name="${staff_name}" 
+                 data-officer_name="${staff_name}"
+                  data-officer_id="${staff_id}" 
+                  id="messageReply"
+                  data-job_number="${app.job_number}"> 
+								    <i class="ri-reply-line"></i>
+                  Notice & Replies
+								</a>
+							</li>
+
+						
+              	<li><hr class="dropdown-divider"></li>
+
+						
+					
+
+							<!-- Application Details (Form Submit) -->
+							<li>
+								<a class="dropdown-item"
+								href="javascript:void(0);"
+								onclick="viewApplicationDetails('${app.job_number}','${app.transaction_number}','${app.case_number}','${app.business_process_sub_name}')">
+									<i class="ri-information-line me-2"></i>
+									Application Details
+								</a>
+							</li>
+
+							<li><hr class="dropdown-divider"></li>
+							
+
+						</ul>
+					</div>
+				</td>
+        `;
 
         dataSet17.push([
           checkbox,
@@ -5950,14 +6448,13 @@ $(document).on("click", "#division_apps", function (e) {
       // Add Send Message button dynamically
       let jobNumbersString = jobNumbers.join(",");
       let pdfBtn = `
-        <button class="sendMessage btn btn-primary ml-auto" 
-          id="send_message" 
-          data-staffid="${staff_id}" 
-          data-staff="${staff_name}" 
-          data-jobnumber="${jobNumbersString}" 
-          type="button">
-          Send Message
-        </button>`;
+        <button class="btn btn-primary ms-auto sendMessage" 
+                        data-officer_id="${staff_id}"
+                        data-receiver_name="${staff_name}"
+                        data-officer_name="${staff_name}">
+                    <i class="bi bi-chat-text"></i> Select & Send Message
+                </button>
+        `;
       document.getElementById("sendmsg").innerHTML = pdfBtn;
 
       // Initialize DataTable with export buttons
@@ -6007,10 +6504,10 @@ $(document).on("click", "#division_apps", function (e) {
                   .css("width", "100%");
               },
             },
-            {
-              extend: "colvis",
-              text: "Show / Hide Columns",
-            },
+            // {
+            //   extend: "colvis",
+            //   text: "Show / Hide Columns",
+            // },
             "pageLength",
           ],
         })
@@ -6219,6 +6716,493 @@ $(document).on("click", "#btn_status", function (e) {
 //     });
   
 // });
+
+
+
+// Retry function for error case
+function retrySendMessage() {
+    Swal.close();
+    // Trigger form submission again after a delay
+    setTimeout(() => {
+        $('#message-form').trigger('submit');
+    }, 500);
+}
+
+// Initialize message modal functionality on page load
+$(document).ready(function() {
+    // Character counter
+    $('#message').on('input', function() {
+        const length = $(this).val().length;
+        $('#charCount').text(`${length}/1000 characters`);
+        
+        // Update character count styling
+        $('#charCount').removeClass('warning danger');
+        if (length > 800) {
+            $('#charCount').addClass('warning');
+        }
+        if (length > 950) {
+            $('#charCount').addClass('danger');
+        }
+        
+        // Update preview
+        updateMessagePreview();
+    });
+    
+    // Template buttons
+    $('.template-btn').on('click', function() {
+        const template = $(this).data('template');
+        insertTemplate(template);
+    });
+    
+    // Message type radio buttons
+    $('input[name="message_type"]').on('change', function() {
+        updateMessagePreview();
+        updateSubmitButton();
+    });
+    
+    // Reset form button
+    $('#btnResetForm').on('click', function() {
+        resetMessageForm();
+    });
+});
+
+
+
+
+function resetMessageForm() {
+    // const form = $('#message-form')[0];
+    // if (form) {
+    //     form.reset();
+    // }
+    
+    // Reset character count
+    $('#charCount').text('0/1000 characters').removeClass('warning danger');
+    
+    // Reset preview
+    $('#messagePreview').html('<small class="text-muted">Start typing to see preview</small>');
+    $('#previewCard').hide();
+    
+    // Set default message type to "query" (since this is for compliance)
+    $('#message_type_query').prop('checked', true);
+    updateSubmitButton();
+    
+    // Clear any validation states
+    $('.form-control').removeClass('is-invalid is-valid');
+    $('#message-form').removeClass('was-validated');
+    
+    // Clear the message textarea
+    $('#message').val('');
+}
+
+
+
+// Helper function to update message preview
+function updateMessagePreview() {
+    const message = $('#message').val();
+    const messageType = $('input[name="message_type"]:checked').val();
+    const recipient = $('#recipientNameDisplay').text() || 'Recipient';
+    
+    let preview = '';
+    
+    if (message) {
+        preview = `<strong>To:</strong> ${recipient}\n`;
+        preview += `<strong>Type:</strong> ${messageType || 'Message'}\n\n`;
+        preview += message.substring(0, 200);
+        
+        if (message.length > 200) {
+            preview += '...';
+        }
+        
+        // Show preview card
+        $('#previewCard').show();
+    } else {
+        preview = '<small class="text-muted">Start typing to see preview</small>';
+        $('#previewCard').hide();
+    }
+    
+    $('#messagePreview').html(preview.replace(/\n/g, '<br>'));
+}
+
+// Helper function to insert template text
+function insertTemplate(template) {
+    const templates = {
+        query: "Dear Officer,\n\nPlease provide an update on the status of the application mentioned above. This requires urgent attention.\n\nBest regards,\n[Your Name]",
+        followup: "Dear Officer,\n\nFollowing up on the previous communication regarding this application. Please advise on the current status and any pending actions.\n\nRegards,\n[Your Name]",
+        reminder: "Dear Officer,\n\nThis is a reminder that the application is approaching/passed its TAT deadline. Kindly expedite action to avoid further delays.\n\nThank you,\n[Your Name]",
+        update: "Dear Officer,\n\nPlease update the status of this application in the system as soon as possible. If there are any issues, please let us know immediately.\n\nSincerely,\n[Your Name]"
+    };
+    
+    const $textarea = $('#message');
+    const currentText = $textarea.val();
+    const templateText = templates[template] || '';
+    
+    // Insert template, preserving existing text
+    if (currentText && !currentText.includes(templateText)) {
+        $textarea.val(currentText + '\n\n' + templateText);
+    } else if (!currentText) {
+        $textarea.val(templateText);
+    }
+    
+    // Trigger input event for character count and preview
+    $textarea.trigger('input');
+    
+    // Show success notification
+    Swal.fire({
+        title: 'Template Inserted',
+        text: `"${template}" template has been inserted`,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#0d6efd',
+        timer: 2000
+    });
+}
+
+
+
+
+
+
+    const $cabinetModal = $('#cabinetModal');
+    // ==================== CABINET MODAL FUNCTIONALITY ====================
+    $cabinetModal.on('show.bs.modal', handleCabinetModalShow);
+
+
+        function clearTableRows($table) {
+        $table.find("tbody tr").remove();
+    }
+
+       function handleAjaxError(xhr, status, error) {
+        console.error('AJAX Error:', error);
+        showNotification(
+            `Error loading data. Please try again.`,
+            'error'
+        );
+    }
+
+          function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return unsafe;
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function updateRefreshTime() {
+		const now = new Date();
+		const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+		$('#lastRefreshTime').text(timeString);
+	}
+
+    function handleCabinetModalShow(event) {
+        const jobNumber = $(event.relatedTarget).data('target-id');
+        
+        if (!jobNumber) {
+            console.error('No job number provided for cabinet modal');
+            return;
+        }
+
+        resetCabinetModal();
+        loadCabinetDetails(jobNumber);
+    }
+
+    function resetCabinetModal() {
+        const fields = [
+            '#enq_applicant_name',
+            '#enq_applicant_type',
+            '#enq_cabinet_name',
+            '#enq_job_purpose',
+            '#enq_job_status',
+            '#enq_current_application_status'
+        ];
+        
+        fields.forEach(selector => $(selector).val(''));
+        clearTableRows($('#cabinet-tracking'));
+    }
+
+    function loadCabinetDetails(jobNumber) {
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'load_application_cabinet_details_by_job_number',
+                job_number: jobNumber
+            },
+            cache: false,
+            success: function(response) {
+                populateCabinetData(response);
+				updateRefreshTime();
+            },
+            error: handleAjaxError
+        });
+    }
+
+    function populateCabinetData(response) {
+        try {
+            const data = JSON.parse(response);
+            // console.log(data);
+            // Populate cabinet tracking table
+            if (data.cabinet_tracking && Array.isArray(data.cabinet_tracking)) {
+                const table = $('#cabinet-tracking');
+				table.empty();
+                data.cabinet_tracking.forEach(tracking => {
+                    table.append(createCabinetTrackingRow(tracking));
+                });
+
+				// Update last update date
+				if (data.cabinet_tracking && data.cabinet_tracking.length > 0) {
+					const lastUpdate = data.cabinet_tracking[data.cabinet_tracking.length - 1].created_date;
+					$('#lastUpdateDate').text(lastUpdate);
+				}
+
+				const trackingCount = Array.isArray(data.cabinet_tracking) ? data.cabinet_tracking.length : 0;
+				$('#trackingEntriesCount').text(trackingCount);
+				$('#historyCount').text(trackingCount + ' entries');
+            }
+
+            // Populate cabinet data fields
+            if (data.cabinet_data) {
+                const cabinet = data.cabinet_data;
+                $('#enq_applicant_name').val(cabinet.ar_name || '');
+                $('#enq_applicant_type').val(cabinet.business_process_sub_name || '');
+                $('#enq_cabinet_name').val(cabinet.file_number || '');
+                $('#enq_job_purpose').val(cabinet.job_purpose || '');
+                $('#enq_job_status').val(cabinet.job_status || '');
+                $('#enq_current_application_status').val(cabinet.current_application_status || '');
+            }
+        } catch (error) {
+            console.error('Error parsing cabinet data:', error);
+        }
+    }
+
+    function createCabinetTrackingRow(tracking) {
+        return `
+            <tr>
+                <td class="small">${escapeHtml(tracking.officers_general_comments || '')}</td>
+                <td class="small">${escapeHtml(tracking.division || '')}</td>
+                <td class="small">${escapeHtml(tracking.created_by || '')}</td>
+                <td class="small">${formatDate(tracking.created_date)}</td>
+            </tr>
+        `;
+    }
+
+    window.viewApplicationDetails = function(job_number, transaction_number, case_number, business_process_sub_name) {
+     
+      // Create a form dynamically
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'front_office_view_application';
+      form.target = '_blank'
+      form.style.display = 'none'; // Hide the form
+      
+      // Add the case number as an input field
+      const caseNumberInput = document.createElement('input');
+      caseNumberInput.type = 'hidden';
+      caseNumberInput.name = 'search_text';
+      caseNumberInput.value = case_number;
+      form.appendChild(caseNumberInput);
+
+      // Add the case number as an input field
+      const jobNumberInput = document.createElement('input');
+      jobNumberInput.type = 'hidden';
+      jobNumberInput.name = 'search_text';
+      jobNumberInput.value = job_number;
+      form.appendChild(jobNumberInput);
+
+      // Add the case number as an input field
+      const transactionNumberInput = document.createElement('input');
+      transactionNumberInput.type = 'hidden';
+      transactionNumberInput.name = 'search_text';
+      transactionNumberInput.value = transaction_number;
+      form.appendChild(transactionNumberInput);
+
+      // Add the case number as an input field
+      const businessProcessSubNameInput = document.createElement('input');
+      businessProcessSubNameInput.type = 'hidden';
+      businessProcessSubNameInput.name = 'search_text';
+      businessProcessSubNameInput.value = business_process_sub_name;
+      form.appendChild(businessProcessSubNameInput);
+      
+      // Add the form to the body and submit it
+      document.body.appendChild(form);
+      form.submit();
+};
+
+
+
+
+
+  $(document).on("click", ".sendMessageToAll", function (event) {
+    event.preventDefault();
+    
+    const officerName = $(this).data('officer_name');
+    const receiverName = $(this).data('receiver_name');
+    const jobNumber = $(this).data('job_number');
+    const officerId = $(this).data('officer_id');
+    
+    // Parse job numbers (could be a single job number or array)
+    let jobNumbers = $(this).data("job-number");
+    jobNumbers =
+      typeof jobNumbers === "undefined" ? [] : [{ job_number: jobNumbers }];
+
+      console.log(jobNumbers)
+
+    if (jobNumbers.length <= 0) {
+      jobNumbers = $(this)
+        .parents(".modal")
+        .find("table")
+        .DataTable()
+        .rows()
+        .data()
+        .toArray()
+        .map((currentItem) => {
+          return { job_number: currentItem.job_number };
+        });
+    }
+    
+    // Update modal with data
+    updateSendMessageModal({
+        officer_id: officerId,
+        officer_name: officerName,
+        receiver_name: receiverName,
+        job_numbers: jobNumbers
+    });
+});
+
+
+
+
+
+$(document).on("click", ".sendMessage_unit_case", function (event) {
+    event.preventDefault();
+    
+    const officerName = $(this).data('officer_name');
+    const receiverName = $(this).data('receiver_name');
+    const jobNumber = $(this).data('job_number');
+    const officerId = $(this).data('officer_id');
+    
+    // Parse job numbers (could be a single job number or array)
+    let jobNumbersArray = [];
+    if (jobNumber) {
+        if (Array.isArray(jobNumber)) {
+            jobNumbersArray = jobNumber.map(job => ({ job_number: job }));
+        } else {
+            jobNumbersArray = [{ job_number: jobNumber }];
+        }
+    }
+    
+    // Update modal with data
+    updateSendMessageModal({
+        officer_id: officerId,
+        officer_name: officerName,
+        receiver_name: receiverName,
+        job_numbers: jobNumbersArray
+    });
+});
+
+
+
+
+
+$(document).on("click", "#messageReply", function (event) {
+  event.preventDefault();
+
+  const staffName = $(this).data('staffName');
+  const staffId = $(this).data('staff_id');
+  const jobNumber = $(this).data('job_number');
+
+  console.log("Job Number:", jobNumber);
+  console.log("Modal element exists:", $("#previousNoticesModal").length > 0);
+
+   let title = "Notice(s) sent on Appication With Job Number "+jobNumber
+  document.getElementById('previousNoticesModalLabel').innerHTML = title;
+
+//   sendMessageModal.find("#modalTitleText").html(titleText);
+
+
+  previousNoticesModalLabel
+  
+  // Try showing modal
+  var modalElement = document.getElementById('previousNoticesModal');
+  if (modalElement) {
+    var modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  } else {
+    console.error("Modal element not found!");
+  }
+
+  fetchPreviousNotices(jobNumber);
+});
+
+
+
+function fetchPreviousNotices(jobNumber) {
+  // Show loading message
+  $("#messagesContainer").html('<p class="text-muted mb-0">Loading previous messages...</p>');
+
+  $.ajax({
+    url: "director_dashboard", // your backend endpoint
+    type: "POST",
+    data: { 
+      request_type: 'select_application_notices_by_job_number',
+      job_number: jobNumber // ✅ send job number directly
+    },
+    success: function (response) {
+      console.log(response);
+
+    var json_response = JSON.parse(response);
+
+      if (json_response.success && json_response.cabinet_tracking && json_response.cabinet_tracking.length > 0) {
+        let html = `<ul class="list-group">`;
+        json_response.cabinet_tracking.forEach(msg => {
+  const typeColor =
+    msg.notice_type.toLowerCase() === "query"
+      ? "bg-warning text-dark"
+      : msg.notice_type.toLowerCase() === "warning"
+      ? "bg-danger text-white"
+      : "bg-secondary text-white";
+
+  html += `
+    <li class="list-group-item border-0 shadow-sm mb-3 rounded-3 p-3" style="background: #f9fafb;">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <span class="badge ${typeColor} px-3 py-1 rounded-pill text-capitalize">${msg.notice_type}</span>
+        <small class="text-muted fw-light">
+          <i class="far fa-clock me-1"></i>${new Date(msg.created_date).toLocaleString()}
+        </small>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="mb-2 text-dark flex-grow-1" style="font-size: 0.95rem;">
+          ${msg.details}
+        </p>
+        <button class="btn btn-sm btn-outline-primary ms-2 view-replies-btn"
+        data-notice-id="${msg.notice_id}"
+        title="View Replies">
+  <i class="fas fa-comments"></i>
+</button>
+      </div>
+
+      <div class="text-muted small">
+        <i class="fas fa-user-circle me-1 text-secondary"></i>
+        <b>${msg.created_by}</b> → <span>${msg.receiver_name}</span>
+      </div>
+    </li>
+  `;
+});
+
+
+        html += `</ul>`;
+        $("#messagesContainer").html(html);
+      } else {
+        $("#messagesContainer").html('<p class="text-muted mb-0">No previous messages found for this application.</p>');
+      }
+    },
+    error: function () {
+      $("#messagesContainer").html('<p class="text-danger mb-0">Failed to load previous messages.</p>');
+    }
+  });
+}
 
 
 

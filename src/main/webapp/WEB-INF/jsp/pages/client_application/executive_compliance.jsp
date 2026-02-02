@@ -171,10 +171,6 @@
         width: auto;
     }
 
-    .dropdown-item:hover {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
@@ -276,7 +272,7 @@
 }
 
 .stat-value {
-    font-size: 2.75rem;
+    font-size: 1.10rem;
     font-weight: 700;
     line-height: 1;
     color: #1e293b;
@@ -397,7 +393,7 @@
     z-index: 1085 !important;
 }
   #cabinetModal {
-    z-index: 1090 !important;
+    z-index: 1115 !important;
 }
 
   #completed_apps_modal {
@@ -427,6 +423,32 @@
 }
 
 
+  #previousNoticesModal {
+    z-index: 1095 !important;
+}
+  #repliesModal {
+    z-index: 1100 !important;
+}
+
+.modal-backdrop.show:nth-of-type(2) {
+    z-index: 1060 !important;
+}
+
+  #recieved_reporting_modal {
+    z-index: 1100 !important;
+}
+
+#sub_service_modal {
+    z-index: 1105 !important;
+}
+
+#apps_modal {
+    z-index: 1110 !important;
+}
+
+#completed_apps_modal {
+    z-index: 1110 !important;
+}
 
 
 </style>
@@ -592,97 +614,106 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="row g-4">
-                            <!-- Received -->
-                            <div class="col-xl-2 col-lg-4 col-md-6" id="received_apps">
-                                <div class="dashboard-card bg-c-blue shadow h-100 py-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="text-xs fw-bold text-uppercase mb-1">Received</div>
-                                                <div class="h4 mb-0 fw-bold counter" id="app-received">0</div>
-                                            </div>
-                                            <i class="fas fa-file-import fa-2x text-white opacity-75"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                       <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4">
 
-                            <!-- Pending -->
-                            <div class="col-xl-2 col-lg-4 col-md-6" id="pending_apps">
-                                <div class="dashboard-card bg-c-yellow shadow h-100 py-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="text-xs fw-bold text-uppercase mb-1">Pending</div>
-                                                <div class="h4 mb-0 fw-bold counter" id="app-pending">0</div>
-                                            </div>
-                                            <i class="fas fa-hourglass-half fa-2x text-white opacity-75"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Received -->
+    <div class="col" id="received_apps">
+        <div class="dashboard-card bg-c-blue shadow h-100 py-2"
+             data-toggle="tooltip"
+             title="Total applications received within the selected period.">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-white text-uppercase mb-1">Received</div>
+                        <div class="h5 mb-0 fw-bold text-white counter" id="app-received">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-file-import fa-2x text-white opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                            <!-- Received & Completed -->
-                            <div class="col-xl-2 col-lg-4 col-md-6" id="received_completed_apps">
-                                <div class="dashboard-card bg-c-completed shadow h-100 py-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="text-xs fw-bold text-uppercase mb-1">Received & Completed</div>
-                                                <div class="h4 mb-0 fw-bold counter" id="app-received-completed">0</div>
-                                            </div>
-                                            <i class="fas fa-calendar-check fa-2x text-white opacity-75"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Pending -->
+    <div class="col" id="pending_apps">
+        <div class="dashboard-card bg-c-yellow shadow h-100 py-2"
+             data-toggle="tooltip"
+             title="Applications currently pending review or processing.">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-white text-uppercase mb-1">Pending</div>
+                        <div class="h5 mb-0 fw-bold text-white counter" id="app-pending">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-hourglass-half fa-2x text-white opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                            <!-- Completed -->
-                            <div class="col-xl-2 col-lg-4 col-md-6" id="completed_apps">
-                                <div class="dashboard-card bg-c-green shadow h-100 py-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="text-xs fw-bold text-uppercase mb-1">Completed</div>
-                                                <div class="h4 mb-0 fw-bold counter" id="app-completed">0</div>
-                                            </div>
-                                            <i class="fas fa-check-circle fa-2x text-white opacity-75"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Past Due -->
-                            <div class="col-xl-2 col-lg-4 col-md-6" id="pastdue_apps">
-                                <div class="dashboard-card bg-c-red shadow h-100 py-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="text-xs fw-bold text-uppercase mb-1">Past Due</div>
-                                                <div class="h4 mb-0 fw-bold counter" id="app-pastdue">0</div>
-                                            </div>
-                                            <i class="fas fa-exclamation-triangle fa-2x text-white opacity-75"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Completion Rate -->
-                            <div class="col-xl-2 col-lg-4 col-md-6">
-                                <div class="dashboard-card bg-c-purple shadow h-100 py-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="text-xs fw-bold text-uppercase mb-1">Completion Rate</div>
-                                                <div class="h4 mb-0 fw-bold" id="completion-rate">0%</div>
-                                            </div>
-                                            <i class="fas fa-chart-line fa-2x text-white opacity-75"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Received & Completed -->
+    <div class="col" id="received_completed_apps">
+        <div class="dashboard-card bg-c-completed shadow h-100 py-2"
+             data-toggle="tooltip"
+             title="Applications received and completed within the same period.">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-white text-uppercase mb-1">
+                            Received & Completed
                         </div>
+                        <div class="h5 mb-0 fw-bold text-white counter" id="app-received-completed">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar-check fa-2x text-white opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completed -->
+    <div class="col" id="completed_apps">
+        <div class="dashboard-card bg-c-green shadow h-100 py-2"
+             data-toggle="tooltip"
+             title="Applications completed during this period but possibly received earlier.">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-white text-uppercase mb-1">Completed</div>
+                        <div class="h5 mb-0 fw-bold text-white counter" id="app-completed">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-check-circle fa-2x text-white opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Past Due -->
+    <div class="col" id="pastdue_apps">
+        <div class="dashboard-card bg-c-red shadow h-100 py-2"
+             data-toggle="tooltip"
+             title="Applications that have exceeded their expected completion date.">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs fw-bold text-white text-uppercase mb-1">Past Due</div>
+                        <div class="h5 mb-0 fw-bold text-white counter" id="app-pastdue">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-exclamation-triangle fa-2x text-white opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
                     </div>
                 </div>
             </div>

@@ -70,16 +70,19 @@ public class ComplianceFocal {
 			String request_type = request.getParameter("request_type");
             JSONObject obj = new JSONObject();
 
+        String userdivision = (String) session.getAttribute("division");
+
+
 			String web_service_response = null;
 
-			if (request_type.equals("compliance_focal_report_dashboard_created_today")) {
+			if (request_type.equals("summary_created_day")) {
 
                 String region_id = request.getParameter("region_id");
-                String user_division = request.getParameter("user_division");
+                // String user_division = request.getParameter("user_division");
 
                 obj.put( "region_id" , region_id );
-                obj.put( "user_division" , user_division );
-              //  System.out.println(obj.toString());
+                obj.put( "user_division" , userdivision );
+               System.out.println(userdivision);
 
                 web_service_response = cls_focal_compliance
                         .compliance_focal_report_dashboard_created_today(cls_url_config.getWeb_service_url_ser(),
@@ -96,13 +99,14 @@ public class ComplianceFocal {
 
 
 
-            if (request_type.equals("compliance_focal_report_dashboard_created_day_by_division")) {
+            if (request_type.equals("summary_created_day_service_type")) {
 
                 String region_id = request.getParameter("region_id");
-                String division = request.getParameter("division");
 
                 obj.put( "region_id" , region_id );
-                obj.put( "division" , division );
+                obj.put( "user_division" , userdivision );
+                System.out.println(userdivision);
+
               //  System.out.println(obj.toString());
 
                 web_service_response = cls_focal_compliance
@@ -119,13 +123,14 @@ public class ComplianceFocal {
 
 
 
-            if (request_type.equals("compliance_focal_report_dashboard_created_day_by_service_type")) {
+            if (request_type.equals("summary_created_day_service_type_applications")) {
 
                 String region_id = request.getParameter("region_id");
-                String service_type = request.getParameter("service_type");
+			         	String service = request.getParameter("service");
 
                 obj.put( "region_id" , region_id );
-                obj.put( "service_type" , service_type );
+                obj.put( "service" , service );
+                  System.out.println(service);
               //  System.out.println(obj.toString());
 
                 web_service_response = cls_focal_compliance
@@ -144,13 +149,13 @@ public class ComplianceFocal {
 
 
 
-            if (request_type.equals("compliance_focal_report_dashboard_created_this_month")) {
+            if (request_type.equals("summary_created_month")) {
 
               String region_id = request.getParameter("region_id");
-              String user_division = request.getParameter("user_division");
+              // String user_division = request.getParameter("user_division");
 
               obj.put( "region_id" , region_id );
-              obj.put( "user_division" , user_division );
+              obj.put( "user_division" , userdivision );
             //  System.out.println(obj.toString());
 
               web_service_response = cls_focal_compliance
@@ -168,14 +173,13 @@ public class ComplianceFocal {
 
 
 
-          if (request_type.equals("compliance_focal_report_dashboard_created_month_by_division")) {
+          if (request_type.equals("summary_created_month_service_type")) {
 
             String region_id = request.getParameter("region_id");
-            String division = request.getParameter("division");
 
-            obj.put( "region_id" , region_id );
-            obj.put( "division" , division );
-          //  System.out.println(obj.toString());
+                obj.put( "region_id" , region_id );
+                obj.put( "user_division" , userdivision );
+                // System.out.println(userdivision);
 
             web_service_response = cls_focal_compliance
                     .compliance_focal_report_dashboard_created_month_by_division(cls_url_config.getWeb_service_url_ser(),
@@ -192,14 +196,14 @@ public class ComplianceFocal {
 
 
 
-        if (request_type.equals("compliance_focal_report_dashboard_created_month_by_service_type")) {
+        if (request_type.equals("summary_created_month_service_type_applications")) {
 
-          String region_id = request.getParameter("region_id");
-          String service_type = request.getParameter("service_type");
+         String region_id = request.getParameter("region_id");
+			         	String service = request.getParameter("service");
 
-          obj.put( "region_id" , region_id );
-          obj.put( "service_type" , service_type );
-        //  System.out.println(obj.toString());
+                obj.put( "region_id" , region_id );
+                obj.put( "service" , service );
+                  // System.out.println(service);
 
           web_service_response = cls_focal_compliance
                   .compliance_focal_report_dashboard_created_month_by_service_type(cls_url_config.getWeb_service_url_ser(),
@@ -214,14 +218,13 @@ public class ComplianceFocal {
       }
 
 
-      if (request_type.equals("compliance_focal_report_dashboard_completed_today")) {
+      if (request_type.equals("summary_completed_day")) {
 
-        String region_id = request.getParameter("region_id");
-        String user_division = request.getParameter("user_division");
+           String region_id = request.getParameter("region_id");
+              // String user_division = request.getParameter("user_division");
 
-        obj.put( "region_id" , region_id );
-        obj.put( "user_division" , user_division );
-      //  System.out.println(obj.toString());
+            obj.put( "region_id" , region_id );
+            obj.put( "user_division" , userdivision );
 
         web_service_response = cls_focal_compliance
                 .compliance_focal_report_dashboard_completed_today(cls_url_config.getWeb_service_url_ser(),
@@ -239,14 +242,12 @@ public class ComplianceFocal {
 
 
 
-  if (request_type.equals("compliance_focal_report_dashboard_completed_today_by_division")) {
+  if (request_type.equals("summary_completed_day_service_type")) {
 
-    String region_id = request.getParameter("region_id");
-    String division = request.getParameter("division");
+          String region_id = request.getParameter("region_id");
 
-    obj.put( "region_id" , region_id );
-    obj.put( "division" , division );
-  //  System.out.println(obj.toString());
+                obj.put( "region_id" , region_id );
+                obj.put( "user_division" , userdivision );
 
     web_service_response = cls_focal_compliance
             .compliance_focal_report_dashboard_completed_today_by_division(cls_url_config.getWeb_service_url_ser(),
@@ -265,14 +266,14 @@ public class ComplianceFocal {
 
 
 
-if (request_type.equals("compliance_focal_report_dashboard_completed_today_by_service_ty")) {
+if (request_type.equals("summary_completed_day_service_type_applications")) {
 
-  String region_id = request.getParameter("region_id");
-  String service_type = request.getParameter("service_type");
+               String region_id = request.getParameter("region_id");
+			         	String service = request.getParameter("service");
 
-  obj.put( "region_id" , region_id );
-  obj.put( "service_type" , service_type );
-//  System.out.println(obj.toString());
+                obj.put( "region_id" , region_id );
+                obj.put( "service" , service );
+                  // System.out.println(service);
 
   web_service_response = cls_focal_compliance
           .compliance_focal_report_dashboard_completed_today_by_service_ty(cls_url_config.getWeb_service_url_ser(),
@@ -289,13 +290,13 @@ if (request_type.equals("compliance_focal_report_dashboard_completed_today_by_se
 
 
 
-if (request_type.equals("compliance_focal_report_dashboard_completed_month")) {
+if (request_type.equals("summary_completed_month")) {
 
-  String region_id = request.getParameter("region_id");
-  String user_division = request.getParameter("user_division");
+            String region_id = request.getParameter("region_id");
+              // String user_division = request.getParameter("user_division");
 
-  obj.put( "region_id" , region_id );
-  obj.put( "user_division" , user_division );
+            obj.put( "region_id" , region_id );
+            obj.put( "user_division" , userdivision );
 //  System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
@@ -312,13 +313,12 @@ if (request_type.equals("compliance_focal_report_dashboard_completed_month")) {
 
 
 
-if (request_type.equals("compliance_focal_report_dashboard_completed_month_by_division")) {
+if (request_type.equals("summary_completed_month_service_type")) {
 
   String region_id = request.getParameter("region_id");
-  String division = request.getParameter("division");
 
-  obj.put( "region_id" , region_id );
-  obj.put( "division" , division );
+                obj.put( "region_id" , region_id );
+                obj.put( "user_division" , userdivision );
 //  System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
@@ -336,13 +336,13 @@ if (request_type.equals("compliance_focal_report_dashboard_completed_month_by_di
 
 
 
-if (request_type.equals("compliance_focal_report_dashboard_completed_month_by_service_ty")) {
+if (request_type.equals("summary_completed_month_service_type_applications")) {
 
-  String region_id = request.getParameter("region_id");
-  String service_type = request.getParameter("service_type");
+                String region_id = request.getParameter("region_id");
+			         	String service = request.getParameter("service");
 
-  obj.put( "region_id" , region_id );
-  obj.put( "service_type" , service_type );
+                obj.put( "region_id" , region_id );
+                obj.put( "service" , service );
 //  System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
@@ -361,11 +361,16 @@ if (request_type.equals("compliance_focal_report_dashboard_completed_month_by_se
 if (request_type.equals("compliance_focal_report_dashboard_all")) {
 
   String region_id = request.getParameter("region_id");
-  String division = request.getParameter("division");
+    String start_date = request.getParameter("start_date");
+    String end_date = request.getParameter("end_date");
+
+  // String user_division = (String) session.getAttribute("user_division");
 
   obj.put( "region_id" , region_id );
-  obj.put( "division" , division );
- System.out.println(obj.toString());
+  obj.put( "user_division" , userdivision );
+   obj.put( "start_date" , start_date );
+    obj.put( "end_date" , end_date );
+ System.out.println(start_date);
 
   web_service_response = cls_focal_compliance
           .compliance_focal_report_dashboard_all(cls_url_config.getWeb_service_url_ser(),

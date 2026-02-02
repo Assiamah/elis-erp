@@ -570,7 +570,7 @@
     </div>
 </div>
 
-<div class="modal fade effect-scale modal-blur" id="sendMessageModal_FocalCompliance" tabindex="-1" aria-labelledby="sendMessageModalLabelFocalCompliance" aria-hidden="true">
+<!-- <div class="modal fade effect-scale modal-blur" id="sendMessageModal_FocalCompliance" tabindex="-1" aria-labelledby="sendMessageModalLabelFocalCompliance" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -607,7 +607,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- <div class="modal fade effect-scale modal-blur" data-position="0" id="sendMessageModal" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -674,6 +674,11 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="rec-table">
+
+                </div>
+                <hr>
 
                 <!-- Message Form -->
                 <form method="post" id="message-form" action="SendComplianceMessage" class="needs-validation" novalidate>
@@ -1118,7 +1123,7 @@
                     <table class="table table-bordered table-hover" id="staffapps_table" width="100%" cellspacing="0" data-order='[[1, "desc"]]'>
                         <thead>
                             <tr>
-                                <th>Select All<input type="checkbox" id="select-all"></th>
+                                <th><input type="checkbox" id="select-all"></th>
                                 <th>Job Number</th>
                                 <th>Applicant Name</th>
                                 <th>Application Type</th>
@@ -1203,6 +1208,41 @@
             </div>
             <div class="modal-body" id="repliesModalBody">
                 <!-- Replies will load here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade effect-scale modal-blur" id="previousNoticesModal" tabindex="-1" aria-labelledby="previousNoticesModalLabel" style="z-index: 1029;" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header border-bottom bg-light">
+                <div class="d-flex align-items-center w-100">
+                    <h5 class="modal-title fw-semibold mb-0" id="previousNoticesModalLabel">
+                        <i class="ri-message-2-line me-2 text-primary"></i>
+                        <!-- <span id="modalTitleText">Send Message</span> -->
+                    </h5>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+				<!-- 🕓 PREVIOUS MESSAGES SECTION -->
+                <div id="previousMessages" class="mb-3">
+					<h6 class="text-dark font-weight-bold mb-2">Previous Notices</h6>
+					<div id="messagesContainer" class="border rounded p-2 bg-light" style="max-height: 200px; overflow-y: auto;">
+						<p class="text-muted mb-0">Loading previous messages...</p>
+					</div>
+				</div>
+
+                <!-- Message Form -->
+                
             </div>
         </div>
     </div>

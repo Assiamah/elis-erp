@@ -245,7 +245,7 @@ $(document).ready(function() {
         // $("#").modal("show");  
 
 
-        $(document).on('change', '#select-all', function() {
+  $(document).on('change', '#select-all', function() {
   const isChecked = $(this).is(':checked');
   $('.app-checkbox').prop('checked', isChecked);
 });
@@ -261,157 +261,6 @@ $(document).on('change', '.app-checkbox', function() {
       
 
       
-
-
-
-$('#sendMessageModal_FocalCompliance').on('show.bs.modal', function (event) {
-  const button = $(event.relatedTarget);
-  const staffName = button.data('staff_name');
-  const staffId = button.data('staff_id');
-  const jobNumber = button.data('job_number');
-
-  // Set modal fields
-  $("#sendMessageModal_FocalCompliance #officer_name").val(staffName);
-  $("#sendMessageModal_FocalCompliance #job_numbers").val('[{"job_number":"' + jobNumber + '"}]');
-  $("#sendMessageModal_FocalCompliance #focal_officer_id").val(staffId);
-
-  document.getElementById('sendMessageModalLabel_FocalCompliance').innerHTML =
-    'Send Message To <span class="text-primary">' + staffName + '</span>';
-
-  // Fetch previous messages
-  fetchPreviousNotices(jobNumber);
-});
-
-function fetchPreviousNotices(jobNumber) {
-  // Show loading message
-  $("#messagesContainer").html('<p class="text-muted mb-0">Loading previous messages...</p>');
-
-  $.ajax({
-    url: "director_dashboard", // your backend endpoint
-    type: "POST",
-    data: { 
-      request_type: 'select_application_notices_by_job_number',
-      job_number: jobNumber // ✅ send job number directly
-    },
-    success: function (response) {
-      console.log(response);
-
-    var json_response = JSON.parse(response);
-
-      if (json_response.success && json_response.cabinet_tracking && json_response.cabinet_tracking.length > 0) {
-        let html = `<ul class="list-group">`;
-        json_response.cabinet_tracking.forEach(msg => {
-  const typeColor =
-    msg.notice_type.toLowerCase() === "query"
-      ? "bg-warning text-dark"
-      : msg.notice_type.toLowerCase() === "warning"
-      ? "bg-danger text-white"
-      : "bg-secondary text-white";
-
-  html += `
-    <li class="list-group-item border-0 shadow-sm mb-3 rounded-3 p-3" style="background: #f9fafb;">
-      <div class="d-flex justify-content-between align-items-start mb-2">
-        <span class="badge ${typeColor} px-3 py-1 rounded-pill text-capitalize">${msg.notice_type}</span>
-        <small class="text-muted fw-light">
-          <i class="far fa-clock me-1"></i>${new Date(msg.created_date).toLocaleString()}
-        </small>
-      </div>
-
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="mb-2 text-dark flex-grow-1" style="font-size: 0.95rem;">
-          ${msg.details}
-        </p>
-        <button class="btn btn-sm btn-outline-primary ms-2 view-replies-btn"
-        data-notice-id="${msg.notice_id}"
-        title="View Replies">
-  <i class="fas fa-comments"></i>
-</button>
-      </div>
-
-      <div class="text-muted small">
-        <i class="fas fa-user-circle me-1 text-secondary"></i>
-        <b>${msg.created_by}</b> → <span>${msg.receiver_name}</span>
-      </div>
-    </li>
-  `;
-});
-
-
-        html += `</ul>`;
-        $("#messagesContainer").html(html);
-      } else {
-        $("#messagesContainer").html('<p class="text-muted mb-0">No previous messages found for this application.</p>');
-      }
-    },
-    error: function () {
-      $("#messagesContainer").html('<p class="text-danger mb-0">Failed to load previous messages.</p>');
-    }
-  });
-}
-
-
-
-
-
-// use the container that holds the messages (example: #messagesContainer)
-$('#messagesContainer').on('click', '.view-replies-btn', function () {
-  const noticeId = $(this).data('notice-id');
-
-  $('#repliesModal').modal('show');
-  $('#repliesModalBody').html('<p class="text-muted text-center my-3"><i class="fas fa-spinner fa-spin"></i> Loading replies...</p>');
-
-  $.ajax({
-    url: "director_dashboard",
-    type: "POST",
-    data: { 
-      request_type: 'select_application_notice_replies',
-      notice_id: noticeId
-    },
-    success: function (response) {
-      const json_response = JSON.parse(response);
-      console.log(json_response);
-
-      if (json_response.success && json_response.notice_info && json_response.notice_info.length > 0) {
-        let repliesHtml = `
-          <div class="list-group list-group-flush">
-        `;
-
-        json_response.notice_info.forEach(reply => {
-          repliesHtml += `
-            <div class="list-group-item border-0 border-bottom py-3">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h6 class="fw-semibold mb-0 text-primary">
-                  <i class="fas fa-user-circle me-1 text-secondary"></i> ${reply.created_by}
-                </h6>
-                <small class="text-muted">
-                  <i class="far fa-clock me-1"></i> ${new Date(reply.created_date).toLocaleString()}
-                </small>
-              </div>
-              <p class="mb-0 text-dark" style="font-size: 0.95rem; line-height: 1.4;">
-                ${reply.reply_details}
-              </p>
-            </div>
-          `;
-        });
-
-        repliesHtml += `</div>`;
-        $('#repliesModalBody').html(repliesHtml);
-      } else {
-        $('#repliesModalBody').html(`
-          <div class="text-center text-muted py-4">
-            <i class="fas fa-comments fa-2x mb-2"></i>
-            <p class="mb-0">No replies found for this notice.</p>
-          </div>
-        `);
-      }
-    },
-    error: function () {
-      $('#repliesModalBody').html('<p class="text-danger text-center mb-0 py-3">Failed to load replies.</p>');
-    }
-  });
-});
-
-
 
 
 
@@ -527,14 +376,61 @@ $("#message-form_focal_complaince").on("submit", function (event) {
   }
 
   // ✅ Get staff details
-  const staff = $(this).data("staff");
-  const staffid = $(this).data("staffid");
+  const staff = $(this).data("receiver_name");
+  const staffid = $(this).data("officer_id");
+
+
+  //  data-receiver_name="${StaffName}" 
+  //                data-officer_name="${StaffName}"
+  //                 data-receiver_name="${StaffName}"
+  //                 data-="${staffID}"> 
+
+  console.log(staff);
 
   // ✅ Populate modal hidden fields
   const sendMessageModal = $("#sendMessageModal");
   sendMessageModal.find("#officer_id").val(staffid);
   sendMessageModal.find("#officer_name").val(staff);
   sendMessageModal.find("#job_numbers").val(JSON.stringify(selectedRows));
+
+
+
+  //  console.log(data);
+    
+        // Update modal title
+    const titleText = staff ? 
+        `Send Message to <span class="text-primary">${staff}</span>` : 
+        'Send Message';
+    sendMessageModal.find("#modalTitleText").html(titleText);
+    
+    // Update recipient info card
+    if (staff) {
+        sendMessageModal.find("#recipientNameDisplay").text(staff);
+    } else if (staff) {
+        sendMessageModal.find("#recipientNameDisplay").text(staff);
+    } else {
+        sendMessageModal.find("#recipientNameDisplay").text('Select a recipient');
+    }
+    
+    // Update recipient info
+    if (staffid) {
+        sendMessageModal.find("#recipientInfo").text(`ID: ${staffid}`);
+    } else {
+        sendMessageModal.find("#recipientInfo").text('No ID available');
+    }
+    
+    // Update job count badge
+    const jobCount = Array.isArray(selectedRows) ? selectedRows.length : 0;
+    sendMessageModal.find("#jobCountBadge").text(`${jobCount} ${jobCount === 1 ? 'job' : 'jobs'}`);
+    
+    // Reset form to clean state    
+    // Show the modal (Bootstrap 5)
+    // const bsModal = new bootstrap.Modal(modal);
+    // bsModal.show();
+
+
+
+  
 
   // ✅ Build HTML table for selected applications
   let selectedTable = `
@@ -569,7 +465,7 @@ $("#message-form_focal_complaince").on("submit", function (event) {
 
   // ✅ Replace previous list/table if reopening
   sendMessageModal.find(".modal-body .alert-info").remove();
-  sendMessageModal.find(".modal-body").prepend(selectedTable);
+  sendMessageModal.find(".rec-table").prepend(selectedTable);
 
   // ✅ Update modal title and show
   sendMessageModal
@@ -577,8 +473,62 @@ $("#message-form_focal_complaince").on("submit", function (event) {
     .html(`Send Message To <span class="text-primary">${staff}</span>`);
 
   sendMessageModal.modal("show");
+
+
+    resetMessageForm();
+
 });
 
+
+
+
+function resetMessageForm() {
+    // const form = $('#message-form')[0];
+    // if (form) {
+    //     form.reset();
+    // }
+    
+    // Reset character count
+    $('#charCount').text('0/1000 characters').removeClass('warning danger');
+    
+    // Reset preview
+    $('#messagePreview').html('<small class="text-muted">Start typing to see preview</small>');
+    $('#previewCard').hide();
+    
+    // Set default message type to "query" (since this is for compliance)
+    $('#message_type_query').prop('checked', true);
+    updateSubmitButton();
+    
+    // Clear any validation states
+    $('.form-control').removeClass('is-invalid is-valid');
+    $('#message-form').removeClass('was-validated');
+    
+    // Clear the message textarea
+    $('#message').val('');
+}
+
+
+
+
+
+function updateSubmitButton() {
+    const messageType = $('input[name="message_type"]:checked').val();
+    let buttonText = 'Send Message';
+    
+    switch(messageType) {
+        case 'query':
+            buttonText = 'Send Query';
+            break;
+        case 'reminder':
+            buttonText = 'Send Reminder';
+            break;
+        case 'message':
+        default:
+            buttonText = 'Send Message';
+    }
+    
+    $('#submitButtonText').text(buttonText);
+}
 
 
 
@@ -641,67 +591,203 @@ $("#message-form_focal_complaince").on("submit", function (event) {
 
 
       
-      
-
-
-  $("#message-form").on("submit", function (event) {
-  event.preventDefault();
-
-  const form = $(this);
-  const sendMessageModal = $("#sendMessageModal");
-    const officerName = sendMessageModal.find("#officer_name").val();
-
-
-  const data = {
-    "request_type": "send_compliance_focal_person_message",
-    "officer_id": sendMessageModal.find("#officer_id").val(),
-    "officer_name": sendMessageModal.find("#officer_name").val(),
-    "job_numbers": sendMessageModal.find("#job_numbers").val(),
-    "message_type": sendMessageModal.find("#message_type").val(),
-    "message": sendMessageModal.find("#message").val()
-  };
-
-  // Show confirmation dialog before sending
-  Swal.fire({
-    title: "Send Message?",
-    text: `Are you sure you want to send this message to ${officerName}?`,
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: "#0d6efd",
-    cancelButtonColor: "#6c757d",
-    confirmButtonText: "Yes, Send",
-    cancelButtonText: "Cancel",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Proceed with AJAX submission
-      submitAjax(
-        form.attr("action"),
-        "send_compliance_focal_person_message",
-        data,
-        function () {
-          Swal.fire({
-            icon: "success",
-            title: "Message Sent!",
-            text: "Your message has been sent successfully.",
-            confirmButtonColor: "#0d6efd"
-          }).then(() => {
-            form.trigger("reset");
-            form.parents(".modal").modal("hide");
-          });
-        },
-        function () {
-          Swal.fire({
-            icon: "error",
-            title: "Message Failed",
-            text: "We were not able to send your message. Please contact IT support if issue persists.",
-            confirmButtonColor: "#0d6efd"
-          });
-        }
-      );
+    $(document).on('submit', '#message-form', function(e) {
+    e.preventDefault();
+    
+    const form = $(this);
+    const officerId = form.find('#officer_id').val();
+    const officerName = form.find('#officer_name').val();
+    const jobNumbers = form.find('#job_numbers').val();
+    const messageType = form.find('input[name="message_type"]:checked').val();
+    const message = form.find('#message').val().trim();
+    
+    // Validation
+    if (!message) {
+        Swal.fire({
+            title: 'Message Required',
+            text: 'Please enter a message to send.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ffc107'
+        });
+        return false;
     }
-  });
-});
+    
+    if (!officerId) {
+        Swal.fire({
+            title: 'No Recipient',
+            text: 'No recipient selected for the message.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ffc107'
+        });
+        return false;
+    }
+    
+    // Parse job numbers
+    let jobNumbersArray;
+    try {
+        jobNumbersArray = JSON.parse(jobNumbers);
+    } catch (error) {
+        console.error('Error parsing job numbers:', error);
+        jobNumbersArray = [];
+    }
+    
+    if (jobNumbersArray.length === 0) {
+        Swal.fire({
+            title: 'No Applications',
+            text: 'No applications selected to send message for.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ffc107'
+        });
+        return false;
+    }
+    
+    // Prepare confirmation message
+    const jobCount = jobNumbersArray.length;
+    const confirmationMessage = `
+        <div class="text-start">
+            <p>You are about to send a <strong>${messageType}</strong> to:</p>
+            <ul class="mb-2">
+                <li><strong>${officerName}</strong></li>
+                <li><strong>${jobCount}</strong> application(s)</li>
+            </ul>
+            <div class="alert alert-light border small mt-3">
+                <i class="ri-information-line me-1"></i>
+                Message: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"
+            </div>
+        </div>
+    `;
+    
+    // Show confirmation dialog
+    Swal.fire({
+        title: 'Send Message?',
+        html: confirmationMessage,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Send Message',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        reverseButtons: true,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return new Promise((resolve, reject) => {
+                // const formData = form.serialize();
 
+                const formData = {
+                  "request_type": $("#sendMessageModal").find("#request_type").val(),
+                  "officer_id": officerId,
+                  "officer_name": officerName,
+                  "job_numbers" : jobNumbers,
+                  "message_type" : messageType,
+                  "message" : message
+                }
+                
+                $.ajax({
+                    type: "POST",
+                    url: "SendComplianceMessage",
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response && response.success !== false) {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response?.message || 'Failed to send message'));
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        reject(new Error(`Server error: ${status}`));
+                    }
+                });
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Success handling
+            const response = result.value;
+            
+            Swal.fire({
+                title: 'Success!',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="ri-checkbox-circle-line text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        <h5 class="fw-semibold">Message Sent Successfully</h5>
+                        <p class="text-muted">
+                            Your ${messageType} has been sent to ${officerName}
+                        </p>
+                        ${response?.message_id ? `
+                        <div class="alert alert-light border small mt-3">
+                            <i class="ri-information-line me-1"></i>
+                            Reference ID: <strong>${response.message_id}</strong>
+                        </div>
+                        ` : ''}
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'Done',
+                confirmButtonColor: '#0d6efd',
+                timer: 4000,
+                timerProgressBar: true,
+                willClose: () => {
+                    // Close the modal after success
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('sendMessageModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    // Reset the form for next use
+                    resetMessageForm();
+                }
+            });
+            
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: 'Cancelled',
+                text: 'Message was not sent.',
+                icon: 'info',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#6c757d',
+                timer: 2000
+            });
+        }
+    }).catch((error) => {
+        // Error handling
+        console.error('Error sending message:', error);
+        
+        Swal.fire({
+            title: 'Sending Failed',
+            html: `
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="ri-error-warning-line text-danger" style="font-size: 4rem;"></i>
+                    </div>
+                    <h5 class="fw-semibold">Unable to Send Message</h5>
+                    <p class="text-muted">
+                        ${error.message || 'An unexpected error occurred. Please try again.'}
+                    </p>
+                    <div class="mt-3">
+                        <button class="btn btn-outline-secondary me-2" onclick="Swal.close()">
+                            Close
+                        </button>
+                        <button class="btn btn-primary" onclick="retrySendMessage()">
+                            <i class="ri-refresh-line me-1"></i> Try Again
+                        </button>
+                    </div>
+                </div>
+            `,
+            icon: 'error',
+            showConfirmButton: false,
+            showCancelButton: false
+        });
+    });
+    
+    return false;
+});
 
 
  
@@ -5751,7 +5837,7 @@ $(document).off('click', '#view_regional_applications_by_units_staff_apps').on('
 
         const checkbox = `
           <div class="text-center">
-            <input type="checkbox" class="app-checkbox form-check-input" value="${app.job_number}">
+            <input type="checkbox" class="app-checkbox" value="${app.job_number}">
           </div>`;
 
         const action = `
@@ -5781,15 +5867,16 @@ $(document).off('click', '#view_regional_applications_by_units_staff_apps').on('
 
 							<li><hr class="dropdown-divider"></li>
 
-
               <li>
-								<a class="dropdown-item sendMessage_unit_case"
+								<a class="dropdown-item"
 								href="javascript:void(0);"
                 data-receiver_name="${StaffName}" 
                  data-officer_name="${StaffName}"
                   data-officer_id="${staffID}" 
+                  id="messageReply"
                   data-job_number="${app.job_number}"> 
-								<i class="ri-mail-send-line me-2"></i> Send Message
+								    <i class="ri-reply-line"></i>
+                  Notice & Replies
 								</a>
 							</li>
 
@@ -5827,19 +5914,23 @@ $(document).off('click', '#view_regional_applications_by_units_staff_apps').on('
           action
         ];
       });
+     
+      
 
       // Generate “Send Message” button for all jobs
       const jobNumbersString = jobNumbers.join(",");
       const sendMsgButton = `
         <button 
-          class="sendMessage_unit_case btn btn-primary d-flex align-items-center shadow-sm px-4 py-2 ml-auto"
+          class="sendMessage btn btn-primary d-flex align-items-center shadow-sm px-4 py-2 ml-auto"
           id="send_message"
           data-receiver_name="${StaffName}" 
                  data-officer_name="${StaffName}"
-                  data-officer_id="${staffID}" 
-                  data-job_number="${jobNumbersString}"> 
-          <i class="fas fa-paper-plane mr-2"></i> Send Message
-        </button>`;
+                  data-receiver_name="${StaffName}"
+                  data-officer_id="${staffID}"> 
+          <i class="fas fa-paper-plane mr-2"></i> Select & Send Message
+        </button> 
+        
+        `;
       document.getElementById("sendmsg").innerHTML = sendMsgButton;
 
       // Update summary
@@ -6291,6 +6382,122 @@ $(document).ready(function() {
 
 
 
+
+
+
+// Retry function for error case
+function retrySendMessage() {
+    Swal.close();
+    // Trigger form submission again after a delay
+    setTimeout(() => {
+        $('#message-form').trigger('submit');
+    }, 500);
+}
+
+// Initialize message modal functionality on page load
+$(document).ready(function() {
+    // Character counter
+    $('#message').on('input', function() {
+        const length = $(this).val().length;
+        $('#charCount').text(`${length}/1000 characters`);
+        
+        // Update character count styling
+        $('#charCount').removeClass('warning danger');
+        if (length > 800) {
+            $('#charCount').addClass('warning');
+        }
+        if (length > 950) {
+            $('#charCount').addClass('danger');
+        }
+        
+        // Update preview
+        updateMessagePreview();
+    });
+    
+    // Template buttons
+    $('.template-btn').on('click', function() {
+        const template = $(this).data('template');
+        insertTemplate(template);
+    });
+    
+    // Message type radio buttons
+    $('input[name="message_type"]').on('change', function() {
+        updateMessagePreview();
+        updateSubmitButton();
+    });
+    
+    // Reset form button
+    $('#btnResetForm').on('click', function() {
+        resetMessageForm();
+    });
+});
+
+// Helper function to update message preview
+function updateMessagePreview() {
+    const message = $('#message').val();
+    const messageType = $('input[name="message_type"]:checked').val();
+    const recipient = $('#recipientNameDisplay').text() || 'Recipient';
+    
+    let preview = '';
+    
+    if (message) {
+        preview = `<strong>To:</strong> ${recipient}\n`;
+        preview += `<strong>Type:</strong> ${messageType || 'Message'}\n\n`;
+        preview += message.substring(0, 200);
+        
+        if (message.length > 200) {
+            preview += '...';
+        }
+        
+        // Show preview card
+        $('#previewCard').show();
+    } else {
+        preview = '<small class="text-muted">Start typing to see preview</small>';
+        $('#previewCard').hide();
+    }
+    
+    $('#messagePreview').html(preview.replace(/\n/g, '<br>'));
+}
+
+// Helper function to insert template text
+function insertTemplate(template) {
+    const templates = {
+        query: "Dear Officer,\n\nPlease provide an update on the status of the application mentioned above. This requires urgent attention.\n\nBest regards,\n[Your Name]",
+        followup: "Dear Officer,\n\nFollowing up on the previous communication regarding this application. Please advise on the current status and any pending actions.\n\nRegards,\n[Your Name]",
+        reminder: "Dear Officer,\n\nThis is a reminder that the application is approaching/passed its TAT deadline. Kindly expedite action to avoid further delays.\n\nThank you,\n[Your Name]",
+        update: "Dear Officer,\n\nPlease update the status of this application in the system as soon as possible. If there are any issues, please let us know immediately.\n\nSincerely,\n[Your Name]"
+    };
+    
+    const $textarea = $('#message');
+    const currentText = $textarea.val();
+    const templateText = templates[template] || '';
+    
+    // Insert template, preserving existing text
+    if (currentText && !currentText.includes(templateText)) {
+        $textarea.val(currentText + '\n\n' + templateText);
+    } else if (!currentText) {
+        $textarea.val(templateText);
+    }
+    
+    // Trigger input event for character count and preview
+    $textarea.trigger('input');
+    
+    // Show success notification
+    Swal.fire({
+        title: 'Template Inserted',
+        text: `"${template}" template has been inserted`,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#0d6efd',
+        timer: 2000
+    });
+}
+
+
+
+
+
+
     const $cabinetModal = $('#cabinetModal');
     // ==================== CABINET MODAL FUNCTIONALITY ====================
     $cabinetModal.on('show.bs.modal', handleCabinetModalShow);
@@ -6462,6 +6669,45 @@ $(document).ready(function() {
 
 
 
+  $(document).on("click", ".sendMessageToAll", function (event) {
+    event.preventDefault();
+    
+    const officerName = $(this).data('officer_name');
+    const receiverName = $(this).data('receiver_name');
+    const jobNumber = $(this).data('job_number');
+    const officerId = $(this).data('officer_id');
+    
+    // Parse job numbers (could be a single job number or array)
+    let jobNumbers = $(this).data("job-number");
+    jobNumbers =
+      typeof jobNumbers === "undefined" ? [] : [{ job_number: jobNumbers }];
+
+      console.log(jobNumbers)
+
+    if (jobNumbers.length <= 0) {
+      jobNumbers = $(this)
+        .parents(".modal")
+        .find("table")
+        .DataTable()
+        .rows()
+        .data()
+        .toArray()
+        .map((currentItem) => {
+          return { job_number: currentItem.job_number };
+        });
+    }
+    
+    // Update modal with data
+    updateSendMessageModal({
+        officer_id: officerId,
+        officer_name: officerName,
+        receiver_name: receiverName,
+        job_numbers: jobNumbers
+    });
+});
+
+
+
 
 
 $(document).on("click", ".sendMessage_unit_case", function (event) {
@@ -6491,417 +6737,168 @@ $(document).on("click", ".sendMessage_unit_case", function (event) {
     });
 });
 
-// Function to update the send message modal with data
-function updateSendMessageModal(data) {
-    const modal = document.getElementById('sendMessageModal');
-    const sendMessageModal = $(modal);
 
-    console.log(data);
-    
-    // Update hidden fields
-    sendMessageModal.find("#officer_id").val(data.officer_id || '');
-    sendMessageModal.find("#officer_name").val(data.officer_name || '');
-    sendMessageModal.find("#job_numbers").val(JSON.stringify(data.job_numbers || []));
-    
-    // Update modal title
-    const titleText = data.receiver_name ? 
-        `Send Message to <span class="text-primary">${data.receiver_name}</span>` : 
-        'Send Message';
-    sendMessageModal.find("#modalTitleText").html(titleText);
-    
-    // Update recipient info card
-    if (data.receiver_name) {
-        sendMessageModal.find("#recipientNameDisplay").text(data.receiver_name);
-    } else if (data.officer_name) {
-        sendMessageModal.find("#recipientNameDisplay").text(data.officer_name);
-    } else {
-        sendMessageModal.find("#recipientNameDisplay").text('Select a recipient');
+
+
+
+$(document).on("click", "#messageReply", function (event) {
+  event.preventDefault();
+
+  const staffName = $(this).data('staffName');
+  const staffId = $(this).data('staff_id');
+  const jobNumber = $(this).data('job_number');
+
+  console.log("Job Number:", jobNumber);
+  console.log("Modal element exists:", $("#previousNoticesModal").length > 0);
+
+   let title = "Notice(s) sent on Appication With Job Number "+jobNumber
+  document.getElementById('previousNoticesModalLabel').innerHTML = title;
+
+//   sendMessageModal.find("#modalTitleText").html(titleText);
+
+
+  // previousNoticesModalLabel
+  
+  // Try showing modal
+  var modalElement = document.getElementById('previousNoticesModal');
+  if (modalElement) {
+    var modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  } else {
+    console.error("Modal element not found!");
+  }
+
+  fetchPreviousNotices(jobNumber);
+});
+
+
+
+function fetchPreviousNotices(jobNumber) {
+  // Show loading message
+  $("#messagesContainer").html('<p class="text-muted mb-0">Loading previous messages...</p>');
+
+  $.ajax({
+    url: "director_dashboard", // your backend endpoint
+    type: "POST",
+    data: { 
+      request_type: 'select_application_notices_by_job_number',
+      job_number: jobNumber // ✅ send job number directly
+    },
+    success: function (response) {
+      console.log(response);
+
+    var json_response = JSON.parse(response);
+
+      if (json_response.success && json_response.cabinet_tracking && json_response.cabinet_tracking.length > 0) {
+        let html = `<ul class="list-group">`;
+        json_response.cabinet_tracking.forEach(msg => {
+  const typeColor =
+    msg.notice_type.toLowerCase() === "query"
+      ? "bg-warning text-dark"
+      : msg.notice_type.toLowerCase() === "warning"
+      ? "bg-danger text-white"
+      : "bg-secondary text-white";
+
+  html += `
+    <li class="list-group-item border-0 shadow-sm mb-3 rounded-3 p-3" style="background: #f9fafb;">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <span class="badge ${typeColor} px-3 py-1 rounded-pill text-capitalize">${msg.notice_type}</span>
+        <small class="text-muted fw-light">
+          <i class="far fa-clock me-1"></i>${new Date(msg.created_date).toLocaleString()}
+        </small>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="mb-2 text-dark flex-grow-1" style="font-size: 0.95rem;">
+          ${msg.details}
+        </p>
+        <button class="btn btn-sm btn-outline-primary ms-2 view-replies-btn"
+        data-notice-id="${msg.notice_id}"
+        title="View Replies">
+  <i class="fas fa-comments"></i>
+</button>
+      </div>
+
+      <div class="text-muted small">
+        <i class="fas fa-user-circle me-1 text-secondary"></i>
+        <b>${msg.created_by}</b> → <span>${msg.receiver_name}</span>
+      </div>
+    </li>
+  `;
+});
+
+
+        html += `</ul>`;
+        $("#messagesContainer").html(html);
+      } else {
+        $("#messagesContainer").html('<p class="text-muted mb-0">No previous messages found for this application.</p>');
+      }
+    },
+    error: function () {
+      $("#messagesContainer").html('<p class="text-danger mb-0">Failed to load previous messages.</p>');
     }
-    
-    // Update recipient info
-    if (data.officer_id) {
-        sendMessageModal.find("#recipientInfo").text(`ID: ${data.officer_id}`);
-    } else {
-        sendMessageModal.find("#recipientInfo").text('No ID available');
-    }
-    
-    // Update job count badge
-    const jobCount = Array.isArray(data.job_numbers) ? data.job_numbers.length : 0;
-    sendMessageModal.find("#jobCountBadge").text(`${jobCount} ${jobCount === 1 ? 'job' : 'jobs'}`);
-    
-    // Reset form to clean state
-    resetMessageForm();
-    
-    // Show the modal (Bootstrap 5)
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-    
-    // Log for debugging
-    // console.log('Send message modal data:', {
-    //     officer_id: data.officer_id,
-    //     officer_name: data.officer_name,
-    //     receiver_name: data.receiver_name,
-    //     job_count: jobCount,
-    //     job_numbers: data.job_numbers
-    // });
+  });
 }
 
-// Reset message form function
-function resetMessageForm() {
-    // const form = $('#message-form')[0];
-    // if (form) {
-    //     form.reset();
-    // }
-    
-    // Reset character count
-    $('#charCount').text('0/1000 characters').removeClass('warning danger');
-    
-    // Reset preview
-    $('#messagePreview').html('<small class="text-muted">Start typing to see preview</small>');
-    $('#previewCard').hide();
-    
-    // Set default message type to "query" (since this is for compliance)
-    $('#message_type_query').prop('checked', true);
-    updateSubmitButton();
-    
-    // Clear any validation states
-    $('.form-control').removeClass('is-invalid is-valid');
-    $('#message-form').removeClass('was-validated');
-    
-    // Clear the message textarea
-    $('#message').val('');
-}
 
-// Update submit button text based on message type
-function updateSubmitButton() {
-    const messageType = $('input[name="message_type"]:checked').val();
-    let buttonText = 'Send Message';
-    
-    switch(messageType) {
-        case 'query':
-            buttonText = 'Send Query';
-            break;
-        case 'reminder':
-            buttonText = 'Send Reminder';
-            break;
-        case 'message':
-        default:
-            buttonText = 'Send Message';
-    }
-    
-    $('#submitButtonText').text(buttonText);
-}
 
-// Handle form submission
-$(document).on('submit', '#message-form', function(e) {
-    e.preventDefault();
-    
-    const form = $(this);
-    const officerId = form.find('#officer_id').val();
-    const officerName = form.find('#officer_name').val();
-    const jobNumbers = form.find('#job_numbers').val();
-    const messageType = form.find('input[name="message_type"]:checked').val();
-    const message = form.find('#message').val().trim();
-    
-    // Validation
-    if (!message) {
-        Swal.fire({
-            title: 'Message Required',
-            text: 'Please enter a message to send.',
-            icon: 'warning',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#ffc107'
-        });
-        return false;
-    }
-    
-    if (!officerId) {
-        Swal.fire({
-            title: 'No Recipient',
-            text: 'No recipient selected for the message.',
-            icon: 'warning',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#ffc107'
-        });
-        return false;
-    }
-    
-    // Parse job numbers
-    let jobNumbersArray;
-    try {
-        jobNumbersArray = JSON.parse(jobNumbers);
-    } catch (error) {
-        console.error('Error parsing job numbers:', error);
-        jobNumbersArray = [];
-    }
-    
-    if (jobNumbersArray.length === 0) {
-        Swal.fire({
-            title: 'No Applications',
-            text: 'No applications selected to send message for.',
-            icon: 'warning',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#ffc107'
-        });
-        return false;
-    }
-    
-    // Prepare confirmation message
-    const jobCount = jobNumbersArray.length;
-    const confirmationMessage = `
-        <div class="text-start">
-            <p>You are about to send a <strong>${messageType}</strong> to:</p>
-            <ul class="mb-2">
-                <li><strong>${officerName}</strong></li>
-                <li><strong>${jobCount}</strong> application(s)</li>
-            </ul>
-            <div class="alert alert-light border small mt-3">
-                <i class="ri-information-line me-1"></i>
-                Message: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"
+// use the container that holds the messages (example: #messagesContainer)
+$('#messagesContainer').on('click', '.view-replies-btn', function () {
+  const noticeId = $(this).data('notice-id');
+
+  $('#repliesModal').modal('show');
+  $('#repliesModalBody').html('<p class="text-muted text-center my-3"><i class="fas fa-spinner fa-spin"></i> Loading replies...</p>');
+
+  $.ajax({
+    url: "director_dashboard",
+    type: "POST",
+    data: { 
+      request_type: 'select_application_notice_replies',
+      notice_id: noticeId
+    },
+    success: function (response) {
+      const json_response = JSON.parse(response);
+      console.log(json_response);
+
+      if (json_response.success && json_response.notice_info && json_response.notice_info.length > 0) {
+        let repliesHtml = `
+          <div class="list-group list-group-flush">
+        `;
+
+        json_response.notice_info.forEach(reply => {
+          repliesHtml += `
+            <div class="list-group-item border-0 border-bottom py-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="fw-semibold mb-0 text-primary">
+                  <i class="fas fa-user-circle me-1 text-secondary"></i> ${reply.created_by}
+                </h6>
+                <small class="text-muted">
+                  <i class="far fa-clock me-1"></i> ${new Date(reply.created_date).toLocaleString()}
+                </small>
+              </div>
+              <p class="mb-0 text-dark" style="font-size: 0.95rem; line-height: 1.4;">
+                ${reply.reply_details}
+              </p>
             </div>
-        </div>
-    `;
-    
-    // Show confirmation dialog
-    Swal.fire({
-        title: 'Send Message?',
-        html: confirmationMessage,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, Send Message',
-        cancelButtonText: 'Cancel',
-        confirmButtonColor: '#0d6efd',
-        cancelButtonColor: '#6c757d',
-        reverseButtons: true,
-        showLoaderOnConfirm: true,
-        preConfirm: () => {
-            return new Promise((resolve, reject) => {
-                // const formData = form.serialize();
-
-                const formData = {
-                  "request_type": $("#sendMessageModal").find("#request_type").val(),
-                  "officer_id": officerId,
-                  "officer_name": officerName,
-                  "job_numbers" : jobNumbers,
-                  "message_type" : messageType,
-                  "message" : message
-                }
-                
-                $.ajax({
-                    type: "POST",
-                    url: "SendComplianceMessage",
-                    data: formData,
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response && response.success !== false) {
-                            resolve(response);
-                        } else {
-                            reject(new Error(response?.message || 'Failed to send message'));
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        reject(new Error(`Server error: ${status}`));
-                    }
-                });
-            });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Success handling
-            const response = result.value;
-            
-            Swal.fire({
-                title: 'Success!',
-                html: `
-                    <div class="text-center">
-                        <div class="mb-3">
-                            <i class="ri-checkbox-circle-line text-success" style="font-size: 4rem;"></i>
-                        </div>
-                        <h5 class="fw-semibold">Message Sent Successfully</h5>
-                        <p class="text-muted">
-                            Your ${messageType} has been sent to ${officerName}
-                        </p>
-                        ${response?.message_id ? `
-                        <div class="alert alert-light border small mt-3">
-                            <i class="ri-information-line me-1"></i>
-                            Reference ID: <strong>${response.message_id}</strong>
-                        </div>
-                        ` : ''}
-                    </div>
-                `,
-                icon: 'success',
-                confirmButtonText: 'Done',
-                confirmButtonColor: '#0d6efd',
-                timer: 4000,
-                timerProgressBar: true,
-                willClose: () => {
-                    // Close the modal after success
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('sendMessageModal'));
-                    if (modal) {
-                        modal.hide();
-                    }
-                    
-                    // Reset the form for next use
-                    resetMessageForm();
-                }
-            });
-            
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire({
-                title: 'Cancelled',
-                text: 'Message was not sent.',
-                icon: 'info',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#6c757d',
-                timer: 2000
-            });
-        }
-    }).catch((error) => {
-        // Error handling
-        console.error('Error sending message:', error);
-        
-        Swal.fire({
-            title: 'Sending Failed',
-            html: `
-                <div class="text-center">
-                    <div class="mb-3">
-                        <i class="ri-error-warning-line text-danger" style="font-size: 4rem;"></i>
-                    </div>
-                    <h5 class="fw-semibold">Unable to Send Message</h5>
-                    <p class="text-muted">
-                        ${error.message || 'An unexpected error occurred. Please try again.'}
-                    </p>
-                    <div class="mt-3">
-                        <button class="btn btn-outline-secondary me-2" onclick="Swal.close()">
-                            Close
-                        </button>
-                        <button class="btn btn-primary" onclick="retrySendMessage()">
-                            <i class="ri-refresh-line me-1"></i> Try Again
-                        </button>
-                    </div>
-                </div>
-            `,
-            icon: 'error',
-            showConfirmButton: false,
-            showCancelButton: false
+          `;
         });
-    });
-    
-    return false;
-});
 
-// Retry function for error case
-function retrySendMessage() {
-    Swal.close();
-    // Trigger form submission again after a delay
-    setTimeout(() => {
-        $('#message-form').trigger('submit');
-    }, 500);
-}
-
-// Initialize message modal functionality on page load
-$(document).ready(function() {
-    // Character counter
-    $('#message').on('input', function() {
-        const length = $(this).val().length;
-        $('#charCount').text(`${length}/1000 characters`);
-        
-        // Update character count styling
-        $('#charCount').removeClass('warning danger');
-        if (length > 800) {
-            $('#charCount').addClass('warning');
-        }
-        if (length > 950) {
-            $('#charCount').addClass('danger');
-        }
-        
-        // Update preview
-        updateMessagePreview();
-    });
-    
-    // Template buttons
-    $('.template-btn').on('click', function() {
-        const template = $(this).data('template');
-        insertTemplate(template);
-    });
-    
-    // Message type radio buttons
-    $('input[name="message_type"]').on('change', function() {
-        updateMessagePreview();
-        updateSubmitButton();
-    });
-    
-    // Reset form button
-    $('#btnResetForm').on('click', function() {
-        resetMessageForm();
-    });
-});
-
-// Helper function to update message preview
-function updateMessagePreview() {
-    const message = $('#message').val();
-    const messageType = $('input[name="message_type"]:checked').val();
-    const recipient = $('#recipientNameDisplay').text() || 'Recipient';
-    
-    let preview = '';
-    
-    if (message) {
-        preview = `<strong>To:</strong> ${recipient}\n`;
-        preview += `<strong>Type:</strong> ${messageType || 'Message'}\n\n`;
-        preview += message.substring(0, 200);
-        
-        if (message.length > 200) {
-            preview += '...';
-        }
-        
-        // Show preview card
-        $('#previewCard').show();
-    } else {
-        preview = '<small class="text-muted">Start typing to see preview</small>';
-        $('#previewCard').hide();
+        repliesHtml += `</div>`;
+        $('#repliesModalBody').html(repliesHtml);
+      } else {
+        $('#repliesModalBody').html(`
+          <div class="text-center text-muted py-4">
+            <i class="fas fa-comments fa-2x mb-2"></i>
+            <p class="mb-0">No replies found for this notice.</p>
+          </div>
+        `);
+      }
+    },
+    error: function () {
+      $('#repliesModalBody').html('<p class="text-danger text-center mb-0 py-3">Failed to load replies.</p>');
     }
-    
-    $('#messagePreview').html(preview.replace(/\n/g, '<br>'));
-}
-
-// Helper function to insert template text
-function insertTemplate(template) {
-    const templates = {
-        query: "Dear Officer,\n\nPlease provide an update on the status of the application mentioned above. This requires urgent attention.\n\nBest regards,\n[Your Name]",
-        followup: "Dear Officer,\n\nFollowing up on the previous communication regarding this application. Please advise on the current status and any pending actions.\n\nRegards,\n[Your Name]",
-        reminder: "Dear Officer,\n\nThis is a reminder that the application is approaching/passed its TAT deadline. Kindly expedite action to avoid further delays.\n\nThank you,\n[Your Name]",
-        update: "Dear Officer,\n\nPlease update the status of this application in the system as soon as possible. If there are any issues, please let us know immediately.\n\nSincerely,\n[Your Name]"
-    };
-    
-    const $textarea = $('#message');
-    const currentText = $textarea.val();
-    const templateText = templates[template] || '';
-    
-    // Insert template, preserving existing text
-    if (currentText && !currentText.includes(templateText)) {
-        $textarea.val(currentText + '\n\n' + templateText);
-    } else if (!currentText) {
-        $textarea.val(templateText);
-    }
-    
-    // Trigger input event for character count and preview
-    $textarea.trigger('input');
-    
-    // Show success notification
-    Swal.fire({
-        title: 'Template Inserted',
-        text: `"${template}" template has been inserted`,
-        icon: 'success',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#0d6efd',
-        timer: 2000
-    });
-}
-
-
-
-
+  });
+});
 
  
         });

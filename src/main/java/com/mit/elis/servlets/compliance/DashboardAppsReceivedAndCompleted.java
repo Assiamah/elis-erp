@@ -54,12 +54,16 @@ public class DashboardAppsReceivedAndCompleted {
 
 			if (requestType.equals("apps_received_completed_year")) {
 				String division = request.getParameter("division");
+				 String start_date = request.getParameter("start_date");
+                 String end_date = request.getParameter("end_date");
 
 				// System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
 				obj.put("region_id", region_id);
+				obj.put( "start_date" , start_date );
+                obj.put( "end_date" , end_date );
 
 				String input_details = obj.toString();
 
@@ -76,12 +80,17 @@ public class DashboardAppsReceivedAndCompleted {
 
 			if (requestType.equals("apps_received_completed_year_applications")) {
 				String service = request.getParameter("service");
+				String start_date = request.getParameter("start_date");
+                 String end_date = request.getParameter("end_date");
+
 
 				// System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
 				obj.put("region_id", region_id);
+				obj.put( "start_date" , start_date );
+                obj.put( "end_date" , end_date );
 
 				String input_details = obj.toString();
 

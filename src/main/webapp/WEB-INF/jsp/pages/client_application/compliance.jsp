@@ -117,6 +117,35 @@
         text-align: center;
     }
 }
+  #officerModal {
+    z-index: 1065 !important;
+}
+  #applicationsModal {
+    z-index: 1070 !important;
+}
+  #sendMessageModal {
+    z-index: 1075 !important;
+}
+  #cabinetModal {
+    z-index: 1080 !important;
+}
+  #previousNoticesModal {
+    z-index: 1085 !important;
+}
+  #repliesModal {
+    z-index: 1085 !important;
+}
+
+
+
+
+.modal-backdrop.show:nth-of-type(2) {
+    z-index: 1060 !important;
+}
+  #completedapplicationsModal {
+    z-index: 1055 !important;
+}
+
 </style>
 
 <!-- Begin Page Content -->
@@ -133,6 +162,10 @@
 					
 
 					<!-- Region Selector -->
+	<input type="hidden" id="startdate">
+    <input type="hidden" id="start_date">
+    <input type="hidden" id="enddate">
+    <input type="hidden" id="end_date">
 					
 
 				
@@ -148,7 +181,7 @@
             <div class="col-xl-2">
                 <div class="row">
                     <div class="col-xl-12 col-md-6">
-                        <a href="#" class="showDivisionModal" data-method="summary_created" data-period="day" data-url="DashboardDivisionSummary" data-icon="fa-file" data-title="Applications Received" data-date='This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)'>
+                        <a href="#" class="showDivisionModal" data-method="summary_created" data-period="day" data-url="DashboardDivisionSummary" data-icon="fa-file" data-title="Applications Received" data-date='Today (<fmt:formatDate value="${now}" type="date" />)'>
                             <div class="card stat-card custom-card dashboard-main-card primary school-card"> 
 								<div class="card-body">
 									<div class="d-flex align-items-start gap-3">
@@ -245,43 +278,101 @@
                 <!-- <button class="btn btn-primary btn-add-request" data-bs-toggle="modal" data-bs-target="#addRequestModal">
                     <i class="ri-add-circle-line me-2"></i>New Request
                 </button> -->
-				<div class="row mb-4">
-					<div class="col-12">
-						<div class="d-flex justify-content-between align-items-center">
+					<div class="row mb-4">
+						<div class="col-12">
+							<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+							<!-- LEFT: Title -->
 							<div>
 								<h4 class="mb-2 text-gray-800">Dashboard Overview</h4>
 								<p class="text-muted mb-0">Real-time application tracking and analytics</p>
 							</div>
-							<div class="region-selector" style="width: 445px;">
-								<div class="card border shadow-sm">
-									<div class="card-body py-2 px-3">
-										<div class="d-flex align-items-center gap-3">
-											<div class="region-icon">
-												<i class="ri-map-pin-2-fill text-primary fs-5"></i>
-											</div>
-											<div class="flex-grow-1">
-												<label class="form-label small text-muted mb-1">Current Region</label>
-												<select id="sel_change_region_compliance" class="form-select form-select-sm border-0 p-0 bg-transparent fw-semibold text-dark" data-trigger>
-													<option value="${regional_code}">${regional_name}</option>
-													<c:forEach items="${officeregionlist}" var="officeregion">
-														<option value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
-													</c:forEach>
-												</select>
-											</div>
-										</div>
+
+							<!-- RIGHT: Filters -->
+							<div class="d-flex align-items-center flex-wrap gap-3">
+
+								<!-- Region Selector -->
+								<div class="card border shadow-sm flex-grow-1" style="min-width: 260px; max-width: 300px;">
+								<div class="card-body py-2 px-3">
+									<div class="d-flex align-items-center gap-3">
+									<i class="ri-map-pin-2-fill text-primary fs-5"></i>
+									<div class="flex-grow-1">
+										<label class="form-label small text-muted mb-1">Region</label>
+										<select
+										id="sel_change_region_compliance"
+										class="form-select form-select-sm border-0 p-0 bg-transparent fw-semibold text-dark"
+										>
+										<option value="${regional_code}">${regional_name}</option>
+										<c:forEach items="${officeregionlist}" var="officeregion">
+											<option value="${officeregion.ord_region_code}">
+											${officeregion.ord_region_name}
+											</option>
+										</c:forEach>
+										</select>
+									</div>
 									</div>
 								</div>
+								</div>
+
+								<!-- Date Range Container for better responsiveness -->
+								<div class="d-flex align-items-center flex-wrap gap-3 flex-grow-1 flex-md-grow-0">
+								
+								<!-- Date From -->
+								<div class="card border shadow-sm flex-grow-1" style="min-width: 180px; max-width: 220px;">
+									<div class="card-body py-2 px-3">
+									<div class="d-flex align-items-center gap-2">
+										<i class="ri-calendar-event-line text-primary"></i>
+										<div class="flex-grow-1">
+										<label class="form-label small text-muted mb-1">Date From</label>
+										<input
+											type="text"
+											id="datefrom"
+											class="form-control form-control-sm border-0 p-0 fw-semibold w-100"
+											placeholder="Select start date"
+										/>
+										</div>
+									</div>
+									</div>
+								</div>
+
+								<!-- Date Separator -->
+								<div class="text-muted d-none d-md-block">
+									<i class="ri-arrow-right-line"></i>
+								</div>
+
+								<!-- Date To -->
+								<div class="card border shadow-sm flex-grow-1" style="min-width: 180px; max-width: 220px;">
+									<div class="card-body py-2 px-3">
+									<div class="d-flex align-items-center gap-2">
+										<i class="ri-calendar-event-fill text-primary"></i>
+										<div class="flex-grow-1">
+										<label class="form-label small text-muted mb-1">Date To</label>
+										<input
+											type="text"
+											id="dateto"
+											class="form-control form-control-sm border-0 p-0 fw-semibold w-100"
+											placeholder="Select end date"
+										/>
+										</div>
+									</div>
+									</div>
+								</div>
+
+								</div>
+
+							</div>
 							</div>
 						</div>
-					</div>
-				</div>
+						</div>
+
+
                 <div class="row">
 					<!-- Application Received -->
 					<div id="app-received-year" class="col-lg-4 mb-4">
 						<div class="card custom-card">
 							<div class="card-header">
-								<div class="card-title">    
-									Applications Received in <fmt:formatDate value="${now}" pattern="Y" />
+								<div class="card-title" id="RecTitle">    
+									Applications Received from
 								</div>
 							</div>
 							<div class="card-body"
@@ -316,8 +407,8 @@
 					<div id="app-received-completed-year" class="col-lg-4 mb-4">
 						<div class="card custom-card">
 							<div class="card-header">
-								<div class="card-title">    
-									Applications Received and Completed in <fmt:formatDate value="${now}" pattern="Y" />
+								<div class="card-title" id="RecComp">    
+									Applications Received and Completed from
 								</div>
 							</div>
 							<div class="card-body"
@@ -354,8 +445,8 @@
 					<div id="app-completed-year" class="col-lg-4 mb-4">
 						<div class="card custom-card">
 							<div class="card-header">
-								<div class="card-title">    
-									Applications Completed in <fmt:formatDate value="${now}" pattern="Y" />
+								<div class="card-title" id="CompTitle">    
+									Applications Completed from 
 								</div>
 							</div>
 							<div class="card-body"
@@ -390,7 +481,7 @@
 					<div id="app-past-due-year" class="col-lg-6 mb-4">
 						<div class="card shadow-sm mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-black">Applications Past Due Date </h6>
+								<h6 class="m-0 font-weight-bold text-black">Applications Past Due Date <span id="pastDueTitle"></span></h6>
 								<span class="small text-primary"><span class="count">0</span> Applications</span>
 							</div>
 							<div data-method="apps_past_due" data-period="year" data-url="DashboardAppsPastDueDate" data-next-level-modal="showUnitModal" data-title="Applications Past Due Date" data-date='This Year (<fmt:formatDate value="${now}" pattern="Y" />)' class="content-body card-body"></div>
@@ -399,7 +490,7 @@
 					<div id="app-with-divisions" class="col-lg-6 mb-4">
 						<div class="card shadow-sm mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-black">Applications With Divisions </h6>
+								<h6 class="m-0 font-weight-bold text-black">Applications With Divisions  <span id="AppsWithDivTitle"></span></h6>
 								<span class="small text-primary"><span class="count">0</span> Applications</span>
 							</div>
 							<div data-method="apps_with_division" data-url="DashboardAppsWithDivision" data-next-level-modal="showUnitModal" data-title="Applications With Divisions" class="content-body card-body"></div>
@@ -411,3 +502,12 @@
 	
 	</div>
 </div>
+
+ <jsp:include page="../../components/_compliance_modals.jsp"></jsp:include>
+
+<script>
+	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+</script>
