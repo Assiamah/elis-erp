@@ -1378,6 +1378,7 @@
                               <option value="PVLMD">PVLMD</option>
                               <option value="SMD">SMD</option>
                               <option value="RLO">RLO</option>
+                              <option value="CORPORATE">CORPORATE</option>
                            </select>
                         </div>
                         <div class="col-md-6">
@@ -5691,6 +5692,7 @@
                               <option value="PVLMD">PVLMD</option>
                               <option value="SMD">SMD</option>
                               <option value="RLO">RLO</option>
+                              <option value="CORPORATE">CORPORATE</option>
                            </select>
                         </div>
                         <div class="col-md-6">
