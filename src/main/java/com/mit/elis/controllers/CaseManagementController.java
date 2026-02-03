@@ -12582,6 +12582,7 @@ request.setAttribute("rq_id",rq_id);
 		try {
 
 			if ((String) session.getAttribute("userid") != null || (String) session.getAttribute("userid") != "") {
+
 				cls_casemgt casemgt_web_service = new cls_casemgt();
 				String web_service_response_menu = null;
 				String web_service_response_compliance_notice = null;
@@ -12604,6 +12605,9 @@ request.setAttribute("rq_id",rq_id);
 									cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				}
 
+
+				System.out.println(web_service_response_menu);
+
 				web_service_response_compliance_notice = casemgt_web_service
 							.select_load_compliance_notice_count_by_unit(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
@@ -12620,6 +12624,9 @@ request.setAttribute("rq_id",rq_id);
 				String awaiting_payments = menu_obj.get("awaiting_payments").toString();
 				String awaiting_request = menu_obj.get("awaiting_request").toString();
 				String completed_request = menu_obj.get("completed_request").toString();
+				String attention_required = menu_obj.get("attention_required").toString();
+
+				
 
 				
 
@@ -12631,14 +12638,18 @@ request.setAttribute("rq_id",rq_id);
 				String compliance_queries = notice_count_obj.get("compliance_queries").toString();
 				String query_response  = notice_count_obj.get("query_response").toString();
 
-				request.setAttribute("page_name", "unit_case_management");
+				request.setAttribute("page_name", "unit_case_management_revised");
 				request.setAttribute("view_all_offices", view_all_offices);
 				request.setAttribute("incoming", incoming);
 				request.setAttribute("completed", completed);
 				request.setAttribute("queried", queried);
 				request.setAttribute("awaiting_payment", awaiting_payments);
-request.setAttribute("awaiting_request", awaiting_request);
-request.setAttribute("completed_request", completed_request);
+				request.setAttribute("awaiting_request", awaiting_request);
+				request.setAttribute("completed_request", completed_request);
+
+				request.setAttribute("attention_required", attention_required);
+
+
 
 
 
@@ -12647,7 +12658,9 @@ request.setAttribute("completed_request", completed_request);
 				request.setAttribute("compliance_queries", compliance_queries);
 				request.setAttribute("query_response", query_response);
 
-						model.addAttribute("content", "../pages/client_application/unit_case_management.jsp"); return "layouts/app";
+				request.setAttribute("page_name", "unit_case_management_revised");
+
+				model.addAttribute("content", "../pages/client_application/unit_case_management_revised.jsp"); return "layouts/app";
 
 			} else {
 
@@ -12750,10 +12763,10 @@ request.setAttribute("completed_request", completed_request);
 				request.setAttribute("completed", completed);
 				request.setAttribute("queried", queried);
 				request.setAttribute("awaiting_payment", awaiting_payments);
-request.setAttribute("awaiting_request", awaiting_request);
-request.setAttribute("completed_request", completed_request);
+				request.setAttribute("awaiting_request", awaiting_request);
+				request.setAttribute("completed_request", completed_request);
 
-request.setAttribute("attention_required", attention_required);
+				request.setAttribute("attention_required", attention_required);
 
 
 
@@ -12766,7 +12779,7 @@ request.setAttribute("attention_required", attention_required);
 
 				request.setAttribute("page_name", "unit_case_management_revised");
 
-						model.addAttribute("content", "../pages/client_application/unit_case_management_revised.jsp"); return "layouts/app";
+				model.addAttribute("content", "../pages/client_application/unit_case_management_revised.jsp"); return "layouts/app";
 
 			} else {
 
