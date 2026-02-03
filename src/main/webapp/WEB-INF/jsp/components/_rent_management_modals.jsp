@@ -224,7 +224,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label text-muted small mb-1">Remarks</label>
-                                <div class="form-control bg-light" id="view_remarks" style="height: 100px; overflow-y: auto;">-</div>
+                                <div class="form-control bg-light" id="view_remarks" style="height: 100px; overflow-y: auto; color: rgba(255, 0, 0, 0.568)">-</div>
                             </div>
                         </div>
                     </div>
@@ -2143,11 +2143,11 @@
                     <button class="btn btn-warning" id="btn_load_scanned_documents_rent">
                         <i class="fas fa-sync-alt me-2"></i>Load Documents
                     </button>
-                    <button class="btn btn-primary fileUploadModal">
+                    <button class="btn btn-primary rentFileUploadModal">
                         <i class="fas fa-cloud-upload-alt me-2"></i>Upload Document
                     </button>
                 </div>
-                
+                <input type="hidden" id="file_upload_account_number_rent">
                 <!-- Documents Table -->
                 <div class="card">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -2155,7 +2155,7 @@
                             <i class="fas fa-list me-2"></i>Document List
                         </h6>
                         <div>
-                            <span class="badge bg-primary" id="documentCount">0 documents</span>
+                            <span class="badge bg-primary" id="documentCount_rent">0 documents</span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -2174,9 +2174,9 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="lc_rent_scanned_documents_dataTable_body">
                                     <!-- Dynamic content will be loaded here -->
-                                    <tr id="noDocumentsRow">
+                                    <tr id="noDocumentsRow_rent">
                                         <td colspan="6" class="text-center py-5">
                                             <div class="text-muted">
                                                 <i class="fas fa-folder-open fa-2x mb-3"></i>

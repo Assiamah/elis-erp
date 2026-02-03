@@ -1146,17 +1146,14 @@ if (!$('#demand-notice-styles').length) {
                                 <button type="button" class="btn btn-sm btn-outline-light me-2" id="btnDownloadPDF">
                                     <i class="fas fa-download me-1"></i>Download
                                 </button>
+                                <button type="button" class="btn btn-sm btn-outline-light me-2" id="btnPrintPDF">
+                                    <i class="fas fa-print me-1"></i>Print
+                                </button>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                         </div>
                         <div class="modal-body p-0" style="min-height: 70vh;">
                             <div id="pdfViewerContainer">
-                                <!--<div id="pdfLoading" class="d-flex flex-column align-items-center justify-content-center h-100 p-5">
-                                    <div class="spinner-border text-primary mb-3" role="status">
-                                        <span class="visually-hidden">Loading PDF...</span>
-                                    </div>
-                                    <p class="text-muted">Loading PDF document...</p>
-                                </div>-->
                                 <div id="pdfViewer" style="display: none;">
                                     <div class="pdf-toolbar bg-light p-2 border-bottom">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -1205,9 +1202,14 @@ if (!$('#demand-notice-styles').length) {
                                 <i class="fas fa-info-circle me-1"></i>
                                 Use arrow keys to navigate between pages
                             </div>
-                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
-                                <i class="fas fa-times me-2"></i>Close
-                            </button>
+                            <div>
+                                <button type="button" class="btn btn-outline-dark me-2" id="btnPrintAllPages">
+                                    <i class="fas fa-print me-2"></i>Print All Pages
+                                </button>
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i>Close
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1251,6 +1253,167 @@ if (!$('#demand-notice-styles').length) {
         });
     }
 
+    // Setup print functionality
+    function setupPrintFunctionality() {
+        const printButton = document.getElementById('btnPrintPDF');
+        const printAllButton = document.getElementById('btnPrintAllPages');
+        
+        // Print current page
+        if (printButton) {
+            printButton.addEventListener('click', function() {
+                printPDFPage(currentPage);
+            });
+        }
+        
+        // Print all pages
+        if (printAllButton) {
+            printAllButton.addEventListener('click', function() {
+                printAllPDFPages();
+            });
+        }
+    }
+    
+    // Function to print current page
+    function printPDFPage(pageNum) {
+        // Create a temporary iframe for printing
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
+        
+        // Load the PDF page into iframe
+        pdfDoc.getPage(pageNum).then(function(page) {
+            const viewport = page.getViewport({ scale: 1.5 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            
+            page.render({
+                canvasContext: context,
+                viewport: viewport
+            }).promise.then(function() {
+                // Create print HTML
+                const printHTML = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>${file.name} - Page ${pageNum}</title>
+                        <style>
+                            body { margin: 0; padding: 0; }
+                            img { width: 100%; height: auto; }
+                            @media print {
+                                @page { margin: 0; }
+                                body { margin: 0; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${canvas.toDataURL('image/png')}" alt="PDF Page ${pageNum}">
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                setTimeout(function() {
+                                    window.parent.document.body.removeChild(window.frameElement);
+                                }, 1000);
+                            };
+                        </script>
+                    </body>
+                    </html>
+                `;
+                
+                const iframeDoc = iframe.contentWindow.document;
+                iframeDoc.open();
+                iframeDoc.write(printHTML);
+                iframeDoc.close();
+            });
+        });
+    }
+    
+    // Function to print all pages
+    function printAllPDFPages() {
+        const totalPages = pdfDoc.numPages;
+        
+        // Create a temporary iframe for printing
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
+        
+        // Load all pages
+        const pagePromises = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pagePromises.push(pdfDoc.getPage(i));
+        }
+        
+        Promise.all(pagePromises).then(function(pages) {
+            const canvasPromises = pages.map(function(page, index) {
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                
+                return page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise.then(function() {
+                    return canvas.toDataURL('image/png');
+                });
+            });
+            
+            Promise.all(canvasPromises).then(function(pageImages) {
+                // Create print HTML with all pages
+                let imagesHTML = '';
+                pageImages.forEach(function(imgSrc, index) {
+                    imagesHTML += `<div style="page-break-after: always;">
+                        <img src="${imgSrc}" alt="Page ${index + 1}" style="width: 100%;">
+                        <div style="text-align: center; font-size: 12px; padding: 10px;">
+                            Page ${index + 1} of ${totalPages}
+                        </div>
+                    </div>`;
+                });
+                
+                const printHTML = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>${file.name}</title>
+                        <style>
+                            body { margin: 0; padding: 0; }
+                            @media print {
+                                @page { margin: 0; }
+                                body { margin: 0; }
+                                div { page-break-inside: avoid; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${imagesHTML}
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                setTimeout(function() {
+                                    window.parent.document.body.removeChild(window.frameElement);
+                                }, 1000);
+                            };
+                        </script>
+                    </body>
+                    </html>
+                `;
+                
+                const iframeDoc = iframe.contentWindow.document;
+                iframeDoc.open();
+                iframeDoc.write(printHTML);
+                iframeDoc.close();
+            });
+        });
+    }
+
     // Function to initialize PDF.js viewer
     function initializePDFViewer(fileURL) {
         // Check if PDF.js is loaded
@@ -1258,6 +1421,9 @@ if (!$('#demand-notice-styles').length) {
             // Load PDF.js dynamically
             loadPDFJS().then(() => {
                 renderPDF(fileURL);
+                
+                // Add print functionality
+                setupPrintFunctionality();
             }).catch(error => {
                 console.error('Failed to load PDF.js:', error);
                 showPDFError();
@@ -2574,7 +2740,7 @@ if (!$('#add-form-styles').length) {
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center py-2" href="#"
                                         data-bs-toggle="modal" data-bs-target="#rentdocuments"
-                                        data-rent_id="${this.rl_id}">
+                                        data-rent_id="${this.rl_id}" data-account_number="${this.account_number}">
                                         <i class="fas fa-folder text-warning me-2"></i>
                                         <div>
                                             <div class="fw-medium">Documents</div>
@@ -2639,52 +2805,236 @@ if (!$('#add-form-styles').length) {
         });
     });
 
-      $('#btn_load_scanned_documents_rent').on('click', function(e) { 
+    //   $('#btn_load_scanned_documents_rent').on('click', function(e) { 
 	   
 			
-			 var table_docs_mains = $('#lc_rent_scanned_documents_dataTable');
-			 table_docs_mains.find("tbody tr").remove(); 
+	// 		 var table_docs_mains = $('#lc_rent_scanned_documents_dataTable');
+	// 		 table_docs_mains.find("tbody tr").remove(); 
 	   
-        	var case_number = $("#file_upload_file_number_rent").val();
-        	//console.log(case_number);
-   		 $.ajax({
-				 type: "POST",
-				 url: "LoadLRDJackets",
-				 data: {
-	                	request_type: 'load_case_scanned_document_new',
-	                	case_number:case_number},
-				 cache: false,
-				 beforeSend: function () {
-					// $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-				 },
-				 success: function(serviceresponse) {
-					// if(!serviceresponse){
-					// 	return;
-					// }
-					try{
-						var json_p = JSON.parse(serviceresponse);
-						//console.log(json_p)
+    //     	var case_number = $("#file_upload_file_number_rent").val();
+    //     	//console.log(case_number);
+   	// 	 $.ajax({
+	// 			 type: "POST",
+	// 			 url: "LoadLRDJackets",
+	// 			 data: {
+	//                 	request_type: 'load_case_scanned_document_new',
+	//                 	case_number:case_number},
+	// 			 cache: false,
+	// 			 beforeSend: function () {
+	// 				// $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+	// 			 },
+	// 			 success: function(serviceresponse) {
+	// 				// if(!serviceresponse){
+	// 				// 	return;
+	// 				// }
+	// 				try{
+	// 					var json_p = JSON.parse(serviceresponse);
+	// 					//console.log(json_p)
 											
 						
-						 $(json_p).each(function () {
+	// 					 $(json_p).each(function () {
 						        
 							
 
-							 table_docs_mains.append('<tr><td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' +this.document_extention + '</td>' 
+	// 						 table_docs_mains.append('<tr><td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' +this.document_extention + '</td>' 
 
-					    		    + "</tr>");
+	// 				    		    + "</tr>");
 
-						 });
+	// 					 });
 
-					}catch(e){
-													console.log(e)
-												}
+	// 				}catch(e){
+	// 												console.log(e)
+	// 											}
 					
 					  
-				 }
-				 }); 
-        //	
+	// 			 }
+	// 			 }); 
+    //     //	
+    //     });
+
+        $('#btn_load_scanned_documents_rent').on('click', function(e) { 
+        const case_number = $("#file_upload_account_number_rent").val();
+        const tableBody = $('#lc_rent_scanned_documents_dataTable_body');
+        
+        if (!case_number) {
+            showToast('Account number is required', 'danger');
+            return;
+        }
+        
+        // Show loading state
+        
+        tableBody.html('<tr><td colspan="4" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div><small>Loading documents...</small></td></tr>');
+        
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+                request_type: 'load_case_scanned_document_new',
+                case_number: case_number
+            },
+            cache: false,
+            success: function(serviceresponse) {
+                
+                if(!serviceresponse) {
+                    tableBody.html('<tr id="noDocumentsRow_rent"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-folder-x fs-1 mb-2 d-block"></i><p class="mb-0">No documents found</p><small>Click "Upload Documents" to upload documents</small></div></td></tr>');
+                    $('#documentCount_rent').text(0 + ' document(s)');
+                    return;
+                }
+                
+                try {
+                    const json_p = JSON.parse(serviceresponse);
+                    let html = '';
+                    let totalDocs = 0;
+                    
+                    $(json_p).each(function () {
+                        totalDocs++;
+                        const docName = this.doc_description || 'Unnamed Document';
+                        const docUuid = this.doc_uuid || '#';
+                        const docType = this.doc_type || 'PDF';
+                        
+                        html += `
+                            <tr>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <!--<div class="form-check me-2">
+                                            <input class="form-check-input document-checkbox" type="checkbox" value="${docUuid}">
+                                        </div>
+                                        <div class="avatar avatar-xs bg-light-primary rounded-circle me-2">
+                                            <i class="bi bi-file-earmark"></i>
+                                        </div>-->
+                                        <div>
+                                            <a href="${docUuid}" class="link-post fw-semibold text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to preview">
+                                                ${docName}
+                                            </a>
+                                            <!--<small class="text-muted d-block">
+                                                <i class="bi bi-calendar me-1"></i> ${this.upload_date || 'Date not available'}
+                                            </small>-->
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge bg-info">
+                                        ${docType}
+                                    </span>
+                                </td>
+                                <!--<td class="align-middle text-center">
+                                    <span class="badge bg-secondary">.pdf</span>
+                                </td>-->
+                                <td class="align-middle text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document"
+                                                data-document-path="${docUuid}"
+                                                data-document-name="${docName}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <!--<a href="${docUuid}" 
+                                        class="btn btn-outline-success btn-sm" 
+                                        download="${docName}"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                                            <i class="bi bi-download"></i>
+                                        </a>-->
+                                        <!--<button type="button" class="btn btn-outline-primary btn-sm btn-open-document"
+                                                data-document-path="${docUuid}">
+                                            <i class="bi bi-folder2-open"></i>
+                                        </button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableBody.html(html);
+                    
+                    // Update statistics
+                    $('#documentCount_rent').text(totalDocs + ' document(s)');
+                    
+                    // Initialize tooltips for new elements
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                    });
+
+                    $('#noDocumentsRow_rent').addClass('d-none');
+                    
+                    
+                } catch(e) {
+                    console.error('Error parsing document data:', e);
+                    tableBody.html('<tr id="noDocumentsRow_rent"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                    $('#documentCount_rent').text(0 + ' document(s)');
+                }
+            },
+            error: function(xhr, status, error) {
+                tableBody.html('<tr id="noDocumentsRow_rent"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                $('#documentCount_rent').text(0 + ' document(s)');
+                console.error('AJAX Error:', error);
+            }
         });
+    });
+
+
+    $(document).on('click', '.btn-preview-document', function (e) {
+        e.preventDefault();
+
+        const previewModal = bootstrap.Modal.getOrCreateInstance(
+            document.getElementById('previewModal')
+        );
+
+        const previewContent = $('#previewContent');
+        const previewLoading = $('#previewLoading');
+        const previewError = $('#previewError');
+
+        // Reset UI
+        previewContent.addClass('d-none').empty();
+        previewError.addClass('d-none');
+        previewLoading.removeClass('d-none');
+
+        previewModal.show();
+
+        // ✅ ALWAYS USE currentTarget / this
+        const file_to_open = $(this).data('document-path');
+
+        //console.log('File path:', file_to_open);
+
+        if (!file_to_open) {
+            previewLoading.addClass('d-none');
+            previewError.removeClass('d-none').text('Invalid file path');
+            return;
+        }
+
+        const file_path = file_to_open.replace(/^file:\/\//, '');
+
+        $.ajax({
+            type: "POST",
+            url: "open_pdffile",
+            data: {
+                request_type: 'request_to_generate_batch_list',
+                file_to_open: file_path
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (jobdetails) {
+                const blob = new Blob([jobdetails], {
+                    type: "application/pdf"
+                });
+
+                const objectUrl = URL.createObjectURL(blob);
+
+                previewLoading.addClass('d-none');
+                previewContent.removeClass('d-none').html(`
+                    <iframe src="${objectUrl}"
+                            width="100%"
+                            height="800"
+                            frameborder="0"></iframe>
+                `);
+            },
+            error: function () {
+                previewLoading.addClass('d-none');
+                previewError.removeClass('d-none').text('Failed to load document');
+            }
+        });
+    });
+
 $('#lc_rent_scanned_documents_dataTable').on('click', '.link-post', function(e){
 	//  console.log(e)
 
@@ -4355,6 +4705,8 @@ console.log($(e.relatedTarget).data("file_number"))
             table.find(
                             "tbody tr")
                             .remove();
+
+                            $("#file_upload_account_number_rent").val($(e.relatedTarget).data("account_number"));
         });
         
 
@@ -5152,8 +5504,11 @@ function reversePayment(paymentId) {
     });
 }
 
-$(document).on('click', '.fileUploadModal', function() {
+$(document).on('click', '.rentFileUploadModal', function() {
     $('#fileUploadModal').modal('show');
+
+    const account_number = $('#file_upload_account_number_rent').val();
+    $('#application_file_upload_case_number').val(account_number);
 });
 
 });
