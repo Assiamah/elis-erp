@@ -16043,5 +16043,266 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+
+    // Generate Interest Number with SweetAlert2 Confirmation
+    $('#lc_btn_generate_interest_number').on('click', function(e) { 
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Generate Interest Number?',
+            html: `
+                <div class="text-start">
+                    <p class="mb-2">Are you sure you want to generate a new interest number?</p>
+                    <div class="alert alert-warning p-2 mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <small>This action cannot be undone. Once generated, the interest number will be permanent.</small>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            iconColor: '#4361ee',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Generate',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#4361ee',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-primary px-4',
+                cancelButton: 'btn btn-outline-secondary px-4'
+            },
+            buttonsStyling: false,
+            showClass: {
+                popup: 'animate__animated animate__fadeIn animate__faster'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOut animate__faster'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                generateInterestNumber();
+            }
+        });
+    });
+
+    function generateInterestNumber() {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+        
+        // Show loading state
+        Swal.fire({
+            title: 'Generating...',
+            text: 'Please wait while generating interest number',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_generate_interest_number',
+                case_number: case_number,
+                job_number: job_number,
+                fullname: send_by_name,
+                userid: send_by_id
+            },
+            cache: false,
+            success: function(jobdetails) {
+                Swal.close();
+                
+                if (jobdetails && jobdetails.trim() !== '') {
+                    $('#lc_txt_interest_number').val(jobdetails);
+                    $('#lc_btn_generate_interest_number').prop('disabled', true);
+                    
+                    // Update the status message
+                    $('.form-text.text-center').html(`
+                        <i class="fas fa-check-circle text-success me-1"></i>
+                        <span class="text-success">Interest number generated successfully</span>
+                    `);
+                    
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `
+                            <div class="text-center">
+                                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                                <p class="mb-2"><strong>Interest Number Generated</strong></p>
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-2">
+                                    <code class="fs-5">${jobdetails}</code>
+                                </div>
+                                <small class="text-muted d-block mt-2">This number has been saved to the record.</small>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: '#4361ee',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeIn animate__faster'
+                        }
+                    });
+                    
+                    // Optional: Close the modal after success
+                    // $('#generate_interest_number').modal('hide');
+                    
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to generate interest number. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred while generating interest number. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545'
+                });
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
+
+    // Generate Sub Interest Number with SweetAlert2 Confirmation
+    $('#lc_btn_generate_sub_interest_number').on('click', function(e) { 
+        e.preventDefault();
+        
+        Swal.fire({
+            title: 'Generate Sub Interest Number?',
+            html: `
+                <div class="text-start">
+                    <p class="mb-2">Are you sure you want to generate a new sub interest number?</p>
+                    <div class="alert alert-warning p-2 mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <small>This action cannot be undone. Once generated, the sub interest number will be permanent.</small>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            iconColor: '#4361ee',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Generate',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#4361ee',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-primary px-4',
+                cancelButton: 'btn btn-outline-secondary px-4'
+            },
+            buttonsStyling: false,
+            showClass: {
+                popup: 'animate__animated animate__fadeIn animate__faster'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOut animate__faster'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                generateSubInterestNumber();
+            }
+        });
+    });
+
+    function generateSubInterestNumber() {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+        
+        // Show loading state
+        Swal.fire({
+            title: 'Generating...',
+            text: 'Please wait while generating sub interest number',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_generate_sub_interest_number',
+                case_number: case_number,
+                job_number: job_number,
+                fullname: send_by_name,
+                userid: send_by_id
+            },
+            cache: false,
+            success: function(jobdetails) {
+                Swal.close();
+                
+                if (jobdetails && jobdetails.trim() !== '') {
+                    $('#lc_txt_sub_interest_number').val(jobdetails);
+                    $('#lc_btn_generate_sub_interest_number').prop('disabled', true);
+                    
+                    // Update the status message
+                    $('.form-text.text-center').html(`
+                        <i class="fas fa-check-circle text-success me-1"></i>
+                        <span class="text-success">Sub interest number generated successfully</span>
+                    `);
+                    
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `
+                            <div class="text-center">
+                                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                                <p class="mb-2"><strong>Sub Interest Number Generated</strong></p>
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-2">
+                                    <code class="fs-5">${jobdetails}</code>
+                                </div>
+                                <small class="text-muted d-block mt-2">This number has been saved to the record.</small>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: '#4361ee',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeIn animate__faster'
+                        }
+                    });
+                    
+                    // Optional: Close the modal after success
+                    // $('#generate_sub_interest_number').modal('hide');
+                    
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to generate sub interest number. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred while generating sub interest number. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545'
+                });
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
 });
 

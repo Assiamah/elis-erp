@@ -2942,3 +2942,195 @@
      </div>
   </div>
 </div>
+
+<!-- Generate Interest Number Modal -->
+<div class="modal fade effect-scale modal-blur" id="generate_interest_number" tabindex="-1"
+     aria-labelledby="generateInterestNumberLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="generateInterestNumberLabel">
+          <i class="fas fa-hashtag me-2"></i>
+          Generate Interest Number
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>Interest Number Generation</strong>
+              <p class="mb-0 mt-2">Click generate to create a unique interest number for this record.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Interest Number Field -->
+        <div class="mb-4">
+          <label for="lc_txt_interest_number" class="form-label fw-medium">
+            <i class="fas fa-hashtag me-1"></i>
+            Interest Number
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-tag"></i>
+            </span>
+            <input type="text" class="form-control bg-light" 
+                   id="lc_txt_interest_number" readonly 
+                   value="${interest_number}"
+                   placeholder="Will be generated">
+          </div>
+          <div class="form-text">
+            <i class="fas fa-lock me-1"></i>
+            Auto-generated interest number for this record
+          </div>
+        </div>
+        
+        <!-- Generate Button -->
+        <div class="mt-4">
+          <button type="button" id="lc_btn_generate_interest_number" 
+                  class="btn btn-primary w-100 py-3"
+                  <c:if test="${not empty interest_number and interest_number ne 'null'}">disabled</c:if>>
+            <i class="fas fa-magic me-2"></i>
+            Generate Interest Number
+          </button>
+          <div class="form-text mt-2 text-center">
+            <c:if test="${not empty interest_number and interest_number ne 'null'}">
+              <i class="fas fa-check-circle text-success me-1"></i>
+              <span class="text-success">Interest number already generated</span>
+            </c:if>
+            <c:if test="${empty interest_number or interest_number eq 'null'}">
+              <i class="fas fa-lightbulb text-warning me-1"></i>
+              <span class="text-warning">Click to generate a new interest number</span>
+            </c:if>
+          </div>
+        </div>
+        
+        <!-- Information Section -->
+        <div class="alert alert-light border mt-4">
+          <h6 class="mb-3">
+            <i class="fas fa-lightbulb text-primary me-2"></i>
+            About Interest Numbers
+          </h6>
+          <p class="small mb-0">
+            Interest numbers are unique identifiers used to track ownership interests in land records. 
+            Once generated, they cannot be changed and serve as a permanent reference for this interest record.
+          </p>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Generate Sub Interest Number Modal -->
+<div class="modal fade effect-scale modal-blur" id="generate_sub_interest_number" tabindex="-1"
+     aria-labelledby="generateSubInterestNumberLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="generateSubInterestNumberLabel">
+          <i class="fas fa-hashtag me-2"></i>
+          Generate Sub Interest Number
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Information Alert -->
+        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-4">
+          <div class="d-flex">
+            <i class="fas fa-info-circle me-3 mt-1"></i>
+            <div>
+              <strong>Sub Interest Number Generation</strong>
+              <p class="mb-0 mt-2">Click generate to create a unique sub interest number for this record.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Sub Interest Number Field -->
+        <div class="mb-4">
+          <label for="lc_txt_sub_interest_number" class="form-label fw-medium">
+            <i class="fas fa-hashtag me-1"></i>
+            Sub Interest Number
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-tags"></i>
+            </span>
+            <input type="text" class="form-control bg-light" 
+                   id="lc_txt_sub_interest_number" readonly 
+                   value="${sub_interest_number}"
+                   placeholder="Will be generated">
+          </div>
+          <div class="form-text">
+            <i class="fas fa-lock me-1"></i>
+            Auto-generated sub interest number for this record
+          </div>
+        </div>
+        
+        <!-- Generate Button -->
+        <div class="mt-4">
+          <button type="button" id="lc_btn_generate_sub_interest_number" 
+                  class="btn btn-primary w-100 py-3"
+                  <c:if test="${not empty sub_interest_number and sub_interest_number ne 'null'}">disabled</c:if>>
+            <i class="fas fa-magic me-2"></i>
+            Generate Sub Interest Number
+          </button>
+          <div class="form-text mt-2 text-center">
+            <c:if test="${not empty sub_interest_number and sub_interest_number ne 'null'}">
+              <i class="fas fa-check-circle text-success me-1"></i>
+              <span class="text-success">Sub interest number already generated</span>
+            </c:if>
+            <c:if test="${empty sub_interest_number or sub_interest_number eq 'null'}">
+              <i class="fas fa-lightbulb text-warning me-1"></i>
+              <span class="text-warning">Click to generate a new sub interest number</span>
+            </c:if>
+          </div>
+        </div>
+        
+        <!-- Information Section -->
+        <div class="alert alert-light border mt-4">
+          <h6 class="mb-3">
+            <i class="fas fa-lightbulb text-primary me-2"></i>
+            About Sub Interest Numbers
+          </h6>
+          <p class="small mb-0">
+            Sub interest numbers are used to identify secondary or partial interests within a primary interest. 
+            They help track complex ownership structures and ensure accurate record-keeping for subdivided interests.
+          </p>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
