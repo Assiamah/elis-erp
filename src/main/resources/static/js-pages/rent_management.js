@@ -1253,6 +1253,8 @@ if (!$('#demand-notice-styles').length) {
         });
     }
 
+    let pdfDoc = null;
+
     // Setup print functionality
     function setupPrintFunctionality() {
         const printButton = document.getElementById('btnPrintPDF');
@@ -1421,15 +1423,18 @@ if (!$('#demand-notice-styles').length) {
             // Load PDF.js dynamically
             loadPDFJS().then(() => {
                 renderPDF(fileURL);
-                
-                // Add print functionality
-                setupPrintFunctionality();
             }).catch(error => {
                 console.error('Failed to load PDF.js:', error);
                 showPDFError();
             });
+                
+            // Add print functionality
+            setupPrintFunctionality();
         } else {
             renderPDF(fileURL);
+                
+            // Add print functionality
+            setupPrintFunctionality();
         }
     }
 
@@ -3412,6 +3417,7 @@ $('#editlegder').on('shown.bs.modal', function (e) {
     $("#rt_e_parcel_address").val(data.all?.parcel_address || "");
     $("#rt_e_ls_number").val(data.all?.ls_number || "");
     $("#rt_e_commencement_date").val(data.all?.comm_date || "");
+    $("#rt_e_location_rate").val(data.all?.location_rate || "");
     $("#rt_e_term").val(data.all?.term || "");
     $("#rt_e_expiry_date").val(data.all?.expiry_date || "");
     $("#rt_e_rent_category").val(data.all?.rent_category || "");
