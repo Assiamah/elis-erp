@@ -3424,6 +3424,7 @@ $('#editlegder').on('shown.bs.modal', function (e) {
     $("#rt_e_rent_review_clause").val(data.all?.rent_review_clause || "0");
     $("#rt_e_rent_passing").val(data.all?.rent_passing || "0");
     $("#rt_e_rent_outstanding").val(data.all?.rent_outstanding || "0");
+    $("#rt_e_location_rate").val(data.all?.rt_e_location_rate || "0");
     $("#rt_e_glpin").val(data.all?.glpin || "");
     $("#rt_e_remarks").val(data.all?.remarks || "");
     $("#rt_e_last_payment_date").val(data.all?.last_payment_date || "");
