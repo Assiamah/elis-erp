@@ -8510,6 +8510,45 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				return web_service_response;
 			}
+
+			if (request_type.equals("select_request_additional_input")) {
+				String job_number = request.getParameter("job_number");
+				String rq_id = request.getParameter("rq_id");
+				String note = request.getParameter("note");
+				String is_general_request = request.getParameter("is_general_request");
+				// String collected_by_id_number = request.getParameter("collected_by_id_number");
+				// String collected_by_phone_number = request.getParameter("collected_by_phone_number");
+
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("job_number", job_number);
+				obj.put("rq_id", rq_id);
+				obj.put("note", note);
+				obj.put("modified_by_id", modified_by_id);
+				obj.put("modified_by", modified_by);
+				obj.put("is_general_request", is_general_request);
+
+				System.out.println(obj.toString());
+
+				web_service_response = casemgt_cl.select_request_additional_input(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+
+
+				if (web_service_response != null) {
+					// System.out.println("out " + web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			
 			if (request_type.equals("select_load_published_but_not_worked_on")) {
 
 				web_service_response = casemgt_cl_m

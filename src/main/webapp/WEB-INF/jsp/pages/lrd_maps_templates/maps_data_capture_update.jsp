@@ -6,11 +6,13 @@
         <!-- Start::page-header -->
         <div class="page-header-breadcrumb mb-4">
             <div class="d-flex align-center justify-content-between flex-wrap">
-                <h1 class="page-title fw-medium fs-20 mb-0 text-primary">
-                    <i class="fas fa-map-marked-alt me-2"></i>LRD Plottings
-                </h1>
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">LRD Map Plottings</h1>
+                    <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Manage and plot LRD parcels and transactions</p>
+                </div>
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">ELIS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">LRD Map Plotting</a></li>
                     <li class="breadcrumb-item active text-success" aria-current="page">Maps : Total Parcels (${parcel_count})</li>
                 </ol>
             </div>
@@ -21,7 +23,7 @@
             <!-- Left Sidebar Controls -->
             <div class="col-lg-4 col-xl-3">
                 <!-- Control Panel Card -->
-                <div class="card shadow-lg border-0 mb-4">
+                <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-gradient-primary text-white border-0 py-3">
                         <h5 class="mb-0 fw-semibold">
                             <i class="fas fa-sliders-h me-2"></i>Control Panel
@@ -29,7 +31,7 @@
                     </div>
                     <div class="card-body">
                         <!-- Action Buttons -->
-                        <div class="d-flex flex-wrap gap-2 mb-4">
+                        <div class="btn-group w-100 mb-4">
                             <button type="button" class="btn btn-primary btn-sm" id="lrd_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Add Coordinate">
                                 <i class="fas fa-plus-circle me-1"></i> Add
                             </button>
@@ -75,8 +77,8 @@
                         </div>
 
                         <!-- Quick Coordinate Search -->
-                        <div class="card border-primary mb-4">
-                            <div class="card-header bg-primary bg-opacity-10 border-primary py-2">
+                        <div class="card border-success mb-4">
+                            <div class="card-header bg-success bg-opacity-10 border-success py-2">
                                 <h6 class="mb-0 fw-semibold">
                                     <i class="fas fa-search-location me-2"></i>Quick Coordinate Search
                                 </h6>
@@ -186,7 +188,7 @@
             <!-- Main Map Area -->
             <div class="col-lg-8 col-xl-9">
                 <!-- Map Controls Card -->
-                <div class="card shadow-lg border-0 mb-4">
+                <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-gradient-success text-white border-0 py-3">
                         <h5 class="mb-0 fw-semibold">
                             <i class="fas fa-map me-2"></i>Interactive Map Viewer
@@ -196,7 +198,7 @@
                         <!-- Map Toolbar -->
                         <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
                             <!-- Drawing Mode -->
-                            <div class="btn-group" role="group">
+                            <!-- <div class="btn-group" role="group">
                                 <input type="radio" class="btn-check" name="drawingMode" id="drawMode" checked>
                                 <label class="btn btn-outline-primary btn-sm" for="drawMode">
                                     <i class="fas fa-pencil-alt me-1"></i> Draw
@@ -205,7 +207,7 @@
                                 <label class="btn btn-outline-warning btn-sm" for="modifyMode">
                                     <i class="fas fa-edit me-1"></i> Modify
                                 </label>
-                            </div>
+                            </div> -->
 
                             <!-- Scale Controls -->
                             <div class="d-flex align-items-center gap-2">

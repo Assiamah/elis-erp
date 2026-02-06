@@ -524,6 +524,16 @@
                                 </div>
                             </div>
                             <div class="action-buttons">
+                                <button class="btn btn-danger label-btn ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
+                                    data-job_number="${job_number}" 
+                                    data-ar_name="${ar_name}"
+                                    data-req_id="${rq_id}"
+                                    data-business_process_sub_name="${business_process_sub_name}"
+                                    onclick="requestAdditionalInput(this)"
+                                >
+                                    <i class="bi bi-envelope-arrow-up label-btn-icon"></i>
+                                   Request for Additional Input
+                                </button>
                                 <!-- Primary Action Button -->
                                 <button class="btn btn-info label-btn"
                                     data-job_number="${job_number}" 

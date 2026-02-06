@@ -3,11 +3,13 @@ class InactivityTimer {
         // Configuration
         this.config = {
             warningTime: 100,      // 1 minute warning
-            logoutTime: 900,      // 15 minutes total until logout
+            logoutTime: 900,       // 15 minutes total until logout
             checkInterval: 1000,
-            events: ['mousemove', 'keydown', 'click', 'scroll', 'touchstart', 'mousedown'],
+            events: ['mousemove', 'keydown', 'click', 'scroll', 'touchstart', 'mousedown', 'input', 'wheel'],
             extendOnButtonClick: true,
             buttonExtensionMinutes: 15,
+            debounceDelay: 500,    // Prevent rapid resets
+            ignoreEvents: ['mouseleave', 'mouseenter'], // Events to ignore
             ...config
         };
         
@@ -20,6 +22,8 @@ class InactivityTimer {
         this.timeLeft = this.config.warningTime;
         this.modal = null;
         this.backdrop = null;
+        this.isActive = true;
+        this.debounceTimeout = null;
         
         // Initialize
         this.init();
@@ -31,17 +35,54 @@ class InactivityTimer {
         this.backdrop = document.getElementById('inactivityBackdrop');
         
         if (!this.modal) {
-            console.error('Modal element not found!');
-            return;
+            console.warn('Modal element not found. Creating fallback.');
+            this.createFallbackModal();
         }
         
-        // this.setupEventListeners();
+        // IMPORTANT: Enable event listeners
+        this.setupEventListeners();
         this.setupTimers();
         this.setupModalHandlers();
         this.setupVisibilityHandler();
         
         // Add CSS for progress bar gradient
         this.addProgressBarStyles();
+        
+        // Track initial activity
+        this.updateLastActivity();
+    }
+    
+    createFallbackModal() {
+        // Create modal if it doesn't exist
+        this.modal = document.createElement('div');
+        this.modal.id = 'inactivityModal';
+        this.modal.className = 'modal fade';
+        this.modal.innerHTML = `
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Session About to Expire</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your session will expire in <span id="countdownTimer" class="fw-bold">05:00</span> due to inactivity.</p>
+                        <div class="progress" style="height: 5px;">
+                            <div id="progressFill" class="progress-bar" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="stayActiveBtn">Stay Active</button>
+                        <button type="button" class="btn btn-secondary" id="logoutNowBtn">Logout Now</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(this.modal);
+        
+        // Create backdrop
+        this.backdrop = document.createElement('div');
+        this.backdrop.id = 'inactivityBackdrop';
+        this.backdrop.className = 'modal-backdrop fade';
+        document.body.appendChild(this.backdrop);
     }
     
     addProgressBarStyles() {
@@ -61,26 +102,83 @@ class InactivityTimer {
                     50% { opacity: 0.6; }
                     100% { opacity: 1; }
                 }
+                #inactivityModal {
+                    z-index: 1060;
+                }
+                #inactivityBackdrop {
+                    z-index: 1050;
+                }
             `;
             document.head.appendChild(style);
         }
     }
     
-    // setupEventListeners() {
-    //     // User activity resets timer
-    //     this.config.events.forEach(event => {
-    //         document.addEventListener(event, () => {
-    //             this.resetTimer();
-    //         }, { passive: true });
-    //     });
+    // FIXED: Uncomment and enhance event listeners
+    setupEventListeners() {
+        // User activity resets timer (with debouncing)
+        this.config.events.forEach(event => {
+            document.addEventListener(event, (e) => {
+                // Skip ignored events
+                if (this.config.ignoreEvents.includes(event)) {
+                    return;
+                }
+                
+                // Handle specific events
+                if (event === 'keydown') {
+                    // Ignore modifier keys only
+                    const modifierKeys = ['Shift', 'Control', 'Alt', 'Meta', 'CapsLock'];
+                    if (modifierKeys.includes(e.key)) {
+                        return;
+                    }
+                }
+                
+                this.handleUserActivity();
+            }, { passive: true });
+        });
         
-    //     // Handle browser tab visibility
-    //     document.addEventListener('visibilitychange', () => {
-    //         if (!document.hidden) {
-    //             this.resetTimer();
-    //         }
-    //     });
-    // }
+        // Handle browser tab visibility
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                this.handleUserActivity();
+            }
+        });
+        
+        // Handle window focus/blur
+        window.addEventListener('focus', () => {
+            this.handleUserActivity();
+        });
+        
+        // Optional: Handle AJAX requests if your app uses them
+        this.setupAjaxActivityTracking();
+    }
+    
+    handleUserActivity() {
+        // Debounce to prevent excessive calls
+        if (this.debounceTimeout) {
+            clearTimeout(this.debounceTimeout);
+        }
+        
+        this.debounceTimeout = setTimeout(() => {
+            this.resetTimer();
+            this.isActive = true;
+        }, this.config.debounceDelay);
+    }
+    
+    setupAjaxActivityTracking() {
+        // Track AJAX requests as activity
+        const originalSend = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.send = function(...args) {
+            window.sessionTimer?.handleUserActivity();
+            return originalSend.apply(this, args);
+        };
+        
+        // Track fetch requests as activity
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            window.sessionTimer?.handleUserActivity();
+            return originalFetch.apply(this, args);
+        };
+    }
     
     setupModalHandlers() {
         // Stay Active Button
@@ -168,8 +266,58 @@ class InactivityTimer {
         }, logoutDelay);
     }
     
+    updateLastActivity() {
+        this.lastActivity = Date.now();
+        this.isActive = true;
+    }
+    
+    resetTimer() {
+        // Update last activity timestamp
+        this.updateLastActivity();
+        
+        // Hide modal if showing
+        if (this.isModalShowing) {
+            this.hideWarningModal();
+        }
+        
+        // Reset all timers
+        this.setupTimers();
+        
+        // Optional: Update UI to show user is active
+        this.showActivityIndicator();
+    }
+    
+    showActivityIndicator() {
+        // Optional: Show a brief visual indicator that activity was detected
+        const indicator = document.createElement('div');
+        indicator.className = 'activity-indicator position-fixed bottom-0 end-0 m-3';
+        indicator.style.cssText = 'z-index: 1000; transition: opacity 0.5s;';
+        indicator.innerHTML = '<div class="alert alert-success alert-dismissible fade show" style="padding: 5px 10px; margin: 0;"><small>✓ Active</small></div>';
+        
+        document.body.appendChild(indicator);
+        
+        setTimeout(() => {
+            indicator.style.opacity = '0';
+            setTimeout(() => {
+                if (indicator.parentNode) {
+                    indicator.remove();
+                }
+            }, 500);
+        }, 1000);
+    }
+    
     showWarningModal() {
         if (this.isModalShowing) return;
+        
+        // Check if user is actually inactive
+        const timeSinceActivity = Date.now() - this.lastActivity;
+        const inactiveThreshold = (this.config.logoutTime - this.config.warningTime) * 1000;
+        
+        if (timeSinceActivity < inactiveThreshold) {
+            // User has been active recently, don't show modal
+            this.resetTimer();
+            return;
+        }
         
         this.isModalShowing = true;
         this.timeLeft = this.config.warningTime;
@@ -389,15 +537,21 @@ class InactivityTimer {
     }
     
     async forceLogout() {
+        // Only logout if truly inactive
+        const timeSinceActivity = Date.now() - this.lastActivity;
+        const logoutThreshold = this.config.logoutTime * 1000;
+        
+        if (timeSinceActivity < logoutThreshold) {
+            // User has been active, reset instead
+            this.resetTimer();
+            return;
+        }
+        
         this.clearTimers();
         this.hideWarningModal();
         
-        // // Optional: Send logout request to server
-        // try {
-        //     await this.sendLogoutRequest();
-        // } catch (error) {
-        //     // Silent fail - still redirect to logout
-        // }
+        // Optional: Send logout request to server
+        // await this.sendLogoutRequest();
         
         // Redirect to logout page
         window.location.href = '/Logout';
@@ -513,10 +667,14 @@ class InactivityTimer {
     
     destroy() {
         this.clearTimers();
+        
+        // Remove event listeners
         this.config.events.forEach(event => {
-            // Remove event listeners
-            document.removeEventListener(event, () => {});
+            document.removeEventListener(event, this.handleUserActivity);
         });
+        
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+        window.removeEventListener('focus', this.handleUserActivity);
     }
 }
 
@@ -527,15 +685,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (isAuthenticated) {
         window.sessionTimer = new InactivityTimer({
-            warningTime: 100,    // 1 minute
-            logoutTime: 900,     // 15 minutes
+            warningTime: 100,    // 1 minute warning before logout
+            logoutTime: 900,     // 15 minutes total inactivity until logout
             extendOnButtonClick: true,
-            buttonExtensionMinutes: 15
+            buttonExtensionMinutes: 15,
+            debounceDelay: 500   // Prevent rapid resets from scroll/mousemove
         });
     }
 });
 
 function checkAuthentication() {
     // Replace with your actual authentication check
+    // Example: return document.cookie.includes('sessionId=');
     return true;
 }
+
+// Optional: Add method to manually trigger activity (for forms, etc.)
+window.triggerActivity = function() {
+    if (window.sessionTimer) {
+        window.sessionTimer.resetTimer();
+    }
+};

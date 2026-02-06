@@ -5219,7 +5219,14 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 					// request.setAttribute("deed_number",transaction_details_obj.get("deed_number").toString());
 					// request.setAttribute("file_number",transaction_details_obj.get("file_number").toString());
 					// request.setAttribute("ls_number",transaction_details_obj.get("ls_number").toString());
-					// request.setAttribute("ground_rent",transaction_details_obj.get("ground_rent").toString());
+				// request.setAttribute("ground_rent",transaction_details_obj.get("ground_rent").toString());
+				
+				Object groundRentObj = transaction_details_obj.get("ground_rent");
+				request.setAttribute(
+				    "ground_rent",
+				    groundRentObj != null ? groundRentObj.toString() : ""
+				);
+				
 	
 
 				JSONObject job_detail_obj;
@@ -5244,20 +5251,13 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("rq_id",rq_id);
 				business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
 				request.setAttribute("review_type",review_type);
-						
-				// String get_gender_list = user_web_service.get_list_of_gender(
-				// 		cls_url_config.getWeb_service_url_ser(),
-				// 		cls_url_config.getWeb_service_url_ser_api_key());
-				// // web_service_response = get_gender_list;
-				// System.out.println(get_gender_list);
-				// JSONObject menu_obj_data;
-				// // menu_obj_data = new JSONObject(get_gender_list);
-				// // String all_menus_data = menu_obj_data.get("data").toString();
-				// // System.out.println(all_menus_data);
-				// // Gson googleJson = new Gson();
-				// ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
 
-			//	request.setAttribute("genderlist", javaArrayListFromGSON);
+				String get_gender_list = user_web_service.get_list_of_gender(
+						cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key());
+				ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
+				request.setAttribute("genderlist", javaArrayListFromGSON);
+
 				request.setAttribute("page_name", "case_processing");
 				request.setAttribute("page_name_", "review_application_progress_details");
                 request.setAttribute("page_name", "application_review_details_advanced");
@@ -12625,10 +12625,7 @@ request.setAttribute("rq_id",rq_id);
 				String awaiting_request = menu_obj.get("awaiting_request").toString();
 				String completed_request = menu_obj.get("completed_request").toString();
 				String attention_required = menu_obj.get("attention_required").toString();
-
-				
-
-				
+				String request_for_additional_input = menu_obj.get("request_for_additional_input").toString();
 
 				JSONObject notice_count_obj;
 
@@ -12648,10 +12645,7 @@ request.setAttribute("rq_id",rq_id);
 				request.setAttribute("completed_request", completed_request);
 
 				request.setAttribute("attention_required", attention_required);
-
-
-
-
+				request.setAttribute("request_for_additional_input", request_for_additional_input);
 
 				request.setAttribute("reminders", reminders);
 				request.setAttribute("warnings", warnings);
@@ -12744,9 +12738,7 @@ request.setAttribute("rq_id",rq_id);
 				String awaiting_request = menu_obj.get("awaiting_request").toString();
 				String completed_request = menu_obj.get("completed_request").toString();
 				String attention_required = menu_obj.get("attention_required").toString();
-
-				
-
+				String request_for_additional_input = menu_obj.get("request_for_additional_input").toString();
 				
 
 				JSONObject notice_count_obj;
@@ -12765,12 +12757,8 @@ request.setAttribute("rq_id",rq_id);
 				request.setAttribute("awaiting_payment", awaiting_payments);
 				request.setAttribute("awaiting_request", awaiting_request);
 				request.setAttribute("completed_request", completed_request);
-
+				request.setAttribute("request_for_additional_input", request_for_additional_input);
 				request.setAttribute("attention_required", attention_required);
-
-
-
-
 
 				request.setAttribute("reminders", reminders);
 				request.setAttribute("warnings", warnings);

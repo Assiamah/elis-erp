@@ -2240,8 +2240,6 @@
 </div>
 
 
-
-
 <div class="modal fade effect-scale modal-blur" id="unitComplianceModal" tabindex="-1" aria-labelledby="unitComplianceModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">

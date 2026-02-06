@@ -69,7 +69,7 @@
                                     <div class="d-flex align-items-start gap-3">
                                         <div>
                                             <span class="avatar avatar-md bg-danger svg-white">
-                                                <i class="ri-error-warning-line fs-20"></i>
+                                                <i class="ri-question-line fs-20"></i>
                                             </span>
                                         </div>
                                         <div>
@@ -130,7 +130,7 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <span class="d-block text-muted">Request Completed</span>
+                                            <span class="d-block text-muted">Completed Request</span>
                                             <h5 class="fw-semibold mb-1">${completed_request}</h5>
                                         </div>
                                     </div>
@@ -145,12 +145,31 @@
                                     <div class="d-flex align-items-start gap-3">
                                         <div>
                                             <span class="avatar avatar-md bg-secondary svg-white">
-                                             <i class="ri-question-line fs-20"></i>
+                                             <i class="ri-alarm-warning-line fs-20"></i>
                                             </span>
                                         </div>
                                         <div>
                                             <span class="d-block text-muted">Attention Required</span>
                                             <h5 class="fw-semibold mb-1">${attention_required}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                     <div class="col-lg-4">
+                        <div class="card custom-card stat-card dashboard-main-card danger" id="card-request_additional_input">
+                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="8">
+                                <div class="card-body" id="body-bg-8">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-danger svg-white">
+                                             <i class="bi bi-envelope-arrow-up fs-20"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Request for Additional Input</span>
+                                            <h5 class="fw-semibold mb-1">${request_for_additional_input}</h5>
                                         </div>
                                     </div>
                                 </div>

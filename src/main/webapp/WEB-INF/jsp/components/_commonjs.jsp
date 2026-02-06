@@ -113,8 +113,6 @@ ${page_name == "executive_dashboard" ? "<script src='assets/libs/chart.js/Chart.
 
 <script src="${pageContext.request.contextPath}/assets/libs/jsw/jquery.smartWizard.js" type="text/javascript"></script>
 
-
-
 ${page_name == "rent_management_dashboard" ? "<script src='js-pages/rent_management.js'></script>" : ""}
 ${page_name == "audit_report" ? "<script src='js-pages/audit_report_dashboard.js'></script>" : ""}
 <!-- ${page_name == "audit_report" ? "<script src='js-pages/audit_report.js'></script>" : ""} -->
@@ -129,9 +127,10 @@ ${page_name == "case_processing" ? "<script src='js-pages/js-map/pvlmd_spatial.j
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrfamaps.js'></script>" : ""}
 ${(page_name == "case_processing" || page_name == "application_review_details_advanced") ? "<script src='js-pages/js-map/lcmaps.js'></script>" : ""}
 
-${page_name == "unit_case_management_revised" ? "<script src='js-pages/unit_case_management_revised.js'></script>" : ""}
+${(page_name == "unit_case_management_revised" || page_name == "further_entries_new") ? "<script src='js-pages/unit_case_management_revised.js'></script>" : ""}
+${page_name == "unit_case_management_revised" ? "<script src='js-pages/unit_case_management_compliance.js'></script>" : ""}
 
-${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name=="certificate_signing_module") ? "<script src='js-pages/compliance.js'></script> " : ""}
+${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="certificate_signing_module") ? "<script src='js-pages/compliance.js'></script> " : ""}
 
 ${page_name == "application_review_details_advanced" ? "<script src='js-pages/gated_workflow.js'></script>" : ""}
 
@@ -153,6 +152,7 @@ ${page_name == "executive_dashboard" ? "<script src='js-pages/executive_complian
 
 ${page_name == "director_compliance" ? "<script src='js-pages/director_compliance.js'></script>" : ""}
 
+${page_name == "cica_clients" ? "<script src='js-pages/cica_clients.js'></script>" : ""}
 
 ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 

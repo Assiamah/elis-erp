@@ -621,7 +621,7 @@ public class CicaController {
 
 		//Gson googleJson = new Gson();
 		try {
-
+			request.setAttribute("page_name", "cica_clients");
 					model.addAttribute("content", "../pages/CICA/clients.jsp"); return "layouts/app";
 
 		} catch (Exception e) {

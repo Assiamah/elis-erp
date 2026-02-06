@@ -1042,6 +1042,114 @@ $('#btnAddAlltoBatchlist').on('click', function (e) {
 
 });
 
+
+$('#btnAddAlltoRequestlist').on('click', function (e) {
+    var job_purpose = $("#txt_general_job_purpose").val();
+
+    var remarks_notes = $("#txt_general_remarks_notes").val();
+
+    if (!job_purpose || !remarks_notes) {
+
+        // $.notify(
+        // 	{
+        // 		message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Purpose and remarks field are required!! </span>',
+        // 	}, {
+        // 		type : 'danger' , z_index: 9999 
+        // 	});
+
+        swal.fire({
+            title: 'Ops!',
+            text: 'Purpose and remarks field are required!',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        })
+
+        return;
+    }
+
+    if (job_purpose) {
+        Swal.fire({
+            title: 'Confirm Action',
+            text: 'Are you sure you want to add these applications to the list?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, add them',
+            cancelButtonText: 'Cancel',
+            // confirmButtonColor: '#0d6efd',
+            // cancelButtonColor: '#6c757d',
+            reverseButtons: true
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                $("#job_casemgtdetailsdataTableCSAU input[type=checkbox]:checked, \
+				#job_detailsdataTable input[type=checkbox]:checked, \
+				#job_casemgtdetailsdataTable_frrv input[type=checkbox]:checked, \
+				#job_casemgtdetailsdataTable_tpp input[type=checkbox]:checked, \
+				#job_casemgtdetailsdataTable_cst input[type=checkbox]:checked, \
+				#job_casemgtdetailsdataTable_frrv_cst input[type=checkbox]:checked")
+                    .each(function () {
+
+                        var row = $(this).closest("tr")[0];
+                        var job_number = row.cells[1].innerHTML;
+                        var ar_name = row.cells[2].innerHTML;
+                        var business_process_sub_name = row.cells[3].innerHTML;
+
+                        addJobToRequestlist(
+                            job_number,
+                            ar_name,
+                            business_process_sub_name,
+                            job_purpose,
+                            remarks_notes
+                        );
+                    });
+
+                $("#job_casemgtdetailsdataTable input[type=checkbox]:checked").each(function () {
+
+                    var row = $(this).closest("tr")[0];
+                    var job_number = row.cells[2].innerHTML;
+                    var ar_name = row.cells[3].innerHTML;
+                    var business_process_sub_name = row.cells[4].innerHTML;
+
+                    addJobToRequestlist(
+                        job_number,
+                        ar_name,
+                        business_process_sub_name,
+                        job_purpose,
+                        remarks_notes
+                    );
+                });
+
+                prepareRequestlistModal();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Added!',
+                    text: 'Selected applications have been added successfully.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+    } else {
+
+        // $.notify({
+        // 	message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Purpose of batching required ! </span>',
+        // }, {
+        // 	type: 'danger'
+        // });
+
+        swal.fire({
+            title: 'Ops!',
+            text: 'Purpose and remarks field are required!',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        })
+    }
+
+});
+
 $('#btnaddreqtolistFinal').on('click', function (e) {
     //console.log('Add to batchlist');
     var job_number = $("#req_job_number").val();

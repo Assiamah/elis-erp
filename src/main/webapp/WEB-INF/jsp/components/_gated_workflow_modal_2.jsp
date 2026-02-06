@@ -3134,3 +3134,168 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="ground_rent" tabindex="-1"
+     aria-labelledby="ground_rent_label" aria-hidden="true" data-bs-backdrop="static">
+     <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="ground_rent_label">
+                    <i class="fas fa-money-bill-wave me-2"></i>
+                    Ground Rent Management
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Current Status Card -->
+                <div class="card border-warning border mb-4">
+                    <div class="card-header bg-light-warning py-3">
+                        <h6 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-chart-line text-warning me-2"></i>
+                            Current Ground Rent Status
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-sm bg-light-warning rounded-circle d-flex align-items-center justify-content-center me-3">
+                                <i class="fas fa-dollar-sign text-warning"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <label class="form-label fw-medium mb-1">Current Amount</label>
+                                <div class="d-flex align-items-center">
+                                    <c:choose>
+                                        <c:when test="${not empty ground_rent and ground_rent != 'null' and not fn:contains(ground_rent, '-')}">
+                                            <h4 class="text-success mb-0">${ground_rent}</h4>
+                                            <span class="badge bg-success ms-2">
+                                                <i class="fas fa-check-circle me-1"></i> Set
+                                            </span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="text-danger">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                <span class="fw-medium">Not Set</span>
+                                            </div>
+                                            <span class="badge bg-warning ms-2">Pending</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="alert alert-warning border-warning bg-warning bg-opacity-10 mb-4">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-info-circle fa-lg text-warning"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading mb-2">Ground Rent Information</h6>
+                            <p class="small mb-0">
+                                Enter the ground rent amount for this property. Once set, it cannot be updated unless the status is cleared.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ground Rent Input Section -->
+                <div class="mb-4">
+                    <label for="lc_txt_ground_rent" class="form-label fw-medium">
+                        <i class="fas fa-edit me-1 text-primary"></i>
+                        Ground Rent Amount
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="fas fa-money-bill text-muted"></i>
+                        </span>
+                        <c:choose>
+                            <c:when test="${not empty ground_rent and ground_rent != 'null' and not fn:contains(ground_rent, '-')}">
+                                <input type="text" class="form-control bg-light" 
+                                       id="lc_txt_ground_rent" 
+                                       value="${ground_rent}"
+                                       style="cursor: not-allowed"
+                                       readonly
+                                       placeholder="Ground rent amount (e.g., 5000.00)" />
+                            </c:when>
+                            <c:otherwise>
+                                <input type="text" class="form-control" 
+                                       id="lc_txt_ground_rent" 
+                                       value="${ground_rent}"
+                                       placeholder="Enter ground rent amount (e.g., 5000.00)" />
+                            </c:otherwise>
+                        </c:choose>
+                        <span class="input-group-text bg-light">
+                            <span class="text-muted small">Per Annum</span>
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Enter the annual ground rent amount
+                        </small>
+                        <c:if test="${not empty ground_rent and ground_rent != 'null' and not fn:contains(ground_rent, '-')}">
+                            <span class="badge bg-info">
+                                <i class="fas fa-lock me-1"></i> Locked
+                            </span>
+                        </c:if>
+                    </div>
+                </div>
+
+                <hr class="text-muted my-4">
+                
+                <!-- Update Button -->
+                <div class="mb-3">
+                    <button class="btn btn-primary w-100 py-3" 
+                            id="lc_btn_generate_ground_rent_only"
+                            <c:if test="${not empty ground_rent and ground_rent != 'null' and not fn:contains(ground_rent, '-')}">
+                                disabled
+                            </c:if>>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="me-3">
+                                <i class="fas fa-sync-alt fa-lg"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fw-medium">Update Ground Rent</div>
+                                <small class="d-block opacity-75">
+                                    <c:choose>
+                                        <c:when test="${not empty ground_rent and ground_rent != 'null' and not fn:contains(ground_rent, '-')}">
+                                            <span class="text-warning">
+                                                <i class="fas fa-lock me-1"></i> Amount already set
+                                            </span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            Save and update ground rent amount
+                                        </c:otherwise>
+                                    </c:choose>
+                                </small>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <!-- <i class="fas fa-calendar me-1"></i>
+                        <span id="currentDateDisplay"></span> -->
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+</div>

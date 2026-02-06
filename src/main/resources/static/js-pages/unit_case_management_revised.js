@@ -44,6 +44,7 @@ $(document).ready(function() {
 		var awrq_5 = $('#awa_req_5').val();
 		var ctrq_6 = $('#req_com_6').val();
 		var atr_7 = $('#req_com_7').val();
+		var req_8 = $('#req_inp_8').val();
 		
 
 		datatable.search("").draw();
@@ -188,7 +189,7 @@ $(document).ready(function() {
 				}
 
 		
-				case 5:
+			case 5:
 				if(awrq_5 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -217,7 +218,8 @@ $(document).ready(function() {
 
 					LoadUnitApplications(inbox_type)
 				}
-				case 6:
+
+			case 6:
 				if(ctrq_6 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -246,8 +248,39 @@ $(document).ready(function() {
 
 					LoadUnitApplications(inbox_type)
 				}
-				case 7:
+
+			case 7:
 				if(atr_7 > 500) {
+
+					$('#adv_inbox_type').val(inbox_type);
+
+					if(inbox_type == 1){
+						$('#adv_status').val('Incoming Files');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 2) {
+						$('#adv_status').val('Queried');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 3) {
+						$('#adv_status').val('Completed Within Unit');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 4) {
+						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else {
+						$('#adv_status').val('All');
+					}
+
+					$("#incoming_advanced_search").modal('show');
+
+					return;
+
+				} else {
+
+					LoadUnitApplications(inbox_type)
+				}
+
+			case 8:
+				if(req_8 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
 
@@ -647,11 +680,8 @@ $(document).ready(function() {
 						'<span class="small">' + (this.business_process_sub_name || '') + '</span>',
 
 						// 5: Status
-						'<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="' + (this.job_status || '') + '" class="badge ' +
-							(this.current_application_status === 'Completed' ? 'bg-success' :
-							this.current_application_status === 'Queried' ? 'bg-danger' :
-							this.current_application_status === 'In Progress' ? 'bg-warning' : 'bg-dark') + '">' +
-							((this.job_status || '').length > 15 ? (this.job_status || '').substring(0, 15) + '...' : (this.job_status || '')) +
+						'<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="' + (this.job_purpose || '') + '" >' +
+							((this.job_purpose || '').length > 30 ? (this.job_purpose || '').substring(0, 30) + '...' : (this.job_purpose || '')) +
 						'</span>' +
 						((this.objections || 0) > 0 ? '<i class="fas fa-exclamation-circle ml-1 text-danger" data-toggle="tooltip" title="Has Objections"></i>' : ''),
 
@@ -776,6 +806,12 @@ $(document).ready(function() {
 				$("#body-bg-7").addClass('bg-secondary-light');
 				$("#number-text-7").addClass('text-white');
 				$("#card-attention_required").addClass('active-card');
+				break;
+			case 8: // Request Additional Input - Danger
+				$(".btn-to-be-disabled").prop('disabled', true);
+				$("#body-bg-8").addClass('bg-danger-light');
+				$("#number-text-8").addClass('text-white');
+				$("#card-request_additional_input").addClass('active-card');
 				break;
 			default:
 				// No card selected
@@ -1077,6 +1113,8 @@ function initializeCheckboxSelection() {
     });
 }
 
+
+
 // Update select all checkbox state
 function updateSelectAllCheckbox() {
     const totalCheckboxes = $('.row-checkbox').length;
@@ -1111,6 +1149,32 @@ function updateBatchButtonState() {
 // Event handlers
 $(document).on('click', '#btnSelectAll', function() {
     $('#selectAllCheckbox').trigger('click');
+});
+
+$("#selectAll").on("click", function() {
+	if ($(this).prop("checked") == true) {
+		$('#job_casemgtdetailsdataTable tbody tr').addClass('selected');
+		$('#allBatchList').removeClass('d-none');
+	} else {
+		$('#job_casemgtdetailsdataTable tbody tr').removeClass('selected');
+		$('#allBatchList').addClass('d-none');
+	}
+
+	$("#job_casemgtdetailsdataTable tbody tr").find(":checkbox").prop('checked',
+	$(this).prop('checked'));
+});
+
+$(document).on('change', '.row-checkbox', function () {
+    const anyChecked = $('.row-checkbox:checked').length > 0;
+
+    if (anyChecked) {
+        $('#allBatchList').removeClass('d-none');
+    } else {
+        $('#allBatchList').addClass('d-none');
+    }
+
+    // Optional: keep row highlighting in sync
+    $(this).closest('tr').toggleClass('selected', this.checked);
 });
 
 $(document).on('click', '#btnBatchSelected', function() {
