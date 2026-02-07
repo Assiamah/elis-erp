@@ -16304,5 +16304,419 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    window.requestAdditionalInput = function(element) {
+        const jobNumber = $(element).data('job_number');
+        const applicantName = $(element).data('ar_name');
+        const requestId = $(element).data('req_id');
+        const isGeneralRequest = $("#is_general_request").val();
+        
+        Swal.fire({
+            title: 'Request Additional Input?',
+            html: `
+                <div class="text-start">
+                    <p>Are you sure you want to request additional input for this request?</p>
+                    
+                    <div class="card border-warning mb-3">
+                        <div class="card-header bg-warning bg-opacity-10">
+                            <h6 class="mb-0">
+                                <i class="fas fa-check me-2"></i>
+                                Request Details
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <!-- Job Number -->
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="me-3 text-primary">
+                                    <i class="fas fa-hashtag fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted small mb-1">Job Number</div>
+                                    <div class="fw-bold" id="swalJobNumber">${jobNumber || 'N/A'}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Applicant Name -->
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="me-3 text-primary">
+                                    <i class="fas fa-user fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="text-muted small mb-1">Applicant Name</div>
+                                    <div class="fw-bold" id="swalApplicantName">${applicantName || 'N/A'}</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Note Input -->
+                            <div class="d-flex align-items-start">
+                                <div class="me-3 text-primary">
+                                    <i class="fas fa-sticky-note fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label for="swalRequestNote" class="text-muted small mb-1">
+                                        Request Additional Input Note
+                                    </label>
+                                    <textarea class="form-control form-control-sm" 
+                                            id="swalRequestNote" 
+                                            rows="5" 
+                                            placeholder="Add a note about why you're requesting additional input..."></textarea>
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Optional: Add a note for future reference
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle me-3 mt-1"></i>
+                            <div>
+                                <strong>Warning:</strong> Requesting for additional input will move the request to the archive section and removed from active request lists.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check me-2"></i> Yes, Request Additional Input',
+            cancelButtonText: '<i class="fas fa-times me-2"></i> Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                const note = document.getElementById('swalRequestNote').value;
+                
+                return new Promise((resolve) => {
+                    // Perform AJAX call
+                    const cleanedRequestId = requestId ? requestId.toString().replace('.0', '') : '';
+
+                    if (!note) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Please enter a note.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#dc3545'
+                        });
+                        return;
+                    }
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_request_additional_input',
+                            rq_id: cleanedRequestId,
+                            job_number: jobNumber,
+                            note: note,
+                            is_general_request: isGeneralRequest
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve({ success: true, data: response });
+                        },
+                        error: function(xhr, status, error) {
+                            resolve({ success: false, error: error });
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+            allowEscapeKey: false,
+            backdrop: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response.success) {
+                    try {
+                        const jsonResponse = JSON.parse(response.data);
+                        
+                        if (jsonResponse.success === true) {
+                            // Success - show success message
+                            Swal.fire({
+                                title: 'Request sent successfully!',
+                                html: `
+                                    <div class="text-center">
+                                        <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                                        <p class="mb-0"><strong>Request has been sent successfully</strong></p>
+                                        <p class="text-muted small mt-2">
+                                            <i class="fas fa-hashtag me-1"></i>
+                                            ${jobNumber || 'Request'} has been moved to archive.
+                                        </p>
+                                    </div>
+                                `,
+                                icon: 'success',
+                                confirmButtonText: '<i class="fas fa-redo me-2"></i> Continue',
+                                confirmButtonColor: '#198754',
+                                allowOutsideClick: false
+                            }).then(() => {
+                                // Redirect after successful archive
+                                window.location.href = "/case_movement_module";
+                            });
+                        } else {
+                            // Server returned failure
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Request Failed',
+                                text: jsonResponse.message || 'Failed to send request. Please try again.',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    } catch (parseError) {
+                        // Error parsing JSON
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Processing Error',
+                            text: 'An error occurred while processing the response.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } else {
+                    // AJAX error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Request Failed',
+                        text: 'An error occurred while sending the request. Please try again.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    }
+
+    $('#lc_btn_generate_ground_rent_only').on('click', function(e) {
+        e.preventDefault();
+        
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var job_number = $("#cs_main_job_number").val();
+        
+        var txt_lc_registration_district_number = $("#txt_new_lc_registration_district_number").val();
+        var txt_lc_registration_section_number = $("#txt_new_lc_registration_section_number").val();
+        var lc_txt_ground_rent = $("#lc_txt_ground_rent").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+        
+        // Validate ground rent input
+        if (!lc_txt_ground_rent || lc_txt_ground_rent.trim() === '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please enter the ground rent amount before proceeding.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6',
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+            return;
+        }
+        
+        // Format amount validation
+        if (!/^\d+(\.\d{1,2})?$/.test(lc_txt_ground_rent)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Amount',
+                text: 'Please enter a valid ground rent amount (e.g., 2500.00 or 2500)',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33',
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                }
+            });
+            return;
+        }
+        
+        // Show confirmation dialog with details
+        Swal.fire({
+            title: 'Confirm Ground Rent Update',
+            html: `
+                <div class="text-start">
+                    <p>Are you sure you want to update the ground rent for:</p>
+                    <div class="card border-primary mb-3">
+                        <div class="card-body">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <small class="text-muted">Case Number:</small>
+                                    <div class="fw-bold">${case_number || 'N/A'}</div>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Job Number:</small>
+                                    <div class="fw-bold">${job_number || 'N/A'}</div>
+                                </div>
+                                <div class="col-12">
+                                    <small class="text-muted">New Ground Rent:</small>
+                                    <div class="fw-bold text-success fs-5">${lc_txt_ground_currency_format(lc_txt_ground_rent)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-danger small mb-0">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        This action cannot be undone
+                    </p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Update Ground Rent',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve) => {
+                    // Start the AJAX call
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_generate_ground_rent_only',
+                            case_number: case_number,
+                            job_number: job_number,
+                            transaction_number: transaction_number,
+                            registration_district_number: txt_lc_registration_district_number,
+                            registration_section_number: txt_lc_registration_section_number,
+                            ground_rent: lc_txt_ground_rent,
+                            fullname: send_by_name,
+                            userid: send_by_id
+                        },
+                        cache: false,
+                        success: function(jobdetails) {
+                            console.log(jobdetails);
+                            var json_p = JSON.parse(jobdetails);
+                            
+                            if (jobdetails != "") {
+                                // Update UI
+                                $('#lc_btn_generate_ground_rent_only').prop("disabled", true);
+                                $('#lc_txt_ground_rent').val(json_p.ground_rent).addClass('bg-light').prop('readonly', true);
+                                
+                                // Show success message
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Ground Rent Updated!',
+                                    html: `
+                                        <div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-check-circle fa-3x text-success"></i>
+                                            </div>
+                                            <p class="mb-2">Ground rent has been successfully updated</p>
+                                            <div class="card bg-success bg-opacity-10 border-success">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="fw-bold">New Amount:</span>
+                                                        <span class="fw-bold text-success fs-5">${lc_txt_ground_currency_format(json_p.ground_rent)}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted mt-2 d-block">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                The amount is now locked and cannot be modified
+                                            </small>
+                                        </div>
+                                    `,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#3085d6',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    }
+                                });
+                            }
+                            resolve();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update Failed',
+                                text: 'An error occurred while updating ground rent. Please try again.',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d33',
+                                showClass: {
+                                    popup: 'animate__animated animate__shakeX'
+                                }
+                            });
+                            resolve();
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Ground rent update was cancelled',
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#6c757d',
+                    timer: 2000,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeOut'
+                    }
+                });
+            }
+        });
+    });
+
+    // Helper function to format currency
+    function lc_txt_ground_currency_format(amount) {
+        if (!amount) return '0.00';
+        
+        const num = parseFloat(amount);
+        if (isNaN(num)) return amount;
+        
+        // Format with commas and 2 decimal places
+        return '₵' + num.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    // Optional: Add this function for input validation
+    function validateGroundRentInput(input) {
+        const value = input.value;
+        const isValid = /^\d+(\.\d{1,2})?$/.test(value);
+        
+        if (value && !isValid) {
+            $(input).addClass('is-invalid');
+            $('#lc_btn_generate_ground_rent_only').prop('disabled', true);
+        } else {
+            $(input).removeClass('is-invalid');
+            $('#lc_btn_generate_ground_rent_only').prop('disabled', false);
+        }
+    }
+
+    // Add real-time validation to ground rent input
+    $('#lc_txt_ground_rent').on('input', function() {
+        validateGroundRentInput(this);
+    });
+
+    // Add tooltip to disabled button
+    $('#lc_btn_generate_ground_rent_only').hover(function() {
+        if ($(this).prop('disabled')) {
+            $(this).attr('title', 'Ground rent is already set and cannot be modified');
+        }
+    }, function() {
+        $(this).removeAttr('title');
+    });
+
+    // Optional: Initialize tooltips
+    $(document).ready(function() {
+        $('[title]').tooltip({
+            trigger: 'hover',
+            placement: 'top'
+        });
+    });
 });
 

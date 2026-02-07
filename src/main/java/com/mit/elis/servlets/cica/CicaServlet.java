@@ -14,6 +14,8 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Optional;
+
 import org.springframework.ui.Model;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -1666,7 +1668,10 @@ public class CicaServlet {
 
 				switch (purpose) {
 					case "1":
-						within_time_frame = request.getParameter("within_time_frame");
+						within_time_frame = Optional
+							.ofNullable(request.getParameter("within_time_frame"))
+							.filter(s -> !s.trim().isEmpty())
+							.orElse("0");
 						obj.put("within_time_frame", within_time_frame);
 						if (within_time_frame.equals("1")) {
 							String milestone_status = request.getParameter("milestone_status");
@@ -1695,7 +1700,10 @@ public class CicaServlet {
 						obj.put("nature_of_enquiry", nature_of_enquiry);
 						break;
 					case "3":
-						within_time_frame = request.getParameter("within_time_frame");
+						within_time_frame = Optional
+							.ofNullable(request.getParameter("within_time_frame"))
+							.filter(s -> !s.trim().isEmpty())
+							.orElse("0");
 						obj.put("within_time_frame", within_time_frame);
 						if (within_time_frame.equals("1")) {
 							String milestone_status = request.getParameter("milestone_status");
@@ -1733,6 +1741,8 @@ public class CicaServlet {
 						System.out.println("Non Service Complaint");
 
 				}
+
+				System.out.print(obj.toString());
 
 				web_service_response = cls_cica.save_client_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
