@@ -8,7 +8,7 @@ $(document)
 					var lrd_block_parcel_lrd_dataSource = new ol.source.TileWMS(
 							{
 								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-								//url : 'http://41.66.204.146:8284/geoserver/csau_geospatial/wms',
+								//url : 'http://102.176.83.18:8284/geoserver/csau_geospatial/wms',
 								params : {
 									'LAYERS' : 'csau_geospatial:lc_spatial_objects',
 									'TILED' : true

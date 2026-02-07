@@ -18,7 +18,7 @@
     	<!--  <env-entry-value>http://10.4.1.47:8080/gelis_online_service_live/rest/</env-entry-value> -->
  		<!--       <env-entry-value>http://10.4.1.53:8080/gelis_online_service_live/rest/</env-entry-value>   -->  
 
-    	<!--  <env-entry-value>http://41.66.204.146:9293/gelis_online_service_live/rest/</env-entry-value>-->
+    	<!--  <env-entry-value>http://102.176.83.18:9293/gelis_online_service_live/rest/</env-entry-value>-->
 
   <!-- <env-entry-value>http://10.4.18.21:8080/gelis_online_service_live/rest/</env-entry-value>   -->
     <!--   <env-entry-value>http://10.4.1.47:8080/gelis_online_service_live/rest/</env-entry-value>    -->
@@ -41,7 +41,7 @@
   <env-entry>
     <env-entry-name>payment_callbackUrl</env-entry-name>
     <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>http://41.66.204.146:9293/gelis_online_service_live/rest/payment_service/lc_payment_confirmation_for_bill_from_checkout</env-entry-value>
+    <env-entry-value>http://102.176.83.18:9293/gelis_online_service_live/rest/payment_service/lc_payment_confirmation_for_bill_from_checkout</env-entry-value>
   </env-entry>
   
   

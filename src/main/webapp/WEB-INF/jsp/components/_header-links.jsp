@@ -111,7 +111,7 @@ window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.locat
 	//   console.log(url_obj)
 
 	switch (url_obj.hostname) {
-		case '41.66.204.146':
+		case '102.176.83.18':
 			link_url = url_obj.protocol + '//' + url_obj.hostname + ':6065';
 			break;
 		//    case 'csscloudservice.com':
@@ -131,9 +131,9 @@ window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.locat
 			break;
 
 		case 'elis.lc.gov.gh':
-			//link_url = url_obj.protocol + '//41.66.204.146:6065';
-			link_url = 'http:' + '//41.66.204.146:6065';
-			https://41.66.204.146:6065
+			//link_url = url_obj.protocol + '//102.176.83.18:6065';
+			link_url = 'http:' + '//102.176.83.18:6065';
+			https://102.176.83.18:6065
 			break;
 
 		case 'localhost':

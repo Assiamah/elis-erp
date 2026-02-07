@@ -59,6 +59,42 @@ public class SMDMapsController {
 
 	}
 
+	@RequestMapping("/smd_map_read_only")
+	@GetMapping
+	public String smd_map_read_only(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			//
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		request.setAttribute("page_name", "case_processing");
+				model.addAttribute("content", "../pages/smd_maps_templates/smd_map_read_only.jsp"); return "layouts/app";
+
+	}
+
+
+	
+
 	@RequestMapping("/smd_transaction_search")
 	@GetMapping
 	public String smd_transaction_search(HttpSession session, Model model, HttpServletRequest request,
