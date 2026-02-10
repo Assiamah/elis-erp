@@ -2389,6 +2389,46 @@ $("#lc_btn_visualise_search").click(function(event) {
 			});
 		});
 
+		$("#lc_btn_visualise_coordinate_gf_2").click(function () {
+
+			let jsonArr = [];
+			let polygonPoints = [];
+
+			$('#coordinatelis_Table_2 tbody tr').each(function () {
+				let name = $(this).find('td:eq(0)').text().trim();
+				let x = $(this).find('td:eq(1)').text().trim();
+				let y = $(this).find('td:eq(2)').text().trim();
+
+				jsonArr.push({
+					coordinate_name: name,
+					x_coordinate: x,
+					y_coordinate: y
+				});
+
+				polygonPoints.push(`${y} ${x}`);
+			});
+
+			// Close polygon by repeating first point
+			polygonPoints.push(polygonPoints[0]);
+
+			let polygonWKT = `POLYGON((${polygonPoints.join(', ')}))`;
+
+			console.log(jsonArr);
+			console.log(polygonWKT);
+
+			$('#lc_bl_wkt_polygon_2').val(polygonWKT);
+			$('#lc_fr_bl_wkt_polygon_2').val(polygonWKT);
+
+			lc_searchLayer.setSource(new ol.source.Vector({
+				features: new ol.format.WKT().readFeatures(polygonWKT)
+			}));
+
+			map.getView().fit(lc_searchLayer.getSource().getExtent(), {
+				size: map.getSize(),
+				maxZoom: 16
+			});
+		});
+
 
 
 		$("#lc_btn_visualise_wkt, #lc_btn_visualise_wkt_").click(function(event) {

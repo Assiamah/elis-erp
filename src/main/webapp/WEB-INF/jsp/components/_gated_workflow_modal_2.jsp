@@ -3337,16 +3337,16 @@
             </div>
             <div class="card-body">
               <div class="mb-0">
-                <label for="lc_bl_wkt_polygon" class="form-label fw-semibold">
+                <label for="lc_bl_wkt_polygon_2" class="form-label fw-semibold">
                   <i class="bi bi-code-slash me-2"></i>WKT Polygon
                 </label>
                 <div class="input-group">
-                  <textarea class="form-control font-monospace" id="lc_bl_wkt_polygon" 
+                  <textarea class="form-control font-monospace" id="lc_bl_wkt_polygon_2" 
                             name="lc_bl_wkt_polygon" rows="3" 
                             placeholder="POLYGON((...))" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
                   <button class="btn btn-outline-secondary" type="button" 
                           data-bs-toggle="tooltip" data-bs-placement="top" 
-                          title="Copy to clipboard" onclick="copyWktToClipboard('lc_bl_wkt_polygon')">
+                          title="Copy to clipboard" onclick="copyWktToClipboard('lc_bl_wkt_polygon_2')">
                     <i class="bi bi-clipboard"></i>
                   </button>
                 </div>
@@ -3445,7 +3445,7 @@
               </small>
             </div>
             <div class="card-body p-0">
-              <div class="map-container" id="lc-map" style="height: 400px;"></div>
+              <div class="map-container" id="lc-map_2" style="height: 400px;"></div>
             </div>
           </div>
 
@@ -3473,7 +3473,7 @@
                 </button>
 
                 <button type="button" class="btn btn-info btn-sm" 
-                        id="lc_btn_visualise_coordinate_gf"
+                        id="lc_btn_visualise_coordinate_gf_2"
                         data-bs-placement="top" data-bs-title="Visualize Polygon">
                   <i class="bi bi-eye me-1"></i> Visualize
                 </button>
@@ -3485,7 +3485,7 @@
                 </button>
 
                 <button type="button" class="btn btn-outline-danger btn-sm ms-auto" 
-                        id="btn_clear_all_coordinates"
+                        id="btn_clear_all_coordinates_2"
                         data-bs-placement="top" data-bs-title="Clear All">
                   <i class="bi bi-trash me-1"></i> Clear All
                 </button>
@@ -3493,7 +3493,7 @@
 
               <!-- Coordinates Table -->
               <div class="table-responsive">
-                <table class="table table-hover table-sm" id="coordinatelis_Table">
+                <table class="table table-hover table-sm" id="coordinatelis_Table_2">
                   <thead class="table-light">
                     <tr>
                       <th width="30%">
@@ -3512,7 +3512,7 @@
                   </thead>
                   <tbody>
                     <!-- Data will be inserted dynamically -->
-                    <tr id="noCoordinatesRow">
+                    <tr id="noCoordinatesRow_2">
                       <td colspan="4" class="text-center py-4">
                         <div class="text-muted">
                           <i class="bi bi-geo fs-1 mb-2 d-block"></i>
@@ -3529,7 +3529,74 @@
         </form>
         </div>
         <div class="col-md-6">
-          
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <div class="pb-4">
+                        <button class="btn btn-warning label-btn float-end" id="add_records_information_notes"> 
+                            <i class="ri-add-circle-line label-btn-icon me-2"></i> Add New Records Information Notes 
+                        </button>
+                    </div>
+                    <table class="table table-hover mb-0 pt-4" id="lrd_notes_dataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Records Info.</th>
+                                <th>Entered By</th>
+                                <th>Entered Date</th>
+                                <th>Division</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${application_notes}" var="application_notes_row">
+                            <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-comment text-muted me-2"></i>
+                                        <span class="text-truncate" style="max-width: 200px;">
+                                            ${application_notes_row.an_description}
+                                        </span>
+                                        ${application_notes_row.an_status == false ? 
+                                            '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user-circle text-muted me-2"></i>
+                                        <span>${application_notes_row.created_by}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                        <span>${application_notes_row.created_date}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                        ${application_notes_row.division}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-primary btn-sm viewNotesModal" 
+                                            data-target-id="${application_notes_row.an_id}"
+                                            data-an_description="${application_notes_row.an_description}"
+                                            data-created_by="${application_notes_row.created_by}"
+                                            data-created_date="${application_notes_row.created_date}"
+                                            data-modified_by="${application_notes_row.created_by}"
+                                            data-modified_date="${application_notes_row.created_date}"
+                                            data-division="${application_notes_row.division}"
+                                            ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                        <i class="fas fa-eye me-1"></i>
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         </div>
       </div>
