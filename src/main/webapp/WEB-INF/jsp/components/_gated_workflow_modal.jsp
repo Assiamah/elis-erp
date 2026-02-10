@@ -3710,6 +3710,14 @@
                             <span class="badge bg-primary ms-2">${fn:length(lrd_encumbrances_section)}</span>
                         </button>
                     </li>
+                       <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="valuation-tab" data-bs-toggle="tab" 
+                                data-bs-target="#valuation" type="button" role="tab">
+                            <i class="fas fa-lock me-2"></i>
+                            Encumbrances
+                            <span class="badge bg-primary ms-2">${fn:length(lrd_valuation_section)}</span>
+                        </button>
+                    </li>
                 </ul>
                 
                 <!-- Tab Content -->
@@ -3997,6 +4005,64 @@
                                                                 data-es_entry_number="${lrd_encumbrances_section_row.es_entry_number}"
                                                                 data-es_action_on_form_encumbrances="edit"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Encumbrance">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Valuation Tab -->
+                    <div class="tab-pane fade" id="valuation" role="tabpanel">
+                        <div class="card border">
+                            <div class="card-header bg-warning bg-opacity-10 border-warning">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 text-warning">
+                                        <i class="fas fa-lock me-2"></i>
+                                        Valuation Details
+                                    </h6>
+                                    <button type="button" class="btn btn-warning btn-sm newValuationModal">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Valuation
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_valuation_details_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date of Valuation</th>
+                                                <th>Aamount</th>
+                                                <th>Remarks</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           <c:forEach items="${lrd_valuation_section}" var="valuation_section">
+                                                <tr>
+                                                  <tr>
+                                                    <td>${valuation_section.vs_date_of_valuation}</td>
+                                                    <td>${valuation_section.vs_amount}</td>
+                                                    <td>
+                                                        <span class="badge bg-secondary"></span>${valuation_section.vs_remarks}</span>
+                                                    </td>
+                                                    
+                                                    </tr>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-warning btn-sm editValuationModal"
+                                                                data-vs_id="${valuation_section.vs_id}"
+                                                                data-case_number="${valuation_section.case_number}"
+                                                                data-vs_date_of_valuation="${valuation_section.vs_date_of_valuation}"
+                                                                data-vs_amount="${valuation_section.vs_amount}"
+                                                                data-vs_remarks="${valuation_section.vs_remarks}"
+                                                                data-es_action_on_form_encumbrances="edit"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Valuation">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     </td>
@@ -4823,6 +4889,147 @@
                 </form>
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+<!-- Valuation Section ============================= -->
+<div class="modal fade" id="newValuationModal" tabindex="-1" aria-labelledby="newValuationModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="newValuationModalLabel">
+                    <i class="fas fa-calculator me-2"></i>
+                    Valuation Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_valuation">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="vs_id" name="vs_id" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-3">
+                        
+                        <!-- Case Number -->
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="vs_case_number" class="form-label fw-medium">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    Case Number
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-folder"></i>
+                                    </span>
+                                    <input type="text" name="vs_case_number" id="vs_case_number" 
+                                          value="${case_number}" class="form-control" required readonly>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Date of Valuation -->
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="vs_date_of_valuation" class="form-label fw-medium">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Date of Valuation
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </span>
+                                    <input type="date" name="vs_date_of_valuation" id="vs_date_of_valuation" 
+                                           class="form-control" required>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Select the valuation date
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Amount -->
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="vs_amount" class="form-label fw-medium">
+                                    <i class="fas fa-money-bill-wave me-1"></i>
+                                    Amount
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </span>
+                                    <input type="number" name="vs_amount" id="vs_amount" 
+                                           class="form-control" required
+                                           placeholder="Enter valuation amount">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Enter the valuation amount
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Remarks -->
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="vs_remarks" class="form-label fw-medium">
+                                    <i class="fas fa-comment-alt me-1"></i>
+                                    Remarks
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </span>
+                                    <textarea name="vs_remarks" id="vs_remarks" 
+                                              class="form-control" required
+                                              rows="3"
+                                              placeholder="Enter valuation remarks..."></textarea>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Add any additional notes or remarks
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                        <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                data-action_type='valuation'>
+                            <i class="fas fa-trash me-1"></i>
+                            Delete
+                        </button>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <button type="submit" id="btn_valution_section" class="btn btn-primary" form="form_add_valuation">
+                            <i class="fas fa-save me-1"></i>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
