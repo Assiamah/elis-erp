@@ -827,74 +827,80 @@ $('#sub_service_on_case').change(function () {
     CallA();
 
     function CallA() {
+       
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: 'get_lc_checklist',
+                    main_service_id: main_service_id,
+                    sub_service_id: sub_service_id
+                },
+                cache: false,
+                beforeSend: function () {
+                    // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+                },
+                success: function (jobdetails) {
 
-        $.ajax({
-            type: "POST",
-            url: "Case_Management_Serv",
-            data: {
-                request_type: 'get_lc_checklist',
-                main_service_id: main_service_id,
-                sub_service_id: sub_service_id
-            },
-            cache: false,
-            beforeSend: function () {
-                // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-            },
-            success: function (jobdetails) {
+                    var table = $('#on_case_checlist_table_billdataTable');
+                    table.find("tbody tr").remove();
 
-                var table = $('#on_case_checlist_table_billdataTable');
-                table.find("tbody tr").remove();
+                    //console.log(jobdetails);
+                    var json_p = JSON.parse(jobdetails);
 
-                //console.log(jobdetails);
-                var json_p = JSON.parse(jobdetails);
+                    $(json_p).each(function () {
+                        table.append("<tr><td>" + this.business_process_checklist_name + "</td><td>" + '<div class="text-center custom-checkbox"> <input type="checkbox" class="select-item checkbox form-check-input form-checked-warning" name="select-item" value="1002" /></div>' + "</td>"
+                            //	  +  '<td><p data-placement="top" data-toggle="tooltip" title="Transaction Details"><button class="btn btn-info btn-icon-split" data-title="Delete" data-toggle="modal" data-target="#modalrecordinformation" data-target-id="' + this.ms_id + '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Add to List</span></button></p></td>'
+                            + "</tr>");
+                    });
 
-                $(json_p).each(function () {
-                    table.append("<tr><td>" + this.business_process_checklist_name + "</td><td>" + '<div class="text-center custom-checkbox"> <input type="checkbox" class="select-item checkbox form-check-input form-checked-warning" name="select-item" value="1002" /></div>' + "</td>"
-                        //	  +  '<td><p data-placement="top" data-toggle="tooltip" title="Transaction Details"><button class="btn btn-info btn-icon-split" data-title="Delete" data-toggle="modal" data-target="#modalrecordinformation" data-target-id="' + this.ms_id + '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Add to List</span></button></p></td>'
-                        + "</tr>");
-                });
-
-                CallB();
-            }
-        });
+                    CallB();
+                }
+            });
+            
+       
 
     }
 
 
     function CallB() {
 
-        $.ajax({
-            type: "POST",
-            url: "Case_Management_Serv",
-            data: {
-                request_type: 'get_type_of_forms_list',
-                main_service_id: main_service_id,
-                sub_service_id: sub_service_id
-            },
-            cache: false,
-            beforeSend: function () {
-                // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-            },
-            success: function (jobdetails) {
+         if(main_service == 'APPLICATION FOR REGISTRATION'){
+
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'get_type_of_forms_list',
+                        main_service_id: main_service_id,
+                        sub_service_id: sub_service_id
+                    },
+                    cache: false,
+                    beforeSend: function () {
+                        // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+                    },
+                    success: function (jobdetails) {
 
 
-                // console.log(jobdetails);
-                var json_p = JSON.parse(jobdetails);
-                var options = $("#new_bill_registration_forms_on_case");
+                        // console.log(jobdetails);
+                        var json_p = JSON.parse(jobdetails);
+                        var options = $("#new_bill_registration_forms_on_case");
 
-                // var options = $("#selector");
-                options.empty();
-                options.append(new Option("-- Select --", 0));
+                        // var options = $("#selector");
+                        options.empty();
+                        options.append(new Option("-- Select --", 0));
 
-                $(json_p).each(function () {
-                    $('#new_bill_registration_forms_on_case').append('<option value="' + this.form_number + '-' + this.form_name + '">' + this.form_name + '</option>');
+                        $(json_p).each(function () {
+                            $('#new_bill_registration_forms_on_case').append('<option value="' + this.form_number + '-' + this.form_name + '">' + this.form_name + '</option>');
 
+                        });
+                        //business_process_id	  
+
+                        CallC();
+                    }
                 });
-                //business_process_id	  
 
-                CallC();
-            }
-        });
+         }
 
     }
 
