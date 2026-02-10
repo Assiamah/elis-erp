@@ -8924,7 +8924,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function loadTSDocuments() {
-        const case_number = $("#cs_main_case_number").val();
+        const case_number = $("#certificateAndRegisterDetailsCaseNumber").val();
         const tableBody = $('#documentsTableBody_ts');
         const loadingIndicator = $('#documentsLoading');
         
