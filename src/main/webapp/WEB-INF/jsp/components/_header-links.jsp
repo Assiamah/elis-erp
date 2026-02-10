@@ -103,6 +103,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
+<!-- TableToJSON plugin -->
+<script src="${pageContext.request.contextPath}/assets/vendor/jquery/jquery.tabletojson.js"></script>
+
 <script>
 
 window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.location.href) {

@@ -3060,7 +3060,7 @@ $(document)
 							ar_gender = $("#new_bill_application_gender").val();
 							locality = $("#new_bill_application_locality").val();
 							ar_district = $("#new_bill_application_district").val();
-							ar_region = $("#new_bill_application_region").val();
+							//ar_region = $("#new_bill_application_region").val();
 							licensed_surveyor_number = $("#new_bill_application_ls_number").val();
 							no_of_copy = $("#new_number_of_copies").val();
 							revenue_item = $("#new_type_of_revenue_item").val();
@@ -3077,9 +3077,9 @@ $(document)
 							// 	errorField = '#new_bill_application_district';
 							// 	errorMessage = 'Please select district';
 							// } else 
-							if (!ar_region || ar_region === '-1') {
-								errorField = '#new_bill_application_region';
-								errorMessage = 'Please select region';
+							// if (!ar_region || ar_region === '-1') {
+							// 	errorField = '#new_bill_application_region'; 
+							// 	errorMessage = 'Please select region';
 								// } else if (!type_of_use || type_of_use === '-1') {
 								// 	errorField = '#new_bill_type_of_use';
 								// 	errorMessage = 'Please select type of use';
@@ -3092,7 +3092,7 @@ $(document)
 								// } else if (!licensed_surveyor_number) {
 								// 	errorField = '#new_bill_application_ls_number';
 								// 	errorMessage = "Please enter Surveyor's Number";
-							} else if (!no_of_copy || no_of_copy < 1) {
+							if (!no_of_copy || no_of_copy < 1) {
 								errorField = '#new_number_of_copies';
 								errorMessage = 'Please enter valid number of copies';
 							} else if (!revenue_item || revenue_item === '-1') {

@@ -277,3 +277,5 @@
     });
 </script>
 
+<script src="${pageContext.request.contextPath}/js-pages/gated_workflow.js"></script>
+

@@ -259,7 +259,7 @@ public class MapsController {
 		}
 		request.setAttribute("page_name", "case_processing");
 
-				model.addAttribute("content", "../pages/lrd_maps_templates/maps_data_capture_update.jsp"); return "layouts/app";
+		model.addAttribute("content", "../pages/lrd_maps_templates/maps_data_capture_update.jsp"); return "layouts/app";
 
 	}
 
