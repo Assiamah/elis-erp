@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mit.elis.class_common.Ws_url_config;
-import com.mit.elis.services.SmtpMailService;
+
 //import com.mit.elis.class_common.cls_sms;
 import com.google.gson.Gson;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
@@ -62,8 +62,7 @@ public class two_factor_verification extends HttpServlet {
 	cls_valueadded_services vas_cl = new cls_valueadded_services();
 
 
-	@Autowired
-	private SmtpMailService smtpMailService;
+
 
 	// cls_casemgt casemagt_cl = new cls_casemgt();
 	@RequestMapping("/two_factor_verification")
@@ -93,11 +92,16 @@ System.out.println(password);
 
 			String otp_enabled_obj = "";
 
+			String otp_type_obj = "";
+
 			String verification_code_obj = "";
 
 			if (msg_obj.equals("Success")) {
 				verification_code_obj = obj_test.get("verification_code").toString();
 				otp_enabled_obj = obj_test.get("otp_enabled").toString();
+				
+				otp_type_obj = obj_test.get("otp_type").toString();
+
 				session.setAttribute("verification_code", verification_code_obj);
 				session.setAttribute("user", userName);
 				session.setAttribute("pass", password);
@@ -278,18 +282,74 @@ System.out.println(password);
 				} else {
 					//Code to Send SMS 
 					//System.out.println(obj_sms.toString());
-				String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
+
+
+					//Code to Send SMS 
+					//System.out.println(obj_sms.toString());
+
+
+						String smsm_result = "";
+
+	String arr_verify_messageId = "";
+	String arr_verify  = "";
+
+		String statusCode = "";
+				String message = "";
+				
+				String reason ="";
+				String pointInTime = "";
+ 
+	
+						if (otp_type_obj.equals("sms")) {
+							 smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
+				   //System.out.println("smsm_result");
+				System.out.println(smsm_result);
+	         
+				JSONObject objVerify = new JSONObject(smsm_result);
+
+				// get the inner "data" object
+				JSONObject dataObj = objVerify.getJSONObject("data");
+
+				// extract fields
+				 statusCode = dataObj.getString("status_code");
+				 message = dataObj.getString("message");
+				//boolean inError = dataObj.getBoolean("in_error");
+				 reason = dataObj.getString("reason");
+				 pointInTime = dataObj.getString("point_in_time");
+
+						}	else if (otp_type_obj.equals("email")) {
+
+				// Use the autowired mail service
+                mail_sl.send_otp_mail(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_mail.toString());
+				statusCode="000";
+						} else{
+							 smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
 				//System.out.println("smsm_result");
 				System.out.println(smsm_result);
 
 				// Use the autowired mail service
                 mail_sl.send_otp_mail(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_mail.toString());
+	            
+				// JSONObject obj_verify = new JSONObject(smsm_result);
+				//  arr_verify = obj_verify.get("msg").toString();
+				//  arr_verify_messageId = obj_verify.get("messageId").toString();
 
-				JSONObject obj_verify = new JSONObject(smsm_result);
-				String arr_verify = obj_verify.get("msg").toString();
-				String arr_verify_messageId = obj_verify.get("messageId").toString();
-	
-				if (arr_verify_messageId.length() > 20) {
+
+				 JSONObject objVerify = new JSONObject(smsm_result);
+
+				// get the inner "data" object
+				JSONObject dataObj = objVerify.getJSONObject("data");
+
+				// extract fields
+				 statusCode = dataObj.getString("status_code");
+				 message = dataObj.getString("message");
+				//boolean inError = dataObj.getBoolean("in_error");
+				 reason = dataObj.getString("reason");
+				 pointInTime = dataObj.getString("point_in_time");
+}
+			//	if (arr_verify_messageId.length() > 20) {
+				if (statusCode.equals("000")) {
+					
 					// currently 30 caraters
 					// if (arr_verify.equals("Sms Send Sucessfull")) {
 					String request_url = request.getRequestURI();
