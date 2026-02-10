@@ -5144,3 +5144,184 @@ function initializeCompletedMonthAppsTable(data) {
 $(document).on('click', '.publicFileUploadModal', function () {
     $('#publicFileUploadModal').modal('show');
 })
+
+$('#form_add_minutes').on('submit', function(e){
+    e.preventDefault();
+    
+    // Get form values
+    var action_on_form = $("#action_on_form_query").val() || "add";
+    var am_id = $("#am_id").val();
+    var am_case_number = $("#am_case_number").val();
+    var am_job_number = $("#am_job_number").val();
+    var am_description = $("#am_description").val().trim();
+    var am_from_officer = $("#am_from_officer").val();
+    var am_to_officer = $("#am_to_officer").val();
+    
+    // Validate required fields
+    if (!am_description) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Description',
+            text: 'Please enter minutes description.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        $("#am_description").focus();
+        return false;
+    }
+    
+    if (!am_to_officer) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Recipient',
+            text: 'Please select an officer to send minutes to.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+        $("#am_to_officer").focus();
+        return false;
+    }
+    
+    // Determine action type
+    var isEdit = action_on_form === "edit";
+    var actionText = isEdit ? "update" : "add";
+    var actionTitle = isEdit ? "Update Minutes" : "Add Minutes";
+    var successMessage = isEdit ? "Minutes updated successfully!" : "Minutes added successfully!";
+    
+    // Get additional officer info for confirmation
+    var officerInfo = '';
+    var datalist = document.getElementById('listofusers');
+    if (datalist) {
+        var options = datalist.options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value === am_to_officer) {
+                var userId = options[i].getAttribute('data-value');
+                officerInfo = '<br><small class="text-muted">Officer ID: ' + userId + '</small>';
+                break;
+            }
+        }
+    }
+    
+    // Show confirmation dialog
+    Swal.fire({
+        title: actionTitle,
+        html: '<div class="text-start">' +
+              '<p>Are you sure you want to ' + actionText + ' these minutes?</p>' +
+              '<div class="alert alert-light border mt-3">' +
+              '<div class="row">' +
+              '<div class="col-6"><strong>Case:</strong><br>' + am_case_number + '</div>' +
+              '<div class="col-6"><strong>Job:</strong><br>' + am_job_number + '</div>' +
+              '</div>' +
+              '<div class="row mt-2">' +
+              '<div class="col-6"><strong>From:</strong><br>' + am_from_officer + '</div>' +
+              '<div class="col-6"><strong>To:</strong><br>' + am_to_officer + officerInfo + '</div>' +
+              '</div>' +
+              '<div class="mt-2"><strong>Description Preview:</strong><br>' +
+              '<span class="text-muted">' + (am_description.length > 100 ? am_description.substring(0, 100) + '...' : am_description) + '</span>' +
+              '</div>' +
+              '</div>' +
+              '</div>',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, ' + actionText + ' it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        showLoaderOnConfirm: true,
+        allowOutsideClick: () => !Swal.isLoading(),
+        preConfirm: () => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: "POST",
+                    url: "lc_application_minutes_serv",
+                    data: {
+                        request_type: "select_lc_application_minutes_add_and_update",
+                        am_id: am_id,
+                        am_case_number: am_case_number,
+                        am_job_number: am_job_number,
+                        am_description: am_description,
+                        am_from_officer: am_from_officer,
+                        am_from_position: '',
+                        am_to_officer: am_to_officer,
+                        am_to_position: '',
+                        am_status: false
+                    },
+                    cache: false,
+                    success: function(response) {
+                        resolve(response);
+                    },
+                    error: function(xhr, status, error) {
+                        reject('Server error: ' + error);
+                    }
+                });
+            });
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Success handling
+            Swal.fire({
+                title: 'Success!',
+                html: '<div class="text-center">' +
+                      '<div class="mb-3">' +
+                      '<i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>' +
+                      '</div>' +
+                      '<strong>' + successMessage + '</strong><br>' +
+                      '<div class="mt-3">' +
+                      '<div class="alert alert-light border d-inline-block">' +
+                      '<div class="row small">' +
+                      '<div class="col-6"><strong>Case:</strong><br>' + am_case_number + '</div>' +
+                      '<div class="col-6"><strong>Job:</strong><br>' + am_job_number + '</div>' +
+                      '</div>' +
+                      '</div>' +
+                      '</div>' +
+                      '</div>',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                // Close the modal
+                var modal = bootstrap.Modal.getInstance(document.getElementById('addMinutesModal'));
+                if (modal) {
+                    modal.hide();
+                } else {
+                    $('#addMinutesModal').modal('hide');
+                }
+                
+                // Reset form for new entries
+                if (!isEdit) {
+                    $("#am_description").val('');
+                    $("#am_to_officer").val('');
+                    $("#action_on_form_query").val('add');
+                    $("#am_id").val('0');
+                }
+                
+                // Optional: Trigger event for other components
+                $(document).trigger('minutes:updated', {
+                    action: actionText,
+                    caseNumber: am_case_number,
+                    jobNumber: am_job_number,
+                    minutesId: am_id
+                });
+            });
+        }
+    }).catch((error) => {
+        // Error handling
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            html: '<div class="text-start">' +
+                  '<p>Failed to ' + actionText + ' minutes.</p>' +
+                  '<div class="alert alert-danger mt-2 small">' +
+                  '<strong>Error Details:</strong><br>' +
+                  error +
+                  '</div>' +
+                  '<p class="mt-2">Please try again.</p>' +
+                  '</div>',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Try Again'
+        });
+    });
+    
+    return false;
+});

@@ -532,7 +532,7 @@
                                     onclick="requestAdditionalInput(this)"
                                 >
                                     <i class="bi bi-envelope-arrow-up label-btn-icon"></i>
-                                   Request for Additional Input
+                                    Additional Request
                                 </button>
                                 <!-- Primary Action Button -->
                                 <button class="btn btn-info label-btn"
@@ -952,6 +952,10 @@
                         <div id="collapseMinutes" class="accordion-collapse collapse" 
                              data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
+                                <button class="btn btn-sm btn-primary" id="btn_add_public_document"
+                                        data-bs-toggle="modal" data-bs-target="#addMinutesModal">
+                                    <i class="bi bi-plus"></i> Add Minutes
+                                </button>
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead>
@@ -1192,6 +1196,10 @@
                         <div id="collapseQueries" class="accordion-collapse collapse" 
                              data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
+                                <button class="btn btn-sm btn-danger" id="btn_add_public_document"
+                                        data-bs-toggle="modal" data-bs-target="#newQueryModal">
+                                    <i class="bi bi-plus"></i> Add Query
+                                </button>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-hover">
                                         <thead>
