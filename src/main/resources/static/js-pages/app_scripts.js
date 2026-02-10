@@ -1516,8 +1516,95 @@ $('input[name="request_type_radio"]').on('change', function () {
 $('#frmBatchToCabinet').on('submit', function (e) {
     e.preventDefault();
     // Add your cabinet batching logic here
-    console.log('Batch to cabinet:', $('#cabinet_to_send_to').val());
+    // console.log('Batch to cabinet:', $('#cabinet_to_send_to').val());
+
+    processCabinetBatching();
 });
+
+function processCabinetBatching() {
+    // Show loading state
+    Swal.fire({
+        title: 'Processing Batch',
+        text: 'Please wait while we process your batch...',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Get batch data
+    const batchItems = getBatchItemsFromTable();
+    const listOfApplications = JSON.stringify(batchItems);
+
+    // Get recipient information
+    const cabinetName = $('#cabinet_to_send_to').val();
+    if (!cabinetName) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Could not determine cabinet name',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return;
+    }
+
+    // Get request type
+    const requestType = 'process_batch_list_cabinet';
+
+    // Prepare AJAX data
+    const ajaxData = {
+        request_type: requestType,
+        division: localStorage.getItem('division') || '',
+        list_of_application: listOfApplications,
+        cabinet_name: cabinetName,
+    };
+
+    // First AJAX call to process batch
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: ajaxData,
+        cache: false,
+        success: function (response) {
+            try {
+                const jsonResponse = JSON.parse(response);
+
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error);
+                }
+
+                // Get batch number from response
+                const batchNumber = jsonResponse.batch_number;
+
+                // Generate PDF report
+                generateBatchReport(batchItems, batchNumber, cabinetName);
+
+            } catch (error) {
+                console.error('Error processing batch:', error);
+                Swal.fire({
+                    title: 'Processing Error',
+                    text: 'Failed to process batch: ' + error.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#0d6efd'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            Swal.fire({
+                title: 'Server Error',
+                text: 'Unable to connect to server. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+        }
+    });
+}
 
 $('#frmRequestToCabinet').on('submit', function (e) {
     e.preventDefault();

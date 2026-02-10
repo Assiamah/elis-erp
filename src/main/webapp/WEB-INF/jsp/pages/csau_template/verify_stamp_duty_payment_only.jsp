@@ -19,12 +19,12 @@
         <div class="page-header-breadcrumb mb-3">
             <div class="d-flex align-center justify-content-between flex-wrap">
                 <div>
-                    <h1 class="page-title fw-medium fs-18 mb-1">Verify Stamp Duty Payment</h1>
+                    <h1 class="page-title fw-medium fs-18 mb-1">Verify Bill Payment</h1>
                     <!-- <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Search and verify stamp duty payment</p> -->
                 </div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Verify Stamp Duty Payment</li>
+                    <li class="breadcrumb-item active" aria-current="page">Verify Bill Payment</li>
                 </ol>
             </div>
         </div>
@@ -43,7 +43,7 @@
 							<i class="fas fa-search me-3 fs-4 text-warning"></i>
 							<div>
 								<h5 class="mb-0 fw-semibold">Search Bills</h5>
-								<small class="opacity-75">Search bills to verify stamp duty payment</small>
+								<small class="opacity-75">Search bills to verify bill payment</small>
 							</div>
 						</div> 
 					</div>
@@ -52,7 +52,7 @@
 						<div class="row align-items-end g-3 mb-4">
 							<div class="col-md-7">
 								<label for="txt_ref_number_for_payment_rec" class="form-label fw-semibold">
-									<i class="fas fa-search me-1"></i>Reference/Job Number
+									<i class="fas fa-search me-1"></i>Reference Number
 								</label>
 								<div class="input-group">
 									<span class="input-group-text">

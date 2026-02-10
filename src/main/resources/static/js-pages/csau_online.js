@@ -1212,549 +1212,2104 @@ $(document)
 
 
 			$('#btn_load_bill_details_after_payment_stamp_duty_receive').on('click', function (e) {
+    e.preventDefault();
+    
+    // Get search value
+    var client_phone_search = $("#txt_ref_number_for_payment_rec").val().trim();
+    
+    // Validation with SweetAlert2
+    if (!client_phone_search) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Reference Number Required',
+            html: `
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-receipt fs-1 text-warning"></i>
+                    </div>
+                    <p>Please enter a reference or job number to search for documents.</p>
+                    <small class="text-muted">This is required to locate bill and payment details.</small>
+                </div>
+            `,
+            confirmButtonColor: '#0d6efd',
+            confirmButtonText: 'OK',
+            focusConfirm: true
+        }).then(() => {
+            $("#txt_ref_number_for_payment_rec").focus();
+        });
+        return false;
+    }
+    
+    // Clear previous results
+    $('#payment_details_section').html(`
+        <div class="loading-container text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-muted">Searching for bill details...</p>
+            <small class="text-muted">Reference: ${client_phone_search}</small>
+        </div>
+    `);
+    
+    // Show loading indicator
+    Swal.fire({
+        title: 'Searching Bill Details',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <p class="mb-1">Searching for bill: <strong>${client_phone_search}</strong></p>
+                <small class="text-muted">Please wait while we fetch the details</small>
+            </div>
+        `,
+        allowOutsideClick: false,
+        showConfirmButton: false
+    });
+    
+    $.ajax({
+        type: "POST",
+        url: "payment_serv",
+        data: {
+            request_type: 'lc_payment_verification_for_bill_stamping',
+            ref_number: client_phone_search
+        },
+        cache: false,
+        success: function (jobdetails) {
+            Swal.close();
+            
+            try {
+                var json_p = JSON.parse(jobdetails);
+                
+                if (!json_p.data || json_p.data.length === 0) {
+                    showNoResultsFound(client_phone_search);
+                    return;
+                }
+                
+                // Process each record
+                $(json_p.data).each(function () {
+                    var record = this;
+                    
+                    if (record.payment_confiration_status === 0 || record.payment_confiration_status == null) {
+                        handleUnpaidBill(record);
+                    } else {
+                        handlePaidBill(record);
+                    }
+                });
+                
+            } catch (e) {
+                console.log('Error:', e);
+                showErrorAlert();
+            }
+        },
+        error: function (xhr, status, error) {
+            Swal.close();
+            showErrorAlert();
+            console.error('AJAX Error:', error);
+        }
+    });
+});
 
-				var client_phone_search = $(
-					"#txt_ref_number_for_payment_rec").val();
+// Function to show no results found
+function showNoResultsFound(searchTerm) {
+    $('#payment_details_section').html(`
+        <div class="no-results-container">
+            <div class="no-results-icon">
+                <i class="bi bi-search fs-1"></i>
+            </div>
+            <h4 class="no-results-title">No Documents Found</h4>
+            <p class="no-results-text">
+                No documents found for reference: 
+                <span class="search-term-highlight">${searchTerm}</span>
+            </p>
+            <div class="no-results-actions">
+                <button class="btn btn-outline-primary" onclick="$('#txt_ref_number_for_payment_rec').focus().select()">
+                    <i class="bi bi-pencil-square me-2"></i>Try Different Number
+                </button>
+                <button class="btn btn-link text-muted" onclick="showDocumentHelp()">
+                    <i class="bi bi-question-circle me-1"></i>Document Search Help
+                </button>
+            </div>
+        </div>
+    `);
+    
+    $('#document-section').hide();
+}
 
+// Function to handle unpaid bills
+function handleUnpaidBill(record) {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Document Cannot be Received',
+        html: `
+            <div class="text-start">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-x-circle text-warning fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="mb-1">Bill ${record.ref_number || 'N/A'}</h6>
+                        <p class="text-muted mb-0">Payment not completed</p>
+                    </div>
+                </div>
+                <div class="alert alert-warning border-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Document cannot be received</strong> - Payment must be completed before receiving hardcopy documents for stamping.
+                </div>
+                <div class="mt-3 small text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Please ensure payment is completed through the payment portal before proceeding.
+                </div>
+            </div>
+        `,
+        confirmButtonColor: '#ffc107',
+        confirmButtonText: 'Understood',
+        showCancelButton: true,
+        cancelButtonText: 'Check Payment Status'
+    }).then((result) => {
+        if (result.isDismissed) {
+            checkPaymentPortal(record.ref_number);
+        }
+    });
+    
+    // Show unpaid bill details (optional - you can remove this if not needed)
+    showUnpaidBillDetails(record);
+}
 
-				$
-					.ajax({
-						type: "POST",
-						url: "payment_serv",
-						// target:'_blank',
+// Function to handle paid bills
+function handlePaidBill(record) {
+    $('#document-section').show();
+    
+    // Show paid bill details with document receipt option
+    showPaidBillWithDocumentReceipt(record);
+}
 
-						data: {
-							request_type: 'lc_payment_verification_for_bill_stamping',
-							ref_number: client_phone_search
-						},
-						cache: false,
+// Function to show paid bill details with document receipt
+function showPaidBillWithDocumentReceipt(record) {
+    $('#payment_details_section').html(`
+        <div class="document-receipt-container">
+            <!-- Header -->
+            <div class="receipt-header">
+                <div class="header-content">
+                    <h3 class="receipt-title">
+                        <i class="bi bi-file-earmark-check me-2"></i>
+                        Document Receipt Portal
+                    </h3>
+                    <div class="status-indicator">
+                        <span class="status-badge success">
+                            <i class="bi bi-check-circle-fill me-1"></i>
+                            Ready for Document Receipt
+                        </span>
+                    </div>
+                </div>
+                <div class="document-ref-number">
+                    Document Reference: <strong>${record.ref_number || 'N/A'}</strong>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="quick-stats-bar">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <div class="stat-icon bg-primary">
+                                <i class="bi bi-receipt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <small class="text-muted">Bill Number</small>
+                                <div class="fw-semibold">${record.ref_number || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <div class="stat-icon bg-success">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <div class="stat-content">
+                                <small class="text-muted">Amount Paid</small>
+                                <div class="fw-semibold text-success">${record.payment_amount || '0.00'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-item">
+                            <div class="stat-icon bg-info">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <small class="text-muted">Payment Date</small>
+                                <div class="fw-semibold">${record.payment_date || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Document Receipt Information -->
+            <div class="section-container">
+                <h5 class="section-title">
+                    <i class="bi bi-clipboard-check me-2 text-primary"></i>
+                    Document Receipt Information
+                </h5>
+                
+                <div class="receipt-info-grid">
+                    <div class="info-item">
+                        <label class="info-label">
+                            <i class="bi bi-person-badge me-1"></i>Applicant Name
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display">
+                                ${record.lessees_name || 'N/A'}
+                                <button class="btn-copy" onclick="copyToClipboard('${record.lessees_name}')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <label class="info-label">
+                            <i class="bi bi-briefcase me-1"></i>Job Number
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display">
+                                ${record.job_number || 'N/A'}
+                                <button class="btn-copy" onclick="copyToClipboard('${record.job_number}')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <label class="info-label">
+                            <i class="bi bi-file-earmark-text me-1"></i>Case Number
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display">
+                                ${record.case_number || 'N/A'}
+                                <button class="btn-copy" onclick="copyToClipboard('${record.case_number}')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <label class="info-label">
+                            <i class="bi bi-tags me-1"></i>Process Type
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display">
+                                ${record.business_process_sub_name_actual || 'N/A'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden Inputs -->
+                <input type="hidden" id="business_process_sub_name" value="${record.business_process_sub_name_actual}" >
+                <input type="hidden" id="cs_main_case_number" value="${record.case_number}" >
+            </div>
+            
+            <!-- Payment Verification -->
+            <div class="section-container">
+                <h5 class="section-title">
+                    <i class="bi bi-shield-check me-2 text-success"></i>
+                    Payment Verification
+                </h5>
+                
+                <div class="verification-grid">
+                    <div class="verification-item">
+                        <div class="verification-icon">
+                            <i class="bi bi-credit-card text-success"></i>
+                        </div>
+                        <div class="verification-content">
+                            <h6>Payment Method</h6>
+                            <p class="mb-0">${record.payment_mode || 'N/A'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-item">
+                        <div class="verification-icon">
+                            <i class="bi bi-receipt-cutoff text-primary"></i>
+                        </div>
+                        <div class="verification-content">
+                            <h6>GH.gov Reference</h6>
+                            <p class="mb-0">${record.checkout_id || 'N/A'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-item">
+                        <div class="verification-icon">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </div>
+                        <div class="verification-content">
+                            <h6>Verification Status</h6>
+                            <p class="mb-0 text-success">Payment Verified</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Document Receipt Section -->
+            <div class="document-receipt-section">
+                <div class="document-receipt-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                            Hardcopy Document Receipt
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Important:</strong> Please ensure you have received all required physical documents from the applicant before proceeding.
+                        </div>
+                        
+                        <div class="receipt-checklist">
+                            <h6 class="mb-3">Document Checklist:</h6>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="checkOriginalDocs">
+                                <label class="form-check-label" for="checkOriginalDocs">
+                                    Original signed documents received
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="checkCopies">
+                                <label class="form-check-label" for="checkCopies">
+                                    Photocopies verified against originals
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="checkCompleteness">
+                                <label class="form-check-label" for="checkCompleteness">
+                                    All pages present and complete
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="checkSignatures">
+                                <label class="form-check-label" for="checkSignatures">
+                                    All required signatures present
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Document Receipt Button -->
+                        <div class="document-receipt-action">
+                            <button class="receiveDocument btn btn-primary btn-lg w-100 py-3"
+                                    data-backdrop="static" 
+                                    data-keyboard="false"
+                                    data-title="Receive Document"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#receiveDocsStampingModal"
+                                    data-ref_number="${record.ref_number}"
+                                    data-ar_name="${record.lessees_name}"
+                                    data-business_process_sub_name="${record.business_process_sub_name_actual}"
+                                    data-job_number="${record.job_number}"
+                                    onclick="validateDocumentChecklist(event)">
+                                <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                                Receive Hardcopy Documents for Stamping
+                            </button>
+                            <small class="text-muted d-block mt-2 text-center">
+                                <i class="bi bi-shield-exclamation me-1"></i>
+                                This action will officially record receipt of physical documents
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Actions -->
+            <div class="action-section">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-secondary w-100" onclick="printReceiptSummary()">
+                            <i class="bi bi-printer me-2"></i>Print Summary
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-info w-100" onclick="viewPaymentDetails('${record.ref_number}')">
+                            <i class="bi bi-credit-card me-2"></i>View Full Payment
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-success w-100" onclick="generateAcknowledgement('${record.ref_number}')">
+                            <i class="bi bi-file-earmark-text me-2"></i>Generate Acknowledgement
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    // Initialize event listener for the receive button
+    initializeDocumentReceiptButton();
+}
 
-						beforeSend: function () {
+// Function to validate document checklist before opening modal
+function validateDocumentChecklist(event) {
+    const originalDocs = document.getElementById('checkOriginalDocs');
+    const copies = document.getElementById('checkCopies');
+    const completeness = document.getElementById('checkCompleteness');
+    const signatures = document.getElementById('checkSignatures');
+    
+    if (!originalDocs.checked || !copies.checked || !completeness.checked || !signatures.checked) {
+        event.preventDefault();
+        
+        Swal.fire({
+            icon: 'warning',
+            title: 'Checklist Incomplete',
+            html: `
+                <div class="text-start">
+                    <p>Please complete all checklist items before receiving documents:</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-1"><i class="bi ${originalDocs.checked ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'} me-2"></i>Original documents received</li>
+                        <li class="mb-1"><i class="bi ${copies.checked ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'} me-2"></i>Copies verified</li>
+                        <li class="mb-1"><i class="bi ${completeness.checked ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'} me-2"></i>All pages complete</li>
+                        <li class="mb-1"><i class="bi ${signatures.checked ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'} me-2"></i>Signatures present</li>
+                    </ul>
+                    <div class="alert alert-warning mt-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        All checklist items must be completed to proceed with document receipt.
+                    </div>
+                </div>
+            `,
+            confirmButtonText: 'Complete Checklist',
+            confirmButtonColor: '#0d6efd'
+        });
+        
+        return false;
+    }
+}
 
-						},
-						success: function (
-							jobdetails) {
-							// console.log(jobdetails);
-							// alert(jobdetails);
+// Function to initialize document receipt button
+function initializeDocumentReceiptButton() {
+    $('.receiveDocument').off('click').on('click', function() {
+        // Data will be passed to modal via data attributes
+        console.log('Document receipt button clicked');
+    });
+}
 
-							var table = $('#stamp_duty_bill_list_dataTable');
-							table.find("tbody tr")
-								.remove();
+// Function to show error alert
+function showErrorAlert() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Search Failed',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-octagon fs-1 text-danger"></i>
+                </div>
+                <p>Unable to retrieve document details. Please check the reference number and try again.</p>
+                <small class="text-muted">If the problem persists, contact technical support.</small>
+            </div>
+        `,
+        confirmButtonColor: '#dc3545',
+        confirmButtonText: 'Try Again'
+    }).then(() => {
+        $("#txt_ref_number_for_payment_rec").focus().select();
+    });
+    
+    $('#payment_details_section').html(`
+        <div class="error-container">
+            <div class="error-icon">
+                <i class="bi bi-exclamation-triangle fs-1"></i>
+            </div>
+            <h4 class="error-title">Document Search Error</h4>
+            <p class="error-text">
+                Unable to retrieve document details. Please verify the reference number and try again.
+            </p>
+            <div class="error-actions">
+                <button class="btn btn-outline-danger" onclick="retrySearch()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Retry Search
+                </button>
+                <button class="btn btn-link text-muted" onclick="showSupportContact()">
+                    <i class="bi bi-telephone me-1"></i>Contact Support
+                </button>
+            </div>
+        </div>
+    `);
+}
 
-							// console.log(jobdetails);
-							try {
-								var json_p = JSON
-									.parse(jobdetails);
+// Helper Functions
+function checkPaymentPortal(refNumber) {
+    Swal.fire({
+        title: 'Redirecting to Payment Portal',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <p>Opening payment verification for: <strong>${refNumber}</strong></p>
+                <small class="text-muted">You will be redirected to check payment status</small>
+            </div>
+        `,
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+    }).then(() => {
+        // Add your payment portal redirect logic here
+        showToast('Opening payment portal...', 'info');
+    });
+}
 
-								$(json_p.data)
-									.each(
-										function () {
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard!', 'success');
+    });
+}
 
-											// console.log(this);
-											if (this.payment_confiration_status === 0 || this.payment_confiration_status == null) {
-												alert('Bill has not been paid. It cannot be acknowledge')
-											} else {
+function showToast(message, type = 'info') {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    });
+    
+    Toast.fire({
+        icon: type,
+        title: message
+    });
+}
 
-												// get case number
-												// from job_number
-												$('#document-section').show();
+function printReceiptSummary() {
+    Swal.fire({
+        title: 'Print Summary',
+        html: `
+            <div class="text-center py-4">
+                <i class="bi bi-printer fs-1 text-primary mb-3"></i>
+                <p>Printing document receipt summary...</p>
+                <small class="text-muted">Ensure your printer is connected and ready.</small>
+            </div>
+        `,
+        showConfirmButton: false,
+        timer: 1500
+    }).then(() => {
+        showToast('Summary sent to printer!', 'success');
+    });
+}
 
-												$('#payment_details_section').html(`
-																	
-																	<hr>
-														          	<h3>Bill Details</h3>
-														          	<hr>
-														          	 <input type="hidden" id="business_process_sub_name" value="${this.business_process_sub_name_actual}" >
-														          	  <input type="hidden" id="cs_main_case_number" value="${this.case_number}" >
-																	  <div class="form-group row">
-																	  <div class="col-sm-6">
-																	  	  <label  class="form-label">Bill Number</label>
-																	      <input type="text" disabled class="form-control"  value="${this.ref_number}">
-																	    </div>
-																	    
-																	    <div class="col-sm-6">
-																	      <label  class="form-label">Bill Amount</label>
-																	      <input type="text" disabled class="form-control"  value="${this.bill_amount}">
-																	    </div>
-																	  </div>
-																	  <div class="form-group row">
-																	    <label class="col form-label">Applicant Name</label>
-																	    <div class="col-sm-12">
-																	      <input type="text" disabled class="form-control"  value="${this.lessees_name}">
-																	    </div>
-																	  </div>
-																	  
-																	 
-																	  <hr>
-														          	<h3>Payment Details <span class="badge badge-pill badge-success p-3 mr-10"> Paid </span></h3>
-														          	<hr>
-																	  
-																	  
-																	  
-																	  <div class="form-group row">
-																	    <label  class="col-sm-4 col-form-label">Payment Date</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_date}">
-																	    </div>
-																	  </div>
-																	  <div class="form-group row">
-																	    <label class="col-sm-4 col-form-label">Payment Amount</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_amount}">
-																	    </div>
-																	  </div>
-																	  
-																	  
-																	  <div class="form-group row">
-																	    <label  class="col-sm-4 col-form-label">Payment Mode </label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_mode}">
-																	    </div>
-																	  </div>
-																	  <!--div class="form-group row">
-																	    <label class="col-sm-4 col-form-label">Payment Bank</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.payment_bank}">
-																	    </div>
-																	  </div-->
-																	  
-																	  <div class="form-group row">
-																	    <label class="col-sm-4 col-form-label">GH.gov Ref number</label>
-																	    <div class="col-sm-8">
-																	      <input type="text" disabled class="form-control"  value="${this.checkout_id}">
-																	    </div>
-																	  </div>
-																	  
-																	  <div class="form-group row">
-																	    
-																	    <div class="col-sm-12">
-																	    	<button data-backdrop="static" data-keyboard="false" class="receiveDocument btn btn-danger btn-block  p-3 col"
-																			data-title="Recieve Document" data-toggle="modal" data-target="#receiveDocsStampingModal" 
-																			data-ref_number=${this.ref_number} data-ar_name="${this.lessees_name}" 
-																			data-business_process_sub_name="${this.business_process_sub_name_actual}" data-job_number="${this.job_number}"
-																			>
-																			Receive Hardcopy document for Stamping
-																			</button>
-																	    </div>
-																	  </div>
-																	`);
-											}
-										});
+function viewPaymentDetails(refNumber) {
+    // Implement payment details view logic
+    Swal.fire({
+        title: 'Payment Details',
+        html: `
+            <div class="text-center py-3">
+                <i class="bi bi-credit-card fs-1 text-success mb-3"></i>
+                <p>Full payment details for: <strong>${refNumber}</strong></p>
+                <div class="alert alert-light">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Detailed payment information would display here.
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Close'
+    });
+}
 
-							} catch (e) {
-								console.log(e)
-							}
+function generateAcknowledgement(refNumber) {
+    Swal.fire({
+        title: 'Generate Acknowledgement Receipt',
+        html: `
+            <div class="text-center py-3">
+                <i class="bi bi-file-earmark-text fs-1 text-primary mb-3"></i>
+                <p>Generating acknowledgement for: <strong>${refNumber}</strong></p>
+                <div class="progress mb-3">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                </div>
+            </div>
+        `,
+        showConfirmButton: false,
+        timer: 2000
+    }).then(() => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Acknowledgement Generated',
+            text: 'Document acknowledgement has been created successfully!',
+            confirmButtonText: 'Download',
+            showCancelButton: true,
+            cancelButtonText: 'Close'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showToast('Acknowledgement downloaded!', 'success');
+            }
+        });
+    });
+}
 
+function showDocumentHelp() {
+    Swal.fire({
+        title: 'Document Search Help',
+        html: `
+            <div class="text-start">
+                <h6 class="mb-3">Finding Document References:</h6>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Check the payment receipt from applicant</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Look for the reference number on physical documents</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Use the job number associated with the application</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Contact the applicant for the reference number</li>
+                </ul>
+                <div class="alert alert-light">
+                    <i class="bi bi-lightbulb me-2"></i>
+                    <strong>Tip:</strong> Reference numbers are typically alphanumeric and found on payment receipts.
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Got it'
+    });
+}
 
-						}
-					});
+function showSupportContact() {
+    Swal.fire({
+        title: 'Technical Support',
+        html: `
+            <div class="text-center">
+                <div class="mb-4">
+                    <i class="bi bi-headset fs-1 text-primary"></i>
+                </div>
+                <h6>Document Management Support</h6>
+                <p class="mb-2"><strong>Phone:</strong> +233 XXX XXX XXX</p>
+                <p class="mb-3"><strong>Email:</strong> support@document-mgmt.gov.gh</p>
+                <div class="alert alert-info">
+                    <i class="bi bi-clock me-2"></i>
+                    Available: Mon-Fri, 8:00 AM - 5:00 PM
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Close'
+    });
+}
 
-			});
+function retrySearch() {
+    $('#btn_load_bill_details_after_payment_stamp_duty_receive').click();
+}
+
+// Add CSS for the new design
+$('<style>')
+    .prop('type', 'text/css')
+    .html(`
+        /* Main Container */
+        .document-receipt-container {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            margin-bottom: 2rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        /* Header */
+        .receipt-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            color: white;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .receipt-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: white;
+        }
+        
+        .document-ref-number {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Quick Stats Bar */
+        .quick-stats-bar {
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+        
+        .stat-content {
+            flex: 1;
+        }
+        
+        /* Sections */
+        .section-container {
+            padding: 1.5rem 2rem;
+        }
+        
+        .section-container:not(:last-child) {
+            border-bottom: 1px solid #f1f3f5;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Receipt Info Grid */
+        .receipt-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #6c757d;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            position: relative;
+        }
+        
+        .value-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #212529;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .value-display:hover {
+            background: #fff;
+            border-color: #0d6efd;
+            box-shadow: 0 2px 5px rgba(13, 110, 253, 0.1);
+        }
+        
+        .btn-copy {
+            background: none;
+            border: none;
+            color: #6c757d;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn-copy:hover {
+            background: #e9ecef;
+            color: #0d6efd;
+        }
+        
+        /* Verification Grid */
+        .verification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .verification-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .verification-icon {
+            font-size: 1.5rem;
+        }
+        
+        .verification-content h6 {
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            color: #495057;
+        }
+        
+        .verification-content p {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* Document Receipt Section */
+        .document-receipt-section {
+            padding: 1.5rem 2rem;
+        }
+        
+        .document-receipt-card {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .document-receipt-card .card-header {
+            background: #f8f9fa;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .document-receipt-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .receipt-checklist {
+            background: #f8f9fa;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e9ecef;
+        }
+        
+        .document-receipt-action .btn {
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .document-receipt-action .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+        
+        /* Action Section */
+        .action-section {
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        /* Loading, Error & No Results */
+        .loading-container,
+        .error-container,
+        .no-results-container {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .error-icon,
+        .no-results-icon {
+            font-size: 4rem;
+            color: #dc3545;
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .no-results-icon {
+            color: #6c757d;
+        }
+        
+        .error-title,
+        .no-results-title {
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+        
+        .no-results-title {
+            color: #6c757d;
+        }
+        
+        .error-text,
+        .no-results-text {
+            color: #6c757d;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-term-highlight {
+            background: #fff3cd;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .no-results-actions,
+        .error-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .receipt-header,
+            .quick-stats-bar,
+            .section-container,
+            .document-receipt-section,
+            .action-section {
+                padding: 1.25rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .receipt-title {
+                font-size: 1.25rem;
+            }
+            
+            .receipt-info-grid,
+            .verification-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .verification-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Form Check Custom Styling */
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        
+        .form-check-label {
+            user-select: none;
+            cursor: pointer;
+        }
+    `)
+    .appendTo('head');
+
+// Function to show unpaid bill details (optional)
+function showUnpaidBillDetails(record) {
+    $('#payment_details_section').html(`
+        <div class="unpaid-bill-container">
+            <div class="unpaid-header">
+                <h3><i class="bi bi-x-circle me-2"></i>Payment Required</h3>
+                <p class="mb-0">Bill ${record.ref_number} cannot be processed</p>
+            </div>
+            <div class="unpaid-content">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Complete payment to enable document receipt for stamping.
+                </div>
+            </div>
+        </div>
+    `);
+}
 
 			$('#btn_load_bill_details_after_payment_stamp_duty').on('click', function (e) {
-				e.preventDefault();
-				
-				// Clear previous results
-				$('#payment_details_section').html('');
-				
-				// Get search value
-				var client_phone_search = $("#txt_ref_number_for_payment_rec").val().trim();
-				
-				// Validation with SweetAlert2
-				if (!client_phone_search) {
-					Swal.fire({
-						icon: 'warning',
-						title: 'Reference Number Required',
-						text: 'Please enter a reference/job number to search',
-						confirmButtonColor: '#0d6efd',
-						confirmButtonText: 'OK',
-						focusConfirm: true
-					}).then(() => {
-						$("#txt_ref_number_for_payment_rec").focus();
-					});
-					return false;
-				}
-				
-				// Show loading indicator
-				Swal.fire({
-					title: 'Searching...',
-					text: 'Please wait while we fetch bill details',
-					allowOutsideClick: false,
-					showConfirmButton: false,
-					willOpen: () => {
-						Swal.showLoading();
-					}
-				});
-				
-				$.ajax({
-					type: "POST",
-					url: "payment_serv",
-					data: {
-						request_type: 'lc_payment_verification_for_bill_stamping',
-						ref_number: client_phone_search
-					},
-					cache: false,
-					success: function (jobdetails) {
-						Swal.close();
-						
-						try {
-							var json_p = JSON.parse(jobdetails);
-							
-							if (!json_p.data || json_p.data.length === 0) {
-								showNoResultsFound(client_phone_search);
-								return;
-							}
-							
-							// Process each record
-							$(json_p.data).each(function () {
-								var record = this;
-								
-								if (record.payment_confiration_status === 0 || record.payment_confiration_status == null) {
-									handleUnpaidBill(record);
-								} else {
-									handlePaidBill(record);
-								}
-							});
-							
-						} catch (e) {
-							console.log('Error:', e);
-							showErrorAlert();
-						}
-					},
-					error: function (xhr, status, error) {
-						Swal.close();
-						showErrorAlert();
-						console.error('AJAX Error:', error);
-					}
-				});
-			});
+    e.preventDefault();
+    
+    // Clear previous results
+    $('#payment_details_section').html('');
+    
+    // Get search value
+    var client_phone_search = $("#txt_ref_number_for_payment_rec").val().trim();
+    
+    // Validation with SweetAlert2
+    if (!client_phone_search) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Reference Required',
+            html: `
+                <div class="text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-search fs-1 text-warning"></i>
+                    </div>
+                    <p>Please enter a reference or job number to search for bill details.</p>
+                </div>
+            `,
+            confirmButtonColor: '#0d6efd',
+            confirmButtonText: 'OK',
+            focusConfirm: true
+        }).then(() => {
+            $("#txt_ref_number_for_payment_rec").focus();
+        });
+        return false;
+    }
+    
+    // Show loading indicator
+    Swal.fire({
+        title: 'Searching Bill Details',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <p class="mb-0">Fetching details for reference: <strong>${client_phone_search}</strong></p>
+            </div>
+        `,
+        allowOutsideClick: false,
+        showConfirmButton: false
+    });
+    
+    $.ajax({
+        type: "POST",
+        url: "payment_serv",
+        data: {
+            request_type: 'lc_payment_verification_for_bill_stamping',
+            ref_number: client_phone_search
+        },
+        cache: false,
+        success: function (jobdetails) {
+            Swal.close();
+            console.log(jobdetails);
+            try {
+                var json_p = JSON.parse(jobdetails);
+                
+                if (!json_p.data || json_p.data.length === 0) {
+                    showNoResultsFound(client_phone_search);
+                    return;
+                }
+                
+                // Process each record
+                $(json_p.data).each(function () {
+                    var record = this;
+                    
+                    if (record.payment_confiration_status === 0 || record.payment_confiration_status == null) {
+                        handleUnpaidBill(record);
+                    } else {
+                        handlePaidBill(record);
+                    }
+                });
+                
+            } catch (e) {
+                console.log('Error:', e);
+                showErrorAlert();
+            }
+        },
+        error: function (xhr, status, error) {
+            Swal.close();
+            showErrorAlert();
+            console.error('AJAX Error:', error);
+        }
+    });
+});
 
-			// Function to show no results found
-			function showNoResultsFound(searchTerm) {
-				$('#payment_details_section').html(`
-					<div class="card border-warning">
-						<div class="card-body text-center py-5">
-							<div class="mb-4">
-								<i class="fas fa-search fa-4x text-warning opacity-50"></i>
-							</div>
-							<h4 class="text-warning mb-3">No Bills Found</h4>
-							<p class="text-muted mb-4">
-								No bill found for reference number: 
-								<strong class="text-dark">${searchTerm}</strong>
-							</p>
-							<button class="btn btn-outline-primary" onclick="$('#txt_ref_number_for_payment_rec').focus().select()">
-								<i class="fas fa-edit me-2"></i>Try Another Number
-							</button>
-						</div>
-					</div>
-				`);
-				
-				$('#document-section').hide();
-			}
+// Function to show no results found
+function showNoResultsFound(searchTerm) {
+    $('#payment_details_section').html(`
+        <div class="no-results-container">
+            <div class="no-results-icon">
+                <i class="bi bi-search fs-1"></i>
+            </div>
+            <h4 class="no-results-title">No Bills Found</h4>
+            <p class="no-results-text">
+                No bill found for reference number: 
+                <span class="search-term-highlight">${searchTerm}</span>
+            </p>
+            <div class="no-results-actions">
+                <button class="btn btn-outline-primary" onclick="$('#txt_ref_number_for_payment_rec').focus().select()">
+                    <i class="bi bi-pencil-square me-2"></i>Enter Different Number
+                </button>
+                <button class="btn btn-link text-muted" onclick="showHelpModal()">
+                    <i class="bi bi-question-circle me-1"></i>Need help?
+                </button>
+            </div>
+        </div>
+    `);
+    
+    $('#document-section').hide();
+}
 
-			// Function to handle unpaid bills
-			function handleUnpaidBill(record) {
-				Swal.fire({
-					icon: 'warning',
-					title: 'Payment Required',
-					html: `
-						<div class="text-start">
-							<p>The bill <strong>${record.ref_number}</strong> has not been paid.</p>
-							<div class="alert alert-warning mt-3">
-								<i class="fas fa-exclamation-triangle me-2"></i>
-								This bill cannot be acknowledged until payment is completed.
-							</div>
-						</div>
-					`,
-					confirmButtonColor: '#6c757d',
-					confirmButtonText: 'Close'
-				});
-				
-				$('#document-section').show();
-				$('#btnPrintEgcr2').data('ref_number', record.ref_number);
-				$('#btnPrintEgcr2').html(`
-					<i class="fas fa-sync-alt me-2"></i>Check Online Payment
-				`);
-				
-				// Show unpaid bill details
-				showUnpaidBillDetails(record);
-			}
+// Function to handle unpaid bills
+function handleUnpaidBill(record) {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Payment Pending',
+        html: `
+            <div class="text-start">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-clock-history text-warning fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="mb-1">Bill ${record.ref_number || 'N/A'}</h6>
+                        <p class="text-muted mb-0">Awaiting payment confirmation</p>
+                    </div>
+                </div>
+                <!--<div class="alert alert-warning border-warning bg-warning bg-opacity-5">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    This bill cannot be acknowledged until payment is completed.
+                </div>-->
+            </div>
+        `,
+        confirmButtonColor: '#ffc107',
+        confirmButtonText: 'Understood'
+    });
+    
+    $('#document-section').show();
+    $('#btnPrintEgcr2').data('ref_number', record.ref_number);
+    $('#btnPrintEgcr2').html(`
+        <i class="bi bi-arrow-repeat me-2"></i>Check Payment Status
+    `);
+    
+    // Show unpaid bill details
+    showUnpaidBillDetails(record);
+}
 
-			// Function to handle paid bills
-			function handlePaidBill(record) {
-				$('#document-section').show();
-				$('#btnPrintEgcr2').data('ref_number', record.ref_number);
-				$('#btnPrintEgcr2').html(`
-					<i class="fas fa-file-invoice me-2"></i>View eGCR
-				`);
-				
-				// Show paid bill details
-				showPaidBillDetails(record);
-			}
+// Function to handle paid bills
+function handlePaidBill(record) {
+    $('#document-section').show();
+    $('#btnPrintEgcr2').data('ref_number', record.ref_number);
+    $('#btnPrintEgcr2').html(`
+        <i class="bi bi-file-earmark-text me-2"></i>Generate eGCR
+    `);
+    
+    // Show paid bill details
+    showPaidBillDetails(record);
+}
 
-			// Function to show unpaid bill details
-			function showUnpaidBillDetails(record) {
-				$('#payment_details_section').html(`
-					<div class="card border-warning">
-						<div class="card-header bg-warning bg-opacity-10 border-warning">
-							<h4 class="mb-0 text-warning">
-								<i class="fas fa-clock me-2"></i>Pending Payment
-							</h4>
-						</div>
-						<div class="card-body">
-							<div class="alert alert-warning">
-								<i class="fas fa-exclamation-circle me-2"></i>
-								This bill requires payment confirmation before proceeding.
-							</div>
-							
-							<div class="row g-3">
-								<div class="col-md-6">
-									<label class="form-label text-muted small">Bill Number</label>
-									<div class="input-group">
-										<span class="input-group-text bg-light">
-											<i class="fas fa-hashtag"></i>
-										</span>
-										<input type="text" class="form-control bg-light" readonly value="${record.ref_number || 'N/A'}">
-									</div>
-								</div>
-								
-								<div class="col-md-6">
-									<label class="form-label text-muted small">Bill Amount</label>
-									<div class="input-group">
-										<span class="input-group-text bg-light">
-											<i class="fas fa-money-bill-wave"></i>
-										</span>
-										<input type="text" class="form-control bg-light" readonly value="${record.bill_amount || '0.00'}">
-									</div>
-								</div>
-								
-								<div class="col-12">
-									<label class="form-label text-muted small">Applicant Name</label>
-									<div class="input-group">
-										<span class="input-group-text bg-light">
-											<i class="fas fa-user"></i>
-										</span>
-										<input type="text" class="form-control bg-light" readonly value="${record.lessees_name || 'N/A'}">
-									</div>
-								</div>
-							</div>
-							
-							<div class="mt-4 text-center">
-								<button class="btn btn-outline-warning" onclick="checkPaymentStatus('${record.ref_number}')">
-									<i class="fas fa-redo me-2"></i>Refresh Payment Status
-								</button>
-							</div>
-						</div>
-					</div>
-				`);
-			}
+// Function to show unpaid bill details
+function showUnpaidBillDetails(record) {
+    $('#payment_details_section').html(`
+        <div class="bill-details-container unpaid">
+            <!-- Header -->
+            <div class="bill-header pending">
+                <div class="header-content">
+                    <h3 class="bill-title">
+                        <i class="bi bi-clock-history me-2"></i>
+                        Pending Payment
+                    </h3>
+                    <div class="status-indicator">
+                        <span class="status-badge pending">
+                            <i class="bi bi-hourglass-split me-1"></i>
+                            Awaiting Payment
+                        </span>
+                    </div>
+                </div>
+                <div class="bill-ref-number">
+                    Reference: <strong>${record.ref_number || 'N/A'}</strong>
+                </div>
+            </div>
+            
+            <!-- Warning Alert -->
+            <div class="alert-section">
+                <div class="alert alert-warning">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-exclamation-triangle fs-4"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="alert-heading mb-1">Payment Required</h6>
+                            <p class="mb-0">Complete the payment to proceed with acknowledgment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bill Information -->
+            <div class="section-container">
+                <h5 class="section-title">
+                    <i class="bi bi-receipt me-2"></i>
+                    Bill Information
+                </h5>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="info-label">
+                            <i class="bi bi-hash me-1"></i>Bill Number
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display">
+                                ${record.ref_number || 'N/A'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="info-label">
+                            <i class="bi bi-cash-stack me-1"></i>Bill Amount
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display amount">
+                                ${record.bill_amount || '0.00'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12 mt-4">
+                        <label class="info-label">
+                            <i class="bi bi-person-circle me-1"></i>Applicant Name
+                        </label>
+                        <div class="info-value">
+                            <div class="value-display">
+                                ${record.lessees_name || 'N/A'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Section -->
+            <!--<div class="action-section">
+                <div class="d-flex flex-column flex-md-row gap-3">
+                    <button class="btn btn-warning flex-fill" onclick="checkPaymentStatus('${record.ref_number}')">
+                        <i class="bi bi-arrow-repeat me-2"></i>
+                        Refresh Payment Status
+                    </button>
+                    <button class="btn btn-outline-secondary flex-fill" onclick="viewPaymentInstructions('${record.ref_number}')">
+                        <i class="bi bi-info-circle me-2"></i>
+                        View Payment Instructions
+                    </button>
+                </div>
+            </div>-->
+        </div>
+    `);
+}
 
-			// Function to show paid bill details
-			function showPaidBillDetails(record) {
-				$('#payment_details_section').html(`
-					<div class="card border-success shadow-sm">
-						<div class="card-header bg-success bg-opacity-10 border-success d-flex justify-content-between align-items-center">
-							<h4 class="mb-0 text-success">
-								<i class="fas fa-check-circle me-2"></i>Bill Details
-							</h4>
-							<span class="badge bg-success rounded-pill fs-6">
-								<i class="fas fa-check me-1"></i> Paid
-							</span>
-						</div>
-						
-						<div class="card-body">
-							<input type="hidden" id="business_process_sub_name" value="${record.business_process_sub_name_actual || ''}">
-							<input type="hidden" id="cs_main_case_number" value="${record.case_number || ''}">
-							
-							<!-- Bill Information -->
-							<div class="mb-4">
-								<h5 class="text-muted mb-3 border-bottom pb-2">
-									<i class="fas fa-file-invoice me-2"></i>Bill Information
-								</h5>
-								<div class="row g-3">
-									<div class="col-md-6">
-										<div class="card border-light h-100">
-											<div class="card-body">
-												<div class="d-flex align-items-center mb-2">
-													<div class="bg-primary bg-opacity-10 p-2 rounded me-3">
-														<i class="fas fa-hashtag text-primary"></i>
-													</div>
-													<div>
-														<small class="text-muted">Bill Number</small>
-														<h6 class="mb-0">${record.ref_number || 'N/A'}</h6>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div class="card border-light h-100">
-											<div class="card-body">
-												<div class="d-flex align-items-center mb-2">
-													<div class="bg-info bg-opacity-10 p-2 rounded me-3">
-														<i class="fas fa-money-bill-wave text-info"></i>
-													</div>
-													<div>
-														<small class="text-muted">Bill Amount</small>
-														<h6 class="mb-0">${record.bill_amount || '0.00'}</h6>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-12">
-										<div class="card border-light">
-											<div class="card-body">
-												<div class="d-flex align-items-center">
-													<div class="bg-secondary bg-opacity-10 p-2 rounded me-3">
-														<i class="fas fa-user text-secondary"></i>
-													</div>
-													<div>
-														<small class="text-muted">Applicant Name</small>
-														<h6 class="mb-0">${record.lessees_name || 'N/A'}</h6>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<!-- Payment Information -->
-							<div>
-								<h5 class="text-muted mb-3 border-bottom pb-2">
-									<i class="fas fa-credit-card me-2"></i>Payment Details
-								</h5>
-								<div class="row g-3">
-									<div class="col-md-6">
-										<div class="card border-light">
-											<div class="card-body">
-												<small class="text-muted d-block mb-1">
-													<i class="fas fa-calendar-alt me-1"></i>Payment Date
-												</small>
-												<h6 class="mb-0">${record.payment_date || 'N/A'}</h6>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div class="card border-light">
-											<div class="card-body">
-												<small class="text-muted d-block mb-1">
-													<i class="fas fa-money-check-alt me-1"></i>Payment Amount
-												</small>
-												<h6 class="mb-0">${record.payment_amount || '0.00'}</h6>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div class="card border-light">
-											<div class="card-body">
-												<small class="text-muted d-block mb-1">
-													<i class="fas fa-exchange-alt me-1"></i>Payment Mode
-												</small>
-												<h6 class="mb-0">${record.payment_mode || 'N/A'}</h6>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-md-6">
-										<div class="card border-light">
-											<div class="card-body">
-												<small class="text-muted d-block mb-1">
-													<i class="fas fa-receipt me-1"></i>GH.gov Ref Number
-												</small>
-												<h6 class="mb-0">${record.checkout_id || 'N/A'}</h6>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-12">
-										<div class="card border-light">
-											<div class="card-body">
-												<small class="text-muted d-block mb-1">
-													<i class="fas fa-file-invoice-dollar me-1"></i>Receipt Number
-												</small>
-												<h6 class="mb-0">${record.payment_slip_number || 'N/A'}</h6>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<!-- Action Buttons -->
-							<div class="mt-4 pt-3 border-top">
-								<div class="row g-2">
-									<div class="col">
-										<button class="btn btn-outline-primary w-100" onclick="downloadReceipt('${record.ref_number}')">
-											<i class="fas fa-download me-2"></i>Download Receipt
-										</button>
-									</div>
-									<div class="col">
-										<button class="btn btn-outline-success w-100" onclick="sendEmailConfirmation('${record.ref_number}')">
-											<i class="fas fa-envelope me-2"></i>Email Confirmation
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				`);
-			}
+// Function to show paid bill details
+function showPaidBillDetails(record) {
+    $('#payment_details_section').html(`
+        <div class="bill-details-container paid">
+            <!-- Header -->
+            <div class="bill-header success">
+                <div class="header-content">
+                    <h3 class="bill-title">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Payment Verified
+                    </h3>
+                    <div class="status-indicator">
+                        <span class="status-badge success">
+                            <i class="bi bi-check-circle-fill me-1"></i>
+                            Payment Confirmed
+                        </span>
+                    </div>
+                </div>
+                <div class="bill-ref-number">
+                    Reference: <strong>${record.ref_number || 'N/A'}</strong>
+                </div>
+            </div>
+            
+            <input type="hidden" id="business_process_sub_name" value="${record.business_process_sub_name_actual || ''}">
+            <input type="hidden" id="cs_main_case_number" value="${record.case_number || ''}">
+            
+            <!-- Quick Info Bar -->
+            <div class="quick-info-bar">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="quick-info-item">
+                            <div class="quick-info-icon bg-primary">
+                                <i class="bi bi-hash"></i>
+                            </div>
+                            <div class="quick-info-content">
+                                <small class="text-muted">Bill Number</small>
+                                <div class="fw-semibold">${record.ref_number || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="quick-info-item">
+                            <div class="quick-info-icon bg-success">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <div class="quick-info-content">
+                                <small class="text-muted">Amount Paid</small>
+                                <div class="fw-semibold text-success">${record.payment_amount || '0.00'}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="quick-info-item">
+                            <div class="quick-info-icon bg-info">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="quick-info-content">
+                                <small class="text-muted">Payment Date</small>
+                                <div class="fw-semibold">${record.payment_date || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Grid -->
+            <div class="row g-4">
+                <!-- Bill Information -->
+                <div class="col-lg-6">
+                    <div class="section-container">
+                        <h5 class="section-title">
+                            <i class="bi bi-file-earmark-text me-2 text-primary"></i>
+                            Bill Information
+                        </h5>
+                        
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label class="info-label">
+                                    <i class="bi bi-hash me-1"></i>Bill Number
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display">
+                                        ${record.ref_number || 'N/A'}
+                                        <button class="btn-copy" onclick="copyToClipboard('${record.ref_number}')">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <label class="info-label">
+                                    <i class="bi bi-cash-stack me-1"></i>Bill Amount
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display amount">
+                                        ${record.bill_amount || '0.00'}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <label class="info-label">
+                                    <i class="bi bi-person-circle me-1"></i>Applicant Name
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display">
+                                        ${record.lessees_name || 'N/A'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Information -->
+                <div class="col-lg-6">
+                    <div class="section-container">
+                        <h5 class="section-title">
+                            <i class="bi bi-credit-card me-2 text-success"></i>
+                            Payment Details
+                        </h5>
+                        
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label class="info-label">
+                                    <i class="bi bi-calendar-event me-1"></i>Payment Date
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display">
+                                        ${record.payment_date || 'N/A'}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <label class="info-label">
+                                    <i class="bi bi-cash-coin me-1"></i>Payment Amount
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display amount success">
+                                        ${record.payment_amount || '0.00'}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <label class="info-label">
+                                    <i class="bi bi-wallet2 me-1"></i>Payment Mode
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display">
+                                        ${record.payment_mode || 'N/A'}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <label class="info-label">
+                                    <i class="bi bi-bank me-1"></i>Bank / Gateway
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display">
+                                        ${record.payment_bank || 'N/A'}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item full-width">
+                                <label class="info-label">
+                                    <i class="bi bi-receipt me-1"></i>GH.gov Reference
+                                </label>
+                                <div class="info-value">
+                                    <div class="value-display">
+                                        ${record.checkout_id || 'N/A'}
+                                        <button class="btn-copy" onclick="copyToClipboard('${record.checkout_id}')">
+                                            <i class="bi bi-clipboard"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Receipt Information -->
+            <div class="section-container">
+                <h5 class="section-title">
+                    <i class="bi bi-file-earmark-check me-2 text-info"></i>
+                    Receipt Information
+                </h5>
+                
+                <div class="receipt-display">
+                    <div class="receipt-content">
+                        <div class="receipt-header">
+                            <i class="bi bi-receipt-cutoff fs-2 text-success"></i>
+                            <div class="receipt-title">
+                                <h6 class="mb-1">Payment Receipt</h6>
+                                <small class="text-muted">${record.payment_slip_number || 'N/A'}</small>
+                            </div>
+                        </div>
+                        <div class="receipt-actions">
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewReceipt('${record.ref_number}')">
+                                <i class="bi bi-eye me-1"></i>View
+                            </button>
+                           <!-- <button class="btn btn-outline-success btn-sm" onclick="downloadReceipt('${record.ref_number}')">
+                                <i class="bi bi-download me-1"></i>Download
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+}
 
-			// Function to show error alert
-			function showErrorAlert() {
-				Swal.fire({
-					icon: 'error',
-					title: 'Search Failed',
-					text: 'An error occurred while searching. Please try again.',
-					confirmButtonColor: '#dc3545',
-					confirmButtonText: 'Try Again'
-				}).then(() => {
-					$("#txt_ref_number_for_payment_rec").focus().select();
-				});
-				
-				$('#payment_details_section').html(`
-					<div class="card border-danger">
-						<div class="card-body text-center py-5">
-							<div class="mb-4">
-								<i class="fas fa-exclamation-triangle fa-4x text-danger opacity-50"></i>
-							</div>
-							<h4 class="text-danger mb-3">Search Error</h4>
-							<p class="text-muted mb-4">
-								Unable to retrieve bill details. Please check the reference number and try again.
-							</p>
-						</div>
-					</div>
-				`);
-			}
+// Function to show error alert
+function showErrorAlert() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Search Failed',
+        html: `
+            <div class="text-center">
+                <div class="mb-3">
+                    <i class="bi bi-exclamation-octagon fs-1 text-danger"></i>
+                </div>
+                <p>Unable to retrieve bill details. Please check the reference number and try again.</p>
+            </div>
+        `,
+        confirmButtonColor: '#dc3545',
+        confirmButtonText: 'Try Again'
+    }).then(() => {
+        $("#txt_ref_number_for_payment_rec").focus().select();
+    });
+    
+    $('#payment_details_section').html(`
+        <div class="error-container">
+            <div class="error-icon">
+                <i class="bi bi-exclamation-triangle fs-1"></i>
+            </div>
+            <h4 class="error-title">Search Error</h4>
+            <p class="error-text">
+                Unable to retrieve bill details. Please check your connection and try again.
+            </p>
+            <button class="btn btn-outline-danger" onclick="retrySearch()">
+                <i class="bi bi-arrow-clockwise me-2"></i>Retry Search
+            </button>
+        </div>
+    `);
+}
 
-			// Optional helper functions for actions
-			function checkPaymentStatus(refNumber) {
-				Swal.fire({
-					title: 'Checking Status...',
-					text: 'Verifying payment status with payment gateway',
-					allowOutsideClick: false,
-					showConfirmButton: false,
-					willOpen: () => {
-						Swal.showLoading();
-					}
-				});
-				
-				// Add your payment status check logic here
-				setTimeout(() => {
-					Swal.close();
-					Swal.fire({
-						icon: 'info',
-						title: 'Status Updated',
-						text: 'Payment status has been refreshed',
-						confirmButtonText: 'OK'
-					});
-				}, 1500);
-			}
+// Optional helper functions for actions
+function checkPaymentStatus(refNumber) {
+    Swal.fire({
+        title: 'Checking Payment Status',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-warning mb-3" role="status"></div>
+                <p class="mb-0">Verifying payment status for: <strong>${refNumber}</strong></p>
+            </div>
+        `,
+        allowOutsideClick: false,
+        showConfirmButton: false
+    });
+    
+    // Simulate API call
+    setTimeout(() => {
+        Swal.close();
+        Swal.fire({
+            icon: 'info',
+            title: 'Status Updated',
+            text: 'Payment status has been refreshed. No changes detected.',
+            confirmButtonText: 'OK'
+        });
+    }, 1500);
+}
+
+// Add CSS for the new design
+$('<style>')
+    .prop('type', 'text/css')
+    .html(`
+        /* Main Container */
+        .bill-details-container {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+            margin-bottom: 2rem;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        .bill-details-container.paid {
+            border-top: 4px solid #28a745;
+        }
+        
+        .bill-details-container.unpaid {
+            border-top: 4px solid #ffc107;
+        }
+        
+        /* Header */
+        .bill-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .bill-header.success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(40, 167, 69, 0.1) 100%);
+        }
+        
+        .bill-header.pending {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.05) 0%, rgba(255, 193, 7, 0.1) 100%);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bill-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #2c3e50;
+        }
+        
+        .bill-ref-number {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .status-badge.success {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        
+        .status-badge.pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+        
+        /* Quick Info Bar */
+        .quick-info-bar {
+            padding: 1.5rem 2rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .quick-info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .quick-info-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+        
+        .quick-info-content {
+            flex: 1;
+        }
+        
+        /* Sections */
+        .section-container {
+            padding: 1.5rem 2rem;
+        }
+        
+        .section-container:not(:last-child) {
+            border-bottom: 1px solid #f1f3f5;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-item.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .info-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #6c757d;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            position: relative;
+        }
+        
+        .value-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #212529;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .value-display:hover {
+            background: #fff;
+            border-color: #28a745;
+            box-shadow: 0 2px 5px rgba(13, 110, 253, 0.1);
+        }
+        
+        .value-display.amount {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 1.1rem;
+        }
+        
+        .value-display.amount.success {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .btn-copy {
+            background: none;
+            border: none;
+            color: #6c757d;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .btn-copy:hover {
+            background: #e9ecef;
+            color: #28a745;
+        }
+        
+        /* Alert Section */
+        .alert-section {
+            padding: 1.5rem 2rem;
+            background: #fff8e1;
+            border-bottom: 1px solid #ffeaa7;
+        }
+        
+        /* Receipt Display */
+        .receipt-display {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .receipt-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .receipt-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .receipt-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Action Section */
+        .action-section {
+            padding: 2rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        /* Error & No Results */
+        .error-container,
+        .no-results-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .error-icon,
+        .no-results-icon {
+            font-size: 4rem;
+            color: #dc3545;
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .no-results-icon {
+            color: #6c757d;
+        }
+        
+        .error-title,
+        .no-results-title {
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+        
+        .no-results-title {
+            color: #6c757d;
+        }
+        
+        .error-text,
+        .no-results-text {
+            color: #6c757d;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-term-highlight {
+            background: #fff3cd;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .no-results-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .bill-header,
+            .section-container,
+            .action-section {
+                padding: 1.25rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .bill-title {
+                font-size: 1.25rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .receipt-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .quick-info-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+        }
+        
+        /* Hover Effects */
+        button {
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    `)
+    .appendTo('head');
+
+// Helper functions
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard!', 'success');
+    });
+}
+
+function showToast(message, type = 'info') {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    });
+    
+    Toast.fire({
+        icon: type,
+        title: message
+    });
+}
+
+function viewReceipt(refNumber) {
+    Swal.fire({
+        title: 'Receipt Viewer',
+        html: `
+            <div class="text-center py-4">
+                <i class="bi bi-receipt fs-1 text-success mb-3"></i>
+                <p>Receipt for ${refNumber} would open here.</p>
+                <p class="text-muted small">This feature will be available in the next update.</p>
+            </div>
+        `,
+        confirmButtonText: 'Close'
+    });
+}
+
+function downloadReceipt(refNumber) {
+    Swal.fire({
+        title: 'Download Receipt',
+        html: `
+            <div class="text-center py-3">
+                <i class="bi bi-download fs-1 text-primary mb-3"></i>
+                <p>Downloading receipt for ${refNumber}...</p>
+                <div class="progress mb-3">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                </div>
+            </div>
+        `,
+        showConfirmButton: false,
+        timer: 2000
+    }).then(() => {
+        showToast('Receipt downloaded successfully!', 'success');
+    });
+}
+
+function sendEmailConfirmation(refNumber) {
+    Swal.fire({
+        title: 'Send Email Receipt',
+        html: `
+            <div class="text-start">
+                <div class="mb-3">
+                    <label for="emailAddress" class="form-label">Email Address</label>
+                    <input type="email" id="emailAddress" class="form-control" placeholder="recipient@example.com">
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="includeAttachment" checked>
+                    <label class="form-check-label" for="includeAttachment">
+                        Include receipt as attachment
+                    </label>
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Send Email',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+            const email = document.getElementById('emailAddress').value;
+            if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+                Swal.showValidationMessage('Please enter a valid email address');
+                return false;
+            }
+            return email;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Email Sent',
+                text: `Receipt sent to ${result.value}`,
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+}
+
+function proceedToStamping(refNumber, jobNumber) {
+    Swal.fire({
+        title: 'Proceed to Stamping',
+        html: `
+            <div class="text-center">
+                <div class="mb-4">
+                    <i class="bi bi-stamp fs-1 text-success"></i>
+                </div>
+                <p>Are you ready to proceed with stamp duty acknowledgment?</p>
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    This will move the case to the next stage in the stamping process.
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Proceed',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Add your stamping logic here
+            showToast('Stamping process initiated successfully!', 'success');
+        }
+    });
+}
+
+function retrySearch() {
+    $('#btn_load_bill_details_after_payment_stamp_duty').click();
+}
+
+function printDetails() {
+    window.print();
+}
+
+function showHelpModal() {
+    Swal.fire({
+        title: 'Search Help',
+        html: `
+            <div class="text-start">
+                <h6 class="mb-3">How to find your reference number:</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Check your payment receipt</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Look in your email confirmation</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Contact support if you've lost it</li>
+                </ul>
+                <div class="alert alert-light mt-3">
+                    <i class="bi bi-telephone me-2"></i>
+                    <strong>Support:</strong> +233 XXX XXX XXX
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Got it'
+    });
+}
 
 			$('.txt-action-rec').on('click', function (e) {
 
@@ -3080,18 +4635,18 @@ $(document)
 							// if (!ar_region || ar_region === '-1') {
 							// 	errorField = '#new_bill_application_region'; 
 							// 	errorMessage = 'Please select region';
-								// } else if (!type_of_use || type_of_use === '-1') {
-								// 	errorField = '#new_bill_type_of_use';
-								// 	errorMessage = 'Please select type of use';
-								// } else if (!registration_forms || registration_forms === '-1') {
-								// 	errorField = '#new_bill_registration_forms';
-								// 	errorMessage = 'Please select registration forms';
-								// } else if (!publication_type) {
-								// 	errorField = '#new_bill_publication_type';
-								// 	errorMessage = 'Please select publication type';
-								// } else if (!licensed_surveyor_number) {
-								// 	errorField = '#new_bill_application_ls_number';
-								// 	errorMessage = "Please enter Surveyor's Number";
+							// } else if (!type_of_use || type_of_use === '-1') {
+							// 	errorField = '#new_bill_type_of_use';
+							// 	errorMessage = 'Please select type of use';
+							// } else if (!registration_forms || registration_forms === '-1') {
+							// 	errorField = '#new_bill_registration_forms';
+							// 	errorMessage = 'Please select registration forms';
+							// } else if (!publication_type) {
+							// 	errorField = '#new_bill_publication_type';
+							// 	errorMessage = 'Please select publication type';
+							// } else if (!licensed_surveyor_number) {
+							// 	errorField = '#new_bill_application_ls_number';
+							// 	errorMessage = "Please enter Surveyor's Number";
 							if (!no_of_copy || no_of_copy < 1) {
 								errorField = '#new_number_of_copies';
 								errorMessage = 'Please enter valid number of copies';

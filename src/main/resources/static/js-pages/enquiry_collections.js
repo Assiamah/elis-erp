@@ -439,7 +439,9 @@ $(document).ready(function() {
 			},
 			cache: false,
 			success: function(response) {
-				showNotification(response, 'success');
+				//console.log(response);
+				const result = JSON.parse(response);
+				showNotification(result.msg, 'success');
 				$('#collectionForPayment').modal('hide');
 				resetCollectionForPaymentForm();
 			},
@@ -1412,7 +1414,7 @@ $(document).ready(function() {
         // });
 
 		swal.fire({
-			title: 'Error',
+			title: type === 'success' ? 'Success' : 'Error',
 			text: message,
 			icon: type,
 			confirmButtonText: 'OK'
