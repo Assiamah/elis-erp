@@ -4527,9 +4527,9 @@
                                         <i class="fas fa-info-circle me-1"></i>
                                         Shows all tracking activities for this application
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" id="btnExportHistory">
+                                    <!-- <button type="button" class="btn btn-sm btn-outline-primary" id="btnExportHistory">
                                         <i class="fas fa-download me-2"></i>Export
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
                         </div>

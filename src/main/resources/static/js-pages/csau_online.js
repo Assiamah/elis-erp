@@ -1291,7 +1291,7 @@ $(document)
                     if (record.payment_confiration_status === 0 || record.payment_confiration_status == null) {
                         handleUnpaidBill(record);
                     } else {
-                        handlePaidBill(record);
+                        handlePaidSDBill(record);
                     }
                 });
                 
@@ -1377,7 +1377,7 @@ function handleUnpaidBill(record) {
 }
 
 // Function to handle paid bills
-function handlePaidBill(record) {
+function handlePaidSDBill(record) {
     $('#document-section').show();
     
     // Show paid bill details with document receipt option
@@ -1389,21 +1389,21 @@ function showPaidBillWithDocumentReceipt(record) {
     $('#payment_details_section').html(`
         <div class="document-receipt-container">
             <!-- Header -->
-            <div class="receipt-header">
+             <div class="bill-header success">
                 <div class="header-content">
-                    <h3 class="receipt-title">
-                        <i class="bi bi-file-earmark-check me-2"></i>
-                        Document Receipt Portal
+                    <h3 class="bill-title">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Payment Verified
                     </h3>
                     <div class="status-indicator">
                         <span class="status-badge success">
                             <i class="bi bi-check-circle-fill me-1"></i>
-                            Ready for Document Receipt
+                            Payment Confirmed
                         </span>
                     </div>
                 </div>
-                <div class="document-ref-number">
-                    Document Reference: <strong>${record.ref_number || 'N/A'}</strong>
+                <div class="bill-ref-number">
+                    Reference: <strong>${record.ref_number || 'N/A'}</strong>
                 </div>
             </div>
             
@@ -1598,7 +1598,7 @@ function showPaidBillWithDocumentReceipt(record) {
                         
                         <!-- Document Receipt Button -->
                         <div class="document-receipt-action">
-                            <button class="receiveDocument btn btn-primary btn-lg w-100 py-3"
+                            <button class="receiveDocument btn btn-danger btn-lg w-100 py-3"
                                     data-backdrop="static" 
                                     data-keyboard="false"
                                     data-title="Receive Document"
@@ -1622,7 +1622,7 @@ function showPaidBillWithDocumentReceipt(record) {
             </div>
             
             <!-- Additional Actions -->
-            <div class="action-section">
+            <!--<div class="action-section">
                 <div class="row g-2">
                     <div class="col-md-4">
                         <button class="btn btn-outline-secondary w-100" onclick="printReceiptSummary()">
@@ -1640,7 +1640,7 @@ function showPaidBillWithDocumentReceipt(record) {
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     `);
     
@@ -1901,12 +1901,12 @@ $('<style>')
             animation: slideIn 0.4s ease-out;
         }
         
-        /* Header */
+        /* Header
         .receipt-header {
             padding: 1.5rem 2rem;
             background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
             color: white;
-        }
+        } */
         
         .header-content {
             display: flex;
@@ -2107,13 +2107,6 @@ $('<style>')
             border: 1px solid #e9ecef;
         }
         
-        .document-receipt-action .btn {
-            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
         
         .document-receipt-action .btn:hover {
             transform: translateY(-2px);
@@ -2237,11 +2230,6 @@ $('<style>')
             }
         }
         
-        /* Form Check Custom Styling */
-        .form-check-input:checked {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-        }
         
         .form-check-label {
             user-select: none;
@@ -2686,7 +2674,7 @@ function showPaidBillDetails(record) {
                                 </div>
                             </div>
                             
-                            <div class="info-item">
+                            <!--<div class="info-item">
                                 <label class="info-label">
                                     <i class="bi bi-bank me-1"></i>Bank / Gateway
                                 </label>
@@ -2695,7 +2683,7 @@ function showPaidBillDetails(record) {
                                         ${record.payment_bank || 'N/A'}
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             
                             <div class="info-item full-width">
                                 <label class="info-label">
@@ -3320,65 +3308,326 @@ function showHelpModal() {
 			});
 
 			$('#frmReceiveDocsStamping').on('submit', function (e) {
+    e.preventDefault();
+    
+    // Collect form data
+    var formData = {
+        job_number: $('#stmp_job_number').val(),
+        depositor_phone: $('#smtp_depositor_phone').val(),
+        depositor_name: $('#smtp_depositor_name').val(),
+        document_description: $('#smtp_document_description').val(),
+        applicant_name: $('#stmp_ar_name').val(),
+        process_type: $('#stmp_business_process_sub_name').val(),
+        receipt_date: new Date().toLocaleDateString(),
+        receipt_time: new Date().toLocaleTimeString()
+    };
+    
+    // Generate receipt preview
+    Swal.fire({
+        title: 'Document Receipt Confirmation',
+        html: `
+            <div class="receipt-preview">
+                <div class="receipt-header text-center mb-4">
+                    <h5 class="text-primary mb-2">
+                        <i class="bi bi-file-earmark-check me-2"></i>
+                        Document Receipt
+                    </h5>
+                    <small class="text-muted">Receipt #${Date.now().toString().slice(-8)}</small>
+                </div>
+                
+                <div class="receipt-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Job Number</small>
+                            <div class="fw-semibold">${formData.job_number}</div>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Date & Time</small>
+                            <div class="fw-semibold">${formData.receipt_date} ${formData.receipt_time}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-section mb-3">
+                        <small class="text-muted d-block mb-1">Applicant</small>
+                        <div class="bg-light p-2 rounded">
+                            <i class="bi bi-person me-1"></i>
+                            ${formData.applicant_name}
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-section mb-3">
+                        <small class="text-muted d-block mb-1">Depositor Information</small>
+                        <div class="bg-light p-2 rounded">
+                            <div><i class="bi bi-person-badge me-1"></i> ${formData.depositor_name}</div>
+                            <small class="text-muted"><i class="bi bi-telephone me-1"></i> ${formData.depositor_phone}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-section mb-4">
+                        <small class="text-muted d-block mb-1">Document Description</small>
+                        <div class="bg-light p-2 rounded">
+                            <i class="bi bi-card-text me-1"></i>
+                            ${formData.document_description}
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning small mb-4">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Important:</strong> Once submitted, this receipt will be recorded and cannot be edited.
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="confirmPhysicalReceipt">
+                        <label class="form-check-label" for="confirmPhysicalReceipt">
+                            I have physically received all listed documents
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="confirmAccuracy">
+                        <label class="form-check-label" for="confirmAccuracy">
+                            All information provided is accurate
+                        </label>
+                    </div>
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Submit Receipt',
+        cancelButtonText: 'Edit Details',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        width: '600px',
+        customClass: {
+            popup: 'receipt-swal-popup'
+        },
+        preConfirm: () => {
+            const confirm1 = document.getElementById('confirmPhysicalReceipt');
+            const confirm2 = document.getElementById('confirmAccuracy');
+            
+            if (!confirm1.checked || !confirm2.checked) {
+                Swal.showValidationMessage('Please check all confirmation boxes');
+                return false;
+            }
+            return true;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show processing animation
+            Swal.fire({
+                title: 'Processing Receipt',
+                html: `
+                    <div class="text-center">
+                        <div class="receipt-processing">
+                            <div class="spinner-border text-primary mb-3"></div>
+                            <p>Recording document receipt...</p>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                allowOutsideClick: false,
+                showConfirmButton: false
+            });
+            
+            // Submit AJAX request
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: 'lc_stamp_duty_document_received',
+                    job_number: formData.job_number,
+                    smtp_depositor_phone: formData.depositor_phone,
+                    smtp_depositor_name: formData.depositor_name,
+                    smtp_document_description: formData.document_description
+                },
+                cache: false,
+                success: function (response) {
+                    try {
+                        var json_p = JSON.parse(response);
+                        
+                        if (json_p.msg.includes("success")) {
+                            // Show success with receipt
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Receipt Recorded!',
+                                html: `
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="bi bi-check-circle text-success" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <p class="mb-3"><strong>Document receipt successfully recorded</strong></p>
+                                        <div class="alert alert-success bg-success bg-opacity-10">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <small class="text-muted">Reference</small><br>
+                                                    <strong>${formData.job_number}</strong>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted">Time</small><br>
+                                                    <strong>${new Date().toLocaleTimeString()}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Continue'
+                            });
+                            
+                            // Add to batch list
+                            window.addJobToBatchlist(
+                                formData.job_number, 
+                                formData.applicant_name, 
+                                formData.process_type, 
+                                'Hard Copy Document Received For Further Processing', 
+                                ''
+                            );
 
-				e.preventDefault();
-				/* $('#receiveDocsStampingModal').modal("hide"); */
-
-				var job_number = $('#stmp_job_number').val();
-				var smtp_depositor_phone = $('#smtp_depositor_phone').val();
-				var smtp_depositor_name = $('#smtp_depositor_name').val();
-				var smtp_document_description = $('#smtp_document_description').val();
-				// console.log(smtp_depositor_phone);
-				// console.log(smtp_depositor_name)
-
-				$.ajax({
-					type: "POST",
-					url: "Case_Management_Serv",
-					data: {
-						request_type: 'lc_stamp_duty_document_received',
-						job_number: job_number,
-						smtp_depositor_phone: smtp_depositor_phone,
-						smtp_depositor_name: smtp_depositor_name,
-						smtp_document_description: smtp_document_description
-					},
-					cache: false,
-					beforeSend: function () {
-						// $('#district').html('<img
-						// src="img/loading.gif" alt="" width="24"
-						// height="24">');
-					},
-					success: function (jobdetails) {
-
-						var json_p = JSON.parse(jobdetails);
-						// console.log(json_p.msg)
-						if (json_p.msg.includes("success")) {
-
-							// $("#btnSumitRecDoc").hide();
-							/* $("#btnSumitRecDocSecion").html(
-									 
-									 `<br><div class="alert alert-success">Record Saved and added to batchlist</div>`
-									 
-							 );*/
-
-							addJobToBatchlist(job_number, $('#stmp_ar_name').val(), $('#stmp_business_process_sub_name').val(), 'Hard Copy Document Recieved For Further Processing', '');
-
-							$.notify({
-								message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Action Successful </span>',
-							}, {
-								type: 'success', z_index: 9999
-							});
-						} else {
-							$.notify({
-								message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">!Error. Somthing went wrong. Please try again </span>',
-							}, {
-								type: 'danger', z_index: 9999
-							});
-						}
+							window.prepareBatchlistModal();
+                            
+                        } else {
+                            throw new Error(json_p.msg);
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error Recording Receipt',
+                            text: error.message || 'An error occurred while saving the receipt.',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error',
+                        text: 'Failed to connect to server. Please check your connection.',
+                        confirmButtonText: 'Retry'
+                    });
+                }
+            });
+        }
+    });
+    
+    return false;
+});
 
 
-					}
-				});
-			});
+window.closeModalAndReset = function () {
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('receiveDocsStampingModal'));
+    if (modal) {
+        modal.hide();
+    }
+    
+    // Reset form
+    document.getElementById('frmReceiveDocsStamping').reset();
+    
+    // Show success toast
+   // showSuccessToast('Document receipt completed successfully!');
+}
+
+// Helper functions
+function printReceipt(jobNumber) {
+    Swal.fire({
+        title: 'Printing Receipt',
+        text: 'Generating printable receipt...',
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false
+    }).then(() => {
+        showToast('Receipt sent to printer!', 'success');
+    });
+}
+
+function closeModalAndReset() {
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('receiveDocsStampingModal'));
+    if (modal) {
+        modal.hide();
+    }
+    
+    // Reset form
+    document.getElementById('frmReceiveDocsStamping').reset();
+    
+    // Show success toast
+    showSuccessToast('Document receipt completed successfully!');
+}
+
+function showSuccessToast(message) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    });
+    
+    Toast.fire({
+        icon: 'success',
+        title: message
+    });
+}
+
+function showErrorAlert(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        html: `
+            <div class="text-start">
+                <p>${message}</p>
+                <div class="mt-3">
+                    <button class="btn btn-outline-primary btn-sm" onclick="retrySubmission()">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Retry
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm ms-2" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-1"></i>Cancel
+                    </button>
+                </div>
+            </div>
+        `,
+        showConfirmButton: false
+    });
+}
+
+function retrySubmission() {
+    $('#frmReceiveDocsStamping').submit();
+}
+
+// Add CSS for receipt styling
+$('<style>')
+    .prop('type', 'text/css')
+    .html(`
+        .receipt-preview {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .receipt-swal-popup {
+            max-width: 600px !important;
+        }
+        
+        .receipt-section {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .receipt-section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .receipt-processing {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    `)
+    .appendTo('head');
 
 
 			$('#frmStampDutyFilter').on('submit', function (e) {
