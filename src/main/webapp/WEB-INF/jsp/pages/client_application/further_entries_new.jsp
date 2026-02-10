@@ -69,18 +69,17 @@
                         <span class="h5 mb-0">Application Dashboard</span>
                     </div>
                     <div>
-                      <c:if test="${division == 'SMD'}">
+                   
                         <button class="btn btn-light" id="btnViewBatchlist">
                             <i class="ri-list-check"></i> View Batch List
                         </button>
-                      </c:if>
                       
-                      <c:if test="${division != 'SMD'}">
+                      <!-- <c:if test="${division != 'SMD'}">
                         <button class="btn btn-light" id="btnViewRequestlist">
                             <i class="ri-list-check"></i>
                             View Request List
                         </button>
-                      </c:if>
+                      </c:if> -->
                     </div>
                 </div>
                 
@@ -108,7 +107,7 @@
             <!-- Card Body -->
             <div class="card-body p-4">
                 <!-- Batch Actions Section -->
-                <c:if test="${division == 'SMD'}">
+             
                     <div class="row d-none" id="allBatchList">
                         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
                             <div class="card card-body">
@@ -124,9 +123,9 @@
                             </div>
                         </div>
                     </div>
-                </c:if>
+                
 
-                 <c:if test="${division != 'SMD'}">
+                 <!-- <c:if test="${division != 'SMD'}">
                     <div class="row d-none" id="allBatchList">
                           <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
                               <div class="card card-body">
@@ -143,7 +142,7 @@
                           </div>
                       </div>
 
-                 </c:if>
+                 </c:if> -->
 
                 <!-- Applications Table -->
                 <div class="table-responsive">
@@ -251,23 +250,23 @@
                                             </form> -->
 
 
-                                            <c:if test="${division == 'SMD'}">
+                                           
                                               <button class="btn btn-outline-info btn-sm w-100"
                                                       data-bs-toggle="modal" 
                                                       data-bs-target="#askForPurposeOfBatching"
                                                       data-job_number="${appfiles.job_number}"
                                                       data-ar_name="${appfiles.ar_name}"
                                                       data-business_process_sub_name="${appfiles.business_process_sub_name}">
-                                                  <i class="fas fa-plus me-1"></i> Batch
+                                                  <i class="fas fa-plus me-1"></i> Add To Batch
                                               </button>
-                                            </c:if>
+                                            
 
-                                            <c:if test="${division != 'SMD'}">
+                                            <!-- <c:if test="${division != 'SMD'}">
                                               <button class="btn btn-sm btn-outline-danger w-100" data-job_number="${appfiles.job_number}" data-ar_name="${appfiles.ar_name}" data-business_process_sub_name="${appfiles.business_process_sub_name}" data-locality="undefined" id="btnGeneralWorkRequest">
                                                 <i class="bi bi-send"></i>
                                                 Send Request
                                             </button>
-                                            </c:if>
+                                            </c:if> -->
                                       
                                           <!-- <div class="dropdown">
                                               <button class="btn btn-outline-danger btn-sm dropdown-toggle w-100" 
