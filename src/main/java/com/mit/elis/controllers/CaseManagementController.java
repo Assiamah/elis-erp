@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Optional;
+
 import org.springframework.ui.Model;
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -5219,14 +5221,12 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 					// request.setAttribute("deed_number",transaction_details_obj.get("deed_number").toString());
 					// request.setAttribute("file_number",transaction_details_obj.get("file_number").toString());
 					// request.setAttribute("ls_number",transaction_details_obj.get("ls_number").toString());
-				// request.setAttribute("ground_rent",transaction_details_obj.get("ground_rent").toString());
-				
-				Object groundRentObj = transaction_details_obj.get("ground_rent");
-				request.setAttribute(
-				    "ground_rent",
-				    groundRentObj != null ? groundRentObj.toString() : ""
-				);
-				
+				//request.setAttribute("ground_rent",transaction_details_obj.get("ground_rent").toString());
+
+				request.setAttribute("deed_number", transaction_details_obj.optString("deed_number", ""));
+				request.setAttribute("file_number", transaction_details_obj.optString("file_number", ""));
+				request.setAttribute("ls_number", transaction_details_obj.optString("ls_number", ""));
+				request.setAttribute("ground_rent", transaction_details_obj.optString("ground_rent", ""));
 	
 
 				JSONObject job_detail_obj;

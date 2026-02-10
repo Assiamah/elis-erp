@@ -464,6 +464,8 @@ public class CicaController {
             request.setAttribute("pending",pending);
             request.setAttribute("resolved", resolved);
 
+			request.setAttribute("page_name", "cica_tickets");
+
 					model.addAttribute("content", "../pages/CICA/cica_tickets.jsp"); return "layouts/app";
 
 		} catch (Exception e) {

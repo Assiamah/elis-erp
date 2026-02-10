@@ -13,7 +13,28 @@
 <%@page import="java.util.*" %>
 
 <!-- Begin Page Content -->
-<div class="container-fluid">
+
+<!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">Compliance Advisory Center</h1>
+                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage client tickets and monitor ticket status</p>
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">CAC</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Tickets</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
+
+
  <c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop"> 
     <div class="pagetitle">
       <!-- <h4>DUC - CAC TICKETS</h4> --><br>
@@ -438,6 +459,8 @@
 
 </c:forEach>
 </div>
+</div>
+<!-- End::app-content -->
 <!-- End Page Content -->
 
 <!-- Attachment Modal -->

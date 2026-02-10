@@ -1400,7 +1400,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    $('#lc_btn_add_coordinate').on('click', function () {
+    $('#lc_btn_add_coordinate, #lc_btn_add_coordinate_2').on('click', function () {
         $(document).off('focusin.modal');
         // 🔥 WAIT FOR BOOTSTRAP TO RELEASE FOCUS
         setTimeout(openSwal, 300);
@@ -2085,7 +2085,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove the entire modal HTML code and replace with this JavaScript
 
     // Handle CSV upload button click
-    $('#lrd_btn_add_coordinate_by_csv').on('click', function() {
+    $('#lrd_btn_add_coordinate_by_csv, #lrd_btn_add_coordinate_by_csv_2').on('click', function() {
         // Create SweetAlert modal for file upload
         Swal.fire({
             title: 'Upload Coordinates CSV',

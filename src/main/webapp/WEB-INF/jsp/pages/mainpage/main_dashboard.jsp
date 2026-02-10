@@ -111,7 +111,7 @@
                             <i class="ri-user-line fs-24 text-primary"></i>
                         </div>
                         <div>
-                            <h2 class="mb-1">Welcome back, <span class="text-primary">${fullname}</span></h2>
+                            <h2 class="mb-1">Welcome, <span class="text-primary">${fullname}</span></h2>
                             <p class="text-muted mb-0">
                                 <i class="ri-calendar-line me-1"></i>
                                 <fmt:formatDate value="${now}" pattern="EEEE, MMMM d, yyyy" />

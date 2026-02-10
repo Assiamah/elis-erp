@@ -5726,7 +5726,7 @@ $(document)
 														+ this.bill_amount
 														+ "</td>"
 
-														+ '<td><p data-placement="top" data-toggle="tooltip" title="Details of Client"><button data-backdrop="static" data-keyboard="false" class="btn btn-success btn-circle btn-sm" data-title="Initiat Payment" data-toggle="modal" data-target="#manualBillPayment" '
+														+ '<td><p data-placement="top" data-toggle="tooltip" title="Details of Client"><button data-backdrop="static" data-keyboard="false" class="btn btn-success btn-circle btn-sm float-end" data-bs-title="Initiat Payment" data-bs-toggle="modal" data-bs-target="#manualBillPayment" '
 														+ 'data-bill_number="'
 														+ this.bill_number
 														+ '" '
@@ -5735,7 +5735,7 @@ $(document)
 														+ '" '
 														+ 'data-bill_amount="'
 														+ this.bill_amount
-														+ '" id="deletedew"><span class="fas fa-check"></span></button></p> </td>'
+														+ '" id="deletedew"><span class="fas fa-eye me-2"></span>View</button></p> </td>'
 
 														+ "</tr>");
 											});

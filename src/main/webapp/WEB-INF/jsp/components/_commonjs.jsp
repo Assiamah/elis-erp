@@ -153,6 +153,7 @@ ${page_name == "executive_dashboard" ? "<script src='js-pages/executive_complian
 ${page_name == "director_compliance" ? "<script src='js-pages/director_compliance.js'></script>" : ""}
 
 ${page_name == "cica_clients" ? "<script src='js-pages/cica_clients.js'></script>" : ""}
+${page_name == "cica_tickets" ? "<script src='js-pages/cica_tickets.js'></script>" : ""}
 
 ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 

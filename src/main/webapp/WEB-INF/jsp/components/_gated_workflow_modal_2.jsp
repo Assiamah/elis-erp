@@ -3299,3 +3299,257 @@
         </div>
      </div>
 </div>
+
+
+<div class="modal fade effect-scale modal-blur map-modal" id="add_new_records_Info_frrv" tabindex="-1" aria-labelledby="add_new_records_Info_frrvLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered  modal-fullscreen modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <div class="d-flex align-items-center w-100">
+          <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+            <i class="bi bi-card-text fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title text-white mb-1" id="add_new_records_Info_frrvLabel">
+              Records Information
+            </h5>
+            <p class="mb-0 small opacity-75">
+              <i class="bi bi-info-circle me-1"></i>
+              Upload and manage parcel coordinates
+            </p>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body p-4">
+        <div class="row">
+          <div class="col-md-6">
+        <form action="${pageContext.request.contextPath}/processing_after_payment" method="post" id="parcelForm">
+          <!-- WKT Polygon Input -->
+          <div class="card border mb-4">
+            <div class="card-header bg-light">
+              <h6 class="mb-0 fw-semibold">
+                <i class="bi bi-polygon me-2"></i>WKT Polygon Data
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="mb-0">
+                <label for="lc_bl_wkt_polygon" class="form-label fw-semibold">
+                  <i class="bi bi-code-slash me-2"></i>WKT Polygon
+                </label>
+                <div class="input-group">
+                  <textarea class="form-control font-monospace" id="lc_bl_wkt_polygon" 
+                            name="lc_bl_wkt_polygon" rows="3" 
+                            placeholder="POLYGON((...))" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
+                  <button class="btn btn-outline-secondary" type="button" 
+                          data-bs-toggle="tooltip" data-bs-placement="top" 
+                          title="Copy to clipboard" onclick="copyWktToClipboard('lc_bl_wkt_polygon')">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                </div>
+                <div class="form-text">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Well-Known Text representation of the polygon
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Tools Section -->
+          <div class="card border mb-4">
+            <div class="card-header bg-light">
+              <h6 class="mb-0 fw-semibold">
+                <i class="bi bi-tools me-2"></i>Map Tools
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <!-- Visualization Tools -->
+                <button type="button" class="btn btn-primary btn-sm" 
+                        id="lc_btn_visualise_wkt"
+                        data-bs-toggle="tooltip" data-bs-placement="top" 
+                        title="Visualize Polygon">
+                  <i class="bi bi-eye me-1"></i> View WKT
+                </button>
+
+                <button type="button" class="btn btn-info btn-sm" 
+                        id="lc_btn_visualise_search"
+                        data-bs-toggle="tooltip" data-bs-placement="top" 
+                        title="Plot Parcels">
+                  <i class="bi bi-layers me-1"></i> Plot Parcels
+                </button>
+
+                <button type="button" class="btn btn-warning btn-sm" 
+                        id="lc_btnprintmap"
+                        data-bs-toggle="tooltip" data-bs-placement="top" 
+                        title="Print Map">
+                  <i class="bi bi-printer me-1"></i> Print
+                </button>
+
+                <!-- Scale Controls -->
+                <div class="d-flex align-items-center ms-auto">
+                  <label class="form-label me-2 mb-0 fw-medium">
+                    <i class="bi bi-zoom-in me-1"></i>Scale:
+                  </label>
+                  <div class="input-group input-group-sm" style="width: 200px;">
+                    <input type="text" class="form-control" id="lc_scale_value_e" 
+                           placeholder="Custom scale">
+                    <select class="form-select" data-trigger id="lc_scale_value" style="width: 100px;">
+                      <option value="500">500</option>
+                      <option value="1107">1107</option>
+                      <option value="1250">1250</option>
+                      <option value="2500" selected>2500</option>
+                      <option value="2140">2140</option>
+                      <option value="2670">2670</option>
+                      <option value="2215">2215</option>
+                      <option value="2825">2825</option>
+                      <option value="5000">5000</option>
+                      <option value="10000">10000</option>
+                      <option value="15000">15000</option>
+                      <option value="20000">20000</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Scale Lock -->
+                <div class="d-flex align-items-center ms-2">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" 
+                           id="lc_lockmapscale" checked>
+                    <label class="form-check-label small" for="lc_lockmapscale">
+                      Lock Scale
+                    </label>
+                  </div>
+                  <button type="button" class="btn btn-outline-secondary btn-sm ms-2" 
+                          id="lc_btn_scale_zoom"
+                          data-bs-toggle="tooltip" data-bs-placement="top" 
+                          title="Zoom to Scale">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Container -->
+          <div class="card border mb-4">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+              <h6 class="mb-0 fw-semibold">
+                <i class="bi bi-globe me-2"></i>Map Preview
+              </h6>
+              <small class="text-muted">
+                <i class="bi bi-arrows-fullscreen me-1"></i>Click and drag to navigate
+              </small>
+            </div>
+            <div class="card-body p-0">
+              <div class="map-container" id="lc-map" style="height: 400px;"></div>
+            </div>
+          </div>
+
+          <!-- Coordinate Management -->
+          <div class="card border">
+            <div class="card-header bg-light">
+              <h6 class="mb-0 fw-semibold">
+                <i class="bi bi-geo me-2"></i>Coordinate Management
+              </h6>
+            </div>
+            <div class="card-body">
+              <!-- Action Buttons -->
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <button type="button" class="btn btn-primary btn-sm" 
+                        id="lc_btn_add_coordinate_2"
+                        data-bs-placement="top" data-bs-title="Add Coordinate">
+                  <i class="bi bi-plus-circle me-1"></i> Add Coordinate
+                </button>
+
+                <button type="button" class="btn btn-success btn-sm" 
+                        id="lrd_btn_add_coordinate_by_csv_2"
+                        data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv"
+                        data-bs-placement="top" data-bs-title="Upload CSV">
+                  <i class="bi bi-upload me-1"></i> Upload CSV
+                </button>
+
+                <button type="button" class="btn btn-info btn-sm" 
+                        id="lc_btn_visualise_coordinate_gf"
+                        data-bs-placement="top" data-bs-title="Visualize Polygon">
+                  <i class="bi bi-eye me-1"></i> Visualize
+                </button>
+
+                <button type="button" class="btn btn-warning btn-sm" 
+                        id="btn_lc_save_parcel_for_search"
+                        data-bs-placement="top" data-bs-title="Save Parcel">
+                  <i class="bi bi-save me-1"></i> Save Parcel
+                </button>
+
+                <button type="button" class="btn btn-outline-danger btn-sm ms-auto" 
+                        id="btn_clear_all_coordinates"
+                        data-bs-placement="top" data-bs-title="Clear All">
+                  <i class="bi bi-trash me-1"></i> Clear All
+                </button>
+              </div>
+
+              <!-- Coordinates Table -->
+              <div class="table-responsive">
+                <table class="table table-hover table-sm" id="coordinatelis_Table">
+                  <thead class="table-light">
+                    <tr>
+                      <th width="30%">
+                        <i class="bi bi-tag me-1"></i>Coordinate Name
+                      </th>
+                      <th width="25%">
+                        <i class="bi bi-arrow-right me-1"></i>X Coordinate
+                      </th>
+                      <th width="25%">
+                        <i class="bi bi-arrow-up me-1"></i>Y Coordinate
+                      </th>
+                      <th width="20%" class="text-center">
+                        <i class="bi bi-gear me-1"></i>Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Data will be inserted dynamically -->
+                    <tr id="noCoordinatesRow">
+                      <td colspan="4" class="text-center py-4">
+                        <div class="text-muted">
+                          <i class="bi bi-geo fs-1 mb-2 d-block"></i>
+                          <p class="mb-0">No coordinates added</p>
+                          <small>Click "Add Coordinate" or "Upload CSV" to get started</small>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+        </div>
+        <div class="col-md-6">
+          
+        </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light">
+        <div class="d-flex justify-content-between w-100 align-items-center">
+          <div>
+            <small class="text-muted">
+              <i class="bi bi-info-circle me-1"></i>
+              <span id="coordinateSummary">No coordinates added</span>
+            </small>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <i class="bi bi-x-circle me-1"></i>Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

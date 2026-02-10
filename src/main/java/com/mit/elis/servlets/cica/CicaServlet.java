@@ -1649,8 +1649,10 @@ public class CicaServlet {
 				String complainant_email = request.getParameter("complainant_email");
 				String complainant_add = request.getParameter("complainant_add");
 				String purpose = request.getParameter("purpose");
-				String request_by = request.getParameter("request_by");
-				String request_by_id = request.getParameter("request_by_id");
+				//String request_by = request.getParameter("request_by");
+				String request_by = (String) session.getAttribute("fullname");
+				//String request_by_id = request.getParameter("request_by_id");
+				String request_by_id = (String) session.getAttribute("userid");
 				String regional_code = (String) session.getAttribute("regional_code");
 				// System.out.println(regional_code);
 				String within_time_frame = "";
@@ -1665,6 +1667,8 @@ public class CicaServlet {
 				obj.put("request_by_id", request_by_id);
 				obj.put("purpose", purpose);
 				obj.put("regional_code", regional_code);
+
+				System.out.println("Data: " + obj.toString());
 
 				switch (purpose) {
 					case "1":
