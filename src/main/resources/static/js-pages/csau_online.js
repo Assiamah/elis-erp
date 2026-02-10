@@ -3528,6 +3528,42 @@ window.closeModalAndReset = function () {
    // showSuccessToast('Document receipt completed successfully!');
 }
 
+	$('#lc_btn_check_status_of_lincense_surveyor_oncase').on('click', function(e) { 
+ 			var ls_number = $("#new_bill_application_ls_number_oncase").val();
+ 	
+ 		   //	console.log(id_number);
+ 				 $.ajax({
+ 					 type: "POST",
+ 					 url: "Case_Management_Serv",
+ 					 data: {
+ 		               	request_type: 'select_load_details_of_licenced_surveyor',
+ 		             	ls_number:ls_number},
+ 					 cache: false,
+ 					 beforeSend: function () {
+ 						// $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+ 					 },
+ 					 success: function(jobdetails) {
+ 						
+ 						console.log(jobdetails);
+ 						
+ 						if(jobdetails==="Error in loading Data "){
+ 							alert('Surveyor number does not exist, or Surveyor is not in good standing')
+ 							return false;
+ 						}else{
+ 							var json_p = JSON.parse(jobdetails);
+ 	 						console.log(json_p);
+ 	 						// $('#case_file_number').val(jobdetails);
+ 	 						 $('#addNewserviceBillModalonCase #new_bill_application_surveyors_name_oncase').val(json_p.licensed_surveyor_name);
+ 	 						 $('#addNewserviceBillModalonCase #new_bill_application_surveyors_status_oncase').val(json_p.licensed_surveyor_status);
+ 	 						$('#addNewserviceBillModalonCase #new_bill_application_client_id_oncase').val(json_p.licensed_surveyor_number);
+ 						}
+ 						
+ 			  
+ 					 }
+ 					 }); 
+ 		   //	
+ 		   });
+
 // Helper functions
 function printReceipt(jobNumber) {
     Swal.fire({
