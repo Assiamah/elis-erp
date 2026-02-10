@@ -729,7 +729,7 @@ $('#main_service_on_case').change(function () {
 
     if (main_service_name === 'APPLICATION FOR REGISTRATION') {
         $('#oncasereg-no-div').hide();
-        $('#oncasereglandsize-no-div').hide();
+        $('#oncasereglandsize-no-div').show();
         $('#oncasestp-no-div').hide();
         $('#oncasefreg-no-div').show();
     }

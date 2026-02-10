@@ -4959,9 +4959,9 @@ $('<style>')
 							} else if (!type_of_use || type_of_use === '-1') {
 								errorField = '#new_bill_type_of_use';
 								errorMessage = 'Please select type of use';
-							} else if (!registration_forms || registration_forms === '-1') {
-								errorField = '#new_bill_registration_forms';
-								errorMessage = 'Please select registration forms';
+							// } else if (!registration_forms || registration_forms === '-1') {
+							// 	errorField = '#new_bill_registration_forms';
+							// 	errorMessage = 'Please select registration forms';
 							} else if (!publication_type) {
 								errorField = '#new_bill_publication_type';
 								errorMessage = 'Please select publication type';
