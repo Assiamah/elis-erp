@@ -835,7 +835,7 @@
             </div>
 
             <!-- Land Size & Locality -->
-            <div class="row g-3 mt-2" id="oncasereglandsize-no-div" style="display: none;">
+            <div class="row g-3 mt-2" id="oncasereglandsize-no-div">
               <div class="col-md-6">
                 <label for="new_bill_land_size_on_case" class="form-label fw-medium">Land Size (Acres)</label>
                 <div class="input-group">

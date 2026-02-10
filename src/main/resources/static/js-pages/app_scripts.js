@@ -722,7 +722,7 @@ $('#main_service_on_case').change(function () {
 
     if (main_service_name === 'APPLICATION FOR STAMPING') {
         $('#oncasereg-no-div').hide();
-        $('#oncasereglandsize-no-div').hide();
+        $('#oncasereglandsize-no-div').show();
         $('#oncasestp-no-div').show();
         $('#oncasefreg-no-div').hide();
     }
@@ -732,6 +732,13 @@ $('#main_service_on_case').change(function () {
         $('#oncasereglandsize-no-div').show();
         $('#oncasestp-no-div').hide();
         $('#oncasefreg-no-div').show();
+    }
+
+    if (main_service_name === 'APPLICATION FOR REGULARISATION') {
+        $('#oncasereg-no-div').hide();
+        $('#oncasereglandsize-no-div').show();
+        $('#oncasestp-no-div').hide();
+        $('#oncasefreg-no-div').hide();
     }
 
     $.ajax({
@@ -896,11 +903,12 @@ $('#sub_service_on_case').change(function () {
                         });
                         //business_process_id	  
 
-                        CallC();
                     }
                 });
 
          }
+
+          CallC();
 
     }
 
@@ -917,6 +925,7 @@ $('#sub_service_on_case').change(function () {
                 // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
             },
             success: function (jobdetails) {
+                console.log(jobdetails);
                 var json_p = JSON.parse(jobdetails);
                 var options = $("#new_type_of_revenue_item_on_case");
 

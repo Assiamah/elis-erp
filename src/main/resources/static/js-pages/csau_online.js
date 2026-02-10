@@ -5355,10 +5355,11 @@ $('<style>')
                 } else if (!no_of_copy || isNaN(no_of_copy) || parseInt(no_of_copy) < 1) {
                     errorField = '#new_number_of_copies_on_case';
                     errorMessage = 'Please enter valid number of copies (minimum 1)';
-                } else if (!revenue_item || revenue_item === '-1') {
-                    errorField = '#new_type_of_revenue_item_on_case';
-                    errorMessage = 'Please select nature of instrument';
                 }
+				//  else if (!revenue_item || revenue_item === '-1') {
+                //     errorField = '#new_type_of_revenue_item_on_case';
+                //     errorMessage = 'Please select nature of instrument';
+                // }
                 break;
 
             case 'APPLICATION FOR REGISTRATION':
@@ -5375,9 +5376,9 @@ $('<style>')
                 } else if (!type_of_use || type_of_use === '-1') {
                     errorField = '#new_bill_type_of_use_on_case';
                     errorMessage = 'Please select type of use';
-                } else if (!registration_forms || registration_forms === '-1') {
-                    errorField = '#new_bill_registration_forms_on_case';
-                    errorMessage = 'Please select registration forms';
+                // } else if (!registration_forms || registration_forms === '-1') {
+                //     errorField = '#new_bill_registration_forms_on_case';
+                //     errorMessage = 'Please select registration forms';
                 } else if (!publication_type) {
                     errorField = '#new_bill_publication_type_on_case';
                     errorMessage = 'Please select publication type';
@@ -6197,13 +6198,13 @@ $('<style>')
 								success: function (
 									jobdetails) {
 
-									console.log(jobdetails);
+									// console.log(jobdetails);
 
 									var table = $('#tbl_job_detail_dataTable');
 									table.find("tbody tr")
 										.remove();
 
-									console.log(jobdetails);
+									// console.log(jobdetails);
 									var json_p = JSON
 										.parse(jobdetails);
 									if (json_p.data === null) {
