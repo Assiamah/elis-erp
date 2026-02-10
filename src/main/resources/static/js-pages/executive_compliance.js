@@ -2257,7 +2257,7 @@ $(document).off('click', '#view_recieved_applications').on('click', '#view_recie
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(app.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 
@@ -2712,7 +2712,7 @@ $(document).off('click', '#view_pending_apps_by_sub_service').on('click', '#view
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(item.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 
@@ -3163,7 +3163,7 @@ $(document).off('click', '#view_completed_applications').on('click', '#view_comp
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(app.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 
@@ -3616,7 +3616,7 @@ $(document).off('click', '#view_received_completed_applications').on('click', '#
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(item.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 
@@ -5123,7 +5123,7 @@ $(document)
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(app.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 
@@ -5861,7 +5861,7 @@ $(document).off('click', '#view_regional_applications_by_units_staff_apps').on('
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(app.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 

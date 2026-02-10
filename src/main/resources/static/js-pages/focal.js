@@ -1334,7 +1334,7 @@ $(document).on("click", ".showApplicationsModal", function (event) {
 								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(app.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
-									Cabinet
+									Track
 								</a>
 							</li>
 

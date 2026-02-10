@@ -781,7 +781,6 @@ $('#main_service_on_case').change(function () {
 })
 
 $('#sub_service_on_case').change(function () {
-    //alert($(this).val());
     var select_id = document.getElementById("main_service_on_case");
     var main_service = select_id.options[select_id.selectedIndex].value;
     var sub_service = $(this).val();
@@ -792,13 +791,13 @@ $('#sub_service_on_case').change(function () {
     var sub_service_id = sub_service_name_id[0];
     var sub_service_name = sub_service_name_id[1];
 
+    // Show/hide UI elements based on service selection
     if (main_service_name === 'APPLICATION FOR PLAN APPROVAL') {
         $('#oncasereg-no-div').show();
         $('#oncasereglandsize-no-div').show();
         $('#oncasestp-no-div').hide();
         $('#oncasefreg-no-div').hide();
         $('#oncasefpublication-no-div').hide();
-
     }
 
     if (main_service_name === 'APPLICATION FOR STAMPING') {
@@ -815,26 +814,17 @@ $('#sub_service_on_case').change(function () {
         $('#oncasestp-no-div').hide();
         $('#oncasefreg-no-div').show();
         $('#oncasefpublication-no-div').show();
-
     }
 
-    if (sub_service_name === 'APPLICATION FOR MORTGAGES') {
+    if (sub_service_name === 'APPLICATION FOR MORTGAGES' || 
+        sub_service_name === 'APPLICATION FOR OBJECTION') {
         $("#on_application_client_name").val('');
         document.getElementById("on_application_client_name").readOnly = false;
-
     }
 
-    if (sub_service_name === 'APPLICATION FOR OBJECTION') {
-        $("#on_application_client_name").val('');
-        document.getElementById("on_application_client_name").readOnly = false;
-
-    }
-
-
-    CallA();
-
-    function CallA() {
-       
+    // Create service call functions that return Promises
+    function getLCChecklist() {
+        return new Promise((resolve, reject) => {
             $.ajax({
                 type: "POST",
                 url: "Case_Management_Serv",
@@ -844,111 +834,126 @@ $('#sub_service_on_case').change(function () {
                     sub_service_id: sub_service_id
                 },
                 cache: false,
-                beforeSend: function () {
-                    // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-                },
                 success: function (jobdetails) {
-
-                    var table = $('#on_case_checlist_table_billdataTable');
-                    table.find("tbody tr").remove();
-
-                    //console.log(jobdetails);
-                    var json_p = JSON.parse(jobdetails);
-
-                    $(json_p).each(function () {
-                        table.append("<tr><td>" + this.business_process_checklist_name + "</td><td>" + '<div class="text-center custom-checkbox"> <input type="checkbox" class="select-item checkbox form-check-input form-checked-warning" name="select-item" value="1002" /></div>' + "</td>"
-                            //	  +  '<td><p data-placement="top" data-toggle="tooltip" title="Transaction Details"><button class="btn btn-info btn-icon-split" data-title="Delete" data-toggle="modal" data-target="#modalrecordinformation" data-target-id="' + this.ms_id + '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Add to List</span></button></p></td>'
-                            + "</tr>");
-                    });
-
-                    CallB();
+                    resolve(jobdetails);
+                },
+                error: function (xhr, status, error) {
+                    reject(error);
                 }
             });
+        });
+    }
+
+    function getTypeOfFormsList() {
+        return new Promise((resolve, reject) => {
+            if (main_service_name !== 'APPLICATION FOR REGISTRATION') {
+                resolve(null);
+                return;
+            }
             
-       
-
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: 'get_type_of_forms_list',
+                    main_service_id: main_service_id,
+                    sub_service_id: sub_service_id
+                },
+                cache: false,
+                success: function (jobdetails) {
+                    resolve(jobdetails);
+                },
+                error: function (xhr, status, error) {
+                    reject(error);
+                }
+            });
+        });
     }
 
-
-    function CallB() {
-
-         if(main_service == 'APPLICATION FOR REGISTRATION'){
-
-                $.ajax({
-                    type: "POST",
-                    url: "Case_Management_Serv",
-                    data: {
-                        request_type: 'get_type_of_forms_list',
-                        main_service_id: main_service_id,
-                        sub_service_id: sub_service_id
-                    },
-                    cache: false,
-                    beforeSend: function () {
-                        // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-                    },
-                    success: function (jobdetails) {
-
-
-                        // console.log(jobdetails);
-                        var json_p = JSON.parse(jobdetails);
-                        var options = $("#new_bill_registration_forms_on_case");
-
-                        // var options = $("#selector");
-                        options.empty();
-                        options.append(new Option("-- Select --", 0));
-
-                        $(json_p).each(function () {
-                            $('#new_bill_registration_forms_on_case').append('<option value="' + this.form_number + '-' + this.form_name + '">' + this.form_name + '</option>');
-
-                        });
-                        //business_process_id	  
-
-                    }
-                });
-
-         }
-
-          CallC();
-
+    function getRevenueItemList() {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: 'get_list_of_revenue_item_list'
+                },
+                cache: false,
+                success: function (jobdetails) {
+                    resolve(jobdetails);
+                },
+                error: function (xhr, status, error) {
+                    reject(error);
+                }
+            });
+        });
     }
 
-    function CallC() {
-
-        $.ajax({
-            type: "POST",
-            url: "Case_Management_Serv",
-            data: {
-                request_type: 'get_list_of_revenue_item_list',
-            },
-            cache: false,
-            beforeSend: function () {
-                // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-            },
-            success: function (jobdetails) {
-                console.log(jobdetails);
+    // Execute service calls using Promises
+    getLCChecklist()
+        .then(jobdetails => {
+            // Process checklist data
+            var table = $('#on_case_checlist_table_billdataTable');
+            table.find("tbody tr").remove();
+            
+            try {
                 var json_p = JSON.parse(jobdetails);
-                var options = $("#new_type_of_revenue_item_on_case");
+                $(json_p).each(function () {
+                    table.append("<tr><td>" + this.business_process_checklist_name + "</td><td>" + 
+                        '<div class="text-center custom-checkbox"> <input type="checkbox" class="select-item checkbox form-check-input form-checked-warning" name="select-item" value="1002" /></div>' + 
+                        "</td></tr>");
+                });
+            } catch (e) {
+                console.error("Error parsing checklist data:", e);
+            }
+            
+            return getTypeOfFormsList();
+        })
+        .then(formsData => {
+            // Process forms data if available
+            if (formsData) {
+                console.log("form: " + formsData);
+                try {
+                    var json_p = JSON.parse(formsData);
+                    var options = $("#new_bill_registration_forms_on_case");
+                    options.empty();
+                    options.append(new Option("-- Select --", 0));
 
-                // var options = $("#selector");
+                    $(json_p).each(function () {
+                        options.append('<option value="' + this.form_number + '-' + this.form_name + '">' + 
+                            this.form_name + '</option>');
+                    });
+                } catch (e) {
+                    console.error("Error parsing forms data:", e);
+                }
+            }
+            
+            return getRevenueItemList();
+        })
+        .then(revenueData => {
+            // Process revenue data
+            console.log(revenueData);
+            try {
+                var json_p = JSON.parse(revenueData);
+                var options = $("#new_type_of_revenue_item_on_case");
                 options.empty();
                 options.append(new Option("-- Select --", 0));
 
                 $(json_p).each(function () {
-
-
                     if (sub_service_id == this.is_inspection_required) {
-                        $('#new_type_of_revenue_item_on_case').append('<option value="' + this.id + '_' + this.revenue_items_name + '">' + this.revenue_items_name + '</option>');
-
+                        options.append('<option value="' + this.id + '_' + this.revenue_items_name + '">' + 
+                            this.revenue_items_name + '</option>');
                     }
-
                 });
-                //business_process_id	  
+            } catch (e) {
+                console.error("Error parsing revenue data:", e);
             }
+        })
+        .catch(error => {
+            console.error("Error in service calls:", error);
+            // Handle errors appropriately (show message to user, etc.)
         });
-
-    }
-
-})
+});
 
 $('#btnAddAlltoBatchlist').on('click', function (e) {
     var job_purpose = $("#txt_general_job_purpose").val();
