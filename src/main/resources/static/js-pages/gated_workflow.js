@@ -18505,5 +18505,790 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return false;
     });
+
+    $('#form_assessment').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const case_number = $("#cs_main_transaction_number").val();
+        const job_number = $("#cs_main_job_number").val();
+        const assessed_value = $("#assessed_value").val().trim();
+        const stamp_duty = $("#stamp_duty").val().trim();
+        const assessed_comment = $("#assessed_comment").val().trim();
+        const considertion_fee_adopted_rate = $("#considertion_fee_adopted_rate").val().trim();
+        
+        // Validation
+        const validationErrors = [];
+        
+        if (!assessed_value || parseFloat(assessed_value) <= 0) {
+            validationErrors.push('Valid Assessed Value is required');
+        }
+        if (!stamp_duty || parseFloat(stamp_duty) <= 0) {
+            validationErrors.push('Valid Stamp Duty Payable is required');
+        }
+        if (!assessed_comment) {
+            validationErrors.push('Assessment Comments are required');
+        }
+        if (!considertion_fee_adopted_rate || parseFloat(considertion_fee_adopted_rate) <= 0) {
+            validationErrors.push('Valid Currency Conversion Rate is required');
+        }
+        
+        if (validationErrors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-3">Please correct the following:</h5>
+                        <ul class="text-start list-unstyled">
+                            ${validationErrors.map(err => `<li><i class="fas fa-times-circle text-danger me-2"></i>${err}</li>`).join('')}
+                        </ul>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: 'white',
+                backdrop: 'rgba(0,0,0,0.4)'
+            });
+            return;
+        }
+        
+        // Format amounts for display
+        const formattedAssessedValue = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        }).format(parseFloat(assessed_value) || 0);
+        
+        const formattedStampDuty = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        }).format(parseFloat(stamp_duty) || 0);
+        
+        // Get applicant name for display
+        const ar_name = $("#cs_main_ar_name").val() || 'N/A';
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val() || 'Stamp Duty Assessment';
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Save Stamp Duty Assessment?',
+            html: `<div class="text-start">
+                    <div class="mb-3 text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block">
+                            <i class="fas fa-stamp text-primary fa-3x"></i>
+                        </div>
+                    </div>
+                    <h5 class="mb-3 text-center fw-bold">Confirm Assessment Details</h5>
+                    
+                    <div class="card border-0 bg-light mb-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-briefcase me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Job Number:</span>
+                                <span class="ms-2 fw-semibold">${job_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-file-invoice me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Case Number:</span>
+                                <span class="ms-2 fw-semibold">${case_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-user me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Applicant:</span>
+                                <span class="ms-2 fw-semibold">${ar_name}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-tag me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Service:</span>
+                                <span class="ms-2">${business_process_sub_name}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="bg-white border rounded-3 p-2 text-center">
+                                <small class="text-muted d-block">Assessed Value</small>
+                                <span class="fw-bold text-primary h6">${formattedAssessedValue}</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-white border rounded-3 p-2 text-center">
+                                <small class="text-muted d-block">Stamp Duty</small>
+                                <span class="fw-bold text-success h6">${formattedStampDuty}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-2">
+                        <div class="d-flex">
+                            <i class="fas fa-comment me-2 mt-1"></i>
+                            <div>
+                                <strong>Comments:</strong>
+                                <p class="mb-0 small">${assessed_comment || 'No comments provided'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span class="small">This action will update the stamp duty records and cannot be automatically undone.</span>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check me-2"></i>Yes, Save Assessment',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            // cancelButtonColor: '#6c757d',
+            background: 'white',
+            width: 600,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                // cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Saving Assessment',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mb-0">Processing stamp duty assessment...</p>
+                            <p class="text-muted small mt-2">Please wait while we update the records</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    background: 'white'
+                });
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'update_stamp_duty_records',
+                        case_number: case_number,
+                        job_number: job_number,
+                        assessed_value: assessed_value,
+                        stamp_duty: stamp_duty,
+                        assessed_comment: assessed_comment,
+                        considertion_fee_adopted_rate: considertion_fee_adopted_rate
+                    },
+                    cache: false,
+                    dataType: 'text',
+                    success: function(jobdetails) {
+                        Swal.close(); // Close loading Swal
+                        
+                        if (jobdetails && jobdetails.includes('Success')) {
+                            // Get values for job tracking
+                            const ar_name = $("#cs_main_ar_name").val();
+                            const business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+                            const job_purpose = "Assessment Done";
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Assessment Saved Successfully!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="mb-2">Stamp Duty Assessment Complete</h5>
+                                        <div class="bg-light rounded-3 p-3 mt-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="text-muted">Job Number:</span>
+                                                <span class="fw-semibold">${job_number}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="text-muted">Assessed Value:</span>
+                                                <span class="fw-bold text-primary">${formattedAssessedValue}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">Stamp Duty:</span>
+                                                <span class="fw-bold text-success">${formattedStampDuty}</span>
+                                            </div>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: '<i class="fas fa-check me-2"></i>Continue',
+                                confirmButtonColor: '#198754',
+                                background: 'white',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                backdrop: 'rgba(0,0,0,0.4)'
+                            }).then(() => {
+                                // Add job to completed queried list
+                                addJobToCompletedQueriedList(job_number, ar_name, business_process_sub_name, job_purpose);
+                                
+                                // Close the modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('enter_assessed_value_and_duty_payable'));
+                                if (modal) {
+                                    modal.hide();
+                                }
+                                
+                                // Refresh any related tables or data
+                                refreshStampDutyData();
+                            });
+                            
+                        } else {
+                            // Show error message
+                            let errorMessage = 'An unexpected error occurred while saving the assessment';
+                            let errorDetail = 'Please try again or contact support';
+                            
+                            if (jobdetails && jobdetails.includes('Error')) {
+                                errorMessage = jobdetails.split('Error:')[1] || errorMessage;
+                            }
+                            
+                            Swal.fire({
+                                title: 'Save Failed',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="mb-2">Unable to Save Assessment</h5>
+                                        <p class="text-danger">${errorMessage}</p>
+                                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                            <i class="fas fa-lightbulb me-2"></i>
+                                            ${errorDetail}
+                                        </div>
+                                    </div>`,
+                                icon: 'error',
+                                confirmButtonText: 'Try Again',
+                                confirmButtonColor: '#dc3545',
+                                showCancelButton: true,
+                                cancelButtonText: 'Close',
+                                cancelButtonColor: '#6c757d',
+                                background: 'white',
+                                reverseButtons: true
+                            }).then((retryResult) => {
+                                if (retryResult.isConfirmed) {
+                                    // Retry submission
+                                    $('#form_assessment').submit();
+                                }
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close(); // Close loading Swal
+                        
+                        let errorTitle = 'Server Error';
+                        let errorMessage = 'Failed to connect to the server';
+                        let errorDetails = '';
+                        
+                        if (xhr.status === 404) {
+                            errorMessage = 'Service endpoint not found';
+                            errorDetails = 'Please contact system administrator';
+                        } else if (xhr.status === 500) {
+                            errorMessage = 'Internal server error';
+                            errorDetails = 'The server encountered an error processing your request';
+                        } else if (xhr.status === 0) {
+                            errorMessage = 'Network connection error';
+                            errorDetails = 'Please check your internet connection';
+                        }
+                        
+                        Swal.fire({
+                            title: errorTitle,
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">${errorMessage}</h5>
+                                    <p class="text-danger small">${xhr.status}: ${error}</p>
+                                    <p class="text-muted mt-2">${errorDetails}</p>
+                                    <div class="alert alert-secondary bg-secondary bg-opacity-10 border-secondary mt-3">
+                                        <i class="fas fa-redo-alt me-2"></i>
+                                        You can try again or contact IT support
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                            confirmButtonColor: '#0d6efd',
+                            showCancelButton: true,
+                            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                            cancelButtonColor: '#6c757d',
+                            background: 'white',
+                            reverseButtons: true
+                        }).then((retryResult) => {
+                            if (retryResult.isConfirmed) {
+                                $('#form_assessment').submit();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Helper function to refresh stamp duty data
+    function refreshStampDutyData() {
+        // Trigger any table refreshes or data reloads
+        if (typeof loadStampDutyRecords === 'function') {
+            loadStampDutyRecords();
+        }
+        
+        // Reset form if needed
+        setTimeout(() => {
+            $('#form_assessment')[0].reset();
+            $('#assessed_value, #stamp_duty, #assessed_comment, #considertion_fee_adopted_rate').removeClass('is-valid is-invalid');
+        }, 500);
+    }
+
+    // Optional: Add keyboard shortcut for save (Ctrl+S)
+    $(document).on('keydown', function(e) {
+        if (e.ctrlKey && e.key === 's' && $('#enter_assessed_value_and_duty_payable').hasClass('show')) {
+            e.preventDefault();
+            $('#form_assessment').submit();
+        }
+    });
+
+    // Optional: Auto-calculate stamp duty based on assessed value
+    $('#assessed_value').on('input', function() {
+        const assessedValue = parseFloat($(this).val()) || 0;
+        const dutyRate = 0.005; // 0.5% - adjust based on your business rules
+        
+        const stampDuty = assessedValue * dutyRate;
+        $('#stamp_duty').val(stampDuty.toFixed(2));
+    });
+
+    // Optional: Add confirmation before closing modal with unsaved changes
+    let formChanged = false;
+
+    $('#form_assessment input, #form_assessment textarea').on('change input', function() {
+        formChanged = true;
+    });
+
+    $('#enter_assessed_value_and_duty_payable').on('hide.bs.modal', function(e) {
+        if (formChanged) {
+            e.preventDefault();
+            
+            Swal.fire({
+                title: 'Unsaved Changes',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">You have unsaved changes</h5>
+                        <p class="text-muted">Are you sure you want to close without saving?</p>
+                    </div>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-times me-2"></i>Yes, Close',
+                cancelButtonText: '<i class="fas fa-edit me-2"></i>Continue Editing',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#0d6efd',
+                background: 'white',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formChanged = false;
+                    $(this).modal('hide');
+                }
+            });
+        }
+    });
+
+    $('#submit_print_stamp_bill').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const business_process_id = $("#cs_main_business_process_id").val();
+        const business_process_name = $("#cs_main_business_process_name").val();
+        const business_process_sub_id = $("#cs_main_business_process_sub_id").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+        const client_number = $("#cs_main_client_number").val();
+        const ar_name = $("#cs_main_ar_name").val();
+        const stamp_duty_amount = $("#stamp_duty").val();
+        const assessed_value_amount = $("#assessed_value").val();
+        const assessed_comment = $("#assessed_comment").val();
+        
+        // Validate required fields
+        const validationErrors = [];
+        
+        if (!job_number) validationErrors.push('Job Number is missing');
+        if (!case_number) validationErrors.push('Case Number is missing');
+        if (!ar_name) validationErrors.push('Applicant Name is required');
+        if (!stamp_duty_amount || parseFloat(stamp_duty_amount) <= 0) {
+            validationErrors.push('Valid Stamp Duty amount is required');
+        }
+        if (!assessed_value_amount || parseFloat(assessed_value_amount) <= 0) {
+            validationErrors.push('Valid Assessed Value is required');
+        }
+        
+        if (validationErrors.length > 0) {
+            Swal.fire({
+                title: 'Cannot Print Bill',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-3">The following issues were found:</h5>
+                        <ul class="text-start list-unstyled">
+                            ${validationErrors.map(err => `<li><i class="fas fa-times-circle text-danger me-2"></i>${err}</li>`).join('')}
+                        </ul>
+                        <p class="text-muted small mt-3">Please complete the assessment first before printing</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: 'white',
+                backdrop: 'rgba(0,0,0,0.4)'
+            });
+            return;
+        }
+        
+        // Format amounts for display
+        const formattedStampDuty = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        }).format(parseFloat(stamp_duty_amount) || 0);
+        
+        const formattedAssessedValue = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        }).format(parseFloat(assessed_value_amount) || 0);
+        
+        // Show print confirmation dialog
+        Swal.fire({
+            title: 'Generate Stamp Duty Bill?',
+            html: `<div class="text-start">
+                    <div class="mb-3 text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block">
+                            <i class="fas fa-file-invoice text-primary fa-3x"></i>
+                        </div>
+                    </div>
+                    <h5 class="mb-3 text-center fw-bold">Print Stamp Duty Bill</h5>
+                    
+                    <div class="card border-0 bg-light mb-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-briefcase me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Job Number:</span>
+                                <span class="ms-2 fw-semibold">${job_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-file-invoice me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Case Number:</span>
+                                <span class="ms-2 fw-semibold">${case_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-user me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Applicant:</span>
+                                <span class="ms-2 fw-semibold">${ar_name}</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-tag me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Service:</span>
+                                <span class="ms-2">${business_process_sub_name || 'Stamp Duty'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <div class="bg-white border rounded-3 p-2 text-center">
+                                <small class="text-muted d-block">Assessed Value</small>
+                                <span class="fw-bold text-primary h6">${formattedAssessedValue}</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-white border rounded-3 p-2 text-center">
+                                <small class="text-muted d-block">Stamp Duty</small>
+                                <span class="fw-bold text-success h6">${formattedStampDuty}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                        <div class="d-flex">
+                            <i class="fas fa-print me-2 mt-1"></i>
+                            <div>
+                                <strong>Print Preview</strong>
+                                <p class="mb-0 small">The bill will be generated as a PDF document and open in a new tab for printing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-print me-2"></i>Generate & Print',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            // cancelButtonColor: '#6c757d',
+            background: 'white',
+            width: 600,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                // cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Generating Bill',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mb-0">Creating stamp duty bill...</p>
+                            <p class="text-muted small mt-2">Please wait while we generate your document</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    background: 'white'
+                });
+                
+                // Make AJAX call to generate PDF
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'process_print_stamp_duty_bill',
+                        job_number: job_number,
+                        case_number: case_number,
+                        ar_name: ar_name,
+                        business_process_id: business_process_id,
+                        business_process_name: business_process_name,
+                        business_process_sub_id: business_process_sub_id,
+                        business_process_sub_name: business_process_sub_name,
+                        stamp_duty_amount: stamp_duty_amount,
+                        assessed_value_amount: assessed_value_amount,
+                        assessed_comment: assessed_comment,
+                        client_number: client_number
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(blob, status, xhr) {
+                        Swal.close(); // Close loading Swal
+                        
+                        // Check if response is actually an error (HTML/JSON) instead of PDF
+                        const contentType = xhr.getResponseHeader('Content-Type');
+                        
+                        if (contentType && !contentType.includes('pdf')) {
+                            // Handle error response
+                            const reader = new FileReader();
+                            reader.onload = function() {
+                                try {
+                                    const response = JSON.parse(reader.result);
+                                    showPrintError(response.message || 'Failed to generate bill');
+                                } catch (e) {
+                                    showPrintError('Server returned an invalid response');
+                                }
+                            };
+                            reader.readAsText(blob);
+                            return;
+                        }
+                        
+                        // Success - PDF generated
+                        const objectUrl = URL.createObjectURL(blob);
+                        
+                        // Show success message
+                        Swal.fire({
+                            title: 'Bill Generated Successfully!',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                                        </div>
+                                    </div>
+                                    <h5 class="mb-2">Stamp Duty Bill Ready</h5>
+                                    <p class="text-muted mb-2">The bill has been generated for:</p>
+                                    <div class="bg-light rounded-3 p-2 mb-2">
+                                        <span class="fw-semibold">${ar_name}</span>
+                                    </div>
+                                    <p class="small text-muted">Job: ${job_number}</p>
+                                </div>`,
+                            icon: 'success',
+                            confirmButtonText: '<i class="fas fa-print me-2"></i>Open & Print',
+                            confirmButtonColor: '#0d6efd',
+                            showCancelButton: true,
+                            cancelButtonText: '<i class="fas fa-download me-2"></i>Download Only',
+                            cancelButtonColor: '#6c757d',
+                            background: 'white',
+                            reverseButtons: true
+                        }).then((action) => {
+                            if (action.isConfirmed) {
+                                // Open PDF in new tab for printing
+                                window.open(objectUrl, '_blank');
+                            } else if (action.dismiss === Swal.DismissReason.cancel) {
+                                // Download PDF
+                                const link = document.createElement('a');
+                                link.href = objectUrl;
+                                link.download = `Stamp_Duty_Bill_${job_number}_${new Date().getTime()}.pdf`;
+                                link.click();
+                                
+                                Swal.fire({
+                                    title: 'Download Started',
+                                    text: 'Your bill is being downloaded',
+                                    icon: 'info',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    background: 'white'
+                                });
+                            }
+                            
+                            // Clean up object URL after 1 minute
+                            setTimeout(() => {
+                                URL.revokeObjectURL(objectUrl);
+                            }, 60000);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close(); // Close loading Swal
+                        
+                        let errorMessage = 'Failed to generate bill';
+                        let errorDetails = 'Please try again or contact support';
+                        
+                        if (xhr.status === 404) {
+                            errorMessage = 'Print service not available';
+                            errorDetails = 'The bill generation service is temporarily unavailable';
+                        } else if (xhr.status === 500) {
+                            errorMessage = 'Server error occurred';
+                            errorDetails = 'Unable to generate bill at this time';
+                        } else if (xhr.status === 0) {
+                            errorMessage = 'Network connection error';
+                            errorDetails = 'Please check your internet connection';
+                        }
+                        
+                        showPrintError(errorMessage, errorDetails, xhr.status);
+                    }
+                });
+            }
+        });
+    });
+
+    // Helper function to show print errors
+    function showPrintError(message, details = '', statusCode = '') {
+        Swal.fire({
+            title: 'Print Failed',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <div class="bg-danger bg-opacity-10 rounded-circle p-3 d-inline-block">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                    </div>
+                    <h5 class="mb-2">Unable to Generate Bill</h5>
+                    <p class="text-danger">${message}</p>
+                    ${statusCode ? `<p class="text-muted small">Error Code: ${statusCode}</p>` : ''}
+                    ${details ? `<p class="text-muted mt-2">${details}</p>` : ''}
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Please verify the assessment is complete and try again
+                    </div>
+                </div>`,
+            icon: 'error',
+            confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+            confirmButtonColor: '#0d6efd',
+            showCancelButton: true,
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+            cancelButtonColor: '#6c757d',
+            background: 'white',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#submit_print_stamp_bill').click();
+            }
+        });
+    }
+
+    // Optional: Add PDF preview functionality
+    function previewStampDutyBill() {
+        const job_number = $("#cs_main_job_number").val();
+        const ar_name = $("#cs_main_ar_name").val();
+        const stamp_duty_amount = $("#stamp_duty").val();
+        
+        if (!job_number || !stamp_duty_amount) {
+            return;
+        }
+        
+        // Show quick preview modal
+        const formattedStampDuty = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'GHS',
+            minimumFractionDigits: 2
+        }).format(parseFloat(stamp_duty_amount) || 0);
+        
+        Swal.fire({
+            title: 'Bill Preview',
+            html: `<div class="text-center">
+                    <div class="border rounded-3 p-4 bg-light">
+                        <div class="mb-3">
+                            <i class="fas fa-file-invoice text-primary fa-4x"></i>
+                        </div>
+                        <h6 class="fw-bold">STAMP DUTY BILL</h6>
+                        <p class="small text-muted">${new Date().toLocaleDateString()}</p>
+                        <hr>
+                        <div class="text-start">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Job Number:</span>
+                                <span class="fw-semibold">${job_number}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Applicant:</span>
+                                <span class="fw-semibold">${ar_name}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Stamp Duty:</span>
+                                <span class="fw-bold text-success">${formattedStampDuty}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Full bill will open in a new tab for printing
+                    </p>
+                </div>`,
+            icon: 'info',
+            confirmButtonText: '<i class="fas fa-print me-2"></i>Print Full Bill',
+            confirmButtonColor: '#0d6efd',
+            showCancelButton: true,
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+            background: 'white'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#submit_print_stamp_bill').click();
+            }
+        });
+    }
+
+    // Optional: Add keyboard shortcut (Ctrl+P) for printing
+    $(document).on('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'p' && $('#enter_assessed_value_and_duty_payable').hasClass('show')) {
+            e.preventDefault();
+            previewStampDutyBill();
+        }
+    });
+
+    // Optional: Add tooltip to show keyboard shortcut
+    $(document).ready(function() {
+        $('#submit_print_stamp_bill').attr('data-bs-toggle', 'tooltip')
+            .attr('data-bs-placement', 'top')
+            .attr('title', 'Generate PDF Bill (Ctrl+P)');
+        
+        // Initialize tooltip
+        const tooltip = new bootstrap.Tooltip(document.getElementById('submit_print_stamp_bill'));
+    });
 });
 

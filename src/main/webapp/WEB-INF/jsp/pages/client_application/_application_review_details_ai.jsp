@@ -282,6 +282,7 @@
         <input class="form-control" type="hidden" id="txt_new_lc_registration_block_number" name="txt_new_lc_registration_block_number" value="${registration_block_number}">
         <input class="form-control" type="hidden" id="is_general_request" name="is_general_request" value="${review_type == 'SpecificWorkRequest' ? 'no' : 'yes'}">
         <input class="form-control" type="hidden" id="request_id" name="request_id" value="${rq_id}">
+        <input class="form-control" type="hidden" id="cs_main_ar_name" name="cs_main_ar_name" value="${ar_name}">
         
         <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
             <div class="form-group">
