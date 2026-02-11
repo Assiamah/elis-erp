@@ -3937,98 +3937,758 @@ $('<style>')
 
 
 
-			$('#btn_load_bill_details_after_payment_change_of_names').on('click', function (e) {
+			$('#btn_load_bill_details_after_payment_change_of_names').on('click', function(e) {
+    e.preventDefault();
+    
+    // Get and validate reference number
+    const chng_ref_number = $("#chng_ref_number_for_payment").val().trim();
+    
+    // Validate input
+    if (!chng_ref_number) {
+        Swal.fire({
+            title: 'Reference Number Required',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                    </div>
+                    <h5 class="mb-2">Please Enter a Reference Number</h5>
+                    <p class="text-muted">Enter the payment reference number to verify and load bill details</p>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Example: REF-2024-001
+                    </div>
+                </div>`,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#f39c12',
+            background: 'white',
+            backdrop: 'rgba(0,0,0,0.4)'
+        });
+        return;
+    }
 
-				var chng_ref_number = $("#chng_ref_number_for_payment").val();
-				$.ajax({
-					type: "POST",
-					url: "payment_serv",
-					// target:'_blank',
+    // Show loading state
+    Swal.fire({
+        title: 'Verifying Payment',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-success mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mb-0">Checking reference: <strong>${chng_ref_number}</strong></p>
+                <p class="text-muted small mt-2">Please wait while we verify the payment status</p>
+            </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: 'white'
+    });
 
-					data: {
-						request_type: 'lc_payment_verification_for_name_change',
-						ref_number: chng_ref_number
-					},
-					cache: false,
-					success: function (jobdetails) {
-						console.log(jobdetails);
-						var table = $('#bill_for_payment_list_dataTable_change_of_name');
-						table.find("tbody tr").remove();
-						var json_p = JSON.parse(jobdetails);
+    // Make AJAX call
+    $.ajax({
+        type: "POST",
+        url: "payment_serv",
+        data: {
+            request_type: 'lc_payment_verification_for_name_change',
+            ref_number: chng_ref_number
+        },
+        cache: false,
+        dataType: 'json',
+        success: function(jobdetails) {
+            Swal.close(); // Close loading Swal
 
-						$(json_p.data).each(function () {
-							console.log(this);
-							if (this.payment_confiration_status === 0) {
-								alert('Bill has not been paid. It cannot be acknowledge')
-							} else {
+			// console.log(jobdetails);
+            
+            try {
+                const json_p = (typeof jobdetails === 'string') ? JSON.parse(jobdetails) : jobdetails;
+                
+                // Check if data exists
+                if (!json_p.data || json_p.data.length === 0) {
+                    Swal.fire({
+                        title: 'No Payment Records Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-file-invoice text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Payment Reference Not Found</h5>
+                                <p class="text-muted mb-2">Reference number <strong>"${chng_ref_number}"</strong> does not exist or hasn't been paid.</p>
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <i class="fas fa-search me-2"></i>
+                                    Please verify the reference number and try again
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545',
+                        background: 'white'
+                    });
+                    return;
+                }
 
-								table.append("<tr><td>" +
-									this.ref_number +
-									"</td><td>" +
-									this.ar_name +
-									"</td><td>" +
-									this.bill_amount +
-									"</td>" +
-									'<td><p data-placement="top" data-toggle="tooltip" title="Change Details">' +
-									'<button class="btn btn-success"  data-backdrop="static" '
+                // Clear existing table data
+                const table = $('#bill_for_payment_list_dataTable_change_of_name');
+                table.find("tbody tr").remove();
+                
+                let hasValidPayments = false;
+                let pendingPayments = 0;
 
-									+
-									'data-ref_number="' +
-									this.ref_number +
-									'" data-ar_name="' +
-									this.ar_name +
-									'" data-transaction_number="' +
-									this.bill_number +
-									'" data-business_process_name="' +
-									this.business_process_name +
-									'" data-locality="' +
-									this.locality +
-									'" data-business_process_sub_name="' +
-									this.business_process_sub_name +
-									'" data-bill_amount="' +
-									this.bill_amount +
-									'" data-district="' +
-									this.district +
-									'" data-region="' +
-									this.region +
-									'" id="chng_load_details"><span class="fas fa-download"></span> Load Details</button></p> </td>' +
-									"</tr>");
+                // Process each record
+                $(json_p.data).each(function(index, item) {
+                    if (this.payment_confiration_status === 0) {
+                        pendingPayments++;
+                    } else {
+                        hasValidPayments = true;
+                        const row = createPaymentTableRow(this);
+                        table.append(row);
+                    }
+                });
 
-								$('#chng_load_details').on('click', function (e) {
-									// console.log("jjj " +
-									// $(this).data('region'))
-									// e.preventDefault();
-									$('#ch_ar_name').val($(this).data('ar_name'));
-									$('#new_bill_application_region').val($(this).data('region').toUpperCase());
-									// $('#new_bill_application_region').trigger('change');
-									$('#new_bill_application_district').append($('<option>', {
-										value: $(this).data('district'),
-										text: $(this).data('district')
-									}))
+                // Show notification about unpaid bills
+                if (pendingPayments > 0) {
+                    Swal.fire({
+                        title: 'Unpaid Bills Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-warning fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">${pendingPayments} Unpaid Bill(s) Found</h5>
+                                <p class="text-muted">These bills cannot be acknowledged until payment is complete</p>
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Only paid bills will be displayed
+                                </div>
+                            </div>`,
+                        icon: 'warning',
+                        confirmButtonText: 'Continue',
+                        confirmButtonColor: '#f39c12',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        background: 'white'
+                    });
+                }
 
-									$('#new_bill_application_district').val($(this).data('district'));
-									$('#new_bill_application_locality').val($(this).data('locality').toUpperCase());
-									$('#new_bill_application_transaction').val($(this).data('transaction_number'));
+                // Show success if valid payments found
+                if (hasValidPayments) {
+                    Swal.fire({
+                        title: 'Payment Verified!',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Bill Details Loaded Successfully</h5>
+                                <p class="text-muted">Reference: <strong>${chng_ref_number}</strong></p>
+                                <div class="mt-2">
+                                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                                        <i class="fas fa-check me-1"></i> ${json_p.data.length - pendingPayments} Paid Bill(s)
+                                    </span>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        background: 'white'
+                    });
+                    
+                    // Initialize tooltips for new buttons
+                    initializePaymentTooltips();
+                }
+
+            } catch (error) {
+                console.error('Error parsing response:', error);
+                handlePaymentError('Processing Error', 'Failed to process server response');
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.close(); // Close loading Swal
+            handlePaymentAjaxError(xhr, status, error);
+        }
+    });
+});
+
+// Function to create payment table row
+function createPaymentTableRow(item) {
+	console.log(item);
+    const refNumber = item.ref_number || 'N/A';
+    const arName = item.ar_name || 'N/A';
+    const billAmount = parseFloat(item.bill_amount || 0).toFixed(2);
+    const billNumber = item.bill_number || 'N/A';
+    const businessProcessName = item.business_process_name || 'N/A';
+    const businessProcessSubName = item.business_process_sub_name || 'N/A';
+    const locality = item.locality || '';
+    const district = item.district || '';
+    const region = item.regional_code || '';
+    
+    // Format currency
+    const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'GHS',
+        minimumFractionDigits: 2
+    }).format(billAmount);
+
+    return `<tr>
+        <td>
+            <span class="fw-semibold">${refNumber}</span>
+            <br>
+            <small class="text-muted">${billNumber}</small>
+        </td>
+        <td>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-circle text-primary me-2"></i>
+                <div>
+                    <span class="fw-semibold">${arName}</span>
+                    <br>
+                    <small class="text-muted">${businessProcessSubName}</small>
+                </div>
+            </div>
+        </td>
+        <td>
+            <span class="text-success fw-bold">${formattedAmount}</span>
+        </td>
+        <td>
+            <button type="button" 
+                    class="btn btn-success btn-sm load-details-btn"
+                    data-ref_number="${refNumber}"
+                    data-ar_name="${arName}"
+                    data-transaction_number="${billNumber}"
+                    data-business_process_name="${businessProcessName}"
+                    data-business_process_sub_name="${businessProcessSubName}"
+                    data-locality="${locality}"
+                    data-bill_amount="${billAmount}"
+                    data-district="${district}"
+                    data-region="${region}"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Load and acknowledge payment details">
+                <i class="fas fa-download me-1"></i>
+                Load Details
+            </button>
+        </td>
+    </tr>`;
+}
+
+// Handle Load Details button click with confirmation
+$(document).on('click', '.load-details-btn', function(e) {
+    e.preventDefault();
+    
+    const $btn = $(this);
+    const refNumber = $btn.data('ref_number');
+    const arName = $btn.data('ar_name');
+    const billAmount = $btn.data('bill_amount');
+    const transactionNumber = $btn.data('transaction_number');
+    const businessProcessName = $btn.data('business_process_name');
+    const locality = $btn.data('locality');
+    const district = $btn.data('district');
+    const region = $btn.data('region');
+    
+    // Format amount for display
+    const formattedAmount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'GHS',
+        minimumFractionDigits: 2
+    }).format(billAmount || 0);
+
+    // Show confirmation dialog
+    Swal.fire({
+        title: 'Load Bill Details?',
+        html: `<div class="text-start">
+                <div class="mb-3 text-center">
+                    <i class="fas fa-file-invoice text-success fa-3x"></i>
+                </div>
+                <h5 class="mb-3 text-center">Confirm Payment Acknowledgement</h5>
+                
+                <div class="card border-0 bg-light mb-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-hashtag me-2 text-muted" style="width: 20px;"></i>
+                            <strong>Reference:</strong>
+                            <span class="ms-2">${refNumber}</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-user me-2 text-muted" style="width: 20px;"></i>
+                            <strong>Applicant:</strong>
+                            <span class="ms-2">${arName}</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-tag me-2 text-muted" style="width: 20px;"></i>
+                            <strong>Service:</strong>
+                            <span class="ms-2">${businessProcessName || 'Name Change'}</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-money-bill-wave me-2 text-muted" style="width: 20px;"></i>
+                            <strong>Amount:</strong>
+                            <span class="ms-2 text-success fw-bold">${formattedAmount}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>What happens next?</strong>
+                    <ul class="mb-0 mt-2 small">
+                        <li>Applicant details will be loaded into the form</li>
+                        <li>You can review and update the information</li>
+                        <li>Changes will be saved to the application</li>
+                    </ul>
+                </div>
+            </div>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-check me-2"></i>Yes, Load Details',
+        cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+        confirmButtonColor: '#198754',
+        // cancelButtonColor: '#6c757d',
+        background: 'white',
+        width: 550,
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'btn btn-success',
+            // cancelButton: 'btn btn-secondary'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading state on button
+            $btn.prop('disabled', true);
+            $btn.html('<span class="spinner-border spinner-border-sm me-1"></span>Loading...');
+            
+            // Load data into form
+            setTimeout(() => {
+                // Load applicant name
+                $('#ch_ar_name').val(arName);
+                
+                // Load region (convert to uppercase for consistency)
+                if (region) {
+                    $('#new_bill_application_region').val('11.0');
+                    // $('#new_bill_application_region').trigger('change');
+                }
+
+				// const $regionSelect = $('#new_bill_application_district');
+                // $districtSelect.empty();
+                // $districtSelect.append(`<option value="${district}">${district}</option>`);
+                // $districtSelect.val(district).trigger('change');
+                
+                // Handle district - clear and set new option
+                const $districtSelect = $('#new_bill_application_district');
+                $districtSelect.empty();
+                $districtSelect.append(`<option value="${district}">${district}</option>`);
+                $districtSelect.val(district).trigger('change');
+                
+				console.log(locality, district, region);
+
+				const $localitySelect = $('#new_bill_application_locality');
+                $localitySelect.empty();
+                $localitySelect.append(`<option value="${locality}">${locality}</option>`);
+                $localitySelect.val(locality).trigger('change');
+                
+                // Load transaction number
+                $('#new_bill_application_transaction').val(transactionNumber);
+                
+                // Show save button with animation
+                $('#btnSaveChangeOfNames').fadeIn(300).removeClass('d-none').css('display', 'block');
+                
+                // Reset button state
+                $btn.prop('disabled', false);
+                $btn.html('<i class="fas fa-download me-1"></i>Load Details');
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Details Loaded!',
+                    html: `<div class="text-center">
+                            <div class="mb-2">
+                                <i class="fas fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <p class="mb-0">Applicant information has been loaded successfully</p>
+                            <p class="text-muted small mt-2">Reference: ${refNumber}</p>
+                        </div>`,
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: 'white'
+                });
+                
+                // Scroll to form section
+                $('html, body').animate({
+                    scrollTop: $('#frmChangeofNames').offset().top - 100
+                }, 500);
+                
+            }, 300); // Small delay for better UX
+        }
+    });
+});
 
 
-									$('#btnSaveChangeOfNames').show();
-								});
+  $('#new_bill_application_region')
+							.change(
+									function() {
+                                        
+
+										// var region_id = $(this).find(
+										// 		':selected').attr('data-id');
+
+												//var region_id = $(this).val();
+												// var region_id = $(this).find(
+												// 	':selected').attr('data-id');
+
+												var region_id = $(this).val();
+
+										//const
+										// sub_service_name_id = sub_service
+										// 		.split('-');
+
+										// var main_service_id = sub_service_name_id[0];
+										// var main_service_name = sub_service_name_id[1];
+
+										// console.log(main_service_id);
+										// //console.log(main_service_name);
+										// main_service_id = main_service_id
+										// .replace('.0', '');
+
+										//  console.log("seleted gerion: " +  region_id);
+										// //
+										// region_id = region_id.replace('.0', '');
+
+										// var region_id = ""
+
+										// 		console.log(typeof main_service_id)
+
+										// 		switch (parseInt(main_service_id)) {
+										// 			case 11:
+										// 				region_id = 5;
+										// 			  	break;
+										// 			case 10:
+										// 				region_id = 5;
+										// 				break;
+										// 			case 14:
+										// 				region_id = 10;
+										// 				break;
+										// 			case 15:
+										// 				region_id = 3;
+										// 				break;
+										// 			case 18:
+										// 				region_id = 6;
+										// 				break;
+										// 			case 20:
+										// 				region_id = 2;
+										// 				break;
+										// 			case 17:
+										// 				region_id = 7;
+										// 				break;
+										// 			case 16:
+										// 				region_id = 8;
+										// 				break;
+										// 			case 19:
+										// 				region_id = 9;
+										// 				break;
+										// 			case 12:
+										// 				region_id = 4;
+										// 				break;
+										// 			case 13:
+										// 				region_id = 1;
+										// 				break;
+										// 			case 21:
+										// 				region_id = 21;
+										// 				break;
+										// 			case 22:
+										// 				region_id = 22;
+										// 				break;
+										// 			case 23:
+										// 				region_id = 23;
+										// 				break;
+										// 			case 24:
+										// 				region_id = 24;
+										// 				break;
+										// 			case 25:
+										// 				region_id = 25;
+										// 				break;
+										// 			case 26:
+										// 				region_id = 26;
+										// 		}
+
+											console.log(region_id);
+
+										$
+												.ajax({
+													type : "POST",
+													url : "Case_Management_Serv",
+													data : {
+														request_type : 'get_list_of_district',
+														region_id : region_id.replace('.0', '')
+													},
+													cache : false,
+													
+													success : function(
+															jobdetails) {
+
+														var select = $("#party_ar_district_gen");
+														var select2 = $("#new_bill_application_district");
+														select.empty();
+														select2.empty();
+
+														// console.log("District:
+														// " + jobdetails);
+														var json_p = JSON
+																.parse(jobdetails);
+
+														$(json_p)
+																.each(
+																		function() {
+																			
+																			select2
+																					.append('<option value="'
+																							+ this.district_name
+																							+ '">'
+																							+ this.district_name
+																							+ '</option>');
+
+																			/*
+																			 * select.append("<tr><td>"
+																			 * +this.officers_general_comments + "</td><td>"
+																			 * +this.division + "</td><td>"
+																			 * +this.created_by + "</td><td>"
+																			 * +this.created_date +'</tr>');
+																			 */
+
+																		});
+
+													}
+												});
 
 
+												// $
+												// .ajax({
+												// 	type : "POST",
+												// 	url : "Case_Management_Serv",
+												// 	data : {
+												// 		request_type : 'get_list_of_locality',
+												// 		region_id : main_service_id
+												// 	},
+												// 	cache : false,
+												// 	beforeSend : function() {
+												// 		// $('#district').html('<img
+												// 		// src="img/loading.gif"
+												// 		// alt="" width="24"
+												// 		// height="24">');
+												// 	},
+												// 	success : function(
+												// 			jobdetails) {
 
-							}
+												// 		 //console.log(jobdetails);
+												// 		var json_p = JSON
+												// 				.parse(jobdetails);
+												// 		var options = $("#new_bill_application_locality");
 
+												// 		// var options =
+												// 		// $("#selector");
+												// 		options.empty();
+												// 		options
+												// 				.append(new Option(
+												// 						"-- Select --",
+												// 						0));
 
+												// 		$(json_p)
+												// 				.each(
+												// 						function() {
 
+												// 							$(
+												// 									'#new_bill_application_locality')
+												// 									.append(
+												// 											'<option value="'
 
+												// 													+ this.location_name
+												// 													+ '">'
+												// 													+ this.location_name
+												// 													+ '</option>');
 
-						});
+												// 						});
+												// 		// business_process_id
+												// 	}
+												// });
 
+									});
 
+// Handle Save Changes button with confirmation
+$('#btnSaveChangeOfNames').off('click').on('click', function(e) {
+    e.preventDefault();
+    
+    const $btn = $(this);
+    const arName = $('#ch_ar_name').val();
+    const region = $('#new_bill_application_region').val();
+    const district = $('#new_bill_application_district').val();
+    const locality = $('#new_bill_application_locality').val();
+    const transactionNumber = $('#new_bill_application_transaction').val();
+    
+    // Validate form
+    if (!arName || !region || !district || !locality) {
+        Swal.fire({
+            title: 'Incomplete Form',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                    </div>
+                    <h5 class="mb-2">Please Complete All Fields</h5>
+                    <p class="text-muted">All applicant information fields are required</p>
+                </div>`,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#f39c12',
+            background: 'white'
+        });
+        return;
+    }
 
-					}
-				});
-			});
+    Swal.fire({
+        title: 'Save Changes?',
+        html: `<div class="text-start">
+                <div class="mb-3 text-center">
+                    <i class="fas fa-save text-primary fa-3x"></i>
+                </div>
+                <h5 class="mb-3 text-center">Confirm Changes</h5>
+                
+                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    This action will update the applicant information permanently
+                </div>
+                
+                <p class="text-muted small text-center mb-0">
+                    Please verify all details before saving
+                </p>
+            </div>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-save me-2"></i>Save Changes',
+        cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        background: 'white',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Here you can add AJAX call to save changes
+            Swal.fire({
+                title: 'Saved!',
+                html: '<p>Changes have been saved successfully</p>',
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: 'white'
+            }).then(() => {
+                $('#btnSaveChangeOfNames').fadeOut(300);
+            });
+        }
+    });
+});
+
+// Initialize tooltips for payment buttons
+function initializePaymentTooltips() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+        try {
+            const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+            if (tooltip) {
+                tooltip.dispose();
+            }
+            new bootstrap.Tooltip(tooltipTriggerEl, {
+                trigger: 'hover',
+                delay: { show: 300, hide: 100 }
+            });
+        } catch (e) {
+            console.warn('Could not initialize tooltip:', e);
+        }
+    });
+}
+
+// Error handler for payment verification
+function handlePaymentError(title, message) {
+    Swal.fire({
+        title: title,
+        html: `<div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                </div>
+                <h5 class="mb-2">${message}</h5>
+                <p class="text-muted">Please try again or contact support</p>
+            </div>`,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#dc3545',
+        background: 'white'
+    });
+}
+
+// AJAX error handler for payment verification
+function handlePaymentAjaxError(xhr, status, error) {
+    let errorTitle = 'Verification Failed';
+    let errorMessage = 'Unable to verify payment reference';
+    let errorDetails = '';
+    
+    if (xhr.status === 404) {
+        errorMessage = 'Payment service endpoint not found';
+        errorDetails = 'Please contact system administrator';
+    } else if (xhr.status === 500) {
+        errorMessage = 'Server error occurred';
+        errorDetails = 'Please try again in a few moments';
+    } else if (xhr.status === 0) {
+        errorMessage = 'Network connection error';
+        errorDetails = 'Please check your internet connection';
+    }
+
+    Swal.fire({
+        title: errorTitle,
+        html: `<div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                </div>
+                <h5 class="mb-2">${errorMessage}</h5>
+                <p class="text-danger small">${xhr.status}: ${error}</p>
+                <p class="text-muted mt-2">${errorDetails}</p>
+                <div class="alert alert-secondary bg-secondary bg-opacity-10 border-secondary mt-3">
+                    <i class="fas fa-redo-alt me-2"></i>
+                    You can try again or use a different reference number
+                </div>
+            </div>`,
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+        confirmButtonColor: '#0d6efd',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        cancelButtonColor: '#6c757d',
+        background: 'white',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#btn_load_bill_details_after_payment_change_of_names').click();
+        }
+    });
+}
+
+// Optional: Add clear/reset functionality
+$('#btnClearPaymentSearch').on('click', function() {
+    $('#chng_ref_number_for_payment').val('').focus();
+    $('#bill_for_payment_list_dataTable_change_of_name tbody').empty();
+    $('#ch_ar_name').val('');
+    $('#new_bill_application_transaction').val('');
+    $('#btnSaveChangeOfNames').fadeOut(300);
+    
+    Swal.fire({
+        title: 'Cleared',
+        text: 'Search form has been reset',
+        icon: 'info',
+        timer: 1500,
+        showConfirmButton: false,
+        background: 'white'
+    });
+});
+
+// Enter key support for search
+$('#chng_ref_number_for_payment').on('keypress', function(e) {
+    if (e.which === 13) {
+        e.preventDefault();
+        $('#btn_load_bill_details_after_payment_change_of_names').click();
+    }
+});
 
 
 
@@ -6348,165 +7008,282 @@ $('<style>')
 
 					});
 
-			$('#btn_job_number_for_adding_name_change_bill')
-				.on(
-					'click',
-					function (e) {
+			$('#btn_job_number_for_adding_name_change_bill').on('click', function(e) {
+    e.preventDefault();
+    
+    // Get and validate search input
+    const client_phone_search = $("#txt_job_number_for_adding_case_and_status").val().trim().toUpperCase();
+    
+    // Validate search criteria
+    if (!client_phone_search || client_phone_search.length < 6) {
+        Swal.fire({
+            title: 'Invalid Search',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                    </div>
+                    <h5 class="mb-3">Please Enter Valid Search Value</h5>
+                    <p class="text-muted mb-0">Search must be at least 6 characters long</p>
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Example: JOB-2024-001
+                    </div>
+                </div>`,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#f39c12',
+            background: 'white',
+            backdrop: 'rgba(0,0,0,0.4)',
+            allowOutsideClick: false
+        });
+        return;
+    }
 
-						var client_phone_search = $(
-							"#txt_job_number_for_adding_case_and_status")
-							.val().toUpperCase();
+    // Show loading state with Swal
+    Swal.fire({
+        title: 'Searching...',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mb-0">Looking for job number: <strong>${client_phone_search}</strong></p>
+                <p class="text-muted small mt-2">Please wait while we fetch the details</p>
+            </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: 'white'
+    });
 
-						if (!(client_phone_search.length >= 6 || client_phone_search === undefined)) {
-							$
-								.notify(
-									{
-										message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter valid search Value </span>',
-									}, {
-									type: 'danger', z_index: 9999
-								});
-							return;
-						}
+    // Make AJAX call
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'load_application_details_by_job_number_all',
+            job_number: client_phone_search
+        },
+        cache: false,
+        dataType: 'json',
+        success: function(jobdetails) {
+            Swal.close(); // Close loading Swal
+            
+            try {
+                const json_p = (typeof jobdetails === 'string') ? JSON.parse(jobdetails) : jobdetails;
+                
+                // Check if data exists
+                if (!json_p.data || json_p.data.length === 0) {
+                    Swal.fire({
+                        title: 'Application Not Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-file-exclamation text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">No Records Found</h5>
+                                <p class="text-muted mb-2">Job number <strong>"${client_phone_search}"</strong> does not exist</p>
+                                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    Tips:
+                                    <ul class="text-start mb-0 mt-2">
+                                        <li>Check if the job number is correct</li>
+                                        <li>Verify the application hasn't been archived</li>
+                                        <li>Contact support if the issue persists</li>
+                                    </ul>
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545',
+                        background: 'white',
+                        backdrop: 'rgba(0,0,0,0.4)'
+                    });
+                    return;
+                }
 
-						$
-							.ajax({
-								type: "POST",
-								url: "Case_Management_Serv",
-								// target:'_blank',
+                // Clear existing table data
+                const table = $('#tbl_job_detail_dataTable_nameChange');
+                table.find("tbody tr").remove();
 
-								data: {
-									request_type: 'load_application_details_by_job_number_all',
-									job_number: client_phone_search
-								},
-								cache: false,
+                // Populate table with results
+                $(json_p.data).each(function(index, item) {
+                    const row = createTableRow(item);
+                    table.append(row);
+                });
 
-								success: function (
-									jobdetails) {
+                // Show success notification
+                Swal.fire({
+                    title: 'Records Found!',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">${json_p.data.length} Application(s) Found</h5>
+                            <p class="text-muted">Job number: <strong>${client_phone_search}</strong></p>
+                        </div>`,
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: 'white'
+                });
 
-									var table = $('#tbl_job_detail_dataTable_nameChange');
-									table.find("tbody tr")
-										.remove();
+                // Initialize tooltips for new buttons
+                initializeTooltips();
 
-									console.log(jobdetails);
-									var json_p = JSON
-										.parse(jobdetails);
-									if (json_p.data === null) {
-										$
-											.notify(
-												{
-													message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Application not found </span>',
-												},
-												{
-													type: 'danger', z_index: 9999
-												});
-										return false;
-									}
-									$(json_p.data)
-										.each(
-											function () {
+            } catch (error) {
+                console.error('Error parsing response:', error);
+                Swal.fire({
+                    title: 'Processing Error',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Failed to Process Response</h5>
+                            <p class="text-muted">Please try again or contact system administrator</p>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545',
+                    background: 'white'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.close(); // Close loading Swal
+            
+            let errorMessage = 'An unexpected error occurred';
+            let errorDetails = '';
+            
+            if (xhr.status === 404) {
+                errorMessage = 'Service endpoint not found';
+                errorDetails = 'Please check your connection or contact support';
+            } else if (xhr.status === 500) {
+                errorMessage = 'Server error';
+                errorDetails = 'The server encountered an internal error';
+            } else if (xhr.status === 0) {
+                errorMessage = 'Network error';
+                errorDetails = 'Please check your internet connection';
+            }
 
-												table
-													.append("<tr><td>"
-														+ this.job_number
-														/*
-														 * + "</td><td>" +
-														 * this.case_number
-														 */
-														+ "</td><td>"
-														+ this.ar_name
-														+ "</td><td>"
-														+ this.locality
-														+ "</td><td>"
-														+ this.regional_number
-														+ "</td><td>"
-														/*
-														 * +
-														 * this.current_application_status + "</td><td>"
-														 */
+            Swal.fire({
+                title: 'Search Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">${errorMessage}</h5>
+                        <p class="text-danger small">${xhr.status}: ${error}</p>
+                        <p class="text-muted mt-2">${errorDetails}</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-clock me-2"></i>
+                            You can try again in a few moments
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#f39c12',
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                cancelButtonColor: '#6c757d',
+                background: 'white',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Retry the search
+                    $('#btn_job_number_for_adding_name_change_bill').click();
+                }
+            });
+        }
+    });
+});
 
-														// Add
-														// Job
-														+ '<p data-placement="top" data-toggle="tooltip" title="Add New Bill"><button class="btn btn-primary  btn-circle btn-sm" data-backdrop="static" data-keyboard="false" data-title="Add New Service" data-toggle="modal" data-target="#addNewserviceBillModalonCase" '
-														+ 'data-ref_number="'
-														+ this.job_number
-														+ '" '
-														+ 'data-case_number="'
-														+ this.transaction_number
-														+ '" '
-														+ 'data-land_size="'
-														+ this.land_size
-														+ '" '
-														+ 'data-ar_name="'
-														+ this.ar_name
-														+ '" '
-														+ 'data-created_for_id="'
-														+ this.created_for_id
-														+ '" '
-														+ 'data-licensed_no="'
-														+ this.licensed_no
-														+ '" '
-														+ 'data-locality="'
-														+ this.locality
-														+ '" '
-														+ 'data-region="'
-														+ this.region
-														+ '" '
-														+ 'data-district="'
-														+ this.district
-														+ '" '
-														+ 'data-licensed_no="'
-														+ this.licensed_no
-														+ '" '
-														+ 'data-bill_amount="'
-														+ this.current_application_status
+// Helper function to create table row with confirmation for adding new service
+function createTableRow(item) {
+    // Format data for display
+    const jobNumber = item.job_number || 'N/A';
+	const caseNumber = item.case_number || 'N/A';
+    const arName = item.ar_name || 'N/A';
+    const locality = item.locality || 'N/A';
+    const regionalNumber = item.regional_number || 'N/A';
+    const transactionNumber = item.transaction_number || 'N/A';
+    const landSize = item.land_size || '0';
+    const createdForId = item.created_for_id || '';
+    const licensedNo = item.licensed_no || 'N/A';
+    const region = item.region || '';
+    const district = item.district || '';
+    const billAmount = item.current_application_status || '0';
 
-														+ '" id="ad_new_service"><span class="fa fa-plus-circle"></span></button></p> </td>'
-
-														/*
-														 * + '<td><p data-placement="top" data-toggle="tooltip" title="generate Transitional Bill"><button
-														 * class="btn
-														 * btn-info
-														 * btn-circle
-														 * btn-sm"
-														 * data-title="Add
-														 * New
-														 * Service"
-														 * data-backdrop="static"
-														 * data-keyboard="false"
-														 * data-toggle="modal"
-														 * data-target="#generateTransitionalBillModal" ' +
-														 * 'data-ref_number="' +
-														 * this.job_number + '" ' +
-														 * 'data-case_number="' +
-														 * this.case_number + '" ' +
-														 * 'data-transaction_number="' +
-														 * this.transaction_number + '" ' +
-														 * 'data-land_size="' +
-														 * this.land_size + '" ' +
-														 * 'data-ar_name="' +
-														 * this.ar_name + '" ' +
-														 * 'data-created_for_id="' +
-														 * this.created_for_id + '" ' +
-														 * 'data-locality="' +
-														 * this.locality + '" ' +
-														 * 'data-licensed_no="' +
-														 * this.licensed_no + '" ' +
-														 * 'data-bill_amount="' +
-														 * this.current_application_status + '"
-														 * id="ad_new_service"><span
-														 * class="fa
-														 * fa-receipt"></span></button></p>
-														 * </td>'
-														 */
-
-														+ "</tr>");
-
-											});
-
-								}
-							});
-
-					});
+    return `<tr>
+        <td>
+            <span class="fw-semibold">${jobNumber}</span>
+        </td>
+		<td>
+            <span class="fw-semibold">${caseNumber}</span>
+        </td>
+        <td>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user text-primary me-2"></i>
+                ${arName}
+            </div>
+        </td>
+        <td>
+            <span class="badge bg-light text-dark">
+                <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+                ${locality}
+            </span>
+        </td>
+        <td>
+            <span class="badge bg-info bg-opacity-10 text-info">
+                ${regionalNumber}
+            </span>
+        </td>
+        <td>
+            <span class="badge bg-secondary">${licensedNo}</span>
+        </td>
+        <td>
+			<div class="d-flex justify-content-end gap-2">
+            <button type="button" 
+                    class="btn btn-primary btn-sm add-service-btn"
+                    data-ref_number="${jobNumber}"
+                    data-case_number="${transactionNumber}"
+                    data-land_size="${landSize}"
+                    data-ar_name="${arName}"
+                    data-created_for_id="${createdForId}"
+                    data-licensed_no="${licensedNo}"
+                    data-locality="${locality}"
+                    data-region="${region}"
+                    data-district="${district}"
+                    data-bill_amount="${billAmount}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addNewserviceBillModalonCase"
+                    title="Add New Bill">
+                <i class="fas fa-plus-circle me-1"></i>
+                Add Bill
+            </button>
+       
+            <!--<button type="button" 
+                    class="btn btn-info btn-sm transitional-bill-btn"
+                    data-ref_number="${jobNumber}"
+                    data-case_number="${transactionNumber}"
+                    data-transaction_number="${transactionNumber}"
+                    data-land_size="${landSize}"
+                    data-ar_name="${arName}"
+                    data-created_for_id="${createdForId}"
+                    data-locality="${locality}"
+                    data-licensed_no="${licensedNo}"
+                    data-bill_amount="${billAmount}"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Generate Transitional Bill">
+                <i class="fas fa-receipt me-1"></i>
+                Transitional
+            </button>-->
+			</div>
+        </td>
+    </tr>`;
+}
 
 			$('#addNewserviceBillModalonCase')
 				.on(
