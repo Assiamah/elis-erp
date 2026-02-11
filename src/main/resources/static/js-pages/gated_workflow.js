@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+    // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    //     return new bootstrap.Tooltip(tooltipTriggerEl);
+    // });
 
     // Show loading indicator when modal opens
     $('#check_review_documents').on('show.bs.modal', function() {
@@ -17198,14 +17198,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, function() {
         $(this).removeAttr('title');
-    });
-
-    // Optional: Initialize tooltips
-    $(document).ready(function() {
-        $('[title]').tooltip({
-            trigger: 'hover',
-            placement: 'top'
-        });
     });
 
 
