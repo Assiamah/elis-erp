@@ -2566,20 +2566,20 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 				p13.setAlignment(Element.ALIGN_LEFT);
 				document.add(p19);
 
-					Paragraph p14 = new Paragraph("Regional Number: " + (String) jsonobj_bbd.getString("regional_number"),
-						new Font(FontFamily.TIMES_ROMAN, 10));
-				p14.setAlignment(Element.ALIGN_LEFT);
-				document.add(p14);	
+				// 	Paragraph p14 = new Paragraph("Regional Number: " + (String) jsonobj_bbd.getString("regional_number"),
+				// 		new Font(FontFamily.TIMES_ROMAN, 10));
+				// p14.setAlignment(Element.ALIGN_LEFT);
+				// document.add(p14);	
 
-				Paragraph p16 = new Paragraph("District: " + (String) jsonobj_bbd.getString("district"),
-						new Font(FontFamily.TIMES_ROMAN, 10));
-			    p16.setAlignment(Element.ALIGN_LEFT);
-			    document.add(p16);
+				// Paragraph p16 = new Paragraph("District: " + (String) jsonobj_bbd.getString("district"),
+				// 		new Font(FontFamily.TIMES_ROMAN, 10));
+			    // p16.setAlignment(Element.ALIGN_LEFT);
+			    // document.add(p16);
 
-				Paragraph p15 = new Paragraph("Region: " + (String) jsonobj_bbd.getString("region"),
-						new Font(FontFamily.TIMES_ROMAN, 10));
-				p15.setAlignment(Element.ALIGN_LEFT);
-				document.add(p15);
+				// Paragraph p15 = new Paragraph("Region: " + (String) jsonobj_bbd.getString("region"),
+				// 		new Font(FontFamily.TIMES_ROMAN, 10));
+				// p15.setAlignment(Element.ALIGN_LEFT);
+				// document.add(p15);
 				
 
 			} else if (bd_business_process_name.equals("APPLICATION FOR REGISTRATION")) {
