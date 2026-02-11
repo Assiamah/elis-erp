@@ -3752,3 +3752,339 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="enter_assessed_value_and_duty_payable" tabindex="-1" 
+     aria-labelledby="assessedValueModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg border-0">
+            
+            <!-- Modal Header - Modern Design -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 px-3 py-3 me-3">
+                        <i class="fas fa-calculator text-primary"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold  text-white" id="assessedValueModalLabel">
+                            Enter Assessed Value & Duty Payable
+                        </h5>
+                        <p class="text-white-50 small mb-0">Stamp duty assessment and valuation</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Comparable Data Card -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-3 pb-0">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-warning p-2 rounded-circle me-2">
+                                <i class="fas fa-chart-line text-dark"></i>
+                            </div>
+                            <h6 class="fw-bold mb-0 text-dark">
+                                Comparable Data Analysis
+                            </h6>
+                            <span class="badge bg-light text-dark ms-2 px-3 py-2">
+                                <i class="fas fa-info-circle me-1"></i> Market Reference
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Alert Display Space -->
+                        <div id="alert-display-space" class="mb-3"></div>
+                        
+                        <form id="form_comparable" method="post" class="needs-validation" novalidate>
+                            <!-- Land Development Status -->
+                            <div class="row g-3 align-items-end mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-tree me-1"></i> Land Development
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="btn-group w-100" role="group" aria-label="Land development status">
+                                        <input type="radio" class="btn-check" name="land_state" id="land_yes" value="YES" autocomplete="off">
+                                        <label class="btn btn-outline-primary rounded-start-3" for="land_yes">
+                                            <i class="fas fa-check-circle me-2"></i> Yes - Developed
+                                        </label>
+                                        
+                                        <input type="radio" class="btn-check" name="land_state" id="land_no" value="NO" autocomplete="off">
+                                        <label class="btn btn-outline-primary rounded-end-3" for="land_no">
+                                            <i class="fas fa-times-circle me-2"></i> No - Undeveloped
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comparable Section (Hidden by default) -->
+                            <div id="comparable_section_display" style="display: none;">
+                                <div class="bg-light bg-opacity-50 rounded-3 p-4">
+                                    <div class="row g-4">
+                                        <!-- Locality/Land Size -->
+                                        <div class="col-12">
+                                            <label class="form-label fw-semibold text-muted small text-uppercase mb-2">
+                                                <i class="fas fa-map-marker-alt me-1"></i> Locality / Land Size
+                                            </label>
+                                            <div class="d-flex gap-2">
+                                                <div class="flex-grow-1">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-end-0">
+                                                            <i class="fas fa-location-dot text-muted"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control border-start-0 ps-0" 
+                                                               id="new_comparable_locality" value="${locality}" 
+                                                               placeholder="Locality" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-end-0">
+                                                            <i class="fas fa-vector-square text-muted"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control border-start-0 ps-0" 
+                                                               id="new_comparable_size_of_land" value="${size_of_land}" 
+                                                               placeholder="Size (acres)" readonly>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button type="button" class="btn btn-warning h-100 px-4" 
+                                                            id="btn_load_comparable_values">
+                                                        <i class="fas fa-download me-2"></i> Load
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Max Value -->
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold text-muted small text-uppercase mb-2">
+                                                <i class="fas fa-arrow-up me-1"></i> Maximum Value
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white">
+                                                    <span class="fw-semibold text-success">GHS</span>
+                                                </span>
+                                                <input type="number" step="0.01" class="form-control border-start-0 ps-0" 
+                                                       id="txt_comp_max_value" name="txt_comp_max_value" 
+                                                       placeholder="0.00" required>
+                                                <span class="input-group-text bg-white border-start-0">
+                                                    <i class="fas fa-chevron-up text-success"></i>
+                                                </span>
+                                            </div>
+                                            <div class="form-text">
+                                                <i class="fas fa-info-circle text-muted me-1"></i> Highest comparable value
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Min Value -->
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold text-muted small text-uppercase mb-2">
+                                                <i class="fas fa-arrow-down me-1"></i> Minimum Value
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white">
+                                                    <span class="fw-semibold text-danger">GHS</span>
+                                                </span>
+                                                <input type="number" step="0.01" class="form-control border-start-0 ps-0" 
+                                                       id="txt_comp_min_value" name="txt_comp_min_value" 
+                                                       placeholder="0.00" required>
+                                                <span class="input-group-text bg-white border-start-0">
+                                                    <i class="fas fa-chevron-down text-danger"></i>
+                                                </span>
+                                            </div>
+                                            <div class="form-text">
+                                                <i class="fas fa-info-circle text-muted me-1"></i> Lowest comparable value
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Value Range Indicator (Hidden initially) -->
+                                        <div class="col-12" id="label" style="display: none;">
+                                            <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-sliders-h me-3 fa-lg"></i>
+                                                    <div>
+                                                        <strong>Value Range Selection</strong>
+                                                        <p class="mb-0 text-muted">Please slide to select appropriate value range</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="assesedvalueRange" class="col-12"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Stamp Duty Assessment Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 pt-3 pb-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary p-2 rounded-circle me-2">
+                                    <i class="fas fa-stamp text-white"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0 text-dark">
+                                    Stamp Duty Assessment
+                                </h6>
+                                <span class="badge bg-primary bg-opacity-10 text-primary ms-2 px-3 py-2">
+                                    <i class="fas fa-calculator me-1"></i> Computation
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form id="form_assessment" method="post" class="needs-validation" novalidate>
+                            
+                            <!-- Consideration & Currency Row -->
+                            <div class="bg-gradient-secondary bg-opacity-10 rounded-3 p-4 mb-4">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold text-muted small text-uppercase">
+                                            <i class="fas fa-hand-holding-usd me-1"></i> Consideration Fee
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white fw-bold">
+                                                ${consideration_fee_currency}
+                                            </span>
+                                            <input type="number" class="form-control bg-white" 
+                                                   value="${consideration_fee}" step="0.01" 
+                                                   placeholder="0.00" readonly>
+                                            <span class="input-group-text bg-light border-start-0 text-muted">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold text-muted small text-uppercase">
+                                            <i class="fas fa-exchange-alt me-1"></i> Currency Rate
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white">
+                                                <i class="fas fa-percent"></i>
+                                            </span>
+                                            <input type="number" step="0.0001" class="form-control" 
+                                                   id="considertion_fee_adopted_rate" name="considertion_fee_adopted_rate"
+                                                   value="${considertion_fee_adopted_rate}" 
+                                                   placeholder="Exchange rate" required>
+                                            <span class="input-group-text bg-white">
+                                                <i class="fas fa-edit text-primary"></i>
+                                            </span>
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle me-1"></i> Bank of Ghana rate
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Assessment Values -->
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-check-circle me-1"></i> Adopted Value (Per Acre)
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">GHS</span>
+                                        <input type="number" step="0.01" class="form-control" 
+                                               id="adopted_value" name="adopted_value" 
+                                               placeholder="0.00" required>
+                                        <span class="input-group-text bg-white border-start-0">
+                                            <i class="fas fa-check text-success"></i>
+                                        </span>
+                                    </div>
+                                    <div class="form-text">
+                                        <i class="fas fa-tag me-1"></i> Adopted comparable value
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-calculator me-1"></i> Assessed Value
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">GHS</span>
+                                        <input type="number" step="0.01" class="form-control" 
+                                               id="assessed_value" name="assessed_value" 
+                                               value="${assessed_value}" placeholder="0.00" required>
+                                        <span class="input-group-text bg-white border-start-0">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-hand-holding-usd me-1"></i> Stamp Duty Payable
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">GHS</span>
+                                        <input type="number" step="0.01" class="form-control fw-bold text-success" 
+                                               id="stamp_duty" name="stamp_duty" 
+                                               value="${stamp_duty_payable}" placeholder="0.00" required>
+                                        <span class="input-group-text bg-white border-start-0">
+                                            <i class="fas fa-file-invoice-dollar text-success"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comments Section -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-comment me-1"></i> Assessment Comments
+                                    </label>
+                                    <textarea class="form-control" id="assessed_comment" name="assessed_comment" 
+                                              rows="3" placeholder="Enter any additional remarks or observations...">${stamp_duty_description}</textarea>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i> Provide justification for the assessed value
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <button type="submit" name="submit_assessment" id="submit_assessment" 
+                                            class="btn btn-primary w-100 py-3 fw-semibold">
+                                        <i class="fas fa-save me-2"></i> Save Assessment
+                                        <!-- <span class="badge bg-white text-primary ms-2">Ctrl+S</span> -->
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex gap-2">
+                                        <button type="button" name="submit_print_stamp_bill" id="submit_print_stamp_bill" 
+                                                class="btn btn-warning flex-grow-1 py-3 fw-semibold">
+                                            <i class="fas fa-print me-2"></i> Print Bill
+                                        </button>
+                                        <!-- <button type="button" class="btn btn-outline-secondary px-4" 
+                                                data-bs-dismiss="modal" aria-label="Close">
+                                            <i class="fas fa-times me-2"></i> Cancel
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer - Simplified -->
+            <div class="modal-footer bg-light border-0 py-3">
+                <div class="d-flex align-items-center justify-content-between w-100">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i> 
+                        All amounts are in Ghana Cedis (GHS)
+                    </div>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                        <i class="fas fa-times-circle me-2"></i> Close Window
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

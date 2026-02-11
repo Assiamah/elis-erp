@@ -13389,6 +13389,12 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					obj.toString());
 
+			 String office_region_list = (String) session.getAttribute("office_region_list");
+			Gson googleJson_officeregions = new Gson();
+			ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(office_region_list,
+					ArrayList.class);
+			request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
+
 			JSONObject jsonobj_locality = new JSONObject(locality_list);
 
 			locality_list = (String) jsonobj_locality.getString("data");
