@@ -8250,7 +8250,7 @@ System.out.println(publicity_date);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -8269,19 +8269,23 @@ System.out.println(publicity_date);
 		String report_approved_by_id = "0";
 
 		// String job_number = (String) obj_main.getString("job_number");
-		if (transaction_approval_details.equals("null") || transaction_approval_details == null) {
+		if (transaction_approval_details == null || transaction_approval_details.equals("null")) {
+    // handle null case
+} else {
+    JSONObject transaction_approval_details_obj =
+            new JSONObject(transaction_approval_details);
 
-		} else {
-			JSONObject transaction_approval_details_obj;
-			transaction_approval_details_obj = new JSONObject(transaction_approval_details);
-			type_of_transaction = (String) transaction_approval_details_obj.get("type_of_transaction")
-					.toString();
-			approval_status = (String) transaction_approval_details_obj.get("approval_status").toString();
-			officers_grade = (String) transaction_approval_details_obj.get("officers_grade").toString();
-			report_approved_by = (String) transaction_approval_details_obj.get("created_by").toString();
-			report_approved_by_id = (String) transaction_approval_details_obj.get("created_by_id").toString();
-
-		}
+    type_of_transaction =
+            transaction_approval_details_obj.optString("type_of_transaction", null);
+    approval_status =
+            transaction_approval_details_obj.optString("approval_status", null);
+    officers_grade =
+            transaction_approval_details_obj.optString("officers_grade", null);
+    report_approved_by =
+            transaction_approval_details_obj.optString("created_by", null);
+    report_approved_by_id =
+            transaction_approval_details_obj.optString("created_by_id", null);
+}
 
 		ByteArrayOutputStream out_pdf = new ByteArrayOutputStream();
 		// file.;
