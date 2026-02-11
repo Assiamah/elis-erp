@@ -77,6 +77,7 @@ public class Case_Management_Serv_Upload {
             return "index.jsp";
 
         }
+        
         // HttpSession session = request.getSession();
         // gets absolute path of the web application
         // String appPath = request.getServletContext().getRealPath("");

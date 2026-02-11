@@ -1688,7 +1688,7 @@
                     },
                     cache: false,
                     success: function(response) {
-                        //console.log(response);
+                       //console.log(response);
                      var json_result = JSON.parse(response);
                         
                         Swal.close();
