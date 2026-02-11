@@ -3620,3 +3620,135 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="newValuationModal" tabindex="-1" aria-labelledby="newValuationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="newValuationModalLabel">
+                    <i class="fas fa-money-bill-wave me-2"></i>
+                    Valuation Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_valuation">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="vs_id" name="vs_id" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-4" style="height: 100vh;">
+                        
+                        <!-- Left Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+
+                          <div class="row g-4">
+                            <div class="col-lg-6">
+                              <!-- Case Number -->
+                               <div class="mb-3">
+                                  <label for="es_case_number" class="form-label fw-medium">
+                                      <i class="fas fa-hashtag me-1"></i>
+                                      Case Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-folder"></i>
+                                      </span>
+                                      <input type="text" name="es_case_number" id="vs_case_number" 
+                                            class="form-control" required readonly value="${case_number}">
+                                  </div>
+                              </div>
+
+                              <!-- Remarks -->
+                            <div class="mb-3">
+                                <label for="vs_remarks" class="form-label fw-medium">
+                                    <i class="fas fa-sticky-note me-1"></i>
+                                    Remarks
+                                </label>
+                                <textarea name="vs_remarks" id="vs_remarks" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Additional remarks or notes"></textarea>
+                                <div class="form-text">Internal notes or observations</div>
+                            </div>
+                              
+                             
+
+                            </div>
+
+                            <div class="col-lg-6">
+                              <!-- Date of Valuation -->
+                              <div class="mb-3">
+                                  <label for="vs_date_of_valuation" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                     Date of Valuation
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-hashtag"></i>
+                                      </span>
+                                      <input type="date" name="vs_date_of_valuation" id="vs_date_of_valuation" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Amount -->
+                              <div class="mb-3">
+                                  <label for="es_entry_number" class="form-label fw-medium">
+                                      <i class="fas fa-fa-money-bill-wave me-1"></i>
+                                      Amount
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-sort-numeric-up"></i>
+                                      </span>
+                                      <input type="number" name="vs_amount" id="vs_amount" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+
+                          <!-- Buttons moved to left column -->
+                          <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <div>
+                                      <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                              data-action_type='encumbrances' style="display: none;">
+                                          <i class="fas fa-trash me-1"></i>
+                                          Delete
+                                      </button>
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                          <i class="fas fa-times me-1"></i>
+                                          Cancel
+                                      </button>
+                                      <button type="submit" id="btn_valution_section" class="btn btn-danger">
+                                          <i class="fas fa-save me-1"></i>
+                                          Save Valuation
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+                            <div class="_gated_workflow_documents"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

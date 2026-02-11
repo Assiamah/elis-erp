@@ -3460,6 +3460,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#newMemorialsModal ._gated_workflow_documents');
         } else if (modalType === 'encumbrance') {
             container = document.querySelector('#newEncumberancesModal ._gated_workflow_documents');
+        } else if (modalType === 'valuation') {
+            container = document.querySelector('#newValuationModal ._gated_workflow_documents');
         } else if (modalType === 'lrd_initial_approval') {
             container = document.querySelector('#lrd_initial_approval ._gated_workflow_documents');
         } else if (modalType === 'addeditpartyGeneral') {
@@ -5132,6 +5134,481 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#newEncumberancesModal .modal-body').scrollTop(0);
 
         window.loadGatedWorkFlowDocuments('encumbrance');
+    });
+
+    // $(document).on('click', '.newValuationModal', function(e) {
+    //     $("#newValuationModal").modal('show');
+
+    //     window.loadGatedWorkFlowDocuments('valuation');
+    // })
+
+     $(document).on('click', '.newValuationModal', function() {
+        const $modal = $('#newValuationModal');
+
+        // Force higher z-index than existing modals
+        const highestZ = Math.max(
+            ...Array.from(document.querySelectorAll('.modal.show'))
+                .map(m => parseInt(window.getComputedStyle(m).zIndex) || 1050),
+            1050
+        );
+
+        $modal.css('z-index', highestZ + 10);
+
+        setTimeout(() => {
+            $('.modal-backdrop')
+                .not('.stacked-backdrop')
+                .css('z-index', highestZ + 5)
+                .addClass('stacked-backdrop');
+        });
+
+        $modal.modal('show');
+
+        $("#vs_id").val(0);
+        $("#vs_date_of_valuation").val('');
+        $("#vs_amount").val('');
+        $("#vs_remarks").val('');
+
+        window.loadGatedWorkFlowDocuments('valuation');
+    });
+
+    $('#form_add_valuation').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Collect form data
+        const action_on_form = $("#action_on_form_valuation").val();
+        const vs_id = parseInt($("#vs_id").val());
+        const vs_case_number = $("#vs_case_number").val();
+        const vs_date_of_valuation = $("#vs_date_of_valuation").val();
+        const vs_amount = $("#vs_amount").val();
+        const vs_remarks = $("#vs_remarks").val();
+        
+        // Determine request type
+        const request_type = "select_lrd_valuation_section_add_and_update";
+        
+        // Validate required fields
+        const requiredFields = [
+            { field: 'vs_date_of_valuation', value: vs_date_of_valuation, label: 'Date of Valuation' },
+            { field: 'vs_amount', value: vs_amount, label: 'Valuation Amount' }
+        ];
+        
+        // Check for empty required fields
+        const emptyFields = requiredFields.filter(field => !field.value || field.value.trim() === '');
+        if (emptyFields.length > 0) {
+            Swal.fire({
+                title: 'Required Fields Missing',
+                html: `<div class="text-start">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>The following fields are required:</p>
+                        <ul class="text-start">
+                            ${emptyFields.map(f => `<li><strong>${f.label}</strong></li>`).join('')}
+                        </ul>
+                        <p class="text-muted small mt-2">Please fill in all required fields before submitting</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14',
+                width: 500
+            });
+            return;
+        }
+        
+        // Validate amount is a positive number
+        const amountNum = parseFloat(vs_amount);
+        if (isNaN(amountNum) || amountNum <= 0) {
+            Swal.fire({
+                title: 'Invalid Amount',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-money-bill-wave text-danger fa-2x"></i>
+                        </div>
+                        <p><strong>Valuation Amount</strong> must be a valid positive number</p>
+                        <p class="text-muted small">Please enter a valid monetary value</p>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Format amount for display
+        const formattedAmount = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(amountNum);
+        
+        // Prepare confirmation message based on action (add/edit)
+        const isEdit = vs_id > 0;
+        const actionText = isEdit ? 'Update' : 'Add';
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: `${actionText} Valuation Record?`,
+            html: `<div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-balance-scale text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-3">Confirm ${actionText}</h5>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Valuation Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Case Number:</strong> ${vs_case_number}</li>
+                                    <li><strong>Date of Valuation:</strong> ${vs_date_of_valuation}</li>
+                                    <li><strong>Amount:</strong> GHS ${formattedAmount}</li>
+                                    ${vs_remarks ? `<li><strong>Remarks:</strong> ${vs_remarks.substring(0, 40)}${vs_remarks.length > 40 ? '...' : ''}</li>` : ''}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        This action will ${isEdit ? 'update the existing' : 'create a new'} 
+                        valuation record in the system.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `<i class="fas fa-save me-1"></i>${actionText} Valuation`,
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            // cancelButtonColor: '#6c757d',
+            width: 550,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                // cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                const submitBtn = $(this).find('button[type="submit"]');
+                const originalText = submitBtn.html();
+                submitBtn.prop('disabled', true);
+                submitBtn.html('<span class="spinner-border spinner-border-sm me-1" role="status"></span>Processing...');
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "lrd_valuation_section_serv",
+                    data: {
+                        request_type: request_type,
+                        vs_id: vs_id,
+                        vs_case_number: vs_case_number,
+                        vs_date_of_valuation: vs_date_of_valuation,
+                        vs_amount: vs_amount,
+                        vs_remarks: vs_remarks
+                    },
+                    cache: false,
+                    success: function(jobdetails) {
+                        try {
+                            const json_p = JSON.parse(jobdetails);
+                            
+                            // Close the modal
+                            const modalElement = document.getElementById('newValuationModal');
+                            if (modalElement) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                } else {
+                                    // If modal instance doesn't exist, hide it directly
+                                    $(modalElement).modal('hide');
+                                }
+                            }
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Success!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Valuation ${isEdit ? 'Updated' : 'Added'}</h5>
+                                        <p class="text-muted">
+                                            Valuation details have been ${isEdit ? 'updated' : 'added'} successfully
+                                        </p>
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-check me-2"></i>
+                                                <div>
+                                                    <strong>Transaction Details:</strong>
+                                                    <div class="small">
+                                                        Case: ${vs_case_number}<br>
+                                                        Date: ${vs_date_of_valuation}<br>
+                                                        Amount: GHS ${formattedAmount}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: 'Continue',
+                                confirmButtonColor: '#198754',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                willClose: () => {
+                                    // Clear form after successful submission if it's not an edit
+                                    if (!isEdit) {
+                                        $('#form_add_valuation')[0].reset();
+                                        $("#vs_id").val('0');
+                                    }
+                                }
+                            });
+                            
+                            // Update the valuation table with new data
+                            updateValuationTable(json_p.data);
+                            
+                        } catch (error) {
+                            console.error('JSON parsing error:', error);
+                            
+                            // Show error message for parsing failure
+                            Swal.fire({
+                                title: 'Processing Error',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                                        </div>
+                                        <p>Failed to process server response</p>
+                                        <p class="text-muted small">Please try again or contact support</p>
+                                    </div>`,
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Save Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Unable to Save Valuation</h5>
+                                    <p class="text-danger small">${xhr.responseText || error || 'Server error occurred'}</p>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Please check your connection and try again
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    },
+                    complete: function() {
+                        // Reset button state
+                        submitBtn.prop('disabled', false);
+                        submitBtn.html(originalText);
+                    }
+                });
+            }
+        });
+    });
+
+    // Function to update the valuation table with the new format
+    function updateValuationTable(data) {
+        const table_bp = $('#lrd_valuation_details_dataTable');
+        table_bp.find("tbody tr").remove();
+        
+        if (data && data.length > 0) {
+            $(data).each(function() {
+                // Format amount for display
+                const formattedAmount = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(this.vs_amount || 0);
+                
+                table_bp.append(`<tr>
+                    <td>${this.vs_date_of_valuation || 'N/A'}</td>
+                    <td class="text-end">
+                        <span class="fw-bold text-success">${formattedAmount}</span>
+                    </td>
+                    <td>
+                        <div class="text-truncate" style="max-width: 250px;" title="${this.vs_remarks || ''}">
+                            ${this.vs_remarks || '<span class="text-muted">No remarks</span>'}
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-outline-danger edit-valuation"
+                                    data-target-id="${this.vs_id}"
+                                    data-vs_id="${this.vs_id}"
+                                    data-vs_case_number="${this.case_number}"
+                                    data-vs_date_of_valuation="${this.vs_date_of_valuation}"
+                                    data-vs_amount="${this.vs_amount}"
+                                    data-vs_remarks="${this.vs_remarks}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Edit Valuation">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                           <!-- <button class="btn btn-outline-danger delete-valuation"
+                                    data-vs_id="${this.vs_id}"
+                                    data-vs_case_number="${this.vs_case_number}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Delete Valuation">
+                                <i class="fas fa-trash"></i>
+                            </button>-->
+                        </div>
+                    </td>
+                </tr>`);
+            });
+            
+            // Initialize tooltips for new buttons
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Add click handlers for edit buttons
+            $('.edit-valuation').off('click').on('click', function() {
+                const vs_id = $(this).data('vs_id');
+                const vs_case_number = $(this).data('vs_case_number');
+                const vs_date_of_valuation = $(this).data('vs_date_of_valuation');
+                const vs_amount = $(this).data('vs_amount');
+                const vs_remarks = $(this).data('vs_remarks');
+                
+                // Populate the modal form
+                $("#vs_id").val(vs_id);
+                $("#vs_case_number").val(vs_case_number);
+                $("#vs_date_of_valuation").val(vs_date_of_valuation);
+                $("#vs_amount").val(vs_amount);
+                $("#vs_remarks").val(vs_remarks);
+                $("#action_on_form_valuation").val('edit');
+                
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById('newValuationModal'));
+                modal.show();
+            });
+            
+            // Add click handlers for delete buttons (optional - if you want delete functionality)
+            $('.delete-valuation').off('click').on('click', function() {
+                const vs_id = $(this).data('vs_id');
+                const vs_case_number = $(this).data('vs_case_number');
+                
+                // Show delete confirmation
+                Swal.fire({
+                    title: 'Delete Valuation?',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-trash-alt text-danger fa-3x"></i>
+                            </div>
+                            <p>Are you sure you want to delete this valuation record?</p>
+                            <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-2">
+                                <strong>Case:</strong> ${vs_case_number}<br>
+                                <strong>Record ID:</strong> ${vs_id}
+                            </div>
+                            <p class="text-muted small">This action cannot be undone</p>
+                        </div>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-trash me-1"></i>Delete',
+                    cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Call delete API here if needed
+                        console.log('Delete valuation with ID:', vs_id);
+                    }
+                });
+            });
+            
+        } else {
+            // Show empty state
+            table_bp.append(`<tr>
+                <td colspan="4" class="text-center py-5">
+                    <div class="text-muted">
+                        <i class="fas fa-balance-scale fa-3x mb-3 d-block"></i>
+                        <h5 class="mb-2">No Valuation Records</h5>
+                        <p class="mb-0">Click "Add Valuation" to create your first record</p>
+                    </div>
+                </td>
+            </tr>`);
+        }
+        
+        // Update any summary or total displays
+        updateValuationSummary(data);
+    }
+
+    // Optional: Function to update valuation summary
+    function updateValuationSummary(data) {
+        if (data && data.length > 0) {
+            const totalAmount = data.reduce((sum, item) => sum + (parseFloat(item.vs_amount) || 0), 0);
+            const formattedTotal = new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(totalAmount);
+            
+            // Update any summary element you have
+            const summaryElement = $('#valuation-summary');
+            if (summaryElement.length) {
+                summaryElement.html(`
+                    <div class="alert alert-info">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-chart-bar me-2"></i>
+                                <strong>Total Valuation:</strong>
+                            </div>
+                            <div class="h4 mb-0 text-success">GHS ${formattedTotal}</div>
+                        </div>
+                        <div class="small text-muted mt-1">
+                            ${data.length} record${data.length !== 1 ? 's' : ''} found
+                        </div>
+                    </div>
+                `);
+            }
+        }
+    }
+
+     $(document).on('click', '.editValuationModal', function(e) {
+
+        const $modal = $('#newValuationModal');
+
+        // Force higher z-index than existing modals
+        const highestZ = Math.max(
+            ...Array.from(document.querySelectorAll('.modal.show'))
+                .map(m => parseInt(window.getComputedStyle(m).zIndex) || 1050),
+            1050
+        );
+
+        $modal.css('z-index', highestZ + 10);
+
+        setTimeout(() => {
+            $('.modal-backdrop')
+                .not('.stacked-backdrop')
+                .css('z-index', highestZ + 5)
+                .addClass('stacked-backdrop');
+        });
+
+        $modal.modal('show');
+
+         const vs_id = $(this).data('vs_id');
+        const vs_case_number = $(this).data('case_number');
+        const vs_date_of_valuation = $(this).data('vs_date_of_valuation');
+        const vs_amount = $(this).data('vs_amount');
+        const vs_remarks = $(this).data('vs_remarks');
+        
+        $("#vs_id").val(vs_id);
+        $("#vs_case_number").val(vs_case_number);
+        $("#vs_date_of_valuation").val(vs_date_of_valuation);
+        $("#vs_amount").val(vs_amount);
+        $("#vs_remarks").val(vs_remarks);
+
+        // Load documents for memorial modal
+        const docsContainer = document.querySelector('#newValuationModal ._gated_workflow_documents');
+        if (docsContainer) {
+            window.loadGatedWorkFlowDocuments('valuation');
+        }
     });
     
     $('#btn_compose_register_description').on('click', function(e) {
@@ -11388,6 +11865,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
      $('#newMemorialsModal').on('hidden.bs.modal', function () {
+        // Remove any stacked / extra backdrops
+        $('.modal-backdrop.stacked-backdrop').remove();
+
+        // Safety: if no modal is open, remove ALL backdrops
+        if ($('.modal.show').length === 0) {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        }
+    });
+
+    $('#newValuationModal').on('hidden.bs.modal', function () {
         // Remove any stacked / extra backdrops
         $('.modal-backdrop.stacked-backdrop').remove();
 
