@@ -290,38 +290,38 @@ System.out.println(password);
 
 						String smsm_result = "";
 
-	String arr_verify_messageId = "";
-	String arr_verify  = "";
+	// String arr_verify_messageId = "";
+	// String arr_verify  = "";
 
-		String statusCode = "";
-				String message = "";
+	// 	String statusCode = "";
+	// 			String message = "";
 				
-				String reason ="";
-				String pointInTime = "";
+	// 			String reason ="";
+	// 			String pointInTime = "";
  
 	
-						if (otp_type_obj.equals("sms")) {
+			 if (otp_type_obj.equals("sms")) {
 							 smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
 				   //System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				// System.out.println(smsm_result);
 	         
-				JSONObject objVerify = new JSONObject(smsm_result);
+				// JSONObject objVerify = new JSONObject(smsm_result);
 
-				// get the inner "data" object
-				JSONObject dataObj = objVerify.getJSONObject("data");
+				// // get the inner "data" object
+				// JSONObject dataObj = objVerify.getJSONObject("data");
 
-				// extract fields
-				 statusCode = dataObj.getString("status_code");
-				 message = dataObj.getString("message");
-				//boolean inError = dataObj.getBoolean("in_error");
-				 reason = dataObj.getString("reason");
-				 pointInTime = dataObj.getString("point_in_time");
+				// // extract fields
+				//  statusCode = dataObj.getString("status_code");
+				//  message = dataObj.getString("message");
+				// //boolean inError = dataObj.getBoolean("in_error");
+				//  reason = dataObj.getString("reason");
+				//  pointInTime = dataObj.getString("point_in_time");
 
 						}	else if (otp_type_obj.equals("email")) {
 
 				// Use the autowired mail service
                 mail_sl.send_otp_mail(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_mail.toString());
-				statusCode="000";
+				// statusCode="000";
 						} else{
 							 smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
 				//System.out.println("smsm_result");
@@ -341,14 +341,14 @@ System.out.println(password);
 				JSONObject dataObj = objVerify.getJSONObject("data");
 
 				// extract fields
-				 statusCode = dataObj.getString("status_code");
-				 message = dataObj.getString("message");
-				//boolean inError = dataObj.getBoolean("in_error");
-				 reason = dataObj.getString("reason");
-				 pointInTime = dataObj.getString("point_in_time");
+				//  statusCode = dataObj.getString("status_code");
+				//  message = dataObj.getString("message");
+				// //boolean inError = dataObj.getBoolean("in_error");
+				//  reason = dataObj.getString("reason");
+				//  pointInTime = dataObj.getString("point_in_time");
 }
 			//	if (arr_verify_messageId.length() > 20) {
-				if (statusCode.equals("000")) {
+				// if (statusCode.equals("000")) {
 					
 					// currently 30 caraters
 					// if (arr_verify.equals("Sms Send Sucessfull")) {
@@ -449,12 +449,12 @@ System.out.println(password);
 
 					}
 
-				} else {
-					System.out.println("sms error");
+				// } else {
+				// 	System.out.println("sms error");
 
-					request.setAttribute("login", "SMS Error");
-					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
-				}
+				// 	request.setAttribute("login", "SMS Error");
+				// 	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+				// }
 
 				}
 

@@ -9872,10 +9872,12 @@ function createTableRow(item) {
 															+ '<td>'
 
 
-															+ '<form action="registration_application_progress_details" method="post">'
+															+ '<form action="request_application_progress_details_ai" method="post">'
 															+ '<input type="hidden" name="case_number" id="case_number" value="' + this.transaction_number + '">'
 															+ '<input type="hidden" name="transaction_number" id="transaction_number" value="' + this.transaction_number + '">'
 															+ '<input type="hidden" name="job_number" id="job_number" value="' + this.job_number + '">'
+															+ '<input type="hidden" name="job_number" id="review_type" value="' + this.request_category + '">'
+															+ '<input type="hidden" name="job_number" id="rq_id" value="' + this.rq_id + '">'
 															+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="' + this.business_process_sub_name + '">'
 
 															+ '	<button type="submit" name="save" class="btn btn-danger btn-icon-split btn-to-be-disabled to_hide_on_level_1" >'
