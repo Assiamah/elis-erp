@@ -288,6 +288,7 @@
                                                     <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
                                                     <input type="hidden" name="review_type" value="${appfiles.request_category}">
                                                     <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
+                                                    <input type="hidden" name="review_instruction" value="${appfiles.request_comments}">
                                                     <button type="submit" class="btn btn-sm btn-warning">
                                                         <i class="ri-folder-open-line"></i>
                                                     </button>
