@@ -19282,5 +19282,373 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize tooltip
         const tooltip = new bootstrap.Tooltip(document.getElementById('submit_print_stamp_bill'));
     });
+
+    // Handle form submission
+    $('#inspectionNotificationForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const case_number = $('#inspection_case_number').text().trim();
+        const job_number = $('#inspection_job_number').text().trim();
+        const applicant_name = $('#inspection_applicant_name').text().trim();
+        const app_type = $('#inspection_app_type').text().trim();
+        const custom_message = $('#inspection_custom_message').val().trim();
+        
+        // Get notification methods
+        const methods = [];
+        if ($('#method_sms').is(':checked')) methods.push('SMS');
+        if ($('#method_email').is(':checked')) methods.push('Email');
+        
+        // Validation
+        const validationErrors = [];
+        
+        if (!case_number || case_number === '') {
+            validationErrors.push('Case number is missing');
+        }
+        if (!job_number || job_number === '') {
+            validationErrors.push('Job number is missing');
+        }
+        if (!applicant_name || applicant_name === '') {
+            validationErrors.push('Applicant name is missing');
+        }
+        if (methods.length === 0) {
+            validationErrors.push('Please select at least one notification method');
+        }
+        if (!custom_message || custom_message === '') {
+            validationErrors.push('Custom message cannot be empty');
+        }
+        
+        if (validationErrors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-3">Please correct the following:</h5>
+                        <ul class="text-start list-unstyled">
+                            ${validationErrors.map(err => `<li><i class="fas fa-times-circle text-danger me-2"></i>${err}</li>`).join('')}
+                        </ul>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: 'white',
+                backdrop: 'rgba(0,0,0,0.4)',
+                width: 500
+            });
+            return;
+        }
+        
+        // Character count validation
+        if (custom_message.length > 500) {
+            Swal.fire({
+                title: 'Message Too Long',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Custom message exceeds 500 characters</h5>
+                        <p class="text-muted">Current length: <span class="fw-bold">${custom_message.length}</span> characters</p>
+                        <p class="text-muted">Maximum allowed: 500 characters</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: 'white'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Send Inspection Notification?',
+            html: `<div class="text-start">
+                    <div class="mb-3 text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block">
+                            <i class="fas fa-paper-plane text-primary fa-3x"></i>
+                        </div>
+                    </div>
+                    <h5 class="mb-3 text-center fw-bold">Confirm Notification</h5>
+                    
+                    <div class="card border-0 bg-light mb-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-briefcase me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Job Number:</span>
+                                <span class="ms-2 fw-semibold">${job_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-file-invoice me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Case Number:</span>
+                                <span class="ms-2 fw-semibold">${case_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-user me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Applicant:</span>
+                                <span class="ms-2 fw-semibold">${applicant_name}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-tag me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Application:</span>
+                                <span class="ms-2">${app_type}</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-bell me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Via:</span>
+                                <span class="ms-2">${methods.join(', ')}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                        <div class="d-flex">
+                            <i class="fas fa-comment me-2 mt-1"></i>
+                            <div>
+                                <strong>Message Preview:</strong>
+                                <p class="mb-0 small text-muted mt-1">${custom_message.substring(0, 150)}${custom_message.length > 150 ? '...' : ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3 mb-0">
+                        <i class="fas fa-clock me-2"></i>
+                        <span class="small">This notification will be sent immediately to the applicant and the application will move to <b>Awaiting Inspection</b> in the <b>Unit Case Management</b>.</span>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-paper-plane me-2"></i>Yes, Send Now',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#28a745',
+            // cancelButtonColor: '#6c757d',
+            background: 'white',
+            width: 600,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-success',
+                // cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Sending Notification',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mb-0">Sending inspection notification...</p>
+                            <p class="text-muted small mt-2">Job: ${job_number}</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    background: 'white',
+                    backdrop: 'rgba(0,0,0,0.4)'
+                });
+                
+                // Prepare data for AJAX
+                const formData = {
+                    request_type: 'send_inspection_notification',
+                    case_number: case_number,
+                    job_number: job_number,
+                    applicant_name: applicant_name,
+                    application_type: app_type,
+                    notification_message: custom_message,
+                    notification_methods: JSON.stringify(methods),
+                    send_sms: $('#method_sms').is(':checked') ? 1 : 0,
+                    send_email: $('#method_email').is(':checked') ? 1 : 0
+                };
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv", // Update with your actual endpoint
+                    data: formData,
+                    cache: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.close(); // Close loading Swal
+                        
+                        // Check if successful
+                        if (response && (response.success)) {
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Notification Sent Successfully!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="mb-2">Inspection Notification Sent</h5>
+                                        <div class="bg-light rounded-3 p-3 mt-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="text-muted">Job Number:</span>
+                                                <span class="fw-semibold">${job_number}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">Sent Via:</span>
+                                                <span class="fw-semibold">${methods.join(', ')}</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted small mt-3">
+                                            <i class="fas fa-clock me-1"></i>
+                                            ${new Date().toLocaleString()}
+                                        </p>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: '<i class="fas fa-check me-2"></i>Done',
+                                confirmButtonColor: '#28a745',
+                                background: 'white',
+                                timer: 5000,
+                                timerProgressBar: true,
+                                backdrop: 'rgba(0,0,0,0.4)'
+                            // }).then(() => {
+                            //     // Close the modal
+                            //     const modal = bootstrap.Modal.getInstance(document.getElementById('inspection_of_site'));
+                            //     if (modal) {
+                            //         modal.hide();
+                            //     }
+                                
+                            //     // Reset form for next use
+                            //     resetInspectionForm();
+                                
+                            //     // Trigger any post-submission actions
+                            //     if (typeof refreshInspectionList === 'function') {
+                            //         refreshInspectionList();
+                            //     }
+                                
+                            //     // Show optional success toast
+                            //     Swal.fire({
+                            //         title: 'Completed',
+                            //         text: 'Inspection notification has been scheduled',
+                            //         icon: 'success',
+                            //         timer: 2000,
+                            //         showConfirmButton: false,
+                            //         toast: true,
+                            //         position: 'top-end',
+                            //         background: 'white'
+                            //     });
+                            // });
+                            }).then(() => {
+                                // Redirect after successful archive
+                                window.location.href = "/case_movement_module";
+                            });
+                            
+                        } else {
+                            // Show error message from server
+                            let errorMsg = 'Failed to send notification';
+                            if (response && response.message) {
+                                errorMsg = response.message;
+                            }
+                            
+                            Swal.fire({
+                                title: 'Sending Failed',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="mb-2">Unable to Send Notification</h5>
+                                        <p class="text-danger">${errorMsg}</p>
+                                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                            <i class="fas fa-lightbulb me-2"></i>
+                                            Please try again or contact support
+                                        </div>
+                                    </div>`,
+                                icon: 'error',
+                                confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                                confirmButtonColor: '#0d6efd',
+                                showCancelButton: true,
+                                cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+                                cancelButtonColor: '#6c757d',
+                                background: 'white',
+                                reverseButtons: true
+                            }).then((retryResult) => {
+                                if (retryResult.isConfirmed) {
+                                    $('#inspectionNotificationForm').submit();
+                                }
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close(); // Close loading Swal
+                        
+                        let errorMessage = 'Failed to connect to server';
+                        let errorDetails = '';
+                        
+                        if (xhr.status === 404) {
+                            errorMessage = 'Service endpoint not found';
+                            errorDetails = 'Please contact system administrator';
+                        } else if (xhr.status === 500) {
+                            errorMessage = 'Server error occurred';
+                            errorDetails = 'Please try again in a few moments';
+                        } else if (xhr.status === 0) {
+                            errorMessage = 'Network connection error';
+                            errorDetails = 'Please check your internet connection';
+                        }
+                        
+                        Swal.fire({
+                            title: 'Server Error',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">${errorMessage}</h5>
+                                    <p class="text-danger small">${xhr.status}: ${error}</p>
+                                    <p class="text-muted mt-2">${errorDetails}</p>
+                                    <div class="alert alert-secondary bg-secondary bg-opacity-10 border-secondary mt-3">
+                                        <i class="fas fa-redo-alt me-2"></i>
+                                        Would you like to try again?
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                            confirmButtonColor: '#0d6efd',
+                            showCancelButton: true,
+                            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                            cancelButtonColor: '#6c757d',
+                            background: 'white',
+                            reverseButtons: true
+                        }).then((retryResult) => {
+                            if (retryResult.isConfirmed) {
+                                $('#inspectionNotificationForm').submit();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    
+    // Character counter for message field
+    $('#inspection_custom_message').on('input', function() {
+        const count = $(this).val().length;
+        const max = 500;
+        const counter = $('#message_char_count');
+        
+        counter.text(`${count}/${max}`);
+        
+        if (count > max) {
+            counter.addClass('text-danger').removeClass('text-muted text-warning');
+            $(this).val($(this).val().substring(0, max));
+            counter.text(`${max}/${max}`);
+        } else if (count > max * 0.9) {
+            counter.addClass('text-warning').removeClass('text-danger text-muted');
+        } else {
+            counter.removeClass('text-danger text-warning').addClass('text-muted');
+        }
+    });
+    
+    // Trigger initial character count
+    setTimeout(() => {
+        $('#inspection_custom_message').trigger('input');
+    }, 100);
 });
 

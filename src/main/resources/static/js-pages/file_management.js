@@ -25,86 +25,533 @@ $(document)
 							 */
 							});
 
-					$('#frmFileJobSearch')
-							.on(
-									'submit',
-									function(e) {
+					$('#frmFileJobSearch').on('submit', function(e) {
+    e.preventDefault();
+    
+    // Get and validate search value
+    const enq_search_value = $("#file_search_value").val().trim();
+    console.log('Search Value:', enq_search_value);
+    
+    // Validate minimum characters
+    if (!enq_search_value || enq_search_value.length < 4) {
+        Swal.fire({
+            title: 'Invalid Search',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                    </div>
+                    <h5 class="mb-3">Search Term Too Short</h5>
+                    <p class="mb-2">Please enter at least <strong>4 characters</strong> to search</p>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <span class="fw-semibold">Tip:</span> Enter job number, case number, or applicant name
+                    </div>
+                    <p class="text-muted small mt-2">
+                        Current length: <span class="fw-bold">${enq_search_value.length || 0}</span> characters
+                    </p>
+                </div>`,
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#f39c12',
+            background: 'white',
+            backdrop: 'rgba(0,0,0,0.4)',
+            width: 500
+        });
+        return;
+    }
 
-										// validation code here
-										e.preventDefault();
-										// console.log('how are your search');
+    // Show loading state with SweetAlert
+    Swal.fire({
+        title: 'Searching Files',
+        html: `
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mb-0">Searching for: <strong>"${enq_search_value}"</strong></p>
+                <p class="text-muted small mt-2">Please wait while we fetch the records</p>
+            </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: 'white',
+        backdrop: 'rgba(0,0,0,0.4)'
+    });
 
-										var enq_search_value = $(
-												"#file_search_value").val();
-										console.log('Search Value: '
-												+ enq_search_value);
+    // Make AJAX call
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'load_application_details_by_job_number',
+            job_number: enq_search_value
+        },
+        cache: false,
+        dataType: 'json',
+        success: function(jobdetails) {
+            Swal.close(); // Close loading Swal
+            
+            try {
+                // Parse response if string
+                const json_p = (typeof jobdetails === 'string') ? JSON.parse(jobdetails) : jobdetails;
+                
+                // Clear existing table data
+                const table = $('#file-search-results-table');
+                table.find("tbody tr").remove();
+                
+                // Check if data exists
+                if (!json_p.job_detail || !json_p.transaction_details) {
+                    // Hide table, show no results message
+                    $('#file-search-results-section .table-responsive').hide();
+                    $('#no-results-message').show();
+                    $('#result-count').text('0');
+                    
+                    Swal.fire({
+                        title: 'No Records Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <div class="bg-warning bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                        <i class="fas fa-folder-open text-warning fa-3x"></i>
+                                    </div>
+                                </div>
+                                <h5 class="mb-2">No matching files found</h5>
+                                <p class="text-muted mb-2">Search term: <strong>"${enq_search_value}"</strong></p>
+                                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <i class="fas fa-search me-2"></i>
+                                    Suggestions:
+                                    <ul class="text-start mb-0 mt-2">
+                                        <li>Check the job number for typos</li>
+                                        <li>Try a different search term</li>
+                                        <li>Use the batch number search</li>
+                                    </ul>
+                                </div>
+                            </div>`,
+                        icon: 'info',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#0d6efd',
+                        background: 'white',
+                        backdrop: 'rgba(0,0,0,0.4)'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#file_search_value').focus().select();
+                        }
+                    });
+                    return;
+                }
+                
+                // Show table, hide no results message
+                $('#file-search-results-section .table-responsive').show();
+                $('#no-results-message').hide();
+                $('#result-count').text('1');
+                
+                // Safely access nested properties
+                const transaction_details = json_p.transaction_details || {};
+                const job_detail = json_p.job_detail || {};
+                const parcel_details = json_p.parcel_details || {};
+                
+                // Get values with fallbacks
+                const ar_name = transaction_details.ar_name || 'N/A';
+                const case_number = transaction_details.case_number || 'N/A';
+                const job_number = job_detail.job_number || 'N/A';
+                const business_process_sub_name = job_detail.business_process_sub_name || 'N/A';
+                const locality = parcel_details.locality || transaction_details.locality || 'N/A';
+                
+                // Create table row with Bootstrap 5 styling
+                const row = `
+                    <tr class="align-middle">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <!--<div class="bg-primary bg-opacity-10 rounded-circle p-2 me-2">
+                                    <i class="fas fa-user text-primary"></i>
+                                </div>-->
+                                <span class="fw-semibold">${escapeHtml(ar_name)}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2">
+                                <!--<i class="fas fa-file-invoice me-1"></i> -->
+                                ${escapeHtml(case_number)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="fw-bold text-primary">${escapeHtml(job_number)}</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
+                               <!-- <i class="fas fa-tag me-1"></i> -->
+                                ${escapeHtml(business_process_sub_name)}
+                            </span>
+                        </td>
+                        <td>
+                            <!--<i class="fas fa-map-marker-alt text-muted me-1"></i> -->
+                            ${escapeHtml(locality)}
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-success btn-sm add-file-btn" 
+                                    data-job_number="${escapeHtml(job_number)}"
+                                    data-ar_name="${escapeHtml(ar_name)}"
+                                    data-app_type="${escapeHtml(business_process_sub_name)}"
+                                    data-locality="${escapeHtml(locality)}"
+                                    onclick="confirmAddFile('${escapeHtml(job_number)}', '${escapeHtml(ar_name)}', '${escapeHtml(business_process_sub_name)}', '${escapeHtml(locality)}')"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Add file to prepared list">
+                                <i class="fas fa-plus-circle me-1"></i>
+                                Add File
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                
+                table.append(row);
+                
+                // Update last search time
+                updateLastSearchTime();
+                
+                // Add to recent searches
+                addRecentSearch(enq_search_value, 'job');
+                
+                // Initialize tooltips
+                initializeTooltips();
+                
+                // Show success message
+                Swal.fire({
+                    title: 'File Found!',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                            </div>
+                            <h5 class="mb-2">Application Retrieved Successfully</h5>
+                            <div class="bg-light rounded-3 p-3 mt-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Job Number:</span>
+                                    <span class="fw-semibold text-primary">${escapeHtml(job_number)}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Applicant:</span>
+                                    <span class="fw-semibold">${escapeHtml(ar_name.substring(0, 30))}${ar_name.length > 30 ? '...' : ''}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Application Type:</span>
+                                    <span class="fw-semibold">${escapeHtml(business_process_sub_name)}</span>
+                                </div>
+                            </div>
+                        </div>`,
+                    icon: 'success',
+                    timer: 2500,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: 'white'
+                });
+                
+            } catch (error) {
+                console.error('Error parsing response:', error);
+                Swal.close();
+                
+                Swal.fire({
+                    title: 'Processing Error',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Failed to process server response</h5>
+                            <p class="text-muted small">${error.message || 'Invalid data format'}</p>
+                            <div class="alert alert-secondary bg-secondary bg-opacity-10 border-secondary mt-3">
+                                <i class="fas fa-tools me-2"></i>
+                                Please try again or contact support
+                            </div>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545',
+                    background: 'white'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            Swal.close(); // Close loading Swal
+            
+            let errorMessage = 'Unable to complete the search';
+            let errorDetails = '';
+            
+            if (xhr.status === 404) {
+                errorMessage = 'Search service not found';
+                errorDetails = 'Please contact system administrator';
+            } else if (xhr.status === 500) {
+                errorMessage = 'Server error occurred';
+                errorDetails = 'Please try again in a few moments';
+            } else if (xhr.status === 0) {
+                errorMessage = 'Network connection error';
+                errorDetails = 'Please check your internet connection';
+            } else if (xhr.status === 400) {
+                errorMessage = 'Invalid search request';
+                errorDetails = 'Please check your search term and try again';
+            }
 
-										if (!(enq_search_value.length >= 4)) {
-											$
-													.notify(
-															{
-																message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter 4 or more characters to search </span>',
-															}, {
-																type : 'danger' , z_index: 9999 
-															});
-										} else {
+            Swal.fire({
+                title: 'Search Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">${errorMessage}</h5>
+                        <p class="text-danger small">${xhr.status}: ${error}</p>
+                        <p class="text-muted mt-2">${errorDetails}</p>
+                        <div class="bg-light rounded-3 p-2 mt-2">
+                            <span class="text-muted">Search term:</span>
+                            <span class="fw-semibold ms-2">"${escapeHtml(enq_search_value)}"</span>
+                        </div>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-redo-alt me-2"></i>
+                            Would you like to try again?
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                confirmButtonColor: '#0d6efd',
+                showCancelButton: true,
+                cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                cancelButtonColor: '#6c757d',
+                background: 'white',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#frmFileJobSearch').submit();
+                }
+            });
+        }
+    });
+});
 
-											
+// Global function to confirm adding file to list
+window.confirmAddFile = function(job_number, ar_name, app_type, locality) {
+    Swal.fire({
+        title: 'Add File to List?',
+        html: `<div class="text-start">
+                <div class="mb-3 text-center">
+                    <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                        <i class="fas fa-file-alt text-success fa-3x"></i>
+                    </div>
+                </div>
+                <h5 class="mb-3 text-center fw-bold">Confirm Add File</h5>
+                
+                <div class="card border-0 bg-light mb-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-briefcase me-2 text-muted" style="width: 24px;"></i>
+                            <span class="text-muted">Job Number:</span>
+                            <span class="ms-2 fw-semibold text-primary">${escapeHtml(job_number)}</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-user me-2 text-muted" style="width: 24px;"></i>
+                            <span class="text-muted">Applicant:</span>
+                            <span class="ms-2 fw-semibold">${escapeHtml(ar_name)}</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-tag me-2 text-muted" style="width: 24px;"></i>
+                            <span class="text-muted">Application:</span>
+                            <span class="ms-2">${escapeHtml(app_type)}</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-map-marker-alt me-2 text-muted" style="width: 24px;"></i>
+                            <span class="text-muted">Locality:</span>
+                            <span class="ms-2">${escapeHtml(locality)}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    This file will be added to your prepared file list for processing.
+                </div>
+            </div>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-check me-2"></i>Yes, Add File',
+        cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+        confirmButtonColor: '#198754',
+        // cancelButtonColor: '#6c757d',
+        background: 'white',
+        width: 550,
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'btn btn-success',
+            // cancelButton: 'btn btn-secondary'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Call the original addFileToList function
+            if (typeof window.addFileToList === 'function') {
+                window.addFileToList(job_number, ar_name, app_type, locality, 'File movement');
+                
+                // Show success message
+                Swal.fire({
+                    title: 'File Added!',
+                    html: `<div class="text-center">
+                            <div class="mb-2">
+                                <i class="fas fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <p class="mb-0 fw-semibold">File <span class="text-primary">${escapeHtml(job_number)}</span> has been added</p>
+                            <p class="text-muted small mt-2">You can view it in your prepared file list</p>
+                        </div>`,
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: 'white'
+                });
+                
+                // Update button state
+                const btn = $(`button[data-job_number="${job_number}"]`);
+                btn.html('<i class="fas fa-check me-1"></i>Added');
+                btn.removeClass('btn-success').addClass('btn-secondary');
+                btn.prop('disabled', true);
+                btn.attr('title', 'Already added to list');
+                
+                // Update tooltip
+                const tooltip = bootstrap.Tooltip.getInstance(btn[0]);
+                if (tooltip) {
+                    tooltip.dispose();
+                }
+                new bootstrap.Tooltip(btn[0], {
+                    title: 'Already added to list',
+                    placement: 'top'
+                });
+            } else {
+                console.error('addFileToList function not found');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Could not add file. Function not available.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        }
+    });
+};
 
-											$.ajax({
-														type : "POST",
-														url : "Case_Management_Serv",
-														data : {
-															request_type : 'load_application_details_by_job_number',
-															job_number : enq_search_value
-														},
-														cache : false,
-														
-														success : function(
-																jobdetails) {
+// Helper function to escape HTML and prevent XSS
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+}
 
-														
+// Update last search time
+function updateLastSearchTime() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    $('#last-search-time').text(timeStr);
+}
 
-															var table = $('#file-search-results-table');
-															table.find(
-																	"tbody tr")
-																	.remove();
+// Add to recent searches
+function addRecentSearch(term, type) {
+    let searches = JSON.parse(localStorage.getItem('recentFileSearches') || '[]');
+    searches = [{ term, type, timestamp: new Date().toISOString() }, ...searches];
+    searches = searches.filter((v, i, a) => a.findIndex(t => t.term === v.term) === i).slice(0, 5);
+    localStorage.setItem('recentFileSearches', JSON.stringify(searches));
+    
+    // Trigger recent searches display if function exists
+    if (typeof displayRecentSearches === 'function') {
+        displayRecentSearches();
+    }
+}
 
-															//console.log(jobdetails);
-															var json_p = JSON
-																	.parse(jobdetails);
-															
-															if(result.job_detail !==null){
-																table.append("<tr><td>" 
-																		+ json_p.transaction_details.ar_name
-																		+ "</td><td>"
-																		+  json_p.transaction_details.case_number
-																		+ "</td><td>"
-																		+ json_p.job_detail.job_number
-																		+ "</td><td>"
-																		+ json_p.job_detail.business_process_sub_name
-																		+ "</td><td>"
-																		+ json_p.parcel_details.locality
-																		+ "</td>"
+// Initialize tooltips
+function initializeTooltips() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+        try {
+            const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+            if (tooltip) {
+                tooltip.dispose();
+            }
+            new bootstrap.Tooltip(tooltipTriggerEl, {
+                trigger: 'hover',
+                delay: { show: 300, hide: 100 }
+            });
+        } catch (e) {
+            console.warn('Could not initialize tooltip:', e);
+        }
+    });
+}
 
-																		+ '<td> <button class="btn btn-info" id="btnAddFile"'
-																		+ ' data-job_number="'
-																		+ json_p.job_detail.job_number
-																		+ '" onclick = "addFileToList(\''+ json_p.job_detail.job_number +'\',\'' + json_p.transaction_details.ar_name + '\',\'' + json_p. job_detail.business_process_sub_name + '\',\''  + json_p.parcel_details.locality+'\')">+ Add </button>  '
-																		
-																		+ '</td></tr>'
-																
-																
-																
-																)
-															}
+// Enter key support
+$('#file_search_value').on('keypress', function(e) {
+    if (e.which === 13) {
+        e.preventDefault();
+        $('#frmFileJobSearch').submit();
+    }
+});
 
-														
+// Clear search with confirmation
+$('#btnClearFileSearch').on('click', function(e) {
+    e.preventDefault();
+    
+    const searchValue = $('#file_search_value').val().trim();
+    if (searchValue !== '') {
+        Swal.fire({
+            title: 'Clear Search?',
+            html: '<p>This will clear your current search term.</p>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-undo me-2"></i>Yes, Clear',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#6c757d',
+            cancelButtonColor: '#0d6efd',
+            background: 'white',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#file_search_value').val('').focus();
+                
+                Swal.fire({
+                    title: 'Cleared',
+                    text: 'Search field has been cleared',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'white'
+                });
+            }
+        });
+    }
+});
 
-														}
-													});
-										}
-									});
+// Add clear button if it doesn't exist
+$(document).ready(function() {
+    if ($('#btnClearFileSearch').length === 0) {
+        const clearBtn = $('<button type="button" class="btn btn-outline-secondary ms-2" id="btnClearFileSearch">' +
+                          '<i class="fas fa-times"></i>' +
+                          '</button>');
+        $('#file_search_value').after(clearBtn);
+    }
+    
+    // Add no results message container if it doesn't exist
+    if ($('#no-results-message').length === 0) {
+        const noResultsHtml = `
+            <div id="no-results-message" class="text-center py-5" style="display: none;">
+                <div class="bg-light bg-opacity-50 rounded-circle p-4 d-inline-block mb-3">
+                    <i class="fas fa-folder-open text-muted fa-3x"></i>
+                </div>
+                <h6 class="fw-bold mb-2">No Files Found</h6>
+                <p class="text-muted mb-2">No records match your search criteria</p>
+                <small class="text-muted d-block mb-3">Try adjusting your search term</small>
+            </div>
+        `;
+        $('#file-search-results-section .card-body').append(noResultsHtml);
+    }
+});
 
 				
 					

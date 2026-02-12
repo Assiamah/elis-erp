@@ -4088,3 +4088,214 @@
         </div>
     </div>
 </div>
+
+<!-- Inspection Site Notification Modal -->
+<div class="modal fade" id="inspection_of_site" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-3 me-3">
+                        <i class="fas fa-clipboard-check text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="inspectionOfSiteModalLabel">
+                            Schedule Site Inspection
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                             Notify applicant for land/property inspection
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Case/Application Summary Card -->
+                <div class="card border-0 bg-light bg-gradient mb-4">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="fw-bold mb-0 text-dark">
+                                <i class="fas fa-briefcase me-2 text-primary"></i>Application Details
+                            </h6>
+                            <span class="badge bg-warning px-3 py-2">
+                                <i class="fas fa-clock me-1"></i> Pending Inspection
+                            </span>
+                        </div>
+                        
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-file-invoice text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Case Number</small>
+                                        <span class="fw-semibold small" id="inspection_case_number">${case_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-info bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-briefcase text-info"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Job Number</small>
+                                        <span class="fw-semibold small" id="inspection_job_number">${job_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-success bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-user text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Applicant Name</small>
+                                        <span class="fw-semibold small" id="inspection_applicant_name">${ar_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-warning bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-tag text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Application Type</small>
+                                        <span class="fw-semibold small" id="inspection_app_type">${business_process_sub_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Notification Form -->
+                <form id="inspectionNotificationForm" method="post" class="needs-validation" novalidate>
+                    
+                    <!-- Notification Message Section -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-white border-0 pt-3 pb-0">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-info bg-opacity-10 p-2 rounded-circle me-2">
+                                    <i class="fas fa-envelope text-info"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0">Notification Message</h6>
+                                <!-- <span class="badge bg-light text-dark ms-2 px-3 py-2">
+                                    <i class="fas fa-edit me-1"></i> Customize
+                                </span> -->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-bell me-1"></i> Notification Method
+                                    </label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="method_sms" checked>
+                                            <label class="form-check-label" for="method_sms">
+                                                <i class="fas fa-sms text-primary me-1"></i> SMS
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="method_email" checked>
+                                            <label class="form-check-label" for="method_email">
+                                                <i class="fas fa-envelope text-primary me-1"></i> Email
+                                            </label>
+                                        </div>
+                                        <!-- <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="method_letter">
+                                            <label class="form-check-label" for="method_letter">
+                                                <i class="fas fa-file-alt text-primary me-1"></i> Letter
+                                            </label>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <!-- <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-exclamation-triangle me-1"></i> Priority Level
+                                    </label>
+                                    <select class="form-select" id="inspection_priority">
+                                        <option value="normal" selected>Normal</option>
+                                        <option value="urgent">Urgent</option>
+                                        <option value="high">High Priority</option>
+                                    </select> -->
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-comment-dots me-1"></i> Custom Message
+                                    </label>
+                                    <textarea class="form-control bg-light" id="inspection_custom_message" rows="7" 
+                                              placeholder="Add any additional instructions or information for the applicant">Dear Applicant,
+
+Your presence is required for a scheduled site inspection regarding your application. Please be available at the specified location and time.
+
+Kindly bring along any relevant documents and ensure the property is accessible.
+
+Thank you.</textarea>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <div class="form-text text-muted">
+                                            <i class="fas fa-info-circle me-1"></i> 
+                                            Maximum 500 characters
+                                        </div>
+                                        <span class="text-muted small" id="message_char_count">250/500</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-0">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-clock fa-fw"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <strong>Reminder:</strong> The applicant will be notified immediately via the selected channels. 
+                                                A follow-up reminder will be sent 24 hours before the scheduled inspection.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+                    <div class="form-check mb-0">
+                        <!-- <input class="form-check-input" type="checkbox" id="send_copy">
+                        <label class="form-check-label small text-muted" for="send_copy">
+                            Send a copy to my email
+                        </label> -->
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-primary px-4" id="previewNotification">
+                            <i class="fas fa-eye me-2"></i>Preview
+                        </button> -->
+                        <button type="submit" form="inspectionNotificationForm" class="btn btn-success px-5" id="sendInspectionNotification">
+                            <i class="fas fa-paper-plane me-2"></i>Send Notification
+                            <span class="badge bg-white text-success ms-2 py-1 px-2">Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

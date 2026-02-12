@@ -8511,6 +8511,51 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			
+			if (request_type.equals("send_inspection_notification")) {
+
+
+				String case_number = request.getParameter("case_number");		
+				String job_number = request.getParameter("job_number");	
+				String applicant_name = request.getParameter("applicant_name");		
+				String application_type = request.getParameter("application_type");	
+				String notification_message = request.getParameter("notification_message");	
+				String notification_methods = request.getParameter("notification_methods");	
+				Integer send_sms = Integer.parseInt(request.getParameter("send_sms"));	
+				Integer send_email = Integer.parseInt(request.getParameter("send_email"));	
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+
+
+				// System.out.println(list_of_application);
+
+				JSONObject obj = new JSONObject();
+				obj.put("case_number", case_number);
+				obj.put("job_number", job_number);
+				obj.put("applicant_name", applicant_name);
+				obj.put("application_type", application_type);
+				obj.put("notification_message", notification_message);
+				obj.put("notification_methods", notification_methods);
+				obj.put("send_sms", send_sms);
+				obj.put("send_email", send_email);
+				obj.put("modified_by", modified_by);
+				obj.put("modified_by_id", modified_by_id);
+
+				// String batchlistdivison = obj.toString();
+
+				// System.out.println("testing cabinet batch: " + obj.toString());
+				web_service_response = casemgt_cl.send_inspection_notification(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("select_request_additional_input")) {
 				String job_number = request.getParameter("job_number");
 				String rq_id = request.getParameter("rq_id");

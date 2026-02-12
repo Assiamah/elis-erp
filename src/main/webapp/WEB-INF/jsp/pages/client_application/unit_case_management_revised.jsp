@@ -36,7 +36,9 @@
         <input type="hidden" class="form-control" id="awa_req_5" value="${awaiting_request}">
         <input type="hidden" class="form-control" id="req_com_6" value="${completed_request}">
         <input type="hidden" class="form-control" id="req_com_7" value="${attention_required}">
-
+        <input type="hidden" class="form-control" id="req_inp_8" value="${request_for_additional_input}">
+        <input type="hidden" class="form-control" id="awa_insp_9" value="${awaiting_inspection}">
+        
         <!-- Stats Cards -->
 
         <!-- Start:: row-1 -->
@@ -170,6 +172,25 @@
                                         <div>
                                             <span class="d-block text-muted">Request for Additional Input</span>
                                             <h5 class="fw-semibold mb-1">${request_for_additional_input}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                     <div class="col-lg-4">
+                        <div class="card custom-card stat-card dashboard-main-card primary" id="card-awaiting_inspection">
+                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="9">
+                                <div class="card-body" id="body-bg-9">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-primary svg-white">
+                                             <i class="bi bi-eyeglasses fs-20"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Awaiting Inspection</span>
+                                            <h5 class="fw-semibold mb-1">${awaiting_inspection}</h5>
                                         </div>
                                     </div>
                                 </div>

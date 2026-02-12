@@ -1267,6 +1267,35 @@ window.addJobToRequestlist = function (
     prepareRequestlistModal();
 };
 
+window.addFileToList = function (
+    job_number_html,
+    ar_name_html,
+    business_process_sub_name,
+    locality,
+    job_purpose
+) {
+
+    var job_number_plain = $('<div>').html(job_number_html).text().trim();
+
+    var obj = {
+        jobNumberPlain: job_number_plain,
+        jobNumberHtml: job_number_html,
+        applicantNameHtml: ar_name_html,
+        applicationType: business_process_sub_name,
+        locality: locality,
+        batchingPurpose: job_purpose
+    };
+
+    var existing = localStorage.getItem('filelistdata');
+    existing = existing ? JSON.parse(existing) : {};
+
+    existing[job_number_plain] = obj;
+
+    localStorage.setItem('filelistdata', JSON.stringify(existing));
+
+    prepareFilelistModal();
+};
+
 window.removeJobFromBatchlist = function (job_number_plain) {
 
     Swal.fire({
@@ -1328,6 +1357,43 @@ window.removeJobFromRequestlist = function (job_number_plain) {
         }
 
         prepareRequestlistModal();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Removed',
+            timer: 1200,
+            showConfirmButton: false
+        });
+    });
+};
+
+window.removeJobFromFilelist = function (job_number_plain) {
+
+    Swal.fire({
+        title: 'Remove Application',
+        text: 'Are you sure you want to remove this application?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it',
+        confirmButtonColor: '#dc3545'
+    }).then(result => {
+
+        if (!result.isConfirmed) return;
+
+        const existing = JSON.parse(localStorage.getItem('filelistdata') || '[]');
+
+        // ✅ REMOVE item from array
+        const updated = existing.filter(item =>
+            item.jobNumberPlain !== job_number_plain
+        );
+
+        if (!updated.length) {
+            localStorage.removeItem('filelistdata');
+        } else {
+            localStorage.setItem('filelistdata', JSON.stringify(updated));
+        }
+
+        prepareFilelistModal();
 
         Swal.fire({
             icon: 'success',
@@ -1465,6 +1531,71 @@ window.prepareRequestlistModal = function () {
     updateRequestCount();
 };
 
+window.prepareFilelistModal = function () {
+
+    const existing = localStorage.getItem('filelistdata');
+
+    if (!existing) {
+        $('#filelistdataTable').empty();
+        updateFileCount();
+        Swal.fire({
+            title: 'No Applications',
+            text: 'No applications in file movement list!',
+            icon: 'warning'
+        });
+        return;
+    }
+
+    const parsed = JSON.parse(existing);
+
+    // ✅ OBJECT → ARRAY (THIS IS THE KEY FIX)
+    const data = Array.isArray(parsed)
+        ? parsed
+        : Object.values(parsed);
+
+    // ✅ Ensure array + valid entries
+    const values = data.filter(item =>
+        item &&
+        item.jobNumberPlain &&
+        item.jobNumberHtml &&
+        item.jobNumberPlain !== 'Job Number'
+    );
+
+    $('#filelistdataTable').empty();
+
+    if (!values.length) {
+        updateFileCount();
+        return;
+    }
+
+    values.forEach(item => {
+
+        const row = $('<tr/>');
+
+        row.append($('<td/>').html(item.jobNumberHtml));
+        row.append($('<td/>').html(item.applicantNameHtml));
+        row.append($('<td/>').html(item.applicationType));
+        row.append($('<td/>').html(item.locality));
+        row.append($('<td/>').html(item.batchingPurpose));
+
+        row.append(
+            $('<td class="text-center"/>').append(
+                $('<button/>', {
+                    type: 'button',
+                    class: 'btn btn-sm btn-danger',
+                    html: '<i class="ri-delete-bin-line"></i>',
+                    click: () => removeJobFromFilelist(item.jobNumberPlain)
+                })
+            )
+        );
+
+        $('#filelistdataTable').append(row);
+    });
+
+    $('#viewFilelistModal').modal('show');
+    updateFileCount();
+};
+
 $('#btnViewBatchlist').on('click', function (e) {
 
     prepareBatchlistModal();
@@ -1474,6 +1605,12 @@ $('#btnViewBatchlist').on('click', function (e) {
 $('#btnViewRequestlist').on('click', function (e) {
 
     prepareRequestlistModal();
+
+});
+
+$('#btnViewFilelist').on('click', function (e) {
+
+    prepareFilelistModal();
 
 });
 
@@ -1505,6 +1642,7 @@ $('input[name="batch_type_radio"]').on('change', function () {
     }
 });
 
+// Handle request type radio buttons
 $('input[name="request_type_radio"]').on('change', function () {
     const type = $(this).val();
     $('#request_type').val(type);
@@ -1529,6 +1667,34 @@ $('input[name="request_type_radio"]').on('change', function () {
     const hasItems = $('#requestlistdataTable tr').length > 0;
     if (hasItems) {
         $('#btn_process_requestlist_ft').show();
+    }
+});
+
+// Handle file movement type radio buttons
+$('input[name="file_type_radio"]').on('change', function () {
+    const type = $(this).val();
+    $('#file_type').val(type);
+
+    // Hide all sections first
+    $('.batch-section').hide().removeClass('active-section');
+
+    // Show selected section
+    switch (type) {
+        case 'Unit':
+            $('#unit-file-section').show().addClass('active-section');
+            break;
+        case 'Individual':
+            $('#individual-file-section').show().addClass('active-section');
+            break;
+        case 'Cabinet':
+            $('#cabinet-file-section').show().addClass('active-section');
+            break;
+    }
+
+    // Show/hide process button
+    const hasItems = $('#filelistdataTable tr').length > 0;
+    if (hasItems) {
+        $('#btn_process_filelist_ft').show();
     }
 });
 
@@ -1677,6 +1843,28 @@ function updateRequestCount() {
     }
 }
 
+function updateFileCount() {
+    // Count rows in the table body
+    const count = $('#filelistTable tbody tr').length;
+    $('#file-count').text(count);
+
+    // Show/hide empty state
+    if (count === 0) {
+        $('#empty-file-state').show();
+        $('#filelistTable').hide();
+    } else {
+        $('#empty-file-state').hide();
+        $('#filelistTable').show();
+    }
+
+    // Show/hide process button
+    if (count > 0 && $('#file_type').val()) {
+        $('#btn_process_filelist_ft').show();
+    } else {
+        $('#btn_process_filelist_ft').hide();
+    }
+}
+
 // Remove all from list
 $('#remove_all_from_list').on('click', function () {
 
@@ -1735,6 +1923,36 @@ $('#remove_all_from_request_list').on('click', function () {
         });
     });
 });
+
+$('#remove_all_from_file_list').on('click', function () {
+
+    Swal.fire({
+        title: 'Clear All Applications',
+        text: 'This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, clear all',
+        confirmButtonColor: '#dc3545'
+    }).then(result => {
+
+        if (!result.isConfirmed) return;
+
+        localStorage.removeItem('filelistdata');
+
+        // ✅ correct table
+        $('#filelistdataTable').empty();
+
+        updateFileCount();
+
+        Swal.fire({
+            title: 'Cleared!',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    });
+});
+
 
 // Add this to handle remove button clicks via event delegation
 $(document).on('click', '.remove-from-batch', function () {
@@ -1804,6 +2022,44 @@ $(document).on('click', '.remove-from-request', function () {
             swal.fire({
                 title: 'Removed!',
                 text: 'Application removed from request list.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd',
+                timer: 1500
+            });
+        }
+    });
+});
+
+$(document).on('click', '.remove-from-file', function () {
+    const $row = $(this).closest('tr');
+    const jobNumber = $row.find('td:first-child').text().trim();
+
+    swal.fire({
+        title: 'Remove Application',
+        text: 'Are you sure you want to remove application ' + jobNumber + ' from the file movement?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Remove from localStorage
+            var existing = localStorage.getItem('filelistdata');
+            existing = existing ? JSON.parse(existing) : {};
+            delete existing[jobNumber];
+            localStorage.setItem('filelistdata', JSON.stringify(existing));
+
+            // Remove from table
+            $row.remove();
+            updateRequestCount();
+
+            // Show success message
+            swal.fire({
+                title: 'Removed!',
+                text: 'Application removed from file movement list.',
                 icon: 'success',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#0d6efd',
@@ -2058,6 +2314,135 @@ $('#req_unit_division_to_send_to').on('change', function () {
         error: function (xhr, status, error) {
             console.error('AJAX error:', error);
             $("#req_unit_to_send_to").empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading units',
+                disabled: true,
+                selected: true
+            }));
+            $unitCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUnitNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
+$('#file_unit_division_to_send_to').on('change', function () {
+    const selected_division = $(this).val();
+    const $select = $("#file_unit_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $unitCount = $("#file_unit-count");
+    const $unitIcon = $("#file_unit-icon");
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading units...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $unitIcon.removeClass('ri-building-2-line').addClass('ri-loader-4-line animate-spin');
+    $(".process-btn").hide();
+
+    if (!selected_division || selected_division === "") {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_units',
+        },
+        cache: false,
+        success: function (jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                const $select = $("#file_unit_to_send_to");
+                let unitCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a unit',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add units to select
+                $(json_p.data).each(function () {
+                    if (this.unit_division && this.unit_division.includes(selected_division)) {
+                        const option = $('<option>', {
+                            value: this.unit_id || this.unit_name,
+                            text: this.unit_name || '',
+                            'data-division': this.unit_division || ''
+                        });
+
+                        $select.append(option);
+                        unitCount++;
+                    }
+                });
+
+                // Update UI based on results
+                if (unitCount > 0) {
+                    $select.prop('disabled', false);
+                    $unitCount.text(`(${unitCount} units)`).removeClass('text-danger').addClass('text-success');
+
+                    // Show success feedback
+                    showUnitNotification(`${unitCount} units loaded successfully`, 'success');
+
+                    // Enable when a unit is selected
+                    $select.on('change', function () {
+                        if ($(this).val()) {
+                            $(".process-btn").show();
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(".process-btn").hide();
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No units available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $unitCount.text('(No units)').removeClass('text-success').addClass('text-danger');
+                    showUnitNotification('No units found for this division', 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading units:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading units',
+                    disabled: true,
+                    selected: true
+                }));
+                $unitCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUnitNotification('Failed to load units. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $("#file_unit_to_send_to").empty().append($('<option>', {
                 value: '',
                 text: 'Network error loading units',
                 disabled: true,
@@ -2377,6 +2762,140 @@ function loadReqUnitUsers() {
     });
 }
 
+function loadFileUnitUsers() {
+    const selected_division = $("#file_division_to_send_to").val();
+    const $select = $("#file_user_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $userCount = $("#file_user-count");
+    const $userIcon = $("#file_user-icon");
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading users...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $userIcon.removeClass('ri-user-line').addClass('ri-loader-4-line animate-spin');
+
+    if (!selected_division) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+        return;
+    }
+
+    const regional_code_general = $("#regional_code_general").text();
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_users',
+        },
+        cache: false,
+        success: function (jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                let userCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a user',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add users to select
+                $(json_p).each(function () {
+                    if (selected_division == this.unit_name && regional_code_general == this.regional_code) {
+                        const option = $('<option>', {
+                            value: this.userid,
+                            text: this.fullname || '',
+                            'data-unit': this.unit_name || '',
+                            'data-regional': this.regional_code || ''
+                        });
+
+                        $select.append(option);
+                        userCount++;
+                    }
+                });
+
+                // Update UI based on results
+                if (userCount > 0) {
+                    $select.prop('disabled', false);
+                    $userCount.text(`(${userCount} users)`).removeClass('text-danger').addClass('text-success');
+
+                    // Show success feedback
+                    showUserNotification(`${userCount} users loaded successfully`, 'success');
+
+                    // Add change event handler
+                    $select.off('change.userChange').on('change.userChange', function () {
+                        const userId = $(this).val();
+                        const userName = $(this).find('option:selected').text();
+
+                        if (userId) {
+                            // Store selected user data
+                            $(this).data('selected-user-id', userId);
+                            $(this).data('selected-user-name', userName);
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No users available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $userCount.text('(No users)').removeClass('text-success').addClass('text-danger');
+                    showUserNotification(`No users found in ${selected_division}`, 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading users:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading users',
+                    disabled: true,
+                    selected: true
+                }));
+                $userCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUserNotification('Failed to load users. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $select.empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading users',
+                disabled: true,
+                selected: true
+            }));
+            $userCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUserNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+}
+
 // Helper function for user notifications
 function showUserNotification(message, type = 'info') {
     let $notification = $('.user-notification');
@@ -2430,6 +2949,12 @@ $(document).ready(function () {
         }
     });
 
+    $('#viewFilelistModal').on('shown.bs.modal', function () {
+        if ($("#req_division_to_send_to").val()) {
+            loadFileUnitUsers();
+        }
+    });
+
     // Or load when individual batch type is selected
     $('input[name="batch_type_radio"][value="Individual"]').on('change', function () {
         if ($(this).is(':checked')) {
@@ -2454,6 +2979,19 @@ $(document).ready(function () {
     $('input[name="request_type_radio"][value="Unit"]').on('change', function () {
         if ($(this).is(':checked')) {
             $("#lbl_request_type").val('Unit');
+        }
+    });
+
+     $('input[name="file_type_radio"][value="Individual"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            loadFileUnitUsers();
+            $("#lbl_file_type").val('Individual');
+        }
+    });
+
+    $('input[name="file_type_radio"][value="Unit"]').on('change', function () {
+        if ($(this).is(':checked')) {
+            $("#lbl_file_type").val('Unit');
         }
     });
 });
@@ -2597,6 +3135,18 @@ $("#btn_process_requestlist_ft").click(function (event) {
     processRequest();
 });
 
+$("#btn_process_filelist_ft").click(function (event) {
+    event.preventDefault();
+
+    // Validate request type selection
+    if (!validateFileTypeSelection()) {
+        return;
+    }
+
+    // Process the batch
+    processFile();
+});
+
 // Function to validate batch type selection
 function validateBatchTypeSelection() {
     const batchType = $('#batch_type').val();
@@ -2710,6 +3260,62 @@ function validateRequestTypeSelection() {
     return true;
 }
 
+function validateFileTypeSelection() {
+    const fileType = $('#file_type').val();
+
+    if (!fileType) {
+        Swal.fire({
+            title: 'Missing Information',
+            text: 'Please select where to send the file (Unit or Individual)',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return false;
+    }
+
+    if (fileType === 'Unit') {
+        const unitSelected = $("#file_unit_to_send_to").val();
+        if (!unitSelected) {
+            Swal.fire({
+                title: 'Unit Required',
+                text: 'Please select a unit to send the request to',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return false;
+        }
+    } else if (fileType === 'Individual') {
+        const userSelected = $("#file_user_to_send_to").val();
+        if (!userSelected) {
+            Swal.fire({
+                title: 'User Required',
+                text: 'Please select a user to send the request to',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return false;
+        }
+    }
+
+    // Validate there are items in the file movement
+    const fileItems = getFileItemsFromTable();
+    if (fileItems.length === 0) {
+        Swal.fire({
+            title: 'Empty Request',
+            text: 'There are no applications in the file movement list',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return false;
+    }
+
+    return true;
+}
+
 // Function to get batch items from table
 function getBatchItemsFromTable() {
     const batchItems = [];
@@ -2753,6 +3359,28 @@ function getRequestItemsFromTable() {
     });
 
     return requestItems;
+}
+
+function getFileItemsFromTable() {
+    const fileItems = [];
+
+    $('#filelistdataTable tr').each(function () {
+        const $row = $(this);
+        const item = {
+            job_number: $row.find('td:eq(0)').text().trim(),
+            ar_name: $row.find('td:eq(1)').text().trim(),
+            business_process_sub_name: $row.find('td:eq(2)').text().trim(),
+            job_purpose: $row.find('td:eq(3)').text().trim(),
+            remarks_notes: $row.find('td:eq(4)').text().trim()
+        };
+
+        // Only add if we have a job number
+        if (item.job_number) {
+            fileItems.push(item);
+        }
+    });
+
+    return fileItems;
 }
 
 // Function to get recipient information
@@ -2830,6 +3458,54 @@ function getReqRecipientInfo(batchType) {
         }
     } else if (batchType === 'Individual') {
         const $userSelect = $("#req_user_to_send_to");
+        const selectedOption = $userSelect.find('option:selected');
+
+        // Get the selected value
+        const selectedValue = $userSelect.val();
+
+        if (selectedValue) {
+            // Get data attributes from the selected option
+            recipient.id = selectedOption.data('id') || selectedValue;
+            recipient.name = selectedOption.text() || selectedValue;
+
+            // Try to get from data attributes if available
+            const userId = selectedOption.data('user-id') || selectedOption.data('id');
+            const userName = selectedOption.data('name') || selectedOption.text();
+
+            if (userId) recipient.id = userId;
+            if (userName) recipient.name = userName;
+        }
+    }
+
+    return recipient;
+}
+
+function getFileRecipientInfo(batchType) {
+    let recipient = {
+        id: '',
+        name: '',
+        type: batchType
+    };
+
+    if (batchType === 'Unit') {
+        const $unitSelect = $("#file_unit_to_send_to");
+        const selectedOption = $unitSelect.find('option:selected');
+
+        // Get the selected value
+        const selectedValue = $unitSelect.val();
+
+        if (selectedValue) {
+            // Get data attributes from the selected option
+            recipient.id = selectedOption.data('id') || selectedValue;
+            recipient.name = selectedOption.text() || selectedValue;
+
+            // If no data-id, use the value as ID
+            if (!recipient.id) {
+                recipient.id = selectedValue;
+            }
+        }
+    } else if (batchType === 'Individual') {
+        const $userSelect = $("#file_user_to_send_to");
         const selectedOption = $userSelect.find('option:selected');
 
         // Get the selected value
@@ -3007,6 +3683,92 @@ function processRequest() {
     // Prepare AJAX data
     const ajaxData = {
         request_type: 'process_request_list',
+        division: localStorage.getItem('division') || '',
+        list_of_application: listOfApplications,
+        send_to_name: recipient.name,
+        send_to_id: recipient.id,
+        batch_type: lblBatchType
+    };
+
+    // First AJAX call to process batch
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: ajaxData,
+        cache: false,
+        success: function (response) {
+            try {
+                const jsonResponse = JSON.parse(response);
+
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error);
+                }
+
+                // Get batch number from response
+                const batchNumber = jsonResponse.batch_number;
+
+                // Generate PDF report
+                generateBatchReport(batchItems, batchNumber, recipient);
+
+            } catch (error) {
+                console.error('Error processing request:', error);
+                Swal.fire({
+                    title: 'Processing Error',
+                    text: 'Failed to process request: ' + error.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#0d6efd'
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            Swal.fire({
+                title: 'Server Error',
+                text: 'Unable to connect to server. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+        }
+    });
+}
+
+function processFile() {
+    // Show loading state
+    Swal.fire({
+        title: 'Processing File Movement',
+        text: 'Please wait while we process your request...',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Get batch data
+    const batchType = $('#file_type').val();
+    const lblBatchType = $("#lbl_file_type").val();
+    const batchItems = getFileItemsFromTable();
+    const listOfApplications = JSON.stringify(batchItems);
+
+    // Get recipient information
+    const recipient = getFileRecipientInfo(batchType);
+    if (!recipient.id || !recipient.name) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Could not determine recipient information',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#0d6efd'
+        });
+        return;
+    }
+
+    // Prepare AJAX data
+    const ajaxData = {
+        request_type: 'process_file_list',
         division: localStorage.getItem('division') || '',
         list_of_application: listOfApplications,
         send_to_name: recipient.name,

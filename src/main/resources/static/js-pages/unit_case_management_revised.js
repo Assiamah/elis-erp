@@ -40,11 +40,11 @@ $(document).ready(function() {
 		var com_3 = $('#com_3').val();
 		var que_2 = $('#que_2').val();
 		var awa_4 = $('#awa_4').val();
-
 		var awrq_5 = $('#awa_req_5').val();
 		var ctrq_6 = $('#req_com_6').val();
 		var atr_7 = $('#req_com_7').val();
 		var req_8 = $('#req_inp_8').val();
+		var awa_9 = $('#awa_insp_9').val();
 		
 
 		datatable.search("").draw();
@@ -71,16 +71,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
-						} else if(inbox_type == 5) {
+					} else if(inbox_type == 5) {
 						$('#adv_status').val('Awaiting Request');
 						$('.exclude_all').removeClass('d-none');
-						} else if(inbox_type == 6) {
+					} else if(inbox_type == 6) {
 						$('#adv_status').val('Completed Request');
 						$('.exclude_all').removeClass('d-none');
-						} else if(inbox_type == 7) {
+					} else if(inbox_type == 7) {
 						$('#adv_status').val('Attention Required');
 						$('.exclude_all').removeClass('d-none');
-				
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -115,6 +120,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -145,6 +165,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -174,6 +209,21 @@ $(document).ready(function() {
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
 						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
@@ -206,6 +256,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -235,6 +300,21 @@ $(document).ready(function() {
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
 						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
@@ -266,6 +346,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -296,6 +391,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -304,6 +414,48 @@ $(document).ready(function() {
 
 					return;
 
+				} else {
+
+					LoadUnitApplications(inbox_type)
+				}
+
+			case 9:
+				if(awa_9 > 500) {
+
+					$('#adv_inbox_type').val(inbox_type);
+
+					if(inbox_type == 1){
+						$('#adv_status').val('Incoming Files');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 2) {
+						$('#adv_status').val('Queried');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 3) {
+						$('#adv_status').val('Completed Within Unit');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 4) {
+						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
+					} else {
+						$('#adv_status').val('All');
+					}
+
+					$("#incoming_advanced_search").modal('show');
 				} else {
 
 					LoadUnitApplications(inbox_type)
@@ -697,6 +849,19 @@ $(document).ready(function() {
 						
 						// 9: Actions
 						'<div class="d-flex justify-content-center">' +
+						(inbox_type == 9 ? 
+						'<button class="btn btn-icon btn-sm me-1 btn-warning btn-wave waves-effect waves-light btn_send_request" ' +
+								'id="btnAddToBatchlist-' + this.job_number + '" ' +
+								'data-job_number="' + this.job_number + '" ' +
+								'data-ar_name="' + this.ar_name + '" ' +
+								'data-business_process_sub_name="' + this.business_process_sub_name + '" ' +
+								'data-application_stage="' + this.application_stage + '" ' +
+								'data-locality="' + this.locality + '" ' +
+								'data-application_stage_name="' + this.application_stage_name + '" ' +
+								'data-application_stage_baby_step="' + this.application_stage_baby_step + '" ' +
+								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" >' +
+								'<i class="fas fa-paper-plane"></i>' +
+							'</button>' :
 							'<button class="btn btn-icon btn-sm me-1 btn-outline-info btn-wave waves-effect waves-light btn-add-batch" ' +
 								'id="btnAddToBatchlist-' + this.job_number + '" ' +
 								'data-job_number="' + this.job_number + '" ' +
@@ -708,7 +873,7 @@ $(document).ready(function() {
 								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
 								'data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal">' +
 								'<i class="fas fa-plus"></i>' +
-							'</button>' +
+							'</button>' )+
 							'<form action="front_office_view_application" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="search_text" value="' + this.case_number + '">' +
@@ -755,6 +920,311 @@ $(document).ready(function() {
 		});
 
 	};
+
+	$(document).on('click', '.btn_send_request', function() {
+        const jobNumber = $(this).data('job_number');
+        const arName = $(this).data('ar_name');
+        const businessProcessSubName = $(this).data('business_process_sub_name');
+        const locality = $(this).data('locality');
+        const description = $(this).data('bs-desc');
+
+        // Open the modal with the data
+        $('#askForPurposeOfSendingRequest').modal('show');
+        $('#req_job_number').val(jobNumber);
+        $('#req_ar_name').val(arName);
+        $('#req_business_process_sub_name').val(businessProcessSubName);
+        $('#req_locality').val(locality);
+        $('#req_description').val(description);
+
+        $.ajax({
+                type : "POST",
+                url : "Case_Management_Serv",
+                data : {
+                    request_type : 'get_request_purpose',
+                },
+                cache : false,
+                beforeSend : function() {
+                },
+                success : function(jobdetails) {
+                    //console.log(jobdetails);
+                    var json_p = JSON.parse(jobdetails);
+                    var options = $("#req_job_purpose");
+                    options.empty();
+                    options.append(new Option("-- select Purpose --",0));
+                    $(json_p).each(function() {
+                        $('#req_job_purpose').append(
+                                                    '<option value="'
+                                                            + this.request_name
+                                                            + '">'
+                                                            + this.request_name
+                                                            + '</option>');
+                        // switch (description) {
+                        //     case 'Further Entry (Enter Details)':
+                        //         if (this._id == 3) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Upload Coordinate and Save':
+                        //         if (this._id == 2) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Send for Records Information':
+                        //         if (this._id == 1 || this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Verify Records Information':
+                        //         if (this._id == 1 || this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Review Records Information':
+                        //         if (this._id == 1) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Inspection of Site (IF applicable)':
+                        //         if (this._id == 23) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Send for Publication':
+                        //         if (this._id == 21) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Send for Title Plan Preparation':
+                        //         if (this._id == 22 || this._id == 15) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check for Objection':
+                        //         if (this._id == 19) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check for Polygon':
+                        //         if (this._id == 2) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     // case 'Generate interest Number':
+                        //     // 	if (this._id == 14) {
+                        //     // 		$('#req_job_purpose').append(
+                        //     // 						'<option value="'
+                        //     // 								+ this.request_name
+                        //     // 								+ '">'
+                        //     // 								+ this.request_name
+                        //     // 								+ '</option>');
+                        //     // 	}
+                        //     // 	break;
+                        //     // case 'Generate sub Interest Number':
+                        //     // 	if (this._id == 18) {
+                        //     // 		$('#req_job_purpose').append(
+                        //     // 						'<option value="'
+                        //     // 								+ this.request_name
+                        //     // 								+ '">'
+                        //     // 								+ this.request_name
+                        //     // 								+ '</option>');
+                        //     // 	}
+                        //     // 	break;
+                        //     case 'Enter Root of Title':
+                        //         if (this._id == 4 || this._id == 20) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Generate Certificate Number':
+                        //         if (this._id == 16) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Generate Volume and Folio':
+                        //         if (this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check Certificate':
+                        //         if (this._id == 4 || this._id == 16 || this._id == 3 || this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check Register':
+                        //         if (this._id == 4 || this._id == 20 || this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check/Review Documents':
+                        //         if (this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Review Documents':
+                        //         if (this._id == 24) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Check availability of Mother File':
+                        //         if (this._id == 25) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Link to Mother File':
+                        //         if (this._id == 25) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;	
+                        //     case 'Preview Certificate':
+                        //         if (this._id == 4 || this._id == 16 || this._id == 3 || this._id == 9) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break;
+                        //     case 'Enter Mortgage Transaction':
+                        //         if (this._id == 17) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break; 
+                        //     case 'View Register':
+                        //         if (this._id == 4) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break; 
+                        //     case 'Check Parcel Details':
+                        //         if (this._id == 3) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         }
+                        //         break; 
+                        //     case 'openall':
+                        //         // if (this._id == 17) {
+                        //             $('#req_job_purpose').append(
+                        //                             '<option value="'
+                        //                                     + this.request_name
+                        //                                     + '">'
+                        //                                     + this.request_name
+                        //                                     + '</option>');
+                        //         //}
+                        //         break;
+                        // }
+                        
+                    });
+                }
+            });
+    });
 
 	function removeAllActiveStates() {
     	// Remove all light background classes
@@ -813,6 +1283,11 @@ $(document).ready(function() {
 				$("#number-text-8").addClass('text-white');
 				$("#card-request_additional_input").addClass('active-card');
 				break;
+			case 9: // Awaiting Inspection
+				$(".btn-to-be-disabled").prop('disabled', true);
+				$("#body-bg-9").addClass('bg-primary-light');
+				$("#number-text-9").addClass('text-white');
+				$("#card-awaiting_inspection").addClass('active-card');
 			default:
 				// No card selected
 		}
