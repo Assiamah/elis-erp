@@ -450,3 +450,204 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="viewFilelistModal" tabindex="-1" aria-labelledby="viewFilelistModalLabel" aria-hidden="true" data-bs-backdrop="static">
+   <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+         <!-- Header - Clean and professional -->
+         <div class="modal-header border-bottom">
+            <h5 class="modal-title fw-semibold fs-5" id="viewFilelistModalLabel">
+               <i class="ri-group-line me-2"></i>File Movement List Processing
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         
+         <div class="modal-body">
+            <input id="lbl_file_type" name="lbl_file_type" type="hidden" value="">
+            
+            <!-- File Type Selection Card -->
+            <div class="card mb-4 shadow-sm border">
+               <div class="card-body">
+                  <div class="row align-items-center mb-3">
+                     <div class="col-md-4">
+                        <label class="form-label fw-semibold mb-2">
+                           <i class="ri-share-forward-line me-1"></i>Move To:
+                        </label>
+                        <div class="btn-group w-100" role="group" aria-label="File type selection">
+                           <input type="radio" class="btn-check" name="file_type_radio" id="file_type_unit" autocomplete="off" value="Unit">
+                           <label class="btn btn-outline-primary" for="file_type_unit">
+                              <i class="ri-building-2-line me-1"></i>Unit
+                           </label>
+                           
+                           <input type="radio" class="btn-check" name="file_type_radio" id="file_type_individual" autocomplete="off" value="Individual">
+                           <label class="btn btn-outline-primary" for="file_type_individual">
+                              <i class="ri-user-line me-1"></i>Individual
+                           </label>
+                        </div>
+                        <input type="hidden" name="file_type" id="file_type">
+                        <div class="text-muted small mt-3">
+                           <i class="ri-information-line me-1"></i>
+                           Select where to move the selected applications
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Unit File Section -->
+                  <div class="batch-section bg-primary-transparent border rounded p-3 mb-3" id="unit-file-section" style="display: none;">
+                     <h6 class="fw-semibold mb-3 text-primary">
+                        <i class="ri-building-2-fill me-2"></i>Moving to a Unit
+                     </h6>
+                     <div class="row g-3">
+                        <div class="col-md-6">
+                           <label for="file_unit_division_to_send_to" class="form-label fw-medium">
+                              Division <span class="text-danger">*</span>
+                           </label>
+                           <select id="file_unit_division_to_send_to" data-trigger class="form-select">
+                              <option value="" selected disabled>Select Division</option>
+                              <option value="LVD">LVD</option>
+                              <option value="LRD">LRD</option>
+                              <option value="PVLMD">PVLMD</option>
+                              <option value="SMD">SMD</option>
+                              <option value="RLO">RLO</option>
+                              <option value="CORPORATE">CORPORATE</option>
+                           </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="file_to_send_to" class="form-label fw-medium">
+                                Unit <span class="text-danger">*</span>
+                                <small class="text-muted ms-1" id="file_unit-count">(0 units)</small>
+                            </label>
+                            <div class="datalist-container">
+                                <div class="input-group">
+                                    <select class="form-select" 
+                                        id="file_unit_to_send_to" 
+                                        aria-describedby="unit-help">
+                                        <option value="" selected disabled>Select a unit</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <span class="input-group-text">
+                                        <i class="ri-building-2-line" id="unit-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="file_unit-help" class="form-text">
+                                <i class="ri-information-line me-1"></i>
+                                Select a unit from the dropdown list
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- Individual Moving Section -->
+                  <div class="batch-section bg-primary-transparent border rounded p-3 mb-3" id="individual-file-section" style="display: none;">
+                     <h6 class="fw-semibold mb-3 text-primary">
+                        <i class="ri-user-fill me-2"></i>Moving to an Individual
+                     </h6>
+                     <div class="row g-3">
+                       <div class="col-md-6">
+                            <label for="division_to_send_to" class="form-label fw-medium">
+                                Division/Unit
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="file_division_to_send_to" 
+                                    value="${unit_name}" readonly>
+                                <span class="input-group-text">
+                                    <i class="ri-lock-line text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="user_to_send_to" class="form-label fw-medium">
+                                User <span class="text-danger">*</span>
+                                <small class="text-muted ms-1" id="file_user-count">(0 users)</small>
+                            </label>
+                            <div class="datalist-container">
+                                <div class="input-group">
+                                    <select class="form-select" id="file_user_to_send_to" required>
+                                        <option value="" selected disabled>Select a user</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                    <span class="input-group-text">
+                                        <i class="ri-user-line" id="file_user-icon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="file_user-help" class="form-text">
+                                <i class="ri-information-line me-1"></i>
+                                Select a user from the dropdown list
+                            </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+            </div>
+            
+            <!-- File List Table Card -->
+            <div class="card shadow-sm border">
+               <div class="card-header border-bottom bg-light">
+                  <h6 class="mb-0 fw-semibold">
+                     <i class="ri-list-check-2 me-2"></i>File List Items
+                     <span class="badge bg-primary ms-2" id="file-count">0</span>
+                  </h6>
+               </div>
+               <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0" id="filelistTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="border-bottom">
+                                        <i class="ri-hashtag me-1 text-muted"></i>Reference No.
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-file-text-line me-1 text-muted"></i>Application Name
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-file-list-3-fill me-1 text-muted"></i>Application Type
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-chat-quote-line me-1 text-muted"></i>Locality
+                                    </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-sticky-note-line me-1 text-muted"></i>Purpose
+                                    </th>
+                                    <th class="border-bottom text-center">
+                                        <i class="ri-settings-3-line me-1 text-muted"></i>Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="filelistdataTable">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                  
+                  <!-- Empty State -->
+                  <div class="text-center py-5" id="empty-file-state">
+                        <div class="mb-3">
+                            <i class="ri-inbox-line fs-1 text-muted"></i>
+                        </div>
+                        <h6 class="text-muted mb-2">No items in file list</h6>
+                        <p class="text-muted small">Select applications from the table to add them to the file movement</p>
+                    </div>
+                </div>
+            </div>
+         </div>
+         
+         <!-- Footer - Clean and professional -->
+         <div class="modal-footer border-top">
+            <div class="me-auto">
+               <button type="button" class="btn btn-outline-danger" id="remove_all_from_file_list">
+                  <i class="ri-delete-bin-line me-1"></i>Clear All
+               </button>
+            </div>
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+               <i class="ri-close-line me-1"></i>Cancel
+            </button>
+            <button type="button" id="btn_process_filelist_ft" class="btn btn-primary" >
+               <i class="ri-send-plane-fill me-1"></i>Process Movement
+            </button>
+         </div>
+      </div>
+   </div>
+</div>

@@ -12626,6 +12626,7 @@ request.setAttribute("rq_id",rq_id);
 				String completed_request = menu_obj.get("completed_request").toString();
 				String attention_required = menu_obj.get("attention_required").toString();
 				String request_for_additional_input = menu_obj.get("request_for_additional_input").toString();
+				String awaiting_inspection = menu_obj.get("awaiting_inspection").toString();
 
 				JSONObject notice_count_obj;
 
@@ -12646,6 +12647,7 @@ request.setAttribute("rq_id",rq_id);
 
 				request.setAttribute("attention_required", attention_required);
 				request.setAttribute("request_for_additional_input", request_for_additional_input);
+				request.setAttribute("awaiting_inspection", awaiting_inspection);
 
 				request.setAttribute("reminders", reminders);
 				request.setAttribute("warnings", warnings);
@@ -12739,6 +12741,7 @@ request.setAttribute("rq_id",rq_id);
 				String completed_request = menu_obj.get("completed_request").toString();
 				String attention_required = menu_obj.get("attention_required").toString();
 				String request_for_additional_input = menu_obj.get("request_for_additional_input").toString();
+				String awaiting_inspection = menu_obj.get("awaiting_inspection").toString();
 				
 
 				JSONObject notice_count_obj;
@@ -12759,6 +12762,7 @@ request.setAttribute("rq_id",rq_id);
 				request.setAttribute("completed_request", completed_request);
 				request.setAttribute("request_for_additional_input", request_for_additional_input);
 				request.setAttribute("attention_required", attention_required);
+				request.setAttribute("awaiting_inspection", awaiting_inspection);
 
 				request.setAttribute("reminders", reminders);
 				request.setAttribute("warnings", warnings);

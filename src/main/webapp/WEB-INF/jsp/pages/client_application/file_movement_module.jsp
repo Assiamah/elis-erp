@@ -12,6 +12,23 @@
 
 
   
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+		<!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+				<h1 class="page-title fw-medium fs-18 mb-0">File Movement</h1>
+				<p class="text-muted mb-0 small">Track and manage document files across cases</p>
+				</div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">File Movement</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
   
 
  <div class="content-wrapper">
@@ -170,6 +187,9 @@
      
     
  </div>
+
+   </div>
+</div>
  
 
 <!-- View Batchlist============================= -->

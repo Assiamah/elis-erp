@@ -160,3 +160,5 @@ ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 ${page_name == "account-reports" ? "<script src='js-pages/audit_report.js'></script>" : ""}
 
 ${page_name == "account-reports" ? "<script src='js-pages/account_reports.js'></script>" : ""}
+
+${page_name == "page_file_management" ?  "<script src='js-pages/file_management.js'></script>" : ""}

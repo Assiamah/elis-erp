@@ -4509,75 +4509,435 @@ $(document).on('click', '.load-details-btn', function(e) {
 									});
 
 // Handle Save Changes button with confirmation
-$('#btnSaveChangeOfNames').off('click').on('click', function(e) {
+$('#frmChangeofNames').on('submit', function(e) {
     e.preventDefault();
     
-    const $btn = $(this);
-    const arName = $('#ch_ar_name').val();
-    const region = $('#new_bill_application_region').val();
-    const district = $('#new_bill_application_district').val();
-    const locality = $('#new_bill_application_locality').val();
-    const transactionNumber = $('#new_bill_application_transaction').val();
+    // Get form values
+    const ch_ar_name = $('#ch_ar_name').val().trim();
+    const ch_region = $('#new_bill_application_region').val();
+    const ch_district = $('#new_bill_application_district').val();
+    const ch_locality = $('#new_bill_application_locality').val();
+    const ch_transaction_number = $('#new_bill_application_transaction').val();
     
-    // Validate form
-    if (!arName || !region || !district || !locality) {
+    // Validation
+    const validationErrors = [];
+    
+    if (!ch_ar_name) {
+        validationErrors.push('Applicant Name(s) is required');
+    }
+    if (!ch_region || ch_region === '-1' || ch_region === 'Select Region') {
+        validationErrors.push('Please select a valid Region');
+    }
+    if (!ch_district || ch_district === '-1' || ch_district === 'Select District') {
+        validationErrors.push('Please select a valid District');
+    }
+    if (!ch_locality || ch_locality === '-1' || ch_locality === 'Select Locality') {
+        validationErrors.push('Please select a valid Locality');
+    }
+    if (!ch_transaction_number) {
+        validationErrors.push('Transaction reference is missing');
+    }
+    
+    if (validationErrors.length > 0) {
         Swal.fire({
-            title: 'Incomplete Form',
+            title: 'Validation Error',
             html: `<div class="text-center">
                     <div class="mb-3">
                         <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
                     </div>
-                    <h5 class="mb-2">Please Complete All Fields</h5>
-                    <p class="text-muted">All applicant information fields are required</p>
+                    <h5 class="mb-3">Please correct the following:</h5>
+                    <ul class="text-start list-unstyled">
+                        ${validationErrors.map(err => `<li><i class="fas fa-times-circle text-danger me-2"></i>${err}</li>`).join('')}
+                    </ul>
+                    <p class="text-muted small mt-3">All fields are required to update application details</p>
                 </div>`,
             icon: 'warning',
             confirmButtonText: 'OK',
             confirmButtonColor: '#f39c12',
-            background: 'white'
+            background: 'white',
+            backdrop: 'rgba(0,0,0,0.4)',
+            width: 500
         });
         return;
     }
-
+    
+    // Get display values for confirmation
+    const regionText = $('#new_bill_application_region option:selected').text();
+    const districtText = $('#new_bill_application_district option:selected').text();
+    const localityText = $('#new_bill_application_locality option:selected').text();
+    
+    // Show confirmation dialog
     Swal.fire({
-        title: 'Save Changes?',
+        title: 'Update Application Details?',
         html: `<div class="text-start">
                 <div class="mb-3 text-center">
-                    <i class="fas fa-save text-primary fa-3x"></i>
+                    <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block">
+                        <i class="fas fa-user-edit text-primary fa-3x"></i>
+                    </div>
                 </div>
-                <h5 class="mb-3 text-center">Confirm Changes</h5>
+                <h5 class="mb-3 text-center fw-bold">Confirm Changes</h5>
                 
-                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    This action will update the applicant information permanently
+                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Transaction Reference:</strong> ${ch_transaction_number}
                 </div>
                 
-                <p class="text-muted small text-center mb-0">
-                    Please verify all details before saving
-                </p>
+                <div class="card border-0 bg-light mb-3">
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold mb-3">Updated Information:</h6>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <i class="fas fa-user me-2 text-muted mt-1" style="width: 20px;"></i>
+                            <div class="flex-grow-1">
+                                <span class="text-muted small d-block">Applicant Name(s)</span>
+                                <span class="fw-semibold">${ch_ar_name}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-2">
+                            <i class="fas fa-map-marker-alt me-2 text-muted mt-1" style="width: 20px;"></i>
+                            <div class="flex-grow-1">
+                                <span class="text-muted small d-block">Location Details</span>
+                                <span class="fw-semibold">${regionText}</span> > 
+                                <span class="fw-semibold">${districtText}</span> > 
+                                <span class="fw-semibold">${localityText}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3 mb-0">
+                    <i class="fas fa-clock me-2"></i>
+                    <span class="small">This action will update the application records permanently.</span>
+                </div>
             </div>`,
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: '<i class="fas fa-save me-2"></i>Save Changes',
+        confirmButtonText: '<i class="fas fa-save me-2"></i>Yes, Update Application',
         cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
         confirmButtonColor: '#0d6efd',
+        // cancelButtonColor: '#6c757d',
+        background: 'white',
+        width: 550,
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            // cancelButton: 'btn btn-secondary'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading state
+            const submitBtn = $(this).find('button[type="submit"]');
+            const originalText = submitBtn.html();
+            
+            Swal.fire({
+                title: 'Updating Application',
+                html: `
+                    <div class="text-center">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mb-0">Saving application details...</p>
+                        <p class="text-muted small mt-2">Transaction: ${ch_transaction_number}</p>
+                    </div>
+                `,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                background: 'white'
+            });
+            
+            // Disable submit button
+            submitBtn.prop('disabled', true);
+            submitBtn.html('<span class="spinner-border spinner-border-sm me-1"></span>Saving...');
+            
+            // Make AJAX call
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: 'update_application_details',
+                    ar_name: ch_ar_name,
+                    region: ch_region,
+                    district: ch_district,
+                    locality: ch_locality,
+                    transaction_number: ch_transaction_number
+                },
+                cache: false,
+                dataType: 'json',
+                success: function(jobdetails) {
+                    Swal.close(); // Close loading Swal
+                    
+                    // Check response
+                    // let success = false;
+                    // let message = 'Application details updated successfully';
+                    // let responseData = jobdetails;
+                    
+                    // if (typeof jobdetails === 'string') {
+                    //     try {
+                    //         responseData = JSON.parse(jobdetails);
+                    //     } catch (e) {
+                    //         // If it's a plain string success message
+                    //         if (jobdetails.includes('Success') || jobdetails.includes('success')) {
+                    //             success = true;
+                    //         }
+                    //     }
+                    // } else if (jobdetails && (jobdetails.status === 'success' || jobdetails.includes?.('Success'))) {
+                    //     success = true;
+                    // }
+                    
+                    // if (success || jobdetails.includes?.('Success')) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success!',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                                        </div>
+                                    </div>
+                                    <h5 class="mb-2">Application Updated Successfully</h5>
+                                    <div class="bg-light rounded-3 p-3 mt-3">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="text-muted">Transaction:</span>
+                                            <span class="fw-semibold">${ch_transaction_number}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-muted">Applicant:</span>
+                                            <span class="fw-semibold">${ch_ar_name.substring(0, 30)}${ch_ar_name.length > 30 ? '...' : ''}</span>
+                                        </div>
+                                    </div>
+                                </div>`,
+                            icon: 'success',
+                            confirmButtonText: '<i class="fas fa-check me-2"></i>Continue',
+                            confirmButtonColor: '#198754',
+                            background: 'white',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            backdrop: 'rgba(0,0,0,0.4)'
+                        }).then(() => {
+                            // Reset form or perform additional actions
+                            $('#frmChangeofNames')[0].reset();
+                            $('#btnSaveChangeOfNames').fadeOut(300);
+                            
+                            // Trigger any post-update actions
+                            if (typeof loadApplicationDetails === 'function') {
+                                loadApplicationDetails(ch_transaction_number);
+                            }
+                            
+                            // Show optional feedback notification
+                            Swal.fire({
+                                title: 'Changes Applied',
+                                text: 'The application records have been updated',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false,
+                                background: 'white'
+                            });
+                        });
+                        
+                    // } else {
+                    //     // Show error message
+                    //     let errorMsg = 'Failed to update application details';
+                    //     if (jobdetails && jobdetails.message) {
+                    //         errorMsg = jobdetails.message;
+                    //     } else if (typeof jobdetails === 'string' && jobdetails.includes('Error')) {
+                    //         errorMsg = jobdetails;
+                    //     }
+                        
+                    //     Swal.fire({
+                    //         title: 'Update Failed',
+                    //         html: `<div class="text-center">
+                    //                 <div class="mb-3">
+                    //                     <div class="bg-danger bg-opacity-10 rounded-circle p-3 d-inline-block">
+                    //                         <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                    //                     </div>
+                    //                 </div>
+                    //                 <h5 class="mb-2">Unable to Update Application</h5>
+                    //                 <p class="text-danger">${errorMsg}</p>
+                    //                 <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                    //                     <i class="fas fa-lightbulb me-2"></i>
+                    //                     Please try again or contact support if the issue persists
+                    //                 </div>
+                    //             </div>`,
+                    //         icon: 'error',
+                    //         confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                    //         confirmButtonColor: '#0d6efd',
+                    //         showCancelButton: true,
+                    //         cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+                    //         cancelButtonColor: '#6c757d',
+                    //         background: 'white',
+                    //         reverseButtons: true
+                    //     }).then((retryResult) => {
+                    //         if (retryResult.isConfirmed) {
+                    //             $('#frmChangeofNames').submit();
+                    //         }
+                    //     });
+                    // }
+                },
+                error: function(xhr, status, error) {
+                    Swal.close(); // Close loading Swal
+                    
+                    let errorTitle = 'Server Error';
+                    let errorMessage = 'Failed to connect to the server';
+                    let errorDetails = '';
+                    
+                    if (xhr.status === 404) {
+                        errorMessage = 'Service endpoint not found';
+                        errorDetails = 'Please contact system administrator';
+                    } else if (xhr.status === 500) {
+                        errorMessage = 'Internal server error';
+                        errorDetails = 'The server encountered an error processing your request';
+                    } else if (xhr.status === 0) {
+                        errorMessage = 'Network connection error';
+                        errorDetails = 'Please check your internet connection';
+                    } else if (xhr.status === 400) {
+                        errorMessage = 'Bad request';
+                        errorDetails = 'The submitted data is invalid';
+                    }
+                    
+                    Swal.fire({
+                        title: errorTitle,
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">${errorMessage}</h5>
+                                <p class="text-danger small">${xhr.status}: ${error}</p>
+                                <p class="text-muted mt-2">${errorDetails}</p>
+                                <div class="alert alert-secondary bg-secondary bg-opacity-10 border-secondary mt-3">
+                                    <i class="fas fa-redo-alt me-2"></i>
+                                    You can try again or contact IT support
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                        confirmButtonColor: '#0d6efd',
+                        showCancelButton: true,
+                        cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                        cancelButtonColor: '#6c757d',
+                        background: 'white',
+                        reverseButtons: true
+                    }).then((retryResult) => {
+                        if (retryResult.isConfirmed) {
+                            $('#frmChangeofNames').submit();
+                        }
+                    });
+                },
+                complete: function() {
+                    // Reset button state
+                    submitBtn.prop('disabled', false);
+                    submitBtn.html(originalText);
+                }
+            });
+        }
+    });
+});
+
+// Optional: Add confirmation for resetting form
+$('#btnResetChangeOfNames').on('click', function(e) {
+    e.preventDefault();
+    
+    Swal.fire({
+        title: 'Reset Form?',
+        html: `<div class="text-center">
+                <div class="mb-3">
+                    <i class="fas fa-undo-alt text-warning fa-3x"></i>
+                </div>
+                <p>All unsaved changes will be lost.</p>
+                <p class="text-muted small">Are you sure you want to reset the form?</p>
+            </div>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-undo me-2"></i>Yes, Reset',
+        cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+        confirmButtonColor: '#f39c12',
         cancelButtonColor: '#6c757d',
         background: 'white',
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            // Here you can add AJAX call to save changes
+            $('#frmChangeofNames')[0].reset();
+            $('#btnSaveChangeOfNames').fadeOut(300);
+            
             Swal.fire({
-                title: 'Saved!',
-                html: '<p>Changes have been saved successfully</p>',
-                icon: 'success',
-                timer: 2000,
-                timerProgressBar: true,
+                title: 'Form Reset',
+                text: 'All fields have been cleared',
+                icon: 'info',
+                timer: 1500,
                 showConfirmButton: false,
                 background: 'white'
-            }).then(() => {
-                $('#btnSaveChangeOfNames').fadeOut(300);
             });
         }
+    });
+});
+
+// Optional: Auto-save indicator
+let autoSaveTimer;
+$('#frmChangeofNames input, #frmChangeofNames textarea, #frmChangeofNames select').on('change input', function() {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(function() {
+        // Show auto-save hint
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            background: 'white'
+        });
+        
+        toast.fire({
+            icon: 'info',
+            title: 'Changes detected',
+            text: 'Click "Save Changes" to update application'
+        });
+    }, 1000);
+});
+
+// Optional: Keyboard shortcut for save (Ctrl+S)
+$(document).on('keydown', function(e) {
+    if (e.ctrlKey && e.key === 's' && $('#frmChangeofNames').is(':visible')) {
+        e.preventDefault();
+        $('#frmChangeofNames').submit();
+    }
+});
+
+// Optional: Character counter for applicant name field
+$('#ch_ar_name').on('input', function() {
+    const charCount = $(this).val().length;
+    const maxLength = 500;
+    
+    if (charCount > 0) {
+        let counterClass = 'text-muted';
+        let icon = 'fa-info-circle';
+        
+        if (charCount > maxLength * 0.9) {
+            counterClass = 'text-warning';
+            icon = 'fa-exclamation-triangle';
+        }
+        if (charCount >= maxLength) {
+            counterClass = 'text-danger';
+            icon = 'fa-times-circle';
+        }
+        
+        const counter = $(this).siblings('.char-counter');
+        if (counter.length) {
+            counter.html(`<i class="fas ${icon} me-1"></i>${charCount}/${maxLength}`);
+            counter.attr('class', `char-counter small ${counterClass}`);
+        }
+    }
+});
+
+// Initialize tooltips
+$(document).ready(function() {
+    $('#frmChangeofNames button[type="submit"]').attr('data-bs-toggle', 'tooltip')
+        .attr('data-bs-placement', 'top')
+        .attr('title', 'Save Changes (Ctrl+S)');
+    
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
 

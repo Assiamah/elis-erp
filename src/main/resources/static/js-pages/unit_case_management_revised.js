@@ -40,11 +40,11 @@ $(document).ready(function() {
 		var com_3 = $('#com_3').val();
 		var que_2 = $('#que_2').val();
 		var awa_4 = $('#awa_4').val();
-
 		var awrq_5 = $('#awa_req_5').val();
 		var ctrq_6 = $('#req_com_6').val();
 		var atr_7 = $('#req_com_7').val();
 		var req_8 = $('#req_inp_8').val();
+		var awa_9 = $('#awa_insp_9').val();
 		
 
 		datatable.search("").draw();
@@ -71,16 +71,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
-						} else if(inbox_type == 5) {
+					} else if(inbox_type == 5) {
 						$('#adv_status').val('Awaiting Request');
 						$('.exclude_all').removeClass('d-none');
-						} else if(inbox_type == 6) {
+					} else if(inbox_type == 6) {
 						$('#adv_status').val('Completed Request');
 						$('.exclude_all').removeClass('d-none');
-						} else if(inbox_type == 7) {
+					} else if(inbox_type == 7) {
 						$('#adv_status').val('Attention Required');
 						$('.exclude_all').removeClass('d-none');
-				
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -115,6 +120,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -145,6 +165,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -174,6 +209,21 @@ $(document).ready(function() {
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
 						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
@@ -206,6 +256,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -235,6 +300,21 @@ $(document).ready(function() {
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
 						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
@@ -266,6 +346,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -296,6 +391,21 @@ $(document).ready(function() {
 					} else if(inbox_type == 4) {
 						$('#adv_status').val('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
 					}
@@ -304,6 +414,48 @@ $(document).ready(function() {
 
 					return;
 
+				} else {
+
+					LoadUnitApplications(inbox_type)
+				}
+
+			case 9:
+				if(awa_9 > 500) {
+
+					$('#adv_inbox_type').val(inbox_type);
+
+					if(inbox_type == 1){
+						$('#adv_status').val('Incoming Files');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 2) {
+						$('#adv_status').val('Queried');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 3) {
+						$('#adv_status').val('Completed Within Unit');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 4) {
+						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
+					} else {
+						$('#adv_status').val('All');
+					}
+
+					$("#incoming_advanced_search").modal('show');
 				} else {
 
 					LoadUnitApplications(inbox_type)
@@ -813,6 +965,11 @@ $(document).ready(function() {
 				$("#number-text-8").addClass('text-white');
 				$("#card-request_additional_input").addClass('active-card');
 				break;
+			case 9: // Awaiting Inspection
+				$(".btn-to-be-disabled").prop('disabled', true);
+				$("#body-bg-9").addClass('bg-primary-light');
+				$("#number-text-9").addClass('text-white');
+				$("#card-awaiting_inspection").addClass('active-card');
 			default:
 				// No card selected
 		}
