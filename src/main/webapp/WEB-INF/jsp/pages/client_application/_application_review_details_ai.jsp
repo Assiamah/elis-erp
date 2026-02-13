@@ -565,6 +565,7 @@
                         <!-- Process Steps Timeline -->
                         <div class="process-timeline">
                             <c:forEach var="babyStep" items="${active_digital_workflow_step_list}" varStatus="loop">
+                                
                                 <!-- Process Step Card -->
                                 <div class="process-step-card mb-4" 
                                     data-status="${babyStep.bse_status.toLowerCase()}">
