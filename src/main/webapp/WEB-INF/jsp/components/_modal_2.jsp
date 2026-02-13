@@ -651,3 +651,80 @@
       </div>
    </div>
 </div>
+
+<!-- Milestone Details Modal -->
+<div class="modal fade effect-fade modal-blur" id="milestoneDetailsModal" tabindex="-1" aria-labelledby="milestoneDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-2 me-3">
+                        <i class="fas fa-tasks text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="milestoneDetailsModalLabel">
+                            Application Milestone Progress
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                            <span id="modalJobNumber"></span> • <span id="modalCaseNumber"></span>
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Summary Stats Cards -->
+                <div class="row g-3 mb-4" id="milestoneStatsContainer">
+                    <!-- Stats will be dynamically populated here -->
+                </div>
+                
+                <!-- Progress Timeline -->
+                <div class="mb-4" id="overallProgressContainer">
+                    <!-- Overall progress will be dynamically populated here -->
+                </div>
+                
+                <!-- Milestones Container -->
+                <div id="milestonesContainer">
+                    <!-- Milestones will be dynamically populated here -->
+                </div>
+                
+                <!-- Loading Skeleton -->
+                <div id="loadingSkeleton" class="text-center py-5" style="display: none;">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted mb-0">Loading milestone details...</p>
+                    <small class="text-muted">Please wait while we fetch the progress data</small>
+                </div>
+                
+                <!-- No Data Message -->
+                <div id="noDataMessage" class="text-center py-5" style="display: none;">
+                    <div class="bg-light bg-opacity-50 rounded-circle p-4 d-inline-block mb-3">
+                        <i class="fas fa-tasks text-muted fa-3x"></i>
+                    </div>
+                    <h6 class="fw-bold mb-2">No Milestones Found</h6>
+                    <p class="text-muted mb-2">No milestone data is available for this application</p>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+                    <!-- <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Last updated: <span id="lastUpdatedTime">Just now</span>
+                    </div> -->
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

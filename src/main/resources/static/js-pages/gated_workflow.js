@@ -19460,7 +19460,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     notification_message: custom_message,
                     notification_methods: JSON.stringify(methods),
                     send_sms: $('#method_sms').is(':checked') ? 1 : 0,
-                    send_email: $('#method_email').is(':checked') ? 1 : 0
+                    send_email: $('#method_email').is(':checked') ? 1 : 0,
+                    request_id: $('#request_id').val()
                 };
                 
                 // Make AJAX call
@@ -19650,5 +19651,39 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         $('#inspection_custom_message').trigger('input');
     }, 100);
+
+    $('#btn_generate_smd_barcode_new_address_code').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_transaction_number").val();
+        //var case_number = $("#cs_main_case_number").val();
+        var wkt_polygon = $("#lc_fr_bl_wkt_polygon").val();
+        
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                // target:'_blank',
+                    data: {
+                       // request_type: 'request_to_generate_smd_barcode_with_address_code',
+                        request_type: 'request_to_generate_smd_barcode',
+                        wkt_polygon:wkt_polygon,
+                        job_number:job_number,
+                        case_number:case_number
+                    },
+                    cache: false,
+                xhrFields:{
+                    responseType: 'blob'
+                },
+                    beforeSend: function () {
+                    // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+                    },
+                    success: function(jobdetails) {
+                        console.log(jobdetails);
+                    var blob = new Blob([jobdetails], {type: "application/pdf"});
+                    var objectUrl = URL.createObjectURL(blob);
+                    window.open(objectUrl);
+                        
+                    }
+                    }); 
+            });
 });
 

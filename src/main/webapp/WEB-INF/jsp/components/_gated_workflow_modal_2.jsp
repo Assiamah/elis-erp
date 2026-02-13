@@ -4299,3 +4299,87 @@ Thank you.</textarea>
         </div>
     </div>
 </div>
+
+<!-- Generate Barcode on Plan Modal -->
+<div class="modal fade effect-fade modal-blur" id="generate_barcode_on_plan" tabindex="-1" aria-labelledby="generateBarcodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-2 me-3">
+                        <i class="fas fa-barcode text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="generateBarcodeModalLabel">
+                            Generate Barcode on Plan
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                            Create unique barcode for document tracking
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Main Barcode Generation Form -->
+                <form id="generateBarcodeForm" method="post" class="needs-validation" novalidate>
+                    
+                    <!-- Barcode Content -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-muted small text-uppercase">
+                            <i class="fas fa-edit me-1"></i> Barcode Content
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="fas fa-hashtag text-muted"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control border-start-0 ps-0" 
+                                   id="barcodeContent" 
+                                   name="barcode_content"
+                                   placeholder="e.g., PLAN-2024-001-001" 
+                                   value="${job_number}"
+                                   required>
+                        </div>
+                        <div class="form-text text-muted">
+                            <i class="fas fa-info-circle me-1"></i> 
+                            Unique identifier for this plan document
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- Information Alert -->
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle fa-fw"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <strong>Barcode Generation:</strong> This will create a unique barcode for the selected plan. 
+                                The barcode will be embedded on the plan document for tracking and verification purposes.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-success px-5" id="btn_generate_smd_barcode_new_address_code">
+                        <i class="fas fa-qrcode me-2"></i>Generate Barcode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

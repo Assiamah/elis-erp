@@ -849,6 +849,18 @@ $(document).ready(function() {
 						
 						// 9: Actions
 						'<div class="d-flex justify-content-center">' +
+						'<button class="btn btn-icon btn-sm me-1 btn-outline-success btn-wave waves-effect waves-light btn-view-milestone" ' +
+							'id="btnAddToBatchlist-' + this.job_number + '" ' +
+							'data-job_number="' + this.job_number + '" ' +
+							'data-ar_name="' + this.ar_name + '" ' +
+							'data-business_process_sub_name="' + this.business_process_sub_name + '" ' +
+							'data-application_stage="' + this.application_stage + '" ' +
+							'data-application_stage_name="' + this.application_stage_name + '" ' +
+							'data-application_stage_baby_step="' + this.application_stage_baby_step + '" ' +
+							'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
+							'data-bs-custom-class="tooltip-primary" title="View Milestone" data-bs-toggle="tooltip">' +
+							'<i class="fas fa-list"></i>' +
+						'</button>' +
 						(inbox_type == 9 ? 
 						'<button class="btn btn-icon btn-sm me-1 btn-warning btn-wave waves-effect waves-light btn_send_request" ' +
 								'id="btnAddToBatchlist-' + this.job_number + '" ' +
@@ -859,10 +871,11 @@ $(document).ready(function() {
 								'data-locality="' + this.locality + '" ' +
 								'data-application_stage_name="' + this.application_stage_name + '" ' +
 								'data-application_stage_baby_step="' + this.application_stage_baby_step + '" ' +
-								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" >' +
+								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
+								'data-bs-custom-class="tooltip-primary" title="Send Request" data-bs-toggle="tooltip">' +
 								'<i class="fas fa-paper-plane"></i>' +
 							'</button>' :
-							'<button class="btn btn-icon btn-sm me-1 btn-outline-info btn-wave waves-effect waves-light btn-add-batch" ' +
+							'<div data-bs-custom-class="tooltip-primary" title="Add to Batch" data-bs-toggle="tooltip" ><button class="btn btn-icon btn-sm me-1 btn-outline-info btn-wave waves-effect waves-light btn-add-batch" ' +
 								'id="btnAddToBatchlist-' + this.job_number + '" ' +
 								'data-job_number="' + this.job_number + '" ' +
 								'data-ar_name="' + this.ar_name + '" ' +
@@ -873,26 +886,26 @@ $(document).ready(function() {
 								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
 								'data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal">' +
 								'<i class="fas fa-plus"></i>' +
-							'</button>' )+
+							'</button></div>' )+
 							'<form action="front_office_view_application" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="search_text" value="' + this.case_number + '">' +
 								'<input type="hidden" name="job_number" value="' + this.job_number + '">' +
 								'<input type="hidden" name="business_process_sub_name" value="' + this.business_process_sub_name + '">' +
-								'<button type="submit" name="save" class="btn btn-icon btn-sm me-1 btn-outline-primary btn-wave waves-effect waves-light">' +
+								'<button type="submit" name="save" class="btn btn-icon btn-sm me-1 btn-outline-primary btn-wave waves-effect waves-light" data-bs-custom-class="tooltip-primary" title="View Application" data-bs-toggle="tooltip">' +
 									'<i class="fas fa-eye"></i>' +
 								'</button>' +
 							'</form>' +
-							'<!--<form action="request_application_progress_details_ai" method="post" class="d-inline">' +
+							'<form action="request_application_progress_details_ai" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="transaction_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="job_number" value="' + this.job_number + '">' +
 								'<input type="hidden" name="review_type" value="GeneralWorkRequest">' +
 								'<input type="hidden" name="business_process_sub_name" value="' + this.business_process_sub_name + '">' +
-								'<button type="submit" name="save" class="btn btn-icon btn-sm me-1 btn-outline-danger btn-wave waves-effect waves-light to_hide_on_level_1">' +
+								'<button type="submit" name="save" class="btn btn-icon btn-sm me-1 btn-outline-danger btn-wave waves-effect waves-light to_hide_on_level_1" data-bs-custom-class="tooltip-primary" title="Work" data-bs-toggle="tooltip">' +
 									'<i class="fas fa-folder-open"></i>' +
 								'</button>' +
-							'</form>-->' +
+							'</form>' +
 						'</div>'
 					]).draw(false);
 					
@@ -920,6 +933,531 @@ $(document).ready(function() {
 		});
 
 	};
+
+	$(document).on('click', '.btn-view-milestone', function(e) {
+        e.preventDefault();
+        
+        const jobNumber = $(this).data('job_number');
+        const caseNumber = $(this).data('case_number') || 'N/A';
+        
+        // Store job info in modal
+        $('#modalJobNumber').text(`Job: ${jobNumber}`);
+        $('#modalCaseNumber').text(`Case: ${caseNumber}`);
+        // $('#lastUpdatedTime').text(new Date().toLocaleString());
+        
+        // Show modal with loading state
+        const modal = new bootstrap.Modal(document.getElementById('milestoneDetailsModal'));
+        modal.show();
+        
+        // Show loading skeleton, hide containers
+        $('#loadingSkeleton').show();
+        $('#milestonesContainer').empty().hide();
+        $('#noDataMessage').hide();
+        $('#milestoneStatsContainer').empty();
+        $('#overallProgressContainer').empty();
+        
+        // Make AJAX call
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_load_current_milestone_details',
+                job_number: jobNumber,
+            },
+            cache: false,
+            dataType: 'json',
+            success: function(response) {
+                console.log('Milestone Data:', response);
+                
+                // Hide loading skeleton
+                $('#loadingSkeleton').hide();
+                
+                // Parse response if needed
+                const milestoneData = (typeof response === 'string') ? JSON.parse(response) : response;
+                
+                // Check if data exists
+                if (!milestoneData || milestoneData.length === 0) {
+                    $('#noDataMessage').show();
+                    return;
+                }
+                
+                // Process and display milestones
+                displayMilestoneData(milestoneData);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading milestone data:', error);
+                
+                // Hide loading skeleton
+                $('#loadingSkeleton').hide();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    html: `<div class="text-center">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x mb-3"></i>
+                            <p>Failed to load milestone details</p>
+                            <p class="text-muted small">${error}</p>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545',
+                    background: 'white'
+                });
+                
+                $('#noDataMessage').show();
+            }
+        });
+    });
+    
+    // Function to display milestone data
+    function displayMilestoneData(milestones) {
+        
+        // Calculate overall statistics
+        const stats = calculateStats(milestones);
+        
+        // Render stats cards
+        renderStatsCards(stats);
+        
+        // Render overall progress bar
+        renderOverallProgress(stats);
+        
+        // Clear and render milestones container
+        const container = $('#milestonesContainer');
+        container.empty().show();
+        
+        // Loop through each milestone
+        milestones.forEach((milestone, index) => {
+            const milestoneHtml = renderMilestone(milestone, index);
+            container.append(milestoneHtml);
+        });
+        
+        // Initialize tooltips for new content
+        initializeTooltips();
+    }
+    
+    // Function to determine milestone status based on baby steps
+	function determineMilestoneStatus(babySteps) {
+		if (!babySteps || babySteps.length === 0) return 'Pending';
+		
+		const steps = babySteps || [];
+		const totalSteps = steps.length;
+		const completedSteps = steps.filter(s => s.bse_status === 'Completed').length;
+		const ongoingSteps = steps.filter(s => s.bse_status === 'Ongoing').length;
+		
+		// If all steps are completed
+		if (completedSteps === totalSteps) {
+			return 'Completed';
+		}
+		
+		// If any step is ongoing
+		if (ongoingSteps > 0) {
+			return 'Ongoing';
+		}
+		
+		// If no steps are ongoing and not all are completed
+		return 'Pending';
+	}
+
+	// Update the stats calculation function
+	function calculateStats(milestones) {
+		let totalBabySteps = 0;
+		let completedSteps = 0;
+		let ongoingSteps = 0;
+		let pendingSteps = 0;
+		
+		let completedMilestones = 0;
+		let ongoingMilestones = 0;
+		let pendingMilestones = 0;
+		
+		milestones.forEach(milestone => {
+			// Determine milestone status based on baby steps
+			const milestoneStatus = determineMilestoneStatus(milestone.baby_steps);
+			
+			// Count milestone statuses
+			if (milestoneStatus === 'Completed') completedMilestones++;
+			else if (milestoneStatus === 'Ongoing') ongoingMilestones++;
+			else pendingMilestones++;
+			
+			// Count baby steps
+			if (milestone.baby_steps && Array.isArray(milestone.baby_steps)) {
+				milestone.baby_steps.forEach(step => {
+					totalBabySteps++;
+					
+					switch(step.bse_status) {
+						case 'Completed':
+							completedSteps++;
+							break;
+						case 'Ongoing':
+							ongoingSteps++;
+							break;
+						case 'Pending':
+							pendingSteps++;
+							break;
+					}
+				});
+			}
+		});
+		
+		const overallProgress = totalBabySteps > 0 ? Math.round((completedSteps / totalBabySteps) * 100) : 0;
+		
+		return {
+			totalMilestones: milestones.length,
+			completedMilestones,
+			ongoingMilestones,
+			pendingMilestones,
+			totalBabySteps,
+			completedSteps,
+			ongoingSteps,
+			pendingSteps,
+			overallProgress
+		};
+	}
+    
+    // Function to render stats cards
+    function renderStatsCards(stats) {
+        const container = $('#milestoneStatsContainer');
+        
+        const html = `
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="fas fa-tasks text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">${stats.totalMilestones}</h6>
+                                <small class="text-muted">Total Milestones</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-success bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="fas fa-check-circle text-success"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">${stats.completedMilestones}</h6>
+                                <small class="text-muted">Completed</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-warning bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="fas fa-spinner text-warning"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">${stats.ongoingMilestones}</h6>
+                                <small class="text-muted">In Progress</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm stat-card h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-danger bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="fas fa-clock text-danger"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">${stats.pendingMilestones}</h6>
+                                <small class="text-muted">Pending</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.html(html);
+    }
+    
+    // Function to render overall progress bar
+    function renderOverallProgress(stats) {
+        const container = $('#overallProgressContainer');
+        
+        const html = `
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div>
+                            <span class="fw-bold">Overall Progress</span>
+                            <span class="badge bg-light text-muted ms-2">
+                                ${stats.completedSteps}/${stats.totalBabySteps} Steps
+                            </span>
+                        </div>
+                        <span class="fw-bold text-primary">${stats.overallProgress}%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-gradient-primary" 
+                             role="progressbar" 
+                             style="width: ${stats.overallProgress}%;" 
+                             aria-valuenow="${stats.overallProgress}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-check-circle text-success me-1"></i> ${stats.completedSteps} Completed
+                        </small>
+                        <small class="text-muted">
+                            <i class="fas fa-spinner text-warning me-1"></i> ${stats.ongoingSteps} In Progress
+                        </small>
+                        <small class="text-muted">
+                            <i class="fas fa-clock text-danger me-1"></i> ${stats.pendingSteps} Pending
+                        </small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.html(html);
+    }
+    
+    // Function to render a single milestone
+    function renderMilestone(milestone, index) {
+        
+        // Determine milestone status and badge color
+       	const status = determineMilestoneStatus(milestone.baby_steps);
+        let badgeClass = '';
+        let cardClass = '';
+        
+        
+        
+        // Calculate progress for this milestone
+        const steps = milestone.baby_steps || [];
+        const totalSteps = steps.length;
+        const completedSteps = steps.filter(s => s.bse_status === 'Completed').length;
+        const progressPercent = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
+
+		switch(status) {
+            case 'Completed':
+                badgeClass = 'bg-success';
+                cardClass = 'completed';
+                break;
+            case 'Ongoing':
+                badgeClass = 'bg-warning text-dark';
+                cardClass = 'ongoing';
+                break;
+            default:
+                badgeClass = 'bg-danger';
+                cardClass = 'pending';
+                break;
+        }
+        
+        // Generate baby steps HTML
+        let babyStepsHtml = '';
+        
+        steps.forEach((step, stepIndex) => {
+            
+            // Determine icon and color based on status
+            let iconClass = '';
+            let iconColor = '';
+            let statusBadgeClass = '';
+            
+            switch(step.bse_status) {
+                case 'Completed':
+                    iconClass = 'fa-check-circle';
+                    iconColor = 'text-success';
+                    statusBadgeClass = 'bg-success';
+                    break;
+                case 'Ongoing':
+                    iconClass = 'fa-spinner fa-spin';
+                    iconColor = 'text-warning';
+                    statusBadgeClass = 'bg-warning text-dark';
+                    break;
+                default:
+                    iconClass = 'fa-times-circle';
+                    iconColor = 'text-danger';
+                    statusBadgeClass = 'bg-danger';
+                    break;
+            }
+            
+            // Format date
+            const completeByDate = step.complete_by_date ? formatDate(step.complete_by_date) : 'N/A';
+            
+            babyStepsHtml += `
+                <li class="mb-2 baby-step-item">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="mt-1">
+                            <i class="fas ${iconClass} ${iconColor} fa-lg"></i>
+                        </div>
+                        <div class="flex-fill">
+                            <div class="d-flex align-items-start justify-content-between mb-1 flex-wrap gap-2">
+                                <div class="fw-semibold" 
+                                     data-bs-toggle="tooltip" 
+                                     data-bs-custom-class="tooltip-primary"
+                                     data-bs-placement="top" 
+                                     title="${escapeHtml(step.bse_description)}">
+                                    ${escapeHtml(step.bse_description)}
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <span class="badge ${statusBadgeClass} bg-opacity-10 ${iconColor} border-0">
+                                        ${step.bse_status}
+                                    </span>
+                                    <span class="badge bg-light text-muted border">
+                                        <i class="fas fa-calendar me-1"></i> ${completeByDate}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="small">
+                                <span class="text-muted">Performed by:</span>
+                                <strong class="ms-1">
+                                    ${step.completed_by ? escapeHtml(step.completed_by) : '<span class="text-muted fw-normal">Pending</span>'}
+                                </strong>
+                                ${step.start_date ? `
+                                    <span class="text-muted ms-2">
+                                        <i class="fas fa-play-circle me-1"></i> ${formatDateTime(step.start_date)}
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            `;
+        });
+        
+        // Generate milestone HTML
+        return `
+            <div class="card shadow-sm mb-4 milestone-card ${cardClass}">
+                <div class="card-header bg-white border-0 pt-3 pb-0">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-light text-dark me-3 px-3 py-2">
+                                MS-${milestone.ms_id || (index + 1)}
+                            </span>
+                            <h6 class="fw-bold mb-0">
+                                ${escapeHtml(milestone.milestone_description)}
+                            </h6>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge ${badgeClass} text-white px-3 py-2">
+                                ${status}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-3">
+                    
+                    <!-- Milestone Progress Bar -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                            <small class="text-muted">Milestone Progress</small>
+                            <small class="fw-semibold">${completedSteps}/${totalSteps} steps</small>
+                        </div>
+                        <div class="progress" style="height: 0.5rem;">
+                            <div class="progress-bar bg-gradient-primary" 
+                                 role="progressbar" 
+                                 style="width: ${progressPercent}%;" 
+                                 aria-valuenow="${progressPercent}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Baby Steps List -->
+                    <ul class="list-unstyled mb-0">
+                        ${babyStepsHtml}
+                    </ul>
+                    
+                </div>
+            </div>
+        `;
+    }
+    
+    // Helper function to format date
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        } catch (e) {
+            return dateString;
+        }
+    }
+    
+    // Helper function to format date time
+    function formatDateTime(dateTimeString) {
+        if (!dateTimeString) return 'N/A';
+        
+        try {
+            const date = new Date(dateTimeString);
+            if (isNaN(date.getTime())) return dateTimeString;
+            
+            return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (e) {
+            return dateTimeString;
+        }
+    }
+    
+    // Helper function to escape HTML and prevent XSS
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+    
+    // Initialize tooltips for dynamically added content
+    function initializeTooltips() {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            try {
+                const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+                if (tooltip) {
+                    tooltip.dispose();
+                }
+                new bootstrap.Tooltip(tooltipTriggerEl, {
+                    trigger: 'hover',
+                    delay: { show: 300, hide: 100 }
+                });
+            } catch (e) {
+                console.warn('Could not initialize tooltip:', e);
+            }
+        });
+    }
+    
+    // Clear tooltips when modal is hidden
+    $('#milestoneDetailsModal').on('hidden.bs.modal', function() {
+        const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltips.forEach(function(el) {
+            const tooltip = bootstrap.Tooltip.getInstance(el);
+            if (tooltip) {
+                tooltip.dispose();
+            }
+        });
+    });
 
 	$(document).on('click', '.btn_send_request', function() {
         const jobNumber = $(this).data('job_number');

@@ -2813,9 +2813,9 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			p2.setAlignment(Element.ALIGN_LEFT);
 			document.add(p2);
 
-			Paragraph p3 = new Paragraph("Comments: " + bd_assessed_comment, new Font(FontFamily.TIMES_ROMAN, 10));
-			p3.setAlignment(Element.ALIGN_LEFT);
-			document.add(p3);
+			// Paragraph p3 = new Paragraph("Comments: " + bd_assessed_comment, new Font(FontFamily.TIMES_ROMAN, 10));
+			// p3.setAlignment(Element.ALIGN_LEFT);
+			// document.add(p3);
 
 			/*
 			 * p3 = new Paragraph("Assessor's Name: " + ws_login_user, new

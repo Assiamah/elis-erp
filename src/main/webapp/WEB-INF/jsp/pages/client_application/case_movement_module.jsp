@@ -277,7 +277,7 @@
                                                     <input type="hidden" name="case_number" value="${appfiles.transaction_number}">
                                                     <input type="hidden" name="job_number" value="${appfiles.job_number}">
                                                     <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
-                                                    <button type="submit" class="btn btn-sm btn-primary">
+                                                    <button type="submit" class="btn btn-sm btn-primary" data-bs-custom-class="tooltip-primary" title="View Application" data-bs-toggle="tooltip">
                                                         <i class="ri-eye-line"></i>
                                                     </button>
                                                 </form>
@@ -289,7 +289,7 @@
                                                     <input type="hidden" name="review_type" value="${appfiles.request_category}">
                                                     <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
                                                     <input type="hidden" name="review_instruction" value="${appfiles.request_comments}">
-                                                    <button type="submit" class="btn btn-sm btn-warning">
+                                                    <button type="submit" class="btn btn-sm btn-warning" data-bs-custom-class="tooltip-primary" title="Work" data-bs-toggle="tooltip">
                                                         <i class="ri-folder-open-line"></i>
                                                     </button>
                                                 </form>

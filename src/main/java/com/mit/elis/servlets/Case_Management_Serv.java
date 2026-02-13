@@ -3271,6 +3271,27 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("select_load_current_milestone_details")) {
+
+				String job_number = request.getParameter("job_number");
+				
+				JSONObject obj = new JSONObject();
+
+				obj.put("job_number", job_number);
+
+				String input = obj.toString();
+				web_service_response = casemgt_cl_m.select_load_current_milestone_details(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						input);
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 
 			if (request_type.equals("update_job_step_status_reverse")) {
 
@@ -8525,6 +8546,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				Integer send_email = Integer.parseInt(request.getParameter("send_email"));	
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
+				String request_id = request.getParameter("request_id");
 
 
 				// System.out.println(list_of_application);

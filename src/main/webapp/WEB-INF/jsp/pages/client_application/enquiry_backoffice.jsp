@@ -27,7 +27,7 @@
            
         <div class="row g-3">
 			<!-- Main Search Card -->
-			<div class="col-lg-8 col-xl-9">
+			<div class="col-lg-8 col-xl-12">
 				<div class="card border-0 shadow-sm">
 					<div class="card-header bg-danger py-3">
 						<div class="d-flex align-items-center">
@@ -216,7 +216,7 @@
 			</div>
 
 			<!-- Batchlist Preview Card -->
-			<div class="col-lg-4 col-xl-3">
+			<!-- <div class="col-lg-4 col-xl-3">
 				<div class="card border-0 shadow-sm">
 					<div class="card-header bg-info py-3">
 						<div class="d-flex align-items-center">
@@ -254,7 +254,7 @@
 							</button>
 						</form>
 						
-						<!-- Batchlist Info -->
+						
 						<div class="mt-4 pt-3 border-top">
 							<h6 class="fw-semibold mb-3"><i class="fas fa-info-circle me-2"></i>Quick Info</h6>
 							<div class="d-flex justify-content-between mb-2">
@@ -268,7 +268,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 	</div>  
