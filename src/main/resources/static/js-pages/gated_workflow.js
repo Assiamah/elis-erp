@@ -19685,5 +19685,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     }); 
             });
+
+
+            $(document).on('click', '.btn_send_inspection_request', function() {
+                $("#inspection_of_site").modal("show");
+            });
 });
 

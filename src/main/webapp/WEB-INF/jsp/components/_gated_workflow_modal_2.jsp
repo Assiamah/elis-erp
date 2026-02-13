@@ -347,13 +347,13 @@
                         <i class="fas fa-user-tie me-2"></i>
                         Initial Approval
                     </h5>
-                    <button type="button" class="btn btn-warning ms-auto btn_send_request" 
+                    <button type="button" class="btn btn-warning ms-auto btn_send_inspection_request" 
                         data-job_number="${job_number}" 
                         data-ar_name="${ar_name}" 
                         data-business_process_sub_name="${business_process_sub_name}" 
                         data-locality="${locality}" 
                         data-bs-desc="${babyStep.bse_description}">
-                        <i class="ri-send-plane-line me-1"></i>Send Request
+                        <i class="ri-send-plane-line me-1"></i>Inspection Request
                     </button>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
