@@ -4210,5 +4210,31 @@ public class Ws_client_application {
 		return output;
 
 	}
+	public String lc_load_bill_details_for_stamp_duty_bill(String web_service_url, String web_service_api_key, String json_data)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "value_added_service/lc_load_bill_details_for_stamp_duty_bill");
+				ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key)
+					.header("Content-Type", "application/json")
+					.post(ClientResponse.class, json_data);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+	
 
 }
