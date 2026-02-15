@@ -17402,7 +17402,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const coordinate = result.value;
                 
                 // Add to table
-                addCoordinateToTable(coordinate.name, coordinate.x, coordinate.y);
+                addCoordinateToTable_2(coordinate.name, coordinate.x, coordinate.y);
                 
                 // Show success message
                 Swal.fire({
@@ -17438,7 +17438,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Function to add coordinate to table
-    function addCoordinateToTable(name, x, y) {
+    function addCoordinateToTable_2(name, x, y) {
         const table = $('#coordinatelis_Table_2');
         const tbody = table.find('tbody');
         

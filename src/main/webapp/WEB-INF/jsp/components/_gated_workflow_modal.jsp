@@ -1372,7 +1372,7 @@
               <!-- Extent -->
               <div class="mb-3">
                 <label for="fe_extent" class="form-label fw-semibold">
-                  <i class="bi bi-arrows-angle-expand me-2"></i>Extent (Acres)
+                  <i class="bi bi-arrows-angle-expand me-2"></i>Extent (Land Size)
                   <span class="text-danger">*</span>
                 </label>
                 <input type="text" class="form-control" id="fe_extent" 

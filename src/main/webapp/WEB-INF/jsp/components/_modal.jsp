@@ -1506,6 +1506,9 @@
                                     <th class="border-bottom">
                                         <i class="ri-sticky-note-line me-1 text-muted"></i>Remarks
                                     </th>
+                                    <th class="border-bottom">
+                                        <i class="ri-file-paper-line me-1 text-muted"></i>Req. ID
+                                    </th>
                                     <th class="border-bottom text-center">
                                         <i class="ri-settings-3-line me-1 text-muted"></i>Action
                                     </th>
@@ -1562,6 +1565,8 @@
 			<div class="modal-body">
 				<input type="hidden" id="bl_application_stage" name="bl_application_stage">
 				<input type="hidden" id="bl_application_stage_baby_step" name="bl_application_stage_baby_step">
+                <input type="hidden" id="bl_req_id_new" name="bl_req_id_new">
+                
 
 				<!-- Job Number -->
 				<div class="mb-3">

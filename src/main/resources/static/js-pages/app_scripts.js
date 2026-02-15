@@ -1012,7 +1012,8 @@ $('#btnAddAlltoBatchlist').on('click', function (e) {
                             ar_name,
                             business_process_sub_name,
                             job_purpose,
-                            remarks_notes
+                            remarks_notes,
+                            0
                         );
                     });
 
@@ -1028,7 +1029,8 @@ $('#btnAddAlltoBatchlist').on('click', function (e) {
                         ar_name,
                         business_process_sub_name,
                         job_purpose,
-                        remarks_notes
+                        remarks_notes,
+                        0
                     );
                 });
 
@@ -1216,7 +1218,8 @@ window.addJobToBatchlist = function (
     ar_name_html,
     business_process_sub_name,
     job_purpose,
-    remarks_notes
+    remarks_notes,
+    req_id
 ) {
 
     var job_number_plain = $('<div>').html(job_number_html).text().trim();
@@ -1227,7 +1230,8 @@ window.addJobToBatchlist = function (
         applicantNameHtml: ar_name_html,
         applicationType: business_process_sub_name,
         batchingPurpose: job_purpose,
-        remarksNotes: remarks_notes
+        remarksNotes: remarks_notes,
+        reqId: req_id
     };
 
     var existing = localStorage.getItem('batchlistdata');
@@ -1447,6 +1451,8 @@ window.prepareBatchlistModal = function () {
         row.append($('<td/>').html(item.applicationType));
         row.append($('<td/>').html(item.batchingPurpose));
         row.append($('<td/>').html(item.remarksNotes));
+        row.append($('<td/>').html(parseInt(item.reqId || 0)));
+        
 
         row.append(
             $('<td class="text-center"/>').append(
@@ -1461,6 +1467,9 @@ window.prepareBatchlistModal = function () {
 
         $('#batchlistdataTable').append(row);
     });
+
+    // Hide 3rd column
+    $('#batchlistTable tr').find('th:nth-child(6), td:nth-child(6)').hide();
 
     $('#viewBatchlistModal').modal('show');
     updateBatchCount();
@@ -2997,15 +3006,45 @@ $(document).ready(function () {
 });
 
 $('#askForPurposeOfBatching').on('show.bs.modal', function (e) {
-    $('#bl_job_number_new').val($(e.relatedTarget).data('job_number'));
-    $('#bl_ar_name_new').val($(e.relatedTarget).data('ar_name'));
-    $('#bl_business_process_sub_name_new').val($(e.relatedTarget).data('business_process_sub_name'));
-    $('#bl_application_stage').val($(e.relatedTarget).data('application_stage'));
-    $('#bl_application_stage_name').val($(e.relatedTarget).data('application_stage_name'));
-    $('#bl_application_stage_baby_step').val($(e.relatedTarget).data('application_stage_baby_step'));
-    $('#bl_application_stage_name_baby_step').val($(e.relatedTarget).data('application_stage_name_baby_step'));
 
+    /* ---------------------------------
+       1. SET MODAL FIELD VALUES
+    ----------------------------------*/
+    const trigger = $(e.relatedTarget);
 
+    $('#bl_job_number_new').val(trigger.data('job_number'));
+    $('#bl_ar_name_new').val(trigger.data('ar_name'));
+    $('#bl_business_process_sub_name_new').val(trigger.data('business_process_sub_name'));
+    $('#bl_application_stage').val(trigger.data('application_stage'));
+    $('#bl_application_stage_name').val(trigger.data('application_stage_name'));
+    $('#bl_application_stage_baby_step').val(trigger.data('application_stage_baby_step'));
+    $('#bl_application_stage_name_baby_step').val(trigger.data('application_stage_name_baby_step'));
+    $('#bl_req_id_new').val(trigger.data('req_id') || 0);
+
+    /* ---------------------------------
+       2. INIT SELECT2 (ONCE)
+    ----------------------------------*/
+    if (!$('#bl_job_purpose_new').hasClass('select2-hidden-accessible')) {
+        $('#bl_job_purpose_new').select2({
+            placeholder: '-- Select --',
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('#askForPurposeOfBatching')
+        });
+    }
+
+    if (!$('#adv_job_purpose').hasClass('select2-hidden-accessible')) {
+        $('#adv_job_purpose').select2({
+            placeholder: '-- Select --',
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('#askForPurposeOfBatching')
+        });
+    }
+
+    /* ---------------------------------
+       3. LOAD OPTIONS VIA AJAX
+    ----------------------------------*/
     $.ajax({
         type: "POST",
         url: "app_modal_fills_serv",
@@ -3013,38 +3052,28 @@ $('#askForPurposeOfBatching').on('show.bs.modal', function (e) {
             request_type: 'tags_for_batching_jobs_list'
         },
         cache: false,
-        beforeSend: function () {
-            // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
-        },
         success: function (jobdetails) {
 
+            const json_p = JSON.parse(jobdetails);
 
-            // console.log(jobdetails);
-            var json_p = JSON.parse(jobdetails);
-            var options = $("#bl_job_purpose_new");
-            var adv_options = $("#adv_job_purpose");
+            // Clear old options safely
+            $('#bl_job_purpose_new')
+                .empty()
+                .append('<option></option>');
 
-            // var options = $("#selector");
-            options.empty();
-            options.append(new Option("-- Select --", 0));
+            $('#adv_job_purpose')
+                .empty()
+                .append('<option></option>');
 
-            adv_options.empty();
-            adv_options.append(new Option("-- Select --", 0));
-
-            $(json_p).each(function () {
-
-                //	console.log(select_id);
-                //	console.log(this.business_process_id);
-
-                //   if (main_service_id ==this.business_process_id){
-                $('#bl_job_purpose_new').append('<option value="' + this.tfb_description + '">' + this.tfb_description + '</option>');
-
-                $('#adv_job_purpose').append('<option value="' + this.tfb_description + '">' + this.tfb_description + '</option>');
-
-                //  }
-
-
+            // Add new options
+            $.each(json_p, function () {
+                const opt = new Option(this.tfb_description, this.tfb_description, false, false);
+                $('#bl_job_purpose_new').append(opt);
+                $('#adv_job_purpose').append(opt.cloneNode(true));
             });
+
+            // Refresh Select2
+            $('#bl_job_purpose_new, #adv_job_purpose').trigger('change');
         }
     });
 
@@ -3059,6 +3088,7 @@ $('#btnaddjobtolistFinal').on('click', function (e) {
     var business_process_sub_name = $("#bl_business_process_sub_name_new").val();
     var job_purpose = $("#bl_job_purpose_new").val();
     var remarks_notes = $("#bl_remarks_notes").val();
+    var req_id = $("#bl_req_id_new").val();
 
     // console.log("job_num: " + job_number);
     // console.log("ar_name: " + ar_name);
@@ -3081,7 +3111,7 @@ $('#btnaddjobtolistFinal').on('click', function (e) {
 
         $('#askForPurposeOfBatching').modal('hide');
 
-        addJobToBatchlist(job_number, ar_name, business_process_sub_name, job_purpose, remarks_notes);
+        addJobToBatchlist(job_number, ar_name, business_process_sub_name, job_purpose, remarks_notes, req_id);
 
         prepareBatchlistModal();
 
@@ -3327,7 +3357,8 @@ function getBatchItemsFromTable() {
             ar_name: $row.find('td:eq(1)').text().trim(),
             business_process_sub_name: $row.find('td:eq(2)').text().trim(),
             job_purpose: $row.find('td:eq(3)').text().trim(),
-            remarks_notes: $row.find('td:eq(4)').text().trim()
+            remarks_notes: $row.find('td:eq(4)').text().trim(),
+            req_id: $row.find('td:eq(5)').text().trim()
         };
 
         // Only add if we have a job number

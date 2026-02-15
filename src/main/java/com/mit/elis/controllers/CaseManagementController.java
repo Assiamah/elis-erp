@@ -4868,6 +4868,7 @@ public class CaseManagementController {
 			HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
+		
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
@@ -4875,6 +4876,7 @@ public class CaseManagementController {
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
+
 		try {
 
 			String web_service_response = null;

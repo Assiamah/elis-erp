@@ -526,7 +526,7 @@
                                 </div>
                             </div>
                             <div class="action-buttons">
-                                <button class="btn btn-danger label-btn ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
+                                <button class="btn btn-danger label-btn  ${rq_id == null ? 'd-none' : ''} ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
                                     data-job_number="${job_number}" 
                                     data-ar_name="${ar_name}"
                                     data-req_id="${rq_id}"
@@ -537,7 +537,7 @@
                                     Additional Request
                                 </button>
                                 <!-- Primary Action Button -->
-                                <button class="btn btn-info label-btn"
+                                <button class="btn btn-info label-btn ${rq_id == null ? 'd-none' : ''}"
                                     data-job_number="${job_number}" 
                                     data-ar_name="${ar_name}"
                                     data-req_id="${rq_id}"
@@ -552,6 +552,7 @@
                                         data-bs-target="#askForPurposeOfBatching"
                                         data-job_number="${job_number}" 
                                         data-ar_name="${ar_name}"
+                                        data-req_id="${rq_id}"
                                         data-business_process_sub_name="${business_process_sub_name}">
                                     <i class="bi bi-plus-circle label-btn-icon"></i>
                                     Add to Batch

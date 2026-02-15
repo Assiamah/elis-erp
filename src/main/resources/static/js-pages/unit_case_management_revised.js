@@ -60,31 +60,31 @@ $(document).ready(function() {
 					$('#adv_inbox_type').val(inbox_type);
 
 					if(inbox_type == 1){
-						$('#adv_status').val('Incoming Files');
+						$('#adv_status').text('Incoming Files');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 2) {
-						$('#adv_status').val('Queried');
+						$('#adv_status').text('Queried');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 3) {
 						$('#adv_status').val('Completed Within Unit');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 4) {
-						$('#adv_status').val('Awaiting Payment');
+						$('#adv_status').text('Awaiting Payment');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 5) {
-						$('#adv_status').val('Awaiting Request');
+						$('#adv_status').text('Awaiting Request');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 6) {
-						$('#adv_status').val('Completed Request');
+						$('#adv_status').text('Completed Request');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 7) {
-						$('#adv_status').val('Attention Required');
+						$('#adv_status').text('Attention Required');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 8) {
-						$('#adv_status').val('Request for Additional Input');
+						$('#adv_status').text('Request for Additional Input');
 						$('.exclude_all').removeClass('d-none');
 					} else if(inbox_type == 9) {
-						$('#adv_status').val('Awaiting Inspection');
+						$('#adv_status').text('Awaiting Inspection');
 						$('.exclude_all').removeClass('d-none');
 					} else {
 						$('#adv_status').val('All');
