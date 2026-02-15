@@ -38,7 +38,7 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="ur_title" class="form-label">Title</label>
-                                <select id="ur_title" class="form-select" required data-trigger>
+                                <select id="ur_title" class="form-select" required >
                                     <option value="Mr">Mr</option>
                                     <option value="Ms">Ms</option>
                                     <option value="Mrs">Mrs</option>
