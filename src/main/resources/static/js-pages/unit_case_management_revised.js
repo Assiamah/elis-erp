@@ -488,6 +488,9 @@ $(document).ready(function() {
 		} else if(adv_search_type == 'f_limit') {
 			$('.exclude_limit').addClass('d-none');
 			$('.include_limit').removeClass('d-none');
+		} else if(adv_search_type == 'f_batch_list') {
+			$('.exclude_batch_list').addClass('d-none');
+			$('.include_batch_list').removeClass('d-none');
 		}
 	});
 				
@@ -504,9 +507,10 @@ $(document).ready(function() {
 		var adv_limit = $('#adv_limit').val()
 		var adv_from_date = $('#adv_from_date').val()
 		var adv_to_date = $('#adv_to_date').val()
-		var enq_search_type = "job_number";
+		var enq_search_type = adv_search_type == 'f_job_number' ? "job_number" : "batch_list_number";
 		var adv_job_purpose = $('#adv_job_purpose').val()
 		var adv_sorting = $('#adv_sorting').val()
+		var adv_batch_list_number = $('#adv_batch_list_number').val()
 
 		if(adv_search_type == 'f_job_number') {
 
@@ -602,7 +606,28 @@ $(document).ready(function() {
 
 				return;
 			} 
-		} 
+		} else if(adv_search_type == 'f_batch_list') {
+
+			inbox_type = '0';
+
+			if(!adv_batch_list_number) {
+				// $.notify({
+				// 	message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter a job number</span>',
+				// }, { type : 'danger' , z_index: 9999  });
+
+				// alert('Please enter a job number');
+
+				swal.fire({
+					title: 'Ops!',
+					text: 'Please enter a batch list number',
+					icon: 'warning',
+					confirmButtonText: 'OK'
+				})
+
+				return;
+			}
+
+		}
 
 		$.ajax({
 			type : "POST",
@@ -619,7 +644,8 @@ $(document).ready(function() {
 				inbox_type: inbox_type + '_false',
 				adv_job_purpose : adv_job_purpose,
 				adv_sorting : adv_sorting,
-				adv_search_type : adv_search_type
+				adv_search_type : adv_search_type,
+				adv_batch_list_number : adv_batch_list_number
 			},
 			success : function(jobdetails) {
 

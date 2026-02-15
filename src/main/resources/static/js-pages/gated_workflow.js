@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </td>
                                 <td class="align-middle text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document"
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview Document"
                                                 data-document-path="${docUuid}"
                                                 data-document-name="${docName}">
                                             <i class="bi bi-eye"></i>
@@ -2717,7 +2717,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
@@ -2923,7 +2923,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
@@ -2965,7 +2965,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
@@ -9472,7 +9472,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </td>-->
                                 <td class="align-middle text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document"
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview Document"
                                                 data-document-path="${docUuid}"
                                                 data-document-name="${docName}">
                                             <i class="bi bi-eye"></i>
@@ -14490,7 +14490,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
@@ -14532,7 +14532,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
@@ -14574,7 +14574,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
@@ -14616,7 +14616,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     $(json_p).each(function () {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
-                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document'" +
+                            +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-preview-document' data-bs-toggle='tooltip' data-bs-placement='top' title='Preview Document'" +
                                                 "data-document-path='" + this.document_file + "'" +
                                                 +"data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +

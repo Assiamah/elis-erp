@@ -1680,9 +1680,9 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <!-- Header -->
-            <div class="modal-header border-bottom bg-light">
-                <h5 class="modal-title fw-semibold" id="incomingAdvancedSearchLabel">
-                    <i class="ri-filter-3-line me-2 text-primary"></i>Advanced Filter
+            <div class="modal-header border-bottom bg-primary">
+                <h5 class="modal-title fw-semibold text-white" id="incomingAdvancedSearchLabel">
+                    <i class="ri-filter-3-line me-2 text-warning"></i>Advanced Filter
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -1743,6 +1743,15 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="adv_search_type" 
+                                           id="adv_filter_type_6" value="f_batch_list">
+                                    <label class="form-check-label fw-medium" for="adv_filter_type_6">
+                                        <i class="ri-list-check-2 me-1"></i>Batch List
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1763,7 +1772,7 @@
                 <!-- Filter Sections -->
                 <div class="filter-sections">
                     <!-- Job Number Filter -->
-                    <div class="card border mb-3 include_job_search exclude_job_purpose exclude_app_type exclude_date_range exclude_limit">
+                    <div class="card border mb-3 include_job_search exclude_job_purpose exclude_app_type exclude_date_range exclude_limit exclude_batch_list">
                         <div class="card-body">
                             <h6 class="card-title fw-semibold mb-3">
                                 <i class="ri-hashtag me-2 text-primary"></i>Job Number
@@ -1786,7 +1795,7 @@
                     </div>
 
                     <!-- Application Type Filter -->
-                    <div class="card border mb-3 include_app_type exclude_job_purpose exclude_job_search exclude_date_range exclude_limit">
+                    <div class="card border mb-3 include_app_type exclude_job_purpose exclude_job_search exclude_date_range exclude_limit exclude_batch_list">
                         <div class="card-body">
                             <h6 class="card-title fw-semibold mb-3">
                                 <i class="ri-file-text-line me-2 text-primary"></i>Application Type
@@ -1803,7 +1812,7 @@
                     </div>
 
                     <!-- Job Purpose Filter -->
-                    <div class="card border mb-3 include_job_purpose include_app_type exclude_job_search exclude_date_range exclude_limit">
+                    <div class="card border mb-3 include_job_purpose include_app_type exclude_job_search exclude_date_range exclude_limit exclude_batch_list">
                         <div class="card-body">
                             <h6 class="card-title fw-semibold mb-3">
                                 <i class="ri-send-plane-line me-2 text-primary"></i>Job Purpose
@@ -1820,7 +1829,7 @@
                     </div>
 
                     <!-- Date Range Filter -->
-                    <div class="card border mb-3 include_date_range exclude_job_search exclude_job_purpose exclude_app_type exclude_limit">
+                    <div class="card border mb-3 include_date_range exclude_job_search exclude_job_purpose exclude_app_type exclude_limit exclude_batch_list">
                         <div class="card-body">
                             <h6 class="card-title fw-semibold mb-3">
                                 <i class="ri-calendar-line me-2 text-primary"></i>Date Range
@@ -1857,7 +1866,7 @@
                     </div>
 
                     <!-- Limit and Sorting Section -->
-                    <div class="row g-3 mb-3 include_app_type include_job_purpose include_date_range exclude_job_search include_limit">
+                    <div class="row g-3 mb-3 include_app_type include_job_purpose include_date_range exclude_job_search include_limit exclude_batch_list">
                         <!-- Limit -->
                         <div class="col-md-6">
                             <div class="card border h-100">
@@ -1895,6 +1904,29 @@
                                         Sort results by creation date
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Batch List Filter -->
+                    <div class="card border mb-3 include_batch_list exclude_job_search exclude_job_purpose exclude_app_type exclude_date_range exclude_limit">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold mb-3">
+                                <i class="ri-hashtag me-2 text-primary"></i>Batch List Number
+                            </h6>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-search-line"></i>
+                                </span>
+                                <input type="text" class="form-control" id="adv_batch_list_number" 
+                                       placeholder="Enter batch list number">
+                                <button class="btn btn-outline-dark" type="button" id="btn_clear_job_number">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </div>
+                            <div class="form-text mt-2">
+                                <i class="ri-information-line me-1"></i>
+                                Enter one or more batch list numbers, separated by commas
                             </div>
                         </div>
                     </div>

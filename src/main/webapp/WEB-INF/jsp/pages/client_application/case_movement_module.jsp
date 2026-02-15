@@ -128,10 +128,13 @@
                             <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Applications assigned to you</p>
                         </div> 
                         <div class="d-flex flex-wrap gap-2">
-
+                            <button class="btn btn-warning btn-sm" id="btnViewBatchlist">
+                                <i class="ri-list-check fs-13"></i>
+                                View Batch List
+                            </button>
                             <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#batchedApplicationsModal">
                                 <i class="ri-folders-line fs-13"></i>
-                                Batched Applications [ <span class="fw-semibold">${applicationlist_all.size()}</span> ]
+                                Batched Applications [ <span class="fw-semibold">${applicationlist_all.size() > 0 ? applicationlist_all.size() : 0}</span> ]
                             </button>
 
                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">

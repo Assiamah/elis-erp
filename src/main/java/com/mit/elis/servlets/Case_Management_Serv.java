@@ -6683,6 +6683,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String adv_job_purpose = request.getParameter("adv_job_purpose");
 				String adv_sorting = request.getParameter("adv_sorting");
 				String adv_search_type = request.getParameter("adv_search_type");
+				String adv_batch_list_number = request.getParameter("adv_batch_list_number");
 
 				JSONObject json_data = new JSONObject();
 
@@ -6703,6 +6704,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				json_data.put("adv_job_purpose", adv_job_purpose);
 				json_data.put("adv_sorting", adv_sorting);
 				json_data.put("adv_search_type", adv_search_type);
+				json_data.put("adv_batch_list_number", adv_batch_list_number);
 
 				System.out.println(json_data.toString());
 				
