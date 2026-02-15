@@ -5940,6 +5940,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String assessed_value_amount = request.getParameter("assessed_value_amount");
 				String assessed_comment = request.getParameter("assessed_comment");
 
+
 				// String land_size = request.getParameter("land_size");
 				// String locality_of_parcel =
 				// request.getParameter("locality_of_parcel");
@@ -6003,15 +6004,26 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				// property_data_json.put("ar_id_number", ar_id_number);
 				// property_data_json.put("ap_type_of_party", ap_type_of_party);
 
-				jsonArray.put(property_data_json);
+				//jsonArray.put(property_data_json);
 
-				rs_result = jsonArray.toString();
+				
+
+				JSONObject json_data = new JSONObject();
+				json_data.put("job_number", job_number);
 
 				// System.out.println(rs_result);
-				// web_service_response =
-				// casemgt_cl.online_select_process_acknowledgement_on_case_sub(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),rs_result);
+				 web_service_response =casemgt_cl.lc_load_bill_details_for_stamp_duty_bill(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),json_data.toString());
 
-				web_service_response = "data";
+				 JSONObject jsonobj_bbd = new JSONObject(web_service_response);
+					String lessees_name = (String) jsonobj_bbd.getString("lessees_name");
+					String ref_number = (String) jsonobj_bbd.getString("ref_number");
+					 String bill_amount = (String) jsonobj_bbd.getString("bill_amount");
+
+				
+					 property_data_json.put("ref_number", ref_number);
+					 property_data_json.put("bill_amount", bill_amount);
+					 rs_result = jsonArray.toString();
+				//web_service_response = "data";
 
 				if (web_service_response != null) {
 					// System.out.println(web_service_response);

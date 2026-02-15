@@ -2677,6 +2677,9 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 		String bd_assessed_value_amount = "";
 		String bd_assessed_comment = "";
 
+		String ref_number = "";
+		String bill_amount = "";
+
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		// file.;
 		try {
@@ -2693,6 +2696,10 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			bd_assessed_comment = (String) jsonobj_bbd.getString("assessed_comment");
 
 			bd_assessed_value_amount = (String) jsonobj_bbd.getString("assessed_value_amount");
+	        ref_number = (String) jsonobj_bbd.getString("ref_number");
+	        bill_amount = (String) jsonobj_bbd.getString("bill_amount");
+
+			
 
 			// bd_type_of_interest=
 			// (String)jsonobj_bbd.getString("type_of_interest");
@@ -2798,6 +2805,11 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			Paragraph p10 = new Paragraph("Job Number: " + bd_job_number, new Font(FontFamily.TIMES_ROMAN, 10));
 			p10.setAlignment(Element.ALIGN_LEFT);
 			document.add(p10);
+
+			Paragraph p10_a = new Paragraph("Ref Number: " + ref_number, new Font(FontFamily.TIMES_ROMAN, 10));
+			p10_a.setAlignment(Element.ALIGN_LEFT);
+			document.add(p10_a);
+
 
 			Paragraph p1 = new Paragraph("Stamp Duty Amount: " + bd_stamp_duty_amount,
 					new Font(FontFamily.TIMES_ROMAN, 10));
