@@ -4710,7 +4710,7 @@
   width: 1.1em;
   height: 1.1em;
   background-color: var(--custom-white);
-  border: 1px solid var(--input-border);
+  border: 2px solid var(--input-border);
 }
 .form-check-input:checked {
   background-color: var(--primary-color);
