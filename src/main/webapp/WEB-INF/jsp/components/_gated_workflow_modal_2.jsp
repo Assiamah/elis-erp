@@ -3622,7 +3622,7 @@
 </div>
 
 
-<div class="modal fade" id="newValuationModal" tabindex="-1" aria-labelledby="newValuationModalLabel" aria-hidden="true">
+<div class="modal fade" id="newValuationModal" tabindex="-1" aria-labelledby="newValuationModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-fullscreen modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             
@@ -3754,7 +3754,7 @@
 </div>
 
 <div class="modal fade" id="enter_assessed_value_and_duty_payable" tabindex="-1" 
-     aria-labelledby="assessedValueModalLabel" aria-hidden="true">
+     aria-labelledby="assessedValueModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content shadow-lg border-0">
             
@@ -4090,7 +4090,7 @@
 </div>
 
 <!-- Inspection Site Notification Modal -->
-<div class="modal fade" id="inspection_of_site" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true">
+<div class="modal fade" id="inspection_of_site" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4301,7 +4301,7 @@ Thank you.</textarea>
 </div>
 
 <!-- Generate Barcode on Plan Modal -->
-<div class="modal fade effect-fade modal-blur" id="generate_barcode_on_plan" tabindex="-1" aria-labelledby="generateBarcodeModalLabel" aria-hidden="true">
+<div class="modal fade effect-fade modal-blur" id="generate_barcode_on_plan" tabindex="-1" aria-labelledby="generateBarcodeModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4379,6 +4379,847 @@ Thank you.</textarea>
                         <i class="fas fa-qrcode me-2"></i>Generate Barcode
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="generate_deed_number" tabindex="-1" 
+     aria-labelledby="generateDeedNumberLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-10 px-3 py-2 rounded-circle">
+                            <i class="bi bi-file-earmark-text text-primary fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="modal-title text-white mb-0" id="generateDeedNumberLabel">
+                            Generate Deed Number
+                        </h5>
+                        <p class="mb-0 small opacity-75">Create or view deed reference</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" 
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <!-- Certificate Type (commented out but ready to use) -->
+                <!-- 
+                <div class="mb-4">
+                    <label for="lc_txt_type_of_certificate" class="form-label fw-medium text-muted mb-2">
+                        <i class="bi bi-award me-1"></i>
+                        Certificate Type
+                    </label>
+                    <select name="lc_txt_type_of_certificate" 
+                            id="lc_txt_type_of_certificate" 
+                            class="form-select form-select-lg bg-light border-0" 
+                            required>
+                        <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
+                            ${certificate_type == 'Individual' ? '-- select certificate type --' : certificate_type}
+                        </option>
+                        <option value="Provisional Certificate">📄 Provisional Certificate</option>
+                        <option value="Land Certificate">🏞️ Land Certificate</option>
+                        <option value="Substituted Certificate">📋 Substituted Certificate</option>
+                    </select>
+                    <div class="form-text">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Select the type of certificate to generate deed number
+                    </div>
+                </div>
+                -->
+
+                <!-- Deed Number Display -->
+                <div class="deed-number-container mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <label class="form-label fw-medium text-muted mb-0">
+                            <i class="bi bi-hash me-1"></i>
+                            Deed Number
+                        </label>
+                        <span class="ms-auto">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
+                                <i class="bi bi-key me-1"></i>
+                                Reference
+                            </span>
+                        </span>
+                    </div>
+                    
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-primary bg-opacity-10 border-0" id="deedPrefix">
+                            <i class="bi bi-file-text text-primary"></i>
+                        </span>
+                        <input type="text" 
+                               class="form-control form-control-lg bg-light ${empty deed_number or deed_number == 'null' ? '' : 'text-primary fw-bold'}" 
+                               id="lc_txt_deed_number" 
+                               readonly 
+                               value="${deed_number}"
+                               aria-describedby="deedHelp">
+                        <button class="btn btn-outline-secondary" 
+                                type="button" 
+                                onclick="copyDeedNumber()"
+                                title="Copy to clipboard"
+                                ${empty deed_number or deed_number == 'null' ? 'disabled' : ''}>
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+                    </div>
+                    <div id="deedHelp" class="form-text">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Deed number is auto-generated and read-only
+                    </div>
+                </div>
+
+                <!-- Generation Status -->
+                <div class="status-container mb-4" id="deedStatusContainer" style="display: none;">
+                    <div class="alert alert-success border-0 bg-success bg-opacity-10 d-flex align-items-center" role="alert">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="alert-heading mb-1 text-success">Deed Number Generated!</h6>
+                            <p class="mb-0 small text-muted" id="deedStatusMessage"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-section">
+                    <!-- Generate Button -->
+                    <button type="button" 
+                            id="lc_btn_generate_deed_number_only" 
+                            class="btn btn-primary btn-lg w-100 py-3 mb-3 generate-btn"
+                            ${not empty deed_number and deed_number != 'null' and not fn:contains(deed_number, '-') ? 'disabled' : ''}>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <span class="btn-icon me-2">
+                                <i class="bi bi-gear-fill"></i>
+                            </span>
+                            <span class="btn-text">Generate New Deed Number</span>
+                        </div>
+                    </button>
+
+                    <!-- Quick Actions (shown when deed number exists) -->
+                    <div class="quick-actions d-flex gap-2 ${empty deed_number or deed_number == 'null' ? 'd-none' : ''}" 
+                         id="quickActions">
+                        <button type="button" class="btn btn-outline-primary flex-fill" onclick="useDeedNumber()">
+                            <i class="bi bi-check-circle me-2"></i>Use Number
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="regenerateDeedNumber()">
+                            <i class="bi bi-arrow-repeat me-2"></i>Regenerate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Information Footer -->
+                <div class="info-footer mt-4 pt-3 border-top">
+                    <div class="d-flex align-items-center text-muted">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-shield-check text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <small class="d-block fw-medium">Secure Generation</small>
+                            <small class="text-muted">Deed numbers are generated following LIS standards</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Close
+                </button>
+                <!-- <button type="button" class="btn btn-outline-primary" onclick="printDeedInfo()">
+                    <i class="bi bi-printer me-2"></i>
+                    Print
+                </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur effect-slide" id="generate_concurrence_certificate" tabindex="-1"
+     aria-labelledby="generateConcurrenceCertificateLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-10 px-3 py-2 rounded-circle">
+                            <i class="bi bi-file-earmark-check text-primary fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="modal-title text-white mb-0" id="generateConcurrenceCertificateLabel">
+                            Generate Concurrence Certificate
+                        </h5>
+                        <p class="mb-0 small opacity-75">Create and manage concurrence certificates</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" 
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <div class="certificate-container">
+                    <!-- Certificate Summary Section -->
+                    <div class="summary-section mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <h6 class="fw-semibold text-primary mb-0">
+                                <i class="bi bi-card-text me-2"></i>
+                                Certificate Summary
+                            </h6>
+                            <span class="ms-auto">
+                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                                    <i class="bi bi-pencil-square me-1"></i>
+                                    Editable
+                                </span>
+                            </span>
+                        </div>
+                        
+                        <div class="form-floating">
+                            <textarea id="lc_search_report_summary_details_cs" 
+                                      name="lc_search_report_summary_details_cs" 
+                                      class="form-control" 
+                                      required 
+                                      style="height: 180px;">${remark_or_comment}</textarea>
+                            <label for="lc_search_report_summary_details_cs">
+                                <i class="bi bi-chat-left-text me-1"></i>
+                                Certificate Summary / Remarks
+                            </label>
+                        </div>
+                        <div class="form-text mt-2">
+                            <i class="bi bi-info-circle me-1 text-primary"></i>
+                            Enter the summary details for the concurrence certificate
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <!-- Compose Template (commented out but ready to use) -->
+                        <!-- 
+                        <div class="col-4 mb-3">
+                            <button type="button" name="btn_compose_certificate_template" 
+                                    id="btn_compose_certificate_template" 
+                                    class="btn btn-outline-primary w-100 py-3">
+                                <i class="bi bi-file-earmark-plus me-2"></i>
+                                <span>Compose Template</span>
+                            </button>
+                        </div>
+                        -->
+
+                        <div class="row g-3">
+                            <!-- Save Certificate Button -->
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_save_search_report_cs" 
+                                        id="lc_btn_save_search_report_cs" 
+                                        class="btn btn-outline-secondary w-100 py-3 save-btn">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-cloud-arrow-up fs-5 me-2"></i>
+                                        <span>Save Certificate</span>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- Generate Certificate Button -->
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_activate_final_concurrence_certificate_cs" 
+                                        id="lc_btn_activate_final_concurrence_certificate_cs" 
+                                        class="btn btn-success w-100 py-3 generate-btn">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-check2-circle fs-5 me-2"></i>
+                                        <span>Generate Certificate</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section (Optional) -->
+                    <div class="preview-section mt-4" id="certificatePreview" style="display: none;">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">
+                                        <i class="bi bi-eye me-2 text-primary"></i>
+                                        Certificate Preview
+                                    </h6>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="togglePreview()">
+                                        <i class="bi bi-arrows-angle-expand"></i>
+                                    </button>
+                                </div>
+                                <div class="preview-content p-3 bg-white rounded-3 border" 
+                                     id="previewContent">
+                                    <!-- Preview content will be dynamically updated -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Inputs -->
+                    <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id" value="${transaction_id}">
+
+                    <!-- Action Status -->
+                    <div class="action-status mt-4" id="actionStatus" style="display: none;">
+                        <div class="alert alert-success d-flex align-items-center border-0" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <div id="statusMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Close
+                </button>
+                <!-- <button type="button" class="btn btn-outline-primary" onclick="previewCertificate()">
+                    <i class="bi bi-eye me-2"></i>
+                    Preview
+                </button>
+                <button type="button" class="btn btn-outline-info" onclick="printCertificate()">
+                    <i class="bi bi-printer me-2"></i>
+                    Print
+                </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-slide" id="generate_ls_number" tabindex="-1"
+     aria-labelledby="generateLsNumberLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-10 text-primary px-3 py-2 rounded-circle">
+                            <i class="bi bi-123 fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="modal-title text-white mb-0" id="generateLsNumberLabel">
+                            Generate Land Serial (LS) Number
+                        </h5>
+                        <p class="mb-0 small opacity-75">Create a unique land serial reference</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" 
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <div class="ls-number-container">
+                    <!-- Certificate Type (commented out but ready to use) -->
+                    <!-- 
+                    <div class="mb-4">
+                        <label for="lc_txt_type_of_certificate" class="form-label fw-medium text-muted mb-2">
+                            <i class="bi bi-award me-1"></i>
+                            Certificate Type
+                        </label>
+                        <select name="lc_txt_type_of_certificate" 
+                                id="lc_txt_type_of_certificate" 
+                                class="form-select form-select-lg bg-light border-0" 
+                                required>
+                            <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
+                                ${certificate_type == 'Individual' ? '-- select certificate type --' : certificate_type}
+                            </option>
+                            <option value="Provisional Certificate">📄 Provisional Certificate</option>
+                            <option value="Land Certificate">🏞️ Land Certificate</option>
+                            <option value="Substituted Certificate">📋 Substituted Certificate</option>
+                        </select>
+                        <div class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Select the type of certificate for LS number generation
+                        </div>
+                    </div>
+                    -->
+
+                    <!-- LS Number Display -->
+                    <div class="ls-display-container mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <label class="form-label fw-medium text-muted mb-0">
+                                <i class="bi bi-hash me-1"></i>
+                                Land Serial (LS) Number
+                            </label>
+                            <span class="ms-auto">
+                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                                    <i class="bi bi-key me-1"></i>
+                                    Unique Identifier
+                                </span>
+                            </span>
+                        </div>
+                        
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-primary bg-opacity-10" id="lsPrefix">
+                                <i class="bi bi-geo-alt text-primary"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control form-control-lg bg-light ${empty ls_number or ls_number == 'null' ? '' : 'text-primary fw-bold'}" 
+                                   id="lc_txt_ls_number" 
+                                   readonly 
+                                   value="${ls_number}"
+                                   aria-describedby="lsHelp">
+                            <button class="btn btn-outline-secondary" 
+                                    type="button" 
+                                    onclick="copyLsNumber()"
+                                    title="Copy to clipboard"
+                                    ${empty ls_number or ls_number == 'null' ? 'disabled' : ''}>
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <!-- <div id="lsHelp" class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            LS number format: LS-[DISTRICT]-[YEAR]-[SEQUENCE]
+                        </div> -->
+                    </div>
+
+                    <!-- LS Number Preview (shown when generated) -->
+                    <div class="ls-preview-container mb-4" id="lsPreviewContainer" style="display: none;">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-success bg-opacity-10 p-2 rounded-circle">
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1">LS Number Generated</h6>
+                                        <p class="mb-0 small text-muted" id="lsPreviewMessage"></p>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewLsDetails()">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generation Status -->
+                    <div class="status-container mb-4" id="lsStatusContainer" style="display: none;">
+                        <div class="alert alert-success border-0 bg-success bg-opacity-10 d-flex align-items-center" role="alert">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="alert-heading mb-1 text-success">LS Number Generated!</h6>
+                                <p class="mb-0 small text-muted" id="lsStatusMessage"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generation Information -->
+                    <div class="info-box bg-light rounded-3 p-3 mb-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-info-circle-fill text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">About LS Numbers</h6>
+                                <p class="small text-muted mb-0">
+                                    Land Serial numbers are unique identifiers assigned to land parcels 
+                                    for tracking and reference purposes throughout the registration process.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-section">
+                        <!-- Generate Button -->
+                        <button type="button" 
+                                id="lc_btn_generate_ls_number_only" 
+                                class="btn btn-primary btn-lg w-100 py-3 mb-3 generate-btn"
+                                ${not empty ls_number and ls_number != 'null' and not fn:contains(ls_number, '-') ? 'disabled' : ''}>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="btn-icon me-2">
+                                    <i class="bi bi-gear-fill"></i>
+                                </span>
+                                <span class="btn-text">Generate LS Number</span>
+                            </div>
+                        </button>
+
+                        <!-- Quick Actions (shown when LS number exists) -->
+                        <!-- <div class="quick-actions d-flex gap-2 ${empty ls_number or ls_number == 'null' ? 'd-none' : ''}" 
+                             id="quickActions">
+                            <button type="button" class="btn btn-outline-primary flex-fill" onclick="useLsNumber()">
+                                <i class="bi bi-check-circle me-2"></i>Use Number
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary flex-fill" onclick="regenerateLsNumber()">
+                                <i class="bi bi-arrow-repeat me-2"></i>Regenerate
+                            </button>
+                        </div> -->
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-slide modal-blur" id="check_signed_certificate_of_registration_of_instrument" 
+     tabindex="-1" aria-labelledby="checkSignedCertificateLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-10 px-3 py-2 rounded-circle">
+                            <i class="bi bi-file-earmark-check text-primary fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="modal-title text-white mb-0" id="checkSignedCertificateLabel">
+                            Signed Certificate
+                        </h5>
+                        <p class="mb-0 small opacity-75">View signed certificate of registration</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" 
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <!-- Volume and Folio Information (commented out but ready to use) -->
+                <!-- 
+                <div class="info-section mb-4">
+                    <h6 class="section-title mb-3">
+                        <i class="bi bi-info-circle me-2 text-primary"></i>
+                        Document Reference
+                    </h6>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control bg-light border-0" 
+                                       id="volume_number" readonly value="${volume_number}" 
+                                       placeholder="Volume number">
+                                <label for="volume_number">
+                                    <i class="bi bi-book me-1"></i>
+                                    Volume Number
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control bg-light border-0" 
+                                       id="folio_number" readonly value="${folio_number}" 
+                                       placeholder="Folio number">
+                                <label for="folio_number">
+                                    <i class="bi bi-file-text me-1"></i>
+                                    Folio Number
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+                <!-- Certificate Preview Card -->
+                <div class="certificate-preview-card mb-4">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body text-center p-4">
+                            <div class="preview-icon mb-3">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block">
+                                    <i class="bi bi-file-earmark-pdf-fill text-primary fs-1"></i>
+                                </div>
+                            </div>
+                            <h6 class="mb-2">Signed Certificate Ready</h6>
+                            <p class="small text-muted mb-0">
+                                Click the button below to view the signed certificate
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate Status -->
+                <!-- <div class="status-indicator mb-4">
+                    <div class="d-flex align-items-center p-3 bg-success bg-opacity-10 rounded-3">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-shield-check text-success fs-4"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1 text-success">Digitally Signed</h6>
+                            <p class="small text-muted mb-0">
+                                Certificate has been digitally signed and verified
+                            </p>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Action Buttons -->
+                <div class="action-section">
+                    <!-- View Certificate Button -->
+                    <button type="button" 
+                            id="lc_btn_activate_final_concurrence_certificate_" 
+                            class="btn btn-primary btn-lg w-100 py-3 mb-3 view-certificate-btn">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <span class="btn-icon me-2">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
+                            <span class="btn-text">View Signed Certificate</span>
+                        </div>
+                    </button>
+
+                    <!-- Quick Actions -->
+                    <!-- <div class="quick-actions d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary flex-fill" onclick="downloadCertificate()">
+                            <i class="bi bi-download me-2"></i>Download
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="printCertificate()">
+                            <i class="bi bi-printer me-2"></i>Print
+                        </button>
+                    </div> -->
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Close
+                </button>
+                <button type="button" class="btn btn-outline-info" onclick="showCertificateInfo()">
+                    <i class="bi bi-question-circle me-2"></i>
+                    Certificate Info
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-slide modal-blur" id="preview_certificate_deed_land_serial_number" 
+     tabindex="-1" aria-labelledby="previewCertificateLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-10 text-primary px-3 py-2 rounded-circle">
+                            <i class="bi bi-eye-fill fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="modal-title text-white mb-0" id="previewCertificateLabel">
+                            Document Reference Numbers
+                        </h5>
+                        <p class="mb-0 small opacity-75">Preview Certificate, Deed & Land Serial Numbers</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" 
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <!-- Certificate Type (commented out but ready to use) -->
+                <!-- 
+                <div class="mb-4">
+                    <label for="lc_txt_type_of_certificate" class="form-label fw-medium text-muted mb-2">
+                        <i class="bi bi-award me-1"></i>
+                        Certificate Type
+                    </label>
+                    <select name="lc_txt_type_of_certificate" 
+                            id="lc_txt_type_of_certificate" 
+                            class="form-select form-select-lg bg-light border-0" 
+                            required>
+                        <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
+                            ${certificate_type == 'Individual' ? '-- select certificate type --' : certificate_type}
+                        </option>
+                        <option value="Provisional Certificate">📄 Provisional Certificate</option>
+                        <option value="Land Certificate">🏞️ Land Certificate</option>
+                        <option value="Substituted Certificate">📋 Substituted Certificate</option>
+                    </select>
+                    <div class="form-text">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Select certificate type to generate related numbers
+                    </div>
+                </div>
+                -->
+
+                <!-- Preview Summary -->
+                <div class="preview-summary mb-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-semibold text-primary mb-0">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            Generated Numbers
+                        </h6>
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Ready for Review
+                        </span>
+                    </div>
+                    <div class="alert alert-light border d-flex align-items-center">
+                        <i class="bi bi-info-circle me-2 text-primary"></i>
+                        <small>The following reference numbers have been generated for this case.</small>
+                    </div>
+                </div>
+
+                <!-- Numbers Display Cards -->
+                <div class="numbers-container">
+                    <!-- Land Serial (LS) Number Card -->
+                    <div class="number-card mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 p-2 rounded-3">
+                                    <i class="bi bi-geo-alt-fill text-primary fs-5"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">Land Serial (LS) Number</h6>
+                                <p class="small text-muted mb-0">Unique identifier for land registration</p>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-primary bg-opacity-10 border-0" id="lsPreviewIcon">
+                                <i class="bi bi-hash text-primary"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control form-control-lg bg-light ${empty ls_number or ls_number == 'null' ? 'text-muted' : 'text-primary fw-bold'}" 
+                                   id="lc_view_ls_number" 
+                                   readonly 
+                                   value="${ls_number}"
+                                   placeholder="LS-XXXX-YYYY-####"
+                                   aria-describedby="lsPreviewHelp">
+                            <button class="btn btn-outline-secondary" 
+                                    type="button" 
+                                    onclick="copyNumber('lc_view_ls_number', 'LS number')"
+                                    title="Copy LS number"
+                                    ${empty ls_number or ls_number == 'null' ? 'disabled' : ''}>
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <div id="lsPreviewHelp" class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            ${not empty ls_number and ls_number != 'null' ? 'LS number generated' : 'No LS number generated yet'}
+                        </div>
+                    </div>
+
+                    <!-- Deed Number Card -->
+                    <div class="number-card mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="icon-wrapper bg-success bg-opacity-10 p-2 rounded-3">
+                                    <i class="bi bi-file-earmark-text-fill text-success fs-5"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">Deed Number</h6>
+                                <p class="small text-muted mb-0">Official deed registration reference</p>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-success bg-opacity-10 border-0" id="deedPreviewIcon">
+                                <i class="bi bi-file-text text-success"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control form-control-lg bg-light ${empty deed_number or deed_number == 'null' ? 'text-muted' : 'text-success fw-bold'}" 
+                                   id="lc_view_deed_number" 
+                                   readonly 
+                                   value="${deed_number}"
+                                   placeholder=""
+                                   aria-describedby="deedPreviewHelp">
+                            <button class="btn btn-outline-secondary" 
+                                    type="button" 
+                                    onclick="copyNumber('lc_view_deed_number', 'Deed number')"
+                                    title="Copy Deed number"
+                                    ${empty deed_number or deed_number == 'null' ? 'disabled' : ''}>
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <div id="deedPreviewHelp" class="form-text">
+                            <i class="bi bi-info-circle me-1"></i>
+                            ${not empty deed_number and deed_number != 'null' ? 'Deed number generated' : 'No deed number generated yet'}
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-section">
+                        <!-- View Certificate Button -->
+                        <button type="button" 
+                                id="lc_btn_activate_final_concurrence_certificate__" 
+                                class="btn btn-primary btn-lg w-100 py-3 mb-3 view-certificate-btn">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="btn-icon me-2">
+                                    <i class="bi bi-eye-fill"></i>
+                                </span>
+                                <span class="btn-text">View Signed Certificate</span>
+                            </div>
+                        </button>
+
+                        <!-- Quick Actions -->
+                        <!-- <div class="quick-actions d-flex gap-2">
+                            <button type="button" class="btn btn-outline-primary flex-fill" onclick="downloadCertificate()">
+                                <i class="bi bi-download me-2"></i>Download
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary flex-fill" onclick="printCertificate()">
+                                <i class="bi bi-printer me-2"></i>Print
+                            </button>
+                        </div> -->
+                    </div>
+
+                    <!-- Volume & Folio Section (can be uncommented when needed) -->
+                    <!-- 
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <div class="number-card">
+                                <label class="form-label small fw-medium text-muted mb-2">
+                                    <i class="bi bi-book me-1"></i>
+                                    Volume Number
+                                </label>
+                                <input type="text" class="form-control bg-light" readonly value="${volume_number}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="number-card">
+                                <label class="form-label small fw-medium text-muted mb-2">
+                                    <i class="bi bi-file-text me-1"></i>
+                                    Folio Number
+                                </label>
+                                <input type="text" class="form-control bg-light" readonly value="${folio_number}" />
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Close
+                </button>
+                <!-- <button type="button" class="btn btn-outline-primary" onclick="refreshPreview()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+                    Refresh
+                </button> -->
             </div>
         </div>
     </div>

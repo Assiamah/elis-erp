@@ -5216,9 +5216,10 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				    request.setAttribute("date_of_issue",transaction_details_obj.get("date_of_issue").toString());
 					request.setAttribute("registered_number",transaction_details_obj.get("registered_number").toString());
-					// request.setAttribute("type_of_transfer",transaction_details_obj.get("type_of_transfer").toString());
-					// request.setAttribute("intended_interest",transaction_details_obj.get("intended_interest").toString());
-					// request.setAttribute("intended_parcel",transaction_details_obj.get("intended_parcel").toString());
+
+					request.setAttribute("type_of_transfer",transaction_details_obj.optString("type_of_transfer", ""));
+					request.setAttribute("intended_interest",transaction_details_obj.optString("intended_interest", ""));
+					request.setAttribute("intended_parcel",transaction_details_obj.optString("intended_parcel", ""));
 		
 					// request.setAttribute("deed_number",transaction_details_obj.get("deed_number").toString());
 					// request.setAttribute("file_number",transaction_details_obj.get("file_number").toString());
