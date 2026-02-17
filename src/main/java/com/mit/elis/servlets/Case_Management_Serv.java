@@ -10884,6 +10884,34 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 			
+			
+
+			
+			if (request_type.equals("search_new_application_for_division")) {
+				JSONArray jsonArr = new JSONArray();
+				JSONObject obj = new JSONObject();
+
+				String search_word = request.getParameter("search_word");
+				String division = (String) session.getAttribute("division");
+				String regional_code = (String) session.getAttribute("regional_code");
+
+				// obj.put("am_id", am_id);
+				// obj.put("am_case_number", am_case_number);
+				// obj.put("am_job_number", am_job_number);
+
+				// jsonArr.put(obj);
+				// String input = jsonArr.toString();
+
+				// System.out.println(input);
+				web_service_response = casemgt_cl
+						.search_new_application_for_division(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), search_word, division, regional_code);
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+			}
 
 
 		} catch (

@@ -112,7 +112,7 @@
                         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
                             <div class="card card-body">
                                 <div class="form-group mb-2">
-                                    <label for="">Purpose for Bactching</label>
+                                    <label for="">Purpose for Batching</label>
                                     <input type="text" class="form-control form-control-sm" id="txt_general_job_purpose">
                                 </div>
                                 <div class="form-group mb-2">

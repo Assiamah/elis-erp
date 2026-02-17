@@ -16009,10 +16009,10 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 		String case_process_stage = (String) transaction_details_obj.get("case_process_stage").toString();
 		String date_of_issue = (String) transaction_details_obj.get("date_of_issue").toString();
 		
-		String deed_number = (String) transaction_details_obj.get("deed_number").toString();
-		String file_number = (String) transaction_details_obj.get("file_number").toString();
-		String ls_number = (String) transaction_details_obj.get("ls_number").toString();
-		String ground_rent = (String) transaction_details_obj.get("ground_rent").toString();
+		String deed_number = (String) transaction_details_obj.optString("deed_number", "");
+		String file_number = (String) transaction_details_obj.optString("file_number", "");
+		String ls_number = (String) transaction_details_obj.optString("ls_number", "");
+		String ground_rent = (String) transaction_details_obj.optString("ground_rent", "");
 		
 
 		

@@ -67,7 +67,7 @@ public class CsauController {
 			// cls_casemgt casemgt_web_service = new cls_casemgt();
 			if ((String) session.getAttribute("userid") != null || (String) session.getAttribute("userid") != "") {
 
-				request.setAttribute("page_name", "csau_online");
+				request.setAttribute("page_name", "add_new_case_template");
 
 						model.addAttribute("content", "../pages/csau_template/add_new_case_template.jsp"); return "layouts/app";
 

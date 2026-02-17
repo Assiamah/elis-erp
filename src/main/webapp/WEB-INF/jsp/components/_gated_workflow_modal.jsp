@@ -7184,11 +7184,9 @@
               </span>
               <select name="lc_intended_parcel" id="lc_intended_parcel" 
                       class="form-select" required>
-                <option value="${intended_parcel == '' ? '' : intended_parcel}">
-                  ${intended_parcel == '' ? '-- Select Extent of Land --' : intended_parcel}
-                </option>
-                <option value="Whole Parcel">Whole Parcel</option>
-                <option value="Part of parcel">Part of Parcel</option>
+                <option ${empty fn:trim(intended_parcel) ? 'selected disabled' : ''}>-- Select Extent of Land --</option>
+                <option value="Whole Parcel" ${intended_parcel == 'Whole Parcel' ? 'selected' : ''}>Whole Parcel</option>
+                <option value="Part of parcel" ${intended_parcel == 'Part of parcel' ? 'selected' : ''}>Part of Parcel</option>
               </select>
             </div>
             <div class="form-text">
@@ -7209,11 +7207,9 @@
               </span>
               <select name="lc_intended_interest" id="lc_intended_interest" 
                       class="form-select" required>
-                <option value="${intended_interest == '' ? '' : intended_interest}">
-                  ${intended_interest == '' ? '-- Select Extent of Interest --' : intended_interest}
-                </option>
-                <option value="Whole Interest">Whole Interest</option>
-                <option value="Part of Interest">Part of Interest</option>
+                <option ${empty fn:trim(intended_interest) ? 'selected disabled' : ''}>-- Select Extent of Interest --</option>
+                <option value="Whole Interest" ${intended_interest == 'Whole Interest' ? 'selected' : ''}>Whole Interest</option>
+                <option value="Part of Interest" ${intended_interest == 'Part of Interest' ? 'selected' : ''}>Part of Interest</option>
               </select>
             </div>
             <div class="form-text">

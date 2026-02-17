@@ -186,7 +186,7 @@
             	<div class="col-sm-8 form-row">
             		<div class="col">
             			<!-- <label for="search_btn">Purpose</label>  -->
-            			<input type="text" class="form-control col" id="txt_general_job_purpose"  value="" placeholder="Purpose for Bactching" /> 
+            			<input type="text" class="form-control col" id="txt_general_job_purpose"  value="" placeholder="Purpose for Batching" /> 
 	            	</div>
 	            	<div class="col">
 	            	<!-- <label for="search_btn">&nbsp;</label>  -->

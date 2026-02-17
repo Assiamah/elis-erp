@@ -6225,3 +6225,139 @@ $('#form_add_minutes').on('submit', function(e){
     
     return false;
 });
+
+$("#quickSearchQCBtn").on("click", function() {
+
+    var quickSearch = $("#quickSearchInputQC").val();
+
+    if (!quickSearch) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Search Query',
+            text: 'Please enter a search query.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        })
+    }
+
+     window.initializeTooltips();
+    var datatable;
+
+    if ($.fn.DataTable.isDataTable('#job_casemgtdetailsdataTable')) {
+        datatable = $('#job_casemgtdetailsdataTable').DataTable();
+    }
+
+    $.ajax({
+        type : "POST",
+        url : "Case_Management_Serv",
+        data : {
+            request_type : 'search_new_application_for_division',
+            search_word: quickSearch
+        },
+        success : function(jobdetails) {
+
+            if(!jobdetails) {
+                return;
+            }
+                                                    
+            // console.log(jobdetails);
+            var json_p = JSON.parse(jobdetails);
+
+            $('#incoming_advanced_search').modal('hide');
+            
+            /*
+                * $('th:nth-child(7)').show(); 
+                * $('th:nth-child(8)').show();
+                */
+
+            datatable.column(0).visible(true);
+            // datatable.column(1).visible(false);
+
+            datatable.search("").draw();
+            datatable.state.clear();
+            datatable.clear();
+
+
+            $(json_p.data).each(function() {
+                datatable.row.add([
+                    // 0: Checkbox
+                    '<div class="form-check d-flex justify-content-center align-items-center">' +
+                        '<input class="form-check-input row-checkbox" type="checkbox" id="checkbox-' + (this.job_number || '') + '">' +
+                    '</div>',
+
+                    // 1: Created Date
+                    '<span class="small">' + (formatDate(this.created_date) || '') + '</span>',
+
+                    // 2: Job Number
+                    '<span class="font-weight-bold text-primary small">' + (this.job_number || '') + '</span>',
+
+                    // 3: Applicant Name
+                    '<div class="applicant-name small">' +
+                        '<a href="#" class="custom-tooltip" ' +
+                            'data-bs-toggle="tooltip" ' +
+                            'data-bs-custom-class="tooltip-primary" ' +
+                            'data-bs-placement="top" ' +
+                            'title="' + (this.ar_name || '') + '">' +
+                            ((this.ar_name || '').length > 20 
+                                ? (this.ar_name || '').substring(0, 20) + '...' 
+                                : (this.ar_name || '')) +
+                        '</a>' +
+                    '</div>',
+
+                    // 4: Application Type
+                    '<span class="small">' + (this.business_process_sub_name || '') + '</span>',
+
+                    // 5: Status
+                    '<div class="text-truncate" style="max-width: 200px;" '+
+                                             'data-bs-toggle="tooltip" title="' + (this.current_application_status || '') + '">' +
+                                            (this.current_application_status || '') +
+                                       '</div>',
+
+                    // 6: Sent By
+                    '<span class="badge '+ (this.age_of_application > '7' ? 'bg-warning' : 'bg-danger') +'">' +
+                                            this.age_of_application + ' days' +
+                                        '</span>',
+
+                    // 7: Actions
+                     '<div class="d-flex justify-content-center align-items-center gap-2">'+
+                        '<form action="front_office_view_application" method="post" class="d-inline">' +
+                            '<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
+                            '<input type="hidden" name="search_text" value="' + this.case_number + '">' +
+                            '<input type="hidden" name="job_number" value="' + this.job_number + '">' +
+                            '<input type="hidden" name="business_process_sub_name" value="' + this.business_process_sub_name + '">' +
+                            '<button type="submit" name="save" class="btn btn-outline-primary btn-sm w-100">' +
+                                '<i class="fas fa-eye me-1"></i> View' +
+                            '</button>' +
+                        '</form>' +
+
+                        '<button class="btn btn-outline-info btn-sm w-100" ' +
+                            'id="btnAddToBatchlist-' + this.job_number + '" ' +
+                            'data-job_number="' + this.job_number + '" ' +
+                            'data-ar_name="' + this.ar_name + '" ' +
+                            'data-business_process_sub_name="' + this.business_process_sub_name + '" ' +
+                            'data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal">' +
+                            '<i class="fas fa-plus me-1"></i> Add To Batch' +
+                        '</button>' +
+                    '</div>'
+                ]).draw(false);
+                
+                datatable.column(2).data().sort();
+
+            });
+
+            // Reinitialize tooltips after a brief delay
+            setTimeout(function() {
+                window.initializeTooltips();
+            }, 50);
+
+            if (localStorage.getItem('user_level') < 2) {
+                // $('th:nth-child(8),
+                // th:nth-child(8)').hide();
+                // $('.to_hide_on_level_1').hide();
+                //datatable.column(11).visible(false);
+
+            }
+
+        }
+    })
+});

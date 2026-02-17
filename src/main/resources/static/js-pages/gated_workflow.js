@@ -1305,7 +1305,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then((result) => {
             if (result.isConfirmed && result.value && result.value.success) {
                 Swal.fire({
-                    title: '<i class="bi bi-check-circle-fill text-success me-2"></i>Success!',
+                    title: 'Success!',
                     html: `<div class="text-center">
                             <div class="mb-3">
                                 <i class="bi bi-check2-circle text-success fs-1"></i>
@@ -13807,6 +13807,158 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialize tooltips for new content
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
+
+    $(document).on('click', '.open-view-notes-2', function(e) {
+        e.preventDefault();
+        
+        // Get data from the clicked button
+        const noteId = $(this).data('target-id');
+        const description = $(this).data('an_description');
+        const createdBy = $(this).data('created_by');
+        const createdDate = $(this).data('created_date');
+        const modifiedBy = $(this).data('modified_by') || createdBy; // Fallback to createdBy if not modified
+        const modifiedDate = $(this).data('modified_date') || createdDate; // Fallback to createdDate if not modified
+        const division = $(this).data('division');
+        const job_number = $(this).data('job_number');
+        const case_number = $(this).data('case_number');
+        
+        // Create the note details HTML
+        const noteDetailsHTML = `
+            <form id="form_view_notes">
+                <!-- Hidden Fields -->
+                <input type="hidden" id="vi_note_id" name="vi_note_id" value="${noteId}">
+                <input type="hidden" id="vi_an_job_number" value="${job_number}">
+                <input type="hidden" id="vi_an_case_number" value="${case_number}">
+                <input type="hidden" id="vi_an_type" value="Normal">
+                
+                <!-- Division Badge -->
+                <div class="mt-3 mb-3">
+                    <label class="form-label small text-muted mb-1">Division</label>
+                    <div>
+                        <span class="badge bg-secondary bg-opacity-10 text-dark p-2">
+                            <i class="fas fa-building me-1"></i>
+                            ${division}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Description Section -->
+                <div class="mb-4">
+                    <div class="form-group">
+                        <label for="vi_note_description" class="form-label fw-medium">
+                            <i class="fas fa-align-left me-1"></i>
+                            Note Description
+                        </label>
+                        <div class="border rounded p-3 bg-light" style="min-height: 150px;">
+                            <div id="vi_note_description" class="note-content">
+                                ${formatNoteDescription(description) || 'No description available'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Metadata Section -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-user-plus me-1"></i>
+                                    Creation Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Created By</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-user text-primary"></i>
+                                        </div>
+                                        <span id="vi_created_by" class="fw-medium">${createdBy}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Created Date</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-calendar text-success"></i>
+                                        </div>
+                                        <span id="vi_created_date" class="fw-medium">${createdDate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-user-edit me-1"></i>
+                                    Modification Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Modified By</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-user-edit text-info"></i>
+                                        </div>
+                                        <span id="vi_modified_by" class="fw-medium">
+                                            ${modifiedBy === createdBy ? 'No modifications' : modifiedBy}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Modified Date</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-calendar-alt text-warning"></i>
+                                        </div>
+                                        <span id="vi_modified_date" class="fw-medium">
+                                            ${modifiedDate === createdDate ? 'Not modified' : modifiedDate}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="mt-4 pt-3 border-top">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="btn_print_note">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button>
+                        <!--
+                        <button type="button" class="btn btn-primary btn-sm" id="btn_edit_note">
+                            <i class="fas fa-edit me-1"></i>
+                            Edit Note
+                        </button>
+                        -->
+                    </div>
+                </div>
+            </form>
+        `;
+        
+        // Insert the note details into the container
+        $('#noteDetailsContainer_2').html(noteDetailsHTML);
+        
+        // Add active state to the clicked row
+        $('#lrd_notes_dataTable_2 tbody tr').removeClass('table-active');
+        $(this).closest('tr').addClass('table-active');
+        
+        // Scroll to the note details section
+        $('html, body').animate({
+            scrollTop: $('._gated_workflow_view_notes').offset().top
+        }, 500);
+        
+        // Initialize tooltips for new content
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
     
     // Handle Print button click
     $(document).on('click', '#btn_print_note', function() {
@@ -19658,37 +19810,1338 @@ document.addEventListener('DOMContentLoaded', function() {
         //var case_number = $("#cs_main_case_number").val();
         var wkt_polygon = $("#lc_fr_bl_wkt_polygon").val();
         
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+        // target:'_blank',
+            data: {
+                // request_type: 'request_to_generate_smd_barcode_with_address_code',
+                request_type: 'request_to_generate_smd_barcode',
+                wkt_polygon:wkt_polygon,
+                job_number:job_number,
+                case_number:case_number
+            },
+            cache: false,
+        xhrFields:{
+            responseType: 'blob'
+        },
+            beforeSend: function () {
+            // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+            },
+            success: function(jobdetails) {
+                console.log(jobdetails);
+            var blob = new Blob([jobdetails], {type: "application/pdf"});
+            var objectUrl = URL.createObjectURL(blob);
+            window.open(objectUrl);
+                
+            }
+            }); 
+    });
+
+
+    $(document).on('click', '.btn_send_inspection_request', function() {
+        $("#inspection_of_site").modal("show");
+    });
+
+    $('#lc_btn_generate_deed_number_only').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var job_number = $("#cs_main_job_number").val();
+        var txt_lc_registration_district_number = $("#txt_new_lc_registration_district_number").val();
+        var txt_lc_registration_section_number = $("#txt_new_lc_registration_section_number").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+        
+        // Validate required fields
+        var errors = [];
+        if (!case_number) errors.push('Case number is required');
+        if (!transaction_number) errors.push('Transaction number is required');
+        if (!job_number) errors.push('Job number is required');
+        if (!txt_lc_registration_district_number) errors.push('Registration district is required');
+        if (!txt_lc_registration_section_number) errors.push('Registration section is required');
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                html: `
+                    <div class="text-start">
+                        <p>Please complete the following fields:</p>
+                        <ul class="list-unstyled">
+                            ${errors.map(error => `<li class="mb-1"><i class="bi bi-x-circle text-danger me-2"></i>${error}</li>`).join('')}
+                        </ul>
+                    </div>
+                `,
+                confirmButtonColor: '#0d6efd',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        
+        // Check if deed number already exists
+        var existingDeedNumber = $('#lc_txt_deed_number').val();
+        if (existingDeedNumber && existingDeedNumber !== 'null' && existingDeedNumber !== '') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Deed Number Already Exists',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-file-earmark-text fs-1 text-primary"></i>
+                        </div>
+                        <p>A deed number has already been generated:</p>
+                        <div class="alert alert-light border p-3 mb-3">
+                            <strong class="fs-5">${existingDeedNumber}</strong>
+                        </div>
+                        <p class="small text-muted">Do you want to generate a new number?</p>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-arrow-repeat me-2"></i>Generate New',
+                cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    generateDeedNumber(case_number, transaction_number, job_number, 
+                                    txt_lc_registration_district_number, txt_lc_registration_section_number, 
+                                    send_by_name, send_by_id);
+                }
+            });
+        } else {
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'Generate Deed Number?',
+                html: `
+                    <div class="text-start">
+                        <div class="alert alert-light border mb-3">
+                            <h6 class="mb-2"><i class="bi bi-info-circle me-2 text-primary"></i>Generation Details</h6>
+                            <div class="row small">
+                                <div class="col-6">
+                                    <strong>Case:</strong><br>${case_number}
+                                </div>
+                                <div class="col-6">
+                                    <strong>Job:</strong><br>${job_number}
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6">
+                                    <strong>District:</strong><br>${txt_lc_registration_district_number}
+                                </div>
+                                <div class="col-6">
+                                    <strong>Section:</strong><br>${txt_lc_registration_section_number}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning small mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Note:</strong> Deed numbers are unique and cannot be modified after generation.
+                        </div>
+                        
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="swalConfirmGeneration">
+                            <label class="form-check-label" for="swalConfirmGeneration">
+                                I confirm that all information is correct
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="swalAgreeTerms">
+                            <label class="form-check-label" for="swalAgreeTerms">
+                                I understand this action cannot be undone
+                            </label>
+                        </div>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-gear-fill me-2"></i>Generate Deed Number',
+                cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
+                reverseButtons: true,
+                preConfirm: () => {
+                    const confirm1 = document.getElementById('swalConfirmGeneration');
+                    const confirm2 = document.getElementById('swalAgreeTerms');
+                    
+                    if (!confirm1.checked || !confirm2.checked) {
+                        Swal.showValidationMessage('Please check both confirmation boxes to proceed');
+                        return false;
+                    }
+                    return true;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    generateDeedNumber(case_number, transaction_number, job_number, 
+                                    txt_lc_registration_district_number, txt_lc_registration_section_number, 
+                                    send_by_name, send_by_id);
+                }
+            });
+        }
+    });
+
+    // Function to generate deed number
+    function generateDeedNumber(case_number, transaction_number, job_number, 
+                            district_number, section_number, send_by_name, send_by_id) {
+        
+        // Show loading
+        Swal.fire({
+            title: 'Generating Deed Number',
+            html: `
+                <div class="text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="mb-1">Processing request...</p>
+                    <small class="text-muted">This may take a few moments</small>
+                    <div class="progress mt-3" style="height: 4px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+                    </div>
+                </div>
+            `,
+            allowOutsideClick: false,
+            showConfirmButton: false
+        });
+        
+        // Make AJAX call
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_generate_deed_number_only',
+                case_number: case_number,
+                job_number: job_number,
+                transaction_number: transaction_number,
+                registration_district_number: district_number,
+                registration_section_number: section_number,
+                fullname: send_by_name,
+                userid: send_by_id
+            },
+            cache: false,
+            success: function(jobdetails) {
+                Swal.close();
+                
+                try {
+                    console.log('Response:', jobdetails);
+                    var json_p = JSON.parse(jobdetails);
+                    
+                    if (jobdetails && json_p.deed_number) {
+                        
+                        // Disable generate button
+                        $('#lc_btn_generate_deed_number_only').prop("disabled", true);
+                        
+                        // Set deed number
+                        $('#lc_txt_deed_number').val(json_p.deed_number);
+                        
+                        // Show success with receipt-like display
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deed Number Generated!',
+                            html: `
+                                <div class="text-center">
+                                    <div class="deed-receipt mb-4">
+                                        <div class="deed-icon mb-3">
+                                            <i class="bi bi-file-earmark-check text-success" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <div class="deed-number-display bg-light p-4 rounded-3 border">
+                                            <small class="text-muted d-block mb-2">Generated Deed Number</small>
+                                            <h3 class="text-primary mb-0 fw-bold">${json_p.deed_number}</h3>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-success border-0 bg-success bg-opacity-10 text-start">
+                                        <div class="row small">
+                                            <div class="col-6">
+                                                <strong>Case Number:</strong><br>
+                                                ${case_number}
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Job Number:</strong><br>
+                                                ${job_number}
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 small">
+                                            <div class="col-6">
+                                                <strong>District:</strong><br>
+                                                ${district_number}
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Section:</strong><br>
+                                                ${section_number}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="small text-muted mt-3">
+                                        <i class="bi bi-clock me-1"></i>
+                                        Generated on ${new Date().toLocaleString()}
+                                    </p>
+                                </div>
+                            `,
+                            confirmButtonText: '<i class="bi bi-check-circle me-2"></i>Done',
+                            confirmButtonColor: '#28a745',
+                            showCancelButton: true,
+                            cancelButtonText: '<i class="bi bi-printer me-2"></i>Print',
+                            cancelButtonColor: '#6c757d'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Show general message dialog
+                                $("#general_message_dialog").modal();
+                                $('#general_message_dialog #general_message_dialog_msg_new').val('Deed number has been generated successfully');
+                                
+                                // Trigger custom event
+                                $(document).trigger('deed:generated', {
+                                    deed_number: json_p.deed_number,
+                                    case_number: case_number,
+                                    job_number: job_number
+                                });
+                                
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                printDeedCertificate(case_number, json_p.deed_number);
+                            }
+                        });
+                        
+                    } else {
+                        throw new Error('Invalid response from server');
+                    }
+                    
+                } catch (e) {
+                    console.error('Error:', e);
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Generation Failed',
+                        html: `
+                            <div class="text-center">
+                                <i class="bi bi-exclamation-triangle text-danger fs-1 mb-3"></i>
+                                <p>Unable to generate deed number.</p>
+                                <div class="alert alert-danger mt-3 small">
+                                    ${e.message || 'Server returned invalid response'}
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#0d6efd'
+                    }).then(() => {
+                        $('#lc_btn_generate_deed_number_only').prop("disabled", false);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    html: `
+                        <div class="text-center">
+                            <i class="bi bi-wifi-off text-danger fs-1 mb-3"></i>
+                            <p>Failed to connect to server.</p>
+                            <small class="text-muted">${error || 'Network error'}</small>
+                        </div>
+                    `,
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: '#0d6efd'
+                }).then(() => {
+                    $('#lc_btn_generate_deed_number_only').prop("disabled", false);
+                });
+            }
+        });
+    }
+
+    // Generate Certificate Button Handler
+    $('#lc_btn_activate_final_concurrence_certificate_cs').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var registration_district_number = $("#txt_lc_registration_district_number").val();
+        var registration_section_number = $("#txt_lc_registration_section_number").val();
+        var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
+        var certificate_summary = $("#lc_search_report_summary_details_cs").val().trim();
+        
+        // Format certificate type
+        type_of_certificate = type_of_certificate == "Land Certificate" ? "LAND CERTIFICATE" : type_of_certificate;
+        
+        // Validate required fields
+        var errors = [];
+        if (!job_number) errors.push('Job number is required');
+        if (!case_number) errors.push('Case number is required');
+        if (!transaction_number) errors.push('Transaction number is required');
+        if (!certificate_summary) errors.push('Certificate summary is required');
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                html: `
+                    <div class="text-start">
+                        <p>Please complete the following fields before generating:</p>
+                        <ul class="list-unstyled">
+                            ${errors.map(error => `<li class="mb-1"><i class="bi bi-x-circle text-danger me-2"></i>${error}</li>`).join('')}
+                        </ul>
+                    </div>
+                `,
+                confirmButtonColor: '#0d6efd',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Generate Concurrence Certificate?',
+            html: `
+                <div class="text-start">
+                    <div class="alert alert-light border mb-3">
+                        <h6 class="mb-2"><i class="bi bi-info-circle me-2 text-primary"></i>Certificate Details</h6>
+                        <div class="row small">
+                            <div class="col-6">
+                                <strong>Job Number:</strong><br>${job_number}
+                            </div>
+                            <div class="col-6">
+                                <strong>Case Number:</strong><br>${case_number}
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <strong>Certificate Type:</strong><br>${type_of_certificate}
+                            </div>
+                            <div class="col-6">
+                                <strong>Transaction:</strong><br>${transaction_number}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Certificate Summary Preview:</small>
+                        <div class="bg-light p-3 rounded small">
+                            ${certificate_summary.length > 150 ? certificate_summary.substring(0, 150) + '...' : certificate_summary}
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info small">
+                        <i class="bi bi-file-pdf me-2"></i>
+                        <strong>PDF Generation:</strong> A PDF certificate will be generated and opened in a new tab.
+                    </div>
+                    
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="confirmGenerateCert">
+                        <label class="form-check-label" for="confirmGenerateCert">
+                            I confirm that all information is accurate and ready for certificate generation
+                        </label>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-file-pdf me-2"></i>Generate Certificate',
+            cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
+            reverseButtons: true,
+            width: '600px',
+            preConfirm: () => {
+                const confirmCheck = document.getElementById('confirmGenerateCert');
+                if (!confirmCheck.checked) {
+                    Swal.showValidationMessage('Please confirm to generate certificate');
+                    return false;
+                }
+                return true;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading
+                Swal.fire({
+                    title: 'Generating Certificate...',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" role="status"></div>
+                            <p class="mb-1">Creating concurrence certificate</p>
+                            <small class="text-muted">Please wait while we generate your PDF</small>
+                            <div class="progress mt-3" style="height: 4px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    `,
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                });
+                
+                // Make AJAX call
                 $.ajax({
                     type: "POST",
                     url: "GenerateCaseReports",
-                // target:'_blank',
                     data: {
-                       // request_type: 'request_to_generate_smd_barcode_with_address_code',
-                        request_type: 'request_to_generate_smd_barcode',
-                        wkt_polygon:wkt_polygon,
-                        job_number:job_number,
-                        case_number:case_number
+                        request_type: 'request_to_generate_certificate',
+                        job_number: job_number,
+                        case_number: case_number,
+                        transaction_number: transaction_number,
+                        cert_type: 'CONCURRENCE',
+                        registration_district_number: registration_district_number,
+                        registration_section_number: registration_section_number,
+                        type_of_certificate: type_of_certificate.trim()
                     },
                     cache: false,
-                xhrFields:{
-                    responseType: 'blob'
-                },
-                    beforeSend: function () {
-                    // $('#district').html('<img src="img/loading.gif" alt="" width="24" height="24">');
+                    xhrFields: {
+                        responseType: 'blob'
                     },
-                    success: function(jobdetails) {
-                        console.log(jobdetails);
-                    var blob = new Blob([jobdetails], {type: "application/pdf"});
-                    var objectUrl = URL.createObjectURL(blob);
-                    window.open(objectUrl);
+                    beforeSend: function() {
+                        // Show loading indicator
+                        showLoadingIndicator();
+                    },
+                    success: function(pdfBlob) {
+                        // Create file object from blob
+                        const file = new File([pdfBlob], `Concurrence_Certificate_${job_number}_${case_number}.pdf`, {
+                            type: "application/pdf",
+                            lastModified: Date.now()
+                        });
                         
+                        // Create object URL
+                        const fileURL = URL.createObjectURL(file);
+                        
+                        // Open PDF in modal
+                        openPDFModal(file, fileURL);
+                        
+                        // Hide loading indicator
+                        hideLoadingIndicator();
+
+                        // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                        // var objectUrl = URL.createObjectURL(blob);
+                        // window.open(objectUrl);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error generating PDF:', error);
+                        hideLoadingIndicator();
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to generate PDF document. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
-                    }); 
-            });
+                });
+            }
+        });
+    });
 
-
-            $(document).on('click', '.btn_send_inspection_request', function() {
-                $("#inspection_of_site").modal("show");
+    // Save Certificate Button Handler
+    $('#lc_btn_save_search_report_cs').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var search_report = $("#lc_search_report_summary_details_cs").val().trim();
+        
+        // Validate
+        if (!search_report) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty Summary',
+                text: 'Please enter certificate summary before saving.',
+                confirmButtonColor: '#0d6efd',
+                confirmButtonText: 'OK'
             });
+            $("#lc_search_report_summary_details_cs").focus();
+            return false;
+        }
+        
+        if (!job_number || !case_number) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Information',
+                text: 'Job number or case number is missing.',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        
+        // Show confirmation
+        Swal.fire({
+            title: 'Save Certificate Summary?',
+            html: `
+                <div class="text-start">
+                    <p>You are about to save the certificate summary for:</p>
+                    <div class="alert alert-light border">
+                        <strong>Job:</strong> ${job_number}<br>
+                        <strong>Case:</strong> ${case_number}
+                    </div>
+                    <div class="bg-light p-3 rounded small">
+                        <strong>Summary Preview:</strong><br>
+                        ${search_report.length > 200 ? search_report.substring(0, 200) + '...' : search_report}
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="confirmSaveSummary">
+                            <label class="form-check-label" for="confirmSaveSummary">
+                                I confirm the summary is correct
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-save me-2"></i>Save Summary',
+            cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
+            preConfirm: () => {
+                const confirmCheck = document.getElementById('confirmSaveSummary');
+                if (!confirmCheck.checked) {
+                    Swal.showValidationMessage('Please confirm to save');
+                    return false;
+                }
+                return true;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading
+                Swal.fire({
+                    title: 'Saving...',
+                    text: 'Please wait while we save your certificate summary',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'online_select_update_search_summary',
+                        search_report: search_report,
+                        case_number: case_number,
+                        job_number: job_number
+                    },
+                    cache: false,
+                    success: function(jobdetails) {
+                        Swal.close();
+                        
+                        try {
+                            console.log('Save response:', jobdetails);
+                            
+                            // Show success
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Saved Successfully!',
+                                html: `
+                                    <div class="text-center">
+                                        <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
+                                        <p>Certificate summary has been saved.</p>
+                                        <small class="text-muted">${new Date().toLocaleString()}</small>
+                                    </div>
+                                `,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#28a745'
+                            }).then(() => {
+                                // Open general message dialog
+                                $("#general_message_dialog").modal();
+                                $('#general_message_dialog #general_message_dialog_msg_new').val(jobdetails);
+                            });
+                            
+                        } catch (error) {
+                            console.error('Error:', error);
+                            showError('Failed to process response');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close();
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Save Failed',
+                            html: `
+                                <div class="text-center">
+                                    <i class="bi bi-wifi-off text-danger fs-1 mb-3"></i>
+                                    <p>Unable to save certificate summary.</p>
+                                    <small class="text-muted">${error || 'Network error'}</small>
+                                </div>
+                            `,
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#0d6efd'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // Helper function to download PDF
+    function downloadPDF(objectUrl, filename) {
+        const link = document.createElement('a');
+        link.href = objectUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showToast('Download started', 'success');
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+        
+        Toast.fire({
+            icon: type,
+            title: message
+        });
+    }
+
+    // Show error
+    function showError(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+            confirmButtonText: 'OK'
+        });
+    }
+
+    // Add keyboard shortcut (Ctrl+S) for saving
+    $(document).keydown(function(e) {
+        if (e.ctrlKey && e.keyCode === 83) { // Ctrl+S
+            e.preventDefault();
+            $('#lc_btn_save_search_report_cs').click();
+        }
+    });
+
+    // Auto-save reminder
+    let autoSaveTimer;
+    $('#lc_search_report_summary_details_cs').on('input', function() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            showToast('Unsaved changes...', 'info');
+        }, 3000);
+    });
+
+    $('#lc_btn_generate_ls_number_only').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var job_number = $("#cs_main_job_number").val();
+        var txt_lc_registration_district_number = $("#txt_new_lc_registration_district_number").val();
+        var txt_lc_registration_section_number = $("#txt_new_lc_registration_section_number").val();
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+        
+        // Validate required fields
+        var errors = [];
+        if (!case_number) errors.push('Case number is required');
+        if (!transaction_number) errors.push('Transaction number is required');
+        if (!job_number) errors.push('Job number is required');
+        if (!txt_lc_registration_district_number) errors.push('Registration district is required');
+        if (!txt_lc_registration_section_number) errors.push('Registration section is required');
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                html: `
+                    <div class="text-start">
+                        <p>Please complete the following fields before generating LS number:</p>
+                        <ul class="list-unstyled">
+                            ${errors.map(error => `<li class="mb-1"><i class="bi bi-x-circle text-danger me-2"></i>${error}</li>`).join('')}
+                        </ul>
+                    </div>
+                `,
+                confirmButtonColor: '#0d6efd',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        
+        // Check if LS number already exists
+        var existingLsNumber = $('#lc_txt_ls_number').val();
+        if (existingLsNumber && existingLsNumber !== 'null' && existingLsNumber !== '') {
+            Swal.fire({
+                icon: 'info',
+                title: 'LS Number Already Exists',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-geo-alt fs-1 text-primary"></i>
+                        </div>
+                        <p>A Land Serial number has already been generated:</p>
+                        <div class="alert alert-light border p-3 mb-3">
+                            <strong class="fs-5 text-primary">${existingLsNumber}</strong>
+                        </div>
+                        <p class="small text-muted">Do you want to generate a new number? The old number will be archived.</p>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-arrow-repeat me-2"></i>Generate New',
+                cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    generateLsNumber(case_number, transaction_number, job_number, 
+                                txt_lc_registration_district_number, txt_lc_registration_section_number, 
+                                send_by_name, send_by_id);
+                }
+            });
+        } else {
+            // Show confirmation dialog
+            Swal.fire({
+                title: 'Generate Land Serial (LS) Number?',
+                html: `
+                    <div class="text-start">
+                        <div class="alert alert-light border mb-3">
+                            <h6 class="mb-2"><i class="bi bi-info-circle me-2 text-primary"></i>Generation Details</h6>
+                            <div class="row small">
+                                <div class="col-6">
+                                    <strong>Case Number:</strong><br>${case_number}
+                                </div>
+                                <div class="col-6">
+                                    <strong>Job Number:</strong><br>${job_number}
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-6">
+                                    <strong>District:</strong><br>${txt_lc_registration_district_number}
+                                </div>
+                                <div class="col-6">
+                                    <strong>Section:</strong><br>${txt_lc_registration_section_number}
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <strong>Transaction:</strong><br>${transaction_number}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning small mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Note:</strong> LS numbers are unique identifiers and cannot be modified after generation.
+                        </div>
+                        
+                        <!--<div class="ls-format-preview bg-light p-3 rounded-3 mb-3">
+                            <h6 class="mb-2">Format Preview:</h6>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="badge bg-primary me-2">LS</span>
+                                <span class="badge bg-secondary me-2">${txt_lc_registration_district_number || 'XXX'}</span>
+                                <span class="badge bg-info me-2">${new Date().getFullYear()}</span>
+                                <span class="badge bg-success">####</span>
+                            </div>
+                            <p class="small text-muted mt-2 mb-0 text-center">
+                                Format: LS-[DISTRICT]-[YEAR]-[SEQUENCE]
+                            </p>
+                        </div>-->
+                        
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="swalConfirmLsGeneration">
+                            <label class="form-check-label" for="swalConfirmLsGeneration">
+                                I confirm that all information is correct
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="swalAgreeLsTerms">
+                            <label class="form-check-label" for="swalAgreeLsTerms">
+                                I understand this action cannot be undone
+                            </label>
+                        </div>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-gear-fill me-2"></i>Generate LS Number',
+                cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
+                reverseButtons: true,
+                width: '600px',
+                preConfirm: () => {
+                    const confirm1 = document.getElementById('swalConfirmLsGeneration');
+                    const confirm2 = document.getElementById('swalAgreeLsTerms');
+                    
+                    if (!confirm1 || !confirm2) return true; // If checkboxes don't exist
+                    
+                    if (!confirm1.checked || !confirm2.checked) {
+                        Swal.showValidationMessage('Please check both confirmation boxes to proceed');
+                        return false;
+                    }
+                    return true;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    generateLsNumber(case_number, transaction_number, job_number, 
+                                txt_lc_registration_district_number, txt_lc_registration_section_number, 
+                                send_by_name, send_by_id);
+                }
+            });
+        }
+    });
+
+    // Function to generate LS number
+    function generateLsNumber(case_number, transaction_number, job_number, 
+                            district_number, section_number, send_by_name, send_by_id) {
+        
+        // Show loading
+        Swal.fire({
+            title: 'Generating LS Number',
+            html: `
+                <div class="text-center">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p class="mb-1">Creating unique Land Serial number...</p>
+                    <small class="text-muted">This may take a few moments</small>
+                    <div class="progress mt-3" style="height: 4px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+                    </div>
+                </div>
+            `,
+            allowOutsideClick: false,
+            showConfirmButton: false
+        });
+        
+        // Make AJAX call
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_generate_ls_number_only',
+                case_number: case_number,
+                job_number: job_number,
+                transaction_number: transaction_number,
+                registration_district_number: district_number,
+                registration_section_number: section_number,
+                fullname: send_by_name,
+                userid: send_by_id
+            },
+            cache: false,
+            success: function(jobdetails) {
+                Swal.close();
+                
+                try {
+                    console.log('Response:', jobdetails);
+                    var json_p = JSON.parse(jobdetails);
+                    
+                    if (jobdetails && json_p.ls_number) {
+                        
+                        // Disable generate button
+                        $('#lc_btn_generate_ls_number_only').prop("disabled", true);
+                        
+                        // Set LS number
+                        $('#lc_txt_ls_number').val(json_p.ls_number);
+                        
+                        // Show success with certificate-like display
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'LS Number Generated!',
+                            html: `
+                                <div class="text-center">
+                                    <div class="ls-receipt mb-4">
+                                        <div class="ls-icon mb-3">
+                                            <i class="bi bi-geo-alt-fill text-success" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <div class="ls-number-display bg-light p-4 rounded-3 border">
+                                            <small class="text-muted d-block mb-2">Land Serial Number</small>
+                                            <h2 class="text-primary mb-0 fw-bold">${json_p.ls_number}</h2>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-success border-0 bg-success bg-opacity-10 text-start">
+                                        <div class="row small">
+                                            <div class="col-6">
+                                                <strong>Case Number:</strong><br>
+                                                ${case_number}
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Job Number:</strong><br>
+                                                ${job_number}
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 small">
+                                            <div class="col-6">
+                                                <strong>District:</strong><br>
+                                                ${district_number}
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Section:</strong><br>
+                                                ${section_number}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-3 d-flex justify-content-center gap-2">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="copyLsNumber('${json_p.ls_number}')">
+                                            <i class="bi bi-clipboard me-1"></i>Copy
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="printLsCertificate('${json_p.ls_number}', '${case_number}')">
+                                            <i class="bi bi-printer me-1"></i>Print
+                                        </button>
+                                    </div>
+                                    
+                                    <p class="small text-muted mt-3">
+                                        <i class="bi bi-clock me-1"></i>
+                                        Generated on ${new Date().toLocaleString()}
+                                    </p>
+                                </div>
+                            `,
+                            confirmButtonText: '<i class="bi bi-check-circle me-2"></i>Continue',
+                            confirmButtonColor: '#28a745',
+                            showCancelButton: true,
+                            cancelButtonText: '<i class="bi bi-file-earmark me-2"></i>View Details',
+                            cancelButtonColor: '#0d6efd'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Show general message dialog
+                                $("#general_message_dialog").modal();
+                                $('#general_message_dialog #general_message_dialog_msg_new').val('Land serial number has been generated successfully');
+                                
+                                // Trigger custom event
+                                $(document).trigger('ls:generated', {
+                                    ls_number: json_p.ls_number,
+                                    case_number: case_number,
+                                    job_number: job_number
+                                });
+                                
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                showLsDetails(json_p.ls_number, case_number, job_number, district_number, section_number);
+                            }
+                        });
+                        
+                    } else {
+                        throw new Error('Invalid response from server');
+                    }
+                    
+                } catch (e) {
+                    console.error('Error:', e);
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Generation Failed',
+                        html: `
+                            <div class="text-center">
+                                <i class="bi bi-exclamation-triangle text-danger fs-1 mb-3"></i>
+                                <p>Unable to generate LS number.</p>
+                                <div class="alert alert-danger mt-3 small">
+                                    ${e.message || 'Server returned invalid response'}
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#0d6efd'
+                    }).then(() => {
+                        $('#lc_btn_generate_ls_number_only').prop("disabled", false);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.close();
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    html: `
+                        <div class="text-center">
+                            <i class="bi bi-wifi-off text-danger fs-1 mb-3"></i>
+                            <p>Failed to connect to server.</p>
+                            <small class="text-muted">${error || 'Network error'}</small>
+                        </div>
+                    `,
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: '#0d6efd'
+                }).then(() => {
+                    $('#lc_btn_generate_ls_number_only').prop("disabled", false);
+                });
+            }
+        });
+    }
+
+    // Function to copy LS number
+    function copyLsNumber(lsNumber) {
+        navigator.clipboard.writeText(lsNumber).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Copied!',
+                text: 'LS number copied to clipboard',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }).catch(() => {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = lsNumber;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Copied!',
+                text: 'LS number copied to clipboard',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        });
+    }
+
+    // Function to show LS details
+    function showLsDetails(lsNumber, caseNumber, jobNumber, district, section) {
+        Swal.fire({
+            title: 'LS Number Details',
+            html: `
+                <div class="text-start">
+                    <div class="mb-4 text-center">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block">
+                            <i class="bi bi-info-circle fs-1 text-primary"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="text-muted small">LS Number</label>
+                        <div class="fs-4 fw-bold text-primary">${lsNumber}</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6 mb-2">
+                            <label class="text-muted small">Case Number</label>
+                            <div>${caseNumber}</div>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label class="text-muted small">Job Number</label>
+                            <div>${jobNumber}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6 mb-2">
+                            <label class="text-muted small">District</label>
+                            <div>${district}</div>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label class="text-muted small">Section</label>
+                            <div>${section}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <label class="text-muted small">Generated On</label>
+                        <div>${new Date().toLocaleString()}</div>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <label class="text-muted small">Generated By</label>
+                        <div>${localStorage.getItem('fullname') || 'System'}</div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <label class="text-muted small">Status</label>
+                        <div><span class="badge bg-success">Active</span></div>
+                    </div>
+                </div>
+            `,
+            confirmButtonText: 'Close',
+            confirmButtonColor: '#0d6efd'
+        });
+    }
+
+    window.showCertificateInfo = function(){
+        $("#view_parcel_and_transaction").modal("show");
+    }
+
+    // Generate Certificate Button Handler
+    $('#lc_btn_activate_final_concurrence_certificate_, #lc_btn_activate_final_concurrence_certificate__').on('click', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var registration_district_number = $("#txt_lc_registration_district_number").val();
+        var registration_section_number = $("#txt_lc_registration_section_number").val();
+        var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
+        var certificate_summary = $("#lc_search_report_summary_details_cs").val().trim();
+        
+        // Format certificate type
+        type_of_certificate = type_of_certificate == "Land Certificate" ? "LAND CERTIFICATE" : type_of_certificate;
+        
+        // Validate required fields
+        var errors = [];
+        if (!job_number) errors.push('Job number is required');
+        if (!case_number) errors.push('Case number is required');
+        if (!transaction_number) errors.push('Transaction number is required');
+        if (!certificate_summary) errors.push('Certificate summary is required');
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                html: `
+                    <div class="text-start">
+                        <p>Please complete the following fields before generating:</p>
+                        <ul class="list-unstyled">
+                            ${errors.map(error => `<li class="mb-1"><i class="bi bi-x-circle text-danger me-2"></i>${error}</li>`).join('')}
+                        </ul>
+                    </div>
+                `,
+                confirmButtonColor: '#0d6efd',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Generate Concurrence Certificate?',
+            html: `
+                <div class="text-start">
+                    <div class="alert alert-light border mb-3">
+                        <h6 class="mb-2"><i class="bi bi-info-circle me-2 text-primary"></i>Certificate Details</h6>
+                        <div class="row small">
+                            <div class="col-6">
+                                <strong>Job Number:</strong><br>${job_number}
+                            </div>
+                            <div class="col-6">
+                                <strong>Case Number:</strong><br>${case_number}
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <strong>Certificate Type:</strong><br>${type_of_certificate}
+                            </div>
+                            <div class="col-6">
+                                <strong>Transaction:</strong><br>${transaction_number}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Certificate Summary Preview:</small>
+                        <div class="bg-light p-3 rounded small">
+                            ${certificate_summary.length > 150 ? certificate_summary.substring(0, 150) + '...' : certificate_summary}
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info small">
+                        <i class="bi bi-file-pdf me-2"></i>
+                        <strong>PDF Generation:</strong> A PDF certificate will be generated and opened in a new tab.
+                    </div>
+                    
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="confirmGenerateCert">
+                        <label class="form-check-label" for="confirmGenerateCert">
+                            I confirm that all information is accurate and ready for certificate generation
+                        </label>
+                    </div>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-file-pdf me-2"></i>Generate Certificate',
+            cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
+            reverseButtons: true,
+            width: '600px',
+            preConfirm: () => {
+                const confirmCheck = document.getElementById('confirmGenerateCert');
+                if (!confirmCheck.checked) {
+                    Swal.showValidationMessage('Please confirm to generate certificate');
+                    return false;
+                }
+                return true;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading
+                Swal.fire({
+                    title: 'Generating Certificate...',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" role="status"></div>
+                            <p class="mb-1">Creating concurrence certificate</p>
+                            <small class="text-muted">Please wait while we generate your PDF</small>
+                            <div class="progress mt-3" style="height: 4px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    `,
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                });
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                    data: {
+                        request_type: 'request_to_generate_certificate',
+                        job_number: job_number,
+                        case_number: case_number,
+                        transaction_number: transaction_number,
+                        cert_type: 'CONCURRENCE',
+                        registration_district_number: registration_district_number,
+                        registration_section_number: registration_section_number,
+                        type_of_certificate: type_of_certificate.trim()
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    beforeSend: function() {
+                        // Show loading indicator
+                        showLoadingIndicator();
+                    },
+                    success: function(pdfBlob) {
+                        // Create file object from blob
+                        const file = new File([pdfBlob], `Concurrence_Certificate_${job_number}_${case_number}.pdf`, {
+                            type: "application/pdf",
+                            lastModified: Date.now()
+                        });
+                        
+                        // Create object URL
+                        const fileURL = URL.createObjectURL(file);
+                        
+                        // Open PDF in modal
+                        openPDFModal(file, fileURL);
+                        
+                        // Hide loading indicator
+                        hideLoadingIndicator();
+
+                        // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                        // var objectUrl = URL.createObjectURL(blob);
+                        // window.open(objectUrl);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error generating PDF:', error);
+                        hideLoadingIndicator();
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Failed to generate PDF document. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
 });
 
