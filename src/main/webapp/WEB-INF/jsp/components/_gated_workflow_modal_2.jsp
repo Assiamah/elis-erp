@@ -4627,23 +4627,39 @@ Thank you.</textarea>
                                 Certificate Summary
                             </h6>
                             <span class="ms-auto">
-                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                                <button class="btn btn-sm btn-danger" id="btn_compose_concurrence_certificate_template">
                                     <i class="bi bi-pencil-square me-1"></i>
-                                    Editable
-                                </span>
+                                    Compose Template
+                                </button>
                             </span>
                         </div>
                         
                         <div class="form-floating">
-                            <textarea id="lc_search_report_summary_details_cs" 
+                            <!-- <textarea id="lc_search_report_summary_details_cs" 
                                       name="lc_search_report_summary_details_cs" 
                                       class="form-control" 
                                       required 
-                                      style="height: 180px;">${remark_or_comment}</textarea>
-                            <label for="lc_search_report_summary_details_cs">
+                                      style="height: 180px;">${remark_or_comment}</textarea> -->
+                            <!-- <label for="lc_search_report_summary_details_cs">
                                 <i class="bi bi-chat-left-text me-1"></i>
                                 Certificate Summary / Remarks
-                            </label>
+                            </label> -->
+                            <div class="position-relative">
+                                <!-- <textarea id="lc_search_report_summary_details" 
+                                          name="lc_search_report_summary_details" 
+                                          class="form-control" 
+                                          required 
+                                          rows="7"
+                                          style="min-height: 200px; padding: 1.5rem !important;"
+                                          placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                </textarea> -->
+                                <div id="lc_concurrence_certificate_summary_details">
+                                  ${remark_or_comment}
+                                </div>
+                                <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                    <i class="fas fa-file-signature"></i>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-text mt-2">
                             <i class="bi bi-info-circle me-1 text-primary"></i>

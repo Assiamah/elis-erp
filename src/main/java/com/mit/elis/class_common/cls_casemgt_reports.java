@@ -22,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -8477,8 +8479,34 @@ System.out.println(publicity_date);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
-			HTMLWorker htmlWorker = new HTMLWorker(document);
-			htmlWorker.parse(new StringReader(remark_or_comment1));
+			// HTMLWorker htmlWorker = new HTMLWorker(document);
+			// htmlWorker.parse(new StringReader(remark_or_comment1));
+
+			try {
+				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
+					if (remark_or_comment1.contains("<ol>") || remark_or_comment1.contains("<li>")) {
+						// Use programmatic list creation
+						addListToDocument(document, remark_or_comment1);
+					} else {
+						// For plain text, just add as paragraph
+						Paragraph para = new Paragraph(remark_or_comment1, 
+							new Font(Font.FontFamily.TIMES_ROMAN, 12));
+						document.add(para);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				// Fallback to plain text
+				try {
+					Paragraph fallback = new Paragraph(
+						remark_or_comment1.replaceAll("<[^>]+>", ""),
+						new Font(Font.FontFamily.TIMES_ROMAN, 12)
+					);
+					document.add(fallback);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
 
 			// reportTitle_note6.setAlignment(Element.ALIGN_LEFT);
 			// document.add(reportTitle_note6);
@@ -8826,6 +8854,40 @@ System.out.println(publicity_date);
 
 		}
 	return out_pdf.toByteArray();
+	}
+
+	private void addListToDocument(Document document, String htmlContent) throws Exception {
+		// Extract text from list items
+		Pattern liPattern = Pattern.compile("<li[^>]*>(.*?)</li>", Pattern.DOTALL);
+		Matcher liMatcher = liPattern.matcher(htmlContent);
+		
+		// Create an ordered list
+		com.itextpdf.text.List list = new com.itextpdf.text.List(
+			com.itextpdf.text.List.ORDERED
+		);
+		list.setAutoindent(true);
+		list.setIndentationLeft(20);
+		
+		Font listFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+		
+		while (liMatcher.find()) {
+			String liContent = liMatcher.group(1);
+			
+			// Remove all HTML tags to get plain text
+			String textOnly = liContent
+				.replaceAll("<[^>]+>", " ")  // Remove HTML tags
+				.replaceAll("\\s+", " ")      // Collapse multiple spaces
+				.trim();
+			
+			if (!textOnly.isEmpty()) {
+				ListItem item = new ListItem(textOnly, listFont);
+				list.add(item);
+			}
+		}
+		
+		if (list.size() > 0) {
+			document.add(list);
+		}
 	}
 
 	public byte[] create_search_report_pvlmd_old(String web_service_url, String web_service_api_key,
