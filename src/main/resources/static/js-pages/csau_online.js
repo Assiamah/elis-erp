@@ -9413,7 +9413,9 @@ function createTableRow(item) {
 						$
 							.ajax({
 								type: "POST",
-								url: "Case_Management_Serv",
+								// url: "Case_Management_Serv",
+								url: "acknowledgement_regional_number_bulk",
+								
 								// target:'_blank',
 								data: {
 									request_type: 'online_select_process_acknowledgement_regional_number_bulk',
@@ -9460,7 +9462,7 @@ function createTableRow(item) {
 										});
 									var objectUrl = URL
 										.createObjectURL(blob);
-									// window.open(objectUrl);
+									window.open(objectUrl);
 
 									$(
 										'#elisdovumentpreviewblobfile')
