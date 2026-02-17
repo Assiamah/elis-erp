@@ -728,3 +728,72 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-slide modal-blur" id="btnSearchApplication" tabindex="-1" 
+     aria-labelledby="searchApplicationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white border-bottom-0">
+                <div class="d-flex align-items-center w-100">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-10 text-primary px-3 py-2 rounded-circle">
+                            <i class="bi bi-search fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="modal-title text-white mb-0" id="searchApplicationModalLabel">
+                            Search Applications
+                        </h5>
+                        <p class="mb-0 small opacity-75">Find applications by reference number, applicant name, or date</p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-auto" 
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-4">
+                <!-- Search Form -->
+                <form id="applicationSearchForm">
+                    <!-- Quick Search Section -->
+                    <div class="quick-search-section mb-4">
+                        <h6 class="fw-semibold mb-3">
+                            <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+                            Quick Search
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text bg-light border-0">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control form-control-lg border-0 bg-light" 
+                                           id="quickSearchInputQC" 
+                                           placeholder="Enter Job Number">
+                                    <button class="btn btn-primary" type="button" id="quickSearchQCBtn">
+                                        <i class="bi bi-search me-2"></i>Search
+                                    </button>
+                                </div>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Search by any reference number, name, or keyword
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

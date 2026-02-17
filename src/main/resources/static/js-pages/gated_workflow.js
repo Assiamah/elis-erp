@@ -1305,7 +1305,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then((result) => {
             if (result.isConfirmed && result.value && result.value.success) {
                 Swal.fire({
-                    title: '<i class="bi bi-check-circle-fill text-success me-2"></i>Success!',
+                    title: 'Success!',
                     html: `<div class="text-center">
                             <div class="mb-3">
                                 <i class="bi bi-check2-circle text-success fs-1"></i>
@@ -13797,6 +13797,158 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add active state to the clicked row
         $('#lrd_notes_dataTable tbody tr').removeClass('table-active');
+        $(this).closest('tr').addClass('table-active');
+        
+        // Scroll to the note details section
+        $('html, body').animate({
+            scrollTop: $('._gated_workflow_view_notes').offset().top
+        }, 500);
+        
+        // Initialize tooltips for new content
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    });
+
+    $(document).on('click', '.open-view-notes-2', function(e) {
+        e.preventDefault();
+        
+        // Get data from the clicked button
+        const noteId = $(this).data('target-id');
+        const description = $(this).data('an_description');
+        const createdBy = $(this).data('created_by');
+        const createdDate = $(this).data('created_date');
+        const modifiedBy = $(this).data('modified_by') || createdBy; // Fallback to createdBy if not modified
+        const modifiedDate = $(this).data('modified_date') || createdDate; // Fallback to createdDate if not modified
+        const division = $(this).data('division');
+        const job_number = $(this).data('job_number');
+        const case_number = $(this).data('case_number');
+        
+        // Create the note details HTML
+        const noteDetailsHTML = `
+            <form id="form_view_notes">
+                <!-- Hidden Fields -->
+                <input type="hidden" id="vi_note_id" name="vi_note_id" value="${noteId}">
+                <input type="hidden" id="vi_an_job_number" value="${job_number}">
+                <input type="hidden" id="vi_an_case_number" value="${case_number}">
+                <input type="hidden" id="vi_an_type" value="Normal">
+                
+                <!-- Division Badge -->
+                <div class="mt-3 mb-3">
+                    <label class="form-label small text-muted mb-1">Division</label>
+                    <div>
+                        <span class="badge bg-secondary bg-opacity-10 text-dark p-2">
+                            <i class="fas fa-building me-1"></i>
+                            ${division}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Description Section -->
+                <div class="mb-4">
+                    <div class="form-group">
+                        <label for="vi_note_description" class="form-label fw-medium">
+                            <i class="fas fa-align-left me-1"></i>
+                            Note Description
+                        </label>
+                        <div class="border rounded p-3 bg-light" style="min-height: 150px;">
+                            <div id="vi_note_description" class="note-content">
+                                ${formatNoteDescription(description) || 'No description available'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Metadata Section -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-user-plus me-1"></i>
+                                    Creation Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Created By</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-user text-primary"></i>
+                                        </div>
+                                        <span id="vi_created_by" class="fw-medium">${createdBy}</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Created Date</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-calendar text-success"></i>
+                                        </div>
+                                        <span id="vi_created_date" class="fw-medium">${createdDate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-user-edit me-1"></i>
+                                    Modification Details
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Modified By</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-user-edit text-info"></i>
+                                        </div>
+                                        <span id="vi_modified_by" class="fw-medium">
+                                            ${modifiedBy === createdBy ? 'No modifications' : modifiedBy}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted mb-1">Modified Date</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                                            <i class="fas fa-calendar-alt text-warning"></i>
+                                        </div>
+                                        <span id="vi_modified_date" class="fw-medium">
+                                            ${modifiedDate === createdDate ? 'Not modified' : modifiedDate}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="mt-4 pt-3 border-top">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="btn_print_note">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button>
+                        <!--
+                        <button type="button" class="btn btn-primary btn-sm" id="btn_edit_note">
+                            <i class="fas fa-edit me-1"></i>
+                            Edit Note
+                        </button>
+                        -->
+                    </div>
+                </div>
+            </form>
+        `;
+        
+        // Insert the note details into the container
+        $('#noteDetailsContainer_2').html(noteDetailsHTML);
+        
+        // Add active state to the clicked row
+        $('#lrd_notes_dataTable_2 tbody tr').removeClass('table-active');
         $(this).closest('tr').addClass('table-active');
         
         // Scroll to the note details section

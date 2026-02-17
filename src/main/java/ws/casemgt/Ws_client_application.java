@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -4135,6 +4136,44 @@ public class Ws_client_application {
 		}
 		return output;
 
+	}
+
+	public String search_new_application_for_division(String web_service_url, String web_service_api_key, String search_word, String division,
+			String office_region) {
+		String output = "Data Not Received";
+
+		JSONObject obj = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
+
+		try {
+			obj.put("search_word", search_word);
+			obj.put("division", division);
+			obj.put("office_region", office_region);
+			jsonArr.put(obj);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/search_new_application_for_division");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class,
+							jsonArr.toString());
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
 	}
 
 

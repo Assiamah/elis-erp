@@ -1917,7 +1917,7 @@
 <div class="modal fade modal-blur effect-scale" id="compose_search_report" tabindex="-1"
 	role="dialog" aria-labelledby="compose_search_reportmodal" aria-hidden="true"
 >
-	<div class="modal-dialog modal-lg modal-dialog-centered">
+	<div class="modal-dialog modal-fullscreen modal-dialog-centered">
 		<div class="modal-content border-0">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="review_records_verification_label">
@@ -1927,150 +1927,175 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 			<div class="modal-body">
-				<div class="card border">
-                    <div class="card-header bg-light py-2">
-                        <h6 class="mb-0">
-                            <i class="fas fa-sticky-note me-2"></i>
-                            Records Information
-                        </h6>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Records Info.</th>
-                                        <th>Entered By</th>
-                                        <th>Entered Date</th>
-                                        <th>Division</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${application_notes}" var="application_notes_row">
-                                    <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
-                                        ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i class="fas fa-comment text-muted me-2"></i>
-                                                <span class="text-truncate" style="max-width: 200px;">
-                                                    ${application_notes_row.an_description}
-                                                </span>
-                                                ${application_notes_row.an_status == false ? 
-                                                    '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i class="fas fa-user-circle text-muted me-2"></i>
-                                                <span>${application_notes_row.created_by}</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i class="fas fa-calendar-alt text-muted me-2"></i>
-                                                <span>${application_notes_row.created_date}</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-secondary bg-opacity-10 text-dark">
-                                                ${application_notes_row.division}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <button class="btn btn-outline-primary btn-sm viewNotesModal" 
-                                                    data-target-id="${application_notes_row.an_id}"
-                                                    data-an_description="${application_notes_row.an_description}"
-                                                    data-created_by="${application_notes_row.created_by}"
-                                                    data-created_date="${application_notes_row.created_date}"
-                                                    data-modified_by="${application_notes_row.created_by}"
-                                                    data-modified_date="${application_notes_row.created_date}"
-                                                    data-division="${application_notes_row.division}"
-                                                    ${application_notes_row.an_status == false ? "disabled" : ""}>
-                                                <i class="fas fa-eye me-1"></i>
-                                                View
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-sticky-note me-2"></i>
+                                    Records Information
+                                </h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable_2">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Records Info.</th>
+                                                <th>Entered By</th>
+                                                <th>Entered Date</th>
+                                                <th>Division</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${application_notes}" var="application_notes_row">
+                                            <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                                ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-comment text-muted me-2"></i>
+                                                        <span class="text-truncate" style="max-width: 200px;">
+                                                            ${application_notes_row.an_description}
+                                                        </span>
+                                                        ${application_notes_row.an_status == false ? 
+                                                            '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-user-circle text-muted me-2"></i>
+                                                        <span>${application_notes_row.created_by}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                                        <span>${application_notes_row.created_date}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                        ${application_notes_row.division}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-outline-primary btn-sm  open-view-notes-2" 
+                                                            data-target-id="${application_notes_row.an_id}"
+                                                            data-an_description="${application_notes_row.an_description}"
+                                                            data-created_by="${application_notes_row.created_by}"
+                                                            data-created_date="${application_notes_row.created_date}"
+                                                            data-modified_by="${application_notes_row.created_by}"
+                                                            data-modified_date="${application_notes_row.created_date}"
+                                                            data-division="${application_notes_row.division}"
+                                                            ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                        <i class="fas fa-eye me-1"></i>
+                                                        View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie"></i> Summarize Search Reports
-                    </div>
-                    <div class="card-body">
-                        <!-- The Form starts here -->
-                        <div class="form-group">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <label for="lc_search_report_summary_details_2" class="form-label">Report Summary</label>
-                                    <!-- <textarea id="lc_search_report_summary_details_2" 
-                                        name="lc_search_report_summary_details" 
-                                        class="form-control" 
-                                        required 
-                                        rows="7" 
-                                        style="padding:50px !important;">${remark_or_comment}</textarea>
-                                    </div> -->
-                                    <div class="position-relative">
-                                        <!-- <textarea id="lc_search_report_summary_details" 
-                                                    name="lc_search_report_summary_details" 
-                                                    class="form-control" 
-                                                    required 
-                                                    rows="7"
-                                                    style="min-height: 200px; padding: 1.5rem !important;"
-                                                    placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                        </textarea> -->
-                                        <div id="lc_search_report_summary_details_2" class="quill-editor" style="height: 300px;">
-                                            ${remark_or_comment}
-                                        </div>
-                                        <div class="position-absolute top-0 end-0 p-3 text-muted">
-                                            <i class="fas fa-file-signature"></i>
+
+                        <div class="_gated_workflow_view_notes">
+                            <div class="card border">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-sticky-note me-2"></i>
+                                        Note Details
+                                    </h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <!-- Note details will be dynamically inserted here -->
+                                    <div id="noteDetailsContainer_2" class="p-3">
+                                        <div class="text-center text-muted py-5">
+                                            <i class="fas fa-sticky-note fa-3x mb-3"></i>
+                                            <p class="mb-0">Select a note to view details</p>
                                         </div>
                                     </div>
                                 </div>
-                            
-                            <div class="row g-3 mt-2">
-                                <div class="col-auto">
-                                <button type="button" 
-                                    name="btn_compose_certificate_template_2" 
-                                    id="btn_compose_certificate_template_2" 
-                                    class="btn btn-warning btn-icon-split">
-                                    <span class="icon text-white-50"> 
-                                    <i class="fas fa-edit"></i>
-                                    </span>
-                                    <span class="text">Compose Template</span>
-                                </button>
-                                </div>
-                                
-                                <div class="col-auto">
-                                <button type="button" 
-                                    name="lc_btn_save_search_report_2" 
-                                    id="lc_btn_save_search_report_2" 
-                                    class="btn btn-success btn-icon-split">
-                                    <span class="icon text-white-50"> 
-                                    <i class="fas fa-upload"></i>
-                                    </span>
-                                    <span class="text">Save Report</span>
-                                </button>
-                                </div>
-                                
-                                <div class="col">
-                                <button type="button" 
-                                    name="btn_preview_search_report" 
-                                    id="btn_preview_search_report" 
-                                    class="btn btn-info btn-icon-split">
-                                    <span class="icon text-white-50"> 
-                                    <i class="fas fa-print"></i>
-                                    </span>
-                                    <span class="text">Preview Search Report</span>
-                                </button>
-                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-edit"></i> Summarize Search Reports
+                            </div>
+                            <div class="card-body">
+                                <!-- The Form starts here -->
+                                <div class="form-group">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="lc_search_report_summary_details_2" class="form-label">Report Summary</label>
+                                            <!-- <textarea id="lc_search_report_summary_details_2" 
+                                                name="lc_search_report_summary_details" 
+                                                class="form-control" 
+                                                required 
+                                                rows="7" 
+                                                style="padding:50px !important;">${remark_or_comment}</textarea>
+                                            </div> -->
+                                            <div class="position-relative">
+                                                <!-- <textarea id="lc_search_report_summary_details" 
+                                                            name="lc_search_report_summary_details" 
+                                                            class="form-control" 
+                                                            required 
+                                                            rows="7"
+                                                            style="min-height: 200px; padding: 1.5rem !important;"
+                                                            placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                                </textarea> -->
+                                                <div id="lc_search_report_summary_details_2" class="quill-editor" style="height: 300px;">
+                                                    ${remark_or_comment}
+                                                </div>
+                                                <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                                    <i class="fas fa-file-signature"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-auto">
+                                        <!-- <button type="button" 
+                                            name="btn_compose_certificate_template_2" 
+                                            id="btn_compose_certificate_template_2" 
+                                            class="btn btn-warning btn-icon-split">
+                                            <span class="icon text-white-50"> 
+                                            <i class="fas fa-edit"></i>
+                                            </span>
+                                            <span class="text">Compose Template</span>
+                                        </button> -->
+                                        </div>
+                                        
+                                        <div class="col-auto">
+                                        <button type="button" 
+                                            name="lc_btn_save_search_report_2" 
+                                            id="lc_btn_save_search_report_2" 
+                                            class="btn btn-success btn-icon-split">
+                                            <span class="icon text-white-50"> 
+                                            <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="text">Save Report</span>
+                                        </button>
+                                        </div>
+                                        
+                                        <div class="col">
+                                        <button type="button" 
+                                            name="btn_preview_search_report" 
+                                            id="btn_preview_search_report" 
+                                            class="btn btn-info btn-icon-split">
+                                            <span class="icon text-white-50"> 
+                                            <i class="fas fa-print"></i>
+                                            </span>
+                                            <span class="text">Preview Search Report</span>
+                                        </button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

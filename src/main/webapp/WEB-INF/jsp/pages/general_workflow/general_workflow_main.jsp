@@ -616,6 +616,23 @@
             });
     });
 
+    $("#gwf_request_purpose").on('change', function (e) {
+        const request_purpose = $(this).val();
+        if(request_purpose == "New Case Template") {
+            $("#gwf_request_reference_type").val("Job Number");
+            //generate a temporary number starting with LCTMP followed by 6 random numbers plus current year
+            $("#gwf_request_keyword").val("LCTMP" + Math.floor(100000 + Math.random() * 900000) + (new Date().getFullYear()));
+            //make the reference type and keyword fields readonly
+            $("#gwf_request_reference_type").attr("readonly", true);
+            $("#gwf_request_keyword").attr("readonly", true);
+        } else {
+            $("#gwf_request_reference_type").attr("readonly", false);
+            $("#gwf_request_keyword").attr("readonly", false);
+            $("#gwf_request_reference_type").val("");
+            $("#gwf_request_keyword").val("");
+        }
+    });
+
     $("#btn_check_request").on('click', function (e) {
         const request_purpose = $("#gwf_request_purpose").val();
         const request_reference_type = $("#gwf_request_reference_type").val();
@@ -674,7 +691,76 @@
             beforeSend : function() {
             },
             success : function(jobdetails) {
-                console.log(jobdetails);
+                //console.log(jobdetails);
+
+                if(request_purpose == "New Case Template") {
+                    $("#addRequestModal").modal("hide");
+                    Swal.fire({
+                        title: 'Add Job to Request List?',
+                        text: 'This will add selected jobs to request to list.',
+                        icon: 'question',
+                        html: `
+                            <!-- <p>This will add selected jobs to request to list.</p> -->
+                            <div class="form-group text-start mt-2">
+                                <label for="txt_general_remarks_notes">Remarks: <span class="text-danger">*</span></label>
+                                <textarea class="form-control mt-1" id="txt_general_remarks_notes" rows="3"></textarea>
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Add',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#28a745',
+                        cancelButtonColor: '#d33'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var remarks_notes = $("#txt_general_remarks_notes").val();
+                            if (!remarks_notes) {
+                                Swal.fire({
+                                    title: 'Remarks is required!',
+                                    icon: 'warning',
+                                    confirmButtonText: 'OK',
+                                });
+                                return;
+                            }
+
+                            const exists = selectedJobsList.some(job => job.job_number === request_keyword);
+        
+                            if (exists) {
+                                Swal.fire({
+                                    title: 'Duplicate Job',
+                                    text: `Job ${request_keyword} is already in the list.`,
+                                    icon: 'warning',
+                                    confirmButtonText: 'OK'
+                                });
+
+                                return;
+                            }
+                            
+                            // Add job to list
+                            selectedJobsList.push({
+                                jobNumberPlain: request_keyword,
+                                jobNumberHtml: request_keyword,
+                                applicantNameHtml: 'N/A',
+                                applicationType: 'TEMPORAL APPLICATION',
+                                batchingPurpose: request_purpose,
+                                remarksNotes: remarks_notes,
+                                // created_on: jobData.created_on,
+                                // job_status: jobData.job_status
+                            });
+
+                            // Update localStorage
+                            localStorage.setItem('requestlistdata', JSON.stringify(selectedJobsList));
+                            
+                            // Update the table
+                            addJobToRequestlist();
+
+                            prepareRequestlistModal();
+                        }
+                    });
+
+                    return;
+                }
+
                 var json_p = JSON.parse(jobdetails);
                 if(json_p.success){
                   //  toastr['success']('Request already exists');
@@ -755,7 +841,12 @@
                         }
                     });
                 }else{
-                    toastr['warning']('Request does not exist');
+                    //toastr['warning']('Request does not exist');
+                    Swal.fire({
+                        title: 'Request does not exist',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
                 }
                 btnCheckRequest.attr('disabled', false);
                 btnCheckRequest.html('Check');
@@ -765,7 +856,13 @@
                 btnCheckRequest.attr('disabled', false);
                 btnCheckRequest.html('Check');
                 var json_p = JSON.parse(jobdetails);
-                toastr['error'](json_p.message);
+                //toastr['error'](json_p.message);
+                Swal.fire({
+                    title: 'Error!',
+                    text: json_p.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         });
 

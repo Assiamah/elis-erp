@@ -69,9 +69,13 @@
                         <span class="h5 mb-0">Application Dashboard</span>
                     </div>
                     <div>
-                   
+
                         <button class="btn btn-light" id="btnViewBatchlist">
                             <i class="ri-list-check"></i> View Batch List
+                        </button>
+                   
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#btnSearchApplication">
+                            <i class="ri-search-line"></i> Search Application
                         </button>
                       
                       <!-- <c:if test="${division != 'SMD'}">
