@@ -5047,7 +5047,7 @@ table.addCell(new PdfPCell(new Phrase(formatted, font12pt)));
 
 	public byte[] create_service_acknoeledgement_bulk_regional_number(String software_file_location,
 			String basic_bill_details,
-			String ws_bill_details_db, String ws_login_user, String output_file)
+			String ws_bill_details_db, String ws_login_user)
 			throws IOException, SQLException, JSONException {
 		Font bold = new Font(Font.FontFamily.HELVETICA, 8f, Font.BOLD);
 		Font normal = new Font(Font.FontFamily.HELVETICA, 8f, Font.NORMAL);

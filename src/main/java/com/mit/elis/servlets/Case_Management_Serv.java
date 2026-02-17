@@ -9879,7 +9879,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 						.online_select_process_acknowledgement_regional_number_bulk(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				System.out.println(web_service_response);
+				
+								System.out.println(web_service_response);
 
 				if (web_service_response != null) {
 					String pdfFileName = "acnkwledgeslip_rn.pdf";
@@ -9894,9 +9895,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 					// String ws_bill_details_db=
 					// case_mgt_cl.check_payment_status_of_bill_generate_bill(ws_bill_number);
 
-					String pdf_dest = cls_url_config.getCase_upload_location();
-					String files_pdf_jackets_p = pdf_dest + ws_case_number + "/" + ref_number + "_" + "rn_b"
-							+ pdfFileName;
+					//String pdf_dest = cls_url_config.getCase_upload_location();
+					//String files_pdf_jackets_p = pdf_dest + ws_case_number + "/" + ref_number + "_" + "rn_b"+ pdfFileName;
 
 					// File files_pdf_jackets = new File(pdf_dest + ws_case_number);
 
@@ -9915,8 +9915,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 							cls_url_config.getSoftfile_location(), 
 							obj.toString(), 
 							web_service_response, 
-							session.getAttribute("fullname").toString(), 
-							files_pdf_jackets_p);
+							session.getAttribute("fullname").toString());
 
 
 
@@ -9926,12 +9925,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				// pdf_upload_obj.put("jobNumber", job_number);
 				// pdf_upload_obj.put("caseNumber",case_number);
 				// pdf_upload_obj.put("fileData",base64Encoded);
-							
-				
-			
+						
  				// String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
  				// cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
-
+//System.out.println(buffer);
 					if (buffer != null) {
 						// Set response content type to PDF
 						response.setContentType("application/pdf");
@@ -9960,7 +9957,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 					System.out.println(web_service_response);
 				}
 
-				return web_service_response;
+				//return web_service_response;
 			}
 
 			if (request_type.equals("select_compliance_application_notice_count_per_division")) {
