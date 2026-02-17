@@ -20313,7 +20313,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var registration_district_number = $("#txt_lc_registration_district_number").val();
         var registration_section_number = $("#txt_lc_registration_section_number").val();
         var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
-        var certificate_summary = $("#lc_search_report_summary_details_cs").val().trim();
+        var certificate_summary = $("#lc_concurrence_certificate_summary_details").val().trim();
         
         // Format certificate type
         type_of_certificate = type_of_certificate == "Land Certificate" ? "LAND CERTIFICATE" : type_of_certificate;
@@ -20323,7 +20323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!job_number) errors.push('Job number is required');
         if (!case_number) errors.push('Case number is required');
         if (!transaction_number) errors.push('Transaction number is required');
-        if (!certificate_summary) errors.push('Certificate summary is required');
+        //if (!certificate_summary) errors.push('Certificate summary is required');
         
         if (errors.length > 0) {
             Swal.fire({
@@ -20489,7 +20489,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get form values
         var job_number = $("#cs_main_job_number").val();
         var case_number = $("#cs_main_case_number").val();
-        var search_report = $("#lc_search_report_summary_details_cs").val().trim();
+        // var search_report = $("#lc_search_report_summary_details_cs").val().trim();
+
+         // Get content from Quill editor
+        let search_report = '';
+        const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+        if (quillEditor) {
+            search_report = quillEditor.innerHTML;
+        } else {
+            // Fallback to textarea if Quill not found
+            search_report = $("#lc_concurrence_certificate_summary_details").val() || '';
+        }
+        
+        // Clean up Quill's empty paragraph
+        if (search_report === '<p><br></p>') {
+            search_report = '';
+        }
         
         // Validate
         if (!search_report) {
@@ -20500,7 +20515,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 confirmButtonColor: '#0d6efd',
                 confirmButtonText: 'OK'
             });
-            $("#lc_search_report_summary_details_cs").focus();
+            $("#lc_concurrence_certificate_summary_details").focus();
             return false;
         }
         
@@ -21290,6 +21305,311 @@ document.addEventListener('DOMContentLoaded', function() {
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                    }
+                });
+            }
+        });
+    });
+
+
+    $('#btn_compose_concurrence_certificate_template').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_transaction_number").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+        
+        // Validation
+        if (!job_number || !case_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Job Number and Case Number are required to compose certificate template</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Compose Concurrence Certificate?',
+            html: `<div class="text-start">
+                    <h6 class="mb-3">Confirm Template Composition</h6>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                        <div class="d-flex">
+                            <i class="fas fa-file-certificate me-2 mt-1"></i>
+                            <div>
+                                <strong>Certificate Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Process:</strong> ${business_process_sub_name || 'Not specified'}</li>
+                                    <li><strong>Type:</strong> Concurrence Certificate</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        This will generate a concurrence certificate template based on the case details.
+                        Existing content in the editor will be replaced.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-file-signature me-1"></i>Compose Certificate',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 500,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state on button
+                const composeBtn = $(this);
+                const originalText = composeBtn.html();
+                composeBtn.prop('disabled', true);
+                composeBtn.html('<span class="mdi mdi-loading mdi-spin me-1" role="status"></span>Composing...');
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                    data: {
+                        request_type: 'request_to_compose_certificate_template',
+                        job_number: job_number,
+                        case_number: case_number,
+                        business_process_sub_name: business_process_sub_name,
+                        cert_type: 'concurrence_certificate'
+                    },
+                    cache: false,
+                    beforeSend: function() {
+                        // Optional: Show additional loading indicator
+                    },
+                    success: function(response) {
+                        // Get Quill instance - try multiple approaches
+                        let quillInstance;
+                        
+                        // Method 1: Check if Quill instance is attached to the container
+                        const quillContainer = document.getElementById('lc_concurrence_certificate_summary_details');
+                        if (quillContainer && quillContainer.__quill) {
+                            quillInstance = quillContainer.__quill;
+                        }
+                        // Method 2: Try to get it from the editor element
+                        else {
+                            const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+                            if (quillEditor && quillEditor.parentNode && quillEditor.parentNode.__quill) {
+                                quillInstance = quillEditor.parentNode.__quill;
+                            }
+                        }
+
+                        // Method 3: Direct DOM update if Quill instance not found
+                        if (!quillInstance) {
+                            // Fallback: Direct HTML update
+                            const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+                            if (quillEditor) {
+                                quillEditor.innerHTML = `<ol><li>${response}</li></ol>`;
+                                
+                                // Show success message (continue with your success Swal.fire code)
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-file-contract text-success fa-3x"></i>
+                                            </div>
+                                            <h5 class="mb-2">Certificate Template Composed</h5>
+                                            <p class="text-muted">
+                                                Concurrence certificate template has been successfully generated
+                                            </p>
+                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                <i class="fas fa-check me-2"></i>
+                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'View Template',
+                                    confirmButtonColor: '#198754',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue Editing',
+                                    width: 500
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Focus on the Quill editor
+                                        const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+                                        if (quillEditor) {
+                                            quillEditor.focus();
+                                            
+                                            // Optional: Scroll to the editor if needed
+                                            $('html, body').animate({
+                                                scrollTop: $(quillEditor).offset().top - 100
+                                            }, 500);
+                                        }
+                                    }
+                                });
+
+                                return; // Exit early
+                            }
+                        }
+                        
+                        // Update Quill editor with the composed template
+                        if (quillInstance && typeof quillInstance.setContents === 'function') {
+                            try {
+                                // Convert HTML to Delta format for Quill
+                                const delta = quillInstance.clipboard.convert({
+                                    html: `<ol><li>${response}</li></ol>`
+                                });
+                                quillInstance.setContents(delta, 'silent');
+                            
+                                // Show success message
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-file-contract text-success fa-3x"></i>
+                                            </div>
+                                            <h5 class="mb-2">Certificate Template Composed</h5>
+                                            <p class="text-muted">
+                                                Concurrence certificate template has been successfully generated
+                                            </p>
+                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                <i class="fas fa-check me-2"></i>
+                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'View Template',
+                                    confirmButtonColor: '#198754',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue Editing',
+                                    width: 500
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Focus on the Quill editor
+                                        const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+                                        if (quillEditor) {
+                                            quillEditor.focus();
+                                            
+                                            // Optional: Scroll to the editor if needed
+                                            $('html, body').animate({
+                                                scrollTop: $(quillEditor).offset().top - 100
+                                            }, 500);
+                                        }
+                                    }
+                                });
+
+                            } catch (error) {
+                                console.error('Error updating Quill:', error);
+                                // Fallback to direct HTML update
+                                const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+                                if (quillEditor) {
+                                    quillEditor.innerHTML = `<ol><li>${response}</li></ol>`;
+                                }
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `<div class="text-center">
+                                            <div class="mb-3">
+                                                <i class="fas fa-file-contract text-success fa-3x"></i>
+                                            </div>
+                                            <h5 class="mb-2">Certificate Template Composed</h5>
+                                            <p class="text-muted">
+                                                Concurrence certificate template has been successfully generated
+                                            </p>
+                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                                <i class="fas fa-check me-2"></i>
+                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
+                                            </div>
+                                        </div>`,
+                                    icon: 'success',
+                                    confirmButtonText: 'View Template',
+                                    confirmButtonColor: '#198754',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue Editing',
+                                    width: 500
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Focus on the Quill editor
+                                        const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+                                        if (quillEditor) {
+                                            quillEditor.focus();
+                                            
+                                            // Optional: Scroll to the editor if needed
+                                            $('html, body').animate({
+                                                scrollTop: $(quillEditor).offset().top - 100
+                                            }, 500);
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            // Fallback: If Quill instance not found, show error
+                            Swal.fire({
+                                title: 'Editor Error',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-edit text-warning fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Unable to Update Editor</h5>
+                                        <p class="text-muted">
+                                            Template was generated but could not be inserted into the editor
+                                        </p>
+                                        <div class="alert alert-warning mt-3">
+                                            <pre class="mb-0" style="max-height: 150px; overflow: auto;">${response}</pre>
+                                        </div>
+                                    </div>`,
+                                icon: 'warning',
+                                confirmButtonText: 'Copy Content',
+                                confirmButtonColor: '#ffc107',
+                                showCancelButton: true,
+                                cancelButtonText: 'Close'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Copy to clipboard
+                                    navigator.clipboard.writeText(response);
+                                    Swal.fire({
+                                        title: 'Copied!',
+                                        text: 'Content copied to clipboard',
+                                        icon: 'success',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                }
+                            });
+                        }
+                        
+                        console.log('Certificate template composed:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Composition Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Unable to Compose Certificate</h5>
+                                    <p class="text-danger small">${error || 'Server error occurred'}</p>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Please try again or contact system administrator
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    },
+                    complete: function() {
+                        // Reset button state
+                        composeBtn.prop('disabled', false);
+                        composeBtn.html(originalText);
                     }
                 });
             }

@@ -43,4 +43,11 @@
         theme: 'snow'
     });
 
+    const quill4 = new Quill('#lc_concurrence_certificate_summary_details', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+
 })();

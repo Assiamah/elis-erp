@@ -8478,8 +8478,6 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
-
-
 			try {
 				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 					if (remark_or_comment1.contains("<ol>") || remark_or_comment1.contains("<li>")) {
@@ -8505,12 +8503,6 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 					ex.printStackTrace();
 				}
 			}
-
-			//  HTMLWorker htmlWorker = new HTMLWorker(document);
-			//  htmlWorker.parse(new StringReader(remark_or_comment1));
-
-			//  htmlWorker.parse(new StringReader(remark_or_comment1));
-			
 
 			// reportTitle_note6.setAlignment(Element.ALIGN_LEFT);
 			// document.add(reportTitle_note6);
@@ -8894,7 +8886,6 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			document.add(list);
 		}
 	}
-	
 	public byte[] create_search_report_pvlmd_old(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number, String job_number,
 			String fullname,
