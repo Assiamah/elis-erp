@@ -8690,7 +8690,6 @@ System.out.println(publicity_date);
 			JSONObject obj_pdf_b = new JSONObject();
 			obj_pdf_b.put("doc_uuid", doc_uuid);
 					//obj.put("doc_uuid", "44bd40f4-7733-11ef-a814-000c2930f1ec");
-		
 				// Read the InputStream from the external service
 					InputStream pdf_blob = cls_case_documents.open_doc_by_unique_id_new_vlob(
 						doc_web_service_url, doc_web_service_api_key,
