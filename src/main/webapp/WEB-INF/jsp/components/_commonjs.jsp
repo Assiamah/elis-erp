@@ -90,8 +90,9 @@
 <script src="${pageContext.request.contextPath}/assets/js/quill-editor.js"></script>
 
 <!-- Echarts-->
-${(page_name == "compliance_cst") || (page_name == "director_compliance") || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name == "account-reports") || (page_name=="compliance_no_login") || (page_name == "focal_compliance_person") ? "<script src='assets/libs/echarts/dist/echarts.min.js'></script> " : ""}
+${(page_name == "compliance_cst") || (page_name == "director_compliance") || (page_name == "csau_monitoring")  || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name == "account-reports") || (page_name=="compliance_no_login") || (page_name == "focal_compliance_person") ? "<script src='assets/libs/echarts/dist/echarts.min.js'></script> " : ""}
 ${page_name == "executive_dashboard" ? "<script src='assets/libs/chart.js/Chart.min.js'></script>" : ""}
+${page_name == "csau_monitoring"  ? "<script src='assets/libs/chart.js/Chart.min.js'></script>" : ""}
 
 <!-- Datatables Cdn -->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -153,7 +154,7 @@ ${page_name == "executive_dashboard" ? "<script src='js-pages/executive_complian
 ${page_name == "director_compliance" ? "<script src='js-pages/director_compliance.js'></script>" : ""}
 
 ${page_name == "cica_clients" ? "<script src='js-pages/cica_clients.js'></script>" : ""}
-${page_name == "cica_tickets" ? "<script src='js-pages/cica_tickets.js'></script>" : ""}
+${(page_name == "cica_tickets") || (page_name == "cica_focal_person") || (page_name == "cica_replies") ? "<script src='js-pages/cica_tickets.js'></script>" : ""}
 
 ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 
@@ -162,3 +163,6 @@ ${page_name == "account-reports" ? "<script src='js-pages/audit_report.js'></scr
 ${page_name == "account-reports" ? "<script src='js-pages/account_reports.js'></script>" : ""}
 
 ${page_name == "page_file_management" ?  "<script src='js-pages/file_management.js'></script>" : ""}
+
+${page_name == "csau_monitoring" ? "<script src='js-pages/monitoring_csau.js'></script>" : ""}
+${page_name == "unit_user_report" ? "<script src='js-pages/apps_report.js'></script>" : ""}

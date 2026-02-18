@@ -13,167 +13,206 @@
 <%@page import="java.util.*" %>
 
 <input type="text" name="regional_code" value="${sessionScope.regional_code}"  hidden/> 
+
+<!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">Compliance Focal Person</h1>
+                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage client tickets and monitor ticket status</p>
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">CAC</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Compliance Focal Person</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
 				 
-<!-- Begin Page Content -->
-   <div class="container-fluid">
-	<section class="section dashboard">
-		 <!-- Page Heading -->
-                <div class="row mb-4">
-                	 <div class="col-md-12">
-		                <div class=" ">
-		                   
-					         <nav>
-				                <ol class="breadcrumb">
-				                  <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/dashboard"><i class="fas fa-fw fa-home"></i></a></li>
-				                  <li class="breadcrumb-item active">FOCAL PERSON - TICKETS </li>
-				                </ol>
-			               </nav>
-		                    
-		                    
-		                </div>	
-	                </div>
-				</div>
-	
-	
-     	<div class="row mb-4">
-      		<!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
-            <!-- Assigned Cases Card -->
-            <div class="col-xl-4 col-md-6" id="tickets_incoming">
-              <div class="card border-left-info shadow h-100 py-2" id="body-bg-1">
 
-                <div class="card-body">
-	                  		<h5 class="card-title">Tickets <span>| Incoming </span></h5>
-							
-							<div class="d-flex align-items-center">
-								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-									<i class="fas fa-sign-in-alt fa-2x text-info"></i>
-								</div>
-								 <div class="ps-3">	
-		                     	 	<h4 id="incoming_count"><c:out value="${incoming}"></c:out></h4>
-								 </div>
-		                    </div>
+	
+     	<!-- Tickets Overview Cards -->
+<div class="row g-4 mb-4">
+    <!-- Incoming Tickets Card -->
+    <div class="col-xl-4 col-md-6" id="tickets_incoming" style="cursor: pointer;">
+        <div class="card h-100 border-0 shadow-sm hover-lift" id="body-bg-1">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-info bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-sign-in-alt fa-2x text-info"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="text-uppercase fw-semibold text-muted mb-1">Tickets</h6>
+                        <h5 class="card-title mb-0">Incoming</h5>
+                    </div>
                 </div>
-
-              </div>
-            </div><!-- Assigned Cases Card -->
-
-            
-            
-            <div class="col-xl-4 col-md-6" id="tickets_outgoing">			 
-              <div class="card border-left-danger shadow h-100 py-2" id="body-bg-2">
-
-                <div class="card-body">
-        
-                    <h5 class="card-title">Tickets <span>| Outgoing</span></h5>
-
-	                <div class="d-flex align-items-center">
-	                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-	                      <i class="fas fa-sign-out-alt fa-2x text-danger"></i>
-	                    </div>
-	                    <div class="ps-3">
-	                      <h4 id="total_count"><c:out value="${outgoing}"></c:out></h4>
-	
-	                    </div>
-	                  </div>
-					
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Total Tickets</span>
+                    <h3 class="mb-0 fw-bold text-info" id="incoming_count">
+                        <c:out value="${incoming}"></c:out>
+                    </h3>
                 </div>
-              </div>
-			 
-            </div><!-- Archived Cases Card -->
-     	
-     
-     </div>
+                <!-- <div class="progress mt-3" style="height: 4px;">
+                    <div class="progress-bar bg-info" style="width: 75%"></div>
+                </div> -->
+            </div>
+        </div>
     </div>
-  </div>
-			
-		 <div class="row mb-4" id="focal_person_archived_search">
-		 		<div class="col-md-9">
-								 	
-							    
-								    <div class="custom-control custom-radio custom-control-inline">
-									  <input type="radio" id="rbtn_search_type1" name="rbtn_search_type" class="custom-control-input rbtn_search_type" value="client_name" required>
-									  <label class="custom-control-label" for="rbtn_search_type1">Name</label>
-									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-									  <input type="radio" id="rbtn_search_type2" name="rbtn_search_type" class="custom-control-input rbtn_search_type" value="ticket_id" required>
-									  <label class="custom-control-label" for="rbtn_search_type2">Ticket No.</label>
-									</div>
-									<br><br>
-						          <div class="form-group">
-						            <div class="form-row mb-4">
-						              <div class="col-md-5">
-						                
-						                <input class="form-control" id="cc_search_value"  type="text" aria-describedby="" placeholder="Enter search inputs" required >
-						              </div>
-						              <div class="col-md-3">
-						              	
-						                <button type="button" class="btn btn-warning" value="Search" id="btnFPJobSearch" ><i class="fas fa-search"></i> Search </button>
-						                
-						              </div>
-						            </div>
-						            </div>
-						            
-						            </div>
-		 </div>	
-			
-	      <div class="row mb-4">
-	            <div class="col-md-12">
-	              <div class="card">
-	              	<div class="card-header bg-dark text-white">
-						<i class="fa fa-bar-chart"></i><span class="h5">Tickets Details</span> <span
-						class="col-md-3 float-right ">
-						 <button class="btn btn-success btn-icon-split float-right"
-							id="btnViewRequestlist" style="margin-right: -15px">
-							<span class="icon text-white-50"> <i class="fas fa-angle-double-right"></i></span><span
-								class="text">Print Request</span>
-						</button>
-					</span>
-					</div>
-	                <div class="card-body">
-	                	  <h5 class="card-title"><span id="card_title"> </span></h5>
-	                	  
-	                	  <div class="row mt-2">
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-white" style="border: 1px solid black; border-radius: 50%"></i>Tickets with no replies from either DCU or Focal Person.</span>
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-info"></i>Tickets sent to CAC Center.</span>
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-warning"></i>Tickets sent to DCU.</span>
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-success"></i>Message (Replies) sent to client.</span>
-						</div>
-	                  <div class="tab-content mt-4">
-					            <div id="" class="table-responsive">
-					                <table class="table " id="table_list" width="100%" cellspacing="0" style="text-transform: uppercase;">
-	              						<thead>
-										    <tr>
-										        <th>#</th>
-										        <th>Ticket No.</th>
-										        <th>Name</th>
-										        <th>Purpose</th>
-										        <th>Subject</th>
-										        <th class="text-center">Status</th>											        
-										        <th class="text-center">Priority</th>								        
-										        <th>Job Number</th>
-										        <th>Date Created</th>
-												<th>Noted On</th>
-												<th class="text-end">Actions</th>
-										    </tr>
-										  </thead>
-										  <tbody id="table_body">
-										    
-										  </tbody>
-		                   	        </table>
-					            </div>
-					    </div>
-	                </div>
-	              </div>
-	            </div>
-	          </div>
 
-     </section>
+    <!-- Outgoing Tickets Card -->
+    <div class="col-xl-4 col-md-6" id="tickets_outgoing" style="cursor: pointer;">
+        <div class="card h-100 border-0 shadow-sm hover-lift" id="body-bg-2">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-danger bg-opacity-10 rounded-circle p-3">
+                            <i class="fas fa-sign-out-alt fa-2x text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="text-uppercase fw-semibold text-muted mb-1">Tickets</h6>
+                        <h5 class="card-title mb-0">Outgoing</h5>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Total Tickets</span>
+                    <h3 class="mb-0 fw-bold text-danger" id="total_count">
+                        <c:out value="${outgoing}"></c:out>
+                    </h3>
+                </div>
+                <!-- <div class="progress mt-3" style="height: 4px;">
+                    <div class="progress-bar bg-danger" style="width: 45%"></div>
+                </div> -->
+            </div>
+        </div>
+    </div>
 
-	</div>
-<!-- End Page Content -->
+</div>
 
+<!-- Search Section -->
+<div class="row mb-4" style="display: none;" id="focal_person_archived_search">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-12 mb-3">
+                        <div class="d-flex gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                       id="rbtn_search_type1" value="client_name" checked>
+                                <label class="form-check-label" for="rbtn_search_type1">
+                                    <i class="fas fa-user me-1 text-muted"></i>Name
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                       id="rbtn_search_type2" value="ticket_id">
+                                <label class="form-check-label" for="rbtn_search_type2">
+                                    <i class="fas fa-ticket-alt me-1 text-muted"></i>Ticket No.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-end-0">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input class="form-control border-start-0 ps-0" 
+                                   id="cc_search_value" 
+                                   type="text" 
+                                   placeholder="Enter search keywords..."
+                                   aria-label="Search">
+                            <button class="btn btn-primary" type="button" id="btnFPJobSearch">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tickets Details Table -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card border-0 shadow-sm">
+            <!-- Card Header -->
+            <div class="card-header bg-white border-bottom py-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-ticket-alt fa-lg text-primary"></i>
+                        <h5 class="mb-0 fw-semibold">Tickets Details</h5>
+                        <span class="badge bg-light text-dark ms-2" id="card_title"></span>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm" id="btnViewRequestlist">
+                        <i class="fas fa-print me-2"></i>Print Request
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+                <!-- Legend/Status Indicators -->
+                <div class="d-flex flex-wrap gap-4 mb-4 p-3 bg-light rounded-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-white border border-secondary rounded-circle p-2"></span>
+                        <small class="text-muted">No replies from DCU/Focal Person</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-info rounded-circle p-2"> </span>
+                        <small class="text-muted">Sent to CAC Center</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-warning rounded-circle p-2"> </span>
+                        <small class="text-muted">Sent to DCU</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-success rounded-circle p-2"> </span>
+                        <small class="text-muted">Replies sent to client</small>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="table_list" width="100%" cellspacing="0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="fw-semibold text-muted">#</th>
+                                <th class="fw-semibold text-muted">Ticket No.</th>
+                                <th class="fw-semibold text-muted">Name</th>
+                                <th class="fw-semibold text-muted">Purpose</th>
+                                <th class="fw-semibold text-muted">Subject</th>
+                                <th class="fw-semibold text-muted text-center">Status</th>
+                                <th class="fw-semibold text-muted text-center">Priority</th>
+                                <th class="fw-semibold text-muted">Job Number</th>
+                                <th class="fw-semibold text-muted">Date Created</th>
+                                <th class="fw-semibold text-muted">Noted On</th>
+                                <th class="fw-semibold text-muted text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_body">
+                            <!-- Table data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</div>
  <!-- Reply Modal-->
    <div class="modal fade" id="replyModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
@@ -388,50 +427,97 @@
     </div>
 
 
-	<div class="modal fade" id="showRequestlist" tabindex="-1" role="dialog"
-	aria-labelledby="showRequestlist" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="">Generate Request</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-			<div class="row mt-4">
-				<div class="row mb-3">
-					<label for="inputNumber" class="col-sm-4 col-form-label"><h6>To:</h6></label>
-					<div class="col-sm-8">
-					  <input class="form-control" type="text" id="request_to" name="request_to" required>
-					</div>
-				  </div> 
-				  
-				  <!-- <div class="row mb-3" hidden="">
-					<label for="inputNumber" class="col-sm-4 col-form-label">Case ID:</label>
-					<div class="col-sm-8">
-					  <input class="form-control" type="text" id="ticket_id" name="ticket_id" value='<c:out value="${ticket._id}"></c:out>' readonly required>
-					</div>
-				  </div> -->
-					<div class="row mb-3">
-					<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Request:</h6></label>
-					<div class="col-sm-8">
-						<textarea rows="8" cols="" class="form-control" name="duc_request" id="duc_request" required></textarea>
-					</div>
-				  </div>
-               	<div class="card card-body mt-4">
-               		<div class="mt-2" id="request_list"></div>
-               	</div>
-			</div>
-			 	<div class="modal-footer">
-			 	<button type="button" class="btn btn-primary" id="btn_print_bulk_request" >Generate</button>
-			 	
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				
-			</div>
-			
-		</div>
-	</div>
+	<!-- Generate Request Modal -->
+<div class="modal fade modal-blur" id="showRequestlist" tabindex="-1" aria-labelledby="showRequestlistLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-semibold" id="showRequestlistLabel">
+                    <i class="fas fa-file-alt me-2 text-primary"></i>
+                    Generate Request
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="container-fluid px-0">
+                    <!-- To Field -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-4">
+                            <label for="request_to" class="col-form-label fw-semibold">
+                                To: <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="request_to" 
+                                   name="request_to" 
+                                   placeholder="Enter recipient"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter the recipient.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Request Field -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-4">
+                            <label for="duc_request" class="col-form-label fw-semibold">
+                                Request: <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" 
+                                      id="duc_request" 
+                                      name="duc_request" 
+                                      rows="6" 
+                                      placeholder="Type your request here..."
+                                      required></textarea>
+                            <div class="invalid-feedback">
+                                Please enter your request.
+                            </div>
+                            <div class="form-text text-muted">
+                                Maximum 500 characters
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Request List Card -->
+                    <div class="card border-0 bg-light mt-4">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold mb-3">
+                                <i class="fas fa-list me-2 text-muted"></i>
+                                Request List
+                            </h6>
+                            <div id="request_list" class="p-2">
+                                <!-- Request items will be dynamically added here -->
+                                <p class="text-muted text-center mb-0 py-3 small">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    No requests added yet
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-primary" id="btn_print_bulk_request">
+                    <i class="fas fa-print me-2"></i>
+                    Generate
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Status Client Modal-->
 
@@ -441,6 +527,3 @@
 	  document.getElementById("batchTable").deleteRow(i);
 	}
 </script>
-
-
-<script type="text/javascript" src="CICA/includes/pages_script/cica_tickets.js"></script>

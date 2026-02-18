@@ -5940,6 +5940,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String assessed_value_amount = request.getParameter("assessed_value_amount");
 				String assessed_comment = request.getParameter("assessed_comment");
 
+				System.out.print("stamp_duty_amount"+stamp_duty_amount);
+				System.out.print("assessed_value_amount"+assessed_value_amount);
+
 
 				// String land_size = request.getParameter("land_size");
 				// String locality_of_parcel =
@@ -6013,6 +6016,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				// System.out.println(rs_result);
 				 web_service_response =casemgt_cl.lc_load_bill_details_for_stamp_duty_bill(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),json_data.toString());
+
 
 				 JSONObject jsonobj_bbd = new JSONObject(web_service_response);
 					String lessees_name = (String) jsonobj_bbd.getString("lessees_name");

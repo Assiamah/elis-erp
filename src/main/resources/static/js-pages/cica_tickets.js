@@ -1,4 +1,11 @@
 $(function() {
+
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    function convertDate(date_str) {
+        temp_date = date_str.split("-");
+        return temp_date[2] + " " + months[Number(temp_date[1]) - 1] + " " + temp_date[0];
+    }
     // ==================== CONFIGURATION & UTILITIES ====================
     const config = {
         apiUrl: "cica_tickets_serv",
@@ -820,4 +827,600 @@ $(function() {
     
     // Initialize - activate first card on page load
     activateCard($('#tickets_open'));
+
+    $('#tickets_incoming').on('click', function() {
+			// console.log('hjberhjberhbgkherjbjfhre')
+			
+			let dataSet =[];
+			document.getElementById("focal_person_archived_search").style.display="none";
+			
+			$.ajax({
+				url:"cica_focal_person_serv",
+				method:"POST",
+				data:{"request_type":"load_focal_person_tickets",
+						"focal_foward":0},
+				success:function(response){
+					
+					console.log(response);
+				let json_result = JSON.parse(response);
+			
+				
+				 if(json_result.success){
+						if(json_result.data !== null){
+							
+							for(let i=0; i<json_result.data.length; i++){
+			                let html=[];
+			                let id=`<div class="form-check"> <input class="form-check-input fwd tickets" type="checkbox" id="gridCheck" data_id="${json_result.data[i]._id}" data-description="${json_result.data[i].description}" data-purpose="${json_result.data[i].purpose}" data-subject="${json_result.data[i].subject}" data-client_name="${json_result.data[i].client_name}" data-ticket_no="${json_result.data[i].ticket_no}"></div>`
+			                let ticket_id= json_result.data[i].ticket_no;
+			                let name= json_result.data[i].client_name;
+			              	let priority= json_result.data[i].priority;
+			              	let purpose= json_result.data[i].purpose;
+							let job_number= json_result.data[i].reference_id;
+			              	if(purpose == 1) {
+								purpose = 'Service Enquiry'
+							} else if (purpose == 3) {
+								purpose = 'Service Complaint'
+							} else {
+								purpose = "Non-service Complaint"
+							}
+			              	let subject= json_result.data[i].subject;
+			              	let status= json_result.data[i].status;
+			              	if(status == 0) {
+								status = 'Open'
+							}
+							if (status == 1) {
+								status = 'Hold'
+							} 
+							if (status == 2) {
+								status = 'Pending'
+							}
+							if (status == 3) {
+								status = 'Resolved'
+							}
+			              	let region_name= json_result.data[i].region_name;
+			              	let unread_reply= json_result.data[i].unread_reply;
+			              	let dcu_reply= json_result.data[i].dcu_reply;
+			              	let focal_reply= json_result.data[i].focal_reply;
+			              	let message= json_result.data[i].message;
+			               	let date_created=convertDate(json_result.data[i].created_at.slice(0,10));	
+							let note = json_result.data[i].note;
+							let note_date = json_result.data[i].note_date;
+			              	let actions=/*`<div class="dropdown no-arrow text-center">
+								           <a class="icon dropdown-toggle btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						               		<i class="fas fa-ellipsis-v ms-2"></i>
+			              	 			</a>
+					              	  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					              	  	<a class="dropdown-item reply" href="#" id="${json_result.data[i]._id}">Reply</a>
+					              	    <a class="dropdown-item forward" href="#" id="${json_result.data[i]._id}">Forward</a>
+					              	    <a class="dropdown-item status" href="#" id="${json_result.data[i]._id}">Update Status</a>
+					              	  </div>
+					              	</div>`*/
+					              	`
+					              	 <form action="cica_focal_person_post" method="post">
+				              	  		<input type="hidden" name="ticket_id" value="${json_result.data[i]._id}">
+										<input type="hidden"  name="ticket_no" value="${json_result.data[i].ticket_no}">
+										<input type="hidden"  name="request_type" value="load_ticket_details">
+				              	    	<div class="text-end">
+				              	    		<button type="submit" class=" btn btn-primary btn-sm" href="#">Ticket Details</button>
+				              	    	</div>
+						             </form> 
+			              	
+			              	`;
+			            
+			                
+			               html.push(id);
+			               html.push(ticket_id);
+			               html.push(name);
+			               html.push(purpose); 
+			               html.push(subject); 
+			               html.push('<div class="text-center">'+status+'</div>'); 
+			               html.push('<div class="text-center">'+priority+'</div>'); 
+			               html.push(job_number); 
+			               html.push(date_created);
+						   html.push(note_date);
+			               html.push(actions);
+			               html.push(dcu_reply);
+			               html.push(focal_reply);
+			               html.push(message);
+		
+			                dataSet.push(html);
+		            		}
+
+							}
+							
+							$('#table_list').DataTable().clear().destroy();
+
+							$.fn.dataTable.ext.type.detect.unshift(
+								function ( d ) {
+									return (d === 'Low' || d === 'Medium' || d === 'High' || d === 'Urgent') ?
+										'priority' :
+										null;
+								}
+							);
+							
+							$.fn.dataTable.ext.type.order['priority'] = function ( d ) {
+								switch ( d ) {
+									case 'Low'      :   return 1;
+									case 'Medium'   :   return 2;
+									case 'High'     :   return 3;
+									case 'Urgent'   :   return 4;
+								}
+								return 0;
+							};
+								
+							$('#table_list').DataTable({ 
+								data: dataSet,
+								"order"     : [[ 6, "asc" ]],
+								"createdRow": function(row,data,dataIndex){
+									if(data[13] == 1){
+										$(row).addClass('bg-success');
+									}
+									else if(data[11] == true){
+										$(row).addClass('bg-info');
+									}
+									else if(data[12] == true){
+										$(row).addClass('bg-warning');
+									}
+								},
+
+							 }).draw();
+					
+								
+		              	
+						}				
+					}
+				})
+				
+			 document.getElementById("card_title").innerHTML="List of Incoming Tickets";
+			 $("#body-bg-1").addClass('bg-active');
+			 $("#body-bg-2").removeClass('bg-active');
+			 $("#btnViewBatchlist").removeClass('disabled')
+				
+		})
+		
+		
+		$('#tickets_outgoing').on('click', function() {
+			
+			let dataSet =[];
+			document.getElementById("focal_person_archived_search").style.display="block";
+			
+			/*$.ajax({
+				url:"cica_focal_person",
+				method:"POST",
+				data:{"request_type":"load_focal_person_tickets",
+						"focal_foward":1},
+				success:function(response){
+					
+					console.log(response);
+				let json_result = JSON.parse(response);
+			
+				
+				 if(json_result.success){
+						if(json_result.data !== null){
+							
+							for(let i=0; i<json_result.data.length; i++){
+			                let html=[];
+			                let id=`<div class="form-check"> <input class="form-check-input fwd tickets" type="checkbox" id="gridCheck" data_id="${json_result.data[i]._id}" data-purpose="${json_result.data[i].purpose}" data-subject="${json_result.data[i].subject}" data-client_name="${json_result.data[i].client_name}" data-ticket_no="${json_result.data[i].ticket_no}"></div>`
+			                let ticket_id= json_result.data[i].ticket_no;
+			                let name= json_result.data[i].client_name;
+			              	let priority= json_result.data[i].priority;
+			              	let purpose= json_result.data[i].purpose;
+			              	if(purpose == 1) {
+								purpose = 'Service Enquiry'
+							} else if (purpose == 3) {
+								purpose = 'Service Complaint'
+							} else {
+								purpose = "Non-service Complaint"
+							}
+			              	let subject= json_result.data[i].subject;
+			              	let status= json_result.data[i].status;
+			              	if(status == 0) {
+								status = 'Open'
+							}
+							if (status == 1) {
+								status = 'Hold'
+							} 
+							if (status == 2) {
+								status = 'Pending'
+							}
+							if (status == 3) {
+								status = 'Resolved'
+							}
+			              	let region_name= json_result.data[i].region_name;
+			              	let unread_reply= json_result.data[i].unread_reply;
+			              	let dcu_reply= json_result.data[i].dcu_reply;
+			              	let focal_reply= json_result.data[i].focal_reply;
+			               	let date_created=convertDate(json_result.data[i].created_at.slice(0,10));		               	
+			              	let actions=/*`<div class="dropdown no-arrow text-center">
+								           <a class="icon dropdown-toggle btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						               		<i class="fas fa-ellipsis-v ms-2"></i>
+			              	 			</a>
+					              	  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					              	  	<a class="dropdown-item reply" href="#" id="${json_result.data[i]._id}">Reply</a>
+					              	    <a class="dropdown-item forward" href="#" id="${json_result.data[i]._id}">Forward</a>
+					              	    <a class="dropdown-item status" href="#" id="${json_result.data[i]._id}">Update Status</a>
+					              	  </div>
+					              	</div>`
+					              	`
+					              	 <form action="cica_tickets" method="post">
+				              	  		<input type="hidden" name="ticket_id" value="${json_result.data[i]._id}">
+										<input type="hidden"  name="ticket_no" value="${json_result.data[i].ticket_no}">
+										<input type="hidden"  name="request_type" value="load_ticket_details">
+										<input type="hidden"  name="view_by" value="1">
+				              	    	<div class="text-end">
+				              	    		<button type="submit" class=" btn btn-primary btn-sm" href="#">Ticket Details</button>
+				              	    	</div>
+						             </form> 
+			              	
+			              	`;
+			            
+			                
+			               html.push(id);
+			               html.push(ticket_id);
+			               html.push(name);
+			               html.push(purpose); 
+			               html.push(subject); 
+			               html.push('<div class="text-center">'+status+'</div>'); 
+			               html.push('<div class="text-center">'+priority+'</div>'); 
+			               html.push(region_name); 
+			               html.push(date_created);
+			               html.push(actions);
+			               html.push(dcu_reply);
+			               html.push(focal_reply);
+		
+			                dataSet.push(html);
+		            		}
+
+							}*/
+							
+							$('#table_list').DataTable().clear().destroy();
+								
+							/*$('#table_list').DataTable({ data: dataSet,
+							"createdRow": function(row,data,dataIndex){
+								if(data[10] == true && data[11] == true){
+									$(row).addClass('bg-success');
+								}
+								else if(data[10] == true){
+									$(row).addClass('bg-info');
+								}
+								else if(data[11] == true){
+									$(row).addClass('bg-warning');
+								}
+							}
+							 }).draw();
+					
+								
+		              	
+						}				
+					}
+				})*/
+				
+			 document.getElementById("card_title").innerHTML="List of Outgoing Tickets";
+			 $("#body-bg-2").addClass('bg-active');
+			 $("#body-bg-1").removeClass('bg-active');
+			 $("#btnViewBatchlist").addClass('disabled')
+				
+		});
+
+
+        $('#btn_print_bulk_request').on('click',function(){
+		
+		let checkedList = JSON.parse(localStorage.getItem('checkedList')) || [];
+		let division = $('#ft_division').val();
+		let region = $('#ft_region').val();
+
+		//console.log(okay)
+		
+		if(checkedList != null || !division || !region){
+			
+			const json_list ={"list":checkedList};
+			
+			let list = JSON.stringify(json_list);
+			console.log(list);
+			
+			//$('#showBatchlist').modal('hide');
+			
+			$.ajax({
+				url:"cica_tickets_serv",
+				type:"POST",
+				data:{
+					request_type:"forward_tickets",
+					list:list,
+					region:region,
+					division:division
+				},
+				success:function(response){
+					console.log(response);
+				
+					
+							let json_result = JSON.parse(response);
+
+							 if(json_result.success){
+								 //toastr["success"]("Ticket updated successfully", "Success");
+                                 swal.fire({
+                                     icon: 'success',
+                                     title: 'Success',
+                                     text: 'Ticket updated successfully',
+                                 });
+				                } 
+				              else {
+				                        //toastr["error"]("Error updating Ticket", "Error");
+                                        swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: 'Error updating Ticket',
+                                        });
+
+				                 }
+		
+		                    $("#showBatchlist").find('form').trigger('reset');
+		                    $("#showBatchlist").modal('hide');
+		                    
+		                   $("#btn_print_bulk_request").prop('btn_print_bulk_request', false);
+		                  
+		                  setInterval(function(){
+			                       location.reload();
+			                 },1000); 
+					
+				}
+			})  
+		}
+		else{
+			
+			// toastr["error"]("No file selected", "Error");
+            swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No file selected',
+            });
+		}
+		
+	})
+
+    $('#tickets_replies').on('click', function() {
+			
+			let dataSet =[];
+			document.getElementById("replies_archived_search").style.display="none";
+			
+			$.ajax({
+				url:"cica_replies_serv",
+				method:"POST",
+				data:{"request_type":"load_replies",
+						"focal_foward":0},
+				success:function(response){
+					
+					console.log(response);
+				let json_result = JSON.parse(response);
+			
+				
+				 if(json_result.success){
+						if(json_result.data !== null){
+							
+							for(let i=0; i<json_result.data.length; i++){
+			                let html=[];
+			                let id=`<div class="form-check"> <input class="form-check-input fwd tickets" ${json_result.data[i].message == 1 ? '' : 'disabled'} type="checkbox" id="gridCheck" data_id="${json_result.data[i]._id}" data-purpose="${json_result.data[i].purpose}" data-subject="${json_result.data[i].subject}" data-client_name="${json_result.data[i].client_name}" data-ticket_no="${json_result.data[i].ticket_no}"></div>`
+			                let ticket_id= json_result.data[i].ticket_no;
+			                let name= json_result.data[i].client_name;
+			              	let priority= json_result.data[i].priority;
+			              	let purpose= json_result.data[i].purpose;
+			              	if(purpose == 1) {
+								purpose = 'Service Enquiry'
+							} else if (purpose == 3) {
+								purpose = 'Service Complaint'
+							} else {
+								purpose = "Non-service Complaint"
+							}
+			              	let subject= json_result.data[i].subject;
+			              	let status= json_result.data[i].status;
+			              	if(status == 0) {
+								status = 'Open'
+							}
+							if (status == 1) {
+								status = 'Hold'
+							} 
+							if (status == 2) {
+								status = 'Pending'
+							}
+							if (status == 3) {
+								status = 'Resolved'
+							}
+			              	let region_name= json_result.data[i].region_name;
+			              	let unread_reply= json_result.data[i].unread_reply;
+			              	let dcu_reply= json_result.data[i].dcu_reply;
+			              	let focal_reply= json_result.data[i].focal_reply;
+			              	let message= json_result.data[i].message;
+			               	let date_created=convertDate(json_result.data[i].created_at.slice(0,10));		               	
+			              	let actions=/*`<div class="dropdown no-arrow text-center">
+								           <a class="icon dropdown-toggle btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						               		<i class="fas fa-ellipsis-v ms-2"></i>
+			              	 			</a>
+					              	  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					              	  	<a class="dropdown-item reply" href="#" id="${json_result.data[i]._id}">Reply</a>
+					              	    <a class="dropdown-item forward" href="#" id="${json_result.data[i]._id}">Forward</a>
+					              	    <a class="dropdown-item status" href="#" id="${json_result.data[i]._id}">Update Status</a>
+					              	  </div>
+					              	</div>`*/
+					              	`
+					              	 <form action="cica_replies_post" method="post">
+				              	  		<input type="hidden" name="ticket_id" value="${json_result.data[i]._id}">
+										<input type="hidden"  name="ticket_no" value="${json_result.data[i].ticket_no}">
+										<input type="hidden"  name="request_type" value="load_ticket_details">
+				              	    	<div class="text-end">
+				              	    		<button type="submit" class=" btn btn-primary btn-sm" href="#">View Details</button>
+				              	    	</div>
+						             </form> 
+			              	
+			              	`;
+			            
+			                
+			               html.push(id);
+			               html.push(ticket_id);
+			               html.push(name);
+			               html.push(purpose); 
+			               html.push(subject); 
+			               html.push('<div class="text-center">'+status+'</div>'); 
+			               html.push('<div class="text-center">'+priority+'</div>'); 
+			               html.push(region_name); 
+			               html.push(date_created);
+			               html.push(actions);
+			               html.push(dcu_reply);
+			               html.push(focal_reply);
+			               html.push(message);
+		
+			                dataSet.push(html);
+		            		}
+
+							}
+							
+							$('#table_list').DataTable().clear().destroy();
+								
+							$('#table_list').DataTable({ data: dataSet,
+							"createdRow": function(row,data,dataIndex){
+								if(data[12] == 1){
+									$(row).addClass('bg-success');
+								}
+								/*else if(data[10] == true){
+									$(row).addClass('bg-info');
+								}
+								else if(data[11] == true){
+									$(row).addClass('bg-warning');
+								}*/
+							}
+							 }).draw();
+					
+								
+		              	
+						}				
+					}
+				})
+				
+			 document.getElementById("card_title").innerHTML="List of Replied Tickets";
+			 $("#body-bg-1").addClass('bg-active');
+			 $("#body-bg-2").removeClass('bg-active');
+			 $("#btnViewBatchlist").removeClass('disabled')
+				
+		})
+		
+		$('#tickets_archived').on('click', function() {
+			
+			let dataSet =[];
+			document.getElementById("replies_archived_search").style.display="block";
+			
+			/*$.ajax({
+				url:"cica_focal_person",
+				method:"POST",
+				data:{"request_type":"load_focal_person_tickets",
+						"focal_foward":1},
+				success:function(response){
+					
+					console.log(response);
+				let json_result = JSON.parse(response);
+			
+				
+				 if(json_result.success){
+						if(json_result.data !== null){
+							
+							for(let i=0; i<json_result.data.length; i++){
+			                let html=[];
+			                let id=`<div class="form-check"> <input class="form-check-input fwd tickets" type="checkbox" id="gridCheck" data_id="${json_result.data[i]._id}" data-purpose="${json_result.data[i].purpose}" data-subject="${json_result.data[i].subject}" data-client_name="${json_result.data[i].client_name}" data-ticket_no="${json_result.data[i].ticket_no}"></div>`
+			                let ticket_id= json_result.data[i].ticket_no;
+			                let name= json_result.data[i].client_name;
+			              	let priority= json_result.data[i].priority;
+			              	let purpose= json_result.data[i].purpose;
+			              	if(purpose == 1) {
+								purpose = 'Service Enquiry'
+							} else if (purpose == 3) {
+								purpose = 'Service Complaint'
+							} else {
+								purpose = "Non-service Complaint"
+							}
+			              	let subject= json_result.data[i].subject;
+			              	let status= json_result.data[i].status;
+			              	if(status == 0) {
+								status = 'Open'
+							}
+							if (status == 1) {
+								status = 'Hold'
+							} 
+							if (status == 2) {
+								status = 'Pending'
+							}
+							if (status == 3) {
+								status = 'Resolved'
+							}
+			              	let region_name= json_result.data[i].region_name;
+			              	let unread_reply= json_result.data[i].unread_reply;
+			              	let dcu_reply= json_result.data[i].dcu_reply;
+			              	let focal_reply= json_result.data[i].focal_reply;
+			               	let date_created=convertDate(json_result.data[i].created_at.slice(0,10));		               	
+			              	let actions=/*`<div class="dropdown no-arrow text-center">
+								           <a class="icon dropdown-toggle btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						               		<i class="fas fa-ellipsis-v ms-2"></i>
+			              	 			</a>
+					              	  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					              	  	<a class="dropdown-item reply" href="#" id="${json_result.data[i]._id}">Reply</a>
+					              	    <a class="dropdown-item forward" href="#" id="${json_result.data[i]._id}">Forward</a>
+					              	    <a class="dropdown-item status" href="#" id="${json_result.data[i]._id}">Update Status</a>
+					              	  </div>
+					              	</div>`
+					              	`
+					              	 <form action="cica_tickets" method="post">
+				              	  		<input type="hidden" name="ticket_id" value="${json_result.data[i]._id}">
+										<input type="hidden"  name="ticket_no" value="${json_result.data[i].ticket_no}">
+										<input type="hidden"  name="request_type" value="load_ticket_details">
+										<input type="hidden"  name="view_by" value="1">
+				              	    	<div class="text-end">
+				              	    		<button type="submit" class=" btn btn-primary btn-sm" href="#">Ticket Details</button>
+				              	    	</div>
+						             </form> 
+			              	
+			              	`;
+			            
+			                
+			               html.push(id);
+			               html.push(ticket_id);
+			               html.push(name);
+			               html.push(purpose); 
+			               html.push(subject); 
+			               html.push('<div class="text-center">'+status+'</div>'); 
+			               html.push('<div class="text-center">'+priority+'</div>'); 
+			               html.push(region_name); 
+			               html.push(date_created);
+			               html.push(actions);
+			               html.push(dcu_reply);
+			               html.push(focal_reply);
+		
+			                dataSet.push(html);
+		            		}
+
+							}*/
+							
+							$('#table_list').DataTable().clear().destroy();
+								
+							/*$('#table_list').DataTable({ data: dataSet,
+							"createdRow": function(row,data,dataIndex){
+								if(data[10] == true && data[11] == true){
+									$(row).addClass('bg-success');
+								}
+								else if(data[10] == true){
+									$(row).addClass('bg-info');
+								}
+								else if(data[11] == true){
+									$(row).addClass('bg-warning');
+								}
+							}
+							 }).draw();
+					
+								
+		              	
+						}				
+					}
+				})*/
+				
+			 document.getElementById("card_title").innerHTML="List of Archived Tickets";
+			 $("#body-bg-2").addClass('bg-active');
+			 $("#body-bg-1").removeClass('bg-active');
+			 $("#btnViewBatchlist").addClass('disabled')
+				
+		})
 });

@@ -4553,7 +4553,7 @@ Thank you.</textarea>
                     </button>
 
                     <!-- Quick Actions (shown when deed number exists) -->
-                    <div class="quick-actions d-flex gap-2 ${empty deed_number or deed_number == 'null' ? 'd-none' : ''}" 
+                    <!-- <div class="quick-actions d-flex gap-2 ${empty deed_number or deed_number == 'null' ? 'd-none' : ''}" 
                          id="quickActions">
                         <button type="button" class="btn btn-outline-primary flex-fill" onclick="useDeedNumber()">
                             <i class="bi bi-check-circle me-2"></i>Use Number
@@ -4561,7 +4561,7 @@ Thank you.</textarea>
                         <button type="button" class="btn btn-outline-secondary flex-fill" onclick="regenerateDeedNumber()">
                             <i class="bi bi-arrow-repeat me-2"></i>Regenerate
                         </button>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Information Footer -->
@@ -4704,27 +4704,6 @@ Thank you.</textarea>
                                         <span>Generate Certificate</span>
                                     </div>
                                 </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Preview Section (Optional) -->
-                    <div class="preview-section mt-4" id="certificatePreview" style="display: none;">
-                        <div class="card border-0 bg-light">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="mb-0">
-                                        <i class="bi bi-eye me-2 text-primary"></i>
-                                        Certificate Preview
-                                    </h6>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="togglePreview()">
-                                        <i class="bi bi-arrows-angle-expand"></i>
-                                    </button>
-                                </div>
-                                <div class="preview-content p-3 bg-white rounded-3 border" 
-                                     id="previewContent">
-                                    <!-- Preview content will be dynamically updated -->
-                                </div>
                             </div>
                         </div>
                     </div>
