@@ -161,9 +161,9 @@ public class Case_Management_Serv {
 				obj.put("locality", locality);
 				obj.put("transaction_number", transaction_number);
 
-obj.put("fullname", fullname);
-obj.put("userid", userid); 
-obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
+                obj.put("fullname", fullname);
+                obj.put("userid", userid); 
+                obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				web_service_response = casemgt_cl_m.update_application_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
@@ -6013,6 +6013,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				// System.out.println(rs_result);
 				 web_service_response =casemgt_cl.lc_load_bill_details_for_stamp_duty_bill(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),json_data.toString());
+                 
+				  System.out.println(json_data.toString());
+				 
+				 System.out.println(web_service_response);
 
 				 JSONObject jsonobj_bbd = new JSONObject(web_service_response);
 					String lessees_name = (String) jsonobj_bbd.getString("lessees_name");
