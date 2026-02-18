@@ -7903,7 +7903,7 @@ System.out.println(publicity_date);
 
 			// Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
 			// Font.BOLD);
-			// document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
 			Paragraph p_1 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_1);
@@ -8030,15 +8030,10 @@ System.out.println(publicity_date);
 			HTMLWorker htmlWorker = new HTMLWorker(document);
 			htmlWorker.parse(new StringReader(remark_or_comment1));
 
-			// reportTitle_note6.setAlignment(Element.ALIGN_LEFT);
-			// document.add(reportTitle_note6);
-			/*
-			 * Paragraph reportTitle_Line5 = new Paragraph(
-			 * "*******************************************************************************************************",
-			 * new Font(FontFamily.TIMES_ROMAN, 9));
-			 * reportTitle_Line5.setAlignment(Element.ALIGN_CENTER);
-			 * document.add(reportTitle_Line5);
-			 */
+
+
+
+
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
 
@@ -8065,21 +8060,25 @@ System.out.println(publicity_date);
 				reportsignpad.setAlignment(Element.ALIGN_RIGHT);
 				document.add(reportsignpad);
 
-				Paragraph reportoddicer = new Paragraph(fullname, new Font(FontFamily.TIMES_ROMAN, 12));
+			
+			
+				
+
+			}	
+			
+			Paragraph reportoddicer = new Paragraph(fullname, new Font(FontFamily.TIMES_ROMAN, 12));
 				reportoddicer.setAlignment(Element.ALIGN_RIGHT);
 				document.add(reportoddicer);
+
 
 				Paragraph reportTitle4 = new Paragraph("FOR: REGIONAL LANDS OFFICER",
 						new Font(FontFamily.TIMES_ROMAN, 12));
 				reportTitle4.setAlignment(Element.ALIGN_RIGHT);
 				document.add(reportTitle4);
-				Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 12));
+Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 12));
 				reportTitle5.setAlignment(Element.ALIGN_RIGHT);
 				document.add(reportTitle5);
 				document.add(new Phrase(Chunk.NEWLINE));
-
-			}
-
 			Paragraph reportTitle_JOB1 = new Paragraph("Job Number: " + job_number,
 					new Font(FontFamily.TIMES_ROMAN, 12));
 			reportTitle_JOB1.setAlignment(Element.ALIGN_RIGHT);
@@ -8479,9 +8478,6 @@ System.out.println(publicity_date);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
-			// HTMLWorker htmlWorker = new HTMLWorker(document);
-			// htmlWorker.parse(new StringReader(remark_or_comment1));
-
 			try {
 				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 					if (remark_or_comment1.contains("<ol>") || remark_or_comment1.contains("<li>")) {
@@ -8568,7 +8564,9 @@ System.out.println(publicity_date);
 					imagesign.setAlignment(Element.ALIGN_RIGHT);
 					document.add(imagesign);
 
-					Paragraph reportsignpad = new Paragraph(
+					
+				}
+				Paragraph reportsignpad = new Paragraph(
 							"...........................................................",
 							new Font(FontFamily.TIMES_ROMAN, 12));
 					reportsignpad.setAlignment(Element.ALIGN_RIGHT);
@@ -8590,7 +8588,6 @@ System.out.println(publicity_date);
 					reportTitle5.setAlignment(Element.ALIGN_RIGHT);
 					document.add(reportTitle5);
 					document.add(new Phrase(Chunk.NEWLINE));
-				}
 			}
 
 			// if (signature.equals("Yes")) {
@@ -8889,7 +8886,6 @@ System.out.println(publicity_date);
 			document.add(list);
 		}
 	}
-
 	public byte[] create_search_report_pvlmd_old(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number, String job_number,
 			String fullname,
@@ -15701,7 +15697,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 	 // Use XMLWorkerHelper to parse HTML and apply CSS
 	 //XMLWorkerHelper.getInstance().parseXHtml(writer, document, new StringReader(htmlContent), new StringReader(css));
 
-   Font timesNewRoman = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD);
+   Font timesNewRoman = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
 
 // Replace a value in the string
 notes= notes.replace("<ol><li>", "<html><body><p>");

@@ -10927,6 +10927,171 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 		return web_service_response;
 	}
+
+
+
+	@RequestMapping("/acknowledgement_regional_number_bulk")
+	@PostMapping
+	public String acknowledgement_regional_number_bulk(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		// doGet(request, response);
+		String web_service_response = null;
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			// System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");
+			 return "layouts/guest";
+
+		}
+
+		// HttpSession session = request.getSession();
+
+		try {
+			String request_type = request.getParameter("request_type");
+
+			billgeneration_cl.web_compname = (String) session.getAttribute("web_compname");
+			billgeneration_cl.web_comp_address = (String) session.getAttribute("web_comp_address");
+			billgeneration_cl.web_city = (String) session.getAttribute("web_city");
+			billgeneration_cl.web_fax_number = (String) session.getAttribute("web_fax_number");
+			billgeneration_cl.web_telephone = (String) session.getAttribute("web_telephone");
+			billgeneration_cl.web_email = (String) session.getAttribute("web_email");
+			billgeneration_cl.web_branch_of_csau = (String) session.getAttribute("web_branch_of_csau");
+			billgeneration_cl.web_rlo = (String) session.getAttribute("web_rlo");
+			billgeneration_cl.web_regional_accountant = (String) session.getAttribute("web_regional_accountant");
+			billgeneration_cl.web_head_of_csau = (String) session.getAttribute("web_head_of_csau");
+			billgeneration_cl.web_chairman_regional_land_commission = (String) session.getAttribute("web_chairman_regional_land_commission");
+			billgeneration_cl.web_office_region = (String) session.getAttribute("web_office_region");
+
+			// System.out.println(request_type);
+
+
+			if (request_type.equals("online_select_process_acknowledgement_regional_number_bulk")) {
+				String userid = (String) session.getAttribute("userid");
+				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
+
+				String regional_number_list = request.getParameter("regional_number_list");
+				String ref_number = request.getParameter("ref_number");
+
+				String licensed_surveyor_name = request.getParameter("licensed_surveyor_name");
+				String business_process_id = request.getParameter("business_process_id");
+				String business_process_name = request.getParameter("business_process_name");
+				String business_process_sub_id = request.getParameter("business_process_sub_id");
+				String business_process_sub_name = request.getParameter("business_process_sub_name");
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("regional_number_list", regional_number_list);
+				obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
+
+				obj.put("ref_number", ref_number);
+				obj.put("userid", userid);
+
+				obj.put("licensed_surveyor_name", licensed_surveyor_name);
+				obj.put("business_process_id", business_process_id);
+				obj.put("business_process_name", business_process_name);
+				obj.put("business_process_sub_id", business_process_sub_id);
+				obj.put("business_process_sub_name", business_process_sub_name);
+
+				System.out.println(obj.toString());
+
+				web_service_response = casemgt_cl
+						.online_select_process_acknowledgement_regional_number_bulk(
+								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+				
+								System.out.println(web_service_response);
+
+				if (web_service_response != null) {
+					String pdfFileName = "acnkwledgeslip_rn.pdf";
+
+					String ws_case_number = ref_number;
+					JSONObject jsonobject = new JSONObject(web_service_response);
+					// String ws_case_number =
+					// jsonobject.getString("case_number");
+
+					// String ws_bill_details_db=
+					// case_mgt_cl.online_lc_job_number_payment_bill_by_bill_number(ws_bill_number);
+					// String ws_bill_details_db=
+					// case_mgt_cl.check_payment_status_of_bill_generate_bill(ws_bill_number);
+
+					//String pdf_dest = cls_url_config.getCase_upload_location();
+					//String files_pdf_jackets_p = pdf_dest + ws_case_number + "/" + ref_number + "_" + "rn_b"+ pdfFileName;
+
+					// File files_pdf_jackets = new File(pdf_dest + ws_case_number);
+
+					// if (!files_pdf_jackets.exists()) {
+					// 	if (files_pdf_jackets.mkdirs()) {
+					// 		System.out.println("Multiple directories are created!");
+					// 	} else {
+					// 		System.out.println("Failed to create multiple directories!");
+					// 	}
+					// }
+					
+					byte[] buffer = null;
+
+					// Generate the PDF as a byte array
+					buffer = billgeneration_cl.create_service_acknoeledgement_bulk_regional_number(
+							cls_url_config.getSoftfile_location(), 
+							obj.toString(), 
+							web_service_response, 
+							session.getAttribute("fullname").toString());
+
+
+
+				// 	JSONObject pdf_upload_obj = new JSONObject();
+				// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+			
+				// pdf_upload_obj.put("jobNumber", job_number);
+				// pdf_upload_obj.put("caseNumber",case_number);
+				// pdf_upload_obj.put("fileData",base64Encoded);
+						
+ 				// String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+ 				// cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+//System.out.println(buffer);
+					if (buffer != null) {
+						// Set response content type to PDF
+						response.setContentType("application/pdf");
+						
+						// Set the content-disposition header to download the file with the specified name
+						response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+						
+						// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+						response.setContentLength(buffer.length);
+						
+						// Write the PDF byte array to the output stream to download it
+						response.getOutputStream().write(buffer, 0, buffer.length);
+						
+						// Flush the output stream
+						response.getOutputStream().flush();
+						
+						// Close the output stream
+						response.getOutputStream().close();
+					} else {
+						// Handle the case where the PDF generation failed
+						response.setContentType("text/html");
+						response.getWriter().write("Error generating PDF.");
+					}
+
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			
+
+		} catch (
+
+		Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return web_service_response;
+
+	}
 	        public static String formatFileSize(long bytes) {
     if (bytes <= 0) return "0 B";
     
