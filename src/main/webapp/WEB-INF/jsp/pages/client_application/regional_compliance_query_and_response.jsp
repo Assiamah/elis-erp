@@ -10,130 +10,153 @@
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
-<jsp:include page="../includes/_header.jsp"></jsp:include>
 <jsp:useBean id="now" class="java.util.Date" />
 
 
+<style>
+	.dropdown-menu .dropdown-item {
+    text-transform: none !important;
+}
+</style>
+
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
-	<!-- Page Heading -->
-	<h1 class="h3 mb-4 text-gray-800">Compliance Query & Response for ${division}
-	
-	<!-- <select id="sel_change_region_compliance" class="">
-		<option value=${regional_code}>${regional_name}</option>
-									
-		<c:forEach items="${officeregionlist}" var="officeregion">
-			<option  value="${officeregion.ord_region_code}">${officeregion.ord_region_name}</option>
-  		</c:forEach>
+      <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div class="d-flex align-center gap-2">
+					<div>
+						<h1 class="page-title fw-medium fs-18 mb-1"><i class="ri-chat-quote-line me-2 text-primary"></i>Regional Head: Compliance Query and Response</h1>
+                    	<p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Track, manage, and respond to compliance queries</p>
+					</div>
+					
 
-	</select> -->
-	
-	
-	
-	
-	</h1>
+					<!-- Region Selector -->
+					
+
+				
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item" aria-current="page">Compliance</li>
+					<li class="breadcrumb-item active" aria-current="page">Query and Response</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
     <input id='userid' type='hidden' value='${sessionScope.userid}'/>
 
 	<div class="row">
-		<!-- Application Received (Today) -->
-		<div class="col-xl-4 col-md-6 mb-4" id="compliance_query_apps_card">
-			<div class="card border-left-danger shadow h-100 py-2" id="body-bg-1">
-				<div class="card-body">
-					<div class="row no-gutters align-items-center">
-						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-danger text-uppercase mb-1"> Compliance Query Applications</div>
-							<!-- <div class="text-xs  text-dark text-uppercase">today (
-								<fmt:formatDate value="${now}" type="date" />)</div> -->
-							<div class="h5 mb-0 font-weight-bold">${compliance_queries_count}
-							</div>
-						</div>
-						<div class="col-auto">
-							<i class="fas fa-file fa-2x text-gray-300"></i>
-						</div>
-						<a href="#" data-method="" data-period="day" 
-						data-url="" data-icon="fa-file" 
-						data-title="Applications Received" data-date="Today (<fmt:formatDate value="${now}" type="date" />)" 
-						class="showDivisionModal text-decoration-none stretched-link">
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Application Received (Monthly) -->
-		<div class="col-xl-4 col-md-6 mb-4" id="warning_apps_card">
-			<div class="card border-left-warning shadow h-100 py-2" id="body-bg-2">
-
-				<div class="card-body">
-					<div class="row no-gutters align-items-center">
-						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Warning Applications</div>
-							<!-- <div class="text-xs  text-dark text-uppercase">this month (
-								<fmt:formatDate value="${now}" pattern="MMMM" />)</div> -->
-							<div id="lrd_total" class="h5 mb-0 font-weight-bold">${warnings_count}</div>
-						</div>
-						<div class="col-auto">
-							<i class="fas fa-file fa-2x text-gray-300"></i>
-						</div>
-						<a href="#" data-method="" data-period="month" data-url="" data-icon="fa-file" data-title="Applications Received" data-date="This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)" class="showDivisionModal text-decoration-none stretched-link">
-						</a>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
-		<!-- Application Completed (Today) -->
-		<div class="col-xl-4 col-md-6 mb-4" id="reminder_apps_card">
-			<div class="card border-left-info shadow h-100 py-2" id="body-bg-3">
-				<div class="card-body">
-					<div class="row no-gutters align-items-center">
-						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-info text-uppercase mb-1">Reminder Applications
-							</div>
-							<!-- <div class="text-xs  text-dark text-uppercase">today (
-								<fmt:formatDate value="${now}" type="date" />)</div> -->
-
-							<div class="row no-gutters align-items-center">
-								<div class="col-auto">
-									<div id="smd_total" class="h5 mb-0 mr-3 font-weight-bold">${reminders_count}</div>
+		<div class="col-xl-2">
+			<div class="row">
+				<div class="col-xl-12 col-md-6">
+					<a href="#" class="showDivisionModal" id="compliance_query_apps_card" data-method="summary_created" data-period="month" data-url="DashboardDivisionSummary" data-icon="fa-file" data-title="Applications Received" data-date='This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)'>
+						<div class="card stat-card custom-card dashboard-main-card danger"> 
+							<div class="card-body">
+								<div class="d-flex align-items-start gap-3">
+									<div>
+										<span class="avatar avatar-md bg-danger svg-white">
+											<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M0 0h24v24H0z" fill="none"></path><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-5h2v5zm4 0h-2v-3h2v3zm0-5h-2v-2h2v2zm4 5h-2V7h2v10z"></path></svg>
+										</span>
+									</div>
+									<div>
+										<span class="d-block text-muted">Compliance Query Applications</span>
+										<h5 class="fw-semibold mb-1" id="app-received-month">${compliance_queries_count}</h5>
+										<!-- <div class="text-muted fs-12">
+											<span class="text-success">month</span>
+											( <fmt:formatDate value="${now}" pattern="MMMM" /> )
+										</div> -->
+									</div>
 								</div>
-
 							</div>
 						</div>
-						<div class="col-auto">
-							<i class="fas fa-file fa-2x text-gray-300"></i>
+					</a>
+				</div>
+				<div class="col-xl-12 col-md-6">
+					<a href="#" class="showDivisionModal" id="warning_apps_card" data-method="summary_completed" data-period="day" data-url="DashboardDivisionSummary" data-icon="fa-clock" data-title="Applications Completed" data-date='Today (<fmt:formatDate value="${now}" type="date" />)'>
+						<div class="card stat-card custom-card dashboard-main-card warning"> 
+							<div class="card-body">
+								<div class="d-flex align-items-start gap-3">
+									<div>
+										<span class="avatar avatar-md bg-warning svg-white">
+											<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M0 0h24v24H0z" fill="none"></path><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-5h2v5zm4 0h-2v-3h2v3zm0-5h-2v-2h2v2zm4 5h-2V7h2v10z"></path></svg>
+										</span>
+									</div>
+									<div>
+										<span class="d-block text-muted">Warning Applications</span>
+										<h5 class="fw-semibold mb-1" id="app-completed-today">${warnings_count}</h5>
+										<!-- <div class="text-muted fs-12">
+											<span class="text-success">today</span>
+											( <fmt:formatDate value="${now}" type="date" /> )
+										</div> -->
+									</div>
+								</div>
+							</div>
 						</div>
-						<a href="#" data-method="" data-period="day" data-url="" data-icon="fa-clock" data-title="Applications Completed" data-date="Today (<fmt:formatDate value="${now}" type="date" />)" class="showDivisionModal text-decoration-none stretched-link">
-						</a>
-					</div>
+					</a>
+				</div>
+				<div class="col-xl-12 col-md-6">
+					<a href="#" class="showDivisionModal" id="reminder_apps_card" data-method="summary_completed" data-period="month" data-url="DashboardDivisionSummary" data-icon="fa-clock" data-title="Applications Completed" data-date='This Month (<fmt:formatDate value="${now}" pattern="MMMM" />)'>
+						<div class="card stat-card custom-card dashboard-main-card info"> 
+							<div class="card-body">
+								<div class="d-flex align-items-start gap-3">
+									<div>
+										<span class="avatar avatar-md bg-info svg-white">
+											<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M0 0h24v24H0z" fill="none"></path><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-5h2v5zm4 0h-2v-3h2v3zm0-5h-2v-2h2v2zm4 5h-2V7h2v10z"></path></svg>
+										</span>
+									</div>
+									<div>
+										<span class="d-block text-muted">Reminder Applications</span>
+										<h5 class="fw-semibold mb-1" id="app-completed-month">${reminders_count}</h5>
+										<!-- <div class="text-muted fs-12">
+											<span class="text-success">this month</span>
+											( <fmt:formatDate value="${now}" pattern="MMMM" /> )
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>
-	</div>
-
-    <div class="row mb-4">
-        <div class="col-md-12">
-          <div class="card">
-              <div class="card-header bg-dark text-white">
+		<div class="col-xl-10">
+			<div class="card custom-card shadow-sm">
+              <!-- <div class="card-header bg-dark text-white">
                 <i class="fa fa-bar-chart"></i><span class="h5">Queried Details</span> <span
                 class="col-md-3 float-right ">
-                 <!-- <button class="btn btn-success btn-icon-split float-right "
-                    id="btnViewBatchlist" style="margin-right: -15px">
-                    <span class="icon text-white-50"> <i class="fas fa-angle-double-right"></i></span><span
-                        class="text">Forward</span>
-                </button> -->
             </span>
-            </div>
-            <div class="card-body">
-                  <h5 class="card-title"><span id="card_title"> </span></h5>
-				  <div class="row mt-2">
-					<span class="mb-2 mr-2 small"><i class="fas fa-dot-circle text-info"></i>Reminder Applications</span>
-					<span class="mb-2 mr-2 small"><i class="fas fa-dot-circle text-warning"></i>Warning Applications</span>
-					<span class="mb-2 mr-2 small"><i class="fas fa-dot-circle text-danger"></i>Queried Applications</span>
-					<span class="mb-2 mr-2 small"><i class="fas fa-dot-circle text-success"></i>Response</span>
+            </div> -->
+			<div class="card-header d-flex justify-content-between align-items-center">
+				<div>
+					<h5 class="card-title mb-0">Queried Applications [ <span id="card_title"></span> ]</h5>
+					<p class="text-muted small mb-0 filter-status"></p>
 				</div>
+				
+			</div>
+            <div class="card-body">
+                  <div class="card-body p-0 mb-3">
+							<div class="d-flex flex-wrap justify-content-start gap-3">
+								<div class="d-flex align-items-center">
+									<span class="badge bg-info-subtle text-info me-2"><i class="fas fa-circle fa-xs"></i></span>
+									<small class="text-muted">Reminder Applications</small>
+								</div>
+								<div class="d-flex align-items-center">
+									<span class="badge bg-warning-subtle text-warning me-2"><i class="fas fa-circle fa-xs"></i></span>
+									<small class="text-muted">Warning Applications</small>
+								</div>
+								<div class="d-flex align-items-center">
+									<span class="badge bg-danger-subtle text-danger me-2"><i class="fas fa-circle fa-xs"></i></span>
+									<small class="text-muted">Queried Applications</small>
+								</div>
+								<div class="d-flex align-items-center">
+									<span class="badge bg-success-subtle text-success me-2"><i class="fas fa-circle fa-xs"></i></span>
+									<small class="text-muted">Response Applications</small>
+								</div>
+							</div>
+						</div>
               <div class="tab-content mt-4">
                         <div id="" class="table-responsive">
                             <table class="table " id="table_list"  width="100%" cellspacing="0" style="text-transform: uppercase;">
@@ -158,12 +181,12 @@
                 </div>
             </div>
           </div>
-        </div>
-      </div>
+		</div>
+	</div>
 
-	
+    
+
+	</div>
 </div>
 <!-- /.container-fluid -->
 <!-- End of Main Content -->
-
-<jsp:include page="../includes/_footer.jsp"></jsp:include>

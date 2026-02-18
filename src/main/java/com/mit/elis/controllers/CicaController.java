@@ -232,6 +232,8 @@ public class CicaController {
             request.setAttribute("incoming",incoming);
             request.setAttribute("outgoing", outgoing);
 
+			request.setAttribute("page_name","cica_focal_person");
+
 					model.addAttribute("content", "../pages/CICA/cica_focal_person.jsp"); return "layouts/app";
 
 		} catch (Exception e) {
@@ -348,6 +350,8 @@ public class CicaController {
 		 	
             request.setAttribute("replies",replies);
             request.setAttribute("archived", archived);
+
+			request.setAttribute("page_name","cica_replies");
 
 					model.addAttribute("content", "../pages/CICA/cica_replies.jsp"); return "layouts/app";
 

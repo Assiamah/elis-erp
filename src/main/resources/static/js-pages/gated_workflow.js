@@ -18825,9 +18825,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!assessed_comment) {
             validationErrors.push('Assessment Comments are required');
         }
-        if (!considertion_fee_adopted_rate || parseFloat(considertion_fee_adopted_rate) <= 0) {
-            validationErrors.push('Valid Currency Conversion Rate is required');
-        }
+        // if (!considertion_fee_adopted_rate || parseFloat(considertion_fee_adopted_rate) <= 0) {
+        //     validationErrors.push('Valid Currency Conversion Rate is required');
+        // }
         
         if (validationErrors.length > 0) {
             Swal.fire({
@@ -19150,13 +19150,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Optional: Auto-calculate stamp duty based on assessed value
-    $('#assessed_value').on('input', function() {
-        const assessedValue = parseFloat($(this).val()) || 0;
-        const dutyRate = 0.005; // 0.5% - adjust based on your business rules
+    // $('#assessed_value').on('input', function() {
+    //     const assessedValue = parseFloat($(this).val()) || 0;
+    //     const dutyRate = 0.005; // 0.5% - adjust based on your business rules
         
-        const stampDuty = assessedValue * dutyRate;
-        $('#stamp_duty').val(stampDuty.toFixed(2));
-    });
+    //     const stampDuty = assessedValue * dutyRate;
+    //     $('#stamp_duty').val(stampDuty.toFixed(2));
+    // });
 
     // Optional: Add confirmation before closing modal with unsaved changes
     let formChanged = false;
@@ -19366,8 +19366,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         business_process_name: business_process_name,
                         business_process_sub_id: business_process_sub_id,
                         business_process_sub_name: business_process_sub_name,
-                        stamp_duty_amount: stamp_duty_amount,
-                        assessed_value_amount: assessed_value_amount,
+                        stamp_duty_amount: parseFloat(stamp_duty_amount).toFixed(2),
+                        assessed_value_amount: parseFloat(assessed_value_amount).toFixed(2),
                         assessed_comment: assessed_comment,
                         client_number: client_number
                     },
@@ -20012,8 +20012,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!case_number) errors.push('Case number is required');
         if (!transaction_number) errors.push('Transaction number is required');
         if (!job_number) errors.push('Job number is required');
-        if (!txt_lc_registration_district_number) errors.push('Registration district is required');
-        if (!txt_lc_registration_section_number) errors.push('Registration section is required');
+        // if (!txt_lc_registration_district_number) errors.push('Registration district is required');
+        // if (!txt_lc_registration_section_number) errors.push('Registration section is required');
         
         if (errors.length > 0) {
             Swal.fire({

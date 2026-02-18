@@ -517,6 +517,7 @@ $(function(){
 		
 		
 		$('#tickets_incoming').on('click', function() {
+			console.log('hjberhjberhbgkherjbjfhre')
 			
 			let dataSet =[];
 			document.getElementById("focal_person_archived_search").style.display="none";

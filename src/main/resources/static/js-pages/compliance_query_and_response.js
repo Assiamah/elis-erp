@@ -1735,7 +1735,7 @@ $(document).on('click', '.view-messages', function() {
             `);
             modal.find('#responseContainer').removeClass('d-none');
         }
-    });
+    }); 
 });
 
 

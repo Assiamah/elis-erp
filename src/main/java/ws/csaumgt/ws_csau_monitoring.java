@@ -27,12 +27,12 @@ public class ws_csau_monitoring {
 	// }
 
 
-	public String monitoring_csau(String web_service_url, String web_service_api_key, String json_request) {
+	public String load_csau_monitoring_dashboard(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client
-					.resource(web_service_url + "csau_monitoring/load_apps1");
+					.resource(web_service_url + "csau_monitoring/load_csau_monitoring_dashboard");
 			ClientResponse response = webResource.type("application/json").header("x-api-key", web_service_api_key)
 			.post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {

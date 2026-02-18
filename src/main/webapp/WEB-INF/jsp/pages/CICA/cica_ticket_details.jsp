@@ -13,6 +13,7 @@
 <%@page import="java.util.*" %>
 
 <!-- Begin Page Content -->
+ 
 
 <!-- Start::app-content -->
 <div class="main-content app-content">
@@ -22,13 +23,14 @@
         <div class="page-header-breadcrumb mb-3">
             <div class="d-flex align-center justify-content-between flex-wrap">
                 <div>
-                    <h1 class="page-title fw-medium fs-18 mb-1">Compliance Advisory Center</h1>
-                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage client tickets and monitor ticket status</p>
+                    <h1 class="page-title fw-medium fs-18 mb-1">Ticket Details</h1>
+                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>View and manage ticket details</p>
                 </div>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0);">CAC</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Tickets</li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Tickets</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ticket Details</li>
                 </ol>
             </div>
         </div>
@@ -38,416 +40,449 @@
  <c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop"> 
     <div class="pagetitle">
       <!-- <h4>DUC - CAC TICKETS</h4> --><br>
-      <div class=" ">
-		                   
-			         <nav>
-		                <ol class="breadcrumb">
-		                  <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/dashboard"><i class="fas fa-fw fa-home"></i></a></li>
-		         
-		                  <li class="breadcrumb-item active">Ticket Details</li>
-						  <button data-toggle="modal" href="#editModal" class="btn btn-success float-right ${edit_ticket}" 
-						  style="position:absolute; right:130px; border-radius:50px; text-align:center; box-shadow:2px 2px 3px #999;">
-						  Edit Ticket
-						  </button>
-						  <button data-toggle="modal" href="#requestModal" class="btn btn-warning float-right ${update_status}" 
-						  style="position:absolute; right:282px; border-radius:50px; text-align:center; box-shadow:2px 2px 3px #999;">
-						  Print Request
-						  </button>
-		                  <button data-toggle="modal" href="#updateStatusModal" class="btn btn-primary float-right ${update_status}" 
-					                    style="position:absolute; right:130px; border-radius:50px; text-align:center; box-shadow:2px 2px 3px #999;">
-					      				Update Status
-					      			  </button>
-							<button data-toggle="modal" class="btn btn-warning float-right ${print_request}"  data-toggle="modal" href="#requestModal"
-							style="position:absolute; right:130px; border-radius:50px; text-align:center; box-shadow:2px 2px 3px #999;">
-							Print Request
-							</button>
-		                  <button  class="btn btn-danger float-right" 
-				                    style="position:absolute; right:30px; border-radius:50px; text-align:center; box-shadow:2px 2px 3px #999;"
-				                    ><a style=" text-decoration: none" class="text-white" href="${pageContext.request.contextPath}/${cica_route}">
-				      				Go Back</a>
-				      			  </button>
-		                  
-		                </ol>
-	               </nav>
-                    
-		                    
-		</div>	
+	   <div class="btn-group">
+       <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-success ${edit_ticket}" >
+			<i class="fas fa-edit me-1"></i>Edit Ticket
+			</button>
+			<button data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-warning ${update_status}" >
+			<i class="fas fa-print me-1"></i>Print Request
+			</button>
+			<button data-bs-toggle="modal" data-bs-target="#updateStatusModal" class="btn btn-primary ${update_status}" >
+						<i class="fas fa-edit me-1"></i>Update Status
+						</button>
+			<button data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-warning ${print_request}" href="#requestModal">
+			<i class="fas fa-print me-1"></i>Print Request
+			</button>
+			<button  class="btn btn-danger" 
+					><a style=" text-decoration: none" class="text-white" href="${pageContext.request.contextPath}/${cica_route}">
+				<i class="fas fa-arrow-left me-1"></i>Go Back</a>
+					</button>
+	   </div>
     </div>  
 
-    <section class="section">
+    <section class="section mt-4">
       <div class="row">
   
-        <div class="col-lg-8">
-
-          <div class="card">
-            <div class="card-body">
-             
-              <div class="card-header bg-dark text-white">
-				  <h6 class="card-title">Ticket No.:<strong> ${ticket.ticket_no} </strong> - [<span class="text-warning me-2 ms-2">
-				  <c:choose>
-					    <c:when test="${ticket.purpose == 1}">
-					        Service Enquiry 
-					    </c:when>   
-					    <c:when test="${ticket.purpose == 3}">
-					        Service Complaint
-					    </c:when>  
-					    <c:otherwise>
-					        Non-Service Complaint
-					    </c:otherwise>
-					</c:choose>
-				  </span>]</h6>		
-			 </div>
-				
-				<!-- <input type="text" class="form-control" name="req_ticket_no" id="req_ticket_no" value="${cases.id}" hidden> -->
-              <!-- Accordion without outline borders -->
-              
-              <div class="accordion" id="accordionCaseDetails">
-               <div class="accordion-item">
-	                 <h2 class="accordion-header" id="parties">
-		                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="true" aria-controls="collapse1">
-	            			Client Details
-		                </button>
-	                 </h2>
-	                  <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="parties" data-bs-parent="#accordionCaseDetails">
-	                    <div class="accordion-body">
-	                     <%--  <c:forEach items="${case_detail}" var="cases"  varStatus="appfiles_loop"> --%>
-	                     <div class="card">
-	                		<div class="card-body">
-	                    	<div class="row mb-4">
-	                    		<div class="col-md-12">
-	                    			<div class="row">
-			                    		<div class="col-md-5">
-			                    			<span>Name:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.client_name}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Email:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.client_email}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Phone:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.client_phone}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Address:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.client_address}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Contact Client By:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.contact_type}</span>
-				                    	</div>
-			                    	</div>
-		                    	</div>
-	                    	</div>
-						  	<%-- </c:forEach> --%>
-						  	</div>
-	                    	</div>
-	                    </div>
-	                  </div>
-	                </div>
-                <div class="accordion-item">
-                
-	                   <h2 class="accordion-header" id="parties">
-		                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-	            			Complaint Details
-		                </button>
-	                 </h2>
-                 
-                  <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="parties" data-bs-parent="#accordionCaseDetails" >
-                    <div class="accordion-body">
-	              <div class="card">
-	                <div class="card-body">
-	                	 <div class="row mb-4">
-	                    		<div class="col-md-12">
-	                    			<div class="row">
-			                    		<div class="col-md-5">
-			                    			<span>Purpose:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<%-- <span>${ticket.purpose == 1 ? 'Service Enquiry' : 'Service Complaint'}</span> --%>
-			                    			<c:choose>
-											    <c:when test="${ticket.purpose == 1}">
-											        Service Enquiry 
-											    </c:when>   
-											    <c:when test="${ticket.purpose == 3}">
-											        Service Complaint
-											    </c:when>  
-											    <c:otherwise>
-											        Non-Service Complaint
-											    </c:otherwise>
-											</c:choose>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Subject:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.subject}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Description:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.description}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Priority:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.priority}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Division:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.division}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Region:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.region_name}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Related Service:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.related_service}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Reference Number:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<span>${ticket.reference_id}</span>
-				                    	</div>
-			                    	</div>
-			                    	<div class="row mt-2">
-			                    		<div class="col-md-5">
-			                    			<span>Status:</span>
-				                    	</div>
-				                    	<div class="col-md-7">
-			                    			<%-- <span>${ticket.purpose == 1 ? 'Service Enquiry' : 'Service Complaint'}</span> --%>
-			                    			<c:choose>
-											    <c:when test="${ticket.status == 0}">
-											       <button class="btn btn-info disabled" style="border-radius: 25px"> Open </button>
-											    </c:when>   
-											    <c:when test="${ticket.status == 2}">
-											        <button class="btn btn-warning disabled" style="border-radius: 25px"> Pending </button>
-											    </c:when>
-											     <c:when test="${ticket.status == 1}">
-											        <button class="btn btn-danger disabled" style="border-radius: 25px"> On Hold </button>
-											    </c:when>   
-											    <c:when test="${ticket.status == 3}">
-											        <button class="btn btn-success disabled" style="border-radius: 25px"> Resolved </button>
-											    </c:when>
-											</c:choose>
-				                    	</div>
-			                    	</div>
-		                    	</div>
-	                    	</div>
-	                  
-	                </div>
-	              </div>
+       <div class="col-lg-8">
+    <!-- Ticket Details Card -->
+    <div class="card border-0 shadow-sm">
+        <!-- Card Header with Ticket Info -->
+        <div class="card-header bg-white border-bottom py-3">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                        <i class="fas fa-ticket-alt text-primary fa-lg"></i>
                     </div>
-                  </div>
+                    <div>
+                        <h5 class="mb-1 fw-semibold">
+                            Ticket #<span class="text-primary">${ticket.ticket_no}</span>
+                        </h5>
+                        <span class="badge bg-${ticket.purpose == 1 ? 'info' : ticket.purpose == 3 ? 'warning' : 'secondary'} bg-opacity-10 text-${ticket.purpose == 1 ? 'info' : ticket.purpose == 3 ? 'warning' : 'secondary'} px-3 py-2 rounded-pill">
+                            <c:choose>
+                                <c:when test="${ticket.purpose == 1}">
+                                    <i class="fas fa-question-circle me-1"></i>Service Enquiry
+                                </c:when>
+                                <c:when test="${ticket.purpose == 3}">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Service Complaint
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="fas fa-file-alt me-1"></i>Non-Service Complaint
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                    </div>
                 </div>
                 
-                <div class="accordion-item">
-		                  <h2 class="accordion-header" id="notes">
-		                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-		                      Notes
-		                    </button>
-		                  </h2>
-	                  <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="notes" data-bs-parent="#accordionCaseDetails">
-	                    <div class="accordion-body">
-	                    	<div class="table-responsive">
-		                    	<table class="table" id="status_note" width="100%" cellspacing="0">
-						 		 	<thead>
-						 				<tr>
-						 					<th>Note</th>
-						 					<th>Updated Status</th>
-						 					<th>Updated By</th>
-						 					<th>Updated On</th>
-											<th>Attachment</th>
-						 				</tr>
-						 			</thead>
-						 			<tbody>
-						 		  	</tbody>    
-		 		  				</table>
-	 		  				</div>
-	 		  				
-	                    </div>
-	                  </div>
-	                </div>
-	                
-	                <div class="accordion-item">
-		                  <h2 class="accordion-header" id="notes">
-		                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse5">
-		                      Replies
-		                    </button>
-		                  </h2>
-	                  <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="notes" data-bs-parent="#accordionCaseDetails">
-	                    <div class="accordion-body">
-	                    	<div class="table-responsive">
-				                    	<table class="table table-striped" id="replies_tbl" width="100%" cellspacing="0">
-								 		 	<thead>
-								 				<tr>
-								 					<th>Note</th>
-								 					<th class="text-center">Attachment</th>
-								 					<th>Region</th>
-								 					<th>Division</th>
-								 					<th>Replied By</th>
-								 					<th>Replied On</th>
-								 					<th class="text-end">Action</th>
-								 				</tr>
-								 			</thead>
-								 			<tbody>
-								 		  	</tbody>    
-				 		  				</table>
-				 		  			</div>
-	                    </div>
-	                  </div>
-	                </div> 
-	                
-	                
-	                <div class="accordion-item">
-		                  <h2 class="accordion-header" id="notes">
-		                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse5">
-		                      Sent SMS
-		                    </button>
-		                  </h2>
-	                  <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="notes" data-bs-parent="#accordionCaseDetails">
-	                    <div class="accordion-body">
-	                    	<div class="table-responsive">
-				                    	<table class="table table-striped" id="sms_message" width="100%" cellspacing="0">
-								 		 	<thead>
-								 				<tr>
-								 					<th>Message</th>
-								 					<!-- <th class="text-center">Attachment</th> -->
-								 					<th>Client Contact</th>
-								 					<th>Sent By</th>
-								 					<th>Sent Date</th>
-								 					<!-- <th>Replied On</th>
-								 					<th class="text-end">Action</th> -->
-								 				</tr>
-								 			</thead>
-								 			<tbody>
-								 		  	</tbody>    
-				 		  				</table>
-				 		  			</div>
-	                    </div>
-	                  </div> 
-	                </div>   
-
+                <!-- Status Badge -->
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small">Current Status:</span>
+                    <c:choose>
+                        <c:when test="${ticket.status == 0}">
+                            <span class="badge bg-info rounded-pill px-3 py-2">
+                                <i class="fas fa-folder-open me-1"></i>Open
+                            </span>
+                        </c:when>
+                        <c:when test="${ticket.status == 2}">
+                            <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                                <i class="fas fa-clock me-1"></i>Pending
+                            </span>
+                        </c:when>
+                        <c:when test="${ticket.status == 1}">
+                            <span class="badge bg-danger rounded-pill px-3 py-2">
+                                <i class="fas fa-pause-circle me-1"></i>On Hold
+                            </span>
+                        </c:when>
+                        <c:when test="${ticket.status == 3}">
+                            <span class="badge bg-success rounded-pill px-3 py-2">
+                                <i class="fas fa-check-circle me-1"></i>Resolved
+                            </span>
+                        </c:when>
+                    </c:choose>
+                </div>
             </div>
-     	   <!-- End Accordion without outline borders  this is just a test that i'm just doing-->
-
         </div>
-      </div>
 
-    </div>
-   <div class="col-lg-4 ${add_reply}">
+        <!-- Card Body with Accordion -->
+        <div class="card-body p-4">
+            <!-- Modern Accordion -->
+            <div class="accordion modern-accordion" id="accordionTicketDetails">
+                
+                <!-- Client Details Accordion -->
+                <div class="accordion-item border-0 mb-3">
+                    <h2 class="accordion-header" id="clientDetailsHeading">
+                        <button class="accordion-button collapsed bg-light rounded-3" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#clientDetails" 
+                                aria-expanded="false" aria-controls="clientDetails">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                    <i class="fas fa-user text-primary"></i>
+                                </div>
+                                <span class="fw-semibold">Client Information</span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="clientDetails" class="accordion-collapse collapse" 
+                         aria-labelledby="clientDetailsHeading" data-bs-parent="#accordionTicketDetails">
+                        <div class="accordion-body pt-4">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Full Name</span>
+                                        <span class="info-value">${ticket.client_name}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Email Address</span>
+                                        <span class="info-value">${ticket.client_email}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Phone Number</span>
+                                        <span class="info-value">
+                                            <i class="fas fa-phone-alt me-1 text-muted small"></i>
+                                            ${ticket.client_phone}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Preferred Contact</span>
+                                        <span class="info-value">
+                                            <span class="badge bg-light text-dark rounded-pill px-3">
+                                                <i class="fas fa-${ticket.contact_type == 'Email' ? 'envelope' : 'comment'} me-1"></i>
+                                                ${ticket.contact_type}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info-item">
+                                        <span class="info-label">Address</span>
+                                        <span class="info-value">${ticket.client_address}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-          <!-- Recent Activity -->
-          <form id="reply_to_ticket" method="post" enctype="multipart/form-data">
-           <div class="card">
-          	<div class="card-header"><h5>Add Reply</h5></div>
-            <div class="card-body">
-				<div class="form-group mb-3  ${move_to}">
-					<label>Move To:</label>
-					<select class="form-control" id="move_to" name="move_to" required>
-						<option value=" disabled selected">--select--</option>
-						<option value="1">DCU</option>
-						<option value="0">CAC Center</option>
-					</select>
-				</div>
-				  <label>Note:</label>
-				   <div class="row mb-3">
-				   <c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop">
-				   <input type="text" class="form-control" id="ticket_id" name="ticket_id" value="${ticket._id}" hidden />
-	                      	<input type="text" id="ticket_no" name="ticket_no" value="${ticket.ticket_no}" hidden />
-	                      	<input type="text" id="request_type" name="request_type" value="reply_to_ticket" hidden />
-				   </c:forEach>
-				   
-		            <div class="col-sm-12">
-		              <textarea class="form-control" rows="5" id="reply_desc" name="reply_desc" required></textarea>
-		            </div>
-		          </div>
-		          <%-- <label>Attachment</label>
-				  <div class="row mb-3">
-					<div class="col-sm-12">
-		              <input class="form-control" type="file" id="note_attachment" name="note_attachment">
-		            </div>
-				  </div> --%>
-				  
-				  <%-- <div class="row mt-4">
-		                				<div class="col-md-12">
-		                					<span>Would a file be attached ?:</span>
-		                					<input type="checkbox" class="form-check-input ml-4" name="attach_file" id="attach_file"  />
-		                				</div>
-		                				
-		                			</div> --%>
-									<div id="reply_attached_doc">
-										<div class="row mt-4">
-											<div class="col-md-12">
-												<span>Would a file be attached ?:</span>
-												<input type="checkbox" class="form-check-input ml-4" name="attach_file" id="attach_file"  />
-											</div>
-											
-										</div>
-										
-										<div class="row mt-4 mb-4" id="attach_doc">
-											<label>Select Document:</label>
-											<div class="col-md-12">
-											  <input class="form-control" type="file" id="file" name="file" accept="application/pdf" >
-											</div>
-							
-										 </div>
+                <!-- Complaint Details Accordion -->
+                <div class="accordion-item border-0 mb-3">
+                    <h2 class="accordion-header" id="complaintDetailsHeading">
+                        <button class="accordion-button collapsed bg-light rounded-3" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#complaintDetails" 
+                                aria-expanded="false" aria-controls="complaintDetails">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-2">
+                                    <i class="fas fa-file-alt text-warning"></i>
+                                </div>
+                                <span class="fw-semibold">Complaint Details</span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="complaintDetails" class="accordion-collapse collapse" 
+                         aria-labelledby="complaintDetailsHeading" data-bs-parent="#accordionTicketDetails">
+                        <div class="accordion-body pt-4">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Subject</span>
+                                        <span class="info-value">${ticket.subject}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Priority</span>
+                                        <span class="info-value">
+                                            <span class="badge bg-${ticket.priority == 'High' ? 'danger' : ticket.priority == 'Medium' ? 'warning' : 'info'} rounded-pill px-3">
+                                                ${ticket.priority}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Division</span>
+                                        <span class="info-value">${ticket.division}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Region</span>
+                                        <span class="info-value">${ticket.region_name}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Related Service</span>
+                                        <span class="info-value">${ticket.related_service}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Reference Number</span>
+                                        <span class="info-value">
+                                            <span class="badge bg-light text-dark rounded-pill px-3">
+                                                <i class="fas fa-hashtag me-1"></i>
+                                                ${ticket.reference_id}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="info-item">
+                                        <span class="info-label">Description</span>
+                                        <span class="info-value ">${ticket.description}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-									</div>
-		                			
-									 <input type="text" id="replied_by_id" value="${sessionScope.userid}" hidden />
-			<input type="text" id="replied_by" value="${sessionScope.fullname}" hidden />
-			<input type="text" name="view_by" value="${sessionScope.view_by}" hidden />
-									 
-				  
-				  <div class="d-flex justify-content-end">
-		                 <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>Submit</button>
-		             </div>
+                <!-- Notes Timeline Accordion -->
+                <div class="accordion-item border-0 mb-3">
+                    <h2 class="accordion-header" id="notesHeading">
+                        <button class="accordion-button collapsed bg-light rounded-3" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#notesTimeline" 
+                                aria-expanded="false" aria-controls="notesTimeline">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-info bg-opacity-10 rounded-circle p-2">
+                                    <i class="fas fa-sticky-note text-info"></i>
+                                </div>
+                                <span class="fw-semibold">Notes Timeline</span>
+                                <span class="badge bg-info rounded-pill ms-2" id="notesCount">0</span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="notesTimeline" class="accordion-collapse collapse" 
+                         aria-labelledby="notesHeading" data-bs-parent="#accordionTicketDetails">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="status_note" width="100%">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Note</th>
+                                            <th>Status</th>
+                                            <th>Updated By</th>
+                                            <th>Updated On</th>
+                                            <th class="text-center">Attachment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Replies Accordion -->
+                <div class="accordion-item border-0 mb-3">
+                    <h2 class="accordion-header" id="repliesHeading">
+                        <button class="accordion-button collapsed bg-light rounded-3" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#repliesSection" 
+                                aria-expanded="false" aria-controls="repliesSection">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-success bg-opacity-10 rounded-circle p-2">
+                                    <i class="fas fa-reply text-success"></i>
+                                </div>
+                                <span class="fw-semibold">Replies</span>
+                                <span class="badge bg-success rounded-pill ms-2" id="repliesCount">0</span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="repliesSection" class="accordion-collapse collapse" 
+                         aria-labelledby="repliesHeading" data-bs-parent="#accordionTicketDetails">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="replies_tbl" width="100%">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Note</th>
+                                            <th class="text-center">Attachment</th>
+                                            <th>Region</th>
+                                            <th>Division</th>
+                                            <th>Replied By</th>
+                                            <th>Replied On</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SMS Messages Accordion -->
+                <div class="accordion-item border-0 mb-3">
+                    <h2 class="accordion-header" id="smsHeading">
+                        <button class="accordion-button collapsed bg-light rounded-3" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#smsSection" 
+                                aria-expanded="false" aria-controls="smsSection">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                    <i class="fas fa-sms text-primary"></i>
+                                </div>
+                                <span class="fw-semibold">SMS History</span>
+                                <span class="badge bg-primary rounded-pill ms-2" id="smsCount">0</span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="smsSection" class="accordion-collapse collapse" 
+                         aria-labelledby="smsHeading" data-bs-parent="#accordionTicketDetails">
+                        <div class="accordion-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="sms_message" width="100%">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Message</th>
+                                            <th>Contact</th>
+                                            <th>Sent By</th>
+                                            <th>Sent Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          </form>
+        </div>
+    </div>
+</div>
+   <div class="col-lg-4 ${add_reply}">
+    <!-- Add Reply Card -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+            <h5 class="card-title mb-0 fw-semibold">
+                <i class="fas fa-reply me-2 text-primary"></i>
+                Add Reply
+            </h5>
+        </div>
+        
+        <form id="reply_to_ticket" method="post" enctype="multipart/form-data">
+            <div class="card-body">
+                <!-- Hidden Fields -->
+                <c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
+                    <input type="hidden" name="ticket_id" value="${ticket._id}">
+                    <input type="hidden" name="ticket_no" value="${ticket.ticket_no}">
+                </c:forEach>
+                <input type="hidden" name="request_type" value="reply_to_ticket">
+                <input type="hidden" name="replied_by_id" value="${sessionScope.userid}">
+                <input type="hidden" name="replied_by" value="${sessionScope.fullname}">
+                <input type="hidden" name="view_by" value="${sessionScope.view_by}">
+
+                <!-- Move To Dropdown -->
+                <div class="mb-4 ${move_to}">
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-arrow-right me-1 text-muted"></i>
+                        Move To: <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="move_to" name="move_to" required>
+                        <option value="" disabled selected>-- Select Destination --</option>
+                        <option value="1" class="py-2">
+                            <i class="fas fa-building me-2"></i>DCU
+                        </option>
+                        <option value="0" class="py-2">
+                            <i class="fas fa-landmark me-2"></i>CAC Center
+                        </option>
+                    </select>
+                    <div class="form-text text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Choose where this reply should be sent
+                    </div>
+                </div>
+
+                <!-- Note/Reply Textarea -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-sticky-note me-1 text-muted"></i>
+                        Note: <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control" 
+                              id="reply_desc" 
+                              name="reply_desc" 
+                              rows="5" 
+                              placeholder="Type your reply here..."
+                              required></textarea>
+                    <div class="form-text text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Maximum 500 characters
+                    </div>
+                </div>
+
+                <!-- Attachment Section -->
+                <div class="mb-4" id="reply_attached_doc">
+                    <div class="form-check mb-3">
+                        <input type="checkbox" 
+                               class="form-check-input" 
+                               name="attach_file" 
+                               id="attach_file" 
+                               checked>
+                        <label class="form-check-label fw-semibold" for="attach_file">
+                            <i class="fas fa-paperclip me-1 text-muted"></i>
+                            Attach a file to this reply
+                        </label>
+                    </div>
+
+                    <div id="attach_doc" class="ps-4 border-start border-2">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-file-pdf me-1 text-danger"></i>
+                            Select Document:
+                        </label>
+                        <div class="input-group">
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="file" 
+                                   name="file" 
+                                   accept="application/pdf"
+                                   aria-describedby="fileHelp">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-upload text-muted"></i>
+                            </span>
+                        </div>
+                        <div id="fileHelp" class="form-text text-muted small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Accepted format: PDF only. Max size: 5MB
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        Submit Reply
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
           <!-- End Recent Activity -->
 			<!-- End Recent Activity -->
          
@@ -464,388 +499,427 @@
 <!-- End Page Content -->
 
 <!-- Attachment Modal -->
-<c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop">
-  <div class="modal fade" id="updateStatusModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Update Status</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+<!-- Update Status Modal -->
+<c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
+    <div class="modal fade modal-blur" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-semibold" id="updateStatusModalLabel">
+                        <i class="fas fa-edit me-2 text-primary"></i>Update Status
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form id="update_status_form" method="post">
+                    <div class="modal-body">
+                        <!-- Hidden Fields -->
+                        <input type="hidden" class="form-control" name="req_client_phone" id="req_client_phone" value="${ticket.client_phone}">
+                        <input type="hidden" name="updated_by_id" value="${sessionScope.userid}">
+                        <input type="hidden" name="updated_by" value="${sessionScope.fullname}">
+                        
+                        <!-- Ticket No -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Ticket No:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control bg-light" type="text" id="ticket_no" 
+                                       name="ticket_no" value='<c:out value="${ticket.ticket_no}"/>' readonly required>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden Case ID -->
+                        <div class="row mb-3 d-none">
+                            <label class="col-sm-4 col-form-label">Case ID:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" id="ticket_id" name="ticket_id" 
+                                       value='<c:out value="${ticket._id}"/>' readonly required>
+                            </div>
+                        </div>
+                        
+                        <!-- Status Dropdown -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Status:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" name="status_id" id="status_id" required>
+                                    <option selected disabled value="">-- select status --</option>
+                                    <c:choose>
+                                        <c:when test="${ticket.message == 1}">
+                                            <option value="2">Pending</option>
+                                            <option value="1">On Hold</option>
+                                            <option value="3">Resolved</option>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <option value="2">Pending</option>
+                                            <option value="1">On Hold</option>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Note -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Note:</label>
+                            <div class="col-sm-8">
+                                <textarea rows="5" class="form-control" name="txt_note" id="txt_note" 
+                                          placeholder="Enter your note here..." required></textarea>
+                                <div class="form-text text-muted">Add any additional information about this status update</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Status
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form id="update_status_form" method="post" >
-        
-        <div class="modal-body" style="font-size: small;">
-			<input type="text" class="form-control" name="req_client_phone" id="req_client_phone" value="${ticket.client_phone}" hidden>
-          <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Ticket No:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="ticket_no" name="ticket_no" value='<c:out value="${ticket.ticket_no}"></c:out>' readonly required>
-            </div>
-		  </div>
-		  
-		  <div class="row mb-3" hidden="">
-			<label for="inputNumber" class="col-sm-4 col-form-label">Case ID:</label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="ticket_id" name="ticket_id" value='<c:out value="${ticket._id}"></c:out>' readonly required>
-            </div>
-		  </div>
-		  
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Status:</h6></label>
-			<div class="col-sm-8">
-               <select class="form-control" aria-label="Default select example" name="status_id" id="status_id"  required>
-                 <option selected disabled>-- select --</option>
-                 <c:choose>
-				    <c:when test="${ticket.message == 1}">
-				      <option value="2">Pending</option>
-	                  <option value="1">On Hold</option>
-	                  <option value="3">Resolved</option> 
-				    </c:when>
-				    <c:otherwise>
-				      <option value="2">Pending</option>
-	                  <option value="1">On Hold</option>
-				    </c:otherwise>
-				</c:choose>
-			  </select>
-            </div>
-		  </div>
-		    <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Note:</h6></label>
-			<div class="col-sm-8">
-		        <textarea rows="5" cols="" class="form-control" name="txt_note" id="txt_note" required></textarea>
-            </div>
-		  </div>
-		   <input type="text" name="updated_by_id" value="${sessionScope.userid}" hidden />
-			<input type="text" name="updated_by" value="${sessionScope.fullname}" hidden />
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Update</button>
-        </div>
-       </form>
-      </div>
     </div>
-  </div>
 </c:forEach>
 
-
-<c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop">
-  <div class="modal fade" id="requestModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Generate Request</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+<!-- Generate Request Modal -->
+<c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
+    <div class="modal fade modal-blur" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-semibold" id="requestModalLabel">
+                        <i class="fas fa-file-alt me-2 text-primary"></i>Generate Request
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form id="requestForm" method="post">
+                    <div class="modal-body">
+                        <!-- Hidden Fields -->
+                        <input type="hidden" name="req_ticket_no" id="req_ticket_no" value="${ticket.ticket_no}">
+                        <input type="hidden" name="req_subject" id="req_subject" value="${ticket.subject}">
+                        <input type="hidden" name="req_description" id="req_description" value="${ticket.description}">
+                        
+                        <!-- Ticket No -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Ticket No:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control bg-light" type="text" name="ticket_no" 
+                                       value='<c:out value="${ticket.ticket_no}"/>' readonly required>
+                            </div>
+                        </div>
+                        
+                        <!-- Reference No -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Reference No:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control bg-light" type="text" name="reference_no" 
+                                       value='<c:out value="${ticket.reference_id}"/>' readonly required>
+                            </div>
+                        </div>
+                        
+                        <!-- To Field -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">
+                                To: <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" id="request_to" name="request_to" 
+                                       placeholder="Enter recipient" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden Case ID -->
+                        <div class="row mb-3 d-none">
+                            <label class="col-sm-4 col-form-label">Case ID:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" id="ticket_id" name="ticket_id" 
+                                       value='<c:out value="${ticket._id}"/>' readonly required>
+                            </div>
+                        </div>
+                        
+                        <!-- Request Textarea -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">
+                                Request: <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <textarea rows="8" class="form-control" name="duc_request" id="duc_request" 
+                                          placeholder="Type your request here..." required></textarea>
+                                <div class="form-text text-muted">Maximum 500 characters</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                        <button type="button" id="print_request" class="btn btn-primary">
+                            <i class="fas fa-print me-2"></i>Generate
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form id="" method="post" >
-        
-        <div class="modal-body" style="font-size: small;">
-			<input type="text" class="form-control" name="req_ticket_no" id="req_ticket_no" value="${ticket.ticket_no}" hidden>
-				<input type="text" class="form-control" name="req_subject" id="req_subject" value="${ticket.subject}" hidden>
-				<input type="text" class="form-control" name="req_description" id="req_description" value="${ticket.description}" hidden>
-         
-          <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Ticket No:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="ticket_no" name="ticket_no" value='<c:out value="${ticket.ticket_no}"></c:out>' readonly required>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Reference No:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="reference_no" name="reference_no" value='<c:out value="${ticket.reference_id}"></c:out>' readonly required>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>To:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="request_to" name="request_to" required>
-            </div>
-		  </div> 
-		  
-		  <div class="row mb-3" hidden="">
-			<label for="inputNumber" class="col-sm-4 col-form-label">Case ID:</label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="ticket_id" name="ticket_id" value='<c:out value="${ticket._id}"></c:out>' readonly required>
-            </div>
-		  </div>
-		    <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Request:</h6></label>
-			<div class="col-sm-8">
-		        <textarea rows="8" cols="" class="form-control" name="duc_request" id="duc_request" required></textarea>
-            </div>
-		  </div>
-		   <!-- <input type="text" name="updated_by_id" value="${sessionScope.userid}" hidden />
-			<input type="text" name="updated_by" value="${sessionScope.fullname}" hidden /> -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="print_request" class="btn btn-primary">Generate</button>
-        </div>
-       </form>
-      </div>
     </div>
-  </div>
 </c:forEach>
 
-
-<c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop">
-  <div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Ticket</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+<!-- Edit Ticket Modal -->
+<c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
+    <div class="modal fade modal-blur" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-semibold" id="editModalLabel">
+                        <i class="fas fa-pen me-2 text-primary"></i>Edit Ticket
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form id="frmUpdateTicket" method="post">
+                    <div class="modal-body">
+                        <!-- Ticket No -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Ticket No:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control bg-light" type="text" id="rt_ticket_no" name="rt_ticket_no" 
+                                       value='<c:out value="${ticket.ticket_no}"/>' readonly required>
+                            </div>
+                        </div>
+                        
+                        <!-- Purpose -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Purpose:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" name="rt_purpose" id="rt_purpose">
+                                    <option value="" disabled>-- select purpose --</option>
+                                    <option value="2" ${ticket.purpose == '2' ? 'selected' : ''}>Service Enquiry</option>
+                                    <option value="3" ${ticket.purpose == '3' ? 'selected' : ''}>Service Complainant</option>
+                                    <option value="4" ${ticket.purpose == '4' ? 'selected' : ''}>Non-service Complainant</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Subject -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Subject:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" name="rt_subject" id="rt_subject" required>
+                                    <option value="" disabled>-- select subject --</option>
+                                    <option value="Payment Issues" ${ticket.subject == 'Payment Issues' ? 'selected' : ''}>Payment Issues</option>
+                                    <option value="Delayed" ${ticket.subject == 'Delayed' ? 'selected' : ''}>Delayed</option>
+                                    <option value="Upload issues" ${ticket.subject == 'Upload issues' ? 'selected' : ''}>Upload issues</option>
+                                    <option value="Queried" ${ticket.subject == 'Queried' ? 'selected' : ''}>Queried</option>
+                                    <option value="Other Issues" ${ticket.subject == 'Other Issues' ? 'selected' : ''}>Other Issues</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Description:</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" id="rt_description" name="rt_description" 
+                                          rows="3">${ticket.description}</textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Related Service -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Related Service:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" id="rt_related_service" name="rt_related_service" required>
+                                    <option value="" disabled>-- select service --</option>
+                                    <option value="Search" ${ticket.related_service == 'Search' ? 'selected' : ''}>Search</option>
+                                    <option value="Stamp Duty" ${ticket.related_service == 'Stamp Duty' ? 'selected' : ''}>Stamp Duty</option>
+                                    <option value="Concurrence" ${ticket.related_service == 'Concurrence' ? 'selected' : ''}>Concurrence</option>
+                                    <option value="Consent" ${ticket.related_service == 'Consent' ? 'selected' : ''}>Consent</option>
+                                    <option value="Plan Approval" ${ticket.related_service == 'Plan Approval' ? 'selected' : ''}>Plan Approval</option>
+                                    <option value="Title Registration" ${ticket.related_service == 'Title Registration' ? 'selected' : ''}>Title Registration</option>
+                                    <option value="PVLMD Plotting" ${ticket.related_service == 'PVLMD Plotting' ? 'selected' : ''}>PVLMD Plotting</option>
+                                    <option value="Reguralization" ${ticket.related_service == 'Reguralization' ? 'selected' : ''}>Reguralization</option>
+                                    <option value="Certified True Copy" ${ticket.related_service == 'Certified True Copy' ? 'selected' : ''}>Certified True Copy</option>
+                                    <option value="Dispute" ${ticket.related_service == 'Dispute' ? 'selected' : ''}>Dispute</option>
+                                    <option value="Composite Plan" ${ticket.related_service == 'Composite Plan' ? 'selected' : ''}>Composite Plan</option>
+                                    <option value="General Valuation" ${ticket.related_service == 'General Valuation' ? 'selected' : ''}>General Valuation</option>
+                                    <option value="Compensation" ${ticket.related_service == 'Compensation' ? 'selected' : ''}>Compensation</option>
+                                    <option value="Deed Registration" ${ticket.related_service == 'Deed Registration' ? 'selected' : ''}>Deed Registration</option>
+                                    <option value="Substituted Certificate" ${ticket.related_service == 'Substituted Certificate' ? 'selected' : ''}>Substituted Certificate</option>
+                                    <option value="State Land Rent" ${ticket.related_service == 'State Land Rent' ? 'selected' : ''}>State Land Rent</option>
+                                    <option value="Other Services" ${ticket.related_service == 'Other Services' ? 'selected' : ''}>Other Services</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Reference No -->
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">Reference No:</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" id="rt_reference_no" name="rt_reference_no" 
+                                       value='<c:out value="${ticket.reference_id}"/>' required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Close
+                        </button>
+                        <button type="submit" id="btn_update_ticket_details" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Ticket
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form id="frmUpdateTicket" method="post" >
-        
-        <div class="modal-body" style="font-size: small;">
-			<!-- <input type="text" class="form-control" name="req_ticket_no" id="rt_ticket_no" value="${ticket.ticket_no}" hidden>
-				<input type="text" class="form-control" name="req_subject" id="rt_subject" value="${ticket.subject}" hidden>
-				<input type="text" class="form-control" name="req_description" id="rt_description" value="${ticket.description}" hidden> -->
-         
-          <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Ticket No:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="rt_ticket_no" name="rt_ticket_no" value='<c:out value="${ticket.ticket_no}"></c:out>' readonly required>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Purpose:</h6></label>
-			<div class="col-sm-8">
-              <select class="form-control" name="rt_purpose" id="rt_purpose">
-					<option value="" disabled >-- select --</option>
-					${ticket.purpose == '2' ? '<option selected value="2">Service Enquiry</option>' : '<option value="2">Service Enquiry</option>'}
-					${ticket.purpose == '3' ? '<option selected value="3">Service Complainant</option>' : '<option value="3">Service Complainant</option>'}
-					${ticket.purpose == '4' ? '<option selected value="4">Non-service Complainant</option>' : '<option value="4">Non-service Complainant</option>'}
-			  </select>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Subject:</h6></label>
-			<div class="col-sm-8">
-				<select class="form-control" aria-label="Default select example" name="rt_subject" id="rt_subject" required >
-					
-					<option value="" disabled>--select--</option>
-					${ticket.subject == 'Payment Issues' ? '<option selected value="Payment Issues">Payment Issues</option>' : '<option value="Payment Issues">Payment Issues</option>'}
-					${ticket.subject == 'Delayed' ? '<option selected value="Delayed">Delayed</option>' : '<option value="Delayed">Delayed</option>'}
-					${ticket.subject == 'Upload issues' ? '<option selected value="Upload issues">Upload issues</option>' : '<option value="Upload issues">Upload issues</option>'}
-					${ticket.subject == 'Queried' ? '<option selected value="Queried">Queried</option>' : '<option value="Queried">Queried</option>'}
-					${ticket.subject == 'Other Issues' ? '<option selected value="Other Issues">Other Issues</option>' : '<option value="Other Issues">Other Issues</option>'}
-				  </select>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Description:</h6></label>
-			<div class="col-sm-8">
-              <textarea class="form-control" id="rt_description" name="rt_description">${ticket.description}</textarea>
-            </div>
-		  </div>
-
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Related Service:</h6></label>
-			<div class="col-sm-8">
-				<select class="form-control" id="rt_related_service" name="rt_related_service" required>
-				    <option value="" disabled>-- select --</option>
-					${ticket.related_service == 'Search' ? '<option selected value="Search">Search</option>' : '<option value="Search">Search</option>'}
-					${ticket.related_service == 'Stamp Duty' ? '<option selected value="Stamp Duty">Stamp Duty</option>' : '<option value="Stamp Duty">Stamp Duty</option>'}
-					${ticket.related_service == 'Concurrence' ? '<option selected value="Concurrence">Concurrence</option>' : '<option value="Concurrence">Concurrence</option>'}
-					${ticket.related_service == 'Consent' ? '<option selected value="Consent">Consent</option>' : '<option value="Consent">Consent</option>'}
-					${ticket.related_service == 'Plan Approval' ? '<option selected value="Plan Approval">Plan Approval</option>' : '<option value="Plan Approval">Plan Approval</option>'}
-					${ticket.related_service == 'Title Registration' ? '<option selected value="Title Registration">Title Registration</option>' : '<option value="Title Registration">Title Registration</option>'}
-					${ticket.related_service == 'PVLMD Plotting' ? '<option selected value="PVLMD Plotting">PVLMD Plotting</option>' : '<option value="PVLMD Plotting">PVLMD Plotting</option>'}
-					${ticket.related_service == 'Reguralization' ? '<option selected value="Reguralization">Reguralization</option>' : '<option value="Reguralization">Reguralization</option>'}
-					${ticket.related_service == 'Certified True Copy' ? '<option selected value="Certified True Copy">Certified True Copy</option>' : '<option value="Certified True Copy">Certified True Copy</option>'}
-					${ticket.related_service == 'Dispute' ? '<option selected value="Dispute">Dispute</option>' : '<option value="Dispute">Dispute</option>'}
-					${ticket.related_service == 'Composite Plan' ? '<option selected value="Composite Plan">Composite Plan</option>' : '<option value="Composite Plan">Composite Plan</option>'}
-					${ticket.related_service == 'General Valuation' ? '<option selected value="General Valuation">General Valuation</option>' : '<option value="General Valuation">General Valuation</option>'}
-					${ticket.related_service == 'Compensation' ? '<option selected value="Compensation">Compensation</option>' : '<option value="Compensation">Compensation</option>'}
-					${ticket.related_service == 'Deed Registration' ? '<option selected value="Deed Registration">Deed Registration</option>' : '<option value="Deed Registration">Deed Registration</option>'}
-					${ticket.related_service == 'Substituted Certificate' ? '<option selected value="Substituted Certificate">Substituted Certificate</option>' : '<option value="Substituted Certificate">Substituted Certificate</option>'}
-					${ticket.related_service == 'State Land Rent' ? '<option selected value="State Land Rent">State Land Rent</option>' : '<option value="State Land Rent">State Land Rent</option>'}
-					${ticket.related_service == 'Other Services' ? '<option selected value="Other Services">Other Services</option>' : '<option value="Other Services">Other Services</option>'}
-			    </select>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Reference No:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="rt_reference_no" name="rt_reference_no" value='<c:out value="${ticket.reference_id}"></c:out>' required>
-            </div>
-		  </div>
-
-		  <!-- <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Complainant Name:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="reference_no" name="reference_no" value='<c:out value="${ticket.client_name}"></c:out>' required>
-            </div>
-		  </div>
-
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Complainant Phone:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="reference_no" name="reference_no" value='<c:out value="${ticket.client_phone}"></c:out>' required>
-            </div>
-		  </div> -->
-		   <!-- <input type="text" name="updated_by_id" value="${sessionScope.userid}" hidden />
-			<input type="text" name="updated_by" value="${sessionScope.fullname}" hidden /> -->
-        </div>
-        <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" id="btn_update_ticket_details" class="btn btn-primary">Update</button>
-        </div>
-       </form>
-      </div>
     </div>
-  </div>
 </c:forEach>
 
-<!-- Attachment Modal  -->
-  <div class="modal fade" id="elisDocumentPreview" tabindex="-1" role="dialog"
-	aria-labelledby="elisDocumentPreview" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="">Document Preview</h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="form-group">
-												
-												<iframe src=""  id="elisdovumentpreviewblobfilexx" width="100%" height="600"></iframe>
-							
-				</div>
-
-			</div>
-			 	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				
-			</div>
-			
-		</div>
-	</div>
+<!-- Document Preview Modal -->
+<div class="modal fade modal-blur" id="elisDocumentPreview" tabindex="-1" aria-labelledby="elisDocumentPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-semibold" id="elisDocumentPreviewLabel">
+                    <i class="fas fa-file-pdf me-2 text-danger"></i>Document Preview
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe src="" id="elisdovumentpreviewblobfilexx" width="100%" height="600" class="border-0"></iframe>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="modal fade" id="elisDocumentPreviewx" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Ticket Number: <span class="text-danger" id="r_ticket_no"></span></h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="form-group">
-				<div class="card card-body mb-4">
-				<b>Notes:</b>
-					 <span class="" id="r_description"></span>
-				</div>
-				<div id="attachment_status">								
-				   <iframe src=""  id="elisdovumentpreviewblobfile" width="100%" height="600"></iframe>
-					</div>		
-				</div>
-
-			</div>
-			 	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				
-			</div>
-			
-		</div>
-	</div>
+<!-- Ticket Details Preview Modal -->
+<div class="modal fade modal-blur" id="elisDocumentPreviewx" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-semibold" id="exampleModalLabel">
+                    Ticket Number: <span class="text-danger" id="r_ticket_no"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card bg-light border-0 mb-4">
+                    <div class="card-body">
+                        <h6 class="fw-semibold mb-3">
+                            <i class="fas fa-sticky-note me-2 text-primary"></i>Notes:
+                        </h6>
+                        <p class="mb-0" id="r_description"></p>
+                    </div>
+                </div>
+                <div id="attachment_status">
+                    <iframe src="" id="elisdovumentpreviewblobfile" width="100%" height="600" class="border-0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="modal fade" id="viewTimelineDetails" tabindex="-1">
+<!-- View Timeline Details Modal -->
+<div class="modal fade modal-blur" id="viewTimelineDetails" tabindex="-1" aria-labelledby="viewTimelineDetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Updated Info.</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-semibold" id="viewTimelineDetailsLabel">
+                    <i class="fas fa-history me-2 text-info"></i>Updated Information
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <form id="update_status_form_with_note" method="post">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label fw-semibold">Suit Number:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control bg-light" type="text" id="up_suit_number" name="up_suit_number" 
+                                   value='<c:out value="${case_detail[0].suit_number}"/>' readonly required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3 d-none">
+                        <label class="col-sm-3 col-form-label">Case ID:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" id="up_case_id" name="up_case_id" readonly required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label fw-semibold">Note:</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control bg-light" rows="5" id="up_notes" readonly></textarea>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="updated_by" value="${sessionScope.userid}">
+                </div>
+            </form>
         </div>
-        <form id="update_status_form_with_note" method="post" >
-        
-        <div class="modal-body" style="font-size: small;">
-         
-          <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-3 col-form-label">Suit Number:</label>
-			<div class="col-sm-9">
-              <input class="form-control" type="text" id="up_suit_number" name="up_suit_number" value='<c:out value="${case_detail[0].suit_number}"></c:out>' readonly required>
-            </div>
-		  </div>
-		  
-		  <div class="row mb-3" hidden="">
-			<label for="inputNumber" class="col-sm-3 col-form-label">Case ID:</label>
-			<div class="col-sm-9">
-              <input class="form-control" type="text" id="up_case_id" name="up_case_id" readonly required>
-            </div>
-		  </div>
-		  
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-3 col-form-label">Note:</label>
-			<div class="col-sm-9">
-               <textarea class="form-control" rows="5" id="up_notes" readonly></textarea>
-            </div>
-		  </div>
-		   <input type="text" name="updated_by" value="${sessionScope.userid}" hidden />
+    </div>
+</div>
 
-        </div>
-        <%-- <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Update</button>
-        </div> --%>
-       </form>
-      </div>
-    </div>
-  </div>
-  
-   <div class="modal fade" id="minuteModal" tabindex="-1">
+<!-- Add Minute Modal -->
+<div class="modal fade modal-blur" id="minuteModal" tabindex="-1" aria-labelledby="minuteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Minute</h5>
-           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
-        </div>
-        <form id="case_note" method="post" enctype="multipart/form-data">
-        
-        <div class="modal-body" style="font-size: small;">
-         
-          <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label">Suit Number:</label>
-			<div class="col-sm-12">
-              <input class="form-control" type="text" id="m_suit_number" name="m_suit_number" value='<c:out value="${case_detail[0].suit_number}"></c:out>' readonly required>
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-semibold" id="minuteModalLabel">
+                    <i class="fas fa-clock me-2 text-primary"></i>Add Minute
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-		  </div>
-		  <%-- <div class="row mb-3">
-		  	<label for="inputNumber" class="col-sm-4 col-form-label">Subject</label>
-		  
-			<div class="col-sm-12">
-              <input class="form-control" type="text" id="subject" name="subject"  required>
-            </div>
-		  </div> --%>
-		  <div class="row mb-3">
-		  <label for="inputNumber" class="col-sm-4 col-form-label">Notes</label>
-		   
-            <div class="col-sm-12">
-              <textarea class="form-control" rows="5"  id="minutes" name="minutes" required></textarea>
-            </div>
-          </div>
-          <input class="form-control" type="text" id="m_case_id" name="m_case_id" value="${case_detail[0].id}" hidden >
-			<input type="text" name="created_by" id="created_by" value="${sessionScope.fullname}" hidden>
-			<input type="text" name="created_by_id" id="created_by_id" value="${sessionScope.userid}" hidden>
+            
+            <form id="case_note" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label fw-semibold">Suit Number:</label>
+                        <div class="col-sm-12">
+                            <input class="form-control bg-light" type="text" id="m_suit_number" name="m_suit_number" 
+                                   value='<c:out value="${case_detail[0].suit_number}"/>' readonly required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label fw-semibold">Notes:</label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control" rows="5" id="minutes" name="minutes" 
+                                      placeholder="Enter your notes here..." required></textarea>
+                            <div class="form-text text-muted">Add detailed notes about this case</div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="m_case_id" name="m_case_id" value="${case_detail[0].id}">
+                    <input type="hidden" name="created_by" id="created_by" value="${sessionScope.fullname}">
+                    <input type="hidden" name="created_by_id" id="created_by_id" value="${sessionScope.userid}">
+                </div>
+                
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="submit" id="save_minute" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Save Minute
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="modal-footer">
-          <button type="submit" id="save_minute" class="btn btn-primary">Submit</button>
-        </div>
-       </form>
-      </div>
     </div>
+</div>
   </div>
 
  
@@ -872,6 +946,29 @@ toastr['success']('Replied successfully', 'Success');
 	      document.getElementById("attach_doc").style.display="none";
 	    }
 	  });
+
+	  // Function to update count badges
+    function updateCountBadges() {
+        // Update notes count
+        const notesCount = $('#status_note tbody tr').length;
+        $('#notesCount').text(notesCount);
+        
+        // Update replies count
+        const repliesCount = $('#replies_tbl tbody tr').length;
+        $('#repliesCount').text(repliesCount);
+        
+        // Update SMS count
+        const smsCount = $('#sms_message tbody tr').length;
+        $('#smsCount').text(smsCount);
+    }
+
+    // Call initially and after table updates
+    updateCountBadges();
+    
+    // If you're using DataTables, you can hook into the draw event
+    $('#status_note, #replies_tbl, #sms_message').on('draw.dt', function() {
+        updateCountBadges();
+    });
 	  
   })
 

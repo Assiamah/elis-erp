@@ -13,169 +13,247 @@
 <%@page import="java.util.*" %>
 
 <input type="text" name="regional_code" value="${sessionScope.regional_code}"  hidden/> 
+
+<!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
+
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">CAC Replies</h1>
+                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Manage CAC replies and monitor reply status</p>
+                </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">CAC</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">CAC Replies</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
 				 
 <!-- Begin Page Content -->
-   <div class="container-fluid">
-	<section class="section dashboard">
-		 <!-- Page Heading -->
-                <div class="row mb-4">
-                	 <div class="col-md-12">
-		                <div class=" ">
-		                   
-					         <nav>
-				                <ol class="breadcrumb">
-				                  <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/dashboard"><i class="fas fa-fw fa-home"></i></a></li>
-				                  <li class="breadcrumb-item active">CAC - REPLIES </li>
-				                </ol>
-			               </nav>
-		                    
-		                    
-		                </div>	
-	                </div>
-				</div>
+  
+		
 	
-	
-     	<div class="row mb-4">
-      		<!-- Left side columns -->
-        <div class="col-lg-12">
-          <div class="row">
-            <!-- Assigned Cases Card -->
-            <div class="col-xl-4 col-md-6" id="tickets_replies">
-              <div class="card border-left-info shadow h-100 py-2" id="body-bg-1">
-
-                <div class="card-body">
-	                  		<h5 class="card-title">Tickets <span>| Replies </span></h5>
-							
-							<div class="d-flex align-items-center">
-								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-									<i class="fas fa-reply fa-2x text-info"></i>
-								</div>
-								 <div class="ps-3">	
-		                     	 	<h4 id="incoming_count"><c:out value="${replies}"></c:out></h4>
-								 </div>
-		                    </div>
+	<!-- Stats Cards Section -->
+<div class="row g-4 mb-4">
+    <!-- Replies Tickets Card -->
+    <div class="col-xl-4 col-md-6" id="tickets_replies" style="cursor: pointer;">
+        <div class="card border-0 shadow-sm hover-lift h-100" id="body-bg-1">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-info bg-opacity-10 rounded-3 p-3">
+                            <i class="fas fa-reply fa-2x text-info"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="text-uppercase fw-semibold text-muted mb-1">Tickets</h6>
+                        <h5 class="card-title mb-0">Replies</h5>
+                    </div>
                 </div>
-
-              </div>
-            </div><!-- Assigned Cases Card -->
-
-            
-            
-            <div class="col-xl-4 col-md-6" id="tickets_archived">			 
-              <div class="card border-left-danger shadow h-100 py-2" id="body-bg-2">
-
-                <div class="card-body">
-        
-                    <h5 class="card-title">Tickets <span>| Archived</span></h5>
-
-	                <div class="d-flex align-items-center">
-	                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-	                      <i class="fas fa-archive fa-2x text-danger"></i>
-	                    </div>
-	                    <div class="ps-3">
-	                      <h4 id="total_count"><c:out value="${archived}"></c:out></h4>
-	
-	                    </div>
-	                  </div>
-					
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Pending Replies</span>
+                    <h3 class="mb-0 fw-bold text-info" id="incoming_count">
+                        <c:out value="${replies}"/>
+                    </h3>
                 </div>
-              </div>
-			 
-            </div><!-- Archived Cases Card -->
-     	
-     
-     </div>
+                <!-- <div class="progress mt-3" style="height: 6px;">
+                    <div class="progress-bar bg-info" style="width: 75%"></div>
+                </div> -->
+            </div>
+        </div>
     </div>
-  </div>
-			
-		 <div class="row mb-4" id="replies_archived_search">
-		 		<div class="col-md-9">
-								 	
-							    
-								    <div class="custom-control custom-radio custom-control-inline">
-									  <input type="radio" id="rbtn_search_type1" name="rbtn_search_type" class="custom-control-input rbtn_search_type" value="client_name" required>
-									  <label class="custom-control-label" for="rbtn_search_type1">Name</label>
-									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-									  <input type="radio" id="rbtn_search_type2" name="rbtn_search_type" class="custom-control-input rbtn_search_type" value="ticket_id" required>
-									  <label class="custom-control-label" for="rbtn_search_type2">Ticket No.</label>
-									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-									  <input type="radio" id="rbtn_search_type3" name="rbtn_search_type" class="custom-control-input rbtn_search_type" value="job_no" required>
-									  <label class="custom-control-label" for="rbtn_search_type3">Job No.</label>
-									</div>
-									<br><br>
-						          <div class="form-group">
-						            <div class="form-row mb-4">
-						              <div class="col-md-5">
-						                
-						                <input class="form-control" id="cc_search_value"  type="text" aria-describedby="" placeholder="Enter search inputs" required >
-						              </div>
-						              <div class="col-md-3">
-						              	
-						                <button type="button" class="btn btn-warning" value="Search" id="btnRRJobSearch" ><i class="fas fa-search"></i> Search </button>
-						                
-						              </div>
-						            </div>
-						            </div>
-						            
-						            </div>
-		 </div>	
-			
-	      <div class="row mb-4">
-	            <div class="col-md-12">
-	              <div class="card">
-	              	<div class="card-header bg-dark text-white">
-						<i class="fa fa-bar-chart"></i><span class="h5">Tickets Details</span> <span
-						class="col-md-3 float-right ">
-						 <button class="btn btn-success btn-icon-split float-right "
-							id="btnViewBatchlist" style="margin-right: -15px">
-							<span class="icon text-white-50"> <i class="fas fa-angle-double-right"></i></span><span
-								class="text">Archive</span>
-						</button>
-					</span>
-					</div>
-	                <div class="card-body">
-	                	  <h5 class="card-title"><span id="card_title"> </span></h5>
-	                	  
-	                	  <div class="row mt-2">
-							<!-- <span class="mb-2 small"><i class="fas fa-dot-circle text-white" style="border: 1px solid black; border-radius: 50%"></i>Tickets with no replies from either DCU or Focal Person.</span>
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-info"></i>Tickets with replies from DCU.</span>
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-warning"></i>Tickets with replies from Focal Person.</span> -->
-							<span class="mb-2 small"><i class="fas fa-dot-circle text-success"></i>Message (Replies) sent to client.</span>
-						</div>
-	                  <div class="tab-content mt-4">
-					            <div id="" class="table-responsive">
-					                <table class="table " id="table_list"  width="100%" cellspacing="0" style="text-transform: uppercase;">
-	              						<thead>
-										    <tr>
-										        <th>#</th>
-										        <th>Ticket No.</th>
-										        <th>Name</th>
-					 					        <th>Purpose</th>
-										        <th>Subject</th>
-										        <th class="text-center">Status</th>											        
-										        <th class="text-center">Priority</th>								        
-										        <th>Region</th>
-										        <th>Date Created</th>
-												<th class="text-end">Actions</th>
-										    </tr>
-										  </thead>
-										  <tbody id="table_body">
-										    
-										  </tbody>
-		                   	        </table>
-					            </div>
-					    </div>
-	                </div>
-	              </div>
-	            </div>
-	          </div>
 
-     </section>
+    <!-- Archived Tickets Card -->
+    <div class="col-xl-4 col-md-6" id="tickets_archived" style="cursor: pointer;">
+        <div class="card border-0 shadow-sm hover-lift h-100" id="body-bg-2">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-danger bg-opacity-10 rounded-3 p-3">
+                            <i class="fas fa-archive fa-2x text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="text-uppercase fw-semibold text-muted mb-1">Tickets</h6>
+                        <h5 class="card-title mb-0">Archived</h5>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small">Total Archived</span>
+                    <h3 class="mb-0 fw-bold text-danger" id="total_count">
+                        <c:out value="${archived}"/>
+                    </h3>
+                </div>
+                <!-- <div class="progress mt-3" style="height: 6px;">
+                    <div class="progress-bar bg-danger" style="width: 45%"></div>
+                </div> -->
+            </div>
+        </div>
+    </div>
 
-	</div>
+    <!-- Add a third card for balance or additional stats -->
+    <!-- <div class="col-xl-4 col-md-6" id="tickets_stats">
+        <div class="card border-0 shadow-sm hover-lift h-100 bg-gradient-primary">
+            <div class="card-body text-white">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0">
+                        <div class="bg-white bg-opacity-20 rounded-3 p-3">
+                            <i class="fas fa-chart-line fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="text-white-50 text-uppercase fw-semibold mb-1">Overview</h6>
+                        <h5 class="mb-0">Resolution Rate</h5>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-white-50 small">Last 30 days</span>
+                    <h3 class="mb-0 fw-bold">85%</h3>
+                </div>
+                <div class="progress mt-3 bg-white bg-opacity-25" style="height: 6px;">
+                    <div class="progress-bar bg-white" style="width: 85%"></div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<!-- Search Section -->
+<div class="row mb-4" id="replies_archived_search" style="display: none;">
+    <div class="col-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="row g-4">
+                    <!-- Search Type Radio Buttons -->
+                    <div class="col-12">
+                        <label class="fw-semibold text-muted mb-3 d-block">Search by:</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                       id="rbtn_search_type1" value="client_name" checked>
+                                <label class="form-check-label" for="rbtn_search_type1">
+                                    <i class="fas fa-user me-1 text-primary"></i>
+                                    Client Name
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                       id="rbtn_search_type2" value="ticket_id">
+                                <label class="form-check-label" for="rbtn_search_type2">
+                                    <i class="fas fa-ticket-alt me-1 text-success"></i>
+                                    Ticket No.
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rbtn_search_type" 
+                                       id="rbtn_search_type3" value="job_no">
+                                <label class="form-check-label" for="rbtn_search_type3">
+                                    <i class="fas fa-briefcase me-1 text-warning"></i>
+                                    Job No.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="col-12">
+                        <div class="row g-3">
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input class="form-control border-start-0 ps-0" 
+                                           id="cc_search_value" 
+                                           type="text" 
+                                           placeholder="Enter search keywords..."
+                                           aria-label="Search">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary w-100" id="btnRRJobSearch">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tickets Details Table -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <!-- Card Header -->
+            <div class="card-header bg-white border-bottom py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-primary bg-opacity-10 rounded-3 p-2">
+                            <i class="fas fa-ticket-alt text-primary fa-lg"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1 fw-semibold">Tickets Management</h5>
+                            <span class="badge bg-light text-dark rounded-pill" id="card_title"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Archive Button -->
+                    <button class="btn btn-outline-danger btn-sm" id="btnViewBatchlist">
+                        <i class="fas fa-archive me-2"></i>
+                        Archive Selected
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+                <!-- Status Legend -->
+                <div class="d-flex flex-wrap gap-4 mb-4 p-3 bg-light rounded-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-success rounded-circle p-2"></span>
+                        <small class="text-muted">Replies sent to client</small>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="table_list" width="100%">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="fw-semibold text-muted" style="width: 50px;">#</th>
+                                <th class="fw-semibold text-muted">Ticket No.</th>
+                                <th class="fw-semibold text-muted">Client Name</th>
+                                <th class="fw-semibold text-muted">Purpose</th>
+                                <th class="fw-semibold text-muted">Subject</th>
+                                <th class="fw-semibold text-muted text-center">Status</th>
+                                <th class="fw-semibold text-muted text-center">Priority</th>
+                                <th class="fw-semibold text-muted">Region</th>
+                                <th class="fw-semibold text-muted">Date Created</th>
+                                <th class="fw-semibold text-muted text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_body">
+                            <!-- Table data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 <!-- End Page Content -->
+ </div>
+</div>
 
  <!-- Reply Modal-->
    <div class="modal fade" id="replyModal" tabindex="-1">

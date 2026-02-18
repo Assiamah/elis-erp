@@ -5940,6 +5940,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String assessed_value_amount = request.getParameter("assessed_value_amount");
 				String assessed_comment = request.getParameter("assessed_comment");
 
+				System.out.print("stamp_duty_amount"+stamp_duty_amount);
+				System.out.print("assessed_value_amount"+assessed_value_amount);
+
 
 				// String land_size = request.getParameter("land_size");
 				// String locality_of_parcel =
@@ -6017,6 +6020,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				  System.out.println(json_data.toString());
 				 
 				 System.out.println(web_service_response);
+
 
 				 JSONObject jsonobj_bbd = new JSONObject(web_service_response);
 					String lessees_name = (String) jsonobj_bbd.getString("lessees_name");
