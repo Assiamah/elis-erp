@@ -15411,192 +15411,67 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Optional: Show additional loading indicator
                     },
                     success: function(response) {
-                        // Get Quill instance - try multiple approaches
-                        let quillInstance;
+                        // Get HugeRTE/TinyMCE instance
+                        const editor = hugerte.activeEditor; // Get currently active editor
                         
-                        // Method 1: Check if Quill instance is attached to the container
-                        const quillContainer = document.getElementById('lc_search_report_summary_details_2');
-                        if (quillContainer && quillContainer.__quill) {
-                            quillInstance = quillContainer.__quill;
-                        }
-                        // Method 2: Try to get it from the editor element
-                        else {
-                            const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-                            if (quillEditor && quillEditor.parentNode && quillEditor.parentNode.__quill) {
-                                quillInstance = quillEditor.parentNode.__quill;
-                            }
-                        }
-
-                        // Method 3: Direct DOM update if Quill instance not found
-                        if (!quillInstance) {
-                            // Fallback: Direct HTML update
-                            const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-                            if (quillEditor) {
-                                quillEditor.innerHTML = `<ol><li>${response}</li></ol>`;
-                                
-                                // Show success message (continue with your success Swal.fire code)
-                                Swal.fire({
-                                    title: 'Success!',
-                                    html: `<div class="text-center">
-                                            <div class="mb-3">
-                                                <i class="fas fa-file-contract text-success fa-3x"></i>
-                                            </div>
-                                            <h5 class="mb-2">Search Report Template Composed</h5>
-                                            <p class="text-muted">
-                                                Search report template has been successfully generated
-                                            </p>
-                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
-                                                <i class="fas fa-check me-2"></i>
-                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
-                                            </div>
-                                        </div>`,
-                                    icon: 'success',
-                                    confirmButtonText: 'View Template',
-                                    confirmButtonColor: '#198754',
-                                    showCancelButton: true,
-                                    cancelButtonText: 'Continue Editing',
-                                    width: 500
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        // Focus on the Quill editor
-                                        const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-                                        if (quillEditor) {
-                                            quillEditor.focus();
-                                            
-                                            // Optional: Scroll to the editor if needed
-                                            $('html, body').animate({
-                                                scrollTop: $(quillEditor).offset().top - 100
-                                            }, 500);
-                                        }
-                                    }
-                                });
-
-                                return; // Exit early
-                            }
-                        }
+                        // Alternative: Get specific editor by ID
+                        // const editor = hugerte.get('lc_search_report_summary_details_2');
                         
-                        // Update Quill editor with the composed template
-                        if (quillInstance && typeof quillInstance.setContents === 'function') {
-                            try {
-                                // Convert HTML to Delta format for Quill
-                                const delta = quillInstance.clipboard.convert({
-                                    html: `<ol><li>${response}</li></ol>`
-                                });
-                                quillInstance.setContents(delta, 'silent');
+                        if (editor) {
+                            // Set content in the editor
+                            editor.setContent(`<ol><li>${response}</li></ol>`);
                             
-                                // Show success message
-                                Swal.fire({
-                                    title: 'Success!',
-                                    html: `<div class="text-center">
-                                            <div class="mb-3">
-                                                <i class="fas fa-file-contract text-success fa-3x"></i>
-                                            </div>
-                                            <h5 class="mb-2">Search Report Template Composed</h5>
-                                            <p class="text-muted">
-                                                Search report template has been successfully generated
-                                            </p>
-                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
-                                                <i class="fas fa-check me-2"></i>
-                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
-                                            </div>
-                                        </div>`,
-                                    icon: 'success',
-                                    confirmButtonText: 'View Template',
-                                    confirmButtonColor: '#198754',
-                                    showCancelButton: true,
-                                    cancelButtonText: 'Continue Editing',
-                                    width: 500
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        // Focus on the Quill editor
-                                        const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-                                        if (quillEditor) {
-                                            quillEditor.focus();
-                                            
-                                            // Optional: Scroll to the editor if needed
-                                            $('html, body').animate({
-                                                scrollTop: $(quillEditor).offset().top - 100
-                                            }, 500);
-                                        }
-                                    }
-                                });
-
-                            } catch (error) {
-                                console.error('Error updating Quill:', error);
-                                // Fallback to direct HTML update
-                                const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-                                if (quillEditor) {
-                                    quillEditor.innerHTML = `<ol><li>${response}</li></ol>`;
-                                }
-                                Swal.fire({
-                                    title: 'Success!',
-                                    html: `<div class="text-center">
-                                            <div class="mb-3">
-                                                <i class="fas fa-file-contract text-success fa-3x"></i>
-                                            </div>
-                                            <h5 class="mb-2">Search Report Template Composed</h5>
-                                            <p class="text-muted">
-                                                Search report template has been successfully generated
-                                            </p>
-                                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
-                                                <i class="fas fa-check me-2"></i>
-                                                <strong>Details:</strong> Template generated for ${job_number}/${case_number}
-                                            </div>
-                                        </div>`,
-                                    icon: 'success',
-                                    confirmButtonText: 'View Template',
-                                    confirmButtonColor: '#198754',
-                                    showCancelButton: true,
-                                    cancelButtonText: 'Continue Editing',
-                                    width: 500
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        // Focus on the Quill editor
-                                        const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-                                        if (quillEditor) {
-                                            quillEditor.focus();
-                                            
-                                            // Optional: Scroll to the editor if needed
-                                            $('html, body').animate({
-                                                scrollTop: $(quillEditor).offset().top - 100
-                                            }, 500);
-                                        }
-                                    }
-                                });
-                            }
-                        } else {
-                            // Fallback: If Quill instance not found, show error
+                            // Show success message
                             Swal.fire({
-                                title: 'Editor Error',
+                                title: 'Success!',
                                 html: `<div class="text-center">
                                         <div class="mb-3">
-                                            <i class="fas fa-edit text-warning fa-3x"></i>
+                                            <i class="fas fa-file-contract text-success fa-3x"></i>
                                         </div>
-                                        <h5 class="mb-2">Unable to Update Editor</h5>
+                                        <h5 class="mb-2">Search Report Template Composed</h5>
                                         <p class="text-muted">
-                                            Template was generated but could not be inserted into the editor
+                                            Search report template has been successfully generated
                                         </p>
-                                        <div class="alert alert-warning mt-3">
-                                            <pre class="mb-0" style="max-height: 150px; overflow: auto;">${response}</pre>
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                            <i class="fas fa-check me-2"></i>
+                                            <strong>Details:</strong> Template generated for ${job_number}/${case_number}
                                         </div>
                                     </div>`,
-                                icon: 'warning',
-                                confirmButtonText: 'Copy Content',
-                                confirmButtonColor: '#ffc107',
+                                icon: 'success',
+                                confirmButtonText: 'View Template',
+                                confirmButtonColor: '#198754',
                                 showCancelButton: true,
-                                cancelButtonText: 'Close'
+                                cancelButtonText: 'Continue Editing',
+                                width: 500
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    // Copy to clipboard
-                                    navigator.clipboard.writeText(response);
-                                    Swal.fire({
-                                        title: 'Copied!',
-                                        text: 'Content copied to clipboard',
-                                        icon: 'success',
-                                        timer: 1500,
-                                        showConfirmButton: false
-                                    });
+                                    // Focus on the editor
+                                    editor.focus();
+                                    
+                                    // Optional: Scroll to the editor if needed
+                                    $('html, body').animate({
+                                        scrollTop: $('#lc_search_report_summary_details_2').offset().top - 100
+                                    }, 500);
                                 }
+                            });
+                        } else {
+                            // Fallback: Update textarea directly
+                            $(`#lc_search_report_summary_details_2`).val(`<ol><li>${response}</li></ol>`);
+                            
+                            Swal.fire({
+                                title: 'Success!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-file-contract text-success fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Search Report Template Composed</h5>
+                                        <p class="text-muted">
+                                            Search report template has been successfully generated
+                                        </p>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#198754'
                             });
                         }
                         
@@ -15641,18 +15516,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const job_number = $("#cs_main_job_number").val();
         const case_number = $("#cs_main_case_number").val();
         
-        // Get content from Quill editor
+        // Get content from HugeRTE/TinyMCE editor
         let search_report = '';
-        const quillEditor = document.querySelector('#lc_search_report_summary_details_2 .ql-editor');
-        if (quillEditor) {
-            search_report = quillEditor.innerHTML;
+        const editor = hugerte.activeEditor; // Get currently active editor
+        
+        if (editor) {
+            search_report = editor.getContent(); // Gets HTML content
         } else {
-            // Fallback to textarea if Quill not found
+            // Fallback to textarea if editor not found
             search_report = $("#lc_search_report_summary_details_2").val() || '';
         }
         
-        // Clean up Quill's empty paragraph
-        if (search_report === '<p><br></p>') {
+        // Clean up empty content
+        if (!search_report || search_report.trim() === '' || search_report === '<p></p>' || search_report === '<p><br></p>') {
             search_report = '';
         }
         
@@ -15671,9 +15547,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#fd7e14'
             }).then(() => {
-                // Focus on the Quill editor
-                if (quillEditor) {
-                    quillEditor.focus();
+                // Focus on the editor
+                if (editor) {
+                    editor.focus();
                 } else {
                     $("#lc_search_report_summary_details_2").focus();
                 }
@@ -15718,7 +15594,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <li><strong>Job Number:</strong> ${job_number}</li>
                                     <li><strong>Case Number:</strong> ${case_number}</li>
                                     <li><strong>Content:</strong> ${reportLength} characters, ${wordCount} words</li>
-                                    <li><strong>Format:</strong> ${quillEditor ? 'Rich Text' : 'Plain Text'}</li>
+                                    <li><strong>Format:</strong> Rich Text</li>
                                 </ul>
                             </div>
                         </div>
@@ -15815,11 +15691,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     width: 500
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.cancel) {
-                        // Focus on the Quill editor or textarea
-                        if (quillEditor) {
-                            quillEditor.focus();
+                        // Focus on the editor
+                        if (editor) {
+                            editor.focus();
                             $('html, body').animate({
-                                scrollTop: $(quillEditor).offset().top - 100
+                                scrollTop: $('#lc_search_report_summary_details_2').offset().top - 100
                             }, 500);
                         } else {
                             $("#lc_search_report_summary_details_2").focus();
@@ -15889,7 +15765,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('#btn_preview_search_report, #btn_preview_search_report_2, #btn_preview_search_report_3, #btn_preview_search_report_4').on('click', function(e) {
         var job_number = $("#cs_main_job_number").val();
-        var case_number = $("#cs_main_transaction_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var case_number = $("#cs_main_case_number").val();
         var business_process_sub_name = $("#cs_main_business_process_sub_name").val();
         
         $.ajax({
@@ -15898,7 +15775,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: {
                 request_type: 'request_to_generate_search_template',
                 job_number:job_number,
-                case_number:case_number,
+                case_number:transaction_number,
                 business_process_sub_name:business_process_sub_name,
                 signature:'No'
             },
@@ -21615,5 +21492,200 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
+   hugerte.init({
+        selector: '#lc_search_report_summary_details_2',
+        height: 600,
+        menubar: true,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+            'bold italic underline strikethrough | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | ' +
+            'link image media table | ' +
+            'forecolor backcolor emoticons | ' +
+            'removeformat | help',
+        toolbar_mode: 'floating',
+        content_style: `
+            body { 
+                font-family: 'Segoe UI', Arial, sans-serif; 
+                font-size: 14px; 
+                line-height: 1.6;
+                padding: 20px;
+            }
+            h1 { font-size: 24px; }
+            h2 { font-size: 20px; }
+            h3 { font-size: 18px; }
+        `,
+        
+        // Image upload handling (optional)
+        images_upload_url: 'upload.php', // Add your upload endpoint
+        images_upload_handler: function (blobInfo, success, failure) {
+            // Handle image uploads
+            setTimeout(function() {
+                success('data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64());
+            }, 1000);
+        },
+        
+        // Make it feel more like Word
+        setup: function(editor) {
+            editor.on('init', function() {
+                console.log('Editor initialized - ready to use!');
+            });
+            
+            // Add keyboard shortcuts like Word
+            editor.addShortcut('meta+s', 'Save', function() {
+                alert('Save content: ' + editor.getContent());
+                return false;
+            });
+        }
+    });
+
+    $("#btn_upload_signed_report").on("click", function() {
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val(); // Make sure this field exists or get it from somewhere else
+
+        Swal.fire({
+            title: 'Upload Signed Report',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-upload text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-2">Upload Signed Report</h5>
+                    <p class="text-muted mb-3">
+                        This will generate and upload the final signed report for:<br>
+                        <strong>Job #: ${job_number}</strong><br>
+                        <strong>Case #: ${transaction_number}</strong>
+                    </p>
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-0">
+                        <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                        <span class="small">This document will be added to the applicant's public record and cannot be removed.</span>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Upload Report',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Processing...',
+                    html: 'Generating and uploading signed report. Please wait...',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                    data: {
+                        request_type: 'request_to_generate_search_template_upload_search_report',
+                        job_number: job_number,
+                        case_number: transaction_number,
+                        business_process_sub_name: business_process_sub_name,
+                        cert_type: 'concurrence_certificate'
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob' // Important for handling PDF response
+                    },
+                    beforeSend: function() {
+                        // Optional: Show additional loading indicator
+                    },
+                    success: function(response, status, xhr) {
+                        // Check if response is PDF (success) or error message
+                        const contentType = xhr.getResponseHeader('content-type');
+                        
+                        if (contentType === 'application/pdf') {
+                            // Create a blob from the PDF response
+                            const blob = new Blob([response], { type: 'application/pdf' });
+                            const url = window.URL.createObjectURL(blob);
+                            
+                            // Close the upload modal
+                            $('#upload_signed_search_report').modal('hide');
+                            
+                            // Show success message with option to view/download
+                            Swal.fire({
+                                title: 'Upload Successful!',
+                                html: `<div class="text-center">
+                                        <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
+                                        <p class="mb-3">The signed search report has been successfully generated and uploaded to the applicant's public document.</p>
+                                        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            <span class="small">The document is now part of the official case record.</span>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: 'View Document',
+                                cancelButtonText: 'Close',
+                                confirmButtonColor: '#0d6efd'
+                            }).then((viewResult) => {
+                                if (viewResult.isConfirmed) {
+                                    // Open PDF in new window
+                                    window.open(url, '_blank');
+                                } else {
+                                    // Clean up the blob URL
+                                    window.URL.revokeObjectURL(url);
+                                }
+                            });
+                            
+                            // Optional: Trigger download automatically
+                            // const link = document.createElement('a');
+                            // link.href = url;
+                            // link.download = `${transaction_number}_search_report_letter.pdf`;
+                            // link.click();
+                        } else {
+                            // Handle error response (HTML error message)
+                            const reader = new FileReader();
+                            reader.onload = function() {
+                                Swal.fire({
+                                    title: 'Upload Failed',
+                                    text: reader.result || 'An error occurred while uploading the report.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            };
+                            reader.readAsText(response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Upload error:', error);
+                        console.error('Response:', xhr.responseText);
+                        
+                        let errorMessage = 'An error occurred while uploading the report.';
+                        
+                        // Try to parse error response if it's JSON
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            errorMessage = response.message || errorMessage;
+                        } catch (e) {
+                            // If not JSON, use status text
+                            errorMessage = xhr.statusText || errorMessage;
+                        }
+                        
+                        Swal.fire({
+                            title: 'Upload Failed',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+});

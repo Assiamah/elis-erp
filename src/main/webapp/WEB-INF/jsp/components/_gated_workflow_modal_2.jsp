@@ -2048,9 +2048,12 @@
                                                             style="min-height: 200px; padding: 1.5rem !important;"
                                                             placeholder="Enter certificate summary and details...">${remark_or_comment}
                                                 </textarea> -->
-                                                <div id="lc_search_report_summary_details_2" class="quill-editor" style="height: 300px;">
+                                                <!-- <div id="lc_search_report_summary_details_2" class="quill-editor" style="height: 300px;">
                                                     ${remark_or_comment}
-                                                </div>
+                                                </div> -->
+                                                <textarea id="lc_search_report_summary_details_2">
+                                                    ${remark_or_comment}
+                                                </textarea>
                                                 <div class="position-absolute top-0 end-0 p-3 text-muted">
                                                     <i class="fas fa-file-signature"></i>
                                                 </div>
@@ -2421,6 +2424,82 @@
 					<i class="fas fa-times me-2"></i>
 					Close Preview
 				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-blur effect-scale" id="upload_signed_search_report" tabindex="-1"
+	role="dialog" aria-labelledby="upload_signed_search_report_label" aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="upload_signed_search_report_label">
+                    <i class="fas fa-file-signature me-2"></i>
+                    Upload Signed Search Report
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+			
+			<div class="modal-body">
+				<!-- Description Section -->
+				<!-- <div class="alert alert-success bg-success bg-opacity-10 border-success mb-4">
+					<div class="d-flex">
+						<i class="fas fa-info-circle fa-lg me-3 mt-1 text-success"></i>
+						<div>
+							<h6 class="alert-heading mb-2">About Signed Report Upload</h6>
+							<p class="mb-2">Upload the final signed search report here. Once uploaded, this document will be attached to the applicant's public record and become part of the official case documentation.</p>
+						</div>
+					</div>
+				</div> -->
+				
+				<!-- Upload Information Banner -->
+				<div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
+					<div class="d-flex align-items-center">
+						<i class="fas fa-exclamation-triangle fa-lg me-3 text-warning"></i>
+						<div>
+							<strong>Important:</strong> This action will upload the final signed report to the applicant's public document. Please ensure you have the correct signed version before proceeding.
+						</div>
+					</div>
+				</div>
+				
+				<!-- Upload Section -->
+				<div class="text-center p-5 border-dashed rounded-3 bg-light" style="border: 2px dashed #ccc;">
+					<i class="fas fa-cloud-upload-alt text-primary fa-4x mb-3"></i>
+					<h5 class="mb-3">Upload Signed Search Report</h5>
+					<!-- <p class="text-muted mb-4">
+						Select the final signed search report file to upload. 
+						This document will be permanently attached to the applicant's public record.
+					</p> -->
+					
+					<div class="d-grid gap-2 d-md-flex justify-content-center">
+						<button type="button" id="btn_upload_signed_report" class="btn btn-primary btn-lg px-4">
+							<i class="fas fa-upload me-2"></i> 
+							<span class="fw-semibold">Upload Signed Report</span>
+						</button>
+					</div>
+					
+					<small class="text-muted d-block mt-4">
+						<i class="fas fa-exclamation-circle me-1"></i>
+						Note: Once uploaded, this document will be added to the applicant's public record and cannot be removed.
+					</small>
+				</div>
+			</div>
+			
+			<div class="modal-footer bg-light">
+				<button type="button" 
+					class="btn btn-outline-secondary"
+					data-bs-dismiss="modal">
+					<i class="fas fa-times me-2"></i>
+					Cancel
+				</button>
+				<!-- <button type="button" 
+					class="btn btn-outline-primary"
+					disabled>
+					<i class="fas fa-upload me-2"></i>
+					Upload
+				</button> -->
 			</div>
 		</div>
 	</div>

@@ -106,6 +106,9 @@
 <!-- TableToJSON plugin -->
 <script src="${pageContext.request.contextPath}/assets/vendor/jquery/jquery.tabletojson.js"></script>
 
+<!-- HugeRTE - 100% free MIT licensed Word-like editor -->
+<script src="https://cdn.jsdelivr.net/npm/hugerte@1/hugerte.min.js"></script>
+
 <script>
 
 window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.location.href) {

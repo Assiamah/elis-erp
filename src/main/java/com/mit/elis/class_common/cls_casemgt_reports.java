@@ -19,15 +19,13 @@ import java.time.Month;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -8478,17 +8476,12 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
+			System.out.print("remark_or_comment1: " + remark_or_comment1);
+
 			try {
 				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
-					if (remark_or_comment1.contains("<ol>") || remark_or_comment1.contains("<li>")) {
-						// Use programmatic list creation
-						addListToDocument(document, remark_or_comment1);
-					} else {
-						// For plain text, just add as paragraph
-						Paragraph para = new Paragraph(remark_or_comment1, 
-							new Font(Font.FontFamily.TIMES_ROMAN, 12));
-						document.add(para);
-					}
+					// This will handle both numbered lists and regular text
+					addListToDocument(document, remark_or_comment1);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -8854,38 +8847,357 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 	}
 
 	private void addListToDocument(Document document, String htmlContent) throws Exception {
-		// Extract text from list items
-		Pattern liPattern = Pattern.compile("<li[^>]*>(.*?)</li>", Pattern.DOTALL);
-		Matcher liMatcher = liPattern.matcher(htmlContent);
-		
-		// Create an ordered list
-		com.itextpdf.text.List list = new com.itextpdf.text.List(
-			com.itextpdf.text.List.ORDERED
-		);
-		list.setAutoindent(true);
-		list.setIndentationLeft(20);
-		
-		Font listFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
-		
-		while (liMatcher.find()) {
-			String liContent = liMatcher.group(1);
-			
-			// Remove all HTML tags to get plain text
-			String textOnly = liContent
-				.replaceAll("<[^>]+>", " ")  // Remove HTML tags
-				.replaceAll("\\s+", " ")      // Collapse multiple spaces
-				.trim();
-			
-			if (!textOnly.isEmpty()) {
-				ListItem item = new ListItem(textOnly, listFont);
-				list.add(item);
-			}
-		}
-		
-		if (list.size() > 0) {
-			document.add(list);
-		}
-	}
+    if (htmlContent == null || htmlContent.trim().isEmpty()) {
+        return;
+    }
+    
+    // Check if content has mixed elements (paragraphs + lists)
+    if (htmlContent.contains("<p>") && (htmlContent.contains("<ol>") || htmlContent.contains("<li>"))) {
+        // Mixed content - process in order
+        processMixedContent(document, htmlContent);
+    }
+    // Check if this is a numbered list (contains <ol> or <li>)
+    else if (htmlContent.contains("<ol>") || htmlContent.contains("<li>")) {
+        // Parse as a numbered list
+        addNumberedListToDocument(document, htmlContent);
+    } else {
+        // Add as regular paragraph
+        Paragraph para = new Paragraph(cleanText(htmlContent), 
+            new Font(Font.FontFamily.TIMES_ROMAN, 12));
+        document.add(para);
+    }
+}
+
+private void processMixedContent(Document document, String htmlContent) throws Exception {
+    // Split by <p> and <ol> tags to process in order
+    Pattern pattern = Pattern.compile("(<p>.*?</p>|<ol>.*?</ol>)", Pattern.DOTALL);
+    Matcher matcher = pattern.matcher(htmlContent);
+    
+    while (matcher.find()) {
+        String block = matcher.group(1);
+        
+        if (block.startsWith("<p>")) {
+            // Process paragraph WITH formatting preserved
+            processFormattedParagraph(document, block);
+        } 
+        else if (block.startsWith("<ol>")) {
+            // Process list
+            addNumberedListToDocument(document, block);
+        }
+    }
+}
+
+private void processFormattedParagraph(Document document, String htmlParagraph) throws Exception {
+    // Extract the inner content without <p> tags
+    String innerContent = htmlParagraph.replaceAll("^<p>|</p>$", "");
+    
+    // Create a paragraph to hold formatted content
+    Paragraph paragraph = new Paragraph();
+    paragraph.setFont(new Font(Font.FontFamily.TIMES_ROMAN, 12));
+    
+    // Process the HTML to extract formatted text
+    processHtmlToParagraph(innerContent, paragraph);
+    
+    if (paragraph.size() > 0) {
+        document.add(paragraph);
+    }
+}
+
+private void processHtmlToParagraph(String html, Paragraph paragraph) {
+    int index = 0;
+    while (index < html.length()) {
+        if (html.startsWith("<strong>", index) || html.startsWith("<b>", index)) {
+            // Handle bold text
+            String tag = html.startsWith("<strong>", index) ? "<strong>" : "<b>";
+            int endTagIndex = html.indexOf("</" + tag.substring(1, tag.length() - 1) + ">", index);
+            if (endTagIndex > index) {
+                String content = html.substring(index + tag.length(), endTagIndex);
+                
+                // Create bold chunk
+                Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+                Chunk boldChunk = new Chunk(content, boldFont);
+                paragraph.add(boldChunk);
+                
+                index = endTagIndex + tag.replace("<", "</").length();
+            } else {
+                index++;
+            }
+        }
+        else if (html.startsWith("<span", index)) {
+            // Handle span tags with styles
+            int spanEnd = html.indexOf('>', index);
+            if (spanEnd > index) {
+                String spanTag = html.substring(index, spanEnd + 1);
+                int closingSpanIndex = html.indexOf("</span>", index);
+                
+                if (closingSpanIndex > index) {
+                    String content = html.substring(spanEnd + 1, closingSpanIndex);
+                    
+                    // Check for underline style
+                    Font spanFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+                    if (spanTag.contains("underline")) {
+                        spanFont.setStyle(Font.UNDERLINE);
+                    }
+                    
+                    // Process any nested formatting in the content
+                    processHtmlToParagraph(content, paragraph);
+                    
+                    index = closingSpanIndex + 7;
+                } else {
+                    index++;
+                }
+            } else {
+                index++;
+            }
+        }
+        else if (html.startsWith("<u>", index)) {
+            // Handle underline tag
+            int endTagIndex = html.indexOf("</u>", index);
+            if (endTagIndex > index) {
+                String content = html.substring(index + 3, endTagIndex);
+                
+                Font underlineFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+                underlineFont.setStyle(Font.UNDERLINE);
+                Chunk underlineChunk = new Chunk(content, underlineFont);
+                paragraph.add(underlineChunk);
+                
+                index = endTagIndex + 4;
+            } else {
+                index++;
+            }
+        }
+        else if (html.startsWith("</", index)) {
+            // Skip closing tags
+            int closeTagEnd = html.indexOf('>', index);
+            if (closeTagEnd > index) {
+                index = closeTagEnd + 1;
+            } else {
+                index++;
+            }
+        }
+        else {
+            // Regular text
+            int nextTag = html.indexOf('<', index);
+            if (nextTag == -1) {
+                // No more tags, add remaining text
+                String text = html.substring(index).trim();
+                if (!text.isEmpty()) {
+                    Chunk textChunk = new Chunk(text, new Font(Font.FontFamily.TIMES_ROMAN, 12));
+                    paragraph.add(textChunk);
+                }
+                break;
+            } else {
+                String text = html.substring(index, nextTag);
+                if (!text.isEmpty()) {
+                    Chunk textChunk = new Chunk(text, new Font(Font.FontFamily.TIMES_ROMAN, 12));
+                    paragraph.add(textChunk);
+                }
+                index = nextTag;
+            }
+        }
+    }
+}
+
+// Also update the list item processing to handle formatting
+private void addNumberedListToDocument(Document document, String htmlContent) throws Exception {
+    com.itextpdf.text.List pdfList = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED);
+    pdfList.setAutoindent(true);
+    pdfList.setIndentationLeft(20);
+    
+    // Set numbering style for top level (1, 2, 3)
+    pdfList.setNumbered(true);
+    pdfList.setLettered(false);
+    
+    // Extract the list content without the outer <ol> tags
+    String listContent = htmlContent.replaceAll("^<ol>|</ol>$", "");
+    
+    // Parse the list content to separate top-level items
+    java.util.ArrayList<TopLevelItem> topLevelItems = parseTopLevelItems(listContent);
+    
+    for (TopLevelItem topItem : topLevelItems) {
+        // Add the main item WITH formatting
+        if (!topItem.mainText.isEmpty()) {
+            // Create a ListItem with the main text (formatting will be handled in the main text)
+            ListItem mainItem = new ListItem();
+            
+            // Parse the main text for formatting
+            Paragraph itemParagraph = new Paragraph();
+            processHtmlToParagraph(topItem.mainText, itemParagraph);
+            
+            // Transfer chunks from paragraph to list item
+            for (Element element : itemParagraph) {
+                if (element instanceof Chunk) {
+                    mainItem.add(element);
+                }
+            }
+            
+            pdfList.add(mainItem);
+        }
+        
+        // Add nested list if it exists
+        if (topItem.hasNestedList && topItem.nestedItems != null && !topItem.nestedItems.isEmpty()) {
+            com.itextpdf.text.List nestedList = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED);
+            nestedList.setAutoindent(true);
+            nestedList.setIndentationLeft(40);
+            nestedList.setNumbered(false);
+            nestedList.setLettered(true);
+            nestedList.setLowercase(List.LOWERCASE);
+            
+            for (String nestedText : topItem.nestedItems) {
+                if (!nestedText.isEmpty()) {
+                    ListItem nestedItem = new ListItem();
+                    
+                    // Parse nested text for formatting
+                    Paragraph nestedParagraph = new Paragraph();
+                    processHtmlToParagraph(nestedText, nestedParagraph);
+                    
+                    for (Element element : nestedParagraph) {
+                        if (element instanceof Chunk) {
+                            nestedItem.add(element);
+                        }
+                    }
+                    
+                    nestedList.add(nestedItem);
+                }
+            }
+            
+            if (nestedList.size() > 0) {
+                pdfList.add(nestedList);
+            }
+        }
+    }
+    
+    if (pdfList.size() > 0) {
+        document.add(pdfList);
+    }
+}
+
+// Update parseTopLevelItems to preserve HTML in mainText
+private java.util.ArrayList<TopLevelItem> parseTopLevelItems(String listContent) {
+    java.util.ArrayList<TopLevelItem> items = new java.util.ArrayList<>();
+    
+    int index = 0;
+    while (index < listContent.length()) {
+        // Find the next <li> tag
+        int liStart = listContent.indexOf("<li>", index);
+        if (liStart == -1) break;
+        
+        // Find the corresponding closing </li> tag
+        int liEnd = findClosingLiTag(listContent, liStart);
+        if (liEnd == -1) break;
+        
+        // Extract the full li content (preserve HTML)
+        String fullLiContent = listContent.substring(liStart + 4, liEnd);
+        
+        // Check if this li contains a nested list
+        if (fullLiContent.contains("<ol")) {
+            // Find where the nested list starts
+            int nestedStart = fullLiContent.indexOf("<ol");
+            
+            // Main text is before the nested list (preserve HTML)
+            String mainText = fullLiContent.substring(0, nestedStart);
+            
+            // Extract nested list content
+            String nestedContent = fullLiContent.substring(nestedStart);
+            
+            // Parse nested items (preserve HTML)
+            java.util.ArrayList<String> nestedItems = parseNestedItems(nestedContent);
+            
+            // Don't clean the mainText - preserve HTML
+            items.add(new TopLevelItem(mainText, true, nestedItems));
+        } else {
+            // No nested list - preserve HTML
+            items.add(new TopLevelItem(fullLiContent, false, null));
+        }
+        
+        index = liEnd + 5; // Move past </li>
+    }
+    
+    return items;
+}
+
+private int findClosingLiTag(String content, int startPos) {
+    int nestedLevel = 0;
+    int pos = startPos + 4; // Start after <li>
+    
+    while (pos < content.length()) {
+        if (content.startsWith("<li>", pos)) {
+            nestedLevel++;
+            pos += 4;
+        } else if (content.startsWith("</li>", pos)) {
+            if (nestedLevel == 0) {
+                return pos;
+            } else {
+                nestedLevel--;
+                pos += 5;
+            }
+        } else if (content.startsWith("<ol", pos) || content.startsWith("<ul", pos)) {
+            nestedLevel++;
+            pos = content.indexOf('>', pos) + 1;
+        } else if (content.startsWith("</ol>", pos) || content.startsWith("</ul>", pos)) {
+            nestedLevel--;
+            pos += 5;
+        } else {
+            pos++;
+        }
+    }
+    
+    return -1;
+}
+
+// Update parseNestedItems to preserve HTML
+private java.util.ArrayList<String> parseNestedItems(String nestedHtml) {
+    java.util.ArrayList<String> nestedItems = new java.util.ArrayList<>();
+    
+    // Remove the outer <ol> tags but keep inner HTML
+    String nestedContent = nestedHtml.replaceAll("<ol[^>]*>|</ol>", "");
+    
+    int index = 0;
+    while (index < nestedContent.length()) {
+        int liStart = nestedContent.indexOf("<li>", index);
+        if (liStart == -1) break;
+        
+        int liEnd = nestedContent.indexOf("</li>", liStart);
+        if (liEnd == -1) break;
+        
+        // Preserve HTML formatting
+        String itemText = nestedContent.substring(liStart + 4, liEnd);
+        nestedItems.add(itemText); // Don't clean, preserve HTML
+        
+        index = liEnd + 5;
+    }
+    
+    return nestedItems;
+}
+
+// Keep the TopLevelItem class as is
+private static class TopLevelItem {
+    String mainText;
+    boolean hasNestedList;
+    java.util.ArrayList<String> nestedItems;
+    
+    TopLevelItem(String mainText, boolean hasNestedList, java.util.ArrayList<String> nestedItems) {
+        this.mainText = mainText;
+        this.hasNestedList = hasNestedList;
+        this.nestedItems = nestedItems;
+    }
+}
+
+private String cleanText(String text) {
+    if (text == null) return "";
+    
+    // Remove HTML tags but preserve line breaks
+    String cleaned = text.replaceAll("<br\\s*/?>", "\n")
+                         .replaceAll("<p>", "\n")
+                         .replaceAll("</p>", "")
+                         .replaceAll("<[^>]+>", " ")
+                         .replaceAll("&nbsp;", " ")
+                         .replaceAll("\\s+", " ")
+                         .trim();
+    
+    return cleaned;
+}
+	
 	public byte[] create_search_report_pvlmd_old(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number, String job_number,
 			String fullname,
@@ -10910,8 +11222,27 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			//remark_or_comment_bob
 
 // Replace a value in the string
-remark_or_comment1= remark_or_comment1.replace("<ol><li>", "<html><body><p>");
-remark_or_comment1= remark_or_comment1.replace("</li></ol>", "</p></body></html>");
+// remark_or_comment1= remark_or_comment1.replace("<ol><li>", "<html><body><p>");
+// remark_or_comment1= remark_or_comment1.replace("</li></ol>", "</p></body></html>");
+
+			try {
+    if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
+        // This will handle both numbered lists and regular text
+        addListToDocument(document, remark_or_comment1);
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+    // Fallback to plain text
+    try {
+        Paragraph fallback = new Paragraph(
+            remark_or_comment1.replaceAll("<[^>]+>", ""),
+            new Font(Font.FontFamily.TIMES_ROMAN, 12)
+        );
+        document.add(fallback);
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+}
 
 // Output the result
 //System.out.println(updatedString);  // Output: "This is the new comment."

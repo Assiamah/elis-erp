@@ -29,12 +29,12 @@
         theme: 'snow'
     });
 
-    const quill2 = new Quill('#lc_search_report_summary_details_2', {
-        modules: {
-            toolbar: toolbarOptions
-        },
-        theme: 'snow'
-    });
+    // const quill2 = new Quill('#lc_search_report_summary_details_2', {
+    //     modules: {
+    //         toolbar: toolbarOptions
+    //     },
+    //     theme: 'snow'
+    // });
 
     const quill3 = new Quill('#lc_search_report_summary_details_3', {
         modules: {
