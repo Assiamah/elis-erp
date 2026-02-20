@@ -2033,28 +2033,27 @@ public class GenerateCaseReports {
 			// File pdfFile = new File(contextPath + pdfFileName);
 		//byte[] buffer = null;
 			
-	// 	JSONObject pdf_upload_obj = new JSONObject();
-	// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
 
+
+		// JSONObject pdf_upload_obj = new JSONObject();
+		// String base64Encoded = Base64.getEncoder().encodeToString(buffer);
 	
-	// 	pdf_upload_obj.put("jobNumber", job_number);
-	// 	pdf_upload_obj.put("caseNumber",case_number);
-	// 	pdf_upload_obj.put("fileData",base64Encoded);
+		// pdf_upload_obj.put("jobNumber", job_number);
+		// pdf_upload_obj.put("caseNumber",case_number);
+		// pdf_upload_obj.put("fileData",base64Encoded);
 					
-	
-	// 	pdf_upload_obj.put("doc_name",job_number);
-	// 	pdf_upload_obj.put("doc_description","Service Bill");
-	// 	pdf_upload_obj.put("doc_category","public_docs");
-	// 	pdf_upload_obj.put("doc_app_uploaded","elis");
-	// 	pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
-	// 	pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
-	// 	pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+		// pdf_upload_obj.put("doc_name",job_number);
+		// pdf_upload_obj.put("doc_description","SearchReport");
+		// pdf_upload_obj.put("doc_category","public_docs");
+		// pdf_upload_obj.put("doc_app_uploaded","elis");
+		// pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+		// pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+		// pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+
+	    // String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	    // cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
 		
-	
-
-	//  String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
-	//  cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
-
 		if (buffer != null) {
 			// Set response content type to PDF
 			response.setContentType("application/pdf");
@@ -2071,6 +2070,129 @@ public class GenerateCaseReports {
 			// Flush the output stream
 			response.getOutputStream().flush();
 			
+			// Close the output stream
+			response.getOutputStream().close();
+		} else {
+			// Handle the case where the PDF generation failed
+			response.setContentType("text/html");
+			response.getWriter().write("Error generating PDF.");
+		}
+		}
+
+
+
+
+		if (request_type.equals("request_to_generate_search_template_upload_search_report")) {
+
+			String case_number = request.getParameter("case_number");
+			String job_number = request.getParameter("job_number");
+			String fullname = (String) session.getAttribute("fullname"); 
+			String mac_address = (String) session.getAttribute("mac_address"); 
+			String ip_address =  (String) session.getAttribute("ip_address");
+
+			String division = (String) session.getAttribute("division");
+
+			String designation = (String) session.getAttribute("designation");
+			String business_process_sub_name = request.getParameter("business_process_sub_name");
+			String signature = request.getParameter("signature");
+
+				String userid = (String) session.getAttribute("userid");
+
+			System.out.println(request_type);
+
+			String contextPath = cls_url_config.getPublic_docs_upload_location();
+			String case_docs_location = cls_url_config.getCase_upload_location();
+
+			String sign_path = cls_url_config.getSample_sign_location();
+
+			String pdfFileName = case_number + "_search_report_letter" + timeStamp + ".pdf";
+
+			// String pdfFileName = "timer.pdf";
+
+			// String contextPath =
+			// getServletContext().getRealPath(File.separator);
+			File pdfFile = new File(contextPath + case_number + "/" + pdfFileName);
+			File files_pdf_jackets = new File(contextPath + case_number);
+			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
+
+			try {
+
+				if  (business_process_sub_name.equals("APPLICATION FOR OFFICIAL SEARCH (CONSOLIDATED)")) {
+					
+					buffer = case_reports_cl.create_search_report_lc_consolidated_search(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(),cls_url_config.getSoftfile_location(),
+							case_number, job_number, files_pdf_jackets_p, sign_path, case_docs_location, contextPath);
+			
+				}
+					JSONObject upload_obj = new JSONObject();
+					upload_obj.put("jobNumber", job_number);
+					upload_obj.put("caseNumber",case_number);
+					upload_obj.put("fullname",fullname);
+					upload_obj.put("userid",userid);
+					
+
+					 String pdf_upload_response= casemgt_cl.select_complete_search_report_after_upload(cls_url_config.getWeb_service_url_ser(),
+						 cls_url_config.getWeb_service_url_ser_api_key(),upload_obj.toString());
+
+				// buffer = case_reports_cl.create_search_report_smd(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),cls_url_config.getSoftfile_location(),case_number,
+				// job_number, fullname, files_pdf_jackets_p);
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		JSONObject pdf_upload_obj = new JSONObject();
+		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+	
+		pdf_upload_obj.put("jobNumber", job_number);
+		pdf_upload_obj.put("caseNumber",case_number);
+		pdf_upload_obj.put("fileData",base64Encoded);
+					
+		pdf_upload_obj.put("doc_name",job_number);
+		pdf_upload_obj.put("doc_description","SearchReport");
+		pdf_upload_obj.put("doc_category","public_docs");
+		pdf_upload_obj.put("doc_app_uploaded","elis");
+		pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+
+
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
+
+
+
+	    String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	    cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
+		
+		if (buffer != null) {
+			// Set response content type to PDF
+			response.setContentType("application/pdf");
+			// Set the content-disposition header to download the file with the specified name
+			response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+			// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+			response.setContentLength(buffer.length);
+			// Write the PDF byte array to the output stream to download it
+			response.getOutputStream().write(buffer, 0, buffer.length);
+			// Flush the output stream
+			response.getOutputStream().flush();
 			// Close the output stream
 			response.getOutputStream().close();
 		} else {
