@@ -242,7 +242,7 @@
                                                 <th>Applicant Name</th>
                                                 <th>Application Type</th>
                                                 <th>Status</th>
-                                                <th>Sent By</th>
+                                                <th class="officerInd">Sent By</th>
                                                 <th>Locality</th>
                                                 <th>Type of Plotting</th>
                                                 <th>Actions</th>

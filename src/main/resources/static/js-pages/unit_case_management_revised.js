@@ -284,6 +284,8 @@ $(document).ready(function() {
 					LoadUnitApplications(inbox_type)
 				}
 
+				$(".officerInd").text("Assigned To");
+
 			case 6:
 				if(ctrq_6 > 500) {
 
@@ -827,6 +829,8 @@ $(document).ready(function() {
 				// Remove all active state classes first
             	removeAllActiveStates();
 
+				console.log(json_p.data);
+
 
 				$(json_p.data).each(function() {
 					datatable.row.add([
@@ -864,7 +868,7 @@ $(document).ready(function() {
 						((this.objections || 0) > 0 ? '<i class="fas fa-exclamation-circle ml-1 text-danger" data-toggle="tooltip" title="Has Objections"></i>' : ''),
 
 						// 6: Sent By
-						'<span class="small">' + (this.job_forwarded_by || '') + '</span>',
+						'<span class="small">' + (inbox_type == 5 ? this.job_recieved_by || '' : this.job_forwarded_by || '') + '</span>',
 
 						// 7: Locality
 						'<span class="small">' + (this.locality || '') + '</span>',
