@@ -475,7 +475,7 @@ public class ws_compliance {
 			// TODO: change this endpoint to get officers within units with past
 			// due applications in a year
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/report_dashboard_unit_within_each_unit");
+					web_service_url + "compliance_service/report_dashboard_unit_within_each_unit_v5");
 			ClientResponse response = webResource.accept("application/json")
 					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {
@@ -544,7 +544,7 @@ public class ws_compliance {
 			Client client = Client.create();
 
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/report_dashboard_unit_within_each_unit");
+					web_service_url + "compliance_service/report_dashboard_unit_within_each_unit_v5");
 			ClientResponse response = webResource.accept("application/json")
 					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {

@@ -21606,8 +21606,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     success: function(response, status, xhr) {
                         // Check if response is PDF (success) or error message
+                             console.log(response)
                         const contentType = xhr.getResponseHeader('content-type');
-                        
+                        console.log(contentType)
                         if (contentType === 'application/pdf') {
                             // Create a blob from the PDF response
                             const blob = new Blob([response], { type: 'application/pdf' });

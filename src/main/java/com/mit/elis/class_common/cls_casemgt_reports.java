@@ -8476,12 +8476,13 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
-			System.out.print("remark_or_comment1: " + remark_or_comment1);
-
+		//	System.out.print("remark_or_comment1: " + remark_or_comment1);
 			try {
 				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 					// This will handle both numbered lists and regular text
 					addListToDocument(document, remark_or_comment1);
+
+						//System.out.print("remark_or_comment2: " + "Jamhde");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -8542,6 +8543,8 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
+
+			System.out.print("remark_or_comment3: " + remark_or_comment1);
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date1);
 			// String formatted_date_of_registration = formatter.format(date1);

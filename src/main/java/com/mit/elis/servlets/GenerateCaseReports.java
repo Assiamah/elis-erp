@@ -2118,11 +2118,13 @@ public class GenerateCaseReports {
 			try {
 
 				if  (business_process_sub_name.equals("APPLICATION FOR OFFICIAL SEARCH (CONSOLIDATED)")) {
-					
+					System.out.println("contextPath-0");
 					buffer = case_reports_cl.create_search_report_lc_consolidated_search(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(),cls_url_config.getSoftfile_location(),
 							case_number, job_number, files_pdf_jackets_p, sign_path, case_docs_location, contextPath);
 			
+							System.out.println("contextPath");
+							System.out.println("Search_report_completed");
 				}
 					JSONObject upload_obj = new JSONObject();
 					upload_obj.put("jobNumber", job_number);
@@ -2133,6 +2135,8 @@ public class GenerateCaseReports {
 
 					 String pdf_upload_response= casemgt_cl.select_complete_search_report_after_upload(cls_url_config.getWeb_service_url_ser(),
 						 cls_url_config.getWeb_service_url_ser_api_key(),upload_obj.toString());
+
+					//	 System.out.println(upload_obj.toString());
 
 				// buffer = case_reports_cl.create_search_report_smd(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),cls_url_config.getSoftfile_location(),case_number,
 				// job_number, fullname, files_pdf_jackets_p);
@@ -2147,12 +2151,16 @@ public class GenerateCaseReports {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		
 		JSONObject pdf_upload_obj = new JSONObject();
 		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
 	
 		pdf_upload_obj.put("jobNumber", job_number);
 		pdf_upload_obj.put("caseNumber",case_number);
 		pdf_upload_obj.put("fileData",base64Encoded);
+
+
+		//	 System.out.println(base64Encoded);
 					
 		pdf_upload_obj.put("doc_name",job_number);
 		pdf_upload_obj.put("doc_description","SearchReport");
@@ -2181,7 +2189,8 @@ public class GenerateCaseReports {
 	    String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	    cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
 
-		
+		System.out.println("buffer");
+		System.out.println(buffer);
 		if (buffer != null) {
 			// Set response content type to PDF
 			response.setContentType("application/pdf");
