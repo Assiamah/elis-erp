@@ -176,7 +176,7 @@
                                             </div>
                                         </th> -->
                                         <th>Job Details</th>
-                                        <th>Applicantion Type</th>
+                                        <th>Application Type</th>
                                         <th>Job Category</th>
                                         <th>Purpose</th>
                                         <th>Sent By</th>
@@ -215,7 +215,7 @@
                                             </div>
                                         </td>
                                         
-                                        <!-- Applicantion Type -->
+                                        <!-- Application Type -->
                                         <td>
                                             <span class="small">
                                                 ${appfiles.business_process_sub_name}

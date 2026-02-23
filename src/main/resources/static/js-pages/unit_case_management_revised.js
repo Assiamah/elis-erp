@@ -829,7 +829,7 @@ $(document).ready(function() {
 				// Remove all active state classes first
             	removeAllActiveStates();
 
-				console.log(json_p.data);
+				// console.log(json_p.data);
 
 
 				$(json_p.data).each(function() {
@@ -926,6 +926,7 @@ $(document).ready(function() {
 									'<i class="fas fa-eye"></i>' +
 								'</button>' +
 							'</form>' +
+							(inbox_type == 1 ? '' :
 							'<form action="request_application_progress_details_ai" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="transaction_number" value="' + this.transaction_number + '">' +
@@ -935,7 +936,7 @@ $(document).ready(function() {
 								'<button type="submit" name="save" class="btn btn-icon btn-sm me-1 btn-outline-danger btn-wave waves-effect waves-light to_hide_on_level_1" data-bs-custom-class="tooltip-primary" title="Work" data-bs-toggle="tooltip">' +
 									'<i class="fas fa-folder-open"></i>' +
 								'</button>' +
-							'</form>' +
+							'</form>' )+
 						'</div>'
 					]).draw(false);
 					
