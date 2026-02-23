@@ -4618,7 +4618,7 @@
 					</div>
 					<div class="custom-control custom-radio custom-control-inline exclude_all">
 					  <input type="radio" id="adv_filter_type_2" name="adv_search_type" class="custom-control-input" value="f_app_type" required>
-					  <label class="custom-control-label" for="adv_filter_type_2">Applicantion Type</label>
+					  <label class="custom-control-label" for="adv_filter_type_2">Application Type</label>
 					</div>
 					<div class="custom-control custom-radio custom-control-inline exclude_all">
 						<input type="radio" id="adv_filter_type_3" name="adv_search_type" class="custom-control-input" value="f_date_range" required>
@@ -4757,7 +4757,7 @@
 					</div>
 					<div class="custom-control custom-radio custom-control-inline exclude_all">
 					  <input type="radio" id="adv_filter_type_2fr" name="adv_search_type" class="custom-control-input" value="f_app_type" required>
-					  <label class="custom-control-label" for="adv_filter_type_2fr">Applicantion Type</label>
+					  <label class="custom-control-label" for="adv_filter_type_2fr">Application Type</label>
 					</div>
 					<div class="custom-control custom-radio custom-control-inline exclude_all">
 						<input type="radio" id="adv_filter_type_3fr" name="adv_search_type" class="custom-control-input" value="f_date_range" required>

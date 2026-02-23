@@ -4088,11 +4088,35 @@ $('#newQueryModal').on('show.bs.modal', function (event) {
 function populateEditMode(button, modal) {
     $("#qid").val(button.data('id'));
 
+    const normalizedCreatedDate = button.data('created_date').replace('|', '');
+    const createdDate = new Date(normalizedCreatedDate);
+    createdDate.setMinutes(createdDate.getMinutes() + 5);
+    const formattedCreatedDate = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    }).format(createdDate);
+
+    const normalizedModifiedDate = button.data('modified_date').replace('|', '');
+    const modifiedDate = new Date(normalizedModifiedDate);
+    modifiedDate.setMinutes(modifiedDate.getMinutes() + 5);
+    const formattedModifiedDate = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    }).format(modifiedDate);
+
     // Populate fields from button data attributes
     $("#query_created_by").val(button.data('created_by') || '');
-    $("#query_created_date").val(formatDateForDisplay(button.data('created_date')) || '');
+    $("#query_created_date").val((formattedCreatedDate || ''));
     $("#query_modified_by").val(button.data('modified_by') || button.data('created_by') || '');
-    $("#query_modified_date").val(formatDateForDisplay(button.data('modified_date')) || formatDateForDisplay(button.data('created_date')) || '');
+    $("#query_modified_date").val((formattedModifiedDate || formattedCreatedDate) || '');
     $("#query_status").val(button.data('status') || '1');
     $("#query_reasons").val(button.data('reasons') || '');
     $("#query_remarks").val(button.data('remarks') || '');

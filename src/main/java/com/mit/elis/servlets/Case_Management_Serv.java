@@ -3745,7 +3745,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("job_number", job_number);
 
 				obj.put("region_code", region_code);
-				obj.put("number_format", "DN");
+				obj.put("number_format", "DEED_NUMBER");
 			
 
 				obj.put("fullname", fullname); 
@@ -3796,7 +3796,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("job_number", job_number);
 
 				obj.put("region_code", region_code);
-				obj.put("number_format", "LS");
+				obj.put("number_format", "LS_NUMBER");
 			
 
 				obj.put("fullname", fullname); 

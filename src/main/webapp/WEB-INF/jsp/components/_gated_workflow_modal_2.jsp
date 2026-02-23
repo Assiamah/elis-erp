@@ -2237,8 +2237,8 @@
                                 <div class="form-group">
                                     <div class="row g-3">
                                         <div class="col-12">
-                                            <label for="lc_search_report_summary_details_2" class="form-label">Report Summary</label>
-                                            <!-- <textarea id="lc_search_report_summary_details_2" 
+                                            <label for="lc_search_report_summary_details_3" class="form-label">Report Summary</label>
+                                            <!-- <textarea id="lc_search_report_summary_details_3" 
                                                 name="lc_search_report_summary_details" 
                                                 class="form-control" 
                                                 required 
@@ -2254,9 +2254,12 @@
                                                             style="min-height: 200px; padding: 1.5rem !important;"
                                                             placeholder="Enter certificate summary and details...">${remark_or_comment}
                                                 </textarea> -->
-                                                <div id="lc_search_report_summary_details_3" class="quill-editor" style="height: 300px;">
+                                                <!-- <div id="lc_search_report_summary_details_3" class="quill-editor" style="height: 300px;">
                                                     ${remark_or_comment}
-                                                </div>
+                                                </div> -->
+                                                <textarea id="lc_search_report_summary_details_3">
+                                                    ${remark_or_comment}
+                                                </textarea>
                                                 <div class="position-absolute top-0 end-0 p-3 text-muted">
                                                     <i class="fas fa-file-signature"></i>
                                                 </div>

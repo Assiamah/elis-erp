@@ -87,7 +87,7 @@ public class lc_case_query_serv {
 
 			if (request_type.equals("select_lc_case_query_add_and_update")) {
 				JSONArray jsonArr = new JSONArray();
-				JSONObject obj = new JSONObject();
+				JSONObject obj = new JSONObject(); 
 
 				String qid = request.getParameter("qid");
 				String job_number = request.getParameter("job_number");

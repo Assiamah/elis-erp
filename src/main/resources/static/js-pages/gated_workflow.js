@@ -16213,18 +16213,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const job_number = $("#cs_main_job_number").val();
         const case_number = $("#cs_main_case_number").val();
         
-        // Get content from Quill editor
+        // Get content from HugeRTE/TinyMCE editor
         let search_report = '';
-        const quillEditor = document.querySelector('#lc_search_report_summary_details_3 .ql-editor');
-        if (quillEditor) {
-            search_report = quillEditor.innerHTML;
+        const editor = hugerte.activeEditor; // Get currently active editor
+        
+        if (editor) {
+            search_report = editor.getContent(); // Gets HTML content
         } else {
-            // Fallback to textarea if Quill not found
+            // Fallback to textarea if editor not found
             search_report = $("#lc_search_report_summary_details_3").val() || '';
         }
         
-        // Clean up Quill's empty paragraph
-        if (search_report === '<p><br></p>') {
+        // Clean up empty content
+        if (!search_report || search_report.trim() === '' || search_report === '<p></p>' || search_report === '<p><br></p>') {
             search_report = '';
         }
         
@@ -16243,9 +16244,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#fd7e14'
             }).then(() => {
-                // Focus on the Quill editor
-                if (quillEditor) {
-                    quillEditor.focus();
+                // Focus on the editor
+                if (editor) {
+                    editor.focus();
                 } else {
                     $("#lc_search_report_summary_details_3").focus();
                 }
@@ -16290,7 +16291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <li><strong>Job Number:</strong> ${job_number}</li>
                                     <li><strong>Case Number:</strong> ${case_number}</li>
                                     <li><strong>Content:</strong> ${reportLength} characters, ${wordCount} words</li>
-                                    <li><strong>Format:</strong> ${quillEditor ? 'Rich Text' : 'Plain Text'}</li>
+                                    <li><strong>Format:</strong> Rich Text</li>
                                 </ul>
                             </div>
                         </div>
@@ -16387,11 +16388,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     width: 500
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.cancel) {
-                        // Focus on the Quill editor or textarea
-                        if (quillEditor) {
-                            quillEditor.focus();
+                        // Focus on the editor
+                        if (editor) {
+                            editor.focus();
                             $('html, body').animate({
-                                scrollTop: $(quillEditor).offset().top - 100
+                                scrollTop: $('#lc_search_report_summary_details_3').offset().top - 100
                             }, 500);
                         } else {
                             $("#lc_search_report_summary_details_3").focus();
@@ -21493,8 +21494,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-   hugerte.init({
-        selector: '#lc_search_report_summary_details_2',
+    hugerte.init({
+        selector: '#lc_search_report_summary_details_2, #lc_search_report_summary_details_3',
         height: 600,
         menubar: true,
         plugins: [
