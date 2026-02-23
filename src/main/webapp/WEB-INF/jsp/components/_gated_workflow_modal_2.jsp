@@ -5352,3 +5352,85 @@ Thank you.</textarea>
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-fade modal-blur" id="generate_file_number" tabindex="-1"
+     aria-labelledby="generateFileNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="generateFileNumberLabel">
+          <i class="fas fa-folder-open me-2"></i>
+          Open File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="mb-3">
+            <label for="lc_txt_file_number" class="form-label">
+              <i class="fas fa-landmark me-1"></i>
+              Type of Land Reference:
+            </label>
+            <select class="form-select" id="lc_txt_file_number_type" data-trigger="">
+              <option disabled selected value="">-- select --</option>
+              <option value="FAMILY_LAND">Family Land</option>
+              <option value="STOOL_LAND">Stool Land</option>
+              <option value="STATE_LAND_KD">State Land (Koforidua)</option>
+              <option value="STATE_LAND_NK">State Land (Nkawkaw)</option>
+              <option value="STATE_LAND_OD">State Land (Oda)</option>
+              <option value="STATE_LAND_NS">State Land (Nsawam)</option>
+              <option value="STATE_LAND_OTHER">State Land (Other)</option>
+            </select>
+        </div>
+        <div class="mb-3">
+          <label for="lc_txt_file_number" class="form-label">
+            <i class="fas fa-hashtag me-1"></i>
+            File Number:
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-file"></i>
+            </span>
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_file_number" readonly value="${file_number}" style="cursor: not-allowed;" />
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <button type="button" id="lc_btn_generate_file_number_only" 
+                  class="btn btn-primary w-100 py-2" 
+                  value="Generate"
+                  <c:if test="${not empty file_number and file_number != 'null' and not fn:contains(file_number, '-')}">
+                    disabled
+                  </c:if>>
+            <i class="fas fa-sync-alt me-2"></i>
+            Generate File Number
+          </button>
+          
+          <!-- Status Message -->
+          <div class="form-text mt-2 text-center">
+            <c:if test="${not empty file_number and file_number != 'null' and not fn:contains(file_number, '-')}">
+              <i class="fas fa-check-circle text-success me-1"></i>
+              <span class="text-success">File number already generated</span>
+            </c:if>
+            <c:if test="${empty file_number or file_number == 'null' or fn:contains(file_number, '-')}">
+              <i class="fas fa-info-circle text-info me-1"></i>
+              <span class="text-info">Click to generate a new file number</span>
+            </c:if>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

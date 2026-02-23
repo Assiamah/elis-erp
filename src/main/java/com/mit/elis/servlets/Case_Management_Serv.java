@@ -3827,9 +3827,11 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String transaction_number = request.getParameter("transaction_number");
 				String job_number = request.getParameter("job_number");
 
+
 				String registration_district_number = request.getParameter("registration_district_number");
 				String registration_section_number = request.getParameter("registration_section_number");
 				//String type_of_certificate = request.getParameter("type_of_certificate");
+				String file_number_type = request.getParameter("file_number_type");
 
 				String fullname = (String) session.getAttribute("fullname"); 
 				String mac_address = (String) session.getAttribute("mac_address"); 
@@ -3848,7 +3850,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("job_number", job_number);
 
 				obj.put("region_code", region_code);
-				obj.put("number_format", "FN");
+				obj.put("file_number_type", file_number_type);
+				obj.put("number_format", file_number_type);
 			
 
 				obj.put("fullname", fullname); 
