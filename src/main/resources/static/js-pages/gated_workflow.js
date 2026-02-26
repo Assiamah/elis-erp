@@ -21549,6 +21549,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $("#btn_upload_signed_report").on("click", function() {
         const job_number = $("#cs_main_job_number").val();
         const transaction_number = $("#cs_main_transaction_number").val();
+        const case_number = $("#cs_main_case_number").val();
         const business_process_sub_name = $("#cs_main_business_process_sub_name").val(); // Make sure this field exists or get it from somewhere else
 
         Swal.fire({
@@ -21594,7 +21595,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     data: {
                         request_type: 'request_to_generate_search_template_upload_search_report',
                         job_number: job_number,
-                        case_number: transaction_number,
+                        case_number: case_number,
+                        transaction_number: transaction_number,
                         business_process_sub_name: business_process_sub_name,
                         cert_type: 'concurrence_certificate'
                     },
