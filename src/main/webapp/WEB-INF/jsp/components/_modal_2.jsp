@@ -382,7 +382,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="date" class="form-control" id="receiptDate" 
-                                           value="<?php echo date('Y-m-d'); ?>">
+                                           value="">
                                     <label for="receiptDate">
                                         <i class="bi bi-calendar-event me-1"></i>
                                         Receipt Date

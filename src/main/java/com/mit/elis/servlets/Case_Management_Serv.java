@@ -6578,6 +6578,21 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("get_application_json")) {
+				String job_number = request.getParameter("job_number");
+				// System.out.println(job_number);
+				web_service_response = casemgt_cl.get_application_json(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), job_number);
+
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("select_load_details_for_batching")) {
 				String job_number = request.getParameter("job_number");
 				// System.out.println(job_number);

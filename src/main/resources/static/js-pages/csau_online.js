@@ -15086,213 +15086,161 @@ function createTableRow(item) {
 
 
 
-			$('#btn_search_job_number_for_acknowledgement_slip')
-				.on(
-					'click',
-					function (e) {
+			$('#btn_search_job_number_for_acknowledgement_slip').on('click', function(e) {
+				var client_phone_search = $("#txt_job_number_for_adding_case_and_status").val().toUpperCase();
 
-						var client_phone_search = $(
-							"#txt_job_number_for_adding_case_and_status")
-							.val().toUpperCase();
+				if (!(client_phone_search.length >= 6 || client_phone_search === undefined)) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Invalid Search',
+						text: 'Please enter a valid search value (minimum 6 characters)',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					});
+					return;
+				}
 
-						if (!(client_phone_search.length >= 6 || client_phone_search === undefined)) {
-							$
-								.notify(
-									{
-										message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please enter valid search Value </span>',
-									}, {
-									type: 'danger', z_index: 9999
-								});
-							return;
+				$('#btnSaveChangeOfService').hide();
+				$('#chs_job_number').val("");
+				$('#chs_ar_name').val("");
+				$('#chs_business_process_name').val("");
+				$('#chs_business_process_sub_name').val("");
+
+				$.ajax({
+					type: "POST",
+					url: "Case_Management_Serv",
+					data: {
+						request_type: 'load_application_details_by_job_number_all',
+						job_number: client_phone_search
+					},
+					cache: false,
+					success: function(jobdetails) {
+						var table = $('#tbl_job_detail_dataTable');
+						table.find("tbody tr").remove();
+
+						console.log(jobdetails);
+						var json_p = JSON.parse(jobdetails);
+						
+						if (json_p.data === null) {
+							Swal.fire({
+								icon: 'warning',
+								title: 'Not Found',
+								text: 'Application not found. Please try again.',
+								confirmButtonColor: '#3085d6',
+								confirmButtonText: 'OK'
+							});
+							return false;
 						}
+						
+						$(json_p.data).each(function() {
+							table.append("<tr><td>" 
+								+ this.job_number 
+								+ "</td><td>" 
+								+ this.case_number 
+								+ "</td><td>" 
+								+ this.ar_name 
+								+ "</td>"
+								+ '<td><p data-placement="top" data-toggle="tooltip" title="Generate Acknowledgement Slip">' +
+								'<button class="btn btn-warning btn-sm" data-backdrop="static" '
+								+ 'data-ref_number="' + this.job_number + '" '
+								+ 'data-case_number="' + this.transaction_number + '" '
+								+ 'data-land_size="' + this.land_size + '" '
+								+ 'data-ar_name="' + this.ar_name + '" '
+								+ 'data-created_for_id="' + this.created_for_id + '" '
+								+ 'data-licensed_no="' + this.licensed_no + '" '
+								+ 'data-locality="' + this.locality + '" '
+								+ 'data-business_process_id="' + this.business_process_id + '" '
+								+ 'data-business_process_name="' + this.business_process_name + '" '
+								+ 'data-business_process_sub_id="' + this.business_process_sub_id + '" '
+								+ 'data-business_process_sub_name="' + this.business_process_sub_name + '" '
+								+ 'id="btn_regenerate_acknowledgement_slip">'
+								+ '<i class="fa fa-download me-1"></i> Generate</button></p> </td>'
+								+ "</tr>");
+						});
 
-						$('#btnSaveChangeOfService').hide();
-						$('#chs_job_number').val("");
-						$('#chs_ar_name').val("");
-						$('#chs_business_process_name').val("");
-						$('#chs_business_process_sub_name').val("");
+						// Attach event handler for generate buttons
+						$('#btn_regenerate_acknowledgement_slip').on('click', function(e) {
+							var job_number = $(this).data('ref_number');
 
-						$
-							.ajax({
-								type: "POST",
-								url: "Case_Management_Serv",
-								// target:'_blank',
-
-								data: {
-									request_type: 'load_application_details_by_job_number_all',
-									job_number: client_phone_search
-								},
-								cache: false,
-
-								success: function (
-									jobdetails) {
-
-									//console.log(jobdetails);
-
-									var table = $('#tbl_job_detail_dataTable');
-									table.find("tbody tr")
-										.remove();
-
-									console.log(jobdetails);
-									var json_p = JSON
-										.parse(jobdetails);
-									if (json_p.data === null) {
-										// $
-										// 		.notify(
-										// 				{
-										// 					message : '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Application not found </span>',
-										// 				},
-										// 				{
-										// 					type : 'danger' , z_index: 9999 
-										// 				});
-
-										swal.fire({
-											title: 'Ops!',
-											text: 'Application not found. Please try again.',
-											icon: 'warning',
-											confirmButtonText: 'OK'
-										})
-
-										return false;
-									}
-									$(json_p.data)
-										.each(
-											function () {
-
-												table
-													.append("<tr><td>"
-														+ this.job_number
-														+ "</td><td>"
-														+ this.case_number
-														+ "</td><td>"
-														+ this.ar_name
-														// + "</td><td>"
-														// + this.current_application_status
-														+ "</td>"
-
-														/*
-														 * + '<td><p data-placement="top" data-toggle="tooltip" title="Details of Case"><button
-														 * class="btn
-														 * btn-success
-														 * btn-circle
-														 * btn-sm"
-														 * data-title="Delete"
-														 * data-toggle="modal"
-														 * data-target="#NotoncaseafterPaymentModalonCase" ' +
-														 * 'data-ref_number="' +
-														 * this.job_number + '" ' +
-														 * 'data-ar_name="' +
-														 * this.case_number + '" ' +
-														 * 'data-ar_name="' +
-														 * this.ar_name + '" ' +
-														 * 'data-bill_amount="' +
-														 * this.current_application_status + '"
-														 * id="deletedew"><span
-														 * class="fa
-														 * fa-info-circle"></span></button></p>
-														 * </td>'
-														 */
-
-														// Add
-														// Job
-														+ '<td><p data-placement="top" data-toggle="tooltip" title="Change Details">' +
-														'<button class="btn btn-warning"  data-backdrop="static" '
-														+ 'data-ref_number="'
-														+ this.job_number
-														+ '" '
-														+ 'data-case_number="'
-														+ this.transaction_number
-														+ '" '
-														+ 'data-land_size="'
-														+ this.land_size
-														+ '" '
-														+ 'data-ar_name="'
-														+ this.ar_name
-														+ '" '
-														+ 'data-created_for_id="'
-														+ this.created_for_id
-														+ '" '
-														+ 'data-licensed_no="'
-														+ this.licensed_no
-														+ '" '
-														+ 'data-locality="'
-														+ this.locality
-														+ '" '
-														+ 'data-business_process_id="'
-														+ this.business_process_id
-														+ '" '
-														+ 'data-business_process_name="'
-														+ this.business_process_name
-														+ '" '
-														+ 'data-business_process_sub_id="'
-														+ this.business_process_sub_id
-														+ '" '
-														+ 'data-business_process_sub_name="'
-														+ this.business_process_sub_name
-
-														+ '" id="btn_regenerate_acknowledgement_slip"><span class="fa fa-download"></span> Generate</button></p> </td>'
-														+ "</tr>");
-
-
-												$('#btn_regenerate_acknowledgement_slip').on('click', function (e) {
-
-													var job_number = $(this).data('ref_number');
-
-													//console.log(job_number)
-
-													$
-														.ajax({
-															type: "POST",
-															url: "Case_Management_Serv",
-															data: {
-																request_type: 'online_select_regenerate_process_acknowledgment_slip',
-																job_number: job_number
-															},
-															cache: false,
-															// responseType:
-															// 'arraybuffer',
-															// dataType:'blob',
-															xhrFields: {
-																responseType: 'blob'
-															},
-															beforeSend: function () {
-																// $('#district').html('<img
-																// src="img/loading.gif"
-																// alt=""
-																// width="24"
-																// height="24">');
-															},
-															success: function (
-																jobdetails) {
-																console
-																	.log(jobdetails);
-																// const
-																// arrayBuffer
-																// =
-																// _base64ToArrayBuffer(jobdetails);
-
-																var blob = new Blob(
-																	[jobdetails],
-																	{
-																		type: "application/pdf"
-																	});
-																var objectUrl = URL
-																	.createObjectURL(blob);
-																window
-																	.open(objectUrl);
-
-																console
-																	.log(jobdetails);
-
-															}
-														});
-												});
-											});
-
+							// Show loading alert
+							Swal.fire({
+								title: 'Generating...',
+								text: 'Please wait while we generate your acknowledgement slip',
+								allowOutsideClick: false,
+								allowEscapeKey: false,
+								showConfirmButton: false,
+								didOpen: () => {
+									Swal.showLoading();
 								}
 							});
 
-					});
+							$.ajax({
+								type: "POST",
+								url: "Case_Management_Serv",
+								data: {
+									request_type: 'online_select_regenerate_process_acknowledgment_slip',
+									job_number: job_number
+								},
+								cache: false,
+								xhrFields: {
+									responseType: 'blob'
+								},
+								success: function(jobdetails) {
+									// Close loading alert
+									Swal.close();
+									
+									// Check if response is valid
+									if (jobdetails && jobdetails.size > 0) {
+										var blob = new Blob([jobdetails], {
+											type: "application/pdf"
+										});
+										var objectUrl = URL.createObjectURL(blob);
+										window.open(objectUrl);
+										
+										// Optional: Show success message
+										Swal.fire({
+											icon: 'success',
+											title: 'Success!',
+											text: 'Acknowledgement slip generated successfully',
+											showConfirmButton: false,
+											timer: 1500,
+											timerProgressBar: true
+										});
+									} else {
+										Swal.fire({
+											icon: 'error',
+											title: 'Generation Failed',
+											text: 'Unable to generate acknowledgement slip. Please try again.',
+											confirmButtonColor: '#3085d6',
+											confirmButtonText: 'OK'
+										});
+									}
+								},
+								error: function(xhr, status, error) {
+									Swal.fire({
+										icon: 'error',
+										title: 'Error',
+										text: 'An error occurred while generating the slip. Please try again.',
+										confirmButtonColor: '#3085d6',
+										confirmButtonText: 'OK'
+									});
+									console.error('Error:', error);
+								}
+							});
+						});
+					},
+					error: function(xhr, status, error) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Server Error',
+							text: 'Unable to process your request. Please try again later.',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'OK'
+						});
+						console.error('Error:', error);
+					}
+				});
+			});
 
 
 

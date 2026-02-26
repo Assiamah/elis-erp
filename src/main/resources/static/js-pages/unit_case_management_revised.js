@@ -1230,7 +1230,7 @@ $(document).ready(function() {
                         </div>
                         <span class="fw-bold text-primary">${stats.overallProgress}%</span>
                     </div>
-                    <div class="progress">
+                    <div class="progress" style="height: 0.5rem;">
                         <div class="progress-bar bg-gradient-primary" 
                              role="progressbar" 
                              style="width: ${stats.overallProgress}%;" 
@@ -1388,7 +1388,7 @@ $(document).ready(function() {
                             <small class="text-muted">Milestone Progress</small>
                             <small class="fw-semibold">${completedSteps}/${totalSteps} steps</small>
                         </div>
-                        <div class="progress" style="height: 0.5rem;">
+                        <div class="progress" style="height: 0.3rem;">
                             <div class="progress-bar bg-gradient-primary" 
                                  role="progressbar" 
                                  style="width: ${progressPercent}%;" 

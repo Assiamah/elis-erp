@@ -4962,7 +4962,7 @@ public class CaseManagementController {
 
 
 			if (web_service_response != null) {
-				//System.out.println(web_service_response);
+				System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
