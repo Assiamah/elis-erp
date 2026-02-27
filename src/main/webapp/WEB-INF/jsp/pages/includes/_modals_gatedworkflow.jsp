@@ -4069,96 +4069,103 @@ role="dialog" aria-labelledby="lrdcertificateapprovalmodal" aria-hidden="true"
 
 
 
-<div class="modal fade" id="update_digital_workflow_milestone" tabindex="-1"
-  role="dialog" aria-labelledby="#upload_coordinate" aria-hidden="true">
+
+
+<!-- Update Digital Workflow Milestone Modal -->
+<div class="modal fade"
+     id="update_digital_workflow_milestone"
+     tabindex="-1"
+     aria-labelledby="update_digital_workflow_milestone_label"
+     aria-hidden="true">
+
   <div class="modal-dialog modal-dialog-centered modal-md">
-     <div class="modal-content">
-        <div class="modal-header">
-           <h5 class="modal-title" id="">Update Digital Workflow Milestone</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-            <div class="row mt-2">
-                <div class="col-md-12">
+    <div class="modal-content">
 
-                 
-				<input id="up_userid" name="up_userid" type="hidden" value="${userid}">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title"
+            id="update_digital_workflow_milestone_label">
+            Update Digital Workflow Milestone
+        </h5>
 
-
-				<div class="form-group">
-					<label for="bl_job_number">Full Name</label> <input
-						class="form-control " type="text" placeholder=""
-						id="up_fullname" readonly
-					>
-				</div>
-
-
-
-
-				<div class="row">
-					<div class="col-lg-12">
-						<!-- Example Bar Chart Card-->
-						<div class="card mb-3">
-							<div class="card-header">
-								<i class="fa fa-bar-chart"></i>Milestone List
-							</div>
-							<div class="card-body">
-
-
-
-								<!--  Here is where the fee list comes -->
-
-								<div class="table-responsive">
-								
-									
-									<table class="table table-bordered table-hover" id="tbl_baby_steps_list_dataTable"
-										width="100%"
-									>
-									
-										<thead>
-											<tr>
-												<th>Description</th>
-												<th>Option</th>
-											
-
-											</tr>
-										</thead>
-				
-										<tbody>
-
-
-
-										</tbody>
-									</table>
-								</div>
-
-								<!--  End Of Table -->
-							</div>
-							<div class="card-footer small text-muted"></div>
-						</div>
-
-
-					</div>
-				</div>
-
-    
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-      
-          <button type="button" id="btn_process_updated_milestone"  class="btn btn-success btn-icon-split"
-				> <span class="icon text-white-50"> <i class="fas fa-check"></i>
-				</span> <span class="text">Update Milestone</span>
-				</button>
-      
-          <button type="button" class="btn btn-secondary "
-            data-dismiss="modal">Close</button>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+        </button>
       </div>
-     </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <input id="up_userid"
+               name="up_userid"
+               type="hidden"
+               value="${userid}">
+
+        <div class="mb-3">
+          <label for="up_fullname" class="form-label">Full Name</label>
+          <input class="form-control"
+                 type="text"
+                 id="up_fullname"
+                 readonly>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fa fa-bar-chart"></i> Milestone List
+          </div>
+
+          <div class="card-body">
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover"
+                     id="tbl_baby_steps_list_dataTable"
+                     width="100%">
+
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Option</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <!-- Dynamic Content -->
+                </tbody>
+
+              </table>
+            </div>
+
+          </div>
+
+          <div class="card-footer small text-muted"></div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+
+        <button type="button"
+                id="btn_process_updated_milestone"
+                class="btn btn-success">
+
+          <i class="fas fa-check me-1"></i>
+          Update Milestone
+        </button>
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+          Close
+        </button>
+
+      </div>
+
+    </div>
   </div>
 </div>
-
 
 <div class="modal fade" id="review_motherfile_details" tabindex="-1"
   role="dialog" aria-labelledby="#review_motherfile_details" aria-hidden="true" data-backdrop="static">

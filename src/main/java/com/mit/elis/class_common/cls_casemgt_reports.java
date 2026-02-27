@@ -8140,7 +8140,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 	}
 
 	public byte[] create_search_report_lc_consolidated_search(String web_service_url, String web_service_api_key,String doc_web_service_url, String doc_web_service_api_key,
-			String software_file_location, String case_number,
+			String software_file_location, String case_number, String transactions_number,
 			String job_number,
 			String output_file, String sign_path, String case_docs_location, String public_docs_location)
 			throws IOException, SQLException, JSONException, ParseException {
@@ -8153,7 +8153,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		JSONObject request_json = new JSONObject();
 
-		request_json.put("transaction_number", case_number);
+		request_json.put("transaction_number", transactions_number);
 		request_json.put("job_number", job_number);
 		System.out.println(request_json.toString());
 		String case_records = cls_case_management
@@ -8480,7 +8480,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			try {
 				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 					// This will handle both numbered lists and regular text
-					addListToDocument(document, remark_or_comment1);
+					//addListToDocument(document, remark_or_comment1);
 
 						//System.out.print("remark_or_comment2: " + "Jamhde");
 				}
