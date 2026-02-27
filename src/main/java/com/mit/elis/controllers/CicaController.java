@@ -123,6 +123,8 @@ public class CicaController {
 					ArrayList.class);
 			request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
 
+			request.setAttribute("page_name","cica_dashboard");
+
 					model.addAttribute("content", "../pages/CICA/cica_dashboard.jsp"); return "layouts/app";
 
 		} catch (Exception e) {

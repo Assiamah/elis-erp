@@ -150,6 +150,17 @@ $(document).ready(function(){
                                             
                                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" 
                                                 aria-labelledby="actionMenu${i}" style="width: 200px">
+
+                                                 <!-- Track Application -->
+                                                <li>
+                                                    <button type="button" 
+                                                            class="dropdown-item d-flex align-items-center gap-2 px-3 py-2"
+                                                            data-bs-target="#cabinetModal" data-bs-toggle="modal"
+                                                            data-target-id="${response.data[i].job_number}">
+                                                        <i class="ri-hard-drive-2-line text-secondary"></i>
+                                                        <span>Track</span>
+                                                    </button>
+                                                </li>
                                                 
                                                 <!-- View Application -->
                                                 <li>
@@ -366,7 +377,18 @@ $(document).ready(function(){
                                             
                                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" 
                                                 aria-labelledby="actionMenu${i}" style="width: 200px">
-                                                
+
+                                                 <!-- Track Application -->
+                                                <li>
+                                                    <button type="button" 
+                                                            class="dropdown-item d-flex align-items-center gap-2 px-3 py-2"
+                                                            data-bs-target="#cabinetModal" data-bs-toggle="modal"
+                                                            data-target-id="${response.data[i].job_number}">
+                                                        <i class="ri-hard-drive-2-line text-secondary"></i>
+                                                        <span>Track</span>
+                                                    </button>
+                                                </li>
+
                                                 <!-- View Application -->
                                                 <li>
                                                     <form action="front_office_view_application" method="post">
@@ -579,6 +601,17 @@ $(document).ready(function(){
                                             
                                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" 
                                                 aria-labelledby="actionMenu${i}" style="width: 200px">
+
+                                                 <!-- Track Application -->
+                                                <li>
+                                                    <button type="button" 
+                                                            class="dropdown-item d-flex align-items-center gap-2 px-3 py-2"
+                                                            data-bs-target="#cabinetModal" data-bs-toggle="modal"
+                                                            data-target-id="${response.data[i].job_number}">
+                                                        <i class="ri-hard-drive-2-line text-secondary"></i>
+                                                        <span>Track</span>
+                                                    </button>
+                                                </li>
                                                 
                                                 <!-- View Application -->
                                                 <li>
@@ -793,6 +826,17 @@ $(document).ready(function(){
                                             
                                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" 
                                                 aria-labelledby="actionMenu${i}" style="width: 200px">
+
+                                                 <!-- Track Application -->
+                                                <li>
+                                                    <button type="button" 
+                                                            class="dropdown-item d-flex align-items-center gap-2 px-3 py-2"
+                                                            data-bs-target="#cabinetModal" data-bs-toggle="modal"
+                                                            data-target-id="${response.data[i].job_number}">
+                                                        <i class="ri-hard-drive-2-line text-secondary"></i>
+                                                        <span>Track</span>
+                                                    </button>
+                                                </li>
                                                 
                                                 <!-- View Application -->
                                                 <li>
@@ -2843,4 +2887,146 @@ $('#pending_queries_modal').on('hidden.bs.modal', function() {
     $('#pending_queries_table_list tbody').empty();
     $('#queryCountQR').text('0');
 });
+
+
+    const $cabinetModal = $('#cabinetModal');
+
+
+    // ==================== CABINET MODAL FUNCTIONALITY ====================
+    $cabinetModal.on('show.bs.modal', handleCabinetModalShow);
+
+    function handleCabinetModalShow(event) {
+        const jobNumber = $(event.relatedTarget).data('target-id');
+        
+        if (!jobNumber) {
+            console.error('No job number provided for cabinet modal');
+            return;
+        }
+
+        resetCabinetModal();
+        loadCabinetDetails(jobNumber);
+    }
+
+    function resetCabinetModal() {
+        const fields = [
+            '#enq_applicant_name',
+            '#enq_applicant_type',
+            '#enq_cabinet_name',
+            '#enq_job_purpose',
+            '#enq_job_status',
+            '#enq_current_application_status'
+        ];
+        
+        fields.forEach(selector => $(selector).val(''));
+        clearTableRows($('#cabinet-tracking'));
+    }
+
+    function loadCabinetDetails(jobNumber) {
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'load_application_cabinet_details_by_job_number',
+                job_number: jobNumber
+            },
+            cache: false,
+            success: function(response) {
+                populateCabinetData(response);
+				updateRefreshTime();
+            },
+            error: handleAjaxError
+        });
+    }
+
+    function populateCabinetData(response) {
+        try {
+            const data = JSON.parse(response);
+            // console.log(data);
+            // Populate cabinet tracking table
+            if (data.cabinet_tracking && Array.isArray(data.cabinet_tracking)) {
+                const table = $('#cabinet-tracking');
+				table.empty();
+                data.cabinet_tracking.forEach(tracking => {
+                    table.append(createCabinetTrackingRow(tracking));
+                });
+
+				// Update last update date
+				if (data.cabinet_tracking && data.cabinet_tracking.length > 0) {
+					const lastUpdate = data.cabinet_tracking[data.cabinet_tracking.length - 1].created_date;
+					$('#lastUpdateDate').text(lastUpdate);
+				}
+
+				const trackingCount = Array.isArray(data.cabinet_tracking) ? data.cabinet_tracking.length : 0;
+				$('#trackingEntriesCount').text(trackingCount);
+				$('#historyCount').text(trackingCount + ' entries');
+            }
+
+            // Populate cabinet data fields
+            if (data.cabinet_data) {
+                const cabinet = data.cabinet_data;
+                $('#enq_applicant_name').val(cabinet.ar_name || '');
+                $('#enq_applicant_type').val(cabinet.business_process_sub_name || '');
+                $('#enq_cabinet_name').val(cabinet.file_number || '');
+                $('#enq_job_purpose').val(cabinet.job_purpose || '');
+                $('#enq_job_status').val(cabinet.job_status || '');
+                $('#enq_current_application_status').val(cabinet.current_application_status || '');
+            }
+        } catch (error) {
+            console.error('Error parsing cabinet data:', error);
+        }
+    }
+
+    function createCabinetTrackingRow(tracking) {
+        return `
+            <tr>
+                <td class="small">${escapeHtml(tracking.officers_general_comments || '')}</td>
+                <td class="small">${escapeHtml(tracking.division || '')}</td>
+                <td class="small">${escapeHtml(tracking.created_by || '')}</td>
+                <td class="small">${formatDate(tracking.created_date)}</td>
+            </tr>
+        `;
+    }
+
+    function clearTableRows($table) {
+        $table.find("tbody tr").remove();
+    }
+
+    // Helper function to handle AJAX errors (updated to return message string)
+	function handleAjaxError(xhr, status, error, returnMessage = false) {
+		console.error('AJAX Error:', error);
+		
+		let errorMessage = 'Error loading data. Please try again.';
+		
+		if (xhr.status === 0) {
+			errorMessage = 'Network error. Please check your internet connection.';
+		} else if (xhr.status === 404) {
+			errorMessage = 'Requested resource not found.';
+		} else if (xhr.status === 500) {
+			errorMessage = 'Internal server error. Please try again later.';
+		} else if (xhr.responseJSON && xhr.responseJSON.message) {
+			errorMessage = xhr.responseJSON.message;
+		}
+		
+		if (returnMessage) {
+			return errorMessage;
+		} else {
+			showNotification(errorMessage, 'error');
+		}
+	}
+
+    function updateRefreshTime() {
+		const now = new Date();
+		const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+		$('#lastRefreshTime').text(timeString);
+	}
+
+    function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return unsafe;
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 })

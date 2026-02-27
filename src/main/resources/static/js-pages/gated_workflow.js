@@ -21772,4 +21772,276 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+    $('#update_digital_workflow_milestone').on('show.bs.modal', function(event) {
+        // Get the button that triggered the modal
+        //var button = $(event.relatedTarget);
+        
+        // Get data from button attributes
+        var job_number = $("#cs_main_job_number").val();
+        //var workflow_type = button.data('workflow_type');
+        
+        // Get user ID from hidden input
+        var up_userid = $('#up_userid').val();
+        
+        // Debug log to verify values
+        // console.log('Job Number:', job_number);
+        // console.log('Workflow Type:', workflow_type);
+        // console.log('User ID:', up_userid);
+
+        // Validate required fields
+        if (!job_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Data',
+                text: 'Job number or workflow type is missing',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Show loading state
+        Swal.fire({
+            title: 'Loading...',
+            text: 'Fetching milestone data',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // AJAX request
+        $.ajax({
+            type: "POST",
+            url: "valueadded_services_serv",
+            data: {
+                request_type: 'get_all_baby_steps_for_job',
+                job_number: job_number,
+                //workflow_type: workflow_type
+            },
+            cache: false,
+            dataType: 'json',
+            success: function(response) {
+                // Close loading alert
+                Swal.close();
+                
+                console.log('Response:', response);
+                
+                // Clear existing table rows
+                var table = $('#tbl_baby_steps_list_dataTable tbody');
+                table.empty();
+
+                // Check if data exists
+                if (response && response.data && response.data.length > 0) {
+                    // Loop through each milestone
+                    $.each(response.data, function(index, item) {
+                        // Build radio button with same name and correct value
+                        var radio = $('<input>', {
+                            type: 'radio',
+                            name: 'bse_selected',
+                            value: item.bse_id,
+                            class: 'form-check-input'
+                        });
+                        
+                        // Pre-select if marked in data
+                        if (item.bse_option === true || item.bse_option === 'true' || item.bse_option === 1) {
+                            radio.prop('checked', true);
+                        }
+                        
+                        // Create radio cell with proper styling
+                        var radioCell = $('<td>').addClass('text-center').append(radio);
+                        
+                        // Create description cell
+                        var descCell = $('<td>').text(item.bse_description || 'N/A');
+                        
+                        // Append row to table
+                        $('<tr>').append(descCell, radioCell).appendTo(table);
+                    });
+                    
+                    // Update full name field if available
+                    if (response.full_name) {
+                        $('#up_fullname').val(response.full_name);
+                    }
+                    
+                } else {
+                    // No data found
+                    table.append(
+                        $('<tr>').append(
+                            $('<td>', { colspan: 2, class: 'text-center text-muted py-4' })
+                                .html('<i class="bi bi-info-circle me-2"></i>No milestones available')
+                        )
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                // Close loading alert
+                Swal.close();
+                
+                console.error('AJAX Error:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
+                
+                // Show error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load milestone data. Please try again.',
+                    confirmButtonColor: '#3085d6'
+                });
+                
+                // Clear table and show error message
+                var table = $('#tbl_baby_steps_list_dataTable tbody');
+                table.empty().append(
+                    $('<tr>').append(
+                        $('<td>', { colspan: 2, class: 'text-center text-danger py-4' })
+                            .html('<i class="bi bi-exclamation-triangle me-2"></i>Error loading data')
+                    )
+                );
+            }
+        });
+    });
+
+    $("#btn_process_updated_milestone").on("click", function() {
+        // Get the selected radio button value
+        var bse_id = $("input[name='bse_selected']:checked").val();
+        
+        // Check if a milestone is selected
+        if (!bse_id) {
+            // Show warning using SweetAlert2 (more professional than alert)
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Selection',
+                text: 'Please select a milestone to update',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                timer: 3000,
+                timerProgressBar: true
+            });
+            return;
+        }
+
+        // Show confirmation dialog before processing
+        Swal.fire({
+            title: 'Confirm Update',
+            text: 'Are you sure you want to update this milestone?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we update the milestone',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Log the selection for debugging
+                console.log("Selected BSE ID:", bse_id);
+
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "valueadded_services_serv",
+                    data: {
+                        request_type: 'get_process_milestone_update_baby_steps_for_job',
+                        bse_id: bse_id
+                    },
+                    cache: false,
+                    dataType: 'json',  // Expect JSON response
+                    timeout: 30000,     // 30 second timeout
+                    success: function(response) {
+                        // Close loading
+                        Swal.close();
+                        
+                        //console.log("Server Response:", response);
+                        
+                        // Handle different response types
+                        if (typeof response === 'string') {
+                            try {
+                                response = JSON.parse(response);
+                            } catch (e) {
+                                console.error("Parse error:", e);
+                            }
+                        }
+                        
+                        // Check if update was successful
+                        if (response.status == 'success') {
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: response.message || 'Milestone updated successfully',
+                                confirmButtonColor: '#28a745',
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            }).then(() => {
+                                // Close the modal
+                                var modal = bootstrap.Modal.getInstance(document.getElementById('update_digital_workflow_milestone'));
+                                if (modal) {
+                                    modal.hide();
+                                }
+                                
+                                // Optional: Refresh parent page data
+                                if (typeof refreshPageData === 'function') {
+                                    refreshPageData();
+                                }
+                            });
+                        } else {
+                            // Show error message from server
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update Failed',
+                                text: response.message || 'Failed to update milestone',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Close loading
+                        Swal.close();
+                        
+                        console.error("AJAX Error:", error);
+                        console.error("Status:", status);
+                        console.error("Response:", xhr.responseText);
+                        
+                        // Show detailed error message
+                        let errorMessage = 'An error occurred while updating the milestone.';
+                        
+                        if (status === 'timeout') {
+                            errorMessage = 'Request timed out. Please try again.';
+                        } else if (xhr.status === 404) {
+                            errorMessage = 'Service endpoint not found.';
+                        } else if (xhr.status === 500) {
+                            errorMessage = 'Server error. Please contact support.';
+                        }
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage,
+                            confirmButtonColor: '#dc3545',
+                            footer: '<small class="text-muted">Technical details: ' + (error || 'Unknown error') + '</small>'
+                        });
+                    },
+                    complete: function() {
+                        // Optional: Any cleanup code
+                        console.log("AJAX request completed");
+                    }
+                });
+            }
+        });
+    });
+
 });

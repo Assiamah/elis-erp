@@ -5434,3 +5434,87 @@ Thank you.</textarea>
     </div>
   </div>
 </div>
+
+<!-- Update Digital Workflow Milestone Modal - Bootstrap 5 -->
+<div class="modal fade effect-fade modal-blur" id="update_digital_workflow_milestone" tabindex="-1" 
+     aria-labelledby="updateDigitalWorkflowLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateDigitalWorkflowLabel">
+                    <i class="bi bi-arrow-repeat me-2 text-primary"></i>
+                    Update Digital Workflow Milestone
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                        aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Hidden User ID -->
+                <input id="up_userid" name="up_userid" type="hidden" value="${userid}">
+
+                <!-- Full Name Field -->
+                <div class="mb-4">
+                    <label for="up_fullname" class="form-label fw-semibold">
+                        <i class="bi bi-person-circle me-1 text-secondary"></i>
+                        Full Name
+                    </label>
+                    <input class="form-control bg-light" type="text" 
+                           id="up_fullname" readonly
+                           placeholder="User full name will appear here">
+                </div>
+
+                <!-- Milestone List Card -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="bi bi-list-check text-primary me-2"></i>
+                            Milestone List
+                        </h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <!-- Milestone Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" 
+                                   id="tbl_baby_steps_list_dataTable" width="100%">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="px-3 py-3">Description</th>
+                                        <th class="px-3 py-3 text-center" width="120">Option</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table content will be loaded dynamically -->
+                                    <tr>
+                                        <td colspan="2" class="text-center text-muted py-4">
+                                            <i class="bi bi-info-circle me-2"></i>
+                                            No milestones available
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white py-2 text-muted small">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Select milestones to update workflow status
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i>
+                    Cancel
+                </button>
+                <button type="button" id="btn_process_updated_milestone" class="btn btn-success">
+                    <i class="bi bi-check-lg me-1"></i>
+                    Update Milestone
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
