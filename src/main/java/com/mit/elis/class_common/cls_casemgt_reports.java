@@ -8344,20 +8344,20 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			cbaddress.beginText();
 			cbaddress.setFontAndSize(bfaddress, 10);
 
-			cbaddress.setTextMatrix(400, 780);
+			cbaddress.setTextMatrix(435, 780);
 			cbaddress.showText(web_comp_address);
-			cbaddress.setTextMatrix(400, 770);
+			cbaddress.setTextMatrix(435, 770);
 			cbaddress.showText(web_city);
-			cbaddress.setTextMatrix(400, 760);
+			cbaddress.setTextMatrix(435, 760);
 			cbaddress.showText(("Tel: " + web_telephone));
-			cbaddress.setTextMatrix(400, 750);
+			cbaddress.setTextMatrix(435, 750);
 			cbaddress.showText(("Fax: " + web_fax_number));
-			cbaddress.setTextMatrix(400, 740);
+			cbaddress.setTextMatrix(435, 740);
 			cbaddress.showText(("Email: " + web_email));
-			cbaddress.setTextMatrix(400, 730);
+			cbaddress.setTextMatrix(435, 730);
 			cbaddress.showText("Web: www.lc.gov.gh");
 
-			cbaddress.setTextMatrix(400, 700);
+			cbaddress.setTextMatrix(435, 700);
 			Date now = new Date();
 			// cbaddress.showText("Date: " + now.toGMTString());
 
@@ -8480,7 +8480,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			try {
 				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 					// This will handle both numbered lists and regular text
-					//addListToDocument(document, remark_or_comment1);
+					addListToDocument(document, remark_or_comment1);
 
 						//System.out.print("remark_or_comment2: " + "Jamhde");
 				}
@@ -8562,29 +8562,31 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 					
 				}
-				Paragraph reportsignpad = new Paragraph(
-							"...........................................................",
-							new Font(FontFamily.TIMES_ROMAN, 12));
-					reportsignpad.setAlignment(Element.ALIGN_RIGHT);
-					document.add(reportsignpad);
-
-					Paragraph reportoddicer = new Paragraph(report_approved_by, new Font(FontFamily.TIMES_ROMAN, 12));
-					reportoddicer.setAlignment(Element.ALIGN_RIGHT);
-					document.add(reportoddicer);
-
-					Paragraph p_8 = new Paragraph(officers_grade, new Font(FontFamily.TIMES_ROMAN, 12));
-					p_8.setAlignment(Element.ALIGN_RIGHT);
-					document.add(p_8);
-
-					Paragraph reportTitle4 = new Paragraph("FOR: REGIONAL LANDS OFFICER",
-							new Font(FontFamily.TIMES_ROMAN, 12));
-					reportTitle4.setAlignment(Element.ALIGN_RIGHT);
-					document.add(reportTitle4);
-					Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 12));
-					reportTitle5.setAlignment(Element.ALIGN_RIGHT);
-					document.add(reportTitle5);
-					document.add(new Phrase(Chunk.NEWLINE));
 			}
+
+
+			Paragraph reportsignpad = new Paragraph(
+						"...........................................................",
+						new Font(FontFamily.TIMES_ROMAN, 12));
+				reportsignpad.setAlignment(Element.ALIGN_RIGHT);
+				document.add(reportsignpad);
+
+				Paragraph reportoddicer = new Paragraph(report_approved_by, new Font(FontFamily.TIMES_ROMAN, 12));
+				reportoddicer.setAlignment(Element.ALIGN_RIGHT);
+				document.add(reportoddicer);
+
+				Paragraph p_8 = new Paragraph(officers_grade, new Font(FontFamily.TIMES_ROMAN, 12));
+				p_8.setAlignment(Element.ALIGN_RIGHT);
+				document.add(p_8);
+
+				Paragraph reportTitle4 = new Paragraph("FOR: REGIONAL LANDS OFFICER",
+						new Font(FontFamily.TIMES_ROMAN, 12));
+				reportTitle4.setAlignment(Element.ALIGN_RIGHT);
+				document.add(reportTitle4);
+				Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 12));
+				reportTitle5.setAlignment(Element.ALIGN_RIGHT);
+				document.add(reportTitle5);
+				document.add(new Phrase(Chunk.NEWLINE));
 
 			// if (signature.equals("Yes")) {
 
