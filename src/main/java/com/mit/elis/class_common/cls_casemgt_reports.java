@@ -239,7 +239,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -442,10 +442,10 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+		//	System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -801,7 +801,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -1004,10 +1004,10 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -1368,7 +1368,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -1581,10 +1581,10 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -1860,8 +1860,8 @@ public class cls_casemgt_reports {
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
-		System.out.println(request_json.toString());
-		System.out.println(case_records);
+		// System.out.println(request_json.toString());
+		// System.out.println(case_records);
 
 
 		String parcel_details = case_obj.get("parcel_details").toString();
@@ -1874,8 +1874,8 @@ public class cls_casemgt_reports {
 		String json_lrd_proprietorship_section = (String) case_obj.getString("lrd_proprietorship_section");
 		String json_lrd_reservation_section = (String) case_obj.getString("lrd_reservation_section");
 
-		System.out.println("json_lrd_encumbrances_section");
-		System.out.println(json_lrd_encumbrances_section);
+		// System.out.println("json_lrd_encumbrances_section");
+		// System.out.println(json_lrd_encumbrances_section);
 
 		JSONObject parcel_details_obj;
 		parcel_details_obj = new JSONObject(parcel_details);
@@ -1951,7 +1951,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -2557,8 +2557,8 @@ public class cls_casemgt_reports {
 
 			// System.out.println(json_lrd_encumbrances_section);
 
-			System.out.println("json_lrd_encumbrances_section");
-		System.out.println(json_lrd_encumbrances_section);
+		// 	System.out.println("json_lrd_encumbrances_section");
+		// System.out.println(json_lrd_encumbrances_section);
 			Integer NumberCount_memo = 1; //
 			String json_data_land_certificate = "";
 			if (json_lrd_encumbrances_section != "null" && json_lrd_encumbrances_section != null) {
@@ -2566,8 +2566,9 @@ public class cls_casemgt_reports {
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 
-					System.out.println("obj_memorials");
-		System.out.println(obj_memorials);
+		// 			System.out.println("obj_memorials");
+		// System.out.println(obj_memorials);
+
 					myTable_encumbrances.addCell(new PdfPCell(new Phrase(NumberCount_memo.toString(), font10pt)));
 					// myTable_encumbrances.addCell(new PdfPCell(new Phrase((String) obj_memorials.getString("es_entry_number"), font10pt)));
 
@@ -2770,7 +2771,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -3378,7 +3379,7 @@ public class cls_casemgt_reports {
 		// request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
 
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
 		// String case_records =
 		// cls_case_management.select_log_who_generated_smd_temp_barcode(web_service_url,web_service_api_key,request_json.toString());
@@ -3599,8 +3600,9 @@ public class cls_casemgt_reports {
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
-		System.out.println(case_records);
-		System.out.println(request_json.toString());
+		// System.out.println(case_records);
+		// System.out.println(request_json.toString());
+
 		String parcel_details = case_obj.get("parcel_details").toString();
 		String transaction_details = case_obj.get("transaction_details").toString();
 		String job_detail = case_obj.get("job_detail").toString();
@@ -3650,7 +3652,7 @@ public class cls_casemgt_reports {
 		// String parcel_description = (String)
 		// transaction_details_obj.get("plot_number").toString();
 		String publicity_date = (String) transaction_details_obj.get("publicity_date").toString();
-System.out.println(publicity_date);
+//System.out.println(publicity_date);
 		String family_of_grantor = (String) transaction_details_obj.get("family_of_grantor").toString();
 		System.out.println(family_of_grantor);
 		String rent_review_period = (String) transaction_details_obj.get("rent_review_period").toString();
@@ -3680,7 +3682,7 @@ System.out.println(publicity_date);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -4008,10 +4010,10 @@ System.out.println(publicity_date);
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -4166,7 +4168,7 @@ System.out.println(publicity_date);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//ln(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -4352,10 +4354,10 @@ System.out.println(publicity_date);
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -9308,7 +9310,7 @@ private String cleanText(String text) {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
