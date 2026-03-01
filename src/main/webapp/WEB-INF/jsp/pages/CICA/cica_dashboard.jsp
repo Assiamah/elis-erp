@@ -428,7 +428,7 @@
 						</div>
 
 						<!-- Table Footer with Export Options -->
-						<div class="card-footer bg-white border-0 py-3">
+						<!-- <div class="card-footer bg-white border-0 py-3">
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="small text-muted">
 									<i class="bi bi-info-circle me-1"></i>
@@ -449,7 +449,7 @@
 									</button>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -460,9 +460,7 @@
  	</div>
  </div>
 
-<!-- Correct CDN links -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<!-- OR -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.2/apexcharts.min.js"></script>
 
 <!-- Plotly.js library -->

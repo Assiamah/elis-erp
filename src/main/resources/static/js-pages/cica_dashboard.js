@@ -133,7 +133,17 @@ $(function() {
 			return;
 		}
 
-		$('#cica_chart').removeClass('d-none');
+		$('#cica_chart').removeClass('d-none').show().css({
+			'display': 'block',
+			'visibility': 'visible'
+		});
+		
+		// Ensure chart div has proper dimensions
+		$('#barChart').css({
+			'width': '100%',
+			'height': '350px',
+			'display': 'block'
+		});
 		
 		// Check if Plotly is available
 		if (typeof Plotly === 'undefined') {
@@ -204,31 +214,39 @@ $(function() {
 				Plotly.purge(chartDiv); // Clean up existing chart
 			}
 
-			if (chartData.length) {
-				Plotly.newPlot('barChart', chartData, chartLayout, {
-					responsive: true,
-					displaylogo: false,
-					modeBarButtonsToRemove: ['sendDataToCloud']
-				});
-			} else {
-				// Show empty chart message
-				Plotly.newPlot('barChart', [{
-					x: ['No Data'],
-					y: [0],
-					type: 'bar',
-					marker: { color: '#ccc' }
-				}], {
-					title: 'No Data Available',
-					annotations: [{
-						text: 'No data matches your filter criteria',
-						x: 0.5,
-						y: 0.5,
-						xref: 'paper',
+			// Add small delay to ensure DOM is ready and visible
+			setTimeout(() => {
+				if (chartData.length) {
+					Plotly.newPlot('barChart', chartData, chartLayout, {
+						responsive: true,
+						displaylogo: false,
+						modeBarButtonsToRemove: ['sendDataToCloud']
+					});
+				} else {
+					// Show empty chart message
+					Plotly.newPlot('barChart', [{
+						x: ['No Data'],
+						y: [0],
+						type: 'bar',
+						marker: { color: '#ccc' }
+					}], {
+						title: 'No Data Available',
+						annotations: [{
+							text: 'No data matches your filter criteria',
+							x: 0.5,
+							y: 0.5,
+							xref: 'paper',
 						yref: 'paper',
 						showarrow: false
 					}]
-				});
-			}
+					});
+				}
+			}, 100); // Small delay to ensure DOM is ready
+			
+			// Force chart redraw to ensure it displays properly
+			setTimeout(() => {
+				Plotly.Plots.resize('barChart');
+			}, 300); // Additional delay for chart to be fully rendered
 		} catch (error) {
 			console.error('Error creating chart:', error);
 			$('#barChart').html('<div class="alert alert-danger">Error loading chart. Please try again.</div>');
@@ -252,6 +270,12 @@ $(function() {
         $('#div_status').toggleClass('d-none', !showStatusCards);
         $('#div_division').toggleClass('d-none', !showDivisionCards);
         
+        // Ensure chart is visible if it should be
+        const shouldShowChart = purpose !== '2';
+        if (shouldShowChart) {
+            $('#cica_chart').removeClass('d-none').show();
+        }
+        
         // Update division stats if visible
         if (showDivisionCards && json_result) {
             updateDivisionStats(json_result);
@@ -265,6 +289,8 @@ $(function() {
      */
     function processServiceData(data) {
         if (!data || !data.length) return [];
+
+        $("#serviceCount").text(data.length)
         
         return data.map((item, index) => {
             const status = STATUS_MAP[item.status] || 'Unknown';
@@ -294,6 +320,8 @@ $(function() {
      */
     function processOtherData(data) {
         if (!data || !data.length) return [];
+
+        $("#otherCount").text(data.length)
         
         return data.map((item, index) => [
             index + 1,
@@ -414,7 +442,7 @@ $(function() {
             },
             dataType: 'json',
             success: function(response) {
-                console.log('Response:', response);
+                //console.log('Response:', response);
                 
                 let json_result;
                 try {
@@ -424,9 +452,10 @@ $(function() {
                     return;
                 }
 
-                // Update UI based on filters
-                toggleSections(filters, json_result);
+                // Update chart first
                 updateChart(json_result, filters);
+                // Update UI sections after chart
+                toggleSections(filters, json_result);
                 
                 // Update KPI cards
                 if (json_result.total !== undefined) {

@@ -168,3 +168,6 @@ ${page_name == "csau_monitoring" ? "<script src='js-pages/monitoring_csau.js'></
 ${page_name == "unit_user_report" ? "<script src='js-pages/apps_report.js'></script>" : ""}
 
 ${page_name == "help_desk" ? "<script src='js-pages/help_desk.js'></script>" : ""}
+
+${page_name == "page_appdata_transfer_template" ? "<script src='js-pages/_apps_update.js'></script>" : ""}
+${page_name == "page_appdata_transfer_template" ? "<script src='js-pages/users_to_batch.js'></script>" : ""}
