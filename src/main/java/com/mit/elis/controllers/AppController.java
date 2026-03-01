@@ -355,7 +355,7 @@ public class AppController {
 				web_service_response = cls_users.checkUser(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), user, pass);
 				// JSONObject obj = new JSONObject();
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				JSONObject obj_test = new JSONObject(web_service_response);
 				String arr_tester = obj_test.get("data").toString();
@@ -955,7 +955,7 @@ public class AppController {
 				web_service_response = cls_users.checkUser(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), user, pass);
 				// JSONObject obj = new JSONObject();
-				System.out.println(web_service_response);
+			//	System.out.println(web_service_response);
 
 				JSONObject obj_test = new JSONObject(web_service_response);
 				String arr_tester = obj_test.get("data").toString();
@@ -1455,7 +1455,7 @@ public class AppController {
 				web_service_response = cls_users.select_user_by_userid(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), user);
 				// JSONObject obj = new JSONObject();
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				JSONObject obj_test = new JSONObject(web_service_response);
 				String arr_tester = obj_test.get("data").toString();
