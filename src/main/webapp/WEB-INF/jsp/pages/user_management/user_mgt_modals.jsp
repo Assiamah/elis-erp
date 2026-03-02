@@ -256,7 +256,480 @@
 </div>
 
 
+<!-- Assign Milestone Modal -->
+<div class="modal fade effect-fade modal-blur" id="assignMilestoneUserProfile" tabindex="-1" 
+     aria-labelledby="assignMilestoneUserProfileLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow border-0">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-light border-0 pt-4">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                        <i class="fa fa-tasks text-primary fa-fw"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold" id="assignMilestoneUserProfileLabel">
+                            Assign Milestone
+                        </h5>
+                        <p class="text-muted small mb-0">Configure milestone assignments for user</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body pt-4">
+                
+                <!-- Hidden User ID -->
+                <input id="ms_userid" name="ms_userid" type="hidden" value="">
+                
+                <!-- Service Selection Section -->
+                <div class="card bg-light border-0 mb-4">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fa fa-cog me-2 text-primary"></i>Service Configuration
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <!-- Main Service -->
+                            <div class="col-md-6">
+                                <label for="main_service_assign_milestone" class="form-label fw-semibold">
+                                    <i class="fa fa-dashboard me-2 text-muted"></i>Main Service
+                                </label>
+                                <select name="main_service_on_case" id="main_service_assign_milestone" 
+                                        class="form-select selectpicker" data-live-search="true">
+                                    <option value="" selected disabled>-- Select Main Service --</option>
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
+                            
+                            <!-- Sub Service -->
+                            <div class="col-md-6">
+                                <label for="sub_service_assign_milestone" class="form-label fw-semibold">
+                                    <i class="fa fa-sitemap me-2 text-muted"></i>Sub Service
+                                </label>
+                                <select name="sub_service_on_case" id="sub_service_assign_milestone" 
+                                        class="form-select" data-live-search="true">
+                                    <option value="" selected disabled>-- Select Sub Service --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Checklist Section -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 pt-3 pb-0">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-check-circle text-success me-2"></i>
+                            <h6 class="fw-bold mb-0">Milestone Checklist</h6>
+                            <!-- <span class="badge bg-info ms-2" id="selected-count">0 selected</span> -->
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="tbl_user_milestone_list_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50%">
+                                            <i class="fa fa-align-left me-2 text-muted"></i>Description
+                                        </th>
+                                        <th width="30%">
+                                            <i class="fa fa-toggle-on me-2 text-muted"></i>Option
+                                        </th>
+                                        <th width="20%" class="text-start">
+                                            <i class="fa fa-cog me-2 text-muted"></i>MID
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic content will be loaded here -->
+                                    <tr class="text-muted">
+                                        <td colspan="3" class="text-center py-4">
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            Select a service to view milestones
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden Fields -->
+                <input type="hidden" id="bl_jn_id" name="jn_id">
+                <input type="hidden" id="bl_send_by_id" name="send_by_id">
+                <input type="hidden" id="bl_userid" name="userid">
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 pt-3 pb-3">
+                <div class="d-flex gap-2 w-100 justify-content-end">
+                    <!-- Close Button -->
+                    <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-2"></i>Close
+                    </button>
+                    
+                    <!-- Assign Button -->
+                    <button type="button" class="btn btn-success px-4" id="btn_save_user_assigned_milestone_details">
+                        <i class="fa fa-check-circle me-2"></i>Assign Milestone
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
 
+
+<div class="modal fade effect-fade modal-blur" id="checkstepassignment" tabindex="-1" 
+     aria-labelledby="checkstepassignmentLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow border-0">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-light border-0 pt-4">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                        <i class="fa fa-tasks text-primary fa-fw"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold" id="checkstepassignmentLabel">
+                            Check Step Assignment
+                        </h5>
+                        <p class="text-muted small mb-0">Check users assigned to each baby step</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body pt-4">
+                
+                <!-- Hidden User ID -->
+                <input id="ms_userid" name="ms_userid" type="hidden" value="${userid}">
+                
+                <!-- Service Selection Section -->
+                <div class="card bg-light border-0 mb-4">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fa fa-cog me-2 text-primary"></i>Service Configuration
+                        </h6>
+                        
+                        <div class="row g-3">
+                            <!-- Main Service -->
+                            <div class="col-md-6">
+                                <label for="main_service_check_assignment" class="form-label fw-semibold">
+                                    <i class="fa fa-dashboard me-2 text-muted"></i>Main Service
+                                </label>
+                                <select name="main_service_on_case" id="main_service_check_assignment" 
+                                        class="form-select selectpicker" data-live-search="true">
+                                    <option value="" selected disabled>-- Select Main Service --</option>
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
+                            
+                            <!-- Sub Service -->
+                            <div class="col-md-6">
+                                <label for="sub_service_check_assignment" class="form-label fw-semibold">
+                                    <i class="fa fa-sitemap me-2 text-muted"></i>Sub Service
+                                </label>
+                                <select name="sub_service_on_case" id="sub_service_check_assignment" 
+                                        class="form-select" data-live-search="true">
+                                    <option value="" selected disabled>-- Select Sub Service --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Checklist Section -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 pt-3 pb-0">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-list text-success me-2"></i>
+                            <h6 class="fw-bold mb-0">Milestone List</h6>
+                            <!-- <span class="badge bg-info ms-2" id="selected-count">0 selected</span> -->
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="tbl_user_check_assignment_list_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="70%">
+                                            <i class="fa fa-align-left me-2 text-muted"></i>Description
+                                        </th>
+                                        <th width="20%" class="text-start">
+                                            <i class="fa fa-cog me-2 text-muted"></i>Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic content will be loaded here -->
+                                    <tr class="text-muted">
+                                        <td colspan="3" class="text-center py-4">
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            Select a service to view milestones
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden Fields -->
+                <!-- <input type="hidden" id="bl_jn_id" name="jn_id">
+                <input type="hidden" id="bl_send_by_id" name="send_by_id">
+                <input type="hidden" id="bl_userid" name="userid">
+                 -->
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 pt-3 pb-3">
+                <div class="d-flex gap-2 w-100 justify-content-end">
+                    <!-- Close Button -->
+                    <button type="button" class="btn btn-outline-danger px-4" data-bs-dismiss="modal">
+                        <i class="fa fa-times me-2"></i>Close
+                    </button>
+                    
+                    <!-- Assign Button -->
+                    <!-- <button type="button" class="btn btn-success px-4" id="btn_save_user_assigned_milestone_details">
+                        <i class="fa fa-check-circle me-2"></i>Assign Milestone
+                    </button> -->
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<!-- Load Users Assigned Steps Modal -->
+<div class="modal fade effect-fade modal-blur" id="loaduserassignedsteps" tabindex="-1" 
+     aria-labelledby="loaduserassignedstepsLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow border-0">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-light text-success border-0" >
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-success bg-opacity-25 p-2 me-3">
+                        <i class="fa fa-users text-success fa-fw"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark mb-0" id="loaduserassignedstepsLabel">
+                            Users Assigned to Step
+                        </h5>
+                        <p class="text-muted small mb-0" id="stepInfo">
+                            Loading step information...
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Summary Cards -->
+                <div class="row g-3 mb-4" id="summaryCards">
+                    <div class="col-md-3">
+                        <div class="card bg-primary bg-opacity-10 border-0">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-users fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-bold" id="totalUsers">0</h6>
+                                        <small class="text-muted">Total Users</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success bg-opacity-10 border-0">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-check-circle fa-2x text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-bold" id="activeUsers">0</h6>
+                                        <small class="text-muted">Active Users</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info bg-opacity-10 border-0">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-building fa-2x text-info"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-bold" id="totalUnits">0</h6>
+                                        <small class="text-muted">Units</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning bg-opacity-10 border-0">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="fa fa-calendar fa-2x text-warning"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-bold" id="assignedDate">-</h6>
+                                        <small class="text-muted">Latest Assignment</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filters and Search -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fa fa-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" 
+                                   id="searchUserInput" placeholder="Search by name, designation, unit...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterUnit">
+                            <option value="">All Units</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterStatus">
+                            <option value="">All Status</option>
+                            <option value="active">Active Only</option>
+                            <option value="inactive">Inactive Only</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100" id="resetFilters">
+                            <i class="fa fa-undo me-2"></i>Reset
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Users Table -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 pt-3 pb-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="fa fa-list-alt text-primary me-2"></i>
+                                <span class="fw-bold">Assigned Users List</span>
+                            </div>
+                            <span class="badge bg-primary" id="tableRowCount">0 records</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="tbl_users_assigned_steps_list_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th width="20%">
+                                            <i class="fa fa-user me-2 text-muted"></i>User
+                                        </th>
+                                        <th width="15%">
+                                            <i class="fa fa-id-card me-2 text-muted"></i>Staff No.
+                                        </th>
+                                        <th width="15%">
+                                            <i class="fa fa-briefcase me-2 text-muted"></i>Designation
+                                        </th>
+                                        <th width="15%">
+                                            <i class="fa fa-building me-2 text-muted"></i>Unit
+                                        </th>
+                                        <th width="10%">
+                                            <i class="fa fa-phone me-2 text-muted"></i>Contact
+                                        </th>
+                                        <th width="10%">
+                                            <i class="fa fa-check-circle me-2 text-muted"></i>Status
+                                        </th>
+                                        <th width="10%">
+                                            <i class="fa fa-cog me-2 text-muted"></i>Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-muted">
+                                        <td colspan="8" class="text-center py-5">
+                                            <i class="fa fa-users fa-3x mb-3 opacity-50"></i>
+                                            <p class="mb-0">No users assigned to this step</p>
+                                            <small>Click the load button to refresh</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden Fields -->
+                <input type="hidden" id="currentBsId" value="">
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-top p-3">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="small text-muted">
+                        <i class="fa fa-info-circle me-1"></i>
+                        <span id="footerInfo">Select a user to view details</span>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fa fa-times me-2"></i>Close
+                        </button>
+                        <button type="button" class="btn btn-primary" id="refreshAssignedUsers">
+                            <i class="fa fa-sync-alt me-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal (for view action) -->
+<div class="modal fade effect-fade modal-blur" id="userDetailsModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="fa fa-user-circle me-2"></i>User Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="userDetailsContent">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- <div class="modal fade" id="addupdateuserdatails-old" tabindex="-1"
 	role="dialog" aria-labelledby="addupdateuserdatails" aria-hidden="true"

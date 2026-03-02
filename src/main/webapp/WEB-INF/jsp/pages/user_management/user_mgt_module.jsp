@@ -155,6 +155,10 @@
                     <h5 class="card-title mb-0">User List</h5>
                   </div> 
                   <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-danger label-btn" data-bs-toggle="modal" data-bs-target="#checkstepassignment">
+                        <i class="ri-list-check-2 label-btn-icon fs-13"></i>
+                        Check Step Assignment
+                    </button>
                   
                     <button class="btn btn-primary label-btn" data-bs-toggle="modal" data-bs-target="#addupdateuserdatails">
                         <i class="ri-add-line label-btn-icon fs-13"></i>
@@ -214,6 +218,7 @@
                                   </td>
                                   <td>
                                     <div class="d-flex justify-content-center gap-2">
+                                        <div class="btn-group">
                                             <button class="btn btn-sm btn-outline-primary"
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#addupdateuserdatails"
@@ -258,6 +263,18 @@
                                                 data-division="${user.division}">
                                                 <i class="fas fa-user-shield"></i>
                                             </button>
+
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#assignMilestoneUserProfile"
+                                                data-userid="${user.userid}"
+                                                data-username="${user.username}"
+                                                data-fullname="${user.fullname}"
+                                                data-division="${user.division}">
+                                                <i class="fas fa-list"></i>
+                                            </button>
+                                            
+                                        </div>
                                         </div>
                                   </td>
 

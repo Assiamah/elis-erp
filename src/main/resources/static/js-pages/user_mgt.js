@@ -403,6 +403,10 @@ $("#ur_department").on('input', function() {
 									'show.bs.modal',
 									function(event) {
 
+										const ms_userid = $(event.relatedTarget).data('userid');
+
+										 $("#ms_userid").val(ms_userid);
+
 										$
 												.ajax({
 													type : "POST",
@@ -579,9 +583,9 @@ $("#ur_department").on('input', function() {
 
 										var ms_userid = $("#ms_userid").val();
 
-										console.log(main_service_id);
-										console.log(sub_service_id);
-										console.log(ms_userid);
+										// console.log(main_service_id);
+										// console.log(sub_service_id);
+										// console.log(ms_userid);
 
 										$
 												.ajax({
@@ -602,7 +606,7 @@ $("#ur_department").on('input', function() {
 													},
 													success : function(jobdetails) {
 
-														console.log(jobdetails);
+														//console.log(jobdetails);
 														//var json_p = JSON.parse(jobdetails);
 														var table = $('#tbl_user_milestone_list_dataTable');
 
@@ -624,9 +628,9 @@ $("#ur_department").on('input', function() {
 															
 															if(this.option_check){
 																table.append("<tr><td>"
-																		+ this.milestone_description
-																		+ "</td><td><input type='checkbox'checked/></td><td>"
-																		+ this.ms_id 
+																		+ this.bs_description
+																		+ "</td><td><input class='form-check-input' type='checkbox'checked/></td><td>"
+																		+ this.bs_id
 																		+ "</td>"
 									
 																		
@@ -634,9 +638,9 @@ $("#ur_department").on('input', function() {
 																		+ "</tr>");
 															}else{
 																table.append("<tr><td>"
-																		+ this.milestone_description
-																		+ "</td><td><input type='checkbox' /></td><td>"
-																		+ this.ms_id 
+																		+ this.bs_description
+																		+ "</td><td><input class='form-check-input' type='checkbox' /></td><td>"
+																		+ this.bs_id 
 																		+ "</td>"
 									
 																		
@@ -858,88 +862,188 @@ $("#ur_department").on('input', function() {
 						});
 					});
 
-					$('#btn_save_user_assigned_milestone_details').click(function() {
+					$('#btn_save_user_assigned_milestone_details').click(async function() {
+						try {
+							// ==================== GET SELECTED VALUES ====================
+							const mainServiceSelect = document.getElementById("main_service_assign_milestone");
+							const subServiceSelect = document.getElementById("sub_service_assign_milestone");
+							
+							// Validate selections
+							if (!mainServiceSelect.selectedIndex || mainServiceSelect.selectedIndex === 0) {
+								await Swal.fire({
+									icon: 'warning',
+									title: 'Selection Required',
+									text: 'Please select a main service',
+									confirmButtonColor: '#3085d6'
+								});
+								return;
+							}
+							
+							if (!subServiceSelect.selectedIndex || subServiceSelect.selectedIndex === 0) {
+								await Swal.fire({
+									icon: 'warning',
+									title: 'Selection Required',
+									text: 'Please select a sub service',
+									confirmButtonColor: '#3085d6'
+								});
+								return;
+							}
 
-						var main_select_id = document
-												.getElementById("main_service_assign_milestone");
-										var main_service = main_select_id.options[main_select_id.selectedIndex].value;
+							// Parse main service
+							const mainService = mainServiceSelect.options[mainServiceSelect.selectedIndex].value;
+							const [main_service_id, main_service_name] = mainService.split('-');
+							
+							// Parse sub service
+							const subService = subServiceSelect.options[subServiceSelect.selectedIndex].value;
+							const [sub_service_id, sub_service_name] = subService.split('-');
+							
+							const ms_userid = $("#ms_userid").val();
 
-										const
-										main_service_name_id = main_service
-												.split('-');
+							console.log('Selected IDs:', { main_service_id, sub_service_id, ms_userid });
 
-										var main_service_id = main_service_name_id[0];
-										var main_service_name = main_service_name_id[1];
+							// ==================== COLLECT SELECTED MILESTONES ====================
+							const selectedMilestones = [];
+							const userid = $("#ms_userid").val();
 
-										var sub_select_id = document
-												.getElementById("sub_service_assign_milestone");
-										var sub_service = sub_select_id.options[sub_select_id.selectedIndex].value;
-
-										const
-										sub_service_name_id = sub_service
-												.split('-');
-
-										var sub_service_id = sub_service_name_id[0];
-										var sub_service_name = sub_service_name_id[1];
-
-										var ms_userid = $("#ms_userid").val();
-
-										console.log(main_service_id);
-										console.log(sub_service_id);
-										console.log(ms_userid);
-
-						var array = [];
-						// var headers = [];
-
-						var userid = $("#ms_userid").val();
-						$('#tbl_user_milestone_list_dataTable tr').has('td :checkbox:checked').each(function() {
-							var arrayItem = {};
-							$('td', $(this)).each(function(index,item) {
-								if (index == 0) {
-									return true;
-								} else {
-									arrayItem["ms_id"] = $(item).html();
-									arrayItem["userid"] = userid;
-									arrayItem["option_check"] = true;
-									arrayItem["milestone_description"] = 'No Module Name';
-									arrayItem["main_service_id"] = main_service_id;
-									arrayItem["sub_service_id"] = sub_service_id;
+							$('#tbl_user_milestone_list_dataTable tr').has('td :checkbox:checked').each(function() {
+								const row = $(this);
+								const checkbox = row.find('td:eq(1) input[type="checkbox"]');
+								const milestoneId = row.find('td:eq(2)').text().trim(); // Assuming milestone ID is in second column
+								const milestoneDesc = row.find('td:eq(0)').text().trim(); // Assuming description is in third column
+								
+								if (checkbox.is(':checked')) {
+									selectedMilestones.push({
+										ms_id: milestoneId,
+										userid: userid,
+										option_check: true,
+										milestone_description: milestoneDesc || 'No Module Name',
+										main_service_id: main_service_id,
+										sub_service_id: sub_service_id,
+										main_service_name: main_service_name,
+										sub_service_name: sub_service_name
+									});
 								}
 							});
-							array.push(arrayItem);
-						});
-						console.log(array);
 
-						var profile_list1 = JSON.stringify(array);
-
-						console.log(profile_list1);
-
-						$.ajax({
-							type : "POST",
-							url : "user_mgt_serv",
-							data : {
-								request_type : 'update_user_milestone',
-								profile_list : profile_list1,
-								userid : userid,
-							},
-							cache : false,
-							
-							success : function(jobdetails) {
-
-								console.log(jobdetails);
-								// var json_p =
-								// JSON.parse(jobdetails);
-
-								// $('#case_file_number').val(jobdetails);
-								// alert(jobdetails);
-								$("#general_message_dialog").modal();
-								// $('#general_message_dialog
-								// #general_message_dialog_msg').val(jobdetails);
-								$('#general_message_dialog #general_message_dialog_msg_new').val(jobdetails);
-
+							// Validate milestones selected
+							if (selectedMilestones.length === 0) {
+								await Swal.fire({
+									icon: 'warning',
+									title: 'No Milestones Selected',
+									text: 'Please select at least one milestone to assign',
+									confirmButtonColor: '#3085d6'
+								});
+								return;
 							}
-						});
 
+							// console.log('Selected Milestones:', selectedMilestones);
+							
+							const profile_list1 = JSON.stringify(selectedMilestones);
+
+							// ==================== CONFIRMATION DIALOG ====================
+							const confirmResult = await Swal.fire({
+								title: 'Confirm Assignment',
+								html: `
+									<div class="text-start">
+										<p><i class="fa fa-info-circle text-info me-2"></i>You are about to assign:</p>
+										<ul class="list-group mb-3">
+											<li class="list-group-item d-flex justify-content-between align-items-center">
+												Main Service
+												<span class="badge bg-primary rounded-pill">${main_service_name || 'N/A'}</span>
+											</li>
+											<li class="list-group-item d-flex justify-content-between align-items-center">
+												Sub Service
+												<span class="badge bg-info rounded-pill">${sub_service_name || 'N/A'}</span>
+											</li>
+											<li class="list-group-item d-flex justify-content-between align-items-center">
+												Milestones Selected
+												<span class="badge bg-success rounded-pill">${selectedMilestones.length}</span>
+											</li>
+										</ul>
+										<p class="text-warning small mb-0">
+											<i class="fa fa-exclamation-triangle me-1"></i>
+											This action will update the user's milestone assignments.
+										</p>
+									</div>
+								`,
+								icon: 'question',
+								showCancelButton: true,
+								confirmButtonColor: '#28a745',
+								cancelButtonColor: '#6c757d',
+								confirmButtonText: '<i class="fa fa-check-circle me-2"></i>Yes, assign',
+								cancelButtonText: '<i class="fa fa-times me-2"></i>Cancel',
+								reverseButtons: true
+							});
+
+							if (!confirmResult.isConfirmed) {
+								return;
+							}
+
+							// ==================== SHOW LOADING ====================
+							Swal.fire({
+								title: 'Processing...',
+								html: 'Please wait while we assign the milestones',
+								allowOutsideClick: false,
+								didOpen: () => {
+									Swal.showLoading();
+								}
+							});
+
+							// ==================== AJAX CALL ====================
+							const response = await $.ajax({
+								type: "POST",
+								url: "user_mgt_serv",
+								data: {
+									request_type: 'update_user_milestone',
+									profile_list: profile_list1,
+									userid: userid,
+								},
+								cache: false
+							});
+
+							console.log('Server Response:', response);
+
+							// ==================== HANDLE SUCCESS ====================
+							Swal.close();
+							
+							await Swal.fire({
+								icon: 'success',
+								title: 'Success!',
+								html: `
+									<div class="text-center">
+										<i class="fa fa-check-circle fa-3x text-success mb-3"></i>
+										<p>${selectedMilestones.length} milestone(s) assigned successfully</p>
+										<p class="small text-muted">${main_service_name} → ${sub_service_name}</p>
+									</div>
+								`,
+								timer: 3000,
+								showConfirmButton: true,
+								confirmButtonColor: '#28a745',
+								confirmButtonText: 'OK'
+							});
+
+							// Close modal if needed
+							$('#assignMilestoneUserProfile').modal('hide');
+
+						} catch (error) {
+							// ==================== HANDLE ERRORS ====================
+							console.error('Error assigning milestones:', error);
+							
+							Swal.close();
+							
+							await Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								html: `
+									<div class="text-center">
+										<i class="fa fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+										<p>Failed to assign milestones</p>
+										<p class="small text-muted">${error.message || 'Please try again or contact support'}</p>
+									</div>
+								`,
+								confirmButtonColor: '#dc3545'
+							});
+						}
 					});
 
 					// $('#frmAddEditUser').on("submit",function() {
@@ -1048,10 +1152,744 @@ $("#ur_department").on('input', function() {
 					// 			}
 					// 		});
 				   	// 	}
+
+
+
+					$('#checkstepassignment')
+							.on(
+									'show.bs.modal',
+									function(event) {
+
+										$
+												.ajax({
+													type : "POST",
+													url : "Case_Management_Serv",
+													data : {
+														request_type : 'get_lc_main_service',
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt="" width="24"
+														// height="24">');
+													},
+													success : function(
+															jobdetails) {
+
+													//	console.log(jobdetails);
+														var json_p = JSON
+																.parse(jobdetails);
+														var options = $("#main_service_check_assignment");
+
+														// var options =
+														// $("#selector");
+														options.empty();
+														options
+																.append(new Option(
+																		"-- Select --",
+																		0));
+
+														$(json_p)
+																.each(
+																		function() {
+
+																			// console.log(select_id);
+																			// console
+																			// 		.log(this.business_process_id);
+
+																			// if
+																			// (this.business_process_on_case
+																			// ==
+																			// 'No')
+																			// {
+																			$(
+																					'#main_service_check_assignment')
+																					.append(
+																							'<option value="'
+																									+ this.business_process_id
+																									+ '-'
+																									+ this.business_process_name
+																									+ '">'
+																									+ this.business_process_name
+																									+ '</option>');
+																			// }
+
+																		});
+
+														// business_process_id
+													}
+												});
+
+									
+
+									});
+
+									$('#main_service_check_assignment')
+							.change(
+									function() {
+										// alert($(this).val());
+										var select_id = document
+												.getElementById("main_service_check_assignment");
+										var main_service = select_id.options[select_id.selectedIndex].value;
+
+										const
+										main_service_name_id = main_service
+												.split('-');
+
+										var main_service_id = main_service_name_id[0];
+										var main_service_name = main_service_name_id[1];
+
+										$
+												.ajax({
+													type : "POST",
+													url : "Case_Management_Serv",
+													data : {
+														request_type : 'get_lc_sub_service',
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt="" width="24"
+														// height="24">');
+													},
+													success : function(
+															jobdetails) {
+
+													//	console.log(jobdetails);
+														var json_p = JSON
+																.parse(jobdetails);
+														var options = $("#sub_service_check_assignment");
+
+														// var options =
+														// $("#selector");
+														options.empty();
+														options
+																.append(new Option(
+																		"-- Select --",
+																		0));
+
+														$(json_p)
+																.each(
+																		function() {
+
+																			// console
+																			// 		.log(select_id);
+																			// console
+																			// 		.log(this.business_process_id);
+
+																			if (main_service_id == this.business_process_id) {
+																				// if
+																				// (this.business_process_on_case
+																				// ==
+																				// 'No')
+																				// {
+																				$(
+																						'#sub_service_check_assignment')
+																						.append(
+																								'<option value="'
+																										+ this.business_process_sub_id
+																										+ '-'
+																										+ this.business_process_sub_name
+																										+ '">'
+																										+ this.business_process_sub_name
+																										+ '</option>');
+
+																				// }
+
+																			}
+
+																		});
+														// business_process_id
+													}
+												});
+											});	
+
+
+
+											$('#sub_service_check_assignment')
+							.change(
+									function() {
+										// alert($(this).val());
+										var main_select_id = document
+												.getElementById("main_service_check_assignment");
+										var main_service = main_select_id.options[main_select_id.selectedIndex].value;
+
+										const
+										main_service_name_id = main_service
+												.split('-');
+
+										var main_service_id = main_service_name_id[0];
+										var main_service_name = main_service_name_id[1];
+
+										var sub_select_id = document
+												.getElementById("sub_service_check_assignment");
+										var sub_service = sub_select_id.options[sub_select_id.selectedIndex].value;
+
+										const
+										sub_service_name_id = sub_service
+												.split('-');
+
+										var sub_service_id = sub_service_name_id[0];
+										var sub_service_name = sub_service_name_id[1];
+
+										var ms_userid = $("#ms_userid").val();
+
+										// console.log(main_service_id);
+										// console.log(sub_service_id);
+										// console.log(ms_userid);
+
+										$
+												.ajax({
+													type : "POST",
+													url : "user_mgt_serv",
+													data : {
+														request_type : 'select_lc_milestone_per_user',
+														main_service_id : main_service_id,
+														sub_service_id : sub_service_id,
+														userid : ms_userid
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt="" width="24"
+														// height="24">');
+													},
+													success : function(jobdetails) {
+
+														//console.log(jobdetails);
+														//var json_p = JSON.parse(jobdetails);
+														var table = $('#tbl_user_check_assignment_list_dataTable');
+
+														/*
+														 * var table = $(
+														 * '#tbl_user_profile_list_dataTable')
+														 * .DataTable();
+														 */
+									
+														table.find("tbody tr")
+																.remove();
+									
+														console.log(jobdetails);
+														var json_p = JSON
+																.parse(jobdetails);
+									
+														$(json_p.data).each(function() {
+									
+															
+															table.append("<tr><td>"
+																		+ this.bs_description
+																		+ "</td><td> "
+																		+ "<button class='btn btn-sm btn-outline-primary load_user_assigned_steps' data-step_description='" + this.bs_description + "' data-bs_id='" + this.bs_id + "'><i class='fa fa-info-circle'></i></button>"
+																		+ "</td>"
+																		
+																		
+									
+																		+ "</tr>");
+															
+									
+														});
+														
+													}
+												});
+											});	
 				   		
 						
 	
 					// });
+
+					// Load Users Assigned Steps Function
+$(document).on("click", ".load_user_assigned_steps", function() {
+    const bs_id = $(this).data("bs_id");
+    const stepDescription = $(this).data("step_description") || "Step #" + bs_id;
+    
+    // Store current BS ID
+    $("#currentBsId").val(bs_id);
+    
+    // Update modal header with step info
+    $("#stepInfo").text(`Step: ${stepDescription} (ID: ${bs_id})`);
+    
+    // Show modal with loading state
+    $("#loaduserassignedsteps").modal('show');
+    
+    // Show loading in table
+    showTableLoading();
+    
+    // Load assigned users
+    loadAssignedUsers(bs_id);
+});
+
+// Function to load assigned users
+function loadAssignedUsers(bs_id, filters = {}) {
+    
+    // Prepare request data
+    const requestData = {
+        request_type: 'select_load_users_assigned_steps',
+        bs_id: bs_id,
+        page: filters.page || 1,
+        page_size: filters.page_size || 100,
+        search_term: filters.search_term || '',
+        unit_filter: filters.unit_filter || '',
+        status_filter: filters.status_filter || ''
+    };
+    
+    $.ajax({
+        type: "POST",
+        url: "user_mgt_serv",
+        data: requestData,
+        cache: false,
+        beforeSend: function() {
+            // Show loading indicators
+            $("#tbl_users_assigned_steps_list_dataTable tbody").html(`
+                <tr>
+                    <td colspan="8" class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text-muted">Loading assigned users...</p>
+                    </td>
+                </tr>
+            `);
+        },
+        success: function(response) {
+            //console.log('Server Response:', response);
+            
+            try {
+                const data = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                if (data.success) {
+                    // Update summary cards
+                    updateSummaryCards(data);
+                    
+                    // Populate filter dropdowns
+                    populateUnitFilter(data.data);
+                    
+                    // Render table
+                    renderUsersTable(data.data, data.pagination);
+                    
+                    // Update footer info - FIXED: Now this function exists
+                    updateFooterInfo(data);
+                } else {
+                    showError(data.error || 'Failed to load users');
+                    
+                    // Show empty table
+                    $("#tbl_users_assigned_steps_list_dataTable tbody").html(`
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <i class="fa fa-exclamation-triangle fa-3x mb-3 text-warning"></i>
+                                <p class="mb-0">${data.error || 'Failed to load users'}</p>
+                                <small class="text-muted">Please try again</small>
+                            </td>
+                        </tr>
+                    `);
+                    
+                    // Reset footer
+                    $("#footerInfo").html('Error loading data');
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                showError('Invalid response from server');
+                
+                // Show error in table
+                $("#tbl_users_assigned_steps_list_dataTable tbody").html(`
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-danger">
+                            <i class="fa fa-exclamation-circle fa-3x mb-3"></i>
+                            <p class="mb-0">Error parsing server response</p>
+                            <small class="text-muted">Please check console for details</small>
+                        </td>
+                    </tr>
+                `);
+                
+                $("#footerInfo").html('Error loading data');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            showError('Failed to load assigned users. Please try again.');
+            
+            $("#tbl_users_assigned_steps_list_dataTable tbody").html(`
+                <tr>
+                    <td colspan="8" class="text-center py-5 text-danger">
+                        <i class="fa fa-exclamation-triangle fa-3x mb-3"></i>
+                        <p>Error loading users. Please try again.</p>
+                        <small>${error}</small>
+                    </td>
+                </tr>
+            `);
+            
+            $("#footerInfo").html('Connection error');
+        }
+    });
+}
+
+// Function to render users table
+function renderUsersTable(users, pagination) {
+    const table = $('#tbl_users_assigned_steps_list_dataTable');
+    const tbody = table.find('tbody');
+    
+    tbody.empty();
+    
+    if (!users || users.length === 0) {
+        tbody.html(`
+            <tr>
+                <td colspan="8" class="text-center py-5">
+                    <i class="fa fa-user-slash fa-3x mb-3 opacity-50 text-muted"></i>
+                    <p class="mb-0 fw-bold">No users assigned to this step</p>
+                    <small class="text-muted">Click refresh to try again</small>
+                </td>
+            </tr>
+        `);
+        $("#tableRowCount").text('0 records');
+        return;
+    }
+    
+    // Build table rows
+    let html = '';
+    $.each(users, function(index, user) {
+        const statusBadge = user.isdisabled 
+            ? '<span class="badge bg-danger">Inactive</span>' 
+            : '<span class="badge bg-success">Active</span>';
+        
+        const contactInfo = user.phone || user.mobile || user.email || 'N/A';
+        
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
+                            <i class="fa fa-user-circle text-primary"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold">${user.fullname || 'N/A'}</div>
+                            <small class="text-muted">@${user.username || 'N/A'}</small>
+                        </div>
+                    </div>
+                </td>
+                <td>${user.staffnumber || 'N/A'}</td>
+                <td>
+                    <span class="d-block">${user.designation || 'N/A'}</span>
+                    <small class="text-muted">${user.division || ''}</small>
+                </td>
+                <td>
+                    <span class="d-block">${user.unit_name || 'N/A'}</span>
+                    <small class="text-muted">${user.district || ''}</small>
+                </td>
+                <td>
+                    <i class="fa fa-phone-alt me-1 small"></i>${contactInfo}<br>
+                    <small class="text-muted">${user.email || ''}</small>
+                </td>
+                <td class="text-center">
+                    ${statusBadge}
+                    ${user.milestone_assignment ? `
+                        <small class="d-block text-muted mt-1">
+                            <i class="fa fa-calendar-alt me-1"></i>
+                            ${formatDate(user.milestone_assignment.assigned_date)}
+                        </small>
+                    ` : ''}
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-info view-user" 
+                                data-userid="${user.userid}"
+                                title="View Details">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                        <button class="btn btn-outline-primary contact-user" 
+                                data-userid="${user.userid}"
+                                data-phone="${user.phone || ''}"
+                                data-email="${user.email || ''}"
+                                title="Contact">
+                            <i class="fa fa-envelope"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    
+    tbody.html(html);
+    
+    // Update row count
+    const rowCount = users.length;
+    $("#tableRowCount").text(`${rowCount} record${rowCount !== 1 ? 's' : ''}`);
+}
+
+// Function to update summary cards
+function updateSummaryCards(data) {
+    const users = data.data || [];
+    
+    // Calculate stats
+    const totalUsers = users.length;
+    const activeUsers = users.filter(u => !u.isdisabled).length;
+    const uniqueUnits = [...new Set(users.map(u => u.unit_name).filter(Boolean))].length;
+    
+    // Get latest assignment date
+    let latestDate = 'N/A';
+    const dates = users
+        .map(u => u.milestone_assignment?.assigned_date)
+        .filter(Boolean)
+        .sort()
+        .reverse();
+    
+    if (dates.length > 0) {
+        latestDate = formatDate(dates[0]);
+    }
+    
+    // Update UI
+    $("#totalUsers").text(totalUsers);
+    $("#activeUsers").text(activeUsers);
+    $("#totalUnits").text(uniqueUnits);
+    $("#assignedDate").text(latestDate);
+}
+
+// Function to populate unit filter
+function populateUnitFilter(users) {
+    const units = [...new Set(users.map(u => u.unit_name).filter(Boolean))].sort();
+    
+    let options = '<option value="">All Units</option>';
+    units.forEach(unit => {
+        options += `<option value="${unit}">${unit}</option>`;
+    });
+    
+    $("#filterUnit").html(options);
+}
+
+// Function to show table loading state
+function showTableLoading() {
+    $("#tbl_users_assigned_steps_list_dataTable tbody").html(`
+        <tr>
+            <td colspan="8" class="text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted">Loading assigned users...</p>
+            </td>
+        </tr>
+    `);
+    
+    // Reset summary cards
+    $("#totalUsers, #activeUsers, #totalUnits").text('0');
+    $("#assignedDate").text('-');
+    $("#footerInfo").text('Loading data...');
+}
+
+// Function to show error
+function showError(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+        //toast: true,
+        //position: 'top-end',
+        timer: 3000,
+        showConfirmButton: false
+    });
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// ==================== EVENT HANDLERS ====================
+
+// Refresh button
+$("#refreshAssignedUsers").on("click", function() {
+    const bs_id = $("#currentBsId").val();
+    if (bs_id) {
+        showTableLoading();
+        loadAssignedUsers(bs_id);
+    }
+});
+
+// Search input
+let searchTimeout;
+$("#searchUserInput").on("input", function() {
+    clearTimeout(searchTimeout);
+    const searchTerm = $(this).val();
+    const bs_id = $("#currentBsId").val();
+    
+    searchTimeout = setTimeout(() => {
+        if (bs_id) {
+            loadAssignedUsers(bs_id, { search_term: searchTerm });
+        }
+    }, 500);
+});
+
+// Unit filter
+$("#filterUnit").on("change", function() {
+    const unit = $(this).val();
+    const bs_id = $("#currentBsId").val();
+    
+    // Filter locally or make new AJAX call
+    filterTableByUnit(unit);
+});
+
+// Status filter
+$("#filterStatus").on("change", function() {
+    const status = $(this).val();
+    filterTableByStatus(status);
+});
+
+// Reset filters
+$("#resetFilters").on("click", function() {
+    $("#searchUserInput").val('');
+    $("#filterUnit").val('');
+    $("#filterStatus").val('');
+    
+    const bs_id = $("#currentBsId").val();
+    if (bs_id) {
+        loadAssignedUsers(bs_id);
+    }
+});
+
+// View user details
+$(document).on("click", ".view-user", function() {
+    const userId = $(this).data("userid");
+    viewUserDetails(userId);
+});
+
+// Contact user
+$(document).on("click", ".contact-user", function() {
+    const userId = $(this).data("userid");
+    const phone = $(this).data("phone");
+    const email = $(this).data("email");
+    
+    Swal.fire({
+        title: 'Contact User',
+        html: `
+            <div class="text-start">
+                <p><i class="fa fa-phone me-2 text-primary"></i> ${phone || 'N/A'}</p>
+                <p><i class="fa fa-envelope me-2 text-primary"></i> ${email || 'N/A'}</p>
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'OK'
+    });
+});
+
+// ==================== FILTER FUNCTIONS ====================
+
+function filterTableByUnit(unit) {
+    const table = $('#tbl_users_assigned_steps_list_dataTable');
+    
+    if (!unit) {
+        table.find('tbody tr').show();
+        return;
+    }
+    
+    table.find('tbody tr').each(function() {
+        const unitCell = $(this).find('td:eq(4)').text().trim();
+        if (unitCell.includes(unit)) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+    
+    updateVisibleRowCount();
+}
+
+function filterTableByStatus(status) {
+    const table = $('#tbl_users_assigned_steps_list_dataTable');
+    
+    if (!status) {
+        table.find('tbody tr').show();
+        return;
+    }
+    
+    table.find('tbody tr').each(function() {
+        const statusCell = $(this).find('td:eq(6)').text().toLowerCase();
+        if (status === 'active' && !statusCell.includes('inactive')) {
+            $(this).show();
+        } else if (status === 'inactive' && statusCell.includes('inactive')) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+    
+    updateVisibleRowCount();
+}
+
+function updateVisibleRowCount() {
+    const visibleCount = $('#tbl_users_assigned_steps_list_dataTable tbody tr:visible').length;
+    $("#tableRowCount").text(`${visibleCount} visible record${visibleCount !== 1 ? 's' : ''}`);
+}
+
+// ==================== VIEW USER DETAILS ====================
+
+function viewUserDetails(userId) {
+    // You can make another AJAX call to get full user details
+    // For now, we'll show basic info from the table row
+    
+    const row = $(`.view-user[data-userid="${userId}"]`).closest('tr');
+    
+    const html = `
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-4 text-muted">User ID:</div>
+                <div class="col-8 fw-bold">${userId}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 text-muted">Full Name:</div>
+                <div class="col-8">${row.find('td:eq(1) .fw-bold').text()}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 text-muted">Staff Number:</div>
+                <div class="col-8">${row.find('td:eq(2)').text()}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 text-muted">Designation:</div>
+                <div class="col-8">${row.find('td:eq(3)').text()}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 text-muted">Unit:</div>
+                <div class="col-8">${row.find('td:eq(4)').text()}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 text-muted">Contact:</div>
+                <div class="col-8">${row.find('td:eq(5)').text()}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 text-muted">Status:</div>
+                <div class="col-8">${row.find('td:eq(6)').text().trim()}</div>
+            </div>
+        </div>
+    `;
+    
+    $("#userDetailsContent").html(html);
+    $("#userDetailsModal").modal('show');
+}
+
+function updateFooterInfo(data) {
+    const pagination = data.pagination || {};
+    const totalCount = pagination.total_count || (data.data ? data.data.length : 0);
+    const page = pagination.page || 1;
+    const pageSize = pagination.page_size || totalCount;
+    
+    if (totalCount > 0) {
+        const start = ((page - 1) * pageSize) + 1;
+        const end = Math.min(page * pageSize, totalCount);
+        
+        $("#footerInfo").html(`
+            Showing ${start} to ${end} of ${totalCount} entries
+            ${pagination.total_pages ? `(Page ${page} of ${pagination.total_pages})` : ''}
+        `);
+    } else {
+        $("#footerInfo").html('No entries found');
+    }
+}
 
 					$('#frmAddEditUser').on("submit", async function(e) {
     e.preventDefault();
@@ -1466,7 +2304,7 @@ $('#addupdateuserdatails').on('hidden.bs.modal', function() {
 						 	success : function(
 						 			jobdetails) {
 
-						 		console.log(jobdetails);
+						 		//console.log(jobdetails);
 						 		// var json_p =
 						 		// JSON.parse(jobdetails);
 

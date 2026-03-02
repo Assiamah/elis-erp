@@ -353,6 +353,30 @@ public class user_mgt_serv extends HttpServlet {
 				}
 			}
 
+			
+
+			if (request_type.equals("select_load_users_assigned_steps")) {
+				String bs_id = request.getParameter("bs_id");
+
+				obj.put("bs_id", bs_id);
+
+				jsonArr.put(obj);
+				String input = jsonArr.toString();
+				System.out.println(obj.toString());
+				// System.out.println(user_profile);
+				web_service_response = cls_users.select_load_users_assigned_steps(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+				if (web_service_response != null) {
+					obj_r.put("success", true);
+					obj_r.put("msg", "User Saved!");
+					// System.out.println(obj_r.toString());
+					// System.out.println(web_service_response.toString());
+				} else {
+					obj_r.put("success", false);
+					obj_r.put("msg", "Error Delete User.';");
+				}
+			}
+
 			if (request_type.equals("get_all")) {
 
 				String search_by = request.getParameter("search_by");
