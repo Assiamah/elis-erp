@@ -25,7 +25,7 @@
         </div>
         
 
-       <div class="container-fluid py-4">
+
     <!-- Page Header -->
     <div class="row mb-4">
         <div class="col-12">
@@ -336,7 +336,7 @@
 
         </div>
     </div>
-</div>
+
  
 
 

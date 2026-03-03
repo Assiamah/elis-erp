@@ -5053,46 +5053,46 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 
 
 
-			$('#frmChangeofNames').on('submit', function (e) {
+			// $('#frmChangeofNames').on('submit', function (e) {
 
-				e.preventDefault();
-				let ch_ar_name = $('#ch_ar_name').val();
-				let ch_region = $('#new_bill_application_region').val();
-				let ch_district = $('#new_bill_application_district').val();
-				let ch_locality = $('#new_bill_application_locality').val();
-				let ch_transaction_number = $('#new_bill_application_transaction').val();
+			// 	e.preventDefault();
+			// 	let ch_ar_name = $('#ch_ar_name').val();
+			// 	let ch_region = $('#new_bill_application_region').val();
+			// 	let ch_district = $('#new_bill_application_district').val();
+			// 	let ch_locality = $('#new_bill_application_locality').val();
+			// 	let ch_transaction_number = $('#new_bill_application_transaction').val();
 
-				$.ajax({
-					type: "POST",
-					url: "Case_Management_Serv",
-					data: {
-						request_type: 'update_application_details',
-						ar_name: ch_ar_name,
-						region: ch_region,
-						district: ch_district,
-						locality: ch_locality,
-						transaction_number: ch_transaction_number
+			// 	$.ajax({
+			// 		type: "POST",
+			// 		url: "Case_Management_Serv",
+			// 		data: {
+			// 			request_type: 'update_application_details',
+			// 			ar_name: ch_ar_name,
+			// 			region: ch_region,
+			// 			district: ch_district,
+			// 			locality: ch_locality,
+			// 			transaction_number: ch_transaction_number
 
-					},
+			// 		},
 
 
-					cache: false,
-					beforeSend: function () { },
-					success: function (
-						jobdetails) {
-						// console.log(jobdetails);
-						// alert(jobdetails);
-						$
-							.notify({
-								message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Data Changed Successfuly </span>',
-							}, {
-								type: 'success', z_index: 9999
-							});
+			// 		cache: false,
+			// 		beforeSend: function () { },
+			// 		success: function (
+			// 			jobdetails) {
+			// 			// console.log(jobdetails);
+			// 			// alert(jobdetails);
+			// 			$
+			// 				.notify({
+			// 					message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Data Changed Successfuly </span>',
+			// 				}, {
+			// 					type: 'success', z_index: 9999
+			// 				});
 
-					}
-				});
+			// 		}
+			// 	});
 
-			});
+			// });
 
 
 
