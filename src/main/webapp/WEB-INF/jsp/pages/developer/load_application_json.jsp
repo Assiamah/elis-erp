@@ -87,9 +87,9 @@
                                         <i class="bi bi-search me-2"></i>
                                         Load JSON
                                     </button>
-                                    <button class="btn btn-outline-secondary" id="clearButton">
+                                    <!-- <button class="btn btn-outline-secondary" id="clearButton">
                                         <i class="bi bi-arrow-repeat"></i>
-                                    </button>
+                                    </button> -->
                                 </div>
                                 <div class="small text-muted">
                                     <i class="bi bi-info-circle me-1"></i>

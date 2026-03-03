@@ -20521,16 +20521,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Helper function to download PDF
-    function downloadPDF(objectUrl, filename) {
-        const link = document.createElement('a');
-        link.href = objectUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    // function downloadPDF(objectUrl, filename) {
+    //     const link = document.createElement('a');
+    //     link.href = objectUrl;
+    //     link.download = filename;
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
         
-        showToast('Download started', 'success');
-    }
+    //     showToast('Download started', 'success');
+    // }
 
     // Show toast notification
     function showToast(message, type = 'info') {
