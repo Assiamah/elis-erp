@@ -1,6 +1,7 @@
 package com.mit.elis.class_common;
 
 import java.awt.Dimension;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -63,6 +65,18 @@ import com.itextpdf.text.pdf.PdfPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.Pipeline;
+import com.itextpdf.tool.xml.XMLWorker;
+import com.itextpdf.tool.xml.XMLWorkerFontProvider;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.html.CssAppliers;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
+import com.itextpdf.tool.xml.html.Tags;
+import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
+import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
 
@@ -8316,7 +8330,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			BarcodeQRCode barcodeQRCode = new BarcodeQRCode(job_number, 1000, 1000, null);
 			Image codeQrImage = barcodeQRCode.getImage();
-			codeQrImage.scaleAbsolute(80, 80);
+			codeQrImage.scaleAbsolute(90, 90);
 			codeQrImage.setAbsolutePosition(50, 730);
 			// codeQrImage.setAbsolutePosition(420, 690);
 			document.add(codeQrImage);
@@ -8344,7 +8358,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			BaseFont bfaddress = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 			PdfContentByte cbaddress = writer.getDirectContent();
 			cbaddress.beginText();
-			cbaddress.setFontAndSize(bfaddress, 10);
+			cbaddress.setFontAndSize(bfaddress, 11);
 
 			cbaddress.setTextMatrix(435, 780);
 			cbaddress.showText(web_comp_address);
@@ -8366,14 +8380,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			cbaddress.endText();
 
 			PdfContentByte canvas = writer.getDirectContent();
-			canvas.moveTo(20, 690);
+			canvas.moveTo(0, 690);
 			canvas.lineTo(700, 690);
 			canvas.closePathStroke();
 
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
-			// document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
 
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -8383,6 +8397,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
 			// Font.BOLD);
 			// document.add(new Phrase(Chunk.NEWLINE));
+
 			Paragraph p_1 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_1);
@@ -8478,26 +8493,37 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
-		//	System.out.print("remark_or_comment1: " + remark_or_comment1);
-			try {
-				if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
-					// This will handle both numbered lists and regular text
-					addListToDocument(document, remark_or_comment1);
+			if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 
-						//System.out.print("remark_or_comment2: " + "Jamhde");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				// Fallback to plain text
-				try {
-					Paragraph fallback = new Paragraph(
-						remark_or_comment1.replaceAll("<[^>]+>", ""),
-						new Font(Font.FontFamily.TIMES_ROMAN, 12)
-					);
-					document.add(fallback);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+
+				// Load font from resources
+				String fontPath = getClass()
+						.getClassLoader()
+						.getResource("fonts/times.ttf")
+						.getPath();
+
+				fontProvider.register(fontPath, "Times New Roman");
+
+				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+				Pipeline<?> pipeline =
+						new CssResolverPipeline(
+								XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+								new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+						);
+
+				XMLWorker worker = new XMLWorker(pipeline, true);
+				XMLParser parser = new XMLParser(worker);
+
+				String fullHtml =
+						"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+								+ remark_or_comment1 +
+								"</body></html>";
+
+				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
 			}
 
 			// reportTitle_note6.setAlignment(Element.ALIGN_LEFT);
@@ -8664,546 +8690,134 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// 	}
 			// }
 
-   // 1. Prepare output stream to collect the combined PDF
-       // 3. Prepare the final combined PDF
-	   ByteArrayOutputStream combinedPdfOutputStream = new ByteArrayOutputStream();
-	   Document resultDoc_hp = new Document();
-	   PdfCopy copy_hp = new PdfCopy(resultDoc_hp, combinedPdfOutputStream);
-	   resultDoc_hp.open();
+			// Start merging documents
+			ByteArrayOutputStream combinedPdfOutputStream = new ByteArrayOutputStream();
+			Document resultDoc_hp = new Document();
+			PdfCopy copy_hp = new PdfCopy(resultDoc_hp, combinedPdfOutputStream);
+			resultDoc_hp.open();
 
+			// Track page numbers and which pages belong to hashed_plan documents
+			Map<Integer, Boolean> isHashedPlanPage = new HashMap<>();
+			int pageCounter = 1;
+
+			// Add content from main report (out_pdf)
+			PdfReader outPdfReader = new PdfReader(out_pdf.toByteArray());
+			int mainReportPages = outPdfReader.getNumberOfPages();
+			for (int i = 1; i <= mainReportPages; i++) {
+				copy_hp.addPage(copy_hp.getImportedPage(outPdfReader, i));
+				isHashedPlanPage.put(pageCounter, false); // Main report pages are NOT hashed_plan
+				pageCounter++;
+			}
+			outPdfReader.close();
+
+			// Get case documents
+			JSONObject obj_pdf = new JSONObject();
+			obj_pdf.put("doc_reference_number", vr_case_number);
+			obj_pdf.put("document_type", "case_docs");
+			System.out.println(obj_pdf.toString());
 			
-            // 4. Add content from out_pdf
-            PdfReader outPdfReader = new PdfReader(out_pdf.toByteArray());
-            for (int i = 1; i <= outPdfReader.getNumberOfPages(); i++) {
-                copy_hp.addPage(copy_hp.getImportedPage(outPdfReader, i));
-            }
-            outPdfReader.close();
+			String web_response = cls_case_documents.select_case_documents_by_case_number(
+					doc_web_service_url, doc_web_service_api_key, obj_pdf.toString());
+			System.out.println(web_response);
 
+			JSONObject web_response_case = new JSONObject(web_response);
+			String docs_data = web_response_case.get("data").toString();
 
-			    JSONObject obj_pdf = new JSONObject();
-			    obj_pdf.put("doc_reference_number", vr_case_number);
-			    obj_pdf.put("document_type", "case_docs");
-				System.out.println(obj_pdf.toString());
-				String web_response = cls_case_documents.select_case_documents_by_case_number(doc_web_service_url, doc_web_service_api_key, obj_pdf.toString());
-				System.out.println(web_response);
+			// Parse JSON documents
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode rootNode = objectMapper.readTree(docs_data);
 
-				JSONObject web_response_case = new JSONObject(web_response); 
-				String docs_data = web_response_case.get("data").toString(); 
+			// Add hashed_plan documents
+			for (JsonNode node : rootNode) {
+				String doc_uuid = node.get("doc_uuid").asText();
+				String document_name = node.get("document_name").asText();
 
+				if (document_name.contains("hashed_plan_")) {
+					JSONObject obj_pdf_b = new JSONObject();
+					obj_pdf_b.put("doc_uuid", doc_uuid);
 
-        // Create ObjectMapper instance
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        // Parse JSON String into a JsonNode array
-        JsonNode rootNode = objectMapper.readTree(docs_data);
-
-        // Loop through each object in the array
-        for (JsonNode node : rootNode) {
-            String doc_uuid =node.get("doc_uuid").asText();
-			String document_name =node.get("document_name").asText();
-
-			//System.out.println("dfd_id: " + node.get("dfd_id").asInt());
-          //  System.out.println("doc_uuid: " + node.get("doc_uuid").asText());
-           // System.out.println("doc_reference_number: " + node.get("doc_reference_number").asText());
-           // System.out.println("document_name: " + node.get("document_name").asText());
-           // System.out.println("doc_description: " + node.get("doc_description").asText());
-           // System.out.println("----------------------------");
-		
-		   if (document_name.contains("hashed_plan_")) {
-			
-
-			JSONObject obj_pdf_b = new JSONObject();
-			obj_pdf_b.put("doc_uuid", doc_uuid);
-					//obj.put("doc_uuid", "44bd40f4-7733-11ef-a814-000c2930f1ec");
-				// Read the InputStream from the external service
 					InputStream pdf_blob = cls_case_documents.open_doc_by_unique_id_new_vlob(
-						doc_web_service_url, doc_web_service_api_key,
-						obj_pdf_b.toString()
+							doc_web_service_url, doc_web_service_api_key,
+							obj_pdf_b.toString()
 					);
 
-					 // 4. Read PDF from InputStream
-					 PdfReader reader = new PdfReader(pdf_blob);
+					PdfReader reader = new PdfReader(pdf_blob);
+					int totalPages = reader.getNumberOfPages();
 
-					 // 5. Copy all pages to the final document
-					 int totalPages = reader.getNumberOfPages();
-					 for (int i = 1; i <= totalPages; i++) {
-						 copy_hp.addPage(copy_hp.getImportedPage(reader, i));
-					 }
-		 
+					for (int i = 1; i <= totalPages; i++) {
+						copy_hp.addPage(copy_hp.getImportedPage(reader, i));
+						isHashedPlanPage.put(pageCounter, true); // These pages ARE hashed_plan
+						pageCounter++;
+					}
+				}
 			}
-
-        }
-
-
-			// String folderpath = case_docs_location + vr_case_number;
-			// File subdir = new File(folderpath.toString());
-			// String[] children = subdir.list();
-			// if (children == null) {
-			// // System.out.println("Either dir does not exist or is not a
-			// // directory");
-			// } else {
-			// for (int j = 0; j < children.length; j++) {
-			// String filename_doc = children[j];
-			// String path = folderpath.toString() + File.separator + filename_doc;
-			// String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
-			// 	if (filename_doc.contains("hashed_plan_")) {
-			// 	PdfReader reader2 = new PdfReader(path);
-			// 	// Copying Second Document
-			// 		for (int i = 1; i <= reader2.getNumberOfPages(); i++) {
-			// 		copy_hp.addPage(copy_hp.getImportedPage(reader2, i));
-			// 		}
-			// 	}
-
-			// }
-
-			// }
 
 			resultDoc_hp.close();
 
-			// String doc1 = output_file;
-			// String doc2 = path_to_site_plan;
-			// String resultDocFile = path_to_final_site_plan;
-			// PdfReader reader1 = new PdfReader(doc1);
-			// Document resultDoc = new Document();
-			// PdfCopy copy = new PdfCopy(resultDoc, new FileOutputStream(resultDocFile));
-			// resultDoc.open();
 
-			// // Copying First Document
-			// for (int i = 1; i <= reader1.getNumberOfPages(); i++) {
-			// copy.addPage(copy.getImportedPage(reader1, i));
-			// }
-			// PdfReader reader2 = new PdfReader(doc2);
-			// // Copying Second Document
-			// for (int i = 1; i <= reader2.getNumberOfPages(); i++) {
-			// copy.addPage(copy.getImportedPage(reader2, i));
-			// }
-			// resultDoc.close();
+		// Now stamp only the hashed_plan pages
+			PdfReader s_pdfReader = new PdfReader(combinedPdfOutputStream.toByteArray());
+			ByteArrayOutputStream stampedOutputStream = new ByteArrayOutputStream();
+			PdfStamper pdfStamper = new PdfStamper(s_pdfReader, stampedOutputStream);
 
-			// Create PdfReader instance.
-			// //PdfReader s_pdfReader = new PdfReader(path_to_final_site_plan);
-			// 1. Create PdfReader from your combined PDF
-	PdfReader s_pdfReader = new PdfReader(combinedPdfOutputStream.toByteArray());
+			BaseFont baseFont = BaseFont.createFont(
+					BaseFont.TIMES_ROMAN,
+					BaseFont.CP1252,
+					BaseFont.NOT_EMBEDDED
+			);
 
-	// 2. Create an output stream to capture the modified PDF
-	ByteArrayOutputStream stampedOutputStream = new ByteArrayOutputStream();
-	
-	// 3. Create PdfStamper instance (this applies the changes)
-	PdfStamper pdfStamper = new PdfStamper(s_pdfReader, stampedOutputStream);
-	
-	// 4. Create BaseFont instance
-	BaseFont baseFont = BaseFont.createFont(
-		BaseFont.TIMES_ROMAN,
-		BaseFont.CP1252, 
-		BaseFont.NOT_EMBEDDED
-	);
-	
-	// 5. Get number of pages
-	int pages = s_pdfReader.getNumberOfPages();
-	
-	// 6. Iterate through pages
-	for (int i = 1; i <= pages; i++) {
-		// Example: Add only from page 2 onwards
-		if (i == 1) {
-			continue; // skip page 1
-		}
-	
-		PdfContentByte pageContentByte = pdfStamper.getOverContent(i);
-	
-		// Write text
-		pageContentByte.beginText();
-		pageContentByte.setFontAndSize(baseFont, 10);
-		pageContentByte.setTextMatrix(50, 745);
-		pageContentByte.showText(job_number + " Date " + currentTime);
-		pageContentByte.endText();
-	
-		// Add signature image
-		PdfContentByte over = pdfStamper.getOverContent(i);
-		Image imagesign = Image.getInstance(sign_path + report_approved_by_id + ".jpg");
-		imagesign.scaleToFit(80.0F, 80.0F);
-		imagesign.setAbsolutePosition(50, 760);
-		over.addImage(imagesign);
-	
-		// Add QR code
-		BarcodeQRCode barcodeQRCode1 = new BarcodeQRCode(job_number, 1000, 1000, null);
-		Image codeQrImage1 = barcodeQRCode1.getImage();
-		codeQrImage1.scaleAbsolute(80, 80);
-		codeQrImage1.setAbsolutePosition(500, 750);
-		over.addImage(codeQrImage1);
-	}
-	
-		// 7. CLOSE the stamper to save changes!
-		pdfStamper.close();
-		s_pdfReader.close();
-				return stampedOutputStream.toByteArray();
-				//return "ok";
-			
-		
+			int pages = s_pdfReader.getNumberOfPages();
+
+			// Iterate through all pages
+			for (int i = 1; i <= pages; i++) {
+				// Only add content if this page belongs to a hashed_plan document
+				if (isHashedPlanPage.containsKey(i) && isHashedPlanPage.get(i)) {
+					
+					// Get overlay content for this page
+					PdfContentByte over = pdfStamper.getOverContent(i);
+
+					// Write text (job number and date)
+					over.beginText();
+					over.setFontAndSize(baseFont, 10);
+					over.setTextMatrix(50, 745);
+					over.showText(job_number + " Date " + currentTime);
+					over.endText();
+
+					// Add signature image (only if approved)
+					if (type_of_transaction != null && type_of_transaction.equals("approval_of_consolidated_search_signature") &&
+						approval_status != null && approval_status.equals("1")) {
+						
+						try {
+							Image imagesign = Image.getInstance(sign_path + report_approved_by_id + ".jpg");
+							imagesign.scaleToFit(80.0F, 80.0F);
+							imagesign.setAbsolutePosition(10, 760);
+							over.addImage(imagesign);
+						} catch (Exception e) {
+							e.printStackTrace();
+							// Continue without signature if image not found
+						}
+					}
+
+					// Add QR code
+					BarcodeQRCode barcodeQRCode1 = new BarcodeQRCode(job_number, 1000, 1000, null);
+					Image codeQrImage1 = barcodeQRCode1.getImage();
+					codeQrImage1.scaleAbsolute(80, 80);
+					codeQrImage1.setAbsolutePosition(500, 750);
+					over.addImage(codeQrImage1);
+				}
+			}
+
+			// Close stamper and reader
+			pdfStamper.close();
+			s_pdfReader.close();
+
+			return stampedOutputStream.toByteArray();
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			return out_pdf.toByteArray(); // Return original PDF if stamping fails
 		}
-
-		finally {
-
-			// release resources, if any
-			// outputStream.close();
-			// response_ws.close();
-			// client.close();
-
-		}
-	return out_pdf.toByteArray();
 	}
-
-	private void addListToDocument(Document document, String htmlContent) throws Exception {
-    if (htmlContent == null || htmlContent.trim().isEmpty()) {
-        return;
-    }
-    
-    // Check if content has mixed elements (paragraphs + lists)
-    if (htmlContent.contains("<p>") && (htmlContent.contains("<ol>") || htmlContent.contains("<li>"))) {
-        // Mixed content - process in order
-        processMixedContent(document, htmlContent);
-    }
-    // Check if this is a numbered list (contains <ol> or <li>)
-    else if (htmlContent.contains("<ol>") || htmlContent.contains("<li>")) {
-        // Parse as a numbered list
-        addNumberedListToDocument(document, htmlContent);
-    } else {
-        // Add as regular paragraph
-        Paragraph para = new Paragraph(cleanText(htmlContent), 
-            new Font(Font.FontFamily.TIMES_ROMAN, 12));
-        document.add(para);
-    }
-}
-
-private void processMixedContent(Document document, String htmlContent) throws Exception {
-    // Split by <p> and <ol> tags to process in order
-    Pattern pattern = Pattern.compile("(<p>.*?</p>|<ol>.*?</ol>)", Pattern.DOTALL);
-    Matcher matcher = pattern.matcher(htmlContent);
-    
-    while (matcher.find()) {
-        String block = matcher.group(1);
-        
-        if (block.startsWith("<p>")) {
-            // Process paragraph WITH formatting preserved
-            processFormattedParagraph(document, block);
-        } 
-        else if (block.startsWith("<ol>")) {
-            // Process list
-            addNumberedListToDocument(document, block);
-        }
-    }
-}
-
-private void processFormattedParagraph(Document document, String htmlParagraph) throws Exception {
-    // Extract the inner content without <p> tags
-    String innerContent = htmlParagraph.replaceAll("^<p>|</p>$", "");
-    
-    // Create a paragraph to hold formatted content
-    Paragraph paragraph = new Paragraph();
-    paragraph.setFont(new Font(Font.FontFamily.TIMES_ROMAN, 12));
-    
-    // Process the HTML to extract formatted text
-    processHtmlToParagraph(innerContent, paragraph);
-    
-    if (paragraph.size() > 0) {
-        document.add(paragraph);
-    }
-}
-
-private void processHtmlToParagraph(String html, Paragraph paragraph) {
-    int index = 0;
-    while (index < html.length()) {
-        if (html.startsWith("<strong>", index) || html.startsWith("<b>", index)) {
-            // Handle bold text
-            String tag = html.startsWith("<strong>", index) ? "<strong>" : "<b>";
-            int endTagIndex = html.indexOf("</" + tag.substring(1, tag.length() - 1) + ">", index);
-            if (endTagIndex > index) {
-                String content = html.substring(index + tag.length(), endTagIndex);
-                
-                // Create bold chunk
-                Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-                Chunk boldChunk = new Chunk(content, boldFont);
-                paragraph.add(boldChunk);
-                
-                index = endTagIndex + tag.replace("<", "</").length();
-            } else {
-                index++;
-            }
-        }
-        else if (html.startsWith("<span", index)) {
-            // Handle span tags with styles
-            int spanEnd = html.indexOf('>', index);
-            if (spanEnd > index) {
-                String spanTag = html.substring(index, spanEnd + 1);
-                int closingSpanIndex = html.indexOf("</span>", index);
-                
-                if (closingSpanIndex > index) {
-                    String content = html.substring(spanEnd + 1, closingSpanIndex);
-                    
-                    // Check for underline style
-                    Font spanFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
-                    if (spanTag.contains("underline")) {
-                        spanFont.setStyle(Font.UNDERLINE);
-                    }
-                    
-                    // Process any nested formatting in the content
-                    processHtmlToParagraph(content, paragraph);
-                    
-                    index = closingSpanIndex + 7;
-                } else {
-                    index++;
-                }
-            } else {
-                index++;
-            }
-        }
-        else if (html.startsWith("<u>", index)) {
-            // Handle underline tag
-            int endTagIndex = html.indexOf("</u>", index);
-            if (endTagIndex > index) {
-                String content = html.substring(index + 3, endTagIndex);
-                
-                Font underlineFont = new Font(Font.FontFamily.TIMES_ROMAN, 12);
-                underlineFont.setStyle(Font.UNDERLINE);
-                Chunk underlineChunk = new Chunk(content, underlineFont);
-                paragraph.add(underlineChunk);
-                
-                index = endTagIndex + 4;
-            } else {
-                index++;
-            }
-        }
-        else if (html.startsWith("</", index)) {
-            // Skip closing tags
-            int closeTagEnd = html.indexOf('>', index);
-            if (closeTagEnd > index) {
-                index = closeTagEnd + 1;
-            } else {
-                index++;
-            }
-        }
-        else {
-            // Regular text
-            int nextTag = html.indexOf('<', index);
-            if (nextTag == -1) {
-                // No more tags, add remaining text
-                String text = html.substring(index).trim();
-                if (!text.isEmpty()) {
-                    Chunk textChunk = new Chunk(text, new Font(Font.FontFamily.TIMES_ROMAN, 12));
-                    paragraph.add(textChunk);
-                }
-                break;
-            } else {
-                String text = html.substring(index, nextTag);
-                if (!text.isEmpty()) {
-                    Chunk textChunk = new Chunk(text, new Font(Font.FontFamily.TIMES_ROMAN, 12));
-                    paragraph.add(textChunk);
-                }
-                index = nextTag;
-            }
-        }
-    }
-}
-
-// Also update the list item processing to handle formatting
-private void addNumberedListToDocument(Document document, String htmlContent) throws Exception {
-    com.itextpdf.text.List pdfList = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED);
-    pdfList.setAutoindent(true);
-    pdfList.setIndentationLeft(20);
-    
-    // Set numbering style for top level (1, 2, 3)
-    pdfList.setNumbered(true);
-    pdfList.setLettered(false);
-    
-    // Extract the list content without the outer <ol> tags
-    String listContent = htmlContent.replaceAll("^<ol>|</ol>$", "");
-    
-    // Parse the list content to separate top-level items
-    java.util.ArrayList<TopLevelItem> topLevelItems = parseTopLevelItems(listContent);
-    
-    for (TopLevelItem topItem : topLevelItems) {
-        // Add the main item WITH formatting
-        if (!topItem.mainText.isEmpty()) {
-            // Create a ListItem with the main text (formatting will be handled in the main text)
-            ListItem mainItem = new ListItem();
-            
-            // Parse the main text for formatting
-            Paragraph itemParagraph = new Paragraph();
-            processHtmlToParagraph(topItem.mainText, itemParagraph);
-            
-            // Transfer chunks from paragraph to list item
-            for (Element element : itemParagraph) {
-                if (element instanceof Chunk) {
-                    mainItem.add(element);
-                }
-            }
-            
-            pdfList.add(mainItem);
-        }
-        
-        // Add nested list if it exists
-        if (topItem.hasNestedList && topItem.nestedItems != null && !topItem.nestedItems.isEmpty()) {
-            com.itextpdf.text.List nestedList = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED);
-            nestedList.setAutoindent(true);
-            nestedList.setIndentationLeft(40);
-            nestedList.setNumbered(false);
-            nestedList.setLettered(true);
-            nestedList.setLowercase(List.LOWERCASE);
-            
-            for (String nestedText : topItem.nestedItems) {
-                if (!nestedText.isEmpty()) {
-                    ListItem nestedItem = new ListItem();
-                    
-                    // Parse nested text for formatting
-                    Paragraph nestedParagraph = new Paragraph();
-                    processHtmlToParagraph(nestedText, nestedParagraph);
-                    
-                    for (Element element : nestedParagraph) {
-                        if (element instanceof Chunk) {
-                            nestedItem.add(element);
-                        }
-                    }
-                    
-                    nestedList.add(nestedItem);
-                }
-            }
-            
-            if (nestedList.size() > 0) {
-                pdfList.add(nestedList);
-            }
-        }
-    }
-    
-    if (pdfList.size() > 0) {
-        document.add(pdfList);
-    }
-}
-
-// Update parseTopLevelItems to preserve HTML in mainText
-private java.util.ArrayList<TopLevelItem> parseTopLevelItems(String listContent) {
-    java.util.ArrayList<TopLevelItem> items = new java.util.ArrayList<>();
-    
-    int index = 0;
-    while (index < listContent.length()) {
-        // Find the next <li> tag
-        int liStart = listContent.indexOf("<li>", index);
-        if (liStart == -1) break;
-        
-        // Find the corresponding closing </li> tag
-        int liEnd = findClosingLiTag(listContent, liStart);
-        if (liEnd == -1) break;
-        
-        // Extract the full li content (preserve HTML)
-        String fullLiContent = listContent.substring(liStart + 4, liEnd);
-        
-        // Check if this li contains a nested list
-        if (fullLiContent.contains("<ol")) {
-            // Find where the nested list starts
-            int nestedStart = fullLiContent.indexOf("<ol");
-            
-            // Main text is before the nested list (preserve HTML)
-            String mainText = fullLiContent.substring(0, nestedStart);
-            
-            // Extract nested list content
-            String nestedContent = fullLiContent.substring(nestedStart);
-            
-            // Parse nested items (preserve HTML)
-            java.util.ArrayList<String> nestedItems = parseNestedItems(nestedContent);
-            
-            // Don't clean the mainText - preserve HTML
-            items.add(new TopLevelItem(mainText, true, nestedItems));
-        } else {
-            // No nested list - preserve HTML
-            items.add(new TopLevelItem(fullLiContent, false, null));
-        }
-        
-        index = liEnd + 5; // Move past </li>
-    }
-    
-    return items;
-}
-
-private int findClosingLiTag(String content, int startPos) {
-    int nestedLevel = 0;
-    int pos = startPos + 4; // Start after <li>
-    
-    while (pos < content.length()) {
-        if (content.startsWith("<li>", pos)) {
-            nestedLevel++;
-            pos += 4;
-        } else if (content.startsWith("</li>", pos)) {
-            if (nestedLevel == 0) {
-                return pos;
-            } else {
-                nestedLevel--;
-                pos += 5;
-            }
-        } else if (content.startsWith("<ol", pos) || content.startsWith("<ul", pos)) {
-            nestedLevel++;
-            pos = content.indexOf('>', pos) + 1;
-        } else if (content.startsWith("</ol>", pos) || content.startsWith("</ul>", pos)) {
-            nestedLevel--;
-            pos += 5;
-        } else {
-            pos++;
-        }
-    }
-    
-    return -1;
-}
-
-// Update parseNestedItems to preserve HTML
-private java.util.ArrayList<String> parseNestedItems(String nestedHtml) {
-    java.util.ArrayList<String> nestedItems = new java.util.ArrayList<>();
-    
-    // Remove the outer <ol> tags but keep inner HTML
-    String nestedContent = nestedHtml.replaceAll("<ol[^>]*>|</ol>", "");
-    
-    int index = 0;
-    while (index < nestedContent.length()) {
-        int liStart = nestedContent.indexOf("<li>", index);
-        if (liStart == -1) break;
-        
-        int liEnd = nestedContent.indexOf("</li>", liStart);
-        if (liEnd == -1) break;
-        
-        // Preserve HTML formatting
-        String itemText = nestedContent.substring(liStart + 4, liEnd);
-        nestedItems.add(itemText); // Don't clean, preserve HTML
-        
-        index = liEnd + 5;
-    }
-    
-    return nestedItems;
-}
-
-// Keep the TopLevelItem class as is
-private static class TopLevelItem {
-    String mainText;
-    boolean hasNestedList;
-    java.util.ArrayList<String> nestedItems;
-    
-    TopLevelItem(String mainText, boolean hasNestedList, java.util.ArrayList<String> nestedItems) {
-        this.mainText = mainText;
-        this.hasNestedList = hasNestedList;
-        this.nestedItems = nestedItems;
-    }
-}
-
-private String cleanText(String text) {
-    if (text == null) return "";
-    
-    // Remove HTML tags but preserve line breaks
-    String cleaned = text.replaceAll("<br\\s*/?>", "\n")
-                         .replaceAll("<p>", "\n")
-                         .replaceAll("</p>", "")
-                         .replaceAll("<[^>]+>", " ")
-                         .replaceAll("&nbsp;", " ")
-                         .replaceAll("\\s+", " ")
-                         .trim();
-    
-    return cleaned;
-}
 	
 	public byte[] create_search_report_pvlmd_old(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number, String job_number,
@@ -11228,31 +10842,45 @@ private String cleanText(String text) {
 			//remark_or_comment_bob
 			//remark_or_comment_bob
 
-// Replace a value in the string
-// remark_or_comment1= remark_or_comment1.replace("<ol><li>", "<html><body><p>");
-// remark_or_comment1= remark_or_comment1.replace("</li></ol>", "</p></body></html>");
+			// Replace a value in the string
+			// remark_or_comment1= remark_or_comment1.replace("<ol><li>", "<html><body><p>");
+			// remark_or_comment1= remark_or_comment1.replace("</li></ol>", "</p></body></html>");
 
-			try {
-    if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
-        // This will handle both numbered lists and regular text
-        addListToDocument(document, remark_or_comment1);
-    }
-} catch (Exception e) {
-    e.printStackTrace();
-    // Fallback to plain text
-    try {
-        Paragraph fallback = new Paragraph(
-            remark_or_comment1.replaceAll("<[^>]+>", ""),
-            new Font(Font.FontFamily.TIMES_ROMAN, 12)
-        );
-        document.add(fallback);
-    } catch (Exception ex) {
-        ex.printStackTrace();
-    }
-}
+			if (remark_or_comment1 != null && !remark_or_comment1.trim().isEmpty()) {
 
-// Output the result
-//System.out.println(updatedString);  // Output: "This is the new comment."
+				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+
+				// Load font from resources
+				String fontPath = getClass()
+						.getClassLoader()
+						.getResource("fonts/times.ttf")
+						.getPath();
+
+				fontProvider.register(fontPath, "Times New Roman");
+
+				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+				Pipeline<?> pipeline =
+						new CssResolverPipeline(
+								XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+								new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+						);
+
+				XMLWorker worker = new XMLWorker(pipeline, true);
+				XMLParser parser = new XMLParser(worker);
+
+				String fullHtml =
+						"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+								+ remark_or_comment1 +
+								"</body></html>";
+
+				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
+			}
+
+				// Output the result
+				//System.out.println(updatedString);  // Output: "This is the new comment."
             // // Parse the HTML content
              java.util.List<Element> elements = HTMLWorker.parseToList(new StringReader(remark_or_comment1), styles);
 
