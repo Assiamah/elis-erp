@@ -3462,6 +3462,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#newEncumberancesModal ._gated_workflow_documents');
         } else if (modalType === 'valuation') {
             container = document.querySelector('#newValuationModal ._gated_workflow_documents');
+        } else if (modalType === 'certificate') {
+            container = document.querySelector('#newCertificateModal ._gated_workflow_documents');
         } else if (modalType === 'lrd_initial_approval') {
             container = document.querySelector('#lrd_initial_approval ._gated_workflow_documents');
         } else if (modalType === 'addeditpartyGeneral') {
@@ -11877,6 +11879,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     $('#newValuationModal').on('hidden.bs.modal', function () {
+        // Remove any stacked / extra backdrops
+        $('.modal-backdrop.stacked-backdrop').remove();
+
+        // Safety: if no modal is open, remove ALL backdrops
+        if ($('.modal.show').length === 0) {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        }
+    });
+
+    $('#newCertificateModal').on('hidden.bs.modal', function () {
         // Remove any stacked / extra backdrops
         $('.modal-backdrop.stacked-backdrop').remove();
 
@@ -22044,6 +22058,421 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+    });
+
+    $(document).on('click', '.newCertificateModal', function() {
+        const $modal = $('#newCertificateModal');
+
+        // Force higher z-index than existing modals
+        const highestZ = Math.max(
+            ...Array.from(document.querySelectorAll('.modal.show'))
+                .map(m => parseInt(window.getComputedStyle(m).zIndex) || 1050),
+            1050
+        );
+
+        $modal.css('z-index', highestZ + 10);
+
+        setTimeout(() => {
+            $('.modal-backdrop')
+                .not('.stacked-backdrop')
+                .css('z-index', highestZ + 5)
+                .addClass('stacked-backdrop');
+        });
+
+        $modal.modal('show');
+
+        $("#vs_id").val(0);
+        $("#vs_date_of_valuation").val('');
+        $("#vs_amount").val('');
+        $("#vs_remarks").val('');
+
+        window.loadGatedWorkFlowDocuments('certificate');
+    });
+
+    $('#form_add_certificate').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Collect form data
+        const action_on_form = $("#action_on_form_certificate").val();
+        const cs_id = parseInt($("#cs_id").val());
+        const cs_case_number = $("#cs_case_number").val();
+        const cs_date_of_registration = $("#cs_date_of_registration").val();
+        const cs_to_whom_issued = $("#cs_to_whom_issued").val();
+        const cs_serial_number = $("#cs_serial_number").val();
+        const cs_official_notes = $("#cs_official_notes").val();
+        
+        // Determine request type
+        const request_type = "select_lrd_certificate_section_add_and_update";
+        
+        // Validate required fields
+        const requiredFields = [
+            { field: 'cs_date_of_registration', value: cs_date_of_registration, label: 'Date of Registration' },
+            { field: 'cs_to_whom_issued', value: cs_to_whom_issued, label: 'To Whom Issued' },
+            { field: 'cs_serial_number', value: cs_serial_number, label: 'Serial Number' },
+            // { field: 'cs_official_notes', value: cs_official_notes, label: 'Official Notes' }
+        ];
+        
+        // Check for empty required fields
+        const emptyFields = requiredFields.filter(field => !field.value || field.value.trim() === '');
+        if (emptyFields.length > 0) {
+            Swal.fire({
+                title: 'Required Fields Missing',
+                html: `<div class="text-start">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>The following fields are required:</p>
+                        <ul class="text-start">
+                            ${emptyFields.map(f => `<li><strong>${f.label}</strong></li>`).join('')}
+                        </ul>
+                        <p class="text-muted small mt-2">Please fill in all required fields before submitting</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14',
+                width: 500
+            });
+            return;
+        }
+        
+        // Prepare confirmation message based on action (add/edit)
+        const isEdit = vs_id > 0;
+        const actionText = isEdit ? 'Update' : 'Add';
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: `${actionText} Valuation Record?`,
+            html: `<div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-balance-scale text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-3">Confirm ${actionText}</h5>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Valuation Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Case Number:</strong> ${cs_case_number}</li>
+                                    <li><strong>Date of Issue:</strong> ${cs_date_of_registration}</li>
+                                    <li><strong>To Whom Issued:</strong> GHS ${cs_to_whom_issued}</li>
+                                    <li><strong>Serial Number:</strong> ${cs_serial_number}</li>
+                                    ${cs_official_notes ? `<li><strong>Official Notes:</strong> ${cs_official_notes.substring(0, 40)}${cs_official_notes.length > 40 ? '...' : ''}</li>` : ''}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        This action will ${isEdit ? 'update the existing' : 'create a new'} 
+                        valuation record in the system.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `<i class="fas fa-save me-1"></i>${actionText} Valuation`,
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            // cancelButtonColor: '#6c757d',
+            width: 550,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-primary',
+                // cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                const submitBtn = $(this).find('button[type="submit"]');
+                const originalText = submitBtn.html();
+                submitBtn.prop('disabled', true);
+                submitBtn.html('<span class="spinner-border spinner-border-sm me-1" role="status"></span>Processing...');
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "lrd_certificate_section_serv",
+                    data: {
+                        request_type: request_type,
+                        cs_id: cs_id,
+                        cs_case_number: cs_case_number,
+                        cs_date_of_registration: cs_date_of_registration,
+                        cs_to_whom_issued: cs_to_whom_issued,
+                        cs_serial_number: cs_serial_number,
+                        cs_official_notes: cs_official_notes
+                    },
+                    cache: false,
+                    success: function(jobdetails) {
+                        try {
+                            const json_p = JSON.parse(jobdetails);
+                            
+                            // Close the modal
+                            const modalElement = document.getElementById('newCertificateModal');
+                            if (modalElement) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                } else {
+                                    // If modal instance doesn't exist, hide it directly
+                                    $(modalElement).modal('hide');
+                                }
+                            }
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Success!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Certificate ${isEdit ? 'Updated' : 'Added'}</h5>
+                                        <p class="text-muted">
+                                            Certificate details have been ${isEdit ? 'updated' : 'added'} successfully
+                                        </p>
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-check me-2"></i>
+                                                <div>
+                                                    <strong>Transaction Details:</strong>
+                                                    <div class="small">
+                                                        Case: ${cs_case_number}<br>
+                                                        Date: ${cs_date_of_registration}<br>
+                                                        Serial Number: ${cs_serial_number}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: 'Continue',
+                                confirmButtonColor: '#198754',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                willClose: () => {
+                                    // Clear form after successful submission if it's not an edit
+                                    if (!isEdit) {
+                                        $('#form_add_certificate')[0].reset();
+                                        $("#cs_id").val('0');
+                                    }
+                                }
+                            });
+                            
+                            // Update the certificate table with new data
+                            updateCertificateTable(json_p.data);
+                            
+                        } catch (error) {
+                            console.error('JSON parsing error:', error);
+                            
+                            // Show error message for parsing failure
+                            Swal.fire({
+                                title: 'Processing Error',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                                        </div>
+                                        <p>Failed to process server response</p>
+                                        <p class="text-muted small">Please try again or contact support</p>
+                                    </div>`,
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Save Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Unable to Save Certificate details</h5>
+                                    <p class="text-danger small">${xhr.responseText || error || 'Server error occurred'}</p>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Please check your connection and try again
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    },
+                    complete: function() {
+                        // Reset button state
+                        submitBtn.prop('disabled', false);
+                        submitBtn.html(originalText);
+                    }
+                });
+            }
+        });
+    });
+
+    // Function to update the valuation table with the new format
+    function updateCertificateTable(data) {
+        const table_bp = $('#lrd_certificate_details_dataTable');
+        table_bp.find("tbody tr").remove();
+        
+        if (data && data.length > 0) {
+            $(data).each(function() {
+                table_bp.append(`<tr>
+                    <td>${this.cs_date_of_registration || 'N/A'}</td>
+                    <td>${this.cs_to_whom_issued || 'N/A'}</td>
+                    <td>${this.cs_serial_number || 'N/A'}</td>
+                    <td>
+                        <div class="text-truncate" style="max-width: 250px;" title="${this.cs_official_notes || ''}">
+                            ${this.cs_official_notes || '<span class="text-muted">No official notes</span>'}
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-outline-danger edit-certificate"
+                                    data-target-id="${this.cs_id}"
+                                    data-cs_id="${this.cs_id}"
+                                    data-cs_case_number="${this.case_number}"
+                                    data-cs_date_of_registration="${this.cs_date_of_registration}"
+                                    data-cs_to_whom_issued="${this.cs_to_whom_issued}"
+                                    data-cs_serial_number="${this.cs_serial_number}"
+                                    data-cs_official_notes="${this.cs_official_notes}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Edit Certificate">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <!-- <button class="btn btn-outline-danger delete-certificate"
+                                    data-cs_id="${this.cs_id}"
+                                    data-cs_case_number="${this.cs_case_number}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Delete Certificate">
+                                <i class="fas fa-trash"></i>
+                            </button>-->
+                        </div>
+                    </td>
+                </tr>`);
+            });
+            
+            // Initialize tooltips for new buttons
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Add click handlers for edit buttons
+            $('.edit-certificate').off('click').on('click', function() {
+                const cs_id = $(this).data('cs_id');
+                const cs_case_number = $(this).data('cs_case_number');
+                const cs_date_of_registration = $(this).data('cs_date_of_registration');
+                const cs_to_whom_issued = $(this).data('cs_to_whom_issued');
+                const cs_serial_number = $(this).data('cs_serial_number');
+                const cs_official_notes = $(this).data('cs_official_notes');
+                
+                // Populate the modal form
+                $("#cs_id").val(cs_id);
+                $("#cs_case_number").val(cs_case_number);
+                $("#cs_date_of_registration").val(cs_date_of_registration);
+                $("#cs_to_whom_issued").val(cs_to_whom_issued);
+                $("#cs_serial_number").val(cs_serial_number);
+                $("#cs_official_notes").val(cs_official_notes);
+                $("#action_on_form_certificate").val('edit');
+                
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById('newCertificateModal'));
+                modal.show();
+            });
+            
+            // Add click handlers for delete buttons (optional - if you want delete functionality)
+            $('.delete-certificate').off('click').on('click', function() {
+                const cs_id = $(this).data('cs_id');
+                const cs_case_number = $(this).data('cs_case_number');
+                
+                // Show delete confirmation
+                Swal.fire({
+                    title: 'Delete Valuation?',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-trash-alt text-danger fa-3x"></i>
+                            </div>
+                            <p>Are you sure you want to delete this valuation record?</p>
+                            <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-2">
+                                <strong>Case:</strong> ${cs_case_number}<br>
+                                <strong>Record ID:</strong> ${cs_id}
+                            </div>
+                            <p class="text-muted small">This action cannot be undone</p>
+                        </div>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-trash me-1"></i>Delete',
+                    cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Call delete API here if needed
+                        console.log('Delete certificate with ID:', cs_id);
+                    }
+                });
+            });
+            
+        } else {
+            // Show empty state
+            table_bp.append(`<tr>
+                <td colspan="4" class="text-center py-5">
+                    <div class="text-muted">
+                        <i class="fas fa-balance-scale fa-3x mb-3 d-block"></i>
+                        <h5 class="mb-2">No Valuation Records</h5>
+                        <p class="mb-0">Click "Add Valuation" to create your first record</p>
+                    </div>
+                </td>
+            </tr>`);
+        }
+        
+    }
+
+     $(document).on('click', '.editCertificateModal', function(e) {
+
+        const $modal = $('#newCertificateModal');
+
+        // Force higher z-index than existing modals
+        const highestZ = Math.max(
+            ...Array.from(document.querySelectorAll('.modal.show'))
+                .map(m => parseInt(window.getComputedStyle(m).zIndex) || 1050),
+            1050
+        );
+
+        $modal.css('z-index', highestZ + 10);
+
+        setTimeout(() => {
+            $('.modal-backdrop')
+                .not('.stacked-backdrop')
+                .css('z-index', highestZ + 5)
+                .addClass('stacked-backdrop');
+        });
+
+        $modal.modal('show');
+
+        const cs_id = $(this).data('cs_id');
+        const cs_case_number = $(this).data('cs_case_number');
+        const cs_date_of_registration = $(this).data('cs_date_of_registration');
+        const cs_to_whom_issued = $(this).data('cs_to_whom_issued');
+        const cs_serial_number = $(this).data('cs_serial_number');
+        const cs_official_notes = $(this).data('cs_official_notes');
+        
+        $("#cs_id").val(cs_id);
+        $("#cs_case_number").val(cs_case_number);
+        $("#cs_date_of_registration").val(cs_date_of_registration);
+        $("#cs_to_whom_issued").val(cs_to_whom_issued);
+        $("#cs_serial_number").val(cs_serial_number);
+        $("#cs_official_notes").val(cs_official_notes);
+
+        // Load documents for memorial modal
+        const docsContainer = document.querySelector('#newCertificateModal ._gated_workflow_documents');
+        if (docsContainer) {
+            window.loadGatedWorkFlowDocuments('certificate');
+        }
     });
 
 });

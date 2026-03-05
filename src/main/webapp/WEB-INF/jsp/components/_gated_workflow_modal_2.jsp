@@ -5518,3 +5518,150 @@ Thank you.</textarea>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="newCertificateModal" tabindex="-1" aria-labelledby="newCertificateModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="newCertificateModalLabel">
+                    <i class="fas fa-money-bill-wave me-2"></i>
+                    Certificate Section
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_certificate">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="cs_id" name="cs_id" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-4" style="height: 100vh;">
+                        
+                        <!-- Left Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+
+                          <div class="row g-4">
+                            <div class="col-lg-6">
+                              <!-- Case Number -->
+                               <div class="mb-3">
+                                  <label for="cs_case_number" class="form-label fw-medium">
+                                      <i class="fas fa-hashtag me-1"></i>
+                                      Case Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-folder"></i>
+                                      </span>
+                                      <input type="text" name="cs_case_number" id="cs_case_number" 
+                                            class="form-control" required readonly value="${case_number}">
+                                  </div>
+                              </div>
+                              
+                             <!-- Date of Issue -->
+                              <div class="mb-3">
+                                  <label for="cs_date_of_registration" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                     Date of Issue
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar-check"></i>
+                                      </span>
+                                      <input type="date" name="cs_date_of_registration" id="cs_date_of_registration" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+
+                              <!-- >To Whom Issued -->
+                              <div class="mb-3">
+                                  <label for="cs_to_whom_issued" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                     To Whom Issued
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-user"></i>
+                                      </span>
+                                      <input type="text" name="cs_to_whom_issued" id="cs_to_whom_issued" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-6">
+                              
+                              
+                              <!-- Serial Number -->
+                              <div class="mb-3">
+                                  <label for="cs_serial_number" class="form-label fw-medium">
+                                      <i class="fas fa-fa-money-bill-wave me-1"></i>
+                                      Serial Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-sort-numeric-up"></i>
+                                      </span>
+                                      <input type="text" name="cs_serial_number" id="cs_serial_number" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+
+
+                              <!-- Official Notes -->
+                            <div class="mb-3">
+                                <label for="cs_official_notes" class="form-label fw-medium">
+                                    <i class="fas fa-sticky-note me-1"></i>
+                                    Official Notes
+                                </label>
+                                <textarea name="cs_official_notes" id="cs_official_notes" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Additional official notes or observations"></textarea>
+                                <div class="form-text">Internal official notes or observations</div>
+                            </div>
+                              
+                            </div>
+                          </div>
+
+                          <!-- Buttons moved to left column -->
+                          <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <div>
+                                      <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                              data-action_type='encumbrances' style="display: none;">
+                                          <i class="fas fa-trash me-1"></i>
+                                          Delete
+                                      </button>
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                      <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">
+                                          <i class="fas fa-times me-1"></i>
+                                          Cancel
+                                      </button>
+                                      <button type="submit" id="btn_certificate_section" class="btn btn-info">
+                                          <i class="fas fa-save me-1"></i>
+                                          Save Certificate
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+                            <div class="_gated_workflow_documents"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -3718,6 +3718,15 @@
                             <span class="badge bg-primary ms-2">${fn:length(lrd_valuation_section)}</span>
                         </button>
                     </li>
+                    </li>
+                       <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="certificate-tab" data-bs-toggle="tab" 
+                                data-bs-target="#certificate" type="button" role="tab">
+                            <i class="fas fa-certificate me-2"></i>
+                            Certificate
+                            <span class="badge bg-primary ms-2">${fn:length(lrd_certificate_section)}</span>
+                        </button>
+                    </li>
                 </ul>
                 
                 <!-- Tab Content -->
@@ -4066,6 +4075,65 @@
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                       </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Certificate Tab -->
+                    <div class="tab-pane fade" id="certificate" role="tabpanel">
+                        <div class="card border">
+                            <div class="card-header bg-info bg-opacity-10 border-info">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 text-info">
+                                        <i class="fas fa-lock me-2"></i>
+                                        Certificate Details
+                                    </h6>
+                                    <button type="button" class="btn btn-info btn-sm newCertificateModal">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Add Certificate
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_certificate_details_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date of Issue</th>
+                                                <th>To Whom Issuedt</th>
+                                                <th>Serial Number</th>
+                                                <th>Official Notes</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${lrd_certificate_section}" var="certificate_section">
+                                                <tr>
+                                                    <td>${certificate_section.cs_date_of_registration}</td>
+                                                    <td>${certificate_section.cs_to_whom_issued}</td>
+                                                    <td>${certificate_section.cs_serial_number}</td>
+                                                    <td>
+                                                        <div class="text-truncate" style="max-width: 200px;">
+                                                            ${certificate_section.cs_official_notes}
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-info btn-sm editCertificateModal"
+                                                                data-cs_id="${certificate_section.cs_id}"
+                                                                data-cs_case_number="${certificate_section.case_number}"
+                                                                data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
+                                                                data-cs_to_whom_issued="${certificate_section.cs_to_whom_issued}"
+                                                                data-cs_serial_number="${certificate_section.cs_serial_number}"
+                                                                data-cs_official_notes="${certificate_section.cs_official_notes}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Certificate">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
