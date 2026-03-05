@@ -7338,12 +7338,10 @@
             </span>
             <select name="lc_txt_type_of_certificate" id="lc_txt_type_of_certificate" 
                     class="form-select" required>
-              <option value="${certificate_type == 'Individual' ? '' : empty fn:trim(certificate_type) ? '' : certificate_type}">
-                ${certificate_type == 'Individual' ? '-- Select Certificate Type --' : empty fn:trim(certificate_type) ? '-- Select Certificate Type --' : certificate_type}
-              </option>
-              <option value="Provisional Certificate">Provisional Certificate</option>
-              <option value="Land Certificate">Land Certificate</option>
-              <option value="Substituted Certificate">Substituted Certificate</option>
+              <option ${certificate_type == 'Individual' ? 'selected disabled' : empty fn:trim(certificate_type) ? 'selected disabled' : ''}>-- Select Certificate Type --</option>
+              <option value="Provisional Certificate" ${certificate_type == 'Provisional Certificate' ? 'selected' : ''}>Provisional Certificate</option>
+              <option value="Land Certificate" ${certificate_type == 'Land Certificate' ? 'selected' : ''}>Land Certificate</option>
+              <option value="Substituted Certificate" ${certificate_type == 'Substituted Certificate' ? 'selected' : ''}>Substituted Certificate</option>
             </select>
           </div>
           <div class="form-text">
