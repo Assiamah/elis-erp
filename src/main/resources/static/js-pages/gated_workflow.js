@@ -22328,7 +22328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm" role="group">
-                            <button class="btn btn-outline-danger edit-certificate"
+                            <button class="btn btn-outline-info edit-certificate"
                                     data-target-id="${this.cs_id}"
                                     data-cs_id="${this.cs_id}"
                                     data-cs_case_number="${this.case_number}"
