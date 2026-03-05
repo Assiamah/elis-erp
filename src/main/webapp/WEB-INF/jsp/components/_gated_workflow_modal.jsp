@@ -4106,7 +4106,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>Date of Issue</th>
-                                                <th>To Whom Issuedt</th>
+                                                <th>To Whom Issued</th>
                                                 <th>Serial Number</th>
                                                 <th>Official Notes</th>
                                                 <th class="text-center">Action</th>
