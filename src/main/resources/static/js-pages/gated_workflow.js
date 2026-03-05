@@ -22310,7 +22310,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to update the valuation table with the new format
+    // Function to update the certificate table with the new format
     function updateCertificateTable(data) {
         const table_bp = $('#lrd_certificate_details_dataTable');
         table_bp.find("tbody tr").remove();
@@ -22390,12 +22390,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Show delete confirmation
                 Swal.fire({
-                    title: 'Delete Valuation?',
+                    title: 'Delete Certificate?',
                     html: `<div class="text-center">
                             <div class="mb-3">
                                 <i class="fas fa-trash-alt text-danger fa-3x"></i>
                             </div>
-                            <p>Are you sure you want to delete this valuation record?</p>
+                            <p>Are you sure you want to delete this certificate record?</p>
                             <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-2">
                                 <strong>Case:</strong> ${cs_case_number}<br>
                                 <strong>Record ID:</strong> ${cs_id}
@@ -22423,8 +22423,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td colspan="4" class="text-center py-5">
                     <div class="text-muted">
                         <i class="fas fa-balance-scale fa-3x mb-3 d-block"></i>
-                        <h5 class="mb-2">No Valuation Records</h5>
-                        <p class="mb-0">Click "Add Valuation" to create your first record</p>
+                        <h5 class="mb-2">No Certificate Records</h5>
+                        <p class="mb-0">Click "Add Certificate" to create your first record</p>
                     </div>
                 </td>
             </tr>`);
