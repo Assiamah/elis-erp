@@ -4032,7 +4032,7 @@
                             <div class="card-header bg-danger bg-opacity-10 border-danger">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0 text-danger">
-                                        <i class="fas fa-lock me-2"></i>
+                                        <i class="fas fa-money-bill-wave me-2"></i>
                                         Valuation Details
                                     </h6>
                                     <button type="button" class="btn btn-danger btn-sm newValuationModal">
@@ -4091,7 +4091,7 @@
                             <div class="card-header bg-info bg-opacity-10 border-info">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0 text-info">
-                                        <i class="fas fa-lock me-2"></i>
+                                        <i class="fas fa-certificate me-2"></i>
                                         Certificate Details
                                     </h6>
                                     <button type="button" class="btn btn-info btn-sm newCertificateModal">
