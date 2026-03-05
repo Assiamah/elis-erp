@@ -22141,7 +22141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show confirmation dialog
         Swal.fire({
-            title: `${actionText} Valuation Record?`,
+            title: `${actionText} Certificate Record?`,
             html: `<div class="text-start">
                     <div class="mb-3">
                         <i class="fas fa-balance-scale text-primary fa-3x"></i>
@@ -22151,7 +22151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="d-flex">
                             <i class="fas fa-info-circle me-2 mt-1"></i>
                             <div>
-                                <strong>Valuation Details:</strong>
+                                <strong>Certificate Details:</strong>
                                 <ul class="mb-0 ps-3">
                                     <li><strong>Case Number:</strong> ${cs_case_number}</li>
                                     <li><strong>Date of Issue:</strong> ${cs_date_of_registration}</li>
@@ -22164,12 +22164,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <p class="text-muted small mt-3">
                         This action will ${isEdit ? 'update the existing' : 'create a new'} 
-                        valuation record in the system.
+                        certificate record in the system.
                     </p>
                 </div>`,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: `<i class="fas fa-save me-1"></i>${actionText} Valuation`,
+            confirmButtonText: `<i class="fas fa-save me-1"></i>${actionText} Certificate`,
             cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
             confirmButtonColor: '#0d6efd',
             // cancelButtonColor: '#6c757d',
