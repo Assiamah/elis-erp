@@ -619,7 +619,7 @@ $("#ur_department").on('input', function() {
 														table.find("tbody tr")
 																.remove();
 									
-														console.log(jobdetails);
+														//console.log(jobdetails);
 														var json_p = JSON
 																.parse(jobdetails);
 									
@@ -1423,10 +1423,14 @@ $(document).on("click", ".load_user_assigned_steps", function() {
 
 // Function to load assigned users
 function loadAssignedUsers(bs_id, filters = {}) {
+
+	const user_regional_code = $("#user_regional_code_xx").val();
+
+	//console.log("User Regional Code:", user_regional_code);
     
     // Prepare request data
     const requestData = {
-        request_type: 'select_load_users_assigned_steps',
+        request_type: user_regional_code == undefined || user_regional_code == '' ? 'select_load_users_assigned_steps' : 'select_load_users_assigned_steps_per_region',
         bs_id: bs_id,
         page: filters.page || 1,
         page_size: filters.page_size || 100,
@@ -1576,7 +1580,7 @@ function renderUsersTable(users, pagination) {
                 </td>
                 <td>
                     <span class="d-block">${user.unit_name || 'N/A'}</span>
-                    <small class="text-muted">${user.district || ''}</small>
+                    <small class="text-muted">${user.region || ''}</small>
                 </td>
                 <td>
                     <i class="fa fa-phone-alt me-1 small"></i>${contactInfo}<br>

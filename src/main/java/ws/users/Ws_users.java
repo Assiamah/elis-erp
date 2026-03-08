@@ -427,6 +427,33 @@ public class Ws_users {
 		return output;
 	}
 
+	
+	public String select_load_users_assigned_steps_per_region(String web_service_url, String web_service_api_key, String data_input)
+
+	{
+		String output = null;
+		// boolean st =false;
+		try {
+			try {
+				Client client = Client.create();
+				WebResource webResource = client.resource(
+						web_service_url + "user_management_service/select_load_users_assigned_steps_per_region");
+				ClientResponse response_ws = webResource.type("application/json")
+						.header("x-api-key", web_service_api_key).post(ClientResponse.class,
+								data_input);
+				if (response_ws.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : " + response_ws.getStatus());
+				}
+				output = response_ws.getEntity(String.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
 	public String get_list_of_users(String web_service_url, String web_service_api_key) {
 		String output = "Data Not Received";
 		try {
