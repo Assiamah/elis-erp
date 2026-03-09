@@ -7152,7 +7152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    $('#lc_btn_activate_final_certificate, #lc_btn_activate_final_certificate_').on('click', function(e) {
+    $('#lc_btn_activate_final_certificate, #lc_btn_activate_final_certificate_, #lc_btn_activate_final_certificate_rt').on('click', function(e) {
         var job_number = $("#cs_main_job_number").val();
         var case_number = $("#cs_main_case_number").val();
         var transaction_number = $("#cs_main_transaction_number").val();
@@ -16461,6 +16461,260 @@ document.addEventListener('DOMContentLoaded', function() {
     // Optional: Add tooltip for keyboard shortcut
     $(document).ready(function() {
         const saveBtn = $('#lc_btn_save_search_report_3');
+        if (saveBtn.length) {
+            const originalTitle = saveBtn.attr('title') || 'Save Search Report';
+            saveBtn.attr('data-bs-toggle', 'tooltip');
+            saveBtn.attr('data-bs-placement', 'top');
+            saveBtn.attr('title', `${originalTitle} (Ctrl+S)`);
+            
+            // Initialize tooltip
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                new bootstrap.Tooltip(saveBtn[0]);
+            }
+        }
+    });
+
+    $('#lc_btn_save_search_report_rt').on('click', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        
+        // Get content from HugeRTE/TinyMCE editor
+        let search_report = '';
+        const editor = hugerte.activeEditor; // Get currently active editor
+        
+        if (editor) {
+            search_report = editor.getContent(); // Gets HTML content
+        } else {
+            // Fallback to textarea if editor not found
+            search_report = $("#lc_search_report_summary_details_rt").val() || '';
+        }
+        
+        // Clean up empty content
+        if (!search_report || search_report.trim() === '' || search_report === '<p></p>' || search_report === '<p><br></p>') {
+            search_report = '';
+        }
+        
+        // Validation
+        if (!search_report || search_report.trim() === '') {
+            Swal.fire({
+                title: 'Empty Report',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Search report cannot be empty</p>
+                        <p class="text-muted small mt-2">Please add some content to the report before saving</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                // Focus on the editor
+                if (editor) {
+                    editor.focus();
+                } else {
+                    $("#lc_search_report_summary_details_rt").focus();
+                }
+            });
+            return;
+        }
+        
+        if (!job_number || !case_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                        </div>
+                        <p>Job Number and Case Number are required</p>
+                        <p class="text-muted small mt-2">Please ensure all required fields are filled</p>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Calculate report stats for preview
+        const reportLength = search_report.length;
+        const reportPlainText = search_report.replace(/<[^>]*>/g, ' '); // Strip HTML tags
+        const wordCount = reportPlainText.trim().split(/\s+/).filter(word => word.length > 0).length;
+        
+        // Show confirmation dialog with preview
+        Swal.fire({
+            title: 'Save Search Report?',
+            html: `<div class="text-start">
+                    <h5 class="mb-3">Confirm Save</h5>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Report Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Content:</strong> ${reportLength} characters, ${wordCount} words</li>
+                                    <li><strong>Format:</strong> Rich Text</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-eye me-2 mt-1"></i>
+                            <div>
+                                <strong>Report Preview:</strong>
+                                <div class="mt-2 border rounded bg-light p-2" style="max-height: 150px; overflow-y: auto; font-size: 0.85rem;">
+                                    ${reportPlainText.length > 300 ? 
+                                        reportPlainText.substring(0, 300) + '...' : 
+                                        reportPlainText}
+                                </div>
+                                ${reportPlainText.length > 300 ? 
+                                    '<small class="text-muted d-block mt-1">Showing first 300 characters (plain text)</small>' : 
+                                    '<small class="text-muted d-block mt-1">Full content preview (HTML stripped)</small>'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-2">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Note:</strong> This will update the search report permanently in the database
+                    </div>
+                    
+                    <p class="text-muted small mt-3">
+                        Once saved, this report will be used for official records and cannot be undone.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i>Save Report',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'online_select_update_search_summary',
+                            search_report: search_report,
+                            case_number: case_number,
+                            job_number: job_number
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Save response:', response);
+                
+                // Show success message
+                Swal.fire({
+                    title: 'Success!',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Report Saved</h5>
+                            <p class="text-muted">Search report has been saved successfully</p>
+                            
+                            <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check me-2"></i>
+                                    <div>
+                                        <strong>${response}</strong>
+                                        <div class="small text-muted mt-1">
+                                            Saved for ${job_number} • ${new Date().toLocaleTimeString()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`,
+                    icon: 'success',
+                    confirmButtonText: 'Continue',
+                    confirmButtonColor: '#198754',
+                    showCancelButton: true,
+                    cancelButtonText: 'View Report',
+                    width: 500
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Focus on the editor
+                        if (editor) {
+                            editor.focus();
+                            $('html, body').animate({
+                                scrollTop: $('#lc_search_report_summary_details_rt').offset().top - 100
+                            }, 500);
+                        } else {
+                            $("#lc_search_report_summary_details_rt").focus();
+                            $('html, body').animate({
+                                scrollTop: $("#lc_search_report_summary_details_rt").offset().top - 100
+                            }, 500);
+                        }
+                    }
+                });
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled - show brief message
+                Swal.fire({
+                    title: 'Cancelled',
+                    text: 'Save operation was cancelled',
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Save Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Unable to Save Report</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    // Optional: Add keyboard shortcut (Ctrl+S) for saving
+    $(document).on('keydown', function(e) {
+        // Ctrl + S
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            $('#lc_btn_save_search_report_rt').click();
+        }
+    });
+
+    // Optional: Add tooltip for keyboard shortcut
+    $(document).ready(function() {
+        const saveBtn = $('#lc_btn_save_search_report_rt');
         if (saveBtn.length) {
             const originalTitle = saveBtn.attr('title') || 'Save Search Report';
             saveBtn.attr('data-bs-toggle', 'tooltip');

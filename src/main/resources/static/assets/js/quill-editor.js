@@ -50,4 +50,12 @@
         theme: 'snow'
     });
 
+    
+    const quill5 = new Quill('#lc_search_report_summary_details_rt', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'
+    });
+
 })();

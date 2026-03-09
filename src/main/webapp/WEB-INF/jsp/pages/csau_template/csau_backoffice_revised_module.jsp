@@ -14,12 +14,16 @@
     <div class="container-fluid page-container">
 
         <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-3">
+        <div class="page-header-breadcrumb">
             <div class="d-flex align-center justify-content-between flex-wrap">
-                <h1 class="page-title fw-medium fs-18 mb-0">Process Batch List</h1>
+                <div>
+                <h1 class="page-title fw-medium fs-18 mb-0">
+                    <i class="fas fa-folder-open text-danger me-2"></i>Open Application</h1>
+                    <p class="text-muted small mb-0"><i class="ri-information-line me-1 mt-2"></i>View and manage job applications.</p>
+                </div>
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.jsp">Staff Case Management Revised</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Process batch List</li>
+                    <li class="breadcrumb-item"><a href="#">ELIS</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Open Application</li>
                 </ol>
             </div>
         </div>
@@ -30,44 +34,6 @@
             <div class="col-lg-8">
                 <!-- Job Search Card -->
                 <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-transparent border-0 px-4 pt-4 pb-0">
-                        <div class="row nav nav-tabs g-3">
-                            <!-- Card 1: Search Jobs -->
-                            <div class="col-md-6">
-                                <div class="card card-hover border-danger" style="cursor: pointer;" 
-                                    data-bs-toggle="tab" data-bs-target="#search-jobs">
-                                    <div class="card-body text-center p-3">
-                                        <div class="mb-2">
-                                            <i class="fas fa-search fa-2x text-danger"></i>
-                                        </div>
-                                        <h6 class="card-title mb-1 text-dark fw-semibold">Search Jobs</h6>
-                                        <p class="card-text small text-muted">Find jobs by job number</p>
-                                    </div>
-                                    <div class="card-footer bg-danger bg-opacity-10 border-0 text-center py-2">
-                                        <small class="text-danger fw-medium">Click to search</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Card 2: View Batch List -->
-                            <div class="col-md-6">
-                                <div class="card card-hover border-success" style="cursor: pointer;" 
-                                    data-bs-toggle="tab" data-bs-target="#view-batchlist">
-                                    <div class="card-body text-center p-3">
-                                        <div class="mb-2">
-                                            <i class="fas fa-list fa-2x text-success"></i>
-                                        </div>
-                                        <h6 class="card-title mb-1 text-dark fw-semibold">View Batch List</h6>
-                                        <p class="card-text small text-muted">View and manage batch lists</p>
-                                    </div>
-                                    <div class="card-footer bg-success bg-opacity-10 border-0 text-center py-2">
-                                        <small class="text-success fw-medium">Click to view</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div class="card-body px-4 pt-4">
                         <div class="tab-content">
                             <!-- Tab 1: Search Jobs -->
@@ -95,7 +61,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-danger w-100" id="btn_scm_job_number_search">
+                                                <button class="btn btn-warning w-100" id="btn_scm_job_number_search_open">
                                                     <i class="fas fa-search me-1"></i> Search
                                                 </button>
                                             </div>
@@ -136,10 +102,10 @@
                             <i class="fa fa-bar-chart text-primary me-2"></i>
                             Application Details
                         </h5>
-                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">
+                        <!-- <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">
                             <i class="fas fa-file-alt me-1"></i>
                             Total: ${fn:length(applicationlist)} Applications
-                        </span>
+                        </span> -->
                     </div>
                     
                     <div class="card-body">
@@ -154,9 +120,7 @@
                                         <th class="fw-semibold">Applicant Name</th>
                                         <th class="fw-semibold">Application Type</th>
                                         <th class="fw-semibold">Status</th>
-                                        <th class="fw-semibold text-center">Add to Batch</th>
-                                        <th class="fw-semibold text-center">Work</th>
-                                        <th class="fw-semibold text-center">Further Entries</th>
+                                        <th class="fw-semibold text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -203,7 +167,7 @@
                                                 </span>
                                             </td>
                                             
-                                            <td class="text-center">
+                                            <!-- <td class="text-center">
                                                 <button class="btn btn-info btn-sm d-inline-flex align-items-center" 
                                                         id="btnAddToBatchlist-${appfiles.job_number}" 
                                                         data-job_number="${appfiles.job_number}" 
@@ -214,7 +178,7 @@
                                                     <i class="fas fa-list me-1"></i>
                                                     Add to Batch
                                                 </button>
-                                            </td>
+                                            </td> -->
                                             
                                             <td class="text-center">
                                                 <form action="registration_application_progress_details" 
@@ -235,12 +199,11 @@
                                                 </form>
                                             </td>
                                             
-                                            <td class="text-center">
-                                                <!-- Further Entries column -->
+                                            <!-- <td class="text-center">
                                                 <button class="btn btn-outline-secondary btn-sm" disabled>
                                                     <i class="fas fa-plus-circle"></i>
                                                 </button>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </c:forEach>
                                     
@@ -266,164 +229,31 @@
             <div class="col-lg-4">
                 <!-- Instructions Card -->
                 <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-transparent border-0 py-3">
+                    <div class="card-header bg-transparent py-3">
                         <h5 class="mb-0 fw-semibold">
                             <i class="fas fa-info-circle text-primary me-2"></i>
-                            Batch Processing Guide
+                            Instructions
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="alert alert-dark border mb-3">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-lightbulb text-warning fs-5"></i>
+                        <!-- Quick Guide -->
+                        <div class="mb-4">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <i class="bi bi-check-circle-fill text-success me-2 small"></i>
+                                    <span class="small">Enter Job Number in the search field and click Search</span>
                                 </div>
-                                <div class="w-100">
-                                    <div class="fw-semibold mb-2">Quick Start Guide</div>
-                                    <div class="text-muted fs-13">
-                                        <ul class="mb-0 ps-3">
-                                            <li>Search for jobs using Job Number</li>
-                                            <li>Add applications to batch list</li>
-                                            <li>Process multiple applications in batches</li>
-                                            <li>Track batch processing status</li>
-                                        </ul>
-                                    </div>
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <i class="bi bi-check-circle-fill text-success me-2 small"></i>
+                                    <span class="small">Click "Work" button to open the application</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="alert alert-info border mb-3">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-exclamation-circle text-info fs-5"></i>
-                                </div>
-                                <div class="w-100">
-                                    <div class="fw-semibold mb-2">Important Notes</div>
-                                    <div class="text-muted fs-13">
-                                        <ul class="mb-0 ps-3">
-                                            <li>Applications with pending objections are highlighted in red</li>
-                                            <li>Review application status before adding to batch</li>
-                                            <li>Complete all required fields before processing</li>
-                                            <li>Save your work regularly</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="alert alert-success border">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-rocket text-success fs-5"></i>
-                                </div>
-                                <div class="w-100">
-                                    <div class="fw-semibold mb-2">Best Practices</div>
-                                    <div class="text-muted fs-13">
-                                        <ul class="mb-0 ps-3">
-                                            <li>Process similar application types together</li>
-                                            <li>Verify application details before adding to batch</li>
-                                            <li>Monitor batch processing queues</li>
-                                            <li>Complete batches within SLA timelines</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Statistics Card -->
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-transparent border-0 py-3">
-                        <h5 class="mb-0 fw-semibold">
-                            <i class="fas fa-chart-pie text-success me-2"></i>
-                            Processing Summary
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
-                                        <i class="fas fa-clock text-primary"></i>
-                                    </div>
-                                    <span class="fw-medium">Pending Applications</span>
-                                </div>
-                                <span class="badge bg-primary rounded-pill px-3 py-2">${fn:length(applicationlist)}</span>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-danger bg-opacity-10 rounded p-2 me-3">
-                                        <i class="fas fa-exclamation-triangle text-danger"></i>
-                                    </div>
-                                    <span class="fw-medium">With Objections</span>
-                                </div>
-                                <span class="badge bg-danger rounded-pill px-3 py-2">
-                                    <c:set var="objectionCount" value="0" />
-                                    <c:forEach items="${applicationlist}" var="app">
-                                        <c:if test="${app.objections > 0}">
-                                            <c:set var="objectionCount" value="${objectionCount + 1}" />
-                                        </c:if>
-                                    </c:forEach>
-                                    ${objectionCount}
-                                </span>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-success bg-opacity-10 rounded p-2 me-3">
-                                        <i class="fas fa-check-circle text-success"></i>
-                                    </div>
-                                    <span class="fw-medium">Ready to Process</span>
-                                </div>
-                                <span class="badge bg-success rounded-pill px-3 py-2">
-                                    ${fn:length(applicationlist) - objectionCount}
-                                </span>
-                            </div>
-                        </div>
                         
-                        <hr class="my-3">
-                        
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-primary" id="btnViewBatchlistSidebar">
-                                <i class="fas fa-list me-2"></i>
-                                View Active Batch Lists
-                            </button>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Modal for Batch Purpose -->
-<div class="modal fade" id="askForPurposeOfBatching" tabindex="-1" aria-labelledby="askForPurposeOfBatchingLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-semibold" id="askForPurposeOfBatchingLabel">
-                    <i class="fas fa-list text-info me-2"></i>
-                    Add to Batch List
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p class="text-muted mb-3">Please specify the purpose for batching this application:</p>
-                <div class="mb-3">
-                    <label for="batchPurpose" class="form-label fw-medium">Batch Purpose</label>
-                    <input type="text" class="form-control" id="batchPurpose" placeholder="e.g., Examination, Verification, etc.">
-                </div>
-                <div class="mb-3">
-                    <label for="batchNotes" class="form-label fw-medium">Additional Notes (Optional)</label>
-                    <textarea class="form-control" id="batchNotes" rows="2" placeholder="Add any additional notes..."></textarea>
-                </div>
-            </div>
-            <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-info" id="confirmAddToBatch">
-                    <i class="fas fa-check me-1"></i>
-                    Add to Batch
-                </button>
             </div>
         </div>
     </div>

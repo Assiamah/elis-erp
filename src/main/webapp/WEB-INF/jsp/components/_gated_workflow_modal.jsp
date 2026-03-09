@@ -4182,6 +4182,91 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-header bg-success bg-opacity-10 text-success d-flex justify-content-between">
+                        <h6 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>
+                            Certificate Summary
+                        </h6>
+                        <!-- <button class="btn btn-sm btn-danger" id="btn_compose_certificate_template">
+                          <i class="fas fa-edit me-1"></i>Compose Template
+                        </button> -->
+                    </div>
+                    <div class="card-body">
+                        <!-- Certificate Summary Textarea -->
+                        <div class="mb-4">
+                            <label for="lc_search_report_summary_details" class="form-label fw-medium">
+                                <i class="fas fa-edit me-1"></i>
+                                Certificate Content
+                            </label>
+                            <div class="position-relative">
+                                <!-- <textarea id="lc_search_report_summary_details" 
+                                          name="lc_search_report_summary_details" 
+                                          class="form-control" 
+                                          required 
+                                          rows="7"
+                                          style="min-height: 200px; padding: 1.5rem !important;"
+                                          placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                </textarea> -->
+                                <div id="lc_search_report_summary_details_rt">
+                                  ${remark_or_comment}
+                                </div>
+                                <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                    <i class="fas fa-file-signature"></i>
+                                </div>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Enter the complete certificate summary and details. This content will be used to generate the final certificate.
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_save_search_report_rt" 
+                                        id="lc_btn_save_search_report_rt" 
+                                        class="btn btn-primary w-100">
+                                   
+                                        <i class="fas fa-save me-2"></i>
+                                        Save Certificate
+                                    
+                                </button>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <button type="button" name="lc_btn_activate_final_certificate_rt" 
+                                        id="lc_btn_activate_final_certificate_rt" 
+                                        class="btn btn-success w-100">
+                                    
+                                        <i class="fas fa-file-pdf me-2"></i>
+                                        Generate Certificate
+                                    
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Alternative Horizontal Layout -->
+                        <!-- 
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="button" name="lc_btn_save_search_report" 
+                                    id="lc_btn_save_search_report" 
+                                    class="btn btn-outline-secondary flex-fill">
+                                <i class="fas fa-save me-2"></i>
+                                Save Certificate
+                            </button>
+                            
+                            <button type="button" name="lc_btn_save_register_description" 
+                                    id="lc_btn_activate_final_certificate_" 
+                                    class="btn btn-success flex-fill">
+                                <i class="fas fa-file-pdf me-2"></i>
+                                Generate Certificate
+                            </button>
+                        </div>
+                        -->
+                    </div>
+                </div>
                 
             </div>
             
@@ -8147,175 +8232,4 @@
       
     </div>
   </div>
-</div>
-
-<div class="modal fade effect-scale modal-blur" id="preview_memo" tabindex="-1"
-     aria-labelledby="previewMemoModalLabel" aria-hidden="true" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg">
-      
-      <!-- Modal Header -->
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title text-white" id="previewMemoModalLabel">
-          <i class="fas fa-file-alt me-2"></i>
-          Preview Memo
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <!-- Modal Body -->
-      <div class="modal-body text-center p-5">
-        
-        <!-- Memo Icon -->
-        <div class="mb-4">
-          <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3 mx-auto" style="width: 80px; height: 80px; line-height: 80px;">
-            <i class="fas fa-file-invoice fa-3x"></i>
-          </div>
-          <h5 class="mb-3">Memo Generation</h5>
-          <p class="text-muted mb-4">
-            Generate an official memo document for this transaction.
-          </p>
-        </div>
-        
-        <!-- Generate Memo Button -->
-        <div class="mb-4">
-          <button type="button" id="lc_btn_generate_memo_for_certificate_2" 
-                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
-            <i class="fas fa-file-pdf me-2"></i>
-            Generate Memo
-          </button>
-          <div class="form-text mt-2">
-            <i class="fas fa-info-circle me-1"></i>
-            Creates an official memo document in pdf format
-          </div>
-        </div>
-        
-        <!-- Memo Information -->
-        <!-- <div class="alert alert-light border">
-          <div class="d-flex">
-            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
-            <div class="text-start">
-              <strong class="text-dark">Memo Features:</strong>
-              <ul class="mb-0 mt-2 ps-3">
-                <li class="text-muted">Professional memo format</li>
-                <li class="text-muted">Official letterhead and signatures</li>
-                <li class="text-muted">Downloadable Word document</li>
-                <li class="text-muted">Ready for printing and distribution</li>
-              </ul>
-            </div>
-          </div>
-        </div> -->
-        
-      </div>
-      
-      <!-- Modal Footer -->
-      <div class="modal-footer bg-light border-top">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          <i class="fas fa-times me-1"></i>
-          Close
-        </button>
-      </div>
-      
-    </div>
-  </div>
-</div>
-
-<div class="modal fade effect-scale modal-blur" id="review_instruction_with_request" tabindex="-1"
-     aria-labelledby="reviewInstructionModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow">
-            
-            <!-- Modal Header -->
-            <div class="modal-header bg-primary text-white rounded-top">
-                <h5 class="modal-title text-white" id="reviewInstructionModalLabel">
-                    <i class="fas fa-file-alt me-2"></i>
-                    Review Instruction With Request
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" 
-                        aria-label="Close"></button>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- Status Card -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary bg-opacity-10 py-2">
-                        <h6 class="mb-0">
-                            <i class="fas fa-info-circle me-2 text-primary"></i>
-                            Instruction Details
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <!-- Instructions Display -->
-                        <div class="instruction-content-container">
-                            <div class="instruction-header mb-3">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-clipboard-check fa-2x text-primary me-3"></i>
-                                    <div>
-                                        <h5 class="mb-1">Review Instructions</h5>
-                                        <p class="text-muted mb-0">Please review the following instructions carefully</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Main Instruction Content -->
-                            <div class="instruction-content p-4 bg-light rounded border">
-                                ${review_instruction}
-                            </div>
-                            
-                            <!-- Instruction Metadata (Optional) -->
-                            <!-- <div class="instruction-meta mt-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="d-flex align-items-center text-muted small mb-2">
-                                            <i class="fas fa-calendar-alt me-2"></i>
-                                            <span>Last Updated: <span id="instructionDate">Just now</span></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 text-md-end">
-                                        <div class="d-flex align-items-center justify-content-md-end text-muted small mb-2">
-                                            <i class="fas fa-user-edit me-2"></i>
-                                            <span>Provided by: <span id="instructionAuthor">System</span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Action Buttons (if needed) -->
-                <div class="action-buttons d-none" id="instructionActions">
-                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-exclamation-circle fa-lg text-warning me-3"></i>
-                            <div>
-                                <h6 class="mb-1">Required Action</h6>
-                                <p class="mb-0">Please acknowledge that you have read and understood the instructions</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center gap-3">
-                        <button type="button" class="btn btn-success" id="btnAcknowledge">
-                            <i class="fas fa-check-circle me-2"></i>
-                            Acknowledge & Continue
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary" id="btnNeedClarification">
-                            <i class="fas fa-question-circle me-2"></i>
-                            Need Clarification
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <!-- Close Button -->
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
 </div>

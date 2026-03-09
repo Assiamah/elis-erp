@@ -10275,6 +10275,106 @@ function createTableRow(item) {
 
 
 
+		$('#btn_scm_job_number_search_open').on('click', function(e) {
+			e.preventDefault();
+
+			var new_job_number = $("#scm_job_number_search").val();
+			
+			// Show loading if needed (optional)
+			Swal.fire({
+				title: 'Searching...',
+				text: 'Please wait',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading();
+				}
+			});
+
+			$.ajax({
+				type: "POST",
+				url: "Case_Management_Serv",
+				data: {
+					request_type: 'online_select_application_details_by_job_number',
+					job_number: new_job_number,
+					submission_type: 'Online'
+				},
+				cache: false,
+				success: function(jobdetails) {
+					var table = $('#tbl_search_for_job_details_datatable');
+					table.find("tbody tr").remove();
+
+					console.log(jobdetails);
+					
+					// Close loading
+					Swal.close();
+					
+					if (jobdetails.includes('Error Loading Data')) {
+						// Replace $.notify with Swal.fire
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'Job number not Found',
+							timer: 2000,
+							showConfirmButton: false
+						});
+						return false;
+					} else {
+						var json_p = JSON.parse(jobdetails);
+						
+						if (json_p.length === 0) {
+							Swal.fire({
+								icon: 'info',
+								title: 'No Results',
+								text: 'No job details found for this number',
+								timer: 2000,
+								showConfirmButton: false
+							});
+						}
+						
+						$(json_p).each(function() {
+							table.append("<tr><td>"
+								+ this.job_number
+								+ "</td><td>"
+								+ this.ar_name
+								+ "</td><td>"
+								+ this.business_process_sub_name
+								+ "</td><td>"
+								+ this.current_application_status
+								+ "</td>"
+								+ "<td>"
+								+ '<form action="request_application_progress_details_ai" method="post">'
+								+ '<input type="hidden" name="case_number" id="case_number" value="' + this.transaction_number + '">'
+								+ '<input type="hidden" name="transaction_number" id="transaction_number" value="' + this.transaction_number + '">'
+								+ '<input type="hidden" name="job_number" id="job_number" value="' + this.job_number + '">'
+								+ '<input type="hidden" name="review_type" id="review_type" value="GeneralWorkRequest">'
+								// + '<input type="hidden" name="job_number" id="rq_id" value="' + this.rq_id + '">'
+								+ '<input type="hidden" name="business_process_sub_name" id="business_process_sub_name" value="' + this.business_process_sub_name + '">'
+								+ '<button type="submit" name="save" class="btn btn-danger btn-icon-split btn-to-be-disabled to_hide_on_level_1">'
+								+ '<span class="icon text-white-50"> <i class="fas fa-folder-open"></i></span><span class="text">Open</span>'
+								+ '</button></form>'
+								+ "</td>"
+								+ "</tr>"
+							);
+						});
+					}
+					
+				},
+				error: function(xhr, status, error) {
+					Swal.close();
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'An error occurred while searching. Please try again.',
+						timer: 2000,
+						showConfirmButton: false
+					});
+					console.error('AJAX Error:', error);
+				}
+			});
+		});
+
+
+
 			$('#btn_mf_job_number_search').on(
 				'click',
 				function (e) {
