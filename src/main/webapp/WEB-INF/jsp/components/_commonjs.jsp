@@ -131,6 +131,9 @@ ${(page_name == "unit_case_management_revised" || page_name == "further_entries_
 ${page_name == "unit_case_management_revised" ? "<script src='js-pages/unit_case_management_compliance.js'></script>" : ""}
 
 ${(page_name == "compliance_cst") || (page_name == "compliance") || (page_name=="certificate_signing_module") ? "<script src='js-pages/compliance.js'></script> " : ""}
+${(page_name == "compliance_cst") ? "<script src='js-pages//compliance_cst.js'></script> " : ""}
+
+${(page_name == "compliance_cst") ? "<script src='js-pages/corporate_application.js'></script> " : ""}
 
 ${(page_name == "application_review_details_advanced") || (page_name == "add_new_case_template") ? "<script src='js-pages/gated_workflow.js'></script>" : ""}
 

@@ -5311,18 +5311,18 @@ table.addCell(new PdfPCell(new Phrase(formatted, font12pt)));
 		try {
 
 			JSONObject jsonobj_bbd = new JSONObject(basic_bill_details);
-			bd_customer_name = (String) jsonobj_bbd.getString("ar_name");
+			bd_customer_name = (String) jsonobj_bbd.optString("ar_name");
 			// bd_job_number= (String)jsonobj_bbd.getString("job_number");
-			bd_business_process_id = (String) jsonobj_bbd.getString("business_process_id");
-			bd_business_process_name = (String) jsonobj_bbd.getString("business_process_name");
-			bd_land_size = (String) jsonobj_bbd.getString("land_size");
-			bd_business_process_sub_id = (String) jsonobj_bbd.getString("business_process_sub_id");
-			bd_business_process_sub_name = (String) jsonobj_bbd.getString("business_process_sub_name");
+			bd_business_process_id = (String) jsonobj_bbd.optString("business_process_id");
+			bd_business_process_name = (String) jsonobj_bbd.optString("business_process_name");
+			bd_land_size = (String) jsonobj_bbd.optString("land_size");
+			bd_business_process_sub_id = (String) jsonobj_bbd.optString("business_process_sub_id");
+			bd_business_process_sub_name = (String) jsonobj_bbd.optString("business_process_sub_name");
 
-			bd_type_of_interest = (String) jsonobj_bbd.getString("type_of_interest");
-			bd_application_type = (String) jsonobj_bbd.getString("application_type");
-			bd_locality_of_parcel = (String) jsonobj_bbd.getString("locality_of_parcel");
-			bd_created_date = (String) jsonobj_bbd.getString("created_date");
+			bd_type_of_interest = (String) jsonobj_bbd.optString("type_of_interest");
+			bd_application_type = (String) jsonobj_bbd.optString("application_type");
+			bd_locality_of_parcel = (String) jsonobj_bbd.optString("locality_of_parcel");
+			bd_created_date = (String) jsonobj_bbd.optString("created_date");
 
 			JSONObject jsonobj = new JSONObject(ws_bill_details_db);
 			// String bill_details = (String)jsonobj.getString("bills");

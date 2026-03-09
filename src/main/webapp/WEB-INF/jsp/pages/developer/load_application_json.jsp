@@ -48,8 +48,8 @@
                             <div class="card-body p-4">
                                 <div class="d-flex align-items-center mb-4">
                                     <div class="flex-shrink-0">
-                                        <div class="icon-circle bg-primary bg-opacity-10">
-                                            <i class="bi bi-search-heart text-primary fs-4"></i>
+                                        <div class="icon-circle bg-primary bg-opacity-10 rounded p-2">
+                                            <i class="bi bi-search text-primary fs-4"></i>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1 ms-3">
@@ -61,7 +61,7 @@
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center text-success small mb-2">
                                         <i class="bi bi-check-circle-fill me-2"></i>
-                                        <span>Queries both sub_process & processing tables</span>
+                                        <span>Queries both sub process & case processing tables</span>
                                     </div>
                                     <div class="d-flex align-items-center text-success small mb-2">
                                         <i class="bi bi-check-circle-fill me-2"></i>
@@ -285,7 +285,7 @@
                                             </div>
                                             <div class="list-group-item border-0 px-0 py-2">
                                                 <i class="bi bi-check-circle-fill text-success me-2 small"></i>
-                                                <span class="small">Nested sub_process and processing objects</span>
+                                                <span class="small">Nested sub process and case processing objects</span>
                                             </div>
                                             <div class="list-group-item border-0 px-0 py-2">
                                                 <i class="bi bi-check-circle-fill text-success me-2 small"></i>

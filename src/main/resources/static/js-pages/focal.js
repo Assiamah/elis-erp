@@ -67,13 +67,14 @@ const dateToPicker = flatpickr("#dateto", {
 
 
     var title = "Applications Received From " + StrD + " to "+ " "+ EndD;
-     var title_ = "From" + StrD + " to"+ " "+  EndD;
+    var RecComptitle = "Applications Received And Completed " + StrD + " to "+ " "+ EndD;
+    var CompTitle = "Applications Completed From " + StrD + " to "+ " "+ EndD;
+     var title_ = "From " + StrD + " to"+ " "+  EndD;
 
-    
 
     document.getElementById('RecTitle').innerHTML = title;
-    document.getElementById('RecComp').innerHTML = title;
-    document.getElementById('CompTitle').innerHTML = title;
+    document.getElementById('RecComp').innerHTML = RecComptitle;
+    document.getElementById('CompTitle').innerHTML = CompTitle;
     document.getElementById('pastDueTitle').innerHTML = title_;
     document.getElementById('AppsWithDivTitle').innerHTML = title_;
 
@@ -209,8 +210,9 @@ function getServiceTypeButtons(title_) {
 
  
 
+   $(document).off('click', '.sendMessage').on('click', '.sendMessage', function (event) {
 
-    $(document).on("click", ".sendMessage", function (event) {
+    // $(document).on("click", ".sendMessage", function (event) {
   event.preventDefault();
 
   const table = $("#applicationsTable").DataTable();
@@ -354,8 +356,7 @@ function getServiceTypeButtons(title_) {
 
 
 
-
-  $(document).on("click", ".sendMessageToAll", function (event) {
+   $(document).off('click', '.sendMessageToAll').on('click', '.sendMessageToAll', function (event) {
     event.preventDefault();
     
     const officerName = $(this).data('officer_name');
@@ -392,7 +393,7 @@ function getServiceTypeButtons(title_) {
 
   $("#sendMessageModal").css("z-index", 90000);
 
-  $(document).on("click", "#sendMessage", function (event) {
+     $(document).off('click', '#sendMessage').on('click', '#sendMessage', function (event) {
     event.preventDefault();
 
     let sendMessageModal = $("#sendMessageModal");
@@ -514,7 +515,7 @@ function getServiceTypeButtons(title_) {
     generateChart(modalBody, title, chartType, tableData);
   });
 
-  $(document).on("click", ".showDivisionModal", function (event) {
+  $(document).off('click', '.showDivisionModal').on('click', '.showDivisionModal', function (event) {
     event.preventDefault();
 
     let item = $(this);
@@ -803,7 +804,8 @@ $('#exportDivisionData').on('click', function() {
     alert('Export feature would be implemented here');
 });
 
-  $(document).on("click", ".showServiceTypeModal", function (event) {
+  $(document).off('click', '.showServiceTypeModal').on('click', '.showServiceTypeModal', function (event) {
+//   $(document).on("click", ".showServiceTypeModal", function (event) {
     event.preventDefault();
 
     let item = $(this);
@@ -885,7 +887,9 @@ $('#exportDivisionData').on('click', function() {
     modal.modal("show");
   });
 
-  $(document).on("click", ".showUnitModal", function (event) {
+    $(document).off('click', '.showUnitModal').on('click', '.showUnitModal', function (event) {
+
+//   $(document).on("click", ".showUnitModal", function (event) {
     event.preventDefault();
 
     let item = $(this);
@@ -969,7 +973,9 @@ $('#exportDivisionData').on('click', function() {
     modal.modal("show");
   });
 
-  $(document).on("click", ".showOfficerList", function (event) {
+
+      $(document).off('click', '.showOfficerList').on('click', '.showOfficerList', function (event) {
+//   $(document).on("click", ".showOfficerList", function (event) {
     event.preventDefault();
     let item = $(this);
     let url = item.data("url");
@@ -1035,7 +1041,8 @@ function updateOfficerCard(officersData, unitName) {
 }
 
 // Modified showOfficerModal function (for showing all in modal)
-$(document).on("click", ".showOfficerModal", function (event) {
+      $(document).off('click', '.showOfficerModal').on('click', '.showOfficerModal', function (event) {
+// $(document).on("click", ".showOfficerModal", function (event) {
     event.preventDefault();
     let item = $(this);
     
@@ -1213,7 +1220,8 @@ function initializeApplicationsDataTable(tableId, columns, data, title_) {
 }
 
 // Event handler for showing applications modal
-$(document).on("click", ".showApplicationsModal", function (event) {
+ $(document).off('click', '.showApplicationsModal').on('click', '.showApplicationsModal', function (event) {
+// $(document).on("click", ".showApplicationsModal", function (event) {
     event.preventDefault();
     
     let item = $(this);
@@ -2657,7 +2665,8 @@ function getColorClass(index) {
    // Global DataTable variable
   let reminderAppsTable = null;
 
-  $(document).on("click", ".loadReminderApps", function (event) {
+   $(document).off('click', '.loadReminderApps').on('click', '.loadReminderApps', function (event) {
+//   $(document).on("click", ".loadReminderApps", function (event) {
       event.preventDefault();
 
       let item = $(this);
@@ -2895,7 +2904,8 @@ function getColorClass(index) {
   // Global DataTable variable
   let warningAppsTable = null;
 
-  $(document).on("click", ".loadWarningApps", function (event) {
+     $(document).off('click', '.loadWarningApps').on('click', '.loadWarningApps', function (event) {
+//   $(document).on("click", ".loadWarningApps", function (event) {
       event.preventDefault();
 
       let item = $(this);
@@ -3158,7 +3168,8 @@ $('#warningAppsModal').on('hidden.bs.modal', function() {
     }
 });
 
-  $(document).on("click", ".sendReminderMsg", function (event) {
+ $(document).off('click', '.sendReminderMsg').on('click', '.loadWarningApps', function (event) {
+//   $(document).on("click", ".sendReminderMsg", function (event) {
     event.preventDefault();
     
     const $button = $(this);
@@ -3315,7 +3326,7 @@ $('#warningAppsModal').on('hidden.bs.modal', function() {
 
   let complianceTable = null;
 
-$(document).on("click", ".loadComplianceQueriesApps", function (e) {
+   $(document).off('click', '.loadComplianceQueriesApps').on('click', '.loadComplianceQueriesApps', function (e) {
     e.preventDefault();
     loadComplianceApplications();
 });
@@ -3687,7 +3698,8 @@ function convertDate(dateString) {
 }
 
 // Event handlers for action buttons
-$(document).on('click', '.view-messages', function() {
+
+   $(document).off('click', '.view-messages').on('click', '.view-messages', function () {
     $('#viewresponseModal').modal('show');
 
     // Load messages for this noticeId
@@ -3806,7 +3818,7 @@ $(document).on('click', '.view-messages', function() {
     });
 });
 
-$(document).on('click', '.set-inactive', function() {
+   $(document).off('click', '.set-inactive').on('click', '.set-inactive', function () {
     const jobNumber = $(this).data('job-number');
     
     Swal.fire({
@@ -3864,8 +3876,7 @@ $('#unitComplianceModal').on('hidden.bs.modal', function() {
     // Optional: Clear any temporary data
 });
 
-
-$(document).on("click", ".sendMessage_unit_case", function (event) {
+   $(document).off('click', '.sendMessage_unit_case').on('click', '.sendMessage_unit_case', function (event) {
     event.preventDefault();
     
     const officerName = $(this).data('officer_name');
@@ -3893,8 +3904,7 @@ $(document).on("click", ".sendMessage_unit_case", function (event) {
 });
 
 
-
-$(document).on("click", ".messageReply", function (event) {
+   $(document).off('click', '.messageReply').on('click', '.messageReply', function (event) {
   event.preventDefault();
 
   const staffName = $(this).data('staffName');
@@ -3996,7 +4006,9 @@ function fetchPreviousNotices(jobNumber) {
 
 
 // use the container that holds the messages (example: #messagesContainer)
-$('#messagesContainer').on('click', '.view-replies-btn', function () {
+    $('#messagesContainer')
+  .off('click', '.view-replies-btn')
+  .on('click', '.view-replies-btn', function () {
   const noticeId = $(this).data('notice-id');
 
   $('#repliesModal').modal('show');
@@ -4827,9 +4839,11 @@ $(document).on('keydown', function(e) {
     }
 });
 
-    const $cabinetModal = $('#cabinetModal');
-    // ==================== CABINET MODAL FUNCTIONALITY ====================
-    $cabinetModal.on('show.bs.modal', handleCabinetModalShow);
+
+$('#cabinetModal')
+  .off('show.bs.modal')
+  .on('show.bs.modal', handleCabinetModalShow);
+
 
 
         function clearTableRows($table) {
@@ -4937,7 +4951,7 @@ $(document).on('keydown', function(e) {
                 $('#enq_current_application_status').val(cabinet.current_application_status || '');
             }
         } catch (error) {
-            console.error('Error parsing cabinet data:', error);
+            // console.error('Error parsing cabinet data:', error);
         }
     }
 
@@ -4982,5 +4996,56 @@ $(document).on('change', '.app-checkbox', function() {
 
 
 })
+
+
+
+
+// 🔹 SET INITIAL DATES ON PAGE LOAD
+$(document).ready(function() {
+    // Get current date
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    
+    // First day of current year (January 1st)
+    const firstDayOfYear = new Date(currentYear, 0, 1);
+    
+    // Format dates as YYYY-MM-DD
+    const firstDayStr = formatDate(firstDayOfYear);
+    const todayStr = formatDate(now);
+    
+    // Set the flatpickr instances
+    dateFromPicker.setDate(firstDayStr, true);
+    dateToPicker.setDate(todayStr, true);
+    
+    // Also set the hidden input values
+    $('#start_date').val(firstDayStr);
+    $('#end_date').val(todayStr);
+    
+    // Set formatted display values
+    $('#startdate').val(dateFromPicker.formatDate(firstDayOfYear, "j F Y"));
+    $('#enddate').val(dateToPicker.formatDate(now, "j F Y"));
+    
+    // Set minDate constraint
+    dateToPicker.set('minDate', firstDayStr);
+    
+    // Set global variables
+    startDate = firstDayStr;
+    endDate = todayStr;
+    
+    // Trigger the dashboard update (if needed)
+    // Uncomment the next line if you want to automatically load data on page load
+    // dateToPicker.config.onChange([now], todayStr, dateToPicker);
+});
+
+// Helper function to format date as YYYY-MM-DD
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+
+
 
 

@@ -7719,3 +7719,108 @@
     </div>
 </div>
 
+
+<div class="modal fade effect-scale modal-blur" 
+     id="qcUnitSummaryModal" 
+     tabindex="-1" 
+     aria-labelledby="qcUnitSummaryModalLabel"
+     style="z-index: 1029;"
+     aria-hidden="true"
+     data-bs-backdrop="static">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow">
+
+            <!-- Header -->
+            <div class="modal-header border-bottom bg-light">
+
+                <div class="d-flex align-items-center w-100">
+
+                    <h5 class="modal-title fw-semibold mb-0">
+
+                        <i class="ri-bar-chart-line me-2 text-primary"></i>
+
+                        <span id="qc_us_modal_name">
+                            QC Unit Summary
+                        </span>
+
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close ms-auto"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Body -->
+            <div class="modal-body">
+
+                <!-- Summary Table Section -->
+
+                <div id="qcSummarySection" class="mb-3">
+
+                    <h6 class="text-dark fw-bold mb-2">
+                        QC Unit Applications
+                    </h6>
+
+                    <div class="border rounded p-3 bg-light">
+
+                        <table id="qc_unit_summary_details_table"
+                               class="table table-striped table-hover align-middle mb-0">
+
+                            <thead class="table-light">
+
+                                <tr>
+
+                                    <th>Job Number</th>
+
+                                    <th>Applicant Name</th>
+
+                                    <th>Received Date</th>
+
+                                    <th>Duration</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <!-- Dynamic Data -->
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="modal-footer border-top">
+
+                <button type="button"
+                        class="btn btn-danger"
+                        data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
