@@ -8497,13 +8497,26 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
 
-				// Load font from resources
-				String fontPath = getClass()
-						.getClassLoader()
-						.getResource("fonts/times.ttf")
-						.getPath();
+				// Load font from classpath
+				InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/times.ttf");
 
-				fontProvider.register(fontPath, "Times New Roman");
+				if (fontStream == null) {
+					throw new RuntimeException("Font file not found: fonts/times.ttf");
+				}
+
+				// Copy font to temp file (needed for iText)
+				File tempFont = File.createTempFile("times", ".ttf");
+				tempFont.deleteOnExit();
+
+				try (FileOutputStream fos = new FileOutputStream(tempFont)) {
+					byte[] buffer = new byte[1024];
+					int len;
+					while ((len = fontStream.read(buffer)) != -1) {
+						fos.write(buffer, 0, len);
+					}
+				}
+
+				fontProvider.register(tempFont.getAbsolutePath(), "Times New Roman");
 
 				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
 				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
