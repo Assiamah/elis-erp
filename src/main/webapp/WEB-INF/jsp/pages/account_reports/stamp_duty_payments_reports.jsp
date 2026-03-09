@@ -118,7 +118,7 @@
             <div class="d-flex align-center justify-content-between flex-wrap">
                 <div class="d-flex align-center gap-2">
                     <div>
-                        <h1 class="page-title fw-medium fs-20 mb-1"><i class="ri-stamp-line me-2 text-primary"></i>Stamp Duty Payments</h1>
+                        <h1 class="page-title fw-medium fs-20 mb-1"><i class="fas fa-stamp me-2 text-primary"></i>Stamp Duty Payments</h1>
                         <p class="text-muted fs-14 mb-0">Track and manage stamp duty payment transactions</p>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="stats-icon bg-primary me-3">
-                                        <i class="ri-money-dollar-circle-line fs-4"></i>
+                                        <i class="ri-money-dollar-circle-line text-white fs-4"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="text-muted small fw-semibold mb-1">Total Amount</div>
@@ -205,7 +205,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="stats-icon bg-success me-3">
-                                        <i class="ri-file-list-line fs-4"></i>
+                                        <i class="ri-file-list-line text-white fs-4"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="text-muted small fw-semibold mb-1">Total Payment Count</div>
