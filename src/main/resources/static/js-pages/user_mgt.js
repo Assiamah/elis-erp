@@ -1372,7 +1372,7 @@ $("#ur_department").on('input', function() {
 														table.find("tbody tr")
 																.remove();
 									
-														console.log(jobdetails);
+														//console.log(jobdetails);
 														var json_p = JSON
 																.parse(jobdetails);
 									
@@ -1425,12 +1425,19 @@ $(document).on("click", ".load_user_assigned_steps", function() {
 function loadAssignedUsers(bs_id, filters = {}) {
 
 	const user_regional_code = $("#user_regional_code_xx").val();
+	const user_division_code = $("#user_division_code_xx").val();
 
-	//console.log("User Regional Code:", user_regional_code);
+	const is_division = user_division_code != undefined && user_division_code != '';
+	const is_region = (user_regional_code != undefined && user_division_code == undefined);
+
+	// console.log("Is Division:", is_division);
+	// console.log("Is Region:", is_region);
+	// console.log("User Division Code:", user_division_code)
+	// console.log("User Regional Code:", user_regional_code)
     
     // Prepare request data
     const requestData = {
-        request_type: user_regional_code == undefined || user_regional_code == '' ? 'select_load_users_assigned_steps' : 'select_load_users_assigned_steps_per_region',
+        request_type: is_region == true ? 'select_load_users_assigned_steps_per_region' : is_division == true ? 'select_load_users_assigned_steps_per_division' : 'select_load_users_assigned_steps',
         bs_id: bs_id,
         page: filters.page || 1,
         page_size: filters.page_size || 100,

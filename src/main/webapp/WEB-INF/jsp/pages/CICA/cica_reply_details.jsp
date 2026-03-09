@@ -271,7 +271,6 @@
                                             <th>Status</th>
                                             <th>Updated By</th>
                                             <th>Updated On</th>
-                                            <th class="text-center">Attachment</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -300,7 +299,7 @@
                          aria-labelledby="repliesHeading" data-bs-parent="#accordionTicketDetails">
                         <div class="accordion-body">
                             <div class="table-responsive">
-                                <table class="table table-hover align-middle" id="replies_tbl" width="100%">
+                                <table class="table table-hover align-middle" id="one_replies_tbl" width="100%">
                                     <thead class="bg-light">
                                         <tr>
                                             <th>Note</th>
@@ -371,7 +370,7 @@
             </div>
         </div>
 
-        <form id="send_reply_to_client" method="post" class="needs-validation" novalidate>
+        <form id="send_reply_to_client" method="post">
             <div class="card-body">
                 <c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
                     <!-- Hidden Fields -->
@@ -484,7 +483,7 @@
 
                     <!-- Submit Button -->
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg" id="sendMessageBtn">
+                        <button type="submit" class="btn btn-primary btn-lg" >
                             <i class="fas fa-paper-plane me-2"></i>
                             Send Message
                             <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
@@ -511,127 +510,109 @@
 <!-- End Page Content -->
 
 <!-- Attachment Modal -->
-<c:forEach items="${ticket_details}" var="ticket"  varStatus="appfiles_loop">
-  <div class="modal fade" id="updateStatusModal" tabindex="-1">
+<!-- Update Status Modal -->
+<c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
+  <div class="modal fade effect-scale modal-blur" id="updateStatusModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Update Status</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="update_status_form" method="post" >
-        
-        <div class="modal-body" style="font-size: small;">
-         
-          <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Ticket No:</h6></label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="ticket_no" name="ticket_no" value='<c:out value="${ticket.ticket_no}"></c:out>' readonly required>
+        <form id="update_status_form" method="post">
+          <div class="modal-body" style="font-size: small;">
+            <div class="row mb-3">
+              <label for="inputNumber" class="col-sm-4 col-form-label"><h6>Ticket No:</h6></label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="ticket_no" name="ticket_no" value='<c:out value="${ticket.ticket_no}"></c:out>' readonly required>
+              </div>
             </div>
-		  </div>
-		  
-		  <div class="row mb-3" hidden="">
-			<label for="inputNumber" class="col-sm-4 col-form-label">Case ID:</label>
-			<div class="col-sm-8">
-              <input class="form-control" type="text" id="ticket_id" name="ticket_id" value='<c:out value="${ticket._id}"></c:out>' readonly required>
+            
+            <div class="row mb-3" hidden>
+              <label for="inputNumber" class="col-sm-4 col-form-label">Case ID:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="ticket_id" name="ticket_id" value='<c:out value="${ticket._id}"></c:out>' readonly required>
+              </div>
             </div>
-		  </div>
-		  
-		  <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Status:</h6></label>
-			<div class="col-sm-8">
-               <select class="form-control" aria-label="Default select example" name="status_id" id="status_id"  required>
-                 <option selected disabled>-- select --</option>
-                 <option value="2">Pending</option>
+            
+            <div class="row mb-3">
+              <label for="inputNumber" class="col-sm-4 col-form-label"><h6>Status:</h6></label>
+              <div class="col-sm-8">
+                <select class="form-select" aria-label="Default select example" name="status_id" id="status_id" required>
+                  <option selected disabled>-- select --</option>
+                  <option value="2">Pending</option>
                   <option value="1">On Hold</option>
                   <option value="3">Resolved</option>
-			  </select>
+                </select>
+              </div>
             </div>
-		  </div>
-		    <div class="row mb-3">
-			<label for="inputNumber" class="col-sm-4 col-form-label"><h6>Note:</h6></label>
-			<div class="col-sm-8">
-		        <textarea rows="" cols="" class="form-control" name="txt_note" id="txt_note" required></textarea>
+            
+            <div class="row mb-3">
+              <label for="inputNumber" class="col-sm-4 col-form-label"><h6>Note:</h6></label>
+              <div class="col-sm-8">
+                <textarea rows="" cols="" class="form-control" name="txt_note" id="txt_note" required></textarea>
+              </div>
             </div>
-		  </div>
-		   <input type="text" name="updated_by_id" value="${sessionScope.userid}" hidden />
-			<input type="text" name="updated_by" value="${sessionScope.fullname}" hidden />
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Update</button>
-        </div>
-       </form>
+            
+            <input type="text" name="updated_by_id" value="${sessionScope.userid}" hidden />
+            <input type="text" name="updated_by" value="${sessionScope.fullname}" hidden />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </c:forEach>
-<!-- Attachment Modal  -->
-  <div class="modal fade" id="elisDocumentPreview" tabindex="-1" role="dialog"
-	aria-labelledby="elisDocumentPreview" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="">Document Preview</h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="form-group">
-												
-												<iframe src=""  id="elisdovumentpreviewblobfilexx" width="100%" height="600"></iframe>
-							
-				</div>
 
-			</div>
-			 	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				
-			</div>
-			
-		</div>
-	</div>
+<!-- Attachment Modal 1 -->
+<div class="modal fade effect-scale modal-blur" id="elisDocumentPreview" tabindex="-1" aria-labelledby="elisDocumentPreviewLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="elisDocumentPreviewLabel">Document Preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <iframe src="" id="elisdovumentpreviewblobfilexx" width="100%" height="600"></iframe>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="modal fade" id="elisDocumentPreviewx" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Ticket Number: <span class="text-danger" id="r_ticket_no"></span></h5>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="form-group">
-				<div class="card card-body mb-4">
-				<b>Notes:</b>
-					 <span class="" id="r_description"></span>
-				</div>
-				<div id="attachment_status">								
-				   <iframe src=""  id="elisdovumentpreviewblobfile" width="100%" height="600"></iframe>
-					</div>		
-				</div>
-
-			</div>
-			 	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				
-			</div>
-			
-		</div>
-	</div>
+<!-- Attachment Modal 2 with Ticket Details -->
+<div class="modal fade effect-scale modal-blur" id="elisDocumentPreviewx" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ticket Number: <span class="text-danger" id="r_ticket_no"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="card card-body mb-4">
+            <b>Notes:</b>
+            <span class="" id="r_description"></span>
+          </div>
+          <div id="attachment_status">
+            <iframe src="" id="elisdovumentpreviewblobfile" width="100%" height="600"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-
- 
- 
-  ${param.success == "true" ? "
- 
- <script> 
-toastr['success']('Replied successfully', 'Success');
-</script>
- ":""}
  
  <!-- <script>
 

@@ -98,6 +98,81 @@ public class LoginController {
 
 	}
 
+	
+	@RequestMapping("/user_mgt_moduler_per_division")
+	@GetMapping
+	public String user_mgt_moduler_per_division(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		try {
+
+			// HttpSession session = request.getSession();
+
+			String servletName = request.getServletPath();
+			servletName = servletName.replace("/", "");
+			String assigenedmenus = (String) session.getAttribute("menus_com");
+			boolean isFound = false;
+			try {
+				isFound = assigenedmenus.contains(servletName); // true
+			} catch (Exception e) {
+			}
+
+			// Log User out if the user tries to access right not assigned
+			if (!isFound) {
+				request.setAttribute("login", "Please this is not alllowed");
+				//
+				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+			}
+			Ws_users user_web_service = new Ws_users();
+
+			String web_service_response = null;
+
+			if ((String) session.getAttribute("regional_code") != null
+					&& (String) session.getAttribute("regional_code") != "") {
+
+				JSONObject obj_rc = new JSONObject();
+
+				obj_rc.put("region_code", (String) session.getAttribute("regional_code"));
+				obj_rc.put("division", (String) session.getAttribute("division"));
+
+				// obj.put("case_number", case_number);
+
+				// String input_details = obj.toString();
+
+				web_service_response = user_web_service
+						.get_list_of_users_per_division(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj_rc.toString());
+				JSONObject users_obj;
+				users_obj = new JSONObject(web_service_response);
+				String all_users = users_obj.get("data").toString();
+
+				Gson googleJson = new Gson();
+				ArrayList javaArrayListFromGSON = googleJson.fromJson(all_users, ArrayList.class);
+				request.setAttribute("users_list", javaArrayListFromGSON);
+
+				request.setAttribute("page_name", "user_management");
+
+						model.addAttribute("content", "../pages/user_management/user_mgt_module_per_division.jsp"); return "layouts/app";
+
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 	@RequestMapping("/user_mgt_module00z1")
 	@GetMapping
 	public String user_mgt_module(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {

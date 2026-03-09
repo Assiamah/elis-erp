@@ -15,59 +15,81 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	})
 	
-   $("#send_reply_to_client").on('submit',function(e){
-	   
+   $("#send_reply_to_client").on('submit', function(e) {
 		e.preventDefault();
 
-		let ticket_no=$('input[name="ticket_no"]').val();
-		let sent_by_id=$('input[name="sent_by_id"]').val();
-		let contact_by=$('#contact_by').find(":selected").val();
-		let client_contact=$('#contact_by').find(":selected").val() == "Email" ? $('input[name="client_email"]').val() : $('input[name="client_phone"]').val();
-		let message=$('#message').val();
-		let sent_by=$('input[name="sent_by"]').val();
-		
+		let ticket_no = $('input[name="ticket_no"]').val();
+		let sent_by_id = $('input[name="sent_by_id"]').val();
+		let contact_by = $('#contact_by').find(":selected").val();
+		let client_contact = $('#contact_by').find(":selected").val() == "Email" ? $('input[name="client_email"]').val() : $('input[name="client_phone"]').val();
+		let message = $('#message').val();
+		let sent_by = $('input[name="sent_by"]').val();
+
 		console.log(client_contact, ticket_no, sent_by_id, contact_by, message, sent_by)
-		
+
 		let request_type = "send_reply_to_client";
-		
-		if(!contact_by) {
-			toastr["error"]("Select conatact type", "Error");
-		}
-		
-		else {
+
+		if (!contact_by) {
+			swal.fire({
+				icon: 'error',
+				title: 'Error',
+				text: 'Select contact type',
+				timer: 2000,
+				showConfirmButton: false
+			});
+		} else {
 			$.ajax({
-				method:"POST",
-				url : "cica_replies_serv",
-				data : {"ticket_no":ticket_no,
-						"sent_by_id":sent_by_id,
-						"contact_by":contact_by,
-						"client_contact":client_contact,
-						"message":message,
-						"sent_by":sent_by,  
-						"request_type":request_type
-						},
-				success:function(response){
-					
+				method: "POST",
+				url: "cica_replies_serv",
+				data: {
+					"ticket_no": ticket_no,
+					"sent_by_id": sent_by_id,
+					"contact_by": contact_by,
+					"client_contact": client_contact,
+					"message": message,
+					"sent_by": sent_by,
+					"request_type": request_type
+				},
+				success: function(response) {
 					console.log(response);
-				 let json_result = JSON.parse(response);
-	
-				 if(json_result.success == true){
-					 toastr["success"]("Message Sent Successfully", "Success");
-	                } 
-	              else {
-	                        toastr["error"]("Message not sent", "Error");
-	                 }
-	
-	                    $("#send_reply_to_client").find('form').trigger('reset');
-	                    //$("#updateStatusModal").modal('hide');
-	                   setTimeout(function(){
-	                        location.reload();
-	                    },1000); 
+					let json_result = JSON.parse(response);
+
+					if (json_result.success == true) {
+						swal.fire({
+							icon: 'success',
+							title: 'Success',
+							text: 'Message Sent Successfully',
+							timer: 1000,
+							showConfirmButton: false
+						});
+					} else {
+						swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'Message not sent',
+							timer: 2000,
+							showConfirmButton: false
+						});
+					}
+
+					$("#send_reply_to_client").find('form').trigger('reset');
+					
+					setTimeout(function() {
+						location.reload();
+					}, 1000);
+				},
+				error: function() {
+					swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'An error occurred while sending the message',
+						timer: 2000,
+						showConfirmButton: false
+					});
 				}
-				
-			})
+			});
 		}
-	})
+	});
 	
 	 var table_status_note = $('#status_note');
 		table_status_note.find("tbody tr").remove();
