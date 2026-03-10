@@ -388,13 +388,13 @@
             <div class="card-body">
                 <!-- Hidden Fields -->
                 <c:forEach items="${ticket_details}" var="ticket" varStatus="appfiles_loop">
-                    <input type="hidden" name="ticket_id" value="${ticket._id}">
-                    <input type="hidden" name="ticket_no" value="${ticket.ticket_no}">
+                    <input type="hidden" name="ticket_id" id="ticket_id" value="${ticket._id}">
+                    <input type="hidden" name="ticket_no" id="ticket_no" value="${ticket.ticket_no}">
                 </c:forEach>
-                <input type="hidden" name="request_type" value="reply_to_ticket">
-                <input type="hidden" name="replied_by_id" value="${sessionScope.userid}">
-                <input type="hidden" name="replied_by" value="${sessionScope.fullname}">
-                <input type="hidden" name="view_by" value="${sessionScope.view_by}">
+                <input type="hidden" name="request_type" id="request_type" value="reply_to_ticket">
+                <input type="hidden" name="replied_by_id" id="replied_by_id" value="${sessionScope.userid}">
+                <input type="hidden" name="replied_by" id="replied_by" value="${sessionScope.fullname}">
+                <input type="hidden" name="view_by" id="view_by" value="${sessionScope.view_by}">
 
                 <!-- Move To Dropdown -->
                 <div class="mb-4 ${move_to}">
@@ -402,7 +402,7 @@
                         <i class="fas fa-arrow-right me-1 text-muted"></i>
                         Move To: <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" id="move_to" name="move_to" required>
+                    <select class="form-select" id="move_to" name="move_to" >
                         <option value="" disabled selected>-- Select Destination --</option>
                         <option value="1" class="py-2">
                             <i class="fas fa-building me-2"></i>DCU

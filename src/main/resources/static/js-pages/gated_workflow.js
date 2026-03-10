@@ -4366,7 +4366,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         request_type: request_type,
                         ps_id: tr_id,
                         ps_case_number: case_number,
-                        ps_registration_number: tr_term_registration_number,
+                        ps_registration_number: tr_registration_number,
                         ps_proprietor: tr_proprietor,
                         ps_date_of_instrument: tr_date_of_instrument,
                         ps_nature_of_instrument: tr_nature_of_instrument,

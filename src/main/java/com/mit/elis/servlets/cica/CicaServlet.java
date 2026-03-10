@@ -1370,6 +1370,8 @@ public class CicaServlet {
 			JSONObject obj = new JSONObject();
 			JSONObject obj_r = new JSONObject();
 
+			System.out.print(request_type);
+
 			String web_service_response = null;
 
 			if (request_type.equals("reply_to_ticket")) {

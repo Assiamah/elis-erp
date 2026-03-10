@@ -365,6 +365,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contentType: false,
         cache: false,
         success: function(response) {
+			console.log(response);
             let json_result = JSON.parse(response);
 
             // Close loading

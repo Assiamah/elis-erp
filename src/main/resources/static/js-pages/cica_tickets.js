@@ -21,9 +21,9 @@ $(function() {
             4: 'Non-service Complaint'
         },
         rowClasses: {
-            warning: 'bg-warning',
-            info: 'bg-info',
-            success: 'bg-success'
+            warning: 'table-warning',
+            info: 'table-info',
+            success: 'table-success'
         }
     };
 
@@ -126,9 +126,10 @@ $(function() {
         const table = $('#table_list').DataTable({
             data: dataSet,
             createdRow: function(row, data, dataIndex) {
-                const focalReply = data[10];
-                const message = data[11];
-                const destination = data[12];
+                console.log(data);
+                const focalReply = data[11];
+                const message = data[12];
+                const destination = data[13];
                 
                 if (focalReply && destination == 1) {
                     $(row).addClass(config.rowClasses.warning);
@@ -156,7 +157,7 @@ $(function() {
 
         // Update row count
         $('#rowCount').text(table.rows().count());
-        document.getElementById("card_title").innerHTML = title;
+        //document.getElementById("card_title").innerHTML = title;
         
         return table;
     };
@@ -180,7 +181,7 @@ $(function() {
             });
 
             const json_result = JSON.parse(response);
-            
+            // console.log(json_result);
             if (json_result.success && json_result.data) {
                 const dataSet = json_result.data.map(ticket => createTicketRow(ticket));
                 initializeDataTable(dataSet, title);
@@ -547,7 +548,7 @@ $(function() {
             });
 
             const json_result = JSON.parse(response);
-            
+           
             if (json_result.success && json_result.data) {
                 const dataSet = json_result.data.map(ticket => createTicketRow(ticket));
                 initializeDataTable(dataSet, title);
