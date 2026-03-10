@@ -591,6 +591,8 @@ public class CicaController {
 				ArrayList ticket_details_list = googleJson.fromJson(ticket_details, ArrayList.class);
 				request.setAttribute("ticket_details",ticket_details_list);
 
+				request.setAttribute("page_name", "cica_ticket_details");
+
 						model.addAttribute("content", "../pages/CICA/cica_ticket_details.jsp"); return "layouts/app";
 			}
 

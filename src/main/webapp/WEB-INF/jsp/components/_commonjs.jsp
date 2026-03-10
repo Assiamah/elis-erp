@@ -159,6 +159,7 @@ ${page_name == "cica_clients" ? "<script src='js-pages/cica_clients.js'></script
 ${(page_name == "cica_tickets") || (page_name == "cica_focal_person") || (page_name == "cica_replies") ? "<script src='js-pages/cica_tickets.js'></script>" : ""}
 ${(page_name == "cica_dashboard") ? "<script src='js-pages/cica_dashboard.js'></script>" : ""}
 ${page_name == "cica_replies" ? "<script src='js-pages/cica_reply_details.js'></script>" : ""}
+${page_name == "cica_ticket_details" ? "<script src='js-pages/cica_ticket_details.js'></script>" : ""}
 
 ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 

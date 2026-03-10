@@ -5836,3 +5836,380 @@ Thank you.</textarea>
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="transaction_details_for_deed" tabindex="-1"
+     aria-labelledby="transaction_details_for_deed_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="transaction_details_for_deed_label">
+                    <i class="fas fa-book me-2"></i>
+                    Registered Transactions
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <div class="card border">
+                    <div class="card-header bg-primary bg-opacity-10 border-primary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 text-primary">
+                                <i class="fas fa-user-tie me-2"></i>
+                                Transaction Details
+                            </h6>
+                            <button type="button" class="btn btn-primary btn-sm newTransactionModal">
+                                <i class="fas fa-plus me-1"></i>
+                                Add Transaction
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0" id="lrd_transaction_details_dataTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Transaction No.</th>
+                                        <th>Grantee</th>
+                                        <th>Date of Instrument</th>
+                                        <th>Nature of Instrument</th>
+                                        <th>Date of Registration</th>
+                                        <th>Parties</th>
+                                        <th>Price Paid</th>
+                                        <th>Term</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${lrd_proprietorship_section}" var="proprietorship_section">
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-info bg-opacity-10 text-info">
+                                                    ${proprietorship_section.ps_registration_number}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-user text-muted me-2"></i>
+                                                    <span>${proprietorship_section.ps_proprietor}</span>
+                                                </div>
+                                            </td>
+                                            <td>${proprietorship_section.ps_date_of_instrument}</td>
+                                            <td>
+                                                <span class="badge bg-secondary">
+                                                    ${proprietorship_section.ps_nature_of_instrument}
+                                                </span>
+                                            </td>
+                                            <td>${proprietorship_section.ps_date_of_registration}</td>
+                                            <td>
+                                                <div class="small">
+                                                    <div><strong>From:</strong> ${proprietorship_section.ps_transferor}</div>
+                                                    <div><strong>To:</strong> ${proprietorship_section.ps_transferee}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="fw-medium text-success">${proprietorship_section.ps_price_paid}</span>
+                                            </td>
+                                            <td>${proprietorship_section.ps_term}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-outline-primary btn-sm editTransactionModal"
+                                                        data-target-id="${proprietorship_section.ps_id}"
+                                                        data-ps_id="${proprietorship_section.ps_id}"
+                                                        data-ps_case_number="${proprietorship_section.ps_case_number}"
+                                                        data-ps_registration_number="${proprietorship_section.ps_registration_number}"
+                                                        data-ps_proprietor="${proprietorship_section.ps_proprietor}"
+                                                        data-ps_date_of_instrument="${proprietorship_section.ps_date_of_instrument}"
+                                                        data-ps_nature_of_instrument="${proprietorship_section.ps_nature_of_instrument}"
+                                                        data-ps_date_of_registration="${proprietorship_section.ps_date_of_registration}"
+                                                        data-ps_transferor="${proprietorship_section.ps_transferor}"
+                                                        data-ps_transferee="${proprietorship_section.ps_transferee}"
+                                                        data-ps_price_paid="${proprietorship_section.ps_price_paid}"
+                                                        data-ps_remarks="${proprietorship_section.ps_remarks}"
+                                                        data-ps_signature="${proprietorship_section.ps_signature}"
+                                                        data-ps_term="${proprietorship_section.ps_term}"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Transaction">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Transaction Management
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_root_title">
+                            <i class="fas fa-download me-1"></i>
+                            Export
+                        </button> -->
+                        <!-- <button type="button" class="btn btn-outline-info" id="btn_print_root_title">
+                            <i class="fas fa-print me-1"></i>
+                            Print Preview
+                        </button> -->
+                    </div>
+                </div>
+                <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newTransactionModal" tabindex="-1" aria-labelledby="newTransactionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="newTransactionModalLabel">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Transaction Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="form_add_transaction">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" id="tr_id" name="tr_id" value="0">
+                    
+                    <!-- Form Content -->
+                    <div class="row g-4" style="height: 100vh;">
+                        
+                        <!-- Left Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+
+                          <div class="row g-4">
+                            <div class="col-lg-6">
+                              <!-- Case Number -->
+                              <div class="mb-3">
+                                  <label for="tr_case_number" class="form-label fw-medium">
+                                      <i class="fas fa-hashtag me-1"></i>
+                                      Case Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-folder"></i>
+                                      </span>
+                                      <input type="text" name="tr_case_number" id="tr_case_number" 
+                                            value="${case_number}" class="form-control" required readonly>
+                                  </div>
+                              </div>
+                              
+                              <!-- Registered Number -->
+                              <div class="mb-3">
+                                  <label for="tr_registration_number" class="form-label fw-medium">
+                                      <i class="fas fa-certificate me-1"></i>
+                                      Transaction Number
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-hashtag"></i>
+                                      </span>
+                                      <input type="text" name="tr_registration_number" id="tr_registration_number" 
+                                            value="${registered_number}" class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Proprietor/Grantee -->
+                              <div class="mb-3">
+                                  <label for="tr_proprietor" class="form-label fw-medium">
+                                      <i class="fas fa-user me-1"></i>
+                                      Proprietor/Grantee
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-user-check"></i>
+                                      </span>
+                                      <input type="text" name="tr_proprietor" id="tr_proprietor" 
+                                            value="${ar_name}" class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Date of Instrument -->
+                              <div class="mb-3">
+                                  <label for="tr_date_of_instrument" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-alt me-1"></i>
+                                      Date of Instrument
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar"></i>
+                                      </span>
+                                      <input type="date" name="tr_date_of_instrument" id="tr_date_of_instrument" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Nature of Instrument -->
+                              <div class="mb-3">
+                                  <label for="tr_nature_of_instrument" class="form-label fw-medium">
+                                      <i class="fas fa-file-contract me-1"></i>
+                                      Nature of Instrument
+                                  </label>
+                                  <textarea id="tr_nature_of_instrument" name="tr_nature_of_instrument" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Describe the nature of the instrument"></textarea>
+                                  <div class="form-text">
+                                      <i class="fas fa-lightbulb me-1"></i>
+                                      Examples: Lease, Conveyance, Mortgage, Gift, etc.
+                                  </div>
+                              </div>
+
+                            </div>
+
+                            <div class="col-lg-6">
+                              <!-- Date of Registration -->
+                              <div class="mb-3">
+                                  <label for="tr_date_of_registration" class="form-label fw-medium">
+                                      <i class="fas fa-calendar-check me-1"></i>
+                                      Date of Registration
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-calendar-day"></i>
+                                      </span>
+                                      <input type="date" name="tr_date_of_registration" id="tr_date_of_registration" 
+                                            class="form-control" required>
+                                  </div>
+                              </div>
+                              
+                              <!-- Term -->
+                              <div class="mb-3">
+                                  <label for="tr_term" class="form-label fw-medium">
+                                      <i class="fas fa-clock me-1"></i>
+                                      Term
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-history"></i>
+                                      </span>
+                                      <input type="text" name="tr_term" id="tr_term" 
+                                            class="form-control" required 
+                                            placeholder="e.g., 50 years, Perpetual">
+                                  </div>
+                              </div>
+                              
+                              <!-- Grantor -->
+                              <div class="mb-3">
+                                  <label for="tr_transferor" class="form-label fw-medium">
+                                      <i class="fas fa-user-minus me-1"></i>
+                                      Grantor (Transferor)
+                                  </label>
+                                  <textarea name="tr_transferor" id="tr_transferor" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Enter grantor details"></textarea>
+                              </div>
+                              
+                              <!-- Grantee -->
+                              <div class="mb-3">
+                                  <label for="tr_transferee" class="form-label fw-medium">
+                                      <i class="fas fa-user-plus me-1"></i>
+                                      Grantee (Transferee)
+                                  </label>
+                                  <textarea name="tr_transferee" id="tr_transferee" 
+                                            class="form-control" rows="3" required
+                                            placeholder="Enter grantee details">${ar_name}</textarea>
+                              </div>
+                              
+                              <!-- Price Paid -->
+                              <div class="mb-3">
+                                  <label for="tr_price_paid" class="form-label fw-medium">
+                                      <i class="fas fa-money-bill-wave me-1"></i>
+                                      Price Paid
+                                  </label>
+                                  <div class="input-group">
+                                      <span class="input-group-text">
+                                          <i class="fas fa-dollar-sign"></i>
+                                      </span>
+                                      <input type="text" name="tr_price_paid" id="tr_price_paid" 
+                                            class="form-control" required 
+                                            placeholder="Enter amount">
+                                  </div>
+                              </div>
+                              
+                            </div>
+                            <div class="col-12">
+                                
+                                <!-- Remarks -->
+                                <div class="mb-3">
+                                    <label for="tr_remarks" class="form-label fw-medium">
+                                        <i class="fas fa-sticky-note me-1"></i>
+                                        Remarks
+                                    </label>
+                                    <textarea name="tr_remarks" id="tr_remarks" 
+                                              class="form-control" rows="3" required
+                                              placeholder="Additional remarks or notes"></textarea>
+                                </div>
+                                
+                                <!-- Signed By -->
+                                <div class="mb-3">
+                                    <label for="tr_signature" class="form-label fw-medium">
+                                        <i class="fas fa-signature me-1"></i>
+                                        Signed By
+                                    </label>
+                                    <textarea name="tr_signature" id="tr_signature" 
+                                              class="form-control" rows="2" required
+                                              placeholder="Names and signatures of authorized persons"></textarea>
+                                </div>
+                                
+                            </div>
+                          </div>
+
+                    
+                          <!-- Modal Footer -->
+                          <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
+                              <div class="d-flex justify-content-between w-100 align-items-center">
+                                  <div>
+                                      <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
+                                              data-action_type='proprietor'>
+                                          <i class="fas fa-trash me-1"></i>
+                                          Delete
+                                      </button> -->
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                          <i class="fas fa-times me-1"></i>
+                                          Cancel
+                                      </button>
+                                      <button type="submit" id="btn_transaction" class="btn btn-primary">
+                                          <i class="fas fa-save me-1"></i>
+                                          Save Changes
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="col-lg-6 d-flex flex-column scrollable-col">
+                            
+                            <div class="_gated_workflow_documents"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

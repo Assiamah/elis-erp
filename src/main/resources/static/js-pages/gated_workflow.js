@@ -3464,6 +3464,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#newValuationModal ._gated_workflow_documents');
         } else if (modalType === 'certificate') {
             container = document.querySelector('#newCertificateModal ._gated_workflow_documents');
+        } else if (modalType === 'transaction') {
+            container = document.querySelector('#newTransactionModal ._gated_workflow_documents');
         } else if (modalType === 'lrd_initial_approval') {
             container = document.querySelector('#lrd_initial_approval ._gated_workflow_documents');
         } else if (modalType === 'addeditpartyGeneral') {
@@ -4209,6 +4211,369 @@ document.addEventListener('DOMContentLoaded', function() {
         $("#ps_term").val(ps_term);
 
         window.loadGatedWorkFlowDocuments('proprietorship');
+    });
+
+     $(document).on('click', '.newTransactionModal', function() {
+        $("#newTransactionModal").modal('show');
+
+        $("#tr_id").val(0);
+        $("#tr_registration_number").val('');
+        $("#tr_proprietor").val('');
+        $("#tr_date_of_instrument").val('');
+        $("#tr_nature_of_instrument").val('');
+        $("#tr_date_of_registration").val('');
+        $("#tr_transferor").val('');
+        $("#tr_transferee").val('');
+        $("#tr_price_paid").val('');
+        $("#tr_remarks").val('');
+        $("#tr_signature").val('');
+        $("#tr_term").val('');
+
+       window.loadGatedWorkFlowDocuments('transaction');
+    })
+
+    $('#form_add_transaction').on('submit', function(e) {
+        // validation code here
+        e.preventDefault();
+        // console.log('Form submitted');
+        
+        // Collect form data
+        const tr_id = parseInt($("#tr_id").val());
+        const case_number = $("#tr_case_number").val();
+        const tr_registration_number = $("#tr_registration_number").val();
+        const tr_proprietor = $("#tr_proprietor").val();
+        const tr_date_of_instrument = $("#tr_date_of_instrument").val();
+        const tr_nature_of_instrument = $("#tr_nature_of_instrument").val();
+        const tr_date_of_registration = $("#tr_date_of_registration").val();
+        const tr_transferor = $("#tr_transferor").val();
+        const tr_transferee = $("#tr_transferee").val();
+        const tr_price_paid = $("#tr_price_paid").val();
+        const tr_remarks = $("#tr_remarks").val();
+        const tr_signature = $("#tr_signature").val();
+        const tr_term = $("#tr_term").val();
+        
+        // Validate required fields
+        const requiredFields = [
+            { field: 'tr_registration_number', value: tr_registration_number, label: 'Transaction Number' },
+            { field: 'tr_proprietor', value: tr_proprietor, label: 'Grantee' },
+            { field: 'tr_date_of_instrument', value: tr_date_of_instrument, label: 'Date of Instrument' },
+            { field: 'tr_nature_of_instrument', value: tr_nature_of_instrument, label: 'Nature of Instrument' },
+            { field: 'tr_date_of_registration', value: tr_date_of_registration, label: 'Date of Registration' },
+            { field: 'tr_term', value: tr_term, label: 'Term' }
+        ];
+        
+        // Check for empty required fields
+        const emptyFields = requiredFields.filter(field => !field.value.trim());
+        if (emptyFields.length > 0) {
+            const fieldNames = emptyFields.map(f => f.label).join(', ');
+            Swal.fire({
+                title: 'Required Fields Missing',
+                html: `<div class="text-start">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>The following fields are required:</p>
+                        <ul class="text-start">
+                            ${emptyFields.map(f => `<li><strong>${f.label}</strong></li>`).join('')}
+                        </ul>
+                        <p class="text-muted small mt-2">Please fill in all required fields before submitting</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Validate dates
+        if (tr_date_of_instrument && tr_date_of_registration) {
+            const instrumentDate = new Date(tr_date_of_instrument);
+            const registrationDate = new Date(tr_date_of_registration);
+            
+            if (registrationDate < instrumentDate) {
+                Swal.fire({
+                    title: 'Date Validation Error',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-calendar-times text-danger fa-2x"></i>
+                            </div>
+                            <p><strong>Date of Registration</strong> cannot be earlier than <strong>Date of Instrument</strong></p>
+                            <p class="text-muted small">Please check the dates and try again</p>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#dc3545'
+                });
+                return;
+            }
+        }
+        
+        // Prepare confirmation message based on action (add/edit)
+        const isEdit = tr_id > 0;
+        const actionText = isEdit ? 'Update' : 'Add';
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: `${actionText} Proprietorship Record?`,
+            html: `<div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-user-tie text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-3">Confirm ${actionText}</h5>
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Record Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Case:</strong> ${case_number}</li>
+                                    <li><strong>Grantee:</strong> ${tr_proprietor}</li>
+                                    <li><strong>Registered No:</strong> ${tr_registration_number}</li>
+                                    <li><strong>Nature:</strong> ${tr_nature_of_instrument}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3">
+                        This action will ${isEdit ? 'update the existing' : 'create a new'} 
+                        proprietorship record in the system.
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `<i class="fas fa-save me-1"></i>${actionText} Record`,
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 550,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                const submitBtn = $('#btn_proprietorship');
+                const originalText = submitBtn.html();
+                submitBtn.prop('disabled', true);
+                submitBtn.html('<span class="spinner-border spinner-border-sm me-1" role="status"></span>Processing...');
+                
+                // Determine request type
+                const request_type = "select_lrd_proprietorship_section_add_and_update";
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "lrd_proprietorship_section_serv",
+                    data: {
+                        request_type: request_type,
+                        ps_id: tr_id,
+                        ps_case_number: case_number,
+                        ps_registration_number: tr_term_registration_number,
+                        ps_proprietor: tr_proprietor,
+                        ps_date_of_instrument: tr_date_of_instrument,
+                        ps_nature_of_instrument: tr_nature_of_instrument,
+                        ps_date_of_registration: tr_date_of_registration,
+                        ps_transferor: tr_transferor,
+                        ps_transferee: tr_transferee,
+                        ps_price_paid: tr_price_paid,
+                        ps_remarks: tr_remarks,
+                        ps_signature: tr_signature,
+                        ps_term: tr_term
+                    },
+                    cache: false,
+                    beforeSend: function() {
+                        // Additional loading indicators can be added here
+                    },
+                    success: function(jobdetails) {
+                        // console.log('Server response:', jobdetails);
+                        
+                        try {
+                            const json_p = JSON.parse(jobdetails);
+                            
+                            // Close the modal
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('newTransactionModal'));
+                            if (modal) {
+                                modal.hide();
+                            }
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Success!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle text-success fa-3x"></i>
+                                        </div>
+                                        <h5 class="mb-2">Record ${isEdit ? 'Updated' : 'Added'}</h5>
+                                        <p class="text-muted">
+                                            Transaction details have been ${isEdit ? 'updated' : 'added'} successfully
+                                        </p>
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                            <i class="fas fa-check me-2"></i>
+                                            <strong>Details:</strong> ${tr_proprietor} (${tr_registration_number})
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: 'Continue',
+                                confirmButtonColor: '#198754',
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                            
+                            // Update the table with new data
+                            updateTransactionTable(json_p.data);
+                            
+                        } catch (error) {
+                            console.error('JSON parsing error:', error);
+                            
+                            // Show error message for parsing failure
+                            Swal.fire({
+                                title: 'Processing Error',
+                                text: 'Failed to process server response',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#dc3545'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', error);
+                        
+                        // Show error message
+                        Swal.fire({
+                            title: 'Save Failed',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">Unable to Save Record</h5>
+                                    <p class="text-danger small">${error || 'Server error occurred'}</p>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Please try again or contact system administrator
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: 'Try Again',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    },
+                    complete: function() {
+                        // Reset button state
+                        submitBtn.prop('disabled', false);
+                        submitBtn.html(originalText);
+                    }
+                });
+            }
+        });
+    });
+
+    // Function to update the transactio table
+    function updateTransactionTable(data) {
+        const table_bp = $('#lrd_transaction_details_dataTable, #lrd_transaction_details_dataTable_final_approval');
+        table_bp.find("tbody tr").remove();
+        
+        if (data && data.length > 0) {
+            $(data).each(function() {
+                const canEdit = this.edit == 1 ? 'd-none' : '';
+                table_bp.append(`<tr>
+                    <td>
+                        <span class="badge bg-info bg-opacity-10 text-info">
+                            ${this.ps_registration_number}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user text-muted me-2"></i>
+                            <span>${this.ps_proprietor}</span>
+                        </div>
+                    </td>
+                    <td>${this.ps_date_of_instrument}</td>
+                    <td>
+                        <span class="badge bg-secondary">
+                            ${this.ps_nature_of_instrument}
+                        </span>
+                    </td>
+                    <td>${this.ps_date_of_registration}</td>
+                    <td>
+                        <div class="small">
+                            <div><strong>From:</strong> ${this.ps_transferor}</div>
+                            <div><strong>To:</strong> ${this.ps_transferee}</div>
+                        </div>
+                    </td>
+                    <td><span class="fw-medium text-success">${this.ps_price_paid}</span></td>
+                    <!--<td>${this.ps_remarks}</td>-->
+                    <td>${this.ps_term}</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-primary btn-sm ${canEdit} editTransactionModal" 
+                                data-target-id="${this.ps_id}" 
+                                data-ps_id="${this.ps_id}"
+                                data-ps_case_number="${this.ps_case_number}"
+                                data-ps_registration_number="${this.ps_registration_number}"
+                                data-ps_proprietor="${this.ps_proprietor}"
+                                data-ps_date_of_instrument="${this.ps_date_of_instrument}"
+                                data-ps_nature_of_instrument="${this.ps_nature_of_instrument}"
+                                data-ps_date_of_registration="${this.ps_date_of_registration}"
+                                data-ps_transferor="${this.ps_transferor}"
+                                data-ps_transferee="${this.ps_transferee}"
+                                data-ps_price_paid="${this.ps_price_paid}"
+                                data-ps_remarks="${this.ps_remarks}"
+                                data-ps_signature="${this.ps_signature}"
+                                data-ps_term="${this.ps_term}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                </tr>`);
+            });
+            
+            // Initialize tooltips for new buttons
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+        } else {
+            // Show empty state
+            table_bp.append(`<tr>
+                <td colspan="10" class="text-center py-4">
+                    <div class="text-muted">
+                        <i class="fas fa-user-tie fa-2x mb-2 d-block"></i>
+                        <p class="mb-0">No transaction records found</p>
+                        <small>Click "Add Transaction" to create a new record</small>
+                    </div>
+                </td>
+            </tr>`);
+        }
+    }
+
+    $(document).on('click', '.editTransactionModal', function(e) {
+        $("#newTransactionModal").modal('show');
+
+        const ps_id = $(this).data('ps_id');
+        const ps_registration_number = $(this).data('ps_registration_number');
+        const ps_proprietor = $(this).data('ps_proprietor');
+        const ps_date_of_instrument = $(this).data('ps_date_of_instrument');
+        const ps_nature_of_instrument = $(this).data('ps_nature_of_instrument');
+        const ps_date_of_registration = $(this).data('ps_date_of_registration');
+        const ps_transferor = $(this).data('ps_transferor');
+        const ps_transferee = $(this).data('ps_transferee');
+        const ps_price_paid = $(this).data('ps_price_paid');
+        const ps_remarks = $(this).data('ps_remarks');
+        const ps_signature = $(this).data('ps_signature');
+        const ps_term = $(this).data('ps_term');
+
+        $("#tr_id").val(ps_id);
+        $("#tr_registration_number").val(ps_registration_number);
+        $("#tr_proprietor").val(ps_proprietor);
+        $("#tr_date_of_instrument").val(ps_date_of_instrument);
+        $("#tr_nature_of_instrument").val(ps_nature_of_instrument);
+        $("#tr_date_of_registration").val(ps_date_of_registration);
+        $("#tr_transferor").val(ps_transferor);
+        $("#tr_transferee").val(ps_transferee);
+        $("#tr_price_paid").val(ps_price_paid);
+        $("#tr_remarks").val(ps_remarks);
+        $("#tr_signature").val(ps_signature);
+        $("#tr_term").val(ps_term);
+
+        window.loadGatedWorkFlowDocuments('transaction');
     });
 
     $(document).on('click', '.newMemorialsModal', function() {

@@ -1709,6 +1709,41 @@ function submitTicketForm() {
     const submitBtn = $("#save_btn");
     submitBtn.prop('disabled', true).text("Please wait ...");
     
+    // Validate required fields
+    // if (!$('input[name="ticket_name"]').val()) {
+    //     Swal.fire({
+    //         icon: 'warning',
+    //         title: 'Input Required',
+    //         text: 'Please enter complainant name',
+    //         timer: 2000,
+    //         showConfirmButton: false
+    //     });
+    //     submitBtn.prop('disabled', false).text("Save");
+    //     return false;
+    // }
+
+    // if (!$('#contact_type').find(":selected").val()) {
+    //     Swal.fire({
+    //         icon: 'warning',
+    //         title: 'Input Required',
+    //         text: 'Please select contact type',
+    //         timer: 2000,
+    //         showConfirmButton: false
+    //     });
+    //     submitBtn.prop('disabled', false).text("Save");
+    //     return false;
+    // }
+
+    // Show loading indicator
+    Swal.fire({
+        title: 'Submitting Ticket...',
+        text: 'Please wait while your ticket is being processed',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
     const formData = {
         request_type: 'open_ticket',
         complainant_name: $('input[name="ticket_name"]').val(),
@@ -1732,19 +1767,57 @@ function submitTicketForm() {
         success: function(response) {
             try {
                 const jsonResult = JSON.parse(response);
+                
+                // Close loading
+                Swal.close();
+                
                 if (jsonResult.success) {
-                    toastr.success("Ticket Added successfully", "CICA");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Ticket Added Successfully',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    
                     $("#addTicketModal").find('form').trigger('reset');
                     $("#addTicketModal").modal('hide');
+                    
+                    // Optional: Refresh the ticket list if needed
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
                 } else {
-                    toastr.error("Error Adding Ticket", "CICA");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error Adding Ticket',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             } catch (e) {
-                toastr.error("Error processing response", "CICA");
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error processing response',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                console.error('Parse error:', e);
             }
         },
-        error: function() {
-            toastr.error("Error submitting ticket", "CICA");
+        error: function(xhr, status, error) {
+            Swal.close();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error submitting ticket',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            console.error('AJAX Error:', error);
         },
         complete: function() {
             submitBtn.prop('disabled', false).text("Save");
@@ -1760,11 +1833,26 @@ function submitCicaClientForm() {
 
 // Utility functions
 function showError(message) {
-    toastr.error(message, "Error");
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+        timer: 3000,
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33'
+    });
 }
 
 function showSuccess(message) {
-    toastr.success(message, "Success");
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: message,
+        timer: 2000,
+        showConfirmButton: false,
+        timerProgressBar: true
+    });
 }
 
 // Purpose change handler (if not already in your code)
