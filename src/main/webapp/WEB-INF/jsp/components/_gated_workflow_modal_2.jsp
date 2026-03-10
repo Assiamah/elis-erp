@@ -5869,7 +5869,7 @@ Thank you.</textarea>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover table-sm mb-0" id="lrd_transaction_details_dataTable">
+                            <table class="table table-hover mb-0" id="lrd_transaction_details_dataTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th>Transaction No.</th>
