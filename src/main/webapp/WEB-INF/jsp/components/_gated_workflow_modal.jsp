@@ -1517,19 +1517,19 @@
                   <i class="bi bi-eye me-1"></i> View WKT
                 </button>
 
-                <button type="button" class="btn btn-info btn-sm" 
+                <!-- <button type="button" class="btn btn-info btn-sm" 
                         id="lc_btn_visualise_search"
                         data-bs-toggle="tooltip" data-bs-placement="top" 
                         title="Plot Parcels">
                   <i class="bi bi-layers me-1"></i> Plot Parcels
-                </button>
+                </button> -->
 
-                <button type="button" class="btn btn-warning btn-sm" 
+                <!-- <button type="button" class="btn btn-warning btn-sm" 
                         id="lc_btnprintmap"
                         data-bs-toggle="tooltip" data-bs-placement="top" 
                         title="Print Map">
                   <i class="bi bi-printer me-1"></i> Print
-                </button>
+                </button> -->
 
                 <!-- Scale Controls -->
                 <div class="d-flex align-items-center ms-auto">
