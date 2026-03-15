@@ -929,22 +929,22 @@
                                         </button>
                                         
                                         <!-- Plot Parcels Button -->
-                                        <button type="button" class="btn btn-success btn-sm" 
+                                        <!-- <button type="button" class="btn btn-success btn-sm" 
                                             id="lc_btn_visualise_search" 
                                             data-bs-toggle="tooltip" data-bs-placement="top" 
                                             title="Plot Parcels">
                                             <i class="fas fa-object-ungroup me-1"></i>
                                             Plot Parcels
-                                        </button>
+                                        </button> -->
                                         
                                         <!-- Print Map Button -->
-                                        <button type="button" class="btn btn-info btn-sm" 
+                                        <!-- <button type="button" class="btn btn-info btn-sm" 
                                             id="lc_btnprintmap" 
                                             data-bs-toggle="tooltip" data-bs-placement="top" 
                                             title="Print Map">
                                             <i class="fas fa-print me-1"></i>
                                             Print
-                                        </button>
+                                        </button> -->
                                     </div>
                                     
                                     <!-- Scale Controls -->
@@ -1261,22 +1261,22 @@
                                         </button>
                                         
                                         <!-- Plot Parcels Button -->
-                                        <button type="button" class="btn btn-success btn-sm" 
+                                        <!-- <button type="button" class="btn btn-success btn-sm" 
                                             id="lc_btn_visualise_search" 
                                             data-bs-toggle="tooltip" data-bs-placement="top" 
                                             title="Plot Parcels">
                                             <i class="fas fa-object-ungroup me-1"></i>
                                             Plot Parcels
-                                        </button>
+                                        </button> -->
                                         
                                         <!-- Print Map Button -->
-                                        <button type="button" class="btn btn-info btn-sm" 
+                                        <!-- <button type="button" class="btn btn-info btn-sm" 
                                             id="lc_btnprintmap" 
                                             data-bs-toggle="tooltip" data-bs-placement="top" 
                                             title="Print Map">
                                             <i class="fas fa-print me-1"></i>
                                             Print
-                                        </button>
+                                        </button> -->
                                     </div>
                                     
                                     <!-- Scale Controls -->
@@ -1950,18 +1950,18 @@
                                         </button>
                                         
                                         <!-- Plot Parcels Button -->
-                                        <button type="button" class="btn btn-success btn-sm" 
+                                        <!-- <button type="button" class="btn btn-success btn-sm" 
                                             id="lc_btn_visualise_search">
                                             <i class="fas fa-object-ungroup me-1"></i>
                                             Plot Parcels
-                                        </button>
+                                        </button> -->
                                         
                                         <!-- Print Map Button -->
-                                        <button type="button" class="btn btn-info btn-sm" 
+                                        <!-- <button type="button" class="btn btn-info btn-sm" 
                                             id="lc_btnprintmap">
                                             <i class="fas fa-print me-1"></i>
                                             Print
-                                        </button>
+                                        </button> -->
 
                                         <button type="button" class="btn btn-danger btn-sm" 
                                             id="lc_btn_check_related_jobs">
@@ -3679,7 +3679,7 @@
                   <i class="bi bi-eye me-1"></i> View WKT
                 </button>
 
-                <button type="button" class="btn btn-info btn-sm" 
+                <!-- <button type="button" class="btn btn-info btn-sm" 
                         id="lc_btn_visualise_search"
                         data-bs-toggle="tooltip" data-bs-placement="top" 
                         title="Plot Parcels">
@@ -3691,7 +3691,7 @@
                         data-bs-toggle="tooltip" data-bs-placement="top" 
                         title="Print Map">
                   <i class="bi bi-printer me-1"></i> Print
-                </button>
+                </button> -->
 
                 <!-- Scale Controls -->
                 <div class="d-flex align-items-center ms-auto">
@@ -4860,7 +4860,7 @@ Thank you.</textarea>
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h5 class="modal-title text-white mb-0" id="generateConcurrenceCertificateLabel">
-                            Generate Concurrence Certificate
+                            Generate Certificate
                         </h5>
                         <p class="mb-0 small opacity-75">Create and manage concurrence certificates</p>
                     </div>
@@ -5007,9 +5007,9 @@ Thank you.</textarea>
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h5 class="modal-title text-white mb-0" id="generateLsNumberLabel">
-                            Generate Land Serial (LS) Number
+                            Generate Serial Number
                         </h5>
-                        <p class="mb-0 small opacity-75">Create a unique land serial reference</p>
+                        <p class="mb-0 small opacity-75">Create a unique serial reference</p>
                     </div>
                     <button type="button" class="btn-close btn-close-white ms-auto" 
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -5049,7 +5049,7 @@ Thank you.</textarea>
                         <div class="d-flex align-items-center mb-2">
                             <label class="form-label fw-medium text-muted mb-0">
                                 <i class="bi bi-hash me-1"></i>
-                                Land Serial (LS) Number
+                                Serial Number
                             </label>
                             <span class="ms-auto">
                                 <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
@@ -5094,7 +5094,7 @@ Thank you.</textarea>
                                         </div>
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h6 class="mb-1">LS Number Generated</h6>
+                                        <h6 class="mb-1">Serial Number Generated</h6>
                                         <p class="mb-0 small text-muted" id="lsPreviewMessage"></p>
                                     </div>
                                     <button class="btn btn-sm btn-outline-primary" onclick="viewLsDetails()">
@@ -5112,7 +5112,7 @@ Thank you.</textarea>
                                 <i class="bi bi-check-circle-fill text-success fs-5"></i>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="alert-heading mb-1 text-success">LS Number Generated!</h6>
+                                <h6 class="alert-heading mb-1 text-success">Serial Number Generated!</h6>
                                 <p class="mb-0 small text-muted" id="lsStatusMessage"></p>
                             </div>
                         </div>
@@ -5125,9 +5125,9 @@ Thank you.</textarea>
                                 <i class="bi bi-info-circle-fill text-primary"></i>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-1">About LS Numbers</h6>
+                                <h6 class="mb-1">About Serial Numbers</h6>
                                 <p class="small text-muted mb-0">
-                                    Land Serial numbers are unique identifiers assigned to land parcels 
+                                  Serial numbers are unique identifiers assigned to land parcels 
                                     for tracking and reference purposes throughout the registration process.
                                 </p>
                             </div>
@@ -5145,7 +5145,7 @@ Thank you.</textarea>
                                 <span class="btn-icon me-2">
                                     <i class="bi bi-gear-fill"></i>
                                 </span>
-                                <span class="btn-text">Generate LS Number</span>
+                                <span class="btn-text">Generate Serial Number</span>
                             </div>
                         </button>
 
@@ -5388,7 +5388,7 @@ Thank you.</textarea>
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-1">Land Serial (LS) Number</h6>
+                                <h6 class="mb-1">Serial Number</h6>
                                 <p class="small text-muted mb-0">Unique identifier for land registration</p>
                             </div>
                         </div>
@@ -5402,19 +5402,19 @@ Thank you.</textarea>
                                    id="lc_view_ls_number" 
                                    readonly 
                                    value="${ls_number}"
-                                   placeholder="LS-XXXX-YYYY-####"
+                                   placeholder=""
                                    aria-describedby="lsPreviewHelp">
                             <button class="btn btn-outline-secondary" 
                                     type="button" 
-                                    onclick="copyNumber('lc_view_ls_number', 'LS number')"
-                                    title="Copy LS number"
+                                    onclick="copyNumber('lc_view_ls_number', 'Serial number')"
+                                    title="Copy Serial number"
                                     ${empty ls_number or ls_number == 'null' ? 'disabled' : ''}>
                                 <i class="bi bi-clipboard"></i>
                             </button>
                         </div>
                         <div id="lsPreviewHelp" class="form-text">
                             <i class="bi bi-info-circle me-1"></i>
-                            ${not empty ls_number and ls_number != 'null' ? 'LS number generated' : 'No LS number generated yet'}
+                            ${not empty ls_number and ls_number != 'null' ? 'Serial number generated' : 'No Serial number generated yet'}
                         </div>
                     </div>
 
@@ -6212,4 +6212,535 @@ Thank you.</textarea>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="view_parcel_and_transaction_for_deed" tabindex="-1"
+     aria-labelledby="view_parcel_and_transaction_for_deed_label" aria-hidden="true" data-bs-backdrop="static">
+     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="view_parcel_and_transaction_label">
+                    <i class="fas fa-map-marked-alt me-2"></i>
+                    View Parcel and Transaction
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <!-- Summary Card -->
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-hashtag text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Case Number</div>
+                                        <div class="h6 mb-0">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-file-contract text-success"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Job Number</div>
+                                        <div class="h6 mb-0">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+                                        <i class="fas fa-user text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small">Applicant</div>
+                                        <div class="h6 mb-0">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-tabs mb-3 tab-style-6" id="parcelTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" 
+                                data-bs-target="#details" type="button" role="tab">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Transaction Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="location-tab" data-bs-toggle="tab" 
+                                data-bs-target="#location" type="button" role="tab">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Location Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="financial-tab" data-bs-toggle="tab" 
+                                data-bs-target="#financial" type="button" role="tab">
+                            <i class="fas fa-money-bill-wave me-2"></i>
+                            Financial Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="map-tab" data-bs-toggle="tab" 
+                                data-bs-target="#map-" type="button" role="tab">
+                            <i class="fas fa-map me-2"></i>
+                            Map Visualization
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Tab Content -->
+                <div class="tab-content" id="parcelTabContent">
+                    
+                    <!-- Transaction Details Tab -->
+                    <div class="tab-pane fade show active" id="details" role="tabpanel">
+                        <div class="row g-3">
+                            <!-- Column 1 -->
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-file-alt me-2"></i>
+                                            Basic Information
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Transaction Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Regional Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Document</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Registration</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Nature of Instrument</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Type of Interest</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Column 2 -->
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-calendar-alt me-2"></i>
+                                            Term & Renewal
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Term</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(term) ? '--' : fn:trim(term)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Type of Use</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(type_of_use) ? '--' : fn:trim(type_of_use)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Commencement Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Option for Renewal</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(renewal_term) ? '--' : fn:trim(renewal_term)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Certificate Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Issue</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Column 3 -->
+                            <div class="col-12">
+                                <div class="card border">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-certificate me-2"></i>
+                                            Registration & Planning Details
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Plan Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(plan_no) ? '--' : fn:trim(plan_no)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">LTR Plan Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(ltr_plan_no) ? '--' : fn:trim(ltr_plan_no)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Registry Map Ref</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registry_mapref) ? '--' : fn:trim(registry_mapref)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">CC Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(cc_no) ? '--' : fn:trim(cc_no)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">GLPIN</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Interest Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Sub-Interest Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Registered Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Type of Plotting</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(smd_type_of_plotting) ? '--' : fn:trim(smd_type_of_plotting)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">SMD Reference Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(smd_reference_number) ? '--' : fn:trim(smd_reference_number)}</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small text-muted mb-1">Publication Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Location Details Tab -->
+                    <div class="tab-pane fade" id="location" role="tabpanel">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-globe-africa me-2"></i>
+                                            Location Information
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Region</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">District</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label small text-muted mb-1">Locality</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(locality) ? '--' : fn:trim(locality)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Size of Land</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-landmark me-2"></i>
+                                            Registration Details
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Registration District</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registration_district_number) ? '--' : fn:trim(registration_district_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Registration Section</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registration_section_number) ? '--' : fn:trim(registration_section_number)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Registration Block</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(registration_block_number) ? '--' : fn:trim(registration_block_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Created Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Modified Date</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Details Tab -->
+                    <div class="tab-pane fade" id="financial" role="tabpanel">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-calculator me-2"></i>
+                                            Assessment Values
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label small text-muted mb-1">Assessed Value</label>
+                                                <div class="h5 fw-bold text-primary">${empty fn:trim(assessed_value) ? '--' : fn:trim(assessed_value)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Stamp Duty Payable</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(stamp_duty_payable) ? '--' : fn:trim(stamp_duty_payable)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Consideration in Document</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee) ? '--' : fn:trim(consideration_fee)}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Consideration Currency</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Adopted Currency Rate</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_adopted_rate) ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Visualization Tab -->
+                    <div class="tab-pane fade" id="map-" role="tabpanel">
+                      <div class="row g-3"></div>
+                        <div class="card border h-100">
+                            <div class="card-header bg-light py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-map me-2"></i>
+                                        Map Visualization
+                                    </h6>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary btn-sm" 
+                                                id="lc_btn_visualise_wkt_" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Visualise Polygon">
+                                            <i class="fas fa-map me-1"></i>
+                                            Visualise
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" 
+                                                id="lc_btn_visualise_search" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Visualise Search">
+                                            <i class="fas fa-search me-1"></i>
+                                            Search
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="lc_btnprintmap" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Print Map">
+                                            <i class="fas fa-print me-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                
+                                <!-- WKT Polygon Input -->
+                                <div class="mb-3">
+                                    <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
+                                        <i class="fas fa-draw-polygon me-1"></i>
+                                        WKT Polygon
+                                    </label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="lc_bl_wkt_polygon" 
+                                               name="lc_bl_wkt_polygon" type="text" value="${parcel_wkt}"
+                                               placeholder="WKT polygon coordinates">
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                id="btn_copy_wkt" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Copy WKT">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Controls -->
+                                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                    <div class="d-flex align-items-center me-3">
+                                        <label class="me-2 mb-0">Scale:</label>
+                                        <div class="input-group input-group-sm me-2" style="width: 120px;">
+                                            <input class="form-control form-control-sm" id="lc_scale_value_e" 
+                                                   name="lc_scale_value_e" type="text" placeholder="Custom scale">
+                                        </div>
+                                        <select class="form-select form-select-sm" name="lc_scale_value" 
+                                                id="lc_scale_value" style="width: 120px;">
+                                            <option value="500">1:500</option>
+                                            <option value="1107">1:1,107</option>
+                                            <option value="1250">1:1,250</option>
+                                            <option value="2140">1:2,140</option>
+                                            <option value="2215">1:2,215</option>
+                                            <option value="2500">1:2,500</option>
+                                            <option value="2670">1:2,670</option>
+                                            <option value="2825">1:2,825</option>
+                                            <option value="5000" selected>1:5,000</option>
+                                            <option value="10000">1:10,000</option>
+                                            <option value="15000">1:15,000</option>
+                                            <option value="20000">1:20,000</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check me-2">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   checked id="lc_lockmapscale">
+                                            <label class="form-check-label small mb-0" for="lc_lockmapscale">
+                                                Lock Scale
+                                            </label>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" 
+                                                id="lc_btn_scale_zoom" data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" title="Zoom to Scale">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="ms-auto btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_zoom_full">
+                                            <i class="fas fa-expand"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_zoom_out">
+                                            <i class="fas fa-search-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                                id="btn_zoom_in">
+                                            <i class="fas fa-search-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Map Container -->
+                                <div class="mt-3 w-100">
+                                  <div id="lc-map__"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Confirm Transaction Button -->
+                <div class="mt-4">
+                    <button type="button" id="btn_confirm_registration_transaction" 
+                            class="btn btn-success w-100 py-3 d-none">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-check-circle fa-lg me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-medium">Confirm Transaction</div>
+                                <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Viewing details for transaction: ${transaction_number}
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Close
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_details">
+                            <i class="fas fa-download me-1"></i>
+                            Export
+                        </button>
+                        <button type="button" class="btn btn-outline-info" id="btn_print_details">
+                            <i class="fas fa-print me-1"></i>
+                            Print
+                        </button> -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+     </div>
+     </div>
 </div>

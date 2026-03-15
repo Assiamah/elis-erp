@@ -250,12 +250,12 @@
                         </thead>
                         <tbody>
                             <!-- Table content will be populated dynamically -->
-                            <tr class="" id="no-results-row">
+                            <!-- <tr class="" id="no-results-row">
                                 <td colspan="7" class="text-center text-muted py-5">
                                     <i class="fa fa-search fa-3x mb-3 opacity-50"></i>
                                     <p class="mb-0">No results to display. Use the search form above.</p>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>

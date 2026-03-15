@@ -6307,10 +6307,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>`,
                     icon: 'success',
-                    confirmButtonText: 'Continue',
+                    confirmButtonText: 'Ok',
                     confirmButtonColor: '#198754',
                     showCancelButton: true,
-                    cancelButtonText: 'View Description',
+                    //cancelButtonText: 'View Description',
                     width: 500
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.cancel) {
@@ -7757,10 +7757,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>`,
                     icon: isSuccess ? 'success' : 'info',
-                    confirmButtonText: 'Continue',
+                    confirmButtonText: 'Ok',
                     confirmButtonColor: isSuccess ? '#198754' : '#0dcaf0',
                     showCancelButton: true,
-                    cancelButtonText: 'Review Details',
+                    //cancelButtonText: 'Review Details',
                     width: 500
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.cancel) {
@@ -10785,10 +10785,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>`,
                         icon: 'success',
-                        confirmButtonText: 'Continue',
+                        confirmButtonText: 'Ok',
                         confirmButtonColor: '#198754',
                         showCancelButton: true,
-                        cancelButtonText: 'View Details',
+                        //cancelButtonText: 'View Details',
                         width: 550
                     }).then((actionResult) => {
                         if (actionResult.dismiss === Swal.DismissReason.cancel) {
@@ -11055,7 +11055,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <p class="text-muted">Application transfer type has been determined</p>
                                 
                                 ${determinedTransferType ? 
-                                    `<div class="alert alert-primary bg-primary bg-opacity-10 border-primary mt-3">
+                                    `<!--<div class="alert alert-primary bg-primary bg-opacity-10 border-primary mt-3">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-exchange-alt me-2"></i>
                                             <div>
@@ -11065,7 +11065,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>` : ''
+                                    </div>-->` : ''
                                 }
                                 
                                 <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
@@ -11095,10 +11095,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>`,
                         icon: 'success',
-                        confirmButtonText: 'Continue',
+                        confirmButtonText: 'Ok',
                         confirmButtonColor: '#198754',
                         showCancelButton: true,
-                        cancelButtonText: 'View Details',
+                        //cancelButtonText: 'View Details',
                         width: 550
                     }).then((actionResult) => {
                         // Show the general message dialog (preserving original behavior)
@@ -11383,7 +11383,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>`,
                         icon: 'success',
-                        confirmButtonText: 'Continue',
+                        confirmButtonText: 'Ok',
                         confirmButtonColor: '#198754',
                         timer: 5000,
                         timerProgressBar: true,
@@ -11614,7 +11614,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>`,
                         icon: 'success',
-                        confirmButtonText: 'Continue',
+                        confirmButtonText: 'Ok',
                         confirmButtonColor: '#198754',
                         timer: 5000,
                         timerProgressBar: true,
@@ -20590,14 +20590,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <strong>Job:</strong><br>${job_number}
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            <!--<div class="row mt-2">
                                 <div class="col-6">
                                     <strong>District:</strong><br>${txt_lc_registration_district_number}
                                 </div>
                                 <div class="col-6">
                                     <strong>Section:</strong><br>${txt_lc_registration_section_number}
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                         
                         <div class="alert alert-warning small mb-3">
@@ -20724,7 +20724,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 ${job_number}
                                             </div>
                                         </div>
-                                        <div class="row mt-2 small">
+                                        <!--<div class="row mt-2 small">
                                             <div class="col-6">
                                                 <strong>District:</strong><br>
                                                 ${district_number}
@@ -20733,7 +20733,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <strong>Section:</strong><br>
                                                 ${section_number}
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     
                                     <p class="small text-muted mt-3">
@@ -20745,7 +20745,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             confirmButtonText: '<i class="bi bi-check-circle me-2"></i>Done',
                             confirmButtonColor: '#28a745',
                             showCancelButton: true,
-                            cancelButtonText: '<i class="bi bi-printer me-2"></i>Print',
+                            // cancelButtonText: '<i class="bi bi-printer me-2"></i>Print',
                             cancelButtonColor: '#6c757d'
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -21238,7 +21238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'Missing Information',
                 html: `
                     <div class="text-start">
-                        <p>Please complete the following fields before generating LS number:</p>
+                        <p>Please complete the following fields before generating Serial number:</p>
                         <ul class="list-unstyled">
                             ${errors.map(error => `<li class="mb-1"><i class="bi bi-x-circle text-danger me-2"></i>${error}</li>`).join('')}
                         </ul>
@@ -21255,13 +21255,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingLsNumber && existingLsNumber !== 'null' && existingLsNumber !== '') {
             Swal.fire({
                 icon: 'info',
-                title: 'LS Number Already Exists',
+                title: 'Serial Number Already Exists',
                 html: `
                     <div class="text-center">
                         <div class="mb-3">
                             <i class="bi bi-geo-alt fs-1 text-primary"></i>
                         </div>
-                        <p>A Land Serial number has already been generated:</p>
+                        <p>A Serial number has already been generated:</p>
                         <div class="alert alert-light border p-3 mb-3">
                             <strong class="fs-5 text-primary">${existingLsNumber}</strong>
                         </div>
@@ -21283,7 +21283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Show confirmation dialog
             Swal.fire({
-                title: 'Generate Land Serial (LS) Number?',
+                title: 'Generate Serial Number?',
                 html: `
                     <div class="text-start">
                         <div class="alert alert-light border mb-3">
@@ -21296,14 +21296,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <strong>Job Number:</strong><br>${job_number}
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            <!--<div class="row mt-2">
                                 <div class="col-6">
                                     <strong>District:</strong><br>${txt_lc_registration_district_number}
                                 </div>
                                 <div class="col-6">
                                     <strong>Section:</strong><br>${txt_lc_registration_section_number}
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <strong>Transaction:</strong><br>${transaction_number}
@@ -21313,19 +21313,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <div class="alert alert-warning small mb-3">
                             <i class="bi bi-exclamation-triangle me-2"></i>
-                            <strong>Note:</strong> LS numbers are unique identifiers and cannot be modified after generation.
+                            <strong>Note:</strong> Serial numbers are unique identifiers and cannot be modified after generation.
                         </div>
                         
                         <!--<div class="ls-format-preview bg-light p-3 rounded-3 mb-3">
                             <h6 class="mb-2">Format Preview:</h6>
                             <div class="d-flex align-items-center justify-content-center">
-                                <span class="badge bg-primary me-2">LS</span>
+                                <!--<span class="badge bg-primary me-2">LS</span>-->
                                 <span class="badge bg-secondary me-2">${txt_lc_registration_district_number || 'XXX'}</span>
                                 <span class="badge bg-info me-2">${new Date().getFullYear()}</span>
                                 <span class="badge bg-success">####</span>
                             </div>
                             <p class="small text-muted mt-2 mb-0 text-center">
-                                Format: LS-[DISTRICT]-[YEAR]-[SEQUENCE]
+                                Format: [SEQUENCE]/[YEAR]
                             </p>
                         </div>-->
                         
@@ -21347,7 +21347,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 showCancelButton: true,
                 confirmButtonColor: '#28a745',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: '<i class="bi bi-gear-fill me-2"></i>Generate LS Number',
+                confirmButtonText: '<i class="bi bi-gear-fill me-2"></i>Generate Serial Number',
                 cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
                 reverseButtons: true,
                 width: '600px',
@@ -21373,17 +21373,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Function to generate LS number
+    // Function to generate Serial number
     function generateLsNumber(case_number, transaction_number, job_number, 
                             district_number, section_number, send_by_name, send_by_id) {
         
         // Show loading
         Swal.fire({
-            title: 'Generating LS Number',
+            title: 'Generating Serial Number',
             html: `
                 <div class="text-center">
                     <div class="spinner-border text-primary mb-3" role="status"></div>
-                    <p class="mb-1">Creating unique Land Serial number...</p>
+                    <p class="mb-1">Creating unique Serial number...</p>
                     <small class="text-muted">This may take a few moments</small>
                     <div class="progress mt-3" style="height: 4px;">
                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
@@ -21427,7 +21427,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Show success with certificate-like display
                         Swal.fire({
                             icon: 'success',
-                            title: 'LS Number Generated!',
+                            title: 'Serial Number Generated!',
                             html: `
                                 <div class="text-center">
                                     <div class="ls-receipt mb-4">
@@ -21435,7 +21435,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <i class="bi bi-geo-alt-fill text-success" style="font-size: 3rem;"></i>
                                         </div>
                                         <div class="ls-number-display bg-light p-4 rounded-3 border">
-                                            <small class="text-muted d-block mb-2">Land Serial Number</small>
+                                            <small class="text-muted d-block mb-2">Serial Number</small>
                                             <h2 class="text-primary mb-0 fw-bold">${json_p.ls_number}</h2>
                                         </div>
                                     </div>
@@ -21451,7 +21451,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 ${job_number}
                                             </div>
                                         </div>
-                                        <div class="row mt-2 small">
+                                       <!-- <div class="row mt-2 small">
                                             <div class="col-6">
                                                 <strong>District:</strong><br>
                                                 ${district_number}
@@ -21460,16 +21460,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <strong>Section:</strong><br>
                                                 ${section_number}
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     
                                     <div class="mt-3 d-flex justify-content-center gap-2">
                                         <button class="btn btn-sm btn-outline-primary" onclick="copyLsNumber('${json_p.ls_number}')">
                                             <i class="bi bi-clipboard me-1"></i>Copy
                                         </button>
-                                        <button class="btn btn-sm btn-outline-success" onclick="printLsCertificate('${json_p.ls_number}', '${case_number}')">
+                                        <!--<button class="btn btn-sm btn-outline-success" onclick="printLsCertificate('${json_p.ls_number}', '${case_number}')">
                                             <i class="bi bi-printer me-1"></i>Print
-                                        </button>
+                                        </button>-->
                                     </div>
                                     
                                     <p class="small text-muted mt-3">
@@ -21514,7 +21514,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         html: `
                             <div class="text-center">
                                 <i class="bi bi-exclamation-triangle text-danger fs-1 mb-3"></i>
-                                <p>Unable to generate LS number.</p>
+                                <p>Unable to generate Serial number.</p>
                                 <div class="alert alert-danger mt-3 small">
                                     ${e.message || 'Server returned invalid response'}
                                 </div>
@@ -21555,7 +21555,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'success',
                 title: 'Copied!',
-                text: 'LS number copied to clipboard',
+                text: 'Serial number copied to clipboard',
                 timer: 1500,
                 showConfirmButton: false
             });
@@ -21571,7 +21571,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'success',
                 title: 'Copied!',
-                text: 'LS number copied to clipboard',
+                text: 'Serial number copied to clipboard',
                 timer: 1500,
                 showConfirmButton: false
             });
@@ -21581,7 +21581,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to show LS details
     function showLsDetails(lsNumber, caseNumber, jobNumber, district, section) {
         Swal.fire({
-            title: 'LS Number Details',
+            title: 'Serial Number Details',
             html: `
                 <div class="text-start">
                     <div class="mb-4 text-center">
@@ -21591,7 +21591,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     
                     <div class="mb-3">
-                        <label class="text-muted small">LS Number</label>
+                        <label class="text-muted small">Serial Number</label>
                         <div class="fs-4 fw-bold text-primary">${lsNumber}</div>
                     </div>
                     
@@ -21606,7 +21606,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                     
-                    <div class="row">
+                   <!-- <div class="row">
                         <div class="col-6 mb-2">
                             <label class="text-muted small">District</label>
                             <div>${district}</div>
@@ -21615,7 +21615,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <label class="text-muted small">Section</label>
                             <div>${section}</div>
                         </div>
-                    </div>
+                    </div>-->
                     
                     <div class="mb-2">
                         <label class="text-muted small">Generated On</label>
