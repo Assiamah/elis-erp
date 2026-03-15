@@ -42,7 +42,7 @@ public class business_process {
 				.select_business_processes_sub_list(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), business_process_id);
 		if (web_service_response != null) {
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		} else {
 			System.out.println(web_service_response);
 		}
