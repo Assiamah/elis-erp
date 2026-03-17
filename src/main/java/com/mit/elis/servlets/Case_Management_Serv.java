@@ -193,7 +193,7 @@ public class Case_Management_Serv {
 						.load_application_assigned_to_staff_cst(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), userid);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				return web_service_response;
 			}
@@ -205,7 +205,7 @@ public class Case_Management_Serv {
 						.load_corporate_app_assigned_to_staff_frrv_cst(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), userid);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				return web_service_response;
 			}
@@ -217,7 +217,7 @@ public class Case_Management_Serv {
 						.load_cst_unit_summary(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), summary_type);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -230,7 +230,7 @@ public class Case_Management_Serv {
 						.load_corporate_frrv_cst_unit_summary(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), summary_type);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -249,7 +249,7 @@ public class Case_Management_Serv {
 						.load_cst_unit_chart_summary(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -315,7 +315,7 @@ public class Case_Management_Serv {
 				web_service_response = casemgt_cl_m.get_lc_list_notifications(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						user_id);
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
 
 				}

@@ -21229,8 +21229,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!case_number) errors.push('Case number is required');
         if (!transaction_number) errors.push('Transaction number is required');
         if (!job_number) errors.push('Job number is required');
-        if (!txt_lc_registration_district_number) errors.push('Registration district is required');
-        if (!txt_lc_registration_section_number) errors.push('Registration section is required');
+       // if (!txt_lc_registration_district_number) errors.push('Registration district is required');
+       // if (!txt_lc_registration_section_number) errors.push('Registration section is required');
         
         if (errors.length > 0) {
             Swal.fire({

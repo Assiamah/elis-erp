@@ -340,9 +340,9 @@ public class AppController {
 			obj_v.put("user_id", modified_by_id);
 
 			String input = obj_v.toString();
-			System.out.println("code verification request");
+			//System.out.println("code verification request");
 
-			System.out.println(input);
+			//System.out.println(input);
 
 			web_service_response_verify = cls_users.office_verify_verification_token(
 					cls_url_config.getWeb_service_url_ser(),
@@ -1440,9 +1440,9 @@ public class AppController {
 			obj_v.put("user_id", modified_by_id);
 
 			String input = obj_v.toString();
-			System.out.println("code verification request");
+			//System.out.println("code verification request");
 
-			System.out.println(input);
+			//System.out.println(input);
 
 			web_service_response_verify = cls_users.office_verify_verification_token(
 					cls_url_config.getWeb_service_url_ser(),

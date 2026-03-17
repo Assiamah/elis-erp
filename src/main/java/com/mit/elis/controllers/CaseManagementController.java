@@ -251,7 +251,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 				String main_details = case_obj.get("main_details").toString();
@@ -425,7 +425,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 				String main_details = case_obj.get("main_details").toString();
@@ -597,7 +597,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 				String main_details = case_obj.get("main_details").toString();
@@ -767,7 +767,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 				String main_details = case_obj.get("main_details").toString();
@@ -2203,7 +2203,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -2768,7 +2768,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -3378,7 +3378,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -3816,7 +3816,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 					if (web_service_response != null) {
-						System.out.println(web_service_response);
+						//System.out.println(web_service_response);
 						JSONObject case_obj;
 						case_obj = new JSONObject(web_service_response);
 		
@@ -4427,7 +4427,7 @@ public class CaseManagementController {
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -4928,7 +4928,7 @@ public class CaseManagementController {
 			 * System.out.println(transaction_number);
 			 * System.out.println(case_number); System.out.println(job_number);
 			 */
-			System.out.println(review_instruction);
+			//System.out.println(review_instruction);
 			request.setAttribute("job_purpose", job_purpose);
 			request.setAttribute("review_instruction", review_instruction);
 
@@ -4939,7 +4939,7 @@ public class CaseManagementController {
 			obj.put("job_purpose", job_purpose);
 			obj.put("rq_id", rq_id);
 			String batchlistdivison = obj.toString();
-			 System.out.println(batchlistdivison);
+			// System.out.println(batchlistdivison);
 		
 			if (review_type.equals("GeneralWorkRequest")) {
 	         web_service_response = vas_cl.select_review_digital_workflow(cls_url_config.getWeb_service_url_ser(),
@@ -4962,7 +4962,7 @@ public class CaseManagementController {
 
 
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -5061,9 +5061,9 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						ArrayList.class);
 
 
-						System.out.println("baby_step_milestone_list");
+						//System.out.println("baby_step_milestone_list");
 
-						System.out.println(baby_step_milestone_list);
+					//	System.out.println(baby_step_milestone_list);
 
 				// request.setAttribute("transaction_details", main_details);
 				request.setAttribute("job_details", job_details_list);
@@ -5107,8 +5107,8 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				request.setAttribute("compliance_query_status", compliance_query_status);
 
-				System.out.println("case_obj.getparcel_wkt.toString()");
-				System.out.println(case_obj.get("parcel_wkt").toString());
+			//	System.out.println("case_obj.getparcel_wkt.toString()");
+			//	System.out.println(case_obj.get("parcel_wkt").toString());
 
 				String new_case_number = "";
 				JSONObject parcel_details_obj;
@@ -5351,7 +5351,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 			 * System.out.println(transaction_number);
 			 * System.out.println(case_number); System.out.println(job_number);
 			 */
-			System.out.println(review_instruction);
+		//	System.out.println(review_instruction);
 			request.setAttribute("job_purpose", job_purpose);
 			request.setAttribute("review_instruction", review_instruction);
 
@@ -5361,10 +5361,10 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 			obj.put("job_number", job_number);
 			obj.put("job_purpose", job_purpose);
 			String batchlistdivison = obj.toString();
-			  System.out.println(batchlistdivison);
+			//  System.out.println(batchlistdivison);
 
-			   System.out.println("review_type");
-		  System.out.println(review_type);
+			 //  System.out.println("review_type");
+		 // System.out.println(review_type);
 			if (review_type.equals("GeneralWorkRequest")) {
 	         web_service_response = vas_cl.select_review_digital_workflow(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
@@ -5489,7 +5489,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 						// System.out.println("baby_step_milestone_list");
 
-						System.out.println("lrd_proprietorship_section_list: " + lrd_proprietorship_section_list);
+					//	System.out.println("lrd_proprietorship_section_list: " + lrd_proprietorship_section_list);
 
 				// request.setAttribute("transaction_details", main_details);
 				request.setAttribute("job_details", job_details_list);
@@ -5533,8 +5533,8 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				request.setAttribute("compliance_query_status", compliance_query_status);
 
-				System.out.println("case_obj.getparcel_wkt.toString()");
-				System.out.println(case_obj.get("parcel_wkt").toString());
+				//System.out.println("case_obj.getparcel_wkt.toString()");
+				//System.out.println(case_obj.get("parcel_wkt").toString());
 
 				String new_case_number = "";
 				JSONObject parcel_details_obj;
@@ -5720,7 +5720,7 @@ request.setAttribute("rq_id",rq_id);
 						cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 				// web_service_response = get_gender_list;
-				System.out.println(get_gender_list);
+				//get_gender_list);
 				JSONObject menu_obj_data;
 				// menu_obj_data = new JSONObject(get_gender_list);
 				// String all_menus_data = menu_obj_data.get("data").toString();
@@ -5835,13 +5835,13 @@ request.setAttribute("rq_id",rq_id);
 			obj.put("job_number", job_number);
 			obj.put("job_purpose", job_purpose);
 			String batchlistdivison = obj.toString();
-			 System.out.println(batchlistdivison);
+			// System.out.println(batchlistdivison);
 			//web_service_response = casemagt_cl.select_general_case_details(cls_url_config.getWeb_service_url_ser(),
 			web_service_response = casemagt_cl.select_general_case_details_new_general_request(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -6168,7 +6168,7 @@ request.setAttribute("rq_id",rq_id);
 						cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 				// web_service_response = get_gender_list;
-				System.out.println(get_gender_list);
+				//System.out.println(get_gender_list);
 				JSONObject menu_obj_data;
 				// menu_obj_data = new JSONObject(get_gender_list);
 				// String all_menus_data = menu_obj_data.get("data").toString();
@@ -6336,12 +6336,12 @@ request.setAttribute("rq_id",rq_id);
 			obj.put("case_number", transaction_number);
 			obj.put("job_number", job_number);
 			String batchlistdivison = obj.toString();
-			 System.out.println(batchlistdivison);
+			// System.out.println(batchlistdivison);
 			web_service_response = casemagt_cl.select_general_case_details_new_general_request(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -6814,9 +6814,9 @@ request.setAttribute("rq_id",rq_id);
 			String business_process_sub_name = request.getParameter("business_process_sub_name");
 			//String job_purpose = request.getParameter("job_purpose");
 			
-			System.out.println(transaction_number);
-			System.out.println(case_number);
-			 System.out.println(job_number);
+			// System.out.println(transaction_number);
+			// System.out.println(case_number);
+			//  System.out.println(job_number);
 			
 
 			//request.setAttribute("job_purpose", job_purpose);
@@ -6826,12 +6826,12 @@ request.setAttribute("rq_id",rq_id);
 			obj.put("case_number", transaction_number);
 			obj.put("job_number", job_number);
 			String batchlistdivison = obj.toString();
-			 System.out.println(batchlistdivison);
+			// System.out.println(batchlistdivison);
 			web_service_response = casemagt_cl.select_general_case_details_new_app_flow(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -7147,7 +7147,7 @@ request.setAttribute("rq_id",rq_id);
 						cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 				// web_service_response = get_gender_list;
-				System.out.println(get_gender_list);
+			//	System.out.println(get_gender_list);
 				JSONObject menu_obj_data;
 				// menu_obj_data = new JSONObject(get_gender_list);
 				// String all_menus_data = menu_obj_data.get("data").toString();
@@ -7286,12 +7286,12 @@ request.setAttribute("rq_id",rq_id);
 			obj.put("case_number", transaction_number);
 			obj.put("job_number", job_number);
 			String batchlistdivison = obj.toString();
-			 System.out.println(batchlistdivison);
+			// System.out.println(batchlistdivison);
 			web_service_response = casemagt_cl.select_general_case_details(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -7690,7 +7690,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -8531,7 +8531,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -9380,7 +9380,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -10823,7 +10823,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 					search_text.trim());
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 				String parcel_details = case_obj.get("parcel_details").toString();
@@ -12002,7 +12002,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 				String main_details = case_obj.get("main_details").toString();
@@ -12272,7 +12272,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -13075,7 +13075,7 @@ request.setAttribute("rq_id",rq_id);
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
