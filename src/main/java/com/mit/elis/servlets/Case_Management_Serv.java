@@ -1435,6 +1435,36 @@ String userid =  (String) session.getAttribute("userid");
 				return web_service_response;
 			}
 
+			
+			if (request_type.equals("online_select_application_details_by_job_number_or_certificate_number_for_deed")) {
+
+				String job_number = request.getParameter("job_number");
+				String unit_name = (String) session.getAttribute("unit_name");
+				String division_name = (String) session.getAttribute("division");
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("job_number", job_number);
+				obj.put("unit_name", unit_name);
+				obj.put("division_name", division_name);
+
+				System.out.println(obj.toString());
+				web_service_response = casemgt_cl.online_select_application_details_by_job_number_or_certificate_number_for_deed(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+
+				JSONObject jsonobj = new JSONObject(web_service_response);
+				web_service_response = (String) jsonobj.getString("data");
+
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("online_select_archived_application_details_by_job_number")) {
 
 				String job_number = request.getParameter("job_number");

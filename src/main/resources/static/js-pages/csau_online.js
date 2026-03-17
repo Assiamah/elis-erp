@@ -8076,6 +8076,8 @@ function createTableRow(item) {
 				// 	}
 				// }
 
+				const btnComplete = document.getElementById('btnCompleteProcess');
+
 				$.ajax({
 					type: "POST",
 					enctype: "multipart/form-data",
@@ -8163,6 +8165,8 @@ function createTableRow(item) {
 					complete: function () {
 						// Re-enable button
 						$('#btn_not_on_case_ap_generate_acknowledgement').prop('disabled', false).html('Generate Acknowledgement');
+						
+						btnComplete.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
 					}
 				});
 			}

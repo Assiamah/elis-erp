@@ -499,7 +499,7 @@ function updateStepDisplay() {
 
     btnPrev.style.display = currentStep > 1 ? 'inline-block' : 'none';
     btnNext.style.display = currentStep < totalSteps ? 'inline-block' : 'none';
-    btnComplete.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+    //btnComplete.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
 
     if (currentStep === totalSteps) {
         btnNext.textContent = 'Finish';
@@ -820,6 +820,13 @@ $('#sub_service_on_case').change(function () {
         sub_service_name === 'APPLICATION FOR OBJECTION') {
         $("#on_application_client_name").val('');
         document.getElementById("on_application_client_name").readOnly = false;
+    }
+
+    // hide oncasefreg-no-div this if the sub_service_name contains DEED
+    if(sub_service_name.includes('DEED')) {
+        $('#oncasefreg-no-div').hide();
+    } else {
+        $('#oncasefreg-no-div').show();
     }
 
     // Create service call functions that return Promises
