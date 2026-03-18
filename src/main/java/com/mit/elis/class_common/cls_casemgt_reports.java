@@ -16171,9 +16171,56 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 
 			String htmlContent = "<html><body><p>THIS IS TO CERTIFY THAT Sam of Accra in the Greater Accra Region of the Republic of Ghana is registered as tenant or lessee for the unexpired residue of a lease for a term of 99 years from the  twenty seventh day of September, 2023 subject to the reservations, restrictions, encumbrances, liens and interests as are notified by memorial underwritten or endorsed hereon, of and in ALL THAT piece or Parcel of land in extent 0.230 more or less being GLPIN No. GA329393-1148882, SECTION 024 BLOCK 123, situate at AJANGORTEY in the Greater Accra Region of the Republic of Ghana aforesaid which said piece or parcel of land is more particularly delineated on Registry Map No. 79ui in the Lands Commission, Cantonment Accra, and being the piece or parcel of land shown and edged with pink color on Survey Plan No. 7899 annexed to this Certificate except and reserved all minerals, oils, precious stones and timber whatsoever upon or under the said piece or parcel of land..</p></body></html>";
 
-// Replace a value in the string
-remark_or_comment_bob= remark_or_comment_bob.replace("<ol><li>", "<html><body><p>");
-remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body></html>");
+		// Replace a value in the string
+		// remark_or_comment_bob= remark_or_comment_bob.replace("<ol><li>", "<html><body><p>");
+		// remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body></html>");
+
+
+			if (remark_or_comment_bob != null && !remark_or_comment_bob.trim().isEmpty()) {
+
+				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
+
+				// Load font from classpath
+				InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/times.ttf");
+
+				if (fontStream == null) {
+					throw new RuntimeException("Font file not found: fonts/times.ttf");
+				}
+
+				// Copy font to temp file (needed for iText)
+				File tempFont = File.createTempFile("times", ".ttf");
+				tempFont.deleteOnExit();
+
+				try (FileOutputStream fos = new FileOutputStream(tempFont)) {
+					byte[] buffer = new byte[1024];
+					int len;
+					while ((len = fontStream.read(buffer)) != -1) {
+						fos.write(buffer, 0, len);
+					}
+				}
+
+				fontProvider.register(tempFont.getAbsolutePath(), "Times New Roman");
+
+				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+				Pipeline<?> pipeline =
+						new CssResolverPipeline(
+								XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+								new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+						);
+
+				XMLWorker worker = new XMLWorker(pipeline, true);
+				XMLParser parser = new XMLParser(worker);
+
+				String fullHtml =
+						"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+								+ remark_or_comment_bob +
+								"</body></html>";
+
+				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
+			}
 
 
   // Create a StyleSheet

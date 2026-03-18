@@ -3709,7 +3709,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <!-- Modal Header -->
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <div class="d-flex align-items-center">
                     <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
                         <i class="bi bi-cloud-upload fs-4"></i>

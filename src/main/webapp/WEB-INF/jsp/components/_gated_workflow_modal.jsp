@@ -137,11 +137,6 @@
                                                             title="View Bill Details">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                    <!-- <button class="btn btn-sm btn-outline-success print-receipt-btn"
-                                                            data-receipt-number="${payment_bill_row.payment_slip_number}"
-                                                            title="Print Receipt">
-                                                        <i class="bi bi-printer"></i>
-                                                    </button> -->
                                                 </div>
                                             </td>
                                             <td>
@@ -336,7 +331,7 @@
                     </div>
                     <div>
                         <h5 class="modal-title text-white mb-1" id="check_review_documents_label">
-                            Review Documents
+                            Review Documents (Public Documents)
                         </h5>
                         <p class="mb-0 small opacity-75">
                             <i class="bi bi-info-circle me-1"></i>
@@ -375,9 +370,6 @@
                         <i class="bi bi-arrow-clockwise me-1"></i> Refresh
                     </button>
                     
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btn_export_documents">
-                        <i class="bi bi-download me-1"></i> Export
-                    </button>
                 </div>
 
                 <!-- Case Information -->
@@ -442,131 +434,17 @@
                         </tbody>
                     </table>
                 </div>
-                
-                <!-- Document Statistics -->
-                <!-- <div class="row g-3 mb-4" id="documentStatistics">
-                    <div class="col-md-6">
-                        <div class="card border">
-                            <div class="card-body py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-light-primary rounded-circle me-3">
-                                        <i class="bi bi-file-earmark-text"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-0" id="totalDocumentsCount">${fn:length(casescanneddocuments_public)}</h5>
-                                        <small class="text-muted">Total Documents</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card border">
-                            <div class="card-body py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-light-success rounded-circle me-3">
-                                        <i class="bi bi-check-circle"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-0" id="reviewedCount">0</h5>
-                                        <small class="text-muted">Reviewed</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card border">
-                            <div class="card-body py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-light-warning rounded-circle me-3">
-                                        <i class="bi bi-clock"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-0" id="pendingCount">0</h5>
-                                        <small class="text-muted">Pending</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card border">
-                            <div class="card-body py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-light-danger rounded-circle me-3">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-0" id="rejectedCount">0</h5>
-                                        <small class="text-muted">Rejected</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-                <!-- Review Actions -->
-                <!-- <div class="card border">
-                    <div class="card-header bg-light">
-                        <h6 class="mb-0 fw-semibold">
-                            <i class="bi bi-clipboard-check me-2"></i>Review Actions
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" id="toggleAllDocuments">
-                                    <label class="form-check-label" for="toggleAllDocuments">
-                                        Select/Deselect All Documents for Review
-                                    </label>
-                                </div>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="radio" name="reviewStatus" id="reviewApprove" value="approved">
-                                    <label class="form-check-label text-success" for="reviewApprove">
-                                        <i class="bi bi-check-circle me-1"></i>Approve Selected
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="reviewStatus" id="reviewReject" value="rejected">
-                                    <label class="form-check-label text-danger" for="reviewReject">
-                                        <i class="bi bi-x-circle me-1"></i>Reject Selected
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-grid">
-                                    <button type="button" class="btn btn-primary" id="btn_save_review">
-                                        <i class="bi bi-save me-1"></i> Save Review
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
 
             <!-- Modal Footer -->
             <div class="modal-footer bg-light">
                 <div class="d-flex justify-content-between w-100 align-items-center">
                     <div>
-                        <!-- <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="showApprovalButton">
-                            <label class="form-check-label small" for="showApprovalButton">
-                                Show Final Approval
-                            </label>
-                        </div> -->
                     </div>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i> Close
                         </button>
-                        <!-- <button type="button" id="btn_update_app_status_ffrv" style="display:none"
-                                class="btn btn-success">
-                            <i class="bi bi-check-circle me-1"></i> Confirm Final Approval
-                        </button> -->
                     </div>
                 </div>
             </div>
@@ -2372,7 +2250,7 @@
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="review_documents_label">
                     <i class="fas fa-file-alt me-2"></i>
-                    Review Documents
+                    Review Documents (Application & Public Documents)
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -2922,50 +2800,10 @@
                                 <i class="fas fa-clipboard-list text-danger me-2"></i>
                                 Objection Summary
                             </h6>
-                            <!-- <button type="button" class="btn btn-outline-danger btn-sm" id="btn_add_new_objection"
-                                    data-bs-toggle="modal" data-bs-target="#newObjectionModal">
-                                <i class="fas fa-plus me-1"></i>
-                                Add New Objection
-                            </button> -->
+                            
                         </div>
                     </div>
-                    <!-- <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="fas fa-user-times text-danger"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-muted small">Total Objectors</div>
-                                        <div class="h5 mb-0" id="totalObjectors">${fn:length(case_objection)}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar-sm bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="fas fa-clock text-warning"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-muted small">Pending</div>
-                                        <div class="h5 mb-0" id="pendingObjections">0</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-                                        <i class="fas fa-check-circle text-success"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-muted small">Resolved</div>
-                                        <div class="h5 mb-0" id="resolvedObjections">0</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+                    
                 </div>
                 
                 <!-- Objections Table -->
@@ -3608,24 +3446,24 @@
                                 <div class="mt-3 w-100">
                                   <div id="lc-map__"></div>
                                 </div>
+
+                                <!-- Confirm Transaction Button -->
+                                <div class="mt-4">
+                                    <button type="button" id="btn_confirm_registration_transaction" 
+                                            class="btn btn-success w-100 py-3 d-none">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-check-circle fa-lg me-3"></i>
+                                            <div class="text-start">
+                                                <div class="fw-medium">Confirm Transaction</div>
+                                                <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
                                 
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Confirm Transaction Button -->
-                <div class="mt-4">
-                    <button type="button" id="btn_confirm_registration_transaction" 
-                            class="btn btn-success w-100 py-3 d-none">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <i class="fas fa-check-circle fa-lg me-3"></i>
-                            <div class="text-start">
-                                <div class="fw-medium">Confirm Transaction</div>
-                                <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
-                            </div>
-                        </div>
-                    </button>
                 </div>
                 
             </div>
@@ -3642,14 +3480,7 @@
                             <i class="fas fa-times me-1"></i>
                             Close
                         </button>
-                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_details">
-                            <i class="fas fa-download me-1"></i>
-                            Export
-                        </button>
-                        <button type="button" class="btn btn-outline-info" id="btn_print_details">
-                            <i class="fas fa-print me-1"></i>
-                            Print
-                        </button> -->
+                        
                     </div>
                 </div>
             </div>
@@ -4201,14 +4032,6 @@
                                 Certificate Content
                             </label>
                             <div class="position-relative">
-                                <!-- <textarea id="lc_search_report_summary_details" 
-                                          name="lc_search_report_summary_details" 
-                                          class="form-control" 
-                                          required 
-                                          rows="7"
-                                          style="min-height: 200px; padding: 1.5rem !important;"
-                                          placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                </textarea> -->
                                 <div id="lc_search_report_summary_details_rt">
                                   ${remark_or_comment}
                                 </div>
@@ -4247,24 +4070,6 @@
                             </div>
                         </div>
                         
-                        <!-- Alternative Horizontal Layout -->
-                        <!-- 
-                        <div class="d-flex gap-3 mt-4">
-                            <button type="button" name="lc_btn_save_search_report" 
-                                    id="lc_btn_save_search_report" 
-                                    class="btn btn-outline-secondary flex-fill">
-                                <i class="fas fa-save me-2"></i>
-                                Save Certificate
-                            </button>
-                            
-                            <button type="button" name="lc_btn_save_register_description" 
-                                    id="lc_btn_activate_final_certificate_" 
-                                    class="btn btn-success flex-fill">
-                                <i class="fas fa-file-pdf me-2"></i>
-                                Generate Certificate
-                            </button>
-                        </div>
-                        -->
                     </div>
                 </div>
                 
@@ -4282,14 +4087,6 @@
                             <i class="fas fa-times me-1"></i>
                             Close
                         </button>
-                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_root_title">
-                            <i class="fas fa-download me-1"></i>
-                            Export
-                        </button> -->
-                        <!-- <button type="button" class="btn btn-outline-info" id="btn_print_root_title">
-                            <i class="fas fa-print me-1"></i>
-                            Print Preview
-                        </button> -->
                     </div>
                 </div>
                 <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
@@ -4506,11 +4303,6 @@
                           <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
                               <div class="d-flex justify-content-between w-100 align-items-center">
                                   <div>
-                                      <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
-                                              data-action_type='proprietor'>
-                                          <i class="fas fa-trash me-1"></i>
-                                          Delete
-                                      </button> -->
                                   </div>
                                   <div class="d-flex gap-2">
                                       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -4688,11 +4480,6 @@
                           <div class="border-top bg-light p-3 rounded" style="margin-top: auto !important;">
                               <div class="d-flex justify-content-between w-100 align-items-center">
                                   <div>
-                                      <!-- <button type="button" class="btn btn-outline-danger btn_reg_root_delete_action" 
-                                              data-action_type='memorials' style="display: none;">
-                                          <i class="fas fa-trash me-1"></i>
-                                          Delete
-                                      </button> -->
                                   </div>
                                   <div class="d-flex gap-2">
                                       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -5144,14 +4931,6 @@
                                 Certificate Content
                             </label>
                             <div class="position-relative">
-                                <!-- <textarea id="lc_search_report_summary_details" 
-                                          name="lc_search_report_summary_details" 
-                                          class="form-control" 
-                                          required 
-                                          rows="7"
-                                          style="min-height: 200px; padding: 1.5rem !important;"
-                                          placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                </textarea> -->
                                 <div id="lc_search_report_summary_details">
                                   ${remark_or_comment}
                                 </div>
@@ -5189,40 +4968,12 @@
                                 </button>
                             </div>
                         </div>
-                        
-                        <!-- Alternative Horizontal Layout -->
-                        <!-- 
-                        <div class="d-flex gap-3 mt-4">
-                            <button type="button" name="lc_btn_save_search_report" 
-                                    id="lc_btn_save_search_report" 
-                                    class="btn btn-outline-secondary flex-fill">
-                                <i class="fas fa-save me-2"></i>
-                                Save Certificate
-                            </button>
-                            
-                            <button type="button" name="lc_btn_save_register_description" 
-                                    id="lc_btn_activate_final_certificate_" 
-                                    class="btn btn-success flex-fill">
-                                <i class="fas fa-file-pdf me-2"></i>
-                                Generate Certificate
-                            </button>
-                        </div>
-                        -->
+                       
                     </div>
                 </div>
                 
             </div>
-            
-            <!-- Optional Footer -->
-            <!-- 
-            <div class="modal-footer bg-light border-top">
-                <div class="text-muted small">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Certificate will be generated based on the summary provided above.
-                </div>
-            </div>
-            -->
-            
+           
         </div>
     </div>
 </div>
@@ -5254,41 +5005,7 @@
             </div>
           </div>
         </div>
-        
-        <!-- Optional Volume and Folio Display -->
-        <!-- 
-        <div class="row g-3 mb-4">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="" class="form-label fw-medium">
-                <i class="fas fa-book me-1"></i>
-                Volume Number
-              </label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-                <input type="text" class="form-control" readonly value="${volume_number}">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="" class="form-label fw-medium">
-                <i class="fas fa-file-alt me-1"></i>
-                Folio Number
-              </label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-                <input type="text" class="form-control" readonly value="${folio_number}">
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
-        
+      
         <!-- Generate OTP Button -->
         <div class="text-center py-3">
           <button type="button" id="lc_generate_otp_for_approval_for_certificate_and_register" 
@@ -5493,32 +5210,7 @@
                 <i class="fas fa-eye me-2"></i>
                 View Final Certificate
               </button>
-              
-              <!-- Optional: Provisional Certificate Button -->
-              <!--
-              <button type="button" id="lc_btn_activate_provisional_certificate" class="btn btn-warning btn-lg py-3">
-                <i class="fas fa-file-alt me-2"></i>
-                Generate Provisional Certificate
-              </button>
-              -->
-              
-              <!-- Optional: Additional Options -->
-              <!-- <div class="border-top pt-3 mt-2">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="showWatermark">
-                  <label class="form-check-label" for="showWatermark">
-                    <i class="fas fa-water me-1"></i>
-                    Show watermark preview
-                  </label>
-                </div>
-                <div class="form-check mt-2">
-                  <input class="form-check-input" type="checkbox" id="includeSignatures" checked>
-                  <label class="form-check-label" for="includeSignatures">
-                    <i class="fas fa-signature me-1"></i>
-                    Include signatures
-                  </label>
-                </div>
-              </div> -->
+             
             </div>
             
             <!-- Certificate Info (Optional) -->
@@ -5541,10 +5233,6 @@
           <i class="fas fa-times me-1"></i>
           Close
         </button>
-        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="fas fa-check me-1"></i>
-          Continue Editing
-        </button> -->
       </div>
     </div>
   </div>
@@ -5693,12 +5381,6 @@
                         Cancel
                     </button>
                     <div>
-                        <!-- <button type="button" 
-                                class="btn btn-outline-primary me-2"
-                                id="btn_preview_batch">
-                            <i class="fas fa-eye me-1"></i>
-                            Preview
-                        </button> -->
                         <button type="button" 
                                 class="btn btn-primary" 
                                 id="btn_process_completed_app_cabinet">
@@ -6798,22 +6480,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-md-6">
-                                        <div class="card border-primary h-100">
-                                            <div class="card-body text-center p-4">
-                                                <i class="fas fa-file-certificate fa-3x text-primary mb-3"></i>
-                                                <h5 class="card-title mb-3">Generate Certificate</h5>
-                                                <p class="card-text text-muted mb-4">
-                                                    Create the official certificate document for this case.
-                                                </p>
-                                                <button type="button" id="lc_btn_activate_provisional_certificate" 
-                                                        class="btn btn-primary w-100 py-3">
-                                                    <i class="fas fa-file-pdf me-2"></i>
-                                                    Generate Certificate
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -7681,37 +7347,6 @@
           </div>
         </div>
         
-        <!-- Registry Information -->
-        <!-- <div class="alert alert-light border mt-4">
-          <h6 class="mb-3">
-            <i class="fas fa-archive text-primary me-2"></i>
-            About Registry Numbers
-          </h6>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <div class="d-flex align-items-start mb-2">
-                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-2">
-                  <i class="fas fa-book"></i>
-                </div>
-                <div>
-                  <strong>Volume Number</strong>
-                  <p class="small text-muted mb-0">Identifies the physical registry book</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex align-items-start mb-2">
-                <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 me-2">
-                  <i class="fas fa-file"></i>
-                </div>
-                <div>
-                  <strong>Folio Number</strong>
-                  <p class="small text-muted mb-0">Identifies the specific page within the volume</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
         
       </div>
       
@@ -8204,22 +7839,6 @@
           </div>
         </div>
         
-        <!-- Memo Information -->
-        <!-- <div class="alert alert-light border">
-          <div class="d-flex">
-            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
-            <div class="text-start">
-              <strong class="text-dark">Memo Features:</strong>
-              <ul class="mb-0 mt-2 ps-3">
-                <li class="text-muted">Professional memo format</li>
-                <li class="text-muted">Official letterhead and signatures</li>
-                <li class="text-muted">Downloadable Word document</li>
-                <li class="text-muted">Ready for printing and distribution</li>
-              </ul>
-            </div>
-          </div>
-        </div> -->
-        
       </div>
       
       <!-- Modal Footer -->
@@ -8232,4 +7851,136 @@
       
     </div>
   </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="check_review_application_documents" data-bs-backdrop="static" tabindex="-1" aria-labelledby="check_review_documents_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-info text-white">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-lg bg-white text-primary rounded-circle me-3">
+                        <i class="bi bi-folder2-open fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white mb-1" id="check_review_documents_label">
+                            Review Documents (Application Documents)
+                        </h5>
+                        <p class="mb-0 small opacity-75">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Manage and review case documents
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Loading Indicator -->
+                <div id="appDocumentsLoading" class="d-none mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <small class="text-muted">Loading documents...</small>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button type="button" class="btn btn-primary btn-sm" id="btn_load_scanned_documents_application_gated_workflow">
+                        <i class="bi bi-eye me-1"></i> Load Documents
+                    </button>
+                    
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" 
+                            data-bs-target="#fileUploadModal">
+                        <i class="bi bi-plus-circle me-1"></i> Add Documents
+                    </button>
+                    
+                    <button type="button" class="btn btn-info btn-sm" id="btn_refresh_application_documents">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+                    </button>
+                    
+                </div>
+
+                <!-- Case Information -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="bi bi-info-circle me-2"></i>Case Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-file-text me-1"></i>Case Number
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" 
+                                           class="form-control bg-light" 
+                                           id="cs_main_case_number" 
+                                           value="${case_number}" 
+                                           readonly>
+                                    <button class="btn btn-outline-secondary" type="button" 
+                                            onclick="copyToClipboard('cs_main_case_number')">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-medium text-muted mb-1">
+                                    <i class="bi bi-person me-1"></i>Applicant Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control bg-light" 
+                                       value="${ar_name}" 
+                                       readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Documents Table -->
+                <div class="table-responsive border rounded mb-4">
+                    <table class="table table-hover table-sm mb-0" id="lc_application_documents_dataTable_gated_workflow">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="40%">
+                                    <i class="bi bi-file-earmark-text me-1"></i>Document Name
+                                </th>
+                                <th width="25%">
+                                    <i class="bi bi-tag me-1"></i>Document Type
+                                </th>
+                                <th width="15%" class="text-center">
+                                    <i class="bi bi-filetype-pdf me-1"></i>Format
+                                </th>
+                                <th width="20%" class="text-center">
+                                    <i class="bi bi-gear me-1"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="appDocumentsTableBody_gated_workflow">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

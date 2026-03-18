@@ -8321,9 +8321,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                     
-                    <div class="alert alert-secondary bg-light border-secondary small mt-3">
+                    <!--<div class="alert alert-secondary bg-light border-secondary small mt-3">
                         <i class="fas fa-check-double me-2"></i>
                         <strong>Please verify:</strong> All parcel details and transaction information have been reviewed and are correct
+                    </div>-->
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="swalConfirmGeneration">
+                        <label class="form-check-label" for="swalConfirmGeneration">
+                            I confirm that all information is correct
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="swalAgreeTerms">
+                        <label class="form-check-label" for="swalAgreeTerms">
+                            I understand this action cannot be undone
+                        </label>
                     </div>
                     
                     <p class="text-danger fw-bold mt-4">
@@ -8341,6 +8354,15 @@ document.addEventListener('DOMContentLoaded', function() {
             reverseButtons: true,
             showLoaderOnConfirm: true,
             preConfirm: () => {
+               
+                const confirm1 = document.getElementById('swalConfirmGeneration');
+                const confirm2 = document.getElementById('swalAgreeTerms');
+                
+                if (!confirm1.checked || !confirm2.checked) {
+                    Swal.showValidationMessage('Please check both confirmation boxes to proceed');
+                    return;
+                }
+                
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         url: "Case_Management_Serv",
@@ -20824,7 +20846,34 @@ document.addEventListener('DOMContentLoaded', function() {
         var registration_district_number = $("#txt_lc_registration_district_number").val();
         var registration_section_number = $("#txt_lc_registration_section_number").val();
         var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
-        var certificate_summary = $("#lc_concurrence_certificate_summary_details").val().trim();
+       // var certificate_summary = $("#lc_concurrence_certificate_summary_details").val().trim();
+
+        let certificate_summary = '';
+        const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
+        if (quillEditor) {
+            certificate_summary = quillEditor.innerHTML;
+        } else {
+            // Fallback to textarea if Quill not found
+            certificate_summary = $("#lc_concurrence_certificate_summary_details").val() || '';
+        }
+        
+        // Clean up Quill's empty paragraph
+        if (certificate_summary === '<p><br></p>') {
+            certificate_summary = '';
+        }
+        
+        // Validate
+        if (!certificate_summary) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty Summary',
+                text: 'Please enter certificate summary before saving.',
+                confirmButtonColor: '#0d6efd',
+                confirmButtonText: 'OK'
+            });
+            $("#lc_concurrence_certificate_summary_details").focus();
+            return false;
+        }
         
         // Format certificate type
         type_of_certificate = type_of_certificate == "Land Certificate" ? "LAND CERTIFICATE" : type_of_certificate;
@@ -20856,7 +20905,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show confirmation dialog
         Swal.fire({
-            title: 'Generate Concurrence Certificate?',
+            title: 'Generate Certificate?',
             html: `
                 <div class="text-start">
                     <div class="alert alert-light border mb-3">
@@ -20869,34 +20918,34 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <strong>Case Number:</strong><br>${case_number}
                             </div>
                         </div>
-                        <div class="row mt-2">
+                        <!--<div class="row mt-2">
                             <div class="col-6">
                                 <strong>Certificate Type:</strong><br>${type_of_certificate}
                             </div>
                             <div class="col-6">
                                 <strong>Transaction:</strong><br>${transaction_number}
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     
-                    <div class="mb-3">
+                    <!--<div class="mb-3">
                         <small class="text-muted d-block mb-1">Certificate Summary Preview:</small>
                         <div class="bg-light p-3 rounded small">
                             ${certificate_summary.length > 150 ? certificate_summary.substring(0, 150) + '...' : certificate_summary}
                         </div>
-                    </div>
+                    </div>-->
                     
                     <div class="alert alert-info small">
                         <i class="bi bi-file-pdf me-2"></i>
-                        <strong>PDF Generation:</strong> A PDF certificate will be generated and opened in a new tab.
+                        <strong>PDF Generation:</strong> A PDF certificate will be generated and opened in a new modal.
                     </div>
                     
-                    <div class="form-check mt-3">
+                    <!--<div class="form-check mt-3">
                         <input class="form-check-input" type="checkbox" id="confirmGenerateCert">
                         <label class="form-check-label" for="confirmGenerateCert">
                             I confirm that all information is accurate and ready for certificate generation
                         </label>
-                    </div>
+                    </div>-->
                 </div>
             `,
             icon: 'question',
@@ -20908,11 +20957,11 @@ document.addEventListener('DOMContentLoaded', function() {
             reverseButtons: true,
             width: '600px',
             preConfirm: () => {
-                const confirmCheck = document.getElementById('confirmGenerateCert');
-                if (!confirmCheck.checked) {
-                    Swal.showValidationMessage('Please confirm to generate certificate');
-                    return false;
-                }
+                // const confirmCheck = document.getElementById('confirmGenerateCert');
+                // if (!confirmCheck.checked) {
+                //     Swal.showValidationMessage('Please confirm to generate certificate');
+                //     return false;
+                // }
                 return true;
             }
         }).then((result) => {
@@ -23671,6 +23720,141 @@ document.addEventListener('DOMContentLoaded', function() {
             error: function(xhr, status, error) {
                 loadingIndicator.addClass('d-none');
                 tableBody.html('<tr id="tsNoDocuments_d"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                updateDocumentStatistics(0, 0, 0, 0);
+                showToast('Error loading documents. Please try again.', 'danger');
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
+
+    // Load documents button - from your existing code
+    $('#btn_load_scanned_documents_application_gated_workflow').on('click', function(e) { 
+        loadAppDocuments();
+    });
+
+    // Refresh documents button
+    $('#btn_refresh_application_documents').on('click', function() {
+        loadAppDocuments();
+    });
+
+     // Function to load documents
+    function loadAppDocuments() {
+        const case_number = $("#cs_main_case_number").val();
+        const tableBody = $('#appDocumentsTableBody_gated_workflow');
+        const loadingIndicator = $('#appDocumentsLoading');
+        
+        if (!case_number) {
+            showToast('Case number is required', 'danger');
+            return;
+        }
+        
+        // Show loading state
+        loadingIndicator.removeClass('d-none');
+        tableBody.html('<tr><td colspan="4" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div><small>Loading documents...</small></td></tr>');
+        
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+                request_type: 'load_case_scanned_document_new',
+                case_number: case_number
+            },
+            cache: false,
+            success: function(serviceresponse) {
+                loadingIndicator.addClass('d-none');
+                
+                if(!serviceresponse) {
+                    tableBody.html('<tr id="noAppDocumentsRow"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-folder-x fs-1 mb-2 d-block"></i><p class="mb-0">No documents found</p><small>Click "Add Documents" to upload documents</small></div></td></tr>');
+                    updateDocumentStatistics(0, 0, 0, 0);
+                    return;
+                }
+                
+                try {
+                    const json_p = JSON.parse(serviceresponse);
+                    let html = '';
+                    let totalDocs = 0;
+                    
+                    $(json_p).each(function () {
+                        totalDocs++;
+                        const docName = this.doc_description || 'Unnamed Document';
+                        const docUuid = this.doc_uuid || '#';
+                        const docType = this.doc_type || 'PDF';
+                        
+                        html += `
+                            <tr>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <!--<div class="form-check me-2">
+                                            <input class="form-check-input document-checkbox" type="checkbox" value="${docUuid}">
+                                        </div>
+                                        <div class="avatar avatar-xs bg-light-primary rounded-circle me-2">
+                                            <i class="bi bi-file-earmark"></i>
+                                        </div>-->
+                                        <div>
+                                            <a href="#" class="link-post fw-semibold text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to preview">
+                                                ${docName}
+                                            </a>
+                                            <small class="text-muted d-block">
+                                                <i class="bi bi-calendar me-1"></i> ${this.upload_date || 'Date not available'}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge bg-info">
+                                        ${docType}
+                                    </span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <span class="badge bg-secondary">.pdf</span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview Document"
+                                                data-document-path="${docUuid}"
+                                                data-document-name="${docName}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <a href="${docUuid}" 
+                                        class="btn btn-outline-success btn-sm" 
+                                        download="${docName}"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <!--<button type="button" class="btn btn-outline-primary btn-sm btn-open-document"
+                                                data-document-path="${docUuid}">
+                                            <i class="bi bi-folder2-open"></i>
+                                        </button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableBody.html(html);
+                    
+                    // Update statistics
+                    updateDocumentStatistics(totalDocs, 0, totalDocs, 0);
+                    
+                    // Initialize tooltips for new elements
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                    });
+                    
+                    // Show success message
+                    showToast(`Successfully loaded ${totalDocs} document(s)`, 'success');
+                    
+                } catch(e) {
+                    console.error('Error parsing document data:', e);
+                    tableBody.html('<tr id="noAppDocumentsRow"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                    updateDocumentStatistics(0, 0, 0, 0);
+                    showToast('Error loading documents. Please try again.', 'danger');
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingIndicator.addClass('d-none');
+                tableBody.html('<tr id="noAppDocumentsRow"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
                 updateDocumentStatistics(0, 0, 0, 0);
                 showToast('Error loading documents. Please try again.', 'danger');
                 console.error('AJAX Error:', error);
