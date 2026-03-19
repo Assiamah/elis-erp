@@ -5638,7 +5638,7 @@ $('#awaitingInspectionApplicationsModal').on('shown.bs.modal', function () {
 function initializeAwaitingInspectionAppsTable(data) {
     // console.log(data);
     // Adjust the columns to match your data structure
-    const table = $('#report_dashboard_batched_apps_by_user_table').DataTable({
+    const table = $('#report_dashboard_apps_awaiting_inspection_by_user_table').DataTable({
         data: data,
         destroy: true,
         responsive: true,
