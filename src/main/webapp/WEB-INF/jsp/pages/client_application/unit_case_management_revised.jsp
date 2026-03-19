@@ -84,7 +84,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-4 ${division == 'LRD' || division == 'SMD' ? 'd-none' : ''}">
+                    <div class="col-lg-4">
                         <div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_payments">
                             <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="4">
                                 <div class="card-body" id="body-bg-4">
