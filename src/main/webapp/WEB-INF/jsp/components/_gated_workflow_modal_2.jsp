@@ -7019,44 +7019,6 @@ Thank you.</textarea>
                                         </div>
                                     </div>
                                     
-                                    <!-- Registration Details -->
-                                    <!-- <div class="col-md-4">
-                                        <div class="card h-100 border-light shadow-sm">
-                                            <div class="card-header bg-light">
-                                                <h6 class="mb-0"><i class="fas fa-book me-2 text-success"></i>Registration Details</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Registration District</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-map text-success me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_registration_district_number_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Registration Section</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-layer-group text-success me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_registration_section_number_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Registration Block</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-cube text-success me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_registration_block_number_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item">
-                                                    <label class="form-label small text-muted mb-1">District</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-building text-success me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_district_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                     
                                     <!-- Land Details -->
                                     <div class="col-md-4">
@@ -7085,11 +7047,6 @@ Thank you.</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="info-item mb-3">
-                                                    <!-- <label class="form-label small text-muted mb-1">CC Number</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-file-contract text-warning me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_cc_no_sm_d">-</span>
-                                                    </div> -->
                                                 </div>
                                                 <div class="info-item">
                                                     <label class="form-label small text-muted mb-1">Region</label>
@@ -7270,45 +7227,6 @@ Thank you.</textarea>
                                         </div>
                                     </div>
                                     
-                                    <!-- Plotting & Plans -->
-                                    <!-- <div class="col-md-4">
-                                        <div class="card h-100 border-light shadow-sm">
-                                            <div class="card-header bg-light">
-                                                <h6 class="mb-0"><i class="fas fa-drafting-compass me-2 text-indigo"></i>Plotting & Plans</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Type of Plotting</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-ruler-combined text-indigo me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_smd_type_of_plotting_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">SMD Reference</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-map-pin text-indigo me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_smd_reference_number_sm">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Plan Number</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-map text-indigo me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_plan_no_sm">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item">
-                                                    <label class="form-label small text-muted mb-1">Registry Map Ref</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-map-marked-alt text-indigo me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_registry_mapref_sm">-</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    
                                     <!-- Additional Details -->
                                     <div class="col-md-4">
                                         <div class="card h-100 border-light shadow-sm">
@@ -7406,144 +7324,7 @@ Thank you.</textarea>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Memorial Details -->
-                                <!-- <div class="card border-light shadow-sm mb-4">
-                                    <div class="card-header bg-info bg-opacity-10 border-info">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-file-signature text-info me-2"></i>
-                                                Memorial Details
-                                            </h6>
-                                            <span class="badge bg-info" id="memorialsCount">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-sm" id="lrd_memorial_details_dataTable_2">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th><i class="fas fa-hashtag me-1"></i> Registered No.</th>
-                                                        <th><i class="fas fa-file-alt me-1"></i> Memorials</th>
-                                                        <th><i class="fas fa-calendar-alt me-1"></i> Date of Instrument</th>
-                                                        <th><i class="fas fa-calendar-check me-1"></i> Date of Registration</th>
-                                                        <th><i class="fas fa-list-ol me-1"></i> Entry No</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody> -->
-                                                    <!-- Data will be populated here -->
-                                                <!-- </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-center py-4" id="noMemorials">
-                                            <i class="fas fa-file-signature fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted mb-0">No memorial records found</p>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                
-                                <!-- Valuation Details -->
-                                <!-- <div class="card border-light shadow-sm mb-4">
-                                    <div class="card-header bg-warning bg-opacity-10 border-warning">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-chart-line text-warning me-2"></i>
-                                                Valuation Details
-                                            </h6>
-                                            <span class="badge bg-warning" id="valuationCount">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-sm" id="lrd_valuation_details_dataTable_2">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th><i class="fas fa-calendar-alt me-1"></i> Date of Valuation</th>
-                                                        <th><i class="fas fa-money-bill-wave me-1"></i> Amount</th>
-                                                        <th><i class="fas fa-sticky-note me-1"></i> Remarks</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody> -->
-                                                    <!-- Data will be populated here -->
-                                                <!-- </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-center py-4" id="noValuations">
-                                            <i class="fas fa-chart-line fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted mb-0">No valuation records found</p>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                
-                                <!-- Certificate Details -->
-                                <!-- <div class="card border-light shadow-sm mb-4">
-                                    <div class="card-header bg-primary bg-opacity-10 border-primary">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-certificate text-primary me-2"></i>
-                                                Certificate Details
-                                            </h6>
-                                            <span class="badge bg-primary" id="certificateCount">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-sm" id="lrd_certificate_details_dataTable_2">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th><i class="fas fa-calendar-check me-1"></i> Date of Registration</th>
-                                                        <th><i class="fas fa-user-check me-1"></i> To Whom Issued</th>
-                                                        <th><i class="fas fa-hashtag me-1"></i> Serial Number</th>
-                                                        <th><i class="fas fa-sticky-note me-1"></i> Official Notes</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody> -->
-                                                    <!-- Data will be populated here -->
-                                                <!-- </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-center py-4" id="noCertificates">
-                                            <i class="fas fa-certificate fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted mb-0">No certificate records found</p>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                
-                                <!-- Encumbrances Details -->
-                                <!-- <div class="card border-light shadow-sm">
-                                    <div class="card-header bg-danger bg-opacity-10 border-danger">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-file-contract text-danger me-2"></i>
-                                                Encumbrances Details
-                                            </h6>
-                                            <span class="badge bg-danger" id="encumbrancesCount">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-sm" id="lrd_registration_encumbrance_dataTable_2">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th><i class="fas fa-hashtag me-1"></i> Registered Number</th>
-                                                        <th><i class="fas fa-calendar-alt me-1"></i> Date of Instrument</th>
-                                                        <th><i class="fas fa-calendar-check me-1"></i> Date of Registration</th>
-                                                        <th><i class="fas fa-file-alt me-1"></i> Memorials</th>
-                                                        <th><i class="fas fa-sticky-note me-1"></i> Remarks</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody> -->
-                                                    <!-- Data will be populated here -->
-                                                <!-- </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-center py-4" id="noEncumbrances">
-                                            <i class="fas fa-file-contract fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted mb-0">No encumbrance records found</p>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                
+                               
                             </div>
                         </div>
                     </div>
@@ -7595,64 +7376,6 @@ Thank you.</textarea>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Previews Section -->
-                    <!-- <div class="accordion-item border-0">
-                        <h2 class="accordion-header" id="previewsHeading">
-                            <button class="accordion-button bg-light text-dark fw-bold py-3" 
-                                    type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#previewsCollapse" 
-                                    aria-expanded="true" aria-controls="previewsCollapse">
-                                <div class="d-flex align-items-center w-100">
-                                    <i class="fas fa-print text-purple me-3 fa-lg"></i>
-                                    <div>
-                                        <h6 class="mb-0">Previews & Generation</h6>
-                                        <small class="text-muted">Generate registers and certificates</small>
-                                    </div>
-                                </div>
-                                
-                            </button>
-                        </h2>
-                        <div id="previewsCollapse" class="accordion-collapse collapse show" 
-                             aria-labelledby="previewsHeading" data-bs-parent="#caseDetailsAccordion">
-                            <div class="accordion-body bg-white p-4">
-                                <div class="row g-3">
-                                    <div class="col-md-12">
-                                        <div class="card border-purple h-100">
-                                            <div class="card-body text-center p-4">
-                                                <i class="fas fa-book fa-3x text-purple mb-3"></i>
-                                                <h5 class="card-title mb-3">Generate Register</h5>
-                                                <p class="card-text text-muted mb-4">
-                                                    Create the official register document with all case details and records.
-                                                </p>
-                                                <button type="button" id="lc_btn_activate_final_register_md" 
-                                                        class="btn btn-purple w-100 py-3">
-                                                    <i class="fas fa-print me-2"></i>
-                                                    Generate Register
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-md-6">
-                                        <div class="card border-primary h-100">
-                                            <div class="card-body text-center p-4">
-                                                <i class="fas fa-file-certificate fa-3x text-primary mb-3"></i>
-                                                <h5 class="card-title mb-3">Generate Certificate</h5>
-                                                <p class="card-text text-muted mb-4">
-                                                    Create the official certificate document for this case.
-                                                </p>
-                                                <button type="button" id="lc_btn_activate_provisional_certificate" 
-                                                        class="btn btn-primary w-100 py-3">
-                                                    <i class="fas fa-file-pdf me-2"></i>
-                                                    Generate Certificate
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                <!-- </div>
-                            </div>
-                        </div>
-                    </div> -->
                     
                 </div>
                 

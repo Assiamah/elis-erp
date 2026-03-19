@@ -38,6 +38,7 @@
         <input type="hidden" class="form-control" id="req_com_7" value="${attention_required}">
         <input type="hidden" class="form-control" id="req_inp_8" value="${request_for_additional_input}">
         <input type="hidden" class="form-control" id="awa_insp_9" value="${awaiting_inspection}">
+        <input type="hidden" class="form-control" id="awa_pub_10" value="${awaiting_publication}">
         
         <!-- Stats Cards -->
 
@@ -83,7 +84,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 ${division == 'LRD' || division == 'SMD' ? 'd-none' : ''}">
                         <div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_payments">
                             <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="4">
                                 <div class="card-body" id="body-bg-4">
@@ -191,6 +192,25 @@
                                         <div>
                                             <span class="d-block text-muted">Awaiting Inspection</span>
                                             <h5 class="fw-semibold mb-1">${awaiting_inspection}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_publication">
+                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="10">
+                                <div class="card-body" id="body-bg-10">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div>
+                                            <span class="avatar avatar-md bg-warning svg-white">
+                                             <i class="bi bi-newspaper fs-20"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-muted">Awaiting Publication</span>
+                                            <h5 class="fw-semibold mb-1">${awaiting_publication}</h5>
                                         </div>
                                     </div>
                                 </div>

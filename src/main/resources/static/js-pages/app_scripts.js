@@ -5382,6 +5382,7 @@ $('#batchedApplicationsModal').on('shown.bs.modal', function () {
     });
 });
 
+
 // Modified initializeBatchedAppsTable function with your column structure
 function initializeBatchedAppsTable(data) {
     // console.log(data);
@@ -5603,6 +5604,157 @@ $('#req_job_purpose').on('change', function (e) {
         }
     }
 });
+
+$('#awaitingInspectionApplicationsModal').on('shown.bs.modal', function () {
+
+    if ($.fn.DataTable.isDataTable('#report_dashboard_apps_awaiting_inspection_by_user_table')) {
+        $('#report_dashboard_apps_awaiting_inspection_by_user_table').DataTable().destroy();
+    }
+
+    $('#report_dashboard_apps_awaiting_inspection_by_user_table tbody').empty();
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'load_awaiting_inspection_application_to_user',
+        },
+        success: function (data) {
+            try {
+                const jsonData = typeof data === 'string' ? JSON.parse(data) : data;
+                initializeAwaitingInspectionAppsTable(jsonData.data);
+            } catch (e) {
+                console.error("JSON parse error:", e, data);
+                initializeAwaitingInspectionAppsTable([]);
+            }
+        },
+        error: function (xhr) {
+            console.error("AJAX error:", xhr.responseText);
+            initializeAwaitingInspectionAppsTable([]);
+        }
+    });
+});
+
+function initializeAwaitingInspectionAppsTable(data) {
+    // console.log(data);
+    // Adjust the columns to match your data structure
+    const table = $('#report_dashboard_batched_apps_by_user_table').DataTable({
+        data: data,
+        destroy: true,
+        responsive: true,
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+            '<"row"<"col-sm-12"tr>>' +
+            '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>' +
+            '<"row"<"col-sm-12"B>>',
+        buttons: [
+            {
+                extend: 'excel',
+                text: '<i class="ri-file-excel-line me-1"></i>Excel',
+                className: 'btn btn-outline-primary btn-sm',
+                exportOptions: {
+                    columns: [0, 1, 2, 3] // Adjust column indices as needed
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="ri-printer-line me-1"></i>Print',
+                className: 'btn btn-outline-secondary btn-sm',
+                exportOptions: {
+                    columns: [0, 1, 2, 3] // Adjust column indices as needed
+                }
+            }
+        ],
+        columns: [
+            {
+                data: 'job_number',
+                title: 'Job Number',
+                render: function (data, type, row) {
+                    return `<span class="fw-medium text-primary small">${data}</span>`;
+                }
+            },
+            {
+                data: 'business_process_sub_name',
+                title: 'Application Type',
+                render: function (data, type, row) {
+                    return `<span class="text-muted small">${data}</span>`;
+                }
+            },
+            {
+                data: 'ar_name',
+                title: 'Applicant Name',
+                render: function (data, type, row) {
+                    return `
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-xs bg-light rounded-circle me-2">
+                <i class="ri-user-line text-muted"></i>
+              </div>
+              <div>
+                <div class="fw-medium small">${data}</div>
+              </div>
+            </div>
+          `;
+                }
+            },
+            {
+                data: 'modified_date',
+                title: 'Date Received',
+                render: function (data, type, row) {
+                    return `<span class="small">${data}</span>`;
+                }
+            },
+            {
+                data: null,
+                title: 'Action',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+            <button class="btn btn-sm btn-danger"
+                data-job_number="${row.job_number}" 
+                data-ar_name="${row.ar_name}" 
+                data-business_process_sub_name="${row.business_process_sub_name}" 
+                data-locality="${row.locality}" 
+                id="btnMoveToInspection">
+                <i class="bi bi-send"></i>
+                Send Request
+            </button>
+          `;
+                }
+            }
+        ],
+        order: [[3, 'desc']], // Sort by modified_date descending
+        pageLength: 10,
+        language: {
+            emptyTable: "No batched applications found",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "Showing 0 to 0 of 0 entries",
+            infoFiltered: "(filtered from _MAX_ total entries)",
+            lengthMenu: "Show _MENU_ entries",
+            loadingRecords: "Loading...",
+            processing: "Processing...",
+            search: "",
+            searchPlaceholder: "Search applications...",
+            zeroRecords: "No matching records found",
+            paginate: {
+                first: '<i class="ri-arrow-left-s-line"></i>',
+                last: '<i class="ri-arrow-right-s-line"></i>',
+                next: '<i class="ri-arrow-right-s-line"></i>',
+                previous: '<i class="ri-arrow-left-s-line"></i>'
+            }
+        },
+        initComplete: function () {
+            // Add custom search input if needed
+            $('.dataTables_filter input').attr('placeholder', 'Search applications...');
+        },
+        drawCallback: function () {
+            // Update any dynamic content after table draw
+            // You can add additional callbacks here if needed
+        }
+    });
+
+    return table;
+}
+
 
 // Modal hidden event to clean up DataTable
 $('#appsPassedDueModal').on('hidden.bs.modal', function (e) {

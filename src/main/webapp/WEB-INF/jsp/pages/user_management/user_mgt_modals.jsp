@@ -126,11 +126,17 @@
                                 </select>
                             </div>
                             
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <label for="ur_department" class="form-label">Department/Unit</label>
                                 <input class="form-control" list="listofunits" id="ur_department" placeholder="Select or type department" required>
                                 <datalist id="listofunits"></datalist>
-                            </div>
+                            </div> -->
+							<div class="col-md-6">
+								<label for="ur_department" class="form-label">Department/Unit</label>
+								<select id="ur_department" class="form-select select2-dropdown" required>
+									<option value="">Select Department/Unit</option>
+								</select>
+							</div>
                         </div>
                     </div>
 
@@ -210,8 +216,8 @@
                             <div class="col-md-6">
                                 <label for="ur_passwordchanged" class="form-label">Force Password Change</label>
                                 <select id="ur_passwordchanged" class="form-select">
-                                    <option value="NO">Yes (Force Change)</option>
-                                    <option value="YES">No</option>
+                                    <option value="YES">Yes (Force Change)</option>
+                                    <option value="NO">No</option>
                                 </select>
                             </div>
                             

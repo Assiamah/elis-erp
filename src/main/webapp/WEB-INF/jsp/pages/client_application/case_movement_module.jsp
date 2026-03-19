@@ -132,6 +132,12 @@
                                 <i class="ri-list-check fs-13"></i>
                                 View Batch List
                             </button>
+
+                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#awaitingInspectionApplicationsModal">
+                                <i class="bi bi-eyeglasses fs-13"></i>
+                                Awaiting Inspection [ <span class="fw-semibold">${applicationlist_all.size() > 0 ? applicationlist_all.size() : 0}</span> ]
+                            </button>
+
                             <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#batchedApplicationsModal">
                                 <i class="ri-folders-line fs-13"></i>
                                 Batched Applications [ <span class="fw-semibold">${applicationlist_all.size() > 0 ? applicationlist_all.size() : 0}</span> ]

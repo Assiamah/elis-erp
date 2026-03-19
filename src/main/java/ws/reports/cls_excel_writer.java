@@ -81,7 +81,7 @@ public class cls_excel_writer {
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "compliance_service/report_dashboard_unit_for_each_staff");
+                    .resource(web_service_url + "compliance_service/report_dashboard_unit_for_each_staff_v5");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")

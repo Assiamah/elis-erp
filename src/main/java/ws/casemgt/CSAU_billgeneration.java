@@ -2816,6 +2816,11 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			p1.setAlignment(Element.ALIGN_LEFT);
 			document.add(p1);
 
+			// Paragraph p12 = new Paragraph("Duplicate Copies: " + "54.00",
+			// 		new Font(FontFamily.TIMES_ROMAN, 10));
+			// p1.setAlignment(Element.ALIGN_LEFT);
+			// document.add(p12);
+
 			p1 = new Paragraph("Amount In Words: " + AmountInWords.convertToCurrency(bd_stamp_duty_amount),
 					new Font(FontFamily.TIMES_ROMAN, 10));
 			document.add(p1);

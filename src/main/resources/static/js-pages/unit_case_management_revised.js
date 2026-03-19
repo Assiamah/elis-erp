@@ -45,6 +45,7 @@ $(document).ready(function() {
 		var atr_7 = $('#req_com_7').val();
 		var req_8 = $('#req_inp_8').val();
 		var awa_9 = $('#awa_insp_9').val();
+		var awa_10 = $('#awa_pub_10').val();
 		
 
 		datatable.search("").draw();
@@ -53,8 +54,11 @@ $(document).ready(function() {
 
 		//console.log(inc_1, com_3, que_2, awa_4)
 
-		switch (inbox_type) {
+		switch (parseInt(inbox_type)) {
 			case 1:
+
+				$(".officerInd").text("Sent By");
+
 				if(inc_1 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -104,6 +108,9 @@ $(document).ready(function() {
 				}
 
 			case 3:
+
+				$(".officerInd").text("Sent By");
+
 				if(com_3 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -149,6 +156,9 @@ $(document).ready(function() {
 				}
 
 			case 2:
+
+				$(".officerInd").text("Queried By");
+
 				if(que_2 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -194,6 +204,7 @@ $(document).ready(function() {
 				}
 
 			case 4:
+				$(".officerInd").text("Assessed By");
 				if(awa_4 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -240,6 +251,9 @@ $(document).ready(function() {
 
 		
 			case 5:
+
+				$(".officerInd").text("Assigned To");
+
 				if(awrq_5 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -284,9 +298,9 @@ $(document).ready(function() {
 					LoadUnitApplications(inbox_type)
 				}
 
-				$(".officerInd").text("Assigned To");
-
 			case 6:
+				$(".officerInd").text("Completed By");
+				// console.log("Completed By");
 				if(ctrq_6 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -332,6 +346,7 @@ $(document).ready(function() {
 				}
 
 			case 7:
+				$(".officerInd").text("Assigned To");
 				if(atr_7 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -377,6 +392,7 @@ $(document).ready(function() {
 				}
 
 			case 8:
+				$(".officerInd").text("Requested By");
 				if(req_8 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -422,6 +438,7 @@ $(document).ready(function() {
 				}
 
 			case 9:
+				$(".officerInd").text("Requested By");
 				if(awa_9 > 500) {
 
 					$('#adv_inbox_type').val(inbox_type);
@@ -460,6 +477,51 @@ $(document).ready(function() {
 					$("#incoming_advanced_search").modal('show');
 				} else {
 
+					LoadUnitApplications(inbox_type)
+				}
+
+			case 10:
+				$(".officerInd").text("Sent By");
+				if(awa_10 > 500) {
+
+					$('#adv_inbox_type').val(inbox_type);
+
+					if(inbox_type == 1){
+						$('#adv_status').val('Incoming Files');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 2) {
+						$('#adv_status').val('Queried');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 3) {
+						$('#adv_status').val('Completed Within Unit');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 4) {
+						$('#adv_status').val('Awaiting Payment');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 5) {
+						$('#adv_status').val('Awaiting Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 6) {
+						$('#adv_status').val('Completed Request');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 7) {
+						$('#adv_status').val('Attention Required');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 8) {
+						$('#adv_status').val('Request for Additional Input');
+						$('.exclude_all').removeClass('d-none');
+					} else if(inbox_type == 9) {
+						$('#adv_status').val('Awaiting Inspection');
+						$('.exclude_all').removeClass('d-none');
+					} else {
+						$('#adv_status').val('All');
+					}
+
+					$("#incoming_advanced_search").modal('show');
+
+					return;
+
+				} else {
 					LoadUnitApplications(inbox_type)
 				}
 		}
@@ -806,6 +868,28 @@ $(document).ready(function() {
 
 			success : function(jobdetails) {
 
+				if(inbox_type == 1) {
+					$(".officerInd").text("Completed By");
+				} else if(inbox_type == 2) {
+					$(".officerInd").text("Queried By");
+				} else if(inbox_type == 3) {
+					$(".officerInd").text("Completed By");
+				} else if(inbox_type == 4) {
+					$(".officerInd").text("Assessed By");
+				} else if(inbox_type == 5) {
+					$(".officerInd").text("Assigned To");
+				} else if(inbox_type == 6) {
+					$(".officerInd").text("Completed By");
+				} else if(inbox_type == 7) {
+					$(".officerInd").text("Assigned To");
+				} else if(inbox_type == 8) {
+					$(".officerInd").text("Requested By");
+				} else if(inbox_type == 9) {
+					$(".officerInd").text("Requested By");
+				} else if(inbox_type == 10) {
+					$(".officerInd").text("Requested By");
+				}
+
 				if(!jobdetails) {
 					return;
 				}
@@ -862,8 +946,8 @@ $(document).ready(function() {
 						'<span class="small">' + (this.business_process_sub_name || '') + '</span>',
 
 						// 5: Status
-						'<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="' + (this.job_purpose || '') + '" >' +
-							((this.job_purpose || '').length > 30 ? (this.job_purpose || '').substring(0, 30) + '...' : (this.job_purpose || '')) +
+						'<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="' + (inbox_type == 6 ? this.job_purpose : this.job_status || '') + '" >' +
+							((inbox_type == 6 ? this.job_purpose : this.job_status || '').length > 30 ? (inbox_type == 6 ? this.job_purpose : this.job_status || '').substring(0, 30) + '...' : (inbox_type == 6 ? this.job_purpose : this.job_status || '')) +
 						'</span>' +
 						((this.objections || 0) > 0 ? '<i class="fas fa-exclamation-circle ml-1 text-danger" data-toggle="tooltip" title="Has Objections"></i>' : ''),
 
@@ -926,7 +1010,7 @@ $(document).ready(function() {
 									'<i class="fas fa-eye"></i>' +
 								'</button>' +
 							'</form>' +
-							(inbox_type == 1 ? '' :
+							(inbox_type == 6 ? 
 							'<form action="request_application_progress_details_ai" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="transaction_number" value="' + this.transaction_number + '">' +
@@ -936,7 +1020,7 @@ $(document).ready(function() {
 								'<button type="submit" name="save" class="btn btn-icon btn-sm me-1 btn-outline-danger btn-wave waves-effect waves-light to_hide_on_level_1" data-bs-custom-class="tooltip-primary" title="Work" data-bs-toggle="tooltip">' +
 									'<i class="fas fa-folder-open"></i>' +
 								'</button>' +
-							'</form>' )+
+							'</form>' : '' )+
 						'</div>'
 					]).draw(false);
 					
@@ -1857,6 +1941,11 @@ $(document).ready(function() {
 				$("#body-bg-9").addClass('bg-primary-light');
 				$("#number-text-9").addClass('text-white');
 				$("#card-awaiting_inspection").addClass('active-card');
+			case 10: // Awaiting Inspection
+				$(".btn-to-be-disabled").prop('disabled', true);
+				$("#body-bg-10").addClass('bg-warning-light');
+				$("#number-text-10").addClass('text-white');
+				$("#card-awaiting_publication").addClass('active-card');
 			default:
 				// No card selected
 		}

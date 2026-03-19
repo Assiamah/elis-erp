@@ -1354,6 +1354,18 @@ public class CsauController {
 				obj.put("submission_type", "Online");
 				String input = obj.toString();
 
+				String web_service_response_count = null;
+				web_service_response_count = casemgt_web_service.load_count_new_application_for_online(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						input);
+
+					
+				JSONObject menu_obj_tot;
+				menu_obj_tot = new JSONObject(web_service_response_count);
+				String total_count = menu_obj_tot.get("total").toString();
+
+				request.setAttribute("applicationlistcount", total_count);
+
 				// web_service_response_menu =
 				// casemgt_web_service.load_new_application_for_online(input);
 

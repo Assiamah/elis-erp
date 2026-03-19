@@ -3952,6 +3952,37 @@
   </div>
 </div>
 
+<div class="modal fade effect-scale modal-blur" id="awaitingInspectionApplicationsModal" tabindex="-1" aria-labelledby="awaitingInspectionApplicationsModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title text-white" id="awaitingInspectionApplicationsModalLabel">Awaiting Inspection Applications</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="report_dashboard_apps_awaiting_inspection_by_user_table" class="table table-striped table-hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Application Type</th>
+              <th>Applicant Name</th>
+              <th>Date Received</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade effect-scale modal-blur" id="batchedApplicationsModal" tabindex="-1" aria-labelledby="batchedApplicationsModalLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-xl">
     <div class="modal-content border-0 shadow">

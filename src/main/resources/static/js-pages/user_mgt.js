@@ -35,6 +35,21 @@ $(document).ready(function() {
 
 		
 	});*/
+
+	$('#ur_department').select2({
+        placeholder: 'Select or search department',
+        allowClear: true,
+        width: '100%',
+        dropdownParent: $('#addupdateuserdatails'),
+        language: {
+            noResults: function() {
+                return "No departments found";
+            }
+        },
+        escapeMarkup: function(markup) {
+            return markup;
+        }
+    });
 	
 	
 	$('#ur_district').change(function() {
@@ -46,49 +61,130 @@ $(document).ready(function() {
 		
 		
 		
+	// $('#ur_division').change(function() {
+	// 	//alert($(this).val());
+	// 	var selected_division = $(this).val();
+	// 	var office_id = $("#ur_district").val();
+		
+	// 	$("#ur_department").val("");
+	// 	/*$("#btn_process_batchlist").hide();*/
+	// 	$.ajax({
+	// 		type : "POST",
+	// 		url : "Case_Management_Serv",
+	// 		data : {
+	// 			request_type : 'get_lc_list_of_units',
+	// 			office_id: office_id
+	// 		},
+	// 		cache : false,
+	// 		success : function(jobdetails) {
+
+	// 		//	console.log(jobdetails);
+	// 			var json_p = JSON.parse(jobdetails);
+	// 			var datalist = $("#listofunits");
+	// 			datalist.empty();
+						
+	// 			$(json_p.data).each(function() {
+	// 				//console.log("Outer " + this.unit_division + " - " + this.unit_name);
+	// 				if (this.unit_division.includes(selected_division)) {
+	// 					//console.log("Inner " + this.unit_division + " - " + this.unit_name);
+	// 					datalist.append('<option data-name="' + this.unit_name + '" data-id="' + this.unit_id + '" value="' + this.unit_name + '" ></option>');
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+
+		
+	// });
+
 	$('#ur_division').change(function() {
-		//alert($(this).val());
 		var selected_division = $(this).val();
 		var office_id = $("#ur_district").val();
 		
-		$("#ur_department").val("");
-		/*$("#btn_process_batchlist").hide();*/
+		// Clear and disable department dropdown while loading
+		var $departmentSelect = $('#ur_department');
+		$departmentSelect.empty().append('<option value="">Loading departments...</option>');
+		$departmentSelect.prop('disabled', true);
+		
+		// Trigger Select2 update
+		if ($departmentSelect.data('select2')) {
+			$departmentSelect.trigger('change');
+		}
+		
+		if (!selected_division || !office_id) {
+			$departmentSelect.empty().append('<option value="">Select Department/Unit</option>');
+			$departmentSelect.prop('disabled', false);
+			return;
+		}
+		
 		$.ajax({
-			type : "POST",
-			url : "Case_Management_Serv",
-			data : {
-				request_type : 'get_lc_list_of_units',
+			type: "POST",
+			url: "Case_Management_Serv",
+			data: {
+				request_type: 'get_lc_list_of_units',
 				office_id: office_id
 			},
-			cache : false,
-			success : function(jobdetails) {
-
-			//	console.log(jobdetails);
-				var json_p = JSON.parse(jobdetails);
-				var datalist = $("#listofunits");
-				datalist.empty();
-						
-				$(json_p.data).each(function() {
-					//console.log("Outer " + this.unit_division + " - " + this.unit_name);
-					if (this.unit_division.includes(selected_division)) {
-						//console.log("Inner " + this.unit_division + " - " + this.unit_name);
-						datalist.append('<option data-name="' + this.unit_name + '" data-id="' + this.unit_id + '" value="' + this.unit_name + '" ></option>');
+			cache: false,
+			success: function(jobdetails) {
+				var $departmentSelect = $('#ur_department');
+				$departmentSelect.empty().append('<option value="">Select Department/Unit</option>');
+				
+				try {
+					var json_p = JSON.parse(jobdetails);
+					
+					if (json_p.data && json_p.data.length > 0) {
+						// Filter and add options based on selected division
+						$(json_p.data).each(function() {
+							if (this.unit_division && this.unit_division.includes(selected_division)) {
+								var option = new Option(this.unit_name, this.unit_name, false, false);
+								$(option).data('unit-id', this.unit_id);
+								$(option).data('unit-name', this.unit_name);
+								$departmentSelect.append(option);
+							}
+						});
+					} else {
+						$departmentSelect.append('<option value="">No departments available</option>');
 					}
-				});
+				} catch (e) {
+					console.error('Error parsing department data:', e);
+					$departmentSelect.append('<option value="">Error loading departments</option>');
+				}
+				
+				// Re-enable and refresh Select2
+				$departmentSelect.prop('disabled', false);
+				
+				// Refresh Select2 if initialized
+				if ($departmentSelect.data('select2')) {
+					$departmentSelect.trigger('change');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('AJAX Error:', error);
+				var $departmentSelect = $('#ur_department');
+				$departmentSelect.empty().append('<option value="">Error loading departments</option>');
+				$departmentSelect.prop('disabled', false);
+				
+				if ($departmentSelect.data('select2')) {
+					$departmentSelect.trigger('change');
+				}
 			}
 		});
-
-		
 	});
+
 	
 	
 	$('#addupdateuserdatails').on('show.bs.modal', function(event) {
     const button = $(event.relatedTarget);
     const selected_division = button.data('division');
     
-    // Clear form fields
-    $("#ur_department").val("");
-    $("#listofunits").empty();
+    // Clear and reset Select2
+    var $departmentSelect = $('#ur_department');
+    if ($departmentSelect.data('select2')) {
+        $departmentSelect.empty().trigger('change');
+        $departmentSelect.prop('disabled', true);
+    } else {
+        $departmentSelect.val("");
+        $("#listofunits").empty();
+    }
     
     // Set basic user information
     $("#ur_userid").val(button.data('userid'));
@@ -229,39 +325,116 @@ function loadDepartments(button, selected_division) {
         office_id: button.data('regional_code')
     }).then(response => {
         const json_p = JSON.parse(response);
-        const datalist = $("#listofunits");
-        datalist.empty();
+        const $departmentSelect = $('#ur_department');
         
-        $(json_p.data).each(function() {
-            if (this.unit_division.includes(selected_division)) {
-                datalist.append(`<option 
-                    data-name="${this.unit_name}" 
-                    data-id="${this.unit_id}" 
-                    value="${this.unit_name}"
-                ></option>`);
-            }
-        });
+        // Clear existing options
+        $departmentSelect.empty();
+        $departmentSelect.append('<option value="">Select Department/Unit</option>');
         
-        // Set department value after options are loaded
+        // Get the department value from button data
         const departmentValue = button.data('department');
-        $("#ur_department").val(departmentValue);
-
-        // Validate if the value exists in datalist
-        const exists = $('#listofunits option').filter(function() {
-            return $(this).val() === departmentValue;
-        }).length > 0;
-
-        if (!exists && departmentValue) {
-            // If value doesn't exist in datalist but we have a value,
-            // add it as an option
-            datalist.append(`<option 
-                data-name="${departmentValue}" 
-                data-id="${button.data('department_id')}" 
-                value="${departmentValue}"
-            ></option>`);
+        const departmentId = button.data('department_id');
+        
+        // Flag to check if department exists in the list
+        let departmentExists = false;
+        
+        // Add options from response
+        if (json_p.data && json_p.data.length > 0) {
+            $(json_p.data).each(function() {
+                if (this.unit_division && this.unit_division.includes(selected_division)) {
+                    // Check if this is the selected department
+                    if (this.unit_name === departmentValue) {
+                        departmentExists = true;
+                    }
+                    
+                    // Create option with data attributes
+                    var option = new Option(this.unit_name, this.unit_name, false, false);
+                    $(option).data('unit-id', this.unit_id);
+                    $(option).data('unit-name', this.unit_name);
+                    $departmentSelect.append(option);
+                }
+            });
+        }
+        
+        // If department doesn't exist in the list but we have a value, add it
+        if (!departmentExists && departmentValue) {
+            var option = new Option(departmentValue + " (Current)", departmentValue, false, false);
+            $(option).data('unit-id', departmentId);
+            $(option).data('unit-name', departmentValue);
+            $(option).css('font-style', 'italic');
+            $(option).css('color', '#6c757d');
+            $departmentSelect.append(option);
+        }
+        
+        // Enable and set the value
+        $departmentSelect.prop('disabled', false);
+        $departmentSelect.val(departmentValue);
+        
+        // Refresh Select2
+        if ($departmentSelect.data('select2')) {
+            $departmentSelect.trigger('change');
+        }
+        
+        console.log('Department loaded:', departmentValue, 'Exists:', departmentExists);
+    }).catch(error => {
+        console.error('Error loading departments:', error);
+        const $departmentSelect = $('#ur_department');
+        $departmentSelect.empty().append('<option value="">Error loading departments</option>');
+        $departmentSelect.prop('disabled', false);
+        
+        if ($departmentSelect.data('select2')) {
+            $departmentSelect.trigger('change');
         }
     });
 }
+
+// Add this function to initialize Select2 when modal is shown
+$(document).ready(function() {
+    // Initialize Select2
+    $('#ur_department').select2({
+        placeholder: 'Select or search department',
+        allowClear: true,
+        width: '100%',
+        dropdownParent: $('#addupdateuserdatails'),
+        language: {
+            noResults: function() {
+                return "No departments found";
+            }
+        },
+        escapeMarkup: function(markup) {
+            return markup;
+        },
+        templateResult: formatDepartmentResult,
+        templateSelection: formatDepartmentSelection
+    });
+    
+    // Custom formatter for dropdown items
+    function formatDepartmentResult(item) {
+        if (!item.id) {
+            return item.text;
+        }
+        
+        var $item = $(
+            '<span><i class="fas fa-building me-2"></i>' + 
+            item.text + 
+            (item.element && $(item.element).css('font-style') === 'italic' ? 
+                ' <small class="text-muted">(current)</small>' : '') +
+            '</span>'
+        );
+        
+        return $item;
+    }
+    
+    // Custom formatter for selected item
+    function formatDepartmentSelection(item) {
+        if (!item.id) {
+            return item.text;
+        }
+        
+        // Return just the text for the selected item
+        return item.text;
+    }
+});
 
 $(document).on('click', '#togglePassword', function() {
 	const passwordInput = document.getElementById('ur_web_pass');
@@ -1902,47 +2075,67 @@ function updateFooterInfo(data) {
     }
 }
 
-					$('#frmAddEditUser').on("submit", async function(e) {
+$('#frmAddEditUser').on("submit", async function(e) {
     e.preventDefault();
 
-    // Get form data
-    const departmentValue = $("#ur_department").val();
-    const departmentOption = $('#listofunits option').filter(function() {
-        return this.value === departmentValue;
-    });
+    var departmentSelect = $('#ur_department');
+	var departmentOption = departmentSelect.find(':selected');
+	var departmentValue = departmentSelect.val();
 
-    const formData = {
-        userid: $("#ur_userid").val(),
-        title: $("#ur_title").val(),
-        fullname: $("#ur_fullname").val(),
-        address: $("#ur_address").val(),
-        emailaddress: $("#ur_emailaddress").val(),
-        phone: $("#ur_phone").val(),
-        mobile: $("#ur_mobile").val(),
-        staffnumber: $("#ur_staffnumber").val(),
-        designation: $("#ur_designation").val(),
-        region: $("#ur_region").val(),
-        region_id: $("#ur_region").find(':selected').data('id'),
-        district_code: $("#ur_district").val(),
-        district_name: $("#ur_district option:selected").text(),
-        division: $("#ur_division").val(),
-        department: $("#ur_department").val(),
-        username: $("#ur_username").val(),
-        userprofile: $("#ur_userprofile").val(),
-        password: $("#ur_web_pass").val(),
-        password_conf: $("#ur_web_pass_confirm").val(),
-        isdisabled: $("#ur_isdisabled").val() === 'Yes' ? 'true' : 'false',
-        passwordchanged: $("#ur_passwordchanged").val(),
-        canpasswordexpire: $("#ur_canpasswordexpire").val() === 'Yes' ? 'true' : 'false',
-        passwordexpirydate: $("#ur_passwordexpirydate").val(),
-        user_level: $("#ur_user_level").val(),
-        lrd_user_level: $("#ur_lrd_user_level").val(),
-        view_all_offices: $("#ur_view_all_offices").val(),
-        usr_access_level: $("#usr_access_level").val(),
-        department: departmentValue,
-        department_id: departmentOption.data('id'),
-        department_name: departmentOption.data('name'),
-    };
+	// For Select2, we need to check if it's initialized and get data properly
+	var departmentId = null;
+	var departmentName = null;
+
+	if (departmentSelect.data('select2')) {
+		// Get Select2 data
+		var select2Data = departmentSelect.select2('data')[0];
+		if (select2Data) {
+			departmentId = select2Data.element ? $(select2Data.element).data('unit-id') : null;
+			departmentName = select2Data.text;
+		}
+	} else {
+		// Fallback to traditional option data
+		departmentId = departmentOption.data('unit-id');
+		departmentName = departmentOption.data('unit-name') || departmentOption.text();
+	}
+
+	// Alternative: If you're storing data attributes on the option elements
+	// departmentId = departmentOption.data('unit-id');
+	// departmentName = departmentOption.data('unit-name');
+
+	const formData = {
+		userid: $("#ur_userid").val(),
+		title: $("#ur_title").val(),
+		fullname: $("#ur_fullname").val(),
+		address: $("#ur_address").val(),
+		emailaddress: $("#ur_emailaddress").val(),
+		phone: $("#ur_phone").val(),
+		mobile: $("#ur_mobile").val(),
+		staffnumber: $("#ur_staffnumber").val(),
+		designation: $("#ur_designation").val(),
+		region: $("#ur_region").val(),
+		region_id: $("#ur_region").find(':selected').data('id'),
+		district_code: $("#ur_district").val(),
+		district_name: $("#ur_district option:selected").text(),
+		division: $("#ur_division").val(),
+		// Department fields
+		department: departmentValue,
+		department_id: departmentId,
+		department_name: departmentName,
+		// User account fields
+		username: $("#ur_username").val(),
+		userprofile: $("#ur_userprofile").val(),
+		password: $("#ur_web_pass").val(),
+		password_conf: $("#ur_web_pass_confirm").val(),
+		isdisabled: $("#ur_isdisabled").val() === 'Yes' ? 'true' : 'false',
+		passwordchanged: $("#ur_passwordchanged").val(),
+		canpasswordexpire: $("#ur_canpasswordexpire").val() === 'Yes' ? 'true' : 'false',
+		passwordexpirydate: $("#ur_passwordexpirydate").val(),
+		user_level: $("#ur_user_level").val(),
+		lrd_user_level: $("#ur_lrd_user_level").val(),
+		view_all_offices: $("#ur_view_all_offices").val(),
+		usr_access_level: $("#usr_access_level").val()
+	};
 
     // Validate required fields
     const requiredFields = [
@@ -1960,37 +2153,42 @@ function updateFooterInfo(data) {
     ];
 
     const missingFields = requiredFields.filter(item => !formData[item.field] || formData[item.field].toString().trim() === '');
-    
-    if (missingFields.length > 0) {
-        await Swal.fire({
-            title: 'Missing Information',
-            html: `
-                <div class="text-start">
-                    <p>The following required fields are empty:</p>
-                    <ul class="text-danger">
-                        ${missingFields.map(item => `<li>${item.label}</li>`).join('')}
-                    </ul>
-                    <p class="small text-muted">Please fill in all required fields marked with *</p>
-                </div>
-            `,
-            icon: 'warning',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#dc3545'
-        });
-        return;
-    }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.emailaddress && !emailRegex.test(formData.emailaddress)) {
-        await Swal.fire({
-            title: 'Invalid Email',
-            text: 'Please enter a valid email address',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-        return;
-    }
+	const is_disabled = $("#ur_isdisabled").val();
+
+	if(is_disabled == 'No') {
+
+		if (missingFields.length > 0) {
+			await Swal.fire({
+				title: 'Missing Information',
+				html: `
+					<div class="text-start">
+						<p>The following required fields are empty:</p>
+						<ul class="text-danger">
+							${missingFields.map(item => `<li>${item.label}</li>`).join('')}
+						</ul>
+						<p class="small text-muted">Please fill in all required fields marked with *</p>
+					</div>
+				`,
+				icon: 'warning',
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#dc3545'
+			});
+			return;
+		}
+
+		// Validate email format
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (formData.emailaddress && !emailRegex.test(formData.emailaddress)) {
+			await Swal.fire({
+				title: 'Invalid Email',
+				text: 'Please enter a valid email address',
+				icon: 'error',
+				confirmButtonText: 'OK'
+			});
+			return;
+		}
+	}
 
     // Validate password
     if (formData.password || formData.password_conf) {
