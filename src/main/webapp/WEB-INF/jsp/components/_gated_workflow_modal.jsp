@@ -117,10 +117,10 @@
                                     <tr>
                                         <th width="80">Action</th>
                                         <th>Payment Mode</th>
-                                        <th>Bill Amount</th>
+                                        <th>Bill Amount (GHS)</th>
                                         <th>Receipt Number</th>
                                         <th>Payment Date</th>
-                                        <th>Paid Amount</th>
+                                        <th>Paid Amount (GHS)</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -181,7 +181,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex align-items-center">
+                                                <!-- <div class="d-flex align-items-center">
                                                     <c:set var="paymentStatus" value="success" />
                                                     <c:choose>
                                                         <c:when test="${payment_bill_row.payment_amount < payment_bill_row.bill_amount}">
@@ -198,11 +198,12 @@
                                                         <div class="fw-semibold text-${paymentStatus}">${payment_bill_row.payment_amount}</div>
                                                         <c:if test="${payment_bill_row.bill_amount != payment_bill_row.payment_amount}">
                                                             <small class="text-${paymentStatus}">
-                                                                ${payment_bill_row.payment_amount > payment_bill_row.bill_amount ? 'Overpaid' : 'Underpaid'}
+                                                                ${payment_bill_row.payment_amount > payment_bill_row.bill_amount ? 'Paid' : 'Not Paid'}
                                                             </small>
                                                         </c:if>
                                                     </div>
-                                                </div>
+                                                </div> -->
+                                                <span class="fw-semibold">${payment_bill_row.payment_amount}</span>
                                             </td>
                                             <td>
                                                 <c:choose>
@@ -211,7 +212,7 @@
                                                             <i class="bi bi-check-circle me-1"></i>Fully Paid
                                                         </span>
                                                     </c:when>
-                                                    <c:when test="${payment_bill_row.payment_amount == 0}">
+                                                    <c:when test="${payment_bill_row.payment_amount == 0 || payment_bill_row.payment_amount == null}">
                                                         <span class="badge bg-danger">
                                                             <i class="bi bi-x-circle me-1"></i>Unpaid
                                                         </span>
@@ -285,7 +286,7 @@
                                                 <span class="fw-medium text-danger">Unpaid:</span> 
                                                 <c:set var="unpaidCount" value="0" />
                                                 <c:forEach items="${payment_invoice}" var="payment_bill_row">
-                                                    <c:if test="${payment_bill_row.payment_amount == 0}">
+                                                    <c:if test="${payment_bill_row.payment_amount == 0 || payment_bill_row.payment_amount == null || payment_bill_row.payment_amount == ''}">
                                                         <c:set var="unpaidCount" value="${unpaidCount + 1}" />
                                                     </c:if>
                                                 </c:forEach>
@@ -1066,7 +1067,7 @@
                     <i class="bi bi-123"></i>
                   </span>
                   <input type="text" class="form-control" id="fe_surveyor_number" 
-                         value="${surveyor_number}" placeholder="Enter surveyor number">
+                         value="${licensed_surveyor_number}" placeholder="Enter surveyor number">
                 </div>
               </div>
 

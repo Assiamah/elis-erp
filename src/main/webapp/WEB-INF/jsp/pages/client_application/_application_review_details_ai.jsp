@@ -564,6 +564,21 @@
                     <!-- Process Steps List -->
                     <div class="card-body p-4">
                         <!-- Process Steps Timeline -->
+                        <c:forEach items="${baby_step_milestone_list}" var="milestone">
+                            <c:if test="${milestone.mile_stone_status == 'Ongoing'}">
+                                <div class="alert alert-info border-0 mb-3">
+                                    <label class="form-label text-muted small mb-1">Current Milestone</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-warning text-dark me-2">
+                                            <i class="fas fa-spinner fa-spin me-1"></i>
+                                            Ongoing
+                                        </span>
+                                        <span class="fw-medium">${milestone.milestone_description}</span>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+
                         <div class="process-timeline">
                             <c:forEach var="babyStep" items="${active_digital_workflow_step_list}" varStatus="loop">
                                 
@@ -1911,3 +1926,4 @@
 
 <jsp:include page="../../components/_gated_workflow_modal.jsp"></jsp:include>
 <jsp:include page="../../components/_gated_workflow_modal_2.jsp"></jsp:include>
+<jsp:include page="../../components/_gated_workflow_modal_3.jsp"></jsp:include>

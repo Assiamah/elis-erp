@@ -45,6 +45,70 @@ public class cls_casemgt {
 		return output;
 	}
 
+	
+
+	public String load_transaction_details_for_deed(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		// System.out.println("Testing Service select_general_case_details");
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/load_transaction_details_for_deed");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+
+			/*
+			 * WebResource webResource = restClient.resource(url);
+			 * ClientResponse resp = webResource.accept("application/json")
+			 * .header("Authorization", "Basic " + authStringEnc)
+			 * .get(ClientResponse.class);
+			 */
+
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+	}
+
+	public String load_get_file_number_format_per_region(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		// System.out.println("Testing Service select_general_case_details");
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/load_get_file_number_format_per_region");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+
+			/*
+			 * WebResource webResource = restClient.resource(url);
+			 * ClientResponse resp = webResource.accept("application/json")
+			 * .header("Authorization", "Basic " + authStringEnc)
+			 * .get(ClientResponse.class);
+			 */
+
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+	}
+
 
 	public String select_general_case_details_new_app_flow(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";

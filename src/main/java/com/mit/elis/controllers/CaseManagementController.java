@@ -5117,13 +5117,13 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				new_case_number = parcel_details_obj.get("case_number").toString();
 				request.setAttribute("glpin", parcel_details_obj.get("glpin").toString());
-				//request.setAttribute("licensed_surveyor_number", parcel_details_obj.get("licensed_no").toString());
+				request.setAttribute("licensed_surveyor_number", parcel_details_obj.optString("licensed_no").toString());
 				request.setAttribute("regional_number", parcel_details_obj.get("regional_number").toString());
 				request.setAttribute("locality", parcel_details_obj.get("locality").toString());
-				//request.setAttribute("district", parcel_details_obj.get("district").toString());
-				//request.setAttribute("region", parcel_details_obj.get("region").toString());
+				request.setAttribute("district", parcel_details_obj.optString("district").toString());
+				request.setAttribute("region", parcel_details_obj.optString("region").toString());
 				request.setAttribute("size_of_land", parcel_details_obj.get("land_size").toString());
-				//request.setAttribute("extent", parcel_details_obj.get("extent").toString());
+				request.setAttribute("extent", parcel_details_obj.optString("extent").toString());
 				request.setAttribute("registry_mapref", parcel_details_obj.get("registry_mapref").toString());
 				request.setAttribute("plan_no", parcel_details_obj.get("plan_no").toString());
 				request.setAttribute("cc_no", parcel_details_obj.get("cc_no").toString());
@@ -5264,6 +5264,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("page_name", "case_processing");
 				request.setAttribute("page_name_", "review_application_progress_details");
                 request.setAttribute("page_name", "application_review_details_advanced");
+
 	
 				// System.out.println(business_process_sub_name);
 						model.addAttribute("content", "../pages/client_application/_application_review_details_ai.jsp"); return "layouts/app";

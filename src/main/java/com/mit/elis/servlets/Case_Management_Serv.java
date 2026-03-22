@@ -9127,6 +9127,41 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			
+			if (request_type.equals("load_transaction_details_for_deed")) {
+
+				String job_number = (String) request.getParameter("job_number");
+
+				web_service_response = casemgt_cl_m.load_transaction_details_for_deed(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						job_number);
+				//System.out.println(obj.toString());
+
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("load_get_file_number_format_per_region")) {
+
+				String region_code = (String) session.getAttribute("regional_code");
+
+				System.out.print(region_code);
+
+				web_service_response = casemgt_cl_m.load_get_file_number_format_per_region(
+					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), region_code);
+				if (web_service_response != null) {
+					System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+						
+			}
+
 			if (request_type.equals("load_new_application_for_division")) {
 
 				String division = (String) session.getAttribute("division");

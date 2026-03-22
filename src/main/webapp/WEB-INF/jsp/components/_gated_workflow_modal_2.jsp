@@ -518,16 +518,22 @@
                         <i class="fas fa-user-tie me-2"></i>
                         Initial Approval
                     </h5>
-                    <button type="button" class="btn btn-warning ms-auto btn_send_inspection_request" 
-                        data-job_number="${job_number}" 
-                        data-ar_name="${ar_name}" 
-                        data-business_process_sub_name="${business_process_sub_name}" 
-                        data-locality="${locality}" 
-                        data-bs-desc="${babyStep.bse_description}">
-                        <i class="ri-send-plane-line me-1"></i>Inspection Request
-                    </button>
+                    <div class="ms-auto">
+                        <button type="button" class="btn btn-warning btn_send_inspection_request" 
+                            data-job_number="${job_number}" 
+                            data-ar_name="${ar_name}" 
+                            data-business_process_sub_name="${business_process_sub_name}" 
+                            data-locality="${locality}" 
+                            data-bs-desc="${babyStep.bse_description}">
+                            <i class="ri-send-plane-line me-1"></i>Inspection Request
+                        </button>
+                        <button type="button" class="btn btn-info btn_ground_rent">
+                            <i class="ri-coins-fill me-1"></i>Add Ground Rent
+                        </button>
+                    </div>
+                    
                 </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-light btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"><i class="ri-close-line me-1"></i></button>
             </div>
             
             <!-- Modal Body -->
@@ -587,7 +593,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-outline-primary btn-sm open-view-notes" 
+                                                    <button class="btn ${application_notes_row.an_status == false ? 'btn-outline-dark' : 'btn-outline-primary'} btn-sm open-view-notes" 
                                                             data-target-id="${application_notes_row.an_id}"
                                                             data-an_description="${application_notes_row.an_description}"
                                                             data-created_by="${application_notes_row.created_by}"
@@ -2522,51 +2528,6 @@
 					</div>
 				</div>
 				
-				<!-- Report Summary Section -->
-				<!-- <div class="card border-0 shadow-sm mb-4">
-					<div class="card-header bg-light py-3">
-						<h6 class="mb-0">
-							<i class="fas fa-file-alt me-2"></i>
-							Report Details
-						</h6>
-					</div>
-					<div class="card-body">
-						<div class="row g-3">
-							<div class="col-md-6">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-hashtag me-1"></i> Job Number
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_job_number">
-									<span class="text-muted">Not specified</span>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-file-code me-1"></i> Case Number
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_case_number">
-									<span class="text-muted">Not specified</span>
-								</div>
-							</div>
-							<div class="col-12">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-tasks me-1"></i> Process Type
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_process_type">
-									<span class="text-muted">Not specified</span>
-								</div>
-							</div>
-							<div class="col-12">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-calendar-check me-1"></i> Last Modified
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_last_modified">
-									<span class="text-muted">Just now</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> -->
 				
 				<!-- Preview Action Section -->
 				<div class="text-center p-4 border-dashed rounded-3 bg-light">
@@ -4394,7 +4355,7 @@
 </div>
 
 <!-- Inspection Site Notification Modal -->
-<div class="modal fade" id="inspection_of_site" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade modal-blur" id="inspection_of_site" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4993,7 +4954,7 @@ Thank you.</textarea>
     </div>
 </div>
 
-<div class="modal fade effect-slide" id="generate_ls_number" tabindex="-1"
+<div class="modal fade effect-slide modal-blur" id="generate_ls_number" tabindex="-1"
      aria-labelledby="generateLsNumberLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content border-0 shadow">
@@ -5019,30 +4980,7 @@ Thank you.</textarea>
             <!-- Body -->
             <div class="modal-body p-4">
                 <div class="ls-number-container">
-                    <!-- Certificate Type (commented out but ready to use) -->
-                    <!-- 
-                    <div class="mb-4">
-                        <label for="lc_txt_type_of_certificate" class="form-label fw-medium text-muted mb-2">
-                            <i class="bi bi-award me-1"></i>
-                            Certificate Type
-                        </label>
-                        <select name="lc_txt_type_of_certificate" 
-                                id="lc_txt_type_of_certificate" 
-                                class="form-select form-select-lg bg-light border-0" 
-                                required>
-                            <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
-                                ${certificate_type == 'Individual' ? '-- select certificate type --' : certificate_type}
-                            </option>
-                            <option value="Provisional Certificate">📄 Provisional Certificate</option>
-                            <option value="Land Certificate">🏞️ Land Certificate</option>
-                            <option value="Substituted Certificate">📋 Substituted Certificate</option>
-                        </select>
-                        <div class="form-text">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Select the type of certificate for LS number generation
-                        </div>
-                    </div>
-                    -->
+                 
 
                     <!-- LS Number Display -->
                     <div class="ls-display-container mb-4">
@@ -5051,12 +4989,12 @@ Thank you.</textarea>
                                 <i class="bi bi-hash me-1"></i>
                                 Serial Number
                             </label>
-                            <span class="ms-auto">
+                            <!-- <span class="ms-auto">
                                 <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
                                     <i class="bi bi-key me-1"></i>
                                     Unique Identifier
                                 </span>
-                            </span>
+                            </span> -->
                         </div>
                         
                         <div class="input-group input-group-lg">
@@ -5533,27 +5471,28 @@ Thank you.</textarea>
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title text-white" id="generateFileNumberLabel">
           <i class="fas fa-folder-open me-2"></i>
-          Open File
+          Generate File Number
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
       <!-- Modal Body -->
       <div class="modal-body">
+         <div class="mb-3 fs-20">
+            <label for="lc_txt_file_number" class="form-label">
+              <i class="ri-map-2-line me-1"></i>
+              Locality:
+            </label>
+            <span class="text-danger fw-bold">${locality}</span>
+        </div>
         <div class="mb-3">
             <label for="lc_txt_file_number" class="form-label">
               <i class="fas fa-landmark me-1"></i>
               Type of Land Reference:
             </label>
-            <select class="form-select" id="lc_txt_file_number_type" data-trigger="">
+            <select class="form-select" id="lc_txt_file_number_type">
               <option disabled selected value="">-- select --</option>
-              <option value="FAMILY_LAND">Family Land</option>
-              <option value="STOOL_LAND">Stool Land</option>
-              <option value="STATE_LAND_KD">State Land (Koforidua)</option>
-              <option value="STATE_LAND_NK">State Land (Nkawkaw)</option>
-              <option value="STATE_LAND_OD">State Land (Oda)</option>
-              <option value="STATE_LAND_NS">State Land (Nsawam)</option>
-              <option value="STATE_LAND_OTHER">State Land (Other)</option>
+              
             </select>
         </div>
         <div class="mb-3">
@@ -5588,7 +5527,7 @@ Thank you.</textarea>
             </c:if>
             <c:if test="${empty file_number or file_number == 'null' or fn:contains(file_number, '-')}">
               <i class="fas fa-info-circle text-info me-1"></i>
-              <span class="text-info">Click to generate a new file number</span>
+              <span class="text-info selected_file_number">Click to generate a new file number</span>
             </c:if>
           </div>
         </div>
@@ -5846,102 +5785,281 @@ Thank you.</textarea>
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="transaction_details_for_deed_label">
                     <i class="fas fa-book me-2"></i>
-                    Registered Transactions
+                    Check Transactions Details
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
             <!-- Modal Body -->
             <div class="modal-body">
-                
-                <div class="card border">
-                    <div class="card-header bg-primary bg-opacity-10 border-primary">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 text-primary">
-                                <i class="fas fa-user-tie me-2"></i>
-                                Transaction Details
-                            </h6>
-                            <button type="button" class="btn btn-primary btn-sm newTransactionModal">
-                                <i class="fas fa-plus me-1"></i>
-                                Add Transaction
-                            </button>
+
+                <div class="card">
+                    <div class="card-header bg-success bg-opacity-10 justify-content-between">
+                        <div class="card-title text-primary">
+                            <i class="bi bi-geo-alt me-2"></i>Parcel Attributes
                         </div>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0" id="lrd_transaction_details_dataTable">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Transaction No.</th>
-                                        <th>Grantee</th>
-                                        <th>Date of Instrument</th>
-                                        <th>Nature of Instrument</th>
-                                        <th>Date of Registration</th>
-                                        <th>Parties</th>
-                                        <th>Price Paid</th>
-                                        <th>Term</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${lrd_proprietorship_section}" var="proprietorship_section">
-                                        <tr>
-                                            <td>
-                                                <span class="badge bg-info bg-opacity-10 text-info">
-                                                    ${proprietorship_section.ps_registration_number}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="fas fa-user text-muted me-2"></i>
-                                                    <span>${proprietorship_section.ps_proprietor}</span>
-                                                </div>
-                                            </td>
-                                            <td>${proprietorship_section.ps_date_of_instrument}</td>
-                                            <td>
-                                                <span class="badge bg-secondary">
-                                                    ${proprietorship_section.ps_nature_of_instrument}
-                                                </span>
-                                            </td>
-                                            <td>${proprietorship_section.ps_date_of_registration}</td>
-                                            <td>
-                                                <div class="small">
-                                                    <div><strong>From:</strong> ${proprietorship_section.ps_transferor}</div>
-                                                    <div><strong>To:</strong> ${proprietorship_section.ps_transferee}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span class="fw-medium text-success">${proprietorship_section.ps_price_paid}</span>
-                                            </td>
-                                            <td>${proprietorship_section.ps_term}</td>
-                                            <td class="text-center">
-                                                <button class="btn btn-outline-primary btn-sm editTransactionModal"
-                                                        data-target-id="${proprietorship_section.ps_id}"
-                                                        data-ps_id="${proprietorship_section.ps_id}"
-                                                        data-ps_case_number="${proprietorship_section.ps_case_number}"
-                                                        data-ps_registration_number="${proprietorship_section.ps_registration_number}"
-                                                        data-ps_proprietor="${proprietorship_section.ps_proprietor}"
-                                                        data-ps_date_of_instrument="${proprietorship_section.ps_date_of_instrument}"
-                                                        data-ps_nature_of_instrument="${proprietorship_section.ps_nature_of_instrument}"
-                                                        data-ps_date_of_registration="${proprietorship_section.ps_date_of_registration}"
-                                                        data-ps_transferor="${proprietorship_section.ps_transferor}"
-                                                        data-ps_transferee="${proprietorship_section.ps_transferee}"
-                                                        data-ps_price_paid="${proprietorship_section.ps_price_paid}"
-                                                        data-ps_remarks="${proprietorship_section.ps_remarks}"
-                                                        data-ps_signature="${proprietorship_section.ps_signature}"
-                                                        data-ps_term="${proprietorship_section.ps_term}"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Transaction">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Case Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Regional Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Locality</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(locality) || locality == '0' ? '--' : fn:trim(locality)}</div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">District</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Region</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Land Size (Acres)</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">GLPIN</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                
+                <!-- Transaction Details Section -->
+                <div class="card">
+                    <div class="card-header bg-success bg-opacity-10 justify-content-between">
+                        <div class="card-title text-primary">
+                            <i class="bi bi-receipt me-2"></i>Transaction Details
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Job Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Case Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Transaction Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Applicant Name</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Application Type</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(business_process_sub_name) ? '--' : fn:trim(business_process_sub_name)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Nature of Instrument</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Document Date</label>
+                                <fmt:parseDate value="${date_of_document}" pattern="yyyy-MM-dd" var="parsedDocumentDate"/>
+                                <fmt:formatDate value="${parsedDocumentDate}" pattern="dd MMM yyyy" var="formattedDocumentDate"/>
+                                <div class="fw-medium text-dark">${empty formattedDocumentDate ? '--' : formattedDocumentDate}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Registration Date</label>
+                                <fmt:parseDate value="${date_of_registration}" pattern="yyyy-MM-dd" var="parsedRegistrationDate"/>
+                                <fmt:formatDate value="${parsedRegistrationDate}" pattern="dd MMM yyyy" var="formattedRegistrationDate"/>
+                                <div class="fw-medium text-dark">${empty formattedRegistrationDate ? '--' : formattedRegistrationDate}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Type of Interest</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Type of Use</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(type_of_use) || type_of_use == '0' ? '--' : fn:trim(type_of_use)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Term</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(term) || term == '0' ? '--' : fn:trim(term)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Option for Renewal</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(renewal_term) || renewal_term == '0' ? '--' : fn:trim(renewal_term)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Commencement Date</label>
+                                <fmt:parseDate value="${commencement_date}" pattern="yyyy-MM-dd" var="parsedCommencementDate"/>
+                                <fmt:formatDate value="${parsedCommencementDate}" pattern="dd MMM yyyy" var="formattedCommencementDate"/>
+                                <div class="fw-medium text-dark">${empty formattedCommencementDate ? '--' : formattedCommencementDate}</div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Assessed Value</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(assessed_value) || assessed_value == '0' ? '--' : fn:trim(assessed_value)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Stamp Duty Payable</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(stamp_duty_payable) || stamp_duty_payable == '0' ? '--' : fn:trim(stamp_duty_payable)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Consideration in Document</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee) || consideration_fee == '0' ? '--' : fn:trim(consideration_fee)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Consideration Currency</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Adopted Currency Rate</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_adopted_rate) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Annual Rent</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(annual_rent) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(annual_rent)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Rent Review Period</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(rent_review_period) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(rent_review_period)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Ground Rent</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(ground_rent) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(ground_rent)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Publication Date</label>
+                                <fmt:parseDate value="${publicity_date}" pattern="yyyy-MM-dd" var="parsedPublicityDate"/>
+                                <fmt:formatDate value="${parsedPublicityDate}" pattern="dd MMM yyyy" var="formattedPublicityDate"/>
+                                <div class="fw-medium text-dark"> ${empty formattedPublicityDate ? '--' : formattedPublicityDate}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Date of Issue</label>
+                                <fmt:parseDate value="${date_of_issue}" pattern="yyyy-MM-dd" var="parsedDateOfIssue"/>
+                                <fmt:formatDate value="${parsedDateOfIssue}" pattern="dd MMM yyyy" var="formattedDateOfIssue"/>
+                                <div class="fw-medium text-dark"> ${empty formattedDateOfIssue ? '--' : formattedDateOfIssue}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">File Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(file_number) ? '--' : fn:trim(file_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Serial Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(serial_number) ? '--' : fn:trim(serial_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Deed Number</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(deed_number) ? '--' : fn:trim(deed_number)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Extent of Land</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(intended_parcel) ? '--' : fn:trim(intended_parcel)}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-muted small mb-1">Extent of Interest</label>
+                                <div class="fw-medium text-dark">${empty fn:trim(intended_interest) ? '--' : fn:trim(intended_interest)}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="card">
+                    <div class="card-header bg-success bg-opacity-10 justify-content-between">
+                        <div class="card-title text-primary">
+                            <i class="bi bi-receipt me-2"></i>Parties
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <table class="table table-hover table-sm mb-0" id="party_details_datatable">
+                            <thead class="table-light">
+                            <tr>
+                                <th width="25%">
+                                <i class="bi bi-person me-1"></i>Name
+                                </th>
+                                <th width="10%">
+                                <i class="bi bi-gender-ambiguous me-1"></i>Sex
+                                </th>
+                                <th width="20%">
+                                <i class="bi bi-telephone me-1"></i>Contact
+                                </th>
+                                <th width="20%">
+                                <i class="bi bi-address me-1"></i>Address
+                                </th>
+                                <th width="20%">
+                                <i class="bi bi-person-badge me-1"></i>Role
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${parties}" var="parties_row">
+                                <tr>
+                                <td class="align-middle">
+                                    <div class="fw-semibold">${parties_row.ar_name}</div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge ${parties_row.ar_gender == 'MALE' ? 'bg-info' : parties_row.ar_gender == 'FEMALE' ? 'bg-pink' : 'bg-secondary'}">
+                                    ${parties_row.ar_gender == 'MALE' ? 'Male' : parties_row.ar_gender == 'FEMALE' ? 'Female' : 'Other'}
+                                    </span>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="contact-info">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="bi bi-phone text-primary me-2"></i>
+                                        <small>${empty fn:trim(parties_row.ar_cell_phone) ? '--' : fn:trim(parties_row.ar_cell_phone)}</small>
+                                    </div>
+                                    <c:if test="${not empty parties_row.ar_cell_phone2}">
+                                        <div class="d-flex align-items-center">
+                                        <i class="bi bi-telephone-plus text-secondary me-2"></i>
+                                        <small>${empty fn:trim(parties_row.ar_cell_phone2) ? '--' : fn:trim(parties_row.ar_cell_phone2)}</small>
+                                        </div>
+                                    </c:if>
+                                    </div>
+                                </td>
+                                 <td class="align-middle">
+                                    <div class="contact-info">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <i class="bi bi-address text-primary me-2"></i>
+                                            <small>${empty fn:trim(parties_row.ar_address) ? '--' : fn:trim(parties_row.ar_address)}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge ${parties_row.type_of_party == 'Grantor' ? 'bg-success' : parties_row.type_of_party == 'Applicant' ? 'bg-warning' : 'bg-info'}">
+                                    ${parties_row.type_of_party}
+                                    </span>
+                                </td>
+                                </tr>
+                            </c:forEach>
+                            
+                            <!-- Empty State -->
+                            <c:if test="${empty parties}">
+                                <tr>
+                                <td colspan="5" class="text-center py-4">
+                                    <div class="text-muted">
+                                    <i class="bi bi-people fs-1 mb-2 d-block"></i>
+                                    <p class="mb-0">No parties added yet</p>
+                                    <small>Click "Add Grantor" or "Add Applicant" to get started</small>
+                                    </div>
+                                </td>
+                                </tr>
+                            </c:if>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
             </div>
             
             <!-- Modal Footer -->
@@ -5956,14 +6074,6 @@ Thank you.</textarea>
                             <i class="fas fa-times me-1"></i>
                             Close
                         </button>
-                        <!-- <button type="button" class="btn btn-outline-primary" id="btn_export_root_title">
-                            <i class="fas fa-download me-1"></i>
-                            Export
-                        </button> -->
-                        <!-- <button type="button" class="btn btn-outline-info" id="btn_print_root_title">
-                            <i class="fas fa-print me-1"></i>
-                            Print Preview
-                        </button> -->
                     </div>
                 </div>
                 <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id">
@@ -6275,29 +6385,29 @@ Thank you.</textarea>
                 <!-- Tabs Navigation -->
                 <ul class="nav nav-tabs mb-3 tab-style-6" id="parcelTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" 
-                                data-bs-target="#details" type="button" role="tab">
+                        <button class="nav-link active" id="details-tab-deed" data-bs-toggle="tab" 
+                                data-bs-target="#details-deed" type="button" role="tab">
                             <i class="fas fa-info-circle me-2"></i>
                             Transaction Details
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="location-tab" data-bs-toggle="tab" 
-                                data-bs-target="#location" type="button" role="tab">
+                        <button class="nav-link" id="location-tab-deed" data-bs-toggle="tab" 
+                                data-bs-target="#location-deed" type="button" role="tab">
                             <i class="fas fa-map-marker-alt me-2"></i>
                             Location Details
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="financial-tab" data-bs-toggle="tab" 
-                                data-bs-target="#financial" type="button" role="tab">
+                        <button class="nav-link" id="financial-tab-deed" data-bs-toggle="tab" 
+                                data-bs-target="#financial-deed" type="button" role="tab">
                             <i class="fas fa-money-bill-wave me-2"></i>
                             Financial Details
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="map-tab" data-bs-toggle="tab" 
-                                data-bs-target="#map-" type="button" role="tab">
+                        <button class="nav-link" id="map-tab-deed" data-bs-toggle="tab" 
+                                data-bs-target="#map-deed" type="button" role="tab">
                             <i class="fas fa-map me-2"></i>
                             Map Visualization
                         </button>
@@ -6308,7 +6418,7 @@ Thank you.</textarea>
                 <div class="tab-content" id="parcelTabContent">
                     
                     <!-- Transaction Details Tab -->
-                    <div class="tab-pane fade show active" id="details" role="tabpanel">
+                    <div class="tab-pane fade show active" id="details-deed" role="tabpanel">
                         <div class="row g-3">
                             <!-- Column 1 -->
                             <div class="col-md-6">
@@ -6349,6 +6459,18 @@ Thank you.</textarea>
                                                 <label class="form-label small text-muted mb-1">Type of Interest</label>
                                                 <div class="fw-medium text-dark">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
                                             </div>
+                                            <!-- <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">Date of Issue</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
+                                            </div> -->
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Extent of Land</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(intended_parcel) ? '--' : fn:trim(intended_parcel)}</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Extent of Interest</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(intended_interest) ? '--' : fn:trim(intended_interest)}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -6360,7 +6482,7 @@ Thank you.</textarea>
                                     <div class="card-header bg-light py-2">
                                         <h6 class="mb-0">
                                             <i class="fas fa-calendar-alt me-2"></i>
-                                            Term & Renewal
+                                            Term & Renewal & Generated Numbers
                                         </h6>
                                     </div>
                                     <div class="card-body">
@@ -6386,12 +6508,32 @@ Thank you.</textarea>
                                         </div>
                                         <div class="row g-2">
                                             <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Certificate Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+                                                <label class="form-label small text-muted mb-1">Deed Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(deed_number) ? '--' : fn:trim(deed_number)}</div>
                                             </div>
                                             <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Date of Issue</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
+                                                <label class="form-label small text-muted mb-1">Serial Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(serial_number) ? '--' : fn:trim(serial_number)}</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">File Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(file_number) ? '--' : fn:trim(file_number)}</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Rent Review Period</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(rent_review_period) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(rent_review_period)}</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Ground Rent</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(ground_rent) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(ground_rent)}</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Consideration in Document</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee) || consideration_fee == '0' ? '--' : fn:trim(consideration_fee)}</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Consideration Currency</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -6400,60 +6542,90 @@ Thank you.</textarea>
                             
                             <!-- Column 3 -->
                             <div class="col-12">
-                                <div class="card border">
-                                    <div class="card-header bg-light py-2">
-                                        <h6 class="mb-0">
-                                            <i class="fas fa-certificate me-2"></i>
-                                            Registration & Planning Details
-                                        </h6>
+                                <div class="card">
+                                    <div class="card-header bg-success bg-opacity-10 justify-content-between">
+                                        <div class="card-title text-primary">
+                                            <i class="bi bi-receipt me-2"></i>Parties
+                                        </div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row g-3">
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Plan Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(plan_no) ? '--' : fn:trim(plan_no)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">LTR Plan Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(ltr_plan_no) ? '--' : fn:trim(ltr_plan_no)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Registry Map Ref</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(registry_mapref) ? '--' : fn:trim(registry_mapref)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">CC Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(cc_no) ? '--' : fn:trim(cc_no)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">GLPIN</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Interest Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Sub-Interest Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Registered Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Type of Plotting</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(smd_type_of_plotting) ? '--' : fn:trim(smd_type_of_plotting)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">SMD Reference Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(smd_reference_number) ? '--' : fn:trim(smd_reference_number)}</div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label small text-muted mb-1">Publication Date</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
-                                            </div>
-                                        </div>
+
+                                        <table class="table table-hover table-sm mb-0" id="party_details_datatable">
+                                            <thead class="table-light">
+                                            <tr>
+                                                <th width="25%">
+                                                <i class="bi bi-person me-1"></i>Name
+                                                </th>
+                                                <th width="10%">
+                                                <i class="bi bi-gender-ambiguous me-1"></i>Sex
+                                                </th>
+                                                <th width="20%">
+                                                <i class="bi bi-telephone me-1"></i>Contact
+                                                </th>
+                                                <th width="20%">
+                                                <i class="bi bi-address me-1"></i>Address
+                                                </th>
+                                                <th width="20%">
+                                                <i class="bi bi-person-badge me-1"></i>Role
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${parties}" var="parties_row">
+                                                <tr>
+                                                <td class="align-middle">
+                                                    <div class="fw-semibold">${parties_row.ar_name}</div>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge ${parties_row.ar_gender == 'MALE' ? 'bg-info' : parties_row.ar_gender == 'FEMALE' ? 'bg-pink' : 'bg-secondary'}">
+                                                    ${parties_row.ar_gender == 'MALE' ? 'Male' : parties_row.ar_gender == 'FEMALE' ? 'Female' : 'Other'}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <div class="contact-info">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <i class="bi bi-phone text-primary me-2"></i>
+                                                        <small>${empty fn:trim(parties_row.ar_cell_phone) ? '--' : fn:trim(parties_row.ar_cell_phone)}</small>
+                                                    </div>
+                                                    <c:if test="${not empty parties_row.ar_cell_phone2}">
+                                                        <div class="d-flex align-items-center">
+                                                        <i class="bi bi-telephone-plus text-secondary me-2"></i>
+                                                        <small>${empty fn:trim(parties_row.ar_cell_phone2) ? '--' : fn:trim(parties_row.ar_cell_phone2)}</small>
+                                                        </div>
+                                                    </c:if>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <div class="contact-info">
+                                                        <div class="d-flex align-items-center mb-1">
+                                                            <i class="bi bi-address text-primary me-2"></i>
+                                                            <small>${empty fn:trim(parties_row.ar_address) ? '--' : fn:trim(parties_row.ar_address)}</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge ${parties_row.type_of_party == 'Grantor' ? 'bg-success' : parties_row.type_of_party == 'Applicant' ? 'bg-warning' : 'bg-info'}">
+                                                    ${parties_row.type_of_party}
+                                                    </span>
+                                                </td>
+                                                </tr>
+                                            </c:forEach>
+                                            
+                                            <!-- Empty State -->
+                                            <c:if test="${empty parties}">
+                                                <tr>
+                                                <td colspan="5" class="text-center py-4">
+                                                    <div class="text-muted">
+                                                    <i class="bi bi-people fs-1 mb-2 d-block"></i>
+                                                    <p class="mb-0">No parties added yet</p>
+                                                    <small>Click "Add Grantor" or "Add Applicant" to get started</small>
+                                                    </div>
+                                                </td>
+                                                </tr>
+                                            </c:if>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 </div>
                             </div>
@@ -6461,7 +6633,7 @@ Thank you.</textarea>
                     </div>
                     
                     <!-- Location Details Tab -->
-                    <div class="tab-pane fade" id="location" role="tabpanel">
+                    <div class="tab-pane fade" id="location-deed" role="tabpanel">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="card border h-100">
@@ -6497,50 +6669,12 @@ Thank you.</textarea>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <div class="card border h-100">
-                                    <div class="card-header bg-light py-2">
-                                        <h6 class="mb-0">
-                                            <i class="fas fa-landmark me-2"></i>
-                                            Registration Details
-                                        </h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row g-2 mb-3">
-                                            <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Registration District</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(registration_district_number) ? '--' : fn:trim(registration_district_number)}</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Registration Section</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(registration_section_number) ? '--' : fn:trim(registration_section_number)}</div>
-                                            </div>
-                                        </div>
-                                        <div class="row g-2 mb-3">
-                                            <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Registration Block</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(registration_block_number) ? '--' : fn:trim(registration_block_number)}</div>
-                                            </div>
-                                            <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Created Date</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
-                                            </div>
-                                        </div>
-                                        <div class="row g-2">
-                                            <div class="col-6">
-                                                <label class="form-label small text-muted mb-1">Modified Date</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            
                         </div>
                     </div>
                     
                     <!-- Financial Details Tab -->
-                    <div class="tab-pane fade" id="financial" role="tabpanel">
+                    <div class="tab-pane fade" id="financial-deed" role="tabpanel">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="card border h-100">
@@ -6584,7 +6718,7 @@ Thank you.</textarea>
                     </div>
                     
                     <!-- Map Visualization Tab -->
-                    <div class="tab-pane fade" id="map-" role="tabpanel">
+                    <div class="tab-pane fade border-0" id="map-deed" role="tabpanel">
                       <div class="row g-3"></div>
                         <div class="card border h-100">
                             <div class="card-header bg-light py-2">
@@ -6692,27 +6826,28 @@ Thank you.</textarea>
                                 
                                 <!-- Map Container -->
                                 <div class="mt-3 w-100">
-                                  <div id="lc-map__"></div>
+                                  <div id="lc-map__deed"></div>
                                 </div>
                                 
                             </div>
                         </div>
+
+                         <!-- Confirm Transaction Button -->
+                        <div class="mt-4">
+                            <button type="button" id="btn_confirm_registration_transaction_deed" 
+                                    class="btn btn-success w-100 py-3 d-none">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-check-circle fa-lg me-3"></i>
+                                    <div class="text-start">
+                                        <div class="fw-medium">Confirm Transaction</div>
+                                        <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Confirm Transaction Button -->
-                <div class="mt-4">
-                    <button type="button" id="btn_confirm_registration_transaction" 
-                            class="btn btn-success w-100 py-3 d-none">
-                        <div class="d-flex align-items-center justify-content-center">
-                            <i class="fas fa-check-circle fa-lg me-3"></i>
-                            <div class="text-start">
-                                <div class="fw-medium">Confirm Transaction</div>
-                                <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
-                            </div>
-                        </div>
-                    </button>
-                </div>
+            
                 
             </div>
             
