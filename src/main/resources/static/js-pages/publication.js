@@ -348,7 +348,7 @@ $(document).ready(function() {
     //             '': 'Choose agency...',
     //             'judeyamoah@gmail.com': 'Daily Graphic',
     //             'judeyamoah@gmail.com': 'The Spectator',
-    //             'judeyamoah@gmail.com': 'The Daily Times'
+    //             'judeyamoah@gmail.com': 'The Ghanaian Times'
     //         },
     //         inputPlaceholder: 'Select agency',
     //         inputValidator: (value) => {
@@ -448,7 +448,7 @@ $(document).ready(function() {
      var agencies = [
         { email: '', name: 'Daily Graphic', icon: '📰' },
         { email: '', name: 'The Spectator', icon: '📰' },
-        { email: '', name: 'Daily Times', icon: '📰' },
+        { email: '', name: 'Ghanaian Times', icon: '📰' },
     ];
     
     // Build agency options for the modal
@@ -1024,7 +1024,7 @@ function processSpecialPublication(send_to_address, agencyName) {
     //             '': 'Choose agency...',
     //             'judeyamoah@gmail.com': 'Daily Graphic',
     //             'judeyamoah@gmail.com': 'The Spectator',
-    //             'judeyamoah@gmail.com': 'The Daily Times'
+    //             'judeyamoah@gmail.com': 'The Ghanaian Times'
     //         },
     //         inputPlaceholder: 'Select agency',
     //         inputValidator: (value) => {
@@ -1186,7 +1186,7 @@ function processSpecialPublication(send_to_address, agencyName) {
     var agencies = [
         { email: '', name: 'Daily Graphic', icon: '📰' },
         { email: '', name: 'The Spectator', icon: '📰' },
-        { email: '', name: 'Daily Times', icon: '📰' },
+        { email: '', name: 'Ghanaian Times', icon: '📰' },
     ];
     
     // Build agency options for the modal
@@ -1196,7 +1196,7 @@ function processSpecialPublication(send_to_address, agencyName) {
             <div class="agency-option" data-email="${agency.email}" data-name="${agency.name}">
                 <div class="form-check">
                     <input class="form-check-input agency-radio" type="radio" name="agencySelection" 
-                           id="agency_${agency.email.replace(/[@.]/g, '_')}" value="${agency.email}">
+                           id="agency_${agency.email.replace(/[@.]/g, '_')}" value="${agency.name}">
                     <label class="form-check-label" for="agency_${agency.email.replace(/[@.]/g, '_')}">
                        <!-- <span class="agency-icon">${agency.icon}</span> -->
                         <span class="agency-name">${agency.name}</span>

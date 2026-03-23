@@ -3545,8 +3545,12 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 			if (request_type.equals("select_add_to_publication")) {
 
 				String case_number = request.getParameter("case_number");
+				String request_id = request.getParameter("request_id");
 
-				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
+				String fullname = (String) session.getAttribute("fullname"); 
+				String mac_address = (String) session.getAttribute("mac_address"); 
+				String ip_address =  (String) session.getAttribute("ip_address");
+				
 
 				String userid = (String) session.getAttribute("userid");
 				JSONObject obj = new JSONObject();
@@ -3555,7 +3559,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				// obj.put( "wkt_polygon",wkt_polgon );
 				obj.put("case_number", case_number);
 				// obj.put( "job_number", job_number );
-				obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
+				obj.put("fullname", fullname); 
+				obj.put("mac_address", mac_address); 
+				obj.put("ip_address", ip_address);
+				obj.put("request_id", request_id);
 
 				obj.put("userid", userid);
 
@@ -3564,9 +3571,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 				// System.out.println(input);
-				web_service_response = casemgt_cl_m.select_add_to_publication(cls_url_config.getWeb_service_url_ser(),
+				web_service_response = casemgt_cl_m.select_add_to_publication_v5(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
-						case_number);
+						input);
 				if (web_service_response != null) {
 					// System.out.println(web_service_response);
 				} else {

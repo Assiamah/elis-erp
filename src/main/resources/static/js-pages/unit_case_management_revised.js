@@ -887,7 +887,7 @@ $(document).ready(function() {
 				} else if(inbox_type == 9) {
 					$(".officerInd").text("Requested By");
 				} else if(inbox_type == 10) {
-					$(".officerInd").text("Requested By");
+					$(".officerInd").text("Sent By");
 				}
 
 				if(!jobdetails) {
@@ -1881,11 +1881,11 @@ $(document).ready(function() {
 
 	function removeAllActiveStates() {
     	// Remove all light background classes
-		$("#body-bg-1, #body-bg-2, #body-bg-4, #body-bg-5, #body-bg-6, #body-bg-7")
+		$("#body-bg-1, #body-bg-2, #body-bg-4, #body-bg-5, #body-bg-6, #body-bg-7, #body-bg-8, #body-bg-9, #body-bg-10")
 			.removeClass('bg-primary-light bg-danger-light bg-warning-light bg-info-light bg-success-light bg-secondary-light');
 		
 		// Reset text colors (optional - keep text as is)
-		$("#number-text-1, #number-text-2, #number-text-4, #number-text-5, #number-text-6, #number-text-7")
+		$("#number-text-1, #number-text-2, #number-text-4, #number-text-5, #number-text-6, #number-text-7, #number-text-8, #number-text-9, #number-text-10")
 			.removeClass('text-white');
 		
 		// Remove active class from all cards
@@ -1941,7 +1941,8 @@ $(document).ready(function() {
 				$("#body-bg-9").addClass('bg-primary-light');
 				$("#number-text-9").addClass('text-white');
 				$("#card-awaiting_inspection").addClass('active-card');
-			case 10: // Awaiting Inspection
+				break;
+			case 10: // Awaiting Publication
 				$(".btn-to-be-disabled").prop('disabled', true);
 				$("#body-bg-10").addClass('bg-warning-light');
 				$("#number-text-10").addClass('text-white');

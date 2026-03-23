@@ -12610,7 +12610,7 @@ request.setAttribute("rq_id",rq_id);
 				}
 
 
-				System.out.println(web_service_response_menu);
+				//System.out.println(web_service_response_menu);
 
 				web_service_response_compliance_notice = casemgt_web_service
 							.select_load_compliance_notice_count_by_unit(cls_url_config.getWeb_service_url_ser(),
@@ -12631,6 +12631,7 @@ request.setAttribute("rq_id",rq_id);
 				String attention_required = menu_obj.get("attention_required").toString();
 				String request_for_additional_input = menu_obj.get("request_for_additional_input").toString();
 				String awaiting_inspection = menu_obj.get("awaiting_inspection").toString();
+				String awaiting_publication = menu_obj.get("awaiting_publication").toString();
 
 				JSONObject notice_count_obj;
 
@@ -12652,6 +12653,7 @@ request.setAttribute("rq_id",rq_id);
 				request.setAttribute("attention_required", attention_required);
 				request.setAttribute("request_for_additional_input", request_for_additional_input);
 				request.setAttribute("awaiting_inspection", awaiting_inspection);
+				request.setAttribute("awaiting_publication", awaiting_publication);
 
 				request.setAttribute("reminders", reminders);
 				request.setAttribute("warnings", warnings);
@@ -12705,6 +12707,7 @@ request.setAttribute("rq_id",rq_id);
 				cls_casemgt casemgt_web_service = new cls_casemgt();
 				String web_service_response_menu = null;
 				String web_service_response_compliance_notice = null;
+				String web_service_response_publication = null;
 				String view_all_offices = (String) session.getAttribute("view_all_offices");
 				JSONObject obj = new JSONObject();
 
@@ -12725,7 +12728,7 @@ request.setAttribute("rq_id",rq_id);
 				}
 
 
-				System.out.println(web_service_response_menu);
+				//System.out.println(web_service_response_menu);
 
 				web_service_response_compliance_notice = casemgt_web_service
 							.select_load_compliance_notice_count_by_unit(cls_url_config.getWeb_service_url_ser(),
@@ -12746,7 +12749,7 @@ request.setAttribute("rq_id",rq_id);
 				String attention_required = menu_obj.get("attention_required").toString();
 				String request_for_additional_input = menu_obj.get("request_for_additional_input").toString();
 				String awaiting_inspection = menu_obj.get("awaiting_inspection").toString();
-				
+				String awaiting_publication = menu_obj.get("awaiting_publication").toString();
 
 				JSONObject notice_count_obj;
 
@@ -12767,7 +12770,7 @@ request.setAttribute("rq_id",rq_id);
 				request.setAttribute("request_for_additional_input", request_for_additional_input);
 				request.setAttribute("attention_required", attention_required);
 				request.setAttribute("awaiting_inspection", awaiting_inspection);
-
+				request.setAttribute("awaiting_publication", awaiting_publication);
 				request.setAttribute("reminders", reminders);
 				request.setAttribute("warnings", warnings);
 				request.setAttribute("compliance_queries", compliance_queries);

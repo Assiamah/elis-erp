@@ -3138,6 +3138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const job_number = $("#cs_main_job_number").val();
         const case_number = $("#cs_main_case_number").val();
         const publicationDate = $('#lc_txt_publicity_date').val();
+        const request_id = $("#request_id").val();
         
         // Get user info from localStorage
         const send_by_id = localStorage.getItem('userid');
@@ -3154,7 +3155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h5 class="mb-3">Confirm Publication Submission</h5>
                     <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
                         <i class="fas fa-exclamation-triangle me-2"></i>
-                        <strong>Important:</strong> This action will submit the notice for public publication
+                        <strong>Important:</strong> This action will submit the application to the publication list and move it from your staff case management to the publication queue in the unit case management.
                     </div>
                     <div class="text-start mt-3">
                         <p><strong>Job Number:</strong> ${job_number}</p>
@@ -3184,7 +3185,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         case_number: case_number,
                         job_number: job_number,
                         fullname: send_by_name,
-                        userid: send_by_id
+                        userid: send_by_id,
+                        request_id: request_id
                     },
                     cache: false,
                     beforeSend: function() {
@@ -3253,6 +3255,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 // window.location.href = 'publication_list.jsp';
                                 
                                 // console.log('Redirecting to publication list...');
+
+                                window.location.href = '/case_movement_module';
                             }
                         });
                         

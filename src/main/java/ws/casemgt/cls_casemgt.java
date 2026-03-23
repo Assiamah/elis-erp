@@ -740,6 +740,28 @@ public class cls_casemgt {
 		return output;
 	}
 
+	public String select_add_to_publication_v5(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/select_add_to_publication_v5");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+	}
+
 	public String select_update_publication_date(String web_service_url, String web_service_api_key,
 			String json_request) {
 		String output = "Data Not Received";
@@ -4574,6 +4596,53 @@ public class cls_casemgt {
 			Client client = Client.create();
 			WebResource webResource = client.resource(web_service_url
 					+ "case_management_service/select_load_application_for_publication_management");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, regional_id);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} 
+		return output;
+	}
+
+	
+	public String select_count_for_awaiting_publication(String web_service_url, String web_service_api_key,
+			String regional_id) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(web_service_url
+					+ "case_management_service/select_count_for_awaiting_publication");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, regional_id);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} 
+		return output;
+	}
+
+	public String select_load_application_for_awaiting_publication(String web_service_url, String web_service_api_key,
+			String regional_id) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(web_service_url
+					+ "case_management_service/select_load_application_for_awaiting_publication");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class);
 			ClientResponse response = webResource.accept("application/json")

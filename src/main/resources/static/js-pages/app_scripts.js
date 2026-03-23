@@ -6230,6 +6230,64 @@ $(document).on('click', '.publicFileUploadModal', function () {
 
 $('#form_add_minutes').on('submit', function(e){
     e.preventDefault();
+
+    // Validate officer selection
+    const isSelectMode = $('#officer_select_mode').is(':checked');
+    let officerId = '';
+    
+    if (isSelectMode) {
+        officerId = $('#am_to_officer_select').val();
+        if (!officerId) {
+            $('#am_to_officer_select').addClass('is-invalid');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please select an officer.',
+                confirmButtonColor: '#3085d6'
+            });
+            return false;
+        }
+        $('#am_to_officer_select').removeClass('is-invalid');
+    } else {
+        const officerName = $('#am_to_officer_search').val();
+        if (!officerName) {
+            $('#am_to_officer_search').addClass('is-invalid');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please select an officer.',
+                confirmButtonColor: '#3085d6'
+            });
+            return false;
+        }
+        
+        // Find officer ID from datalist
+        let found = false;
+        $('#listofusers option').each(function() {
+            if ($(this).val() === officerName) {
+                officerId = $(this).data('value');
+                found = true;
+                return false;
+            }
+        });
+        
+        if (!found) {
+            $('#am_to_officer_search').addClass('is-invalid');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid Selection',
+                text: 'Please select a valid officer from the list.',
+                confirmButtonColor: '#3085d6'
+            });
+            return false;
+        }
+        $('#am_to_officer_search').removeClass('is-invalid');
+    }
+
+    // Set the hidden field value
+    $('#am_to_officer').val(officerId);
+
+    console.log(officerId)
     
     // Get form values
     var action_on_form = $("#action_on_form_query").val() || "add";
@@ -6297,7 +6355,7 @@ $('#form_add_minutes').on('submit', function(e){
               '</div>' +
               '<div class="row mt-2">' +
               '<div class="col-6"><strong>From:</strong><br>' + am_from_officer + '</div>' +
-              '<div class="col-6"><strong>To:</strong><br>' + am_to_officer + officerInfo + '</div>' +
+              '<div class="col-6"><strong>To:</strong><br>' + am_to_officer + '</div>' +
               '</div>' +
               '<div class="mt-2"><strong>Description Preview:</strong><br>' +
               '<span class="text-muted">' + (am_description.length > 100 ? am_description.substring(0, 100) + '...' : am_description) + '</span>' +
@@ -6346,9 +6404,9 @@ $('#form_add_minutes').on('submit', function(e){
             Swal.fire({
                 title: 'Success!',
                 html: '<div class="text-center">' +
-                      '<div class="mb-3">' +
-                      '<i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>' +
-                      '</div>' +
+                    //   '<div class="mb-3">' +
+                    //   '<i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>' +
+                    //   '</div>' +
                       '<strong>' + successMessage + '</strong><br>' +
                       '<div class="mt-3">' +
                       '<div class="alert alert-light border d-inline-block">' +
@@ -6543,4 +6601,337 @@ $("#quickSearchQCBtn").on("click", function() {
 
         }
     })
+
+});
+
+$('#am_to_division').on('change', function () {
+    const selected_division = $(this).val();
+    const $select = $("#am_to_unit");
+    const $container = $select.closest('.datalist-container');
+    //console.log('Selected Division:', selected_division)
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading units...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+
+    if (!selected_division || selected_division === "") {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_units',
+        },
+        cache: false,
+        success: function (jobdetails) {
+            //console.log(jobdetails)
+            try {
+                const json_p = JSON.parse(jobdetails);
+                const $select = $("#am_to_unit");
+                let unitCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a unit',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add units to select
+                $(json_p.data).each(function () {
+                    if (this.unit_division && this.unit_division.includes(selected_division)) {
+                        const option = $('<option>', {
+                            value: this.unit_id || this.unit_name,
+                            text: this.unit_name || '',
+                            'data-division': this.unit_division || ''
+                        });
+
+                        $select.append(option);
+                        unitCount++;
+                    }
+                });
+
+                // Update UI based on results
+                if (unitCount > 0) {
+                    $select.prop('disabled', false);
+
+                    // Show success feedback
+                    showUnitNotification(`${unitCount} units loaded successfully`, 'success');
+
+                    // Enable when a unit is selected
+                    $select.on('change', function () {
+                        if ($(this).val()) {
+                            $(".process-btn").show();
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(".process-btn").hide();
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No units available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    showUnitNotification('No units found for this division', 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading units:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading units',
+                    disabled: true,
+                    selected: true
+                }));
+                $container.addClass('datalist-error');
+                showUnitNotification('Failed to load units. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $("#am_to_unit").empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading units',
+                disabled: true,
+                selected: true
+            }));
+            $container.addClass('datalist-error');
+            showUnitNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
+// Toggle between select and datalist modes
+$('input[name="officer_input_type"]').on('change', function() {
+    const isSelectMode = $('#officer_select_mode').is(':checked');
+    
+    if (isSelectMode) {
+        $('#officer_select_container').show();
+        $('#officer_search_container').hide();
+        
+        // Enable/disable appropriate fields
+        $('#am_to_officer_select').prop('disabled', false);
+        $('#am_to_officer_search').prop('disabled', true);
+        
+        // Clear values
+        $('#am_to_officer_search').val('');
+        $('#am_to_officer').val('');
+        
+        // Trigger change to validate
+        $('#am_to_officer_select').trigger('change');
+    } else {
+        $('#officer_select_container').hide();
+        $('#officer_search_container').show();
+        
+        // Enable/disable appropriate fields
+        $('#am_to_officer_select').prop('disabled', true);
+        $('#am_to_officer_search').prop('disabled', false);
+        
+        // Clear values
+        $('#am_to_officer_select').val('');
+        $('#am_to_officer').val('');
+        
+        // Trigger change to validate
+        $('#am_to_officer_search').trigger('change');
+    }
+});
+
+// Update the unit selection handler to populate both officer selects
+$('#am_to_unit').on('change', function() {
+    const selected_unit = $(this).val();
+    const $select = $("#am_to_officer_select");
+    const $search = $("#am_to_officer_search");
+    const $container = $select.closest('.datalist-container');
+    const regional_code_general = $("#regional_code_general").text();
+
+    // Reset and show loading state for both officer fields
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading users...',
+        disabled: true,
+        selected: true
+    }));
+    
+    $search.prop('disabled', true);
+    $container.addClass('datalist-loading');
+
+    if (!selected_unit) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a unit first',
+            disabled: true,
+            selected: true
+        }));
+        $search.prop('disabled', true);
+        $container.removeClass('datalist-loading');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_users',
+        },
+        cache: false,
+        success: function (jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                let userCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+
+                // Clear and add default option for select mode
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select an officer',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Clear and update datalist for search mode
+                const $datalist = $('#listofusers');
+                $datalist.empty();
+
+                // Add users to both selects
+                $(json_p).each(function () {
+                    if (selected_unit == this.unit_id && regional_code_general == this.regional_code) {
+                        // Add to select dropdown
+                        const option = $('<option>', {
+                            value: this.fullname,
+                            text: this.fullname || '',
+                            'data-unit': this.unit_name || '',
+                            'data-regional': this.regional_code || ''
+                        });
+                        $select.append(option);
+                        
+                        // Add to datalist
+                        $datalist.append($('<option>', {
+                            'data-value': this.fullname,
+                            value: this.fullname || ''
+                        }));
+                        
+                        userCount++;
+                    }
+                });
+
+                // Update UI based on results
+                if (userCount > 0) {
+                    $select.prop('disabled', false);
+                    $search.prop('disabled', false);
+                    
+                    // Show success feedback
+                    showUserNotification(`${userCount} users loaded successfully`, 'success');
+                    
+                    // Handle select mode change
+                    $select.off('change.userChange').on('change.userChange', function() {
+                        const userId = $(this).val();
+                        const userName = $(this).find('option:selected').text();
+                        
+                        if (userId) {
+                            // Store selected user data and update hidden field
+                            $(this).data('selected-user-id', userId);
+                            $(this).data('selected-user-name', userName);
+                            $('#am_to_officer').val(userId);
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $('#am_to_officer').val('');
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                    
+                    // Handle search mode change
+                    $search.off('change.searchChange').on('change.searchChange', function() {
+                        const selectedName = $(this).val();
+                        let userId = '';
+                        
+                        // Find the corresponding user ID from datalist options
+                        $('#listofusers option').each(function() {
+                            if ($(this).val() === selectedName) {
+                                userId = $(this).data('value');
+                                return false;
+                            }
+                        });
+                        
+                        if (userId) {
+                            $('#am_to_officer').val(userId);
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else if (selectedName === '') {
+                            $('#am_to_officer').val('');
+                            $(this).removeClass('is-valid');
+                        } else {
+                            // Invalid selection
+                            $(this).addClass('is-invalid');
+                            $('#am_to_officer').val('');
+                        }
+                    });
+                    
+                    // Trigger initial validation based on current mode
+                    if ($('#officer_select_mode').is(':checked')) {
+                        $select.trigger('change');
+                    } else {
+                        $search.trigger('change');
+                    }
+                    
+                } else {
+                    $select.empty().append($('<option>', {
+                        value: '',
+                        text: 'No users available for this unit',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $search.prop('disabled', true);
+                    showUserNotification(`No users found in selected unit`, 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading users:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading users',
+                    disabled: true,
+                    selected: true
+                }));
+                $search.prop('disabled', true);
+                $container.addClass('datalist-error');
+                showUserNotification('Failed to load users. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $select.empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading users',
+                disabled: true,
+                selected: true
+            }));
+            $search.prop('disabled', true);
+            $container.addClass('datalist-error');
+            showUserNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
 });
