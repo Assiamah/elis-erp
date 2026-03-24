@@ -2065,15 +2065,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>LRDGAR61145672021</td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-eye me-1"></i>
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>

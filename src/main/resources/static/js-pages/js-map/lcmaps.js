@@ -2507,64 +2507,440 @@ $("#lc_btn_visualise_search").click(function(event) {
 
 
 		$("#lc_btn_check_related_jobs").click(function(event) {
-			
-					 console.log('lc_btn_check_related_jobs')
-						//console.log($('#lc_bl_wkt_polygon').val())
-					var wktplygonsearch = $('#lc_bl_wkt_polygon').val() == undefined ? $('#lc_fr_bl_wkt_polygon').val() : $('#lc_bl_wkt_polygon').val();
-				//	var request = new XMLHttpRequest();
-					console.log(wktplygonsearch)
+    console.log('lc_btn_check_related_jobs');
+    
+    var wktplygonsearch = $('#lc_bl_wkt_polygon').val() == undefined ? 
+                          $('#lc_fr_bl_wkt_polygon').val() : 
+                          $('#lc_bl_wkt_polygon').val();
+    console.log(wktplygonsearch);
+    
+    // Show loading state in table
+    $("#lc_fit_related_jobs_table tbody").html(`
+        <tr>
+            <td colspan="2" class="text-center py-4">
+                <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="text-muted">Loading related jobs...</span>
+            </td>
+        </tr>
+    `);
+    
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'select_check_for_first_in_time_verification',
+            vr_polygon: wktplygonsearch
+        },
+        cache: false,
+        success: function(jobdetails) {
+            try {
+                var json_p = JSON.parse(jobdetails);
+                console.log('Response:', json_p);
+                
+                if (json_p !== undefined && json_p !== null && json_p.success === true) {
+                    
+                    // Handle map layers - display parcels on map
+                    if (under_registration_search_result_searchLayer.getSource() != null) {
+                        under_registration_search_result_searchLayer.getSource().clear();
+                    }
+                    
+                    if (json_p.parcels !== undefined && json_p.parcels !== null && 
+                        json_p.parcels.features !== undefined && json_p.parcels.features !== null && 
+                        json_p.parcels.features.length > 0) {
+                        
+                        under_registration_search_result_searchLayer.setSource(
+                            new ol.source.Vector({
+                                features: (new ol.format.GeoJSON()).readFeatures(json_p.parcels)
+                            })
+                        );
+                        
+                        // Fit map to the parcels extent
+                        var extent = under_registration_search_result_searchLayer.getSource().getExtent();
+                        if (extent && !isNaN(extent[0]) && !isNaN(extent[1]) && 
+                            !isNaN(extent[2]) && !isNaN(extent[3])) {
+                            view.fit(extent);
+                            map.getView().fit(extent, {
+                                size: map.getSize(),
+                                maxZoom: 16
+                            });
+                        }
+                    }
+                    
+                    // Load the data into the table
+                    loadRelatedJobsTable(json_p);
+                    
+                } else {
+                    // Handle unsuccessful response
+                    var errorMsg = json_p.msg || 'No data found';
+                    $("#lc_fit_related_jobs_table tbody").html(`
+                        <tr>
+                            <td colspan="2" class="text-center py-4 text-muted">
+                                <i class="fas fa-search fa-2x mb-2 d-block"></i>
+                                <span>${escapeHtml(errorMsg)}</span>
+                                <div class="small mt-1">No related jobs found for this parcel</div>
+                            </td>
+                        </tr>
+                    `);
+                    
+                    // Clear map layer if no data
+                    if (under_registration_search_result_searchLayer.getSource() != null) {
+                        under_registration_search_result_searchLayer.getSource().clear();
+                    }
+                }
+                
+            } catch(e) {
+                console.error('Error parsing response:', e);
+                $("#lc_fit_related_jobs_table tbody").html(`
+                    <tr>
+                        <td colspan="2" class="text-center py-4 text-danger">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-2 d-block"></i>
+                            Error loading related jobs
+                            <div class="small mt-1">${escapeHtml(e.message)}</div>
+                        </td>
+                    </tr>
+                `);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            $("#lc_fit_related_jobs_table tbody").html(`
+                <tr>
+                    <td colspan="2" class="text-center py-4 text-danger">
+                        <i class="fas fa-exclamation-circle fa-2x mb-2 d-block"></i>
+                        Failed to load related jobs. Please try again.
+                        <div class="small mt-1">${escapeHtml(error)}</div>
+                    </td>
+                </tr>
+            `);
+        }
+    });
+});
 
-					$
-							.ajax({
-								type : "POST",
-								url : "Case_Management_Serv",
-								data : {
-									request_type : 'select_check_for_first_in_time_verification',
-									vr_polygon : wktplygonsearch
-								},
-								cache : false,
-							
-								success : function(jobdetails) {
+// Function to load related jobs into the table
+function loadRelatedJobsTable(jsonData) {
+    var tbody = $("#lc_fit_related_jobs_table tbody");
+    tbody.empty();
+    
+    // Extract data from the response structure
+    var relatedJobs = [];
+    
+    // The data is in json_p.data array from the database function
+    if (jsonData.data && Array.isArray(jsonData.data) && jsonData.data.length > 0) {
+        relatedJobs = jsonData.data;
+    } else if (jsonData.parcels && jsonData.parcels.features && Array.isArray(jsonData.parcels.features)) {
+        // Also extract from parcels features if needed
+        relatedJobs = jsonData.parcels.features.map(function(feature) {
+            return feature.properties;
+        });
+    }
+    
+    // Check if we have any related jobs
+    if (relatedJobs.length > 0) {
+        // Show count badge in card header (optional)
+        var jobCount = relatedJobs.length;
+        $(".card-header h6").html(`
+            <i class="fas fa-list-alt me-2 text-primary"></i>
+            Related Jobs 
+            <span class="badge bg-primary rounded-pill ms-2">${jobCount}</span>
+        `);
+        
+        // Loop through each record and add to table
+        $.each(relatedJobs, function(index, record) {
+            var row = $('<tr>');
+            
+            // Job Number column with additional details
+            var jobCell = $('<td>');
+            var jobHtml = `<strong class="text-primary">${escapeHtml(record.job_number || '-')}</strong>`;
+            
+            if (record.case_number) {
+                jobHtml += `<div class="small text-muted mt-1">
+                                <i class="fas fa-folder-open me-1"></i>
+                                Case: ${escapeHtml(record.case_number)}
+                            </div>`;
+            }
+            
+            if (record.glpin) {
+                jobHtml += `<div class="small text-muted">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                GLPIN: ${escapeHtml(record.glpin)}
+                            </div>`;
+            }
+            
+            if (record.locality) {
+                jobHtml += `<div class="small text-muted">
+                                <i class="fas fa-location-dot me-1"></i>
+                                Locality: ${escapeHtml(record.locality)}
+                            </div>`;
+            }
+            
+            if (record.status) {
+                var statusClass = '';
+                var statusText = record.status;
+                
+                // Determine badge color based on status
+                if (statusText.toLowerCase().includes('completed') || statusText.toLowerCase().includes('approved')) {
+                    statusClass = 'success';
+                } else if (statusText.toLowerCase().includes('pending') || statusText.toLowerCase().includes('processing')) {
+                    statusClass = 'warning';
+                } else if (statusText.toLowerCase().includes('rejected') || statusText.toLowerCase().includes('cancelled')) {
+                    statusClass = 'danger';
+                } else {
+                    statusClass = 'secondary';
+                }
+                
+                jobHtml += `<span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} mt-2">
+                                <i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>
+                                ${escapeHtml(statusText)}
+                            </span>`;
+            }
+            
+            jobCell.html(jobHtml);
+            row.append(jobCell);
+            
+            // Actions column
+            var actionsCell = $('<td>', {'class': 'text-center'});
+            
+            // View button
+            var viewButton = $('<button>', {
+                type: 'button',
+                class: 'btn btn-outline-primary btn-sm me-1',
+                html: '<i class="fas fa-eye me-1"></i> View',
+                click: function() {
+                    viewRelatedJob(record);
+                }
+            });
+            viewButton.attr('data-bs-toggle', 'tooltip');
+            viewButton.attr('data-bs-placement', 'top');
+            viewButton.attr('title', 'View job details');
+            actionsCell.append(viewButton);
+            
+            // Optional: Add a button to locate on map
+            if (record.gid) {
+                var locateButton = $('<button>', {
+                    type: 'button',
+                    class: 'btn btn-outline-info btn-sm',
+                    html: '<i class="fas fa-map-marker-alt me-1"></i> Locate',
+                    click: function() {
+                        locateJobOnMap(record);
+                    }
+                });
+                locateButton.attr('data-bs-toggle', 'tooltip');
+                locateButton.attr('data-bs-placement', 'top');
+                locateButton.attr('title', 'Locate on map');
+                actionsCell.append(locateButton);
+            }
+            
+            row.append(actionsCell);
+            tbody.append(row);
+        });
+        
+        // Add a summary row with statistics
+        var totalJobs = relatedJobs.length;
+        var uniqueLocalities = [...new Set(relatedJobs.map(job => job.locality).filter(l => l))].length;
+        var completedJobs = relatedJobs.filter(job => job.status && job.status.toLowerCase().includes('completed')).length;
+        
+        tbody.append(`
+            <tr class="table-light">
+                <td colspan="2" class="small py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-chart-line me-1 text-primary"></i>
+                            <strong>Summary:</strong>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <span class="text-muted">
+                                <i class="fas fa-folder me-1"></i>Total: ${totalJobs}
+                            </span>
+                            ${uniqueLocalities > 0 ? `
+                            <span class="text-muted">
+                                <i class="fas fa-location-dot me-1"></i>Localities: ${uniqueLocalities}
+                            </span>
+                            ` : ''}
+                            ${completedJobs > 0 ? `
+                            <span class="text-success">
+                                <i class="fas fa-check-circle me-1"></i>Completed: ${completedJobs}
+                            </span>
+                            ` : ''}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `);
+        
+    } else {
+        // No related jobs found
+        $(".card-header h6").html(`
+            <i class="fas fa-list-alt me-2 text-primary"></i>
+            Related Jobs
+        `);
+        
+        tbody.html(`
+            <tr>
+                <td colspan="2" class="text-center py-4 text-muted">
+                    <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                    <span>No related jobs found for this parcel</span>
+                    <div class="small mt-2">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Try adjusting the search area or check the polygon selection
+                    </div>
+                </td>
+            </tr>
+        `);
+    }
+    
+    // Reinitialize tooltips
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('#lc_fit_related_jobs_table [data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+}
 
-									var json_p = JSON.parse(jobdetails);
-									console.log(json_p)
-									
-									if (json_p !== undefined || json_p !== null) {
-										
-									
-										if (under_registration_search_result_searchLayer
-												.getSource() != null) {
-											under_registration_search_result_searchLayer
-													.getSource().clear();
-										}
+// Function to handle viewing a related job
+function viewRelatedJob(record) {
+    console.log('Viewing related job:', record);
+    
+    // Format date if available
+    var datePlott = record.date_plott ? formatDate(record.date_plott) : 'Not available';
+    var plottedBy = record.plotted_by || 'Not available';
+    
+    Swal.fire({
+        title: 'Job Details',
+        width: '600px',
+        html: `
+            <div class="text-start">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">Job Number</small>
+                            <strong class="text-primary">${escapeHtml(record.job_number || '-')}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">Case Number</small>
+                            <strong>${escapeHtml(record.case_number || '-')}</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">GLPIN</small>
+                            <strong>${escapeHtml(record.glpin || '-')}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">Locality</small>
+                            <strong>${escapeHtml(record.locality || '-')}</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">Plotted By</small>
+                            <strong>${escapeHtml(plottedBy)}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">Date Plotted</small>
+                            <strong>${datePlott}</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="border rounded p-2 bg-light">
+                            <small class="text-muted d-block">Status</small>
+                            <span class="badge bg-${getStatusBadgeClass(record.status)}">${escapeHtml(record.status || '-')}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Close',
+        confirmButtonColor: '#3085d6',
+        showCancelButton: true,
+        cancelButtonText: 'View Full Details',
+        cancelButtonColor: '#6c757d'
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel) {
+            // Navigate to full job details page
+            if (record.job_number) {
+                window.location.href = `job_details.jsp?job_number=${record.job_number}&case_number=${record.case_number}`;
+            }
+        }
+    });
+}
 
-										if (json_p.parcels === undefined
-												|| json_p.parcels.features === null) {
-										} else {
-											under_registration_search_result_searchLayer
-													.setSource(new ol.source.Vector(
-															{
-																features : (new ol.format.GeoJSON())
-																		.readFeatures(json_p.parcels)
-															}));
-										}
-										view.fit(under_registration_search_result_searchLayer.getSource().getExtent());
-										map.getView().fit(
-												under_registration_search_result_searchLayer.getSource()
-														.getExtent(), {
-													size : map.getSize(),
-													maxZoom : 16})
+// Function to locate job on map
+function locateJobOnMap(record) {
+    // Implement map location logic based on your map setup
+    console.log('Locating job on map:', record);
+    
+    // If you have the geometry information, you can zoom to it
+    if (record.gid && under_registration_search_result_searchLayer.getSource()) {
+        // Find the feature with matching GID and zoom to it
+        var features = under_registration_search_result_searchLayer.getSource().getFeatures();
+        var foundFeature = null;
+        
+        for (var i = 0; i < features.length; i++) {
+            var props = features[i].getProperties();
+            if (props.gid === record.gid) {
+                foundFeature = features[i];
+                break;
+            }
+        }
+        
+        if (foundFeature) {
+            var extent = foundFeature.getGeometry().getExtent();
+            map.getView().fit(extent, {
+                padding: [50, 50, 50, 50],
+                duration: 1000,
+                maxZoom: 18
+            });
+            
+            // Show success notification
+            Swal.fire({
+                title: 'Located!',
+                text: `Job ${record.job_number} has been located on the map`,
+                icon: 'success',
+                toast: true,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                title: 'Not Found',
+                text: 'Could not locate this parcel on the map',
+                icon: 'warning',
+                toast: true,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+    }
+}
 
-												//  lrd_search_result_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
-                                                // map.getView().fit(lrd_search_result_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
-
-									} else {
-										
-									}
-
-								}
-							});
-				});
+// Helper function to get status badge class
+function getStatusBadgeClass(status) {
+    if (!status) return 'secondary';
+    var statusLower = status.toLowerCase();
+    if (statusLower.includes('completed') || statusLower.includes('approved')) return 'success';
+    if (statusLower.includes('pending') || statusLower.includes('processing')) return 'warning';
+    if (statusLower.includes('rejected') || statusLower.includes('cancelled')) return 'danger';
+    return 'secondary';
+}
 
 
 				$("#lc_btnprintmap").click(function(event) {
