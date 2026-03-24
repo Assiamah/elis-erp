@@ -4091,6 +4091,41 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("select_check_for_first_in_time_verification")) {
+				String polygon = request.getParameter("vr_polygon");
+
+				
+	
+				String created_by = (String) session.getAttribute("fullname");
+				String created_by_id = (String) session.getAttribute("userid");
+				String mac_address = (String) session.getAttribute("mac_address"); 
+				String ip_address =  (String) session.getAttribute("ip_address");
+				String fullname =  (String) session.getAttribute("fullname");
+				String userid =  (String) session.getAttribute("userid");
+				
+				JSONObject obj = new JSONObject();
+
+				obj.put("wkt_polygon", polygon);
+				
+				obj.put("created_by_id", created_by_id);
+				obj.put("fullname", fullname);
+				obj.put("userid", userid); 
+				obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
+
+				String input = obj.toString();
+				// System.out.println(polygon);
+				web_service_response = casemgt_cl.select_check_for_first_in_time_verification(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						input);
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			/*
 			 * if (request_type.equals(
 			 * "online_select_verification_code_final_approval")) { String

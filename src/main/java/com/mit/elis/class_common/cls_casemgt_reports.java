@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.rmi.dgc.Lease;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,12 +28,14 @@ import java.util.regex.Pattern;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.jfree.chart.plot.Plot;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.mit.elis.plan_generations.GeometryUtils;
 import com.mit.elis.plan_generations.Renderer;
+import com.mit.elis.servlets.setup.location;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.awt.geom.AffineTransform;
@@ -15431,6 +15434,17 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 		String dateTimeString = localDateTime.format(formattern);
 
+
+
+
+					output_cetfificate_template += "I [NAME OF THE CHARIMAN OF THE REGIONAL LANDS COMMISSION] CHAIRMAN OF THE [NAME OF THE REGION] REGIONAL LANDS COMMISSION  ";
+					output_cetfificate_template += "acting for and on behalf of the REGIONAL LANDS COMMISSION hereby consent to a [TYPE OF TRANSACTION] by [NAME OF GRANTOR] with ADDRESS OF GRANTOR if Registered company include location of registered office in addition to the Postal Address [Also include acting by its Authorized Agents Name] to [NAME OF GRANTEE] of [POSTAL ADDESS]  ";
+					output_cetfificate_template += "of all [its OR his/her] rights and interest in ALL THAT PIECE OR PARCEL of land known as [DESCRIPTION OF THE PROPERTY INCLUDING THE ACREAGE OF THE LAND] being a portion of an Unnumbered Plot situate at Greenhill, Legon  Accra, in the Greater Accra Region of the Republic of Ghana demised by a [TYPE OF PRECEDING TRANSACTION [DATE]  ";
+					output_cetfificate_template += "and made between the [THE GRANTOR IN THE PRECEDING TANSACTION] of the one part and the [Sublessor/Lessor/Assignor] herein of the other part for a term of [TERM IN WORDS AND NUMBERS] with effect from the [DATE OF TRANSACTION] and it is being subleased to the Sublessee herein for a term of Fifty (50) years with effect from the 1st day of September, 1998 SUBJECT  ";
+					output_cetfificate_template += "nevertheless to the payment of the revised ground rent reserved in the head lease and observance and performance of the Covenants contained in the said Lease reserved and on the part of the Lessee to be observed and performed PROVIDED ALWAYS THAT this Consent is restricted to the particular Sublease hereby authorized and save as aforesaid the covenant in the said Lease  ";
+					output_cetfificate_template += "contained against mortgaging assigning under-letting or parting with possession shall remain in full force and effect. Dated and sealed with Seal of the Greater Accra Regional Lands Commission this [DAY] day of [MONTH], [YEAR]  ";
+
+
 		output_cetfificate_template += "This Instrument is registered under section 216 of the Land Act, 2020 (Act 1036) this "
 				+ specialNamesMonthDay_short[day] + " day of " + convertToTitleCaseIteratingChars(month.toString())
 				+ ", " + year + " at " + dateTimeString;
@@ -15914,14 +15928,29 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 		// String remark_or_comment = (String)
 		// job_detail_obj.get("remark_or_comment").toString();
 
-		output_cetfificate_template += "I ";
-		output_cetfificate_template += web_chairman_regional_land_commission;
-		output_cetfificate_template += " CHAIRMAN OF THE GREATER ACCRA REGIONAL LANDS ";
-		output_cetfificate_template += " COMMISSION in accordance with section 10 (3) of the Lands Commission Act, 2008 (Act 767) hereby record my concurrence to the transaction evidenced by the within � written document subject to the conditions set out in the Schedule hereunder: ";
-		output_cetfificate_template += " SCHEDULE ABOVE REFERRED TO:";
-		output_cetfificate_template += " (1)	The rent payable under the lease shall be paid to the Administrator of Stool Lands or her duly authorized agent:";
-		output_cetfificate_template += " (2)	The rent reserved under the Lease herein shall be " + annual_rent
-				+ " per annum subject to revision every fifth (5th) year of the term. ";
+		// output_cetfificate_template += "I ";
+		// output_cetfificate_template += web_chairman_regional_land_commission;
+		// output_cetfificate_template += " CHAIRMAN OF THE GREATER ACCRA REGIONAL LANDS ";
+		// output_cetfificate_template += " COMMISSION in accordance with section 10 (3) of the Lands Commission Act, 2008 (Act 767) hereby record my concurrence to the transaction evidenced by the within � written document subject to the conditions set out in the Schedule hereunder: ";
+		// output_cetfificate_template += " SCHEDULE ABOVE REFERRED TO:";
+		// output_cetfificate_template += " (1)	The rent payable under the lease shall be paid to the Administrator of Stool Lands or her duly authorized agent:";
+		// output_cetfificate_template += " (2)	The rent reserved under the Lease herein shall be " + annual_rent
+		// 		+ " per annum subject to revision every fifth (5th) year of the term. ";
+
+
+				output_cetfificate_template += " 1, [NAME OF THE CHAIRPERSON] CHAIRMAN OF THE [REGION] REGIONAL LANDS COMMISSION in accordance with Section 10 (3) of the Lands Commission Act, 2008 (Act 767) acting for and on behalf of the Regional Lands Commission hereby grant concurrence to the Lease between ([THE NAME(S) OF THE GRANTOR(S), AND THEIR DETAILS]]) as (THE LESSOR) acting with the consent and concurrence of the Principal Elders of the said Stool and [NAME(S) OF THE GRANTEE(S) of [ADDRESS] as (THE LESSEES) evidenced by the attached Deed of Lease dated the [DATE OF INSTRUMENT – DAY MONTH, YEAR] comprising an approximate area of [SIZE] Acre or [SIZE] Hectare of land situate at [LOCALITY] in the [DISTRICT ASSEMBLY NAME] in the [REGION] for a term of [WORDS (NUMBER) years with effect from the [COMMENCEMENT DATE – DAY MONTH, YEAR] subject to the conditions set out in the schedule hereunder provided:-  ";
+
+			output_cetfificate_template += " SCHEDULE REFERRED TO: -  ";
+
+			output_cetfificate_template += " 1.	The rent reserved under the Lease therein shall be [IN WORDS Ghana Cedis (GH¢      ) per annum subject to revision every fifth (5th ) year of the term  \n";
+
+			output_cetfificate_template += " 2.	The rent payable under the Lease shall be paid to the Office of the Administrator of Stool Lands or its duly authorized agent: -  \n";
+
+            output_cetfificate_template += " 3.	The subject parcel shall parcel of land shall be used for Residential purposes only  \n";
+
+            output_cetfificate_template += " Date d and Sealed with the Seal of the Eastern Regional Lands Commission this 	[DATE OF EXECUTUION OF THE CERTIFICATE – DAY MONTH, YEAR] [year]l.  ";
+
+
 
 		/*
 		 * output_cetfificate_template += "I "; output_cetfificate_template +=
@@ -16090,19 +16119,21 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 			BarcodeQRCode barcodeQRCode = new BarcodeQRCode(new_case_number, 1000, 1000, null);
 			Image codeQrImage = barcodeQRCode.getImage();
 			codeQrImage.scaleAbsolute(80, 80);
-			codeQrImage.setAbsolutePosition(420, 690);
+			//codeQrImage.setAbsolutePosition(420, 690);
+			codeQrImage.setAbsolutePosition(70, 690);
 			document.add(codeQrImage);
 
 			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image.scaleToFit(100.0F, 100.0F);
-			image.setAbsolutePosition(240, 710);
+			image.setAbsolutePosition(240, 690);
 			document.add(image);
 
 			Image image1 = Image.getInstance(software_file_location + "NewLogo.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image1.scaleToFit(70.0F, 70.0F);
-			image1.setAbsolutePosition(50, 670);
+				image1.setAbsolutePosition(420, 700);
+		//	image1.setAbsolutePosition(70, 690);
 			document.add(image1);
 
 			Font font = new Font(FontFamily.TIMES_ROMAN);
@@ -16129,8 +16160,8 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 			 * folio_number);
 			 */
 
-			cbaddress.setTextMatrix(400, 780);
-			cbaddress.showText("LANDS COMMISSION");
+			// cbaddress.setTextMatrix(400, 780);
+			// cbaddress.showText("LANDS COMMISSION");
 
 			cbaddress.endText();
 
@@ -16205,17 +16236,16 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
 				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
 
-				Pipeline<?> pipeline =
-						new CssResolverPipeline(
-								XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
-								new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
-						);
+				Pipeline<?> pipeline = new CssResolverPipeline(
+						XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+						new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+				);
 
 				XMLWorker worker = new XMLWorker(pipeline, true);
 				XMLParser parser = new XMLParser(worker);
 
 				String fullHtml =
-						"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+						"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; text-align: justify'>"
 								+ remark_or_comment_bob +
 								"</body></html>";
 
@@ -16223,62 +16253,62 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 			}
 
 
-  // Create a StyleSheet
-  StyleSheet styles = new StyleSheet();
-  styles.loadTagStyle("body", "font-family", "Times-Roman");
-  styles.loadTagStyle("body", "font-size", "12pt");
-  styles.loadTagStyle("p", "alignment", "justify");
-  styles.loadTagStyle("b", "font-weight", "bold");
+//   // Create a StyleSheet
+//   StyleSheet styles = new StyleSheet();
+//   styles.loadTagStyle("body", "font-family", "Times-Roman");
+//   styles.loadTagStyle("body", "font-size", "12pt");
+//   styles.loadTagStyle("p", "alignment", "justify");
+//   styles.loadTagStyle("b", "font-weight", "bold");
 
-  // Parse the HTML content using HTMLWorker
-  HTMLWorker htmlWorker = new HTMLWorker(document);
-  htmlWorker.setStyleSheet(styles);
+//   // Parse the HTML content using HTMLWorker
+//   HTMLWorker htmlWorker = new HTMLWorker(document);
+//   htmlWorker.setStyleSheet(styles);
 
-  // Parse and add content to the document
-  java.util.List<Element> elements = htmlWorker.parseToList(new StringReader(remark_or_comment_bob), styles);
-  //for (Element element : elements) {
-	for (Element element : elements) {
-		if (element instanceof Paragraph) {
-			// Create a new Paragraph from the original one and set the font and alignment
-			// Paragraph originalParagraph = (Paragraph) element;
-			// Paragraph newParagraph = new Paragraph(originalParagraph.getContent(), timesNewRoman);
+//   // Parse and add content to the document
+//   java.util.List<Element> elements = htmlWorker.parseToList(new StringReader(remark_or_comment_bob), styles);
+//   //for (Element element : elements) {
+// 	for (Element element : elements) {
+// 		if (element instanceof Paragraph) {
+// 			// Create a new Paragraph from the original one and set the font and alignment
+// 			// Paragraph originalParagraph = (Paragraph) element;
+// 			// Paragraph newParagraph = new Paragraph(originalParagraph.getContent(), timesNewRoman);
 			
-			// Paragraph paragraph = (Paragraph) element;
+// 			// Paragraph paragraph = (Paragraph) element;
 			
-			// newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
-			// newParagraph.setLeading(30f); 
-			// newParagraph.setSpacingAfter(20f);  // Add spacing after each paragraph
-			// document.add(newParagraph);
+// 			// newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
+// 			// newParagraph.setLeading(30f); 
+// 			// newParagraph.setSpacingAfter(20f);  // Add spacing after each paragraph
+// 			// document.add(newParagraph);
 
-			// document.add(element);
-			//System.out.println("Par 1");
-			Paragraph paragraph = (Paragraph) element;
-			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
-			paragraph.setLeading(25f); 
-			paragraph.setSpacingAfter(10f);  // Add spacing after each paragraph
-			document.add(paragraph);
+// 			// document.add(element);
+// 			//System.out.println("Par 1");
+// 			Paragraph paragraph = (Paragraph) element;
+// 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
+// 			paragraph.setLeading(25f); 
+// 			paragraph.setSpacingAfter(10f);  // Add spacing after each paragraph
+// 			document.add(paragraph);
 
-		} else if (element instanceof Phrase) {
-			// Create a new Paragraph from the Phrase and apply formatting
-			Phrase originalPhrase = (Phrase) element;
-			Paragraph newParagraph = new Paragraph(originalPhrase.getContent(), timesNewRoman);
-			newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
-			newParagraph.setLeading(25f); 
-			newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
-			document.add(newParagraph);
-			System.out.println("Par 2");
-		} else if (element instanceof Chunk) {
-			// Create a new Chunk and apply font
-			Chunk originalChunk = (Chunk) element;
-			Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
+// 		} else if (element instanceof Phrase) {
+// 			// Create a new Paragraph from the Phrase and apply formatting
+// 			Phrase originalPhrase = (Phrase) element;
+// 			Paragraph newParagraph = new Paragraph(originalPhrase.getContent(), timesNewRoman);
+// 			newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
+// 			newParagraph.setLeading(25f); 
+// 			newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
+// 			document.add(newParagraph);
+// 			System.out.println("Par 2");
+// 		} else if (element instanceof Chunk) {
+// 			// Create a new Chunk and apply font
+// 			Chunk originalChunk = (Chunk) element;
+// 			Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
 
-			document.add(newChunk);
-		} else {
-			// For other types of elements, just add them without changes
-			document.add(element);
-		}
-	//document.add(element);
-  }
+// 			document.add(newChunk);
+// 		} else {
+// 			// For other types of elements, just add them without changes
+// 			document.add(element);
+// 		}
+// 	//document.add(element);
+//   }
 
 
 
@@ -16370,10 +16400,10 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 			// document.add(new Phrase(Chunk.NEWLINE));
 
 
-			Paragraph p_3_1 = new Paragraph("File No: " + case_file_number, new Font(FontFamily.TIMES_ROMAN, 12));
-			p_3_1.setAlignment(Element.ALIGN_JUSTIFIED);
-			p_3_1.setLeading(32);
-			document.add(p_3_1);
+			// Paragraph p_3_1 = new Paragraph("File No: " + case_file_number, new Font(FontFamily.TIMES_ROMAN, 12));
+			// p_3_1.setAlignment(Element.ALIGN_JUSTIFIED);
+			// p_3_1.setLeading(32);
+			// document.add(p_3_1);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));

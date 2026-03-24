@@ -45,6 +45,9 @@ var parcels_smd_dataLayer = new ol.layer.Tile({
 
 })
 
+
+
+
 var garro_parcels_dataSource = new ol.source.TileWMS({
 	url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
 	params : {
@@ -184,6 +187,29 @@ var lrd_certificate_region_dataLayer = new ol.layer.Tile({
 	source : lrd_certificate_region_dataSource
 
 })
+
+
+
+
+var undergoing_registration_status_dataSource = new ol.source.TileWMS({
+	url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+	params : {
+		'LAYERS' : 'csau_geospatial:lc_spatial_objects_undergoing_registration',
+		'TILED' : true
+	},
+	// params: {'LAYERS':
+	// 'rating:spatial_unit_assembly', 'cql_filter':
+	// "assembly_code='AMA'" , 'TILED': true },,
+	serverType : 'geoserver',
+	transition : 0
+})
+
+var undergoing_registration_status_dataLayer = new ol.layer.Tile({
+	title : 'Under Registration Layer',
+	source : undergoing_registration_status_dataSource
+
+})
+
 // 104_modified_CR
 // DIST_03_01_A_modified
 
@@ -264,6 +290,18 @@ lrd_search_result_searchLayer = new ol.layer.Vector({
 		})
 	})
 });
+
+under_registration_search_result_searchLayer = new ol.layer.Vector({
+	title : 'under_registration_search',
+	source : undefined,
+	style : new ol.style.Style({
+		stroke : new ol.style.Stroke({
+			color : 'yellow',
+			width : 3
+		})
+	})
+});
+
 
 lc_searchLayer = new ol.layer.Vector({
 	title : 'Search Layer',
@@ -502,8 +540,9 @@ map.addLayer(pvlmd_current_search_result_searchLayer);
 map.addLayer(smd_smd_current_dataLayer);
 // map.addLayer(smd_parcel_search_result_searchLayer);
 // map.addLayer(smd_cadastral_search_result_searchLayer);
-// map.addLayer(lrd_search_result_searchLayer);
 
+map.addLayer(undergoing_registration_status_dataLayer);
+ map.addLayer(under_registration_search_result_searchLayer);
 map.addLayer(lc_searchLayer);
 
 
@@ -2466,6 +2505,68 @@ $("#lc_btn_visualise_search").click(function(event) {
 				});
 
 
+
+		$("#lc_btn_check_related_jobs").click(function(event) {
+			
+					 console.log('lc_btn_check_related_jobs')
+						//console.log($('#lc_bl_wkt_polygon').val())
+					var wktplygonsearch = $('#lc_bl_wkt_polygon').val() == undefined ? $('#lc_fr_bl_wkt_polygon').val() : $('#lc_bl_wkt_polygon').val();
+				//	var request = new XMLHttpRequest();
+					console.log(wktplygonsearch)
+
+					$
+							.ajax({
+								type : "POST",
+								url : "Case_Management_Serv",
+								data : {
+									request_type : 'select_check_for_first_in_time_verification',
+									vr_polygon : wktplygonsearch
+								},
+								cache : false,
+							
+								success : function(jobdetails) {
+
+									var json_p = JSON.parse(jobdetails);
+									console.log(json_p)
+									
+									if (json_p !== undefined || json_p !== null) {
+										
+									
+										if (under_registration_search_result_searchLayer
+												.getSource() != null) {
+											under_registration_search_result_searchLayer
+													.getSource().clear();
+										}
+
+										if (json_p.parcels === undefined
+												|| json_p.parcels.features === null) {
+										} else {
+											under_registration_search_result_searchLayer
+													.setSource(new ol.source.Vector(
+															{
+																features : (new ol.format.GeoJSON())
+																		.readFeatures(json_p.parcels)
+															}));
+										}
+										view.fit(under_registration_search_result_searchLayer.getSource().getExtent());
+										map.getView().fit(
+												under_registration_search_result_searchLayer.getSource()
+														.getExtent(), {
+													size : map.getSize(),
+													maxZoom : 16})
+
+												//  lrd_search_result_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(wktPolygon)}));
+                                                // map.getView().fit(lrd_search_result_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
+
+									} else {
+										
+									}
+
+								}
+							});
+				});
+
+
 				$("#lc_btnprintmap").click(function(event) {
 
 					console.log("click_type");
@@ -4018,10 +4119,11 @@ window.initializeMap = function initializeMap(targetId) {
             registration_district_dataLayer, grid_lrd_dataLayer, lrd_parcels_dataLayer,
             parcels_smd_dataLayer, pvlmd_current_dataLayer, cro_parcels_dataLayer,
             garro_parcels_dataLayer, garro_search_result_searchLayer, cro_search_result_searchLayer,
-            pvlmd_current_search_result_searchLayer, smd_smd_current_dataLayer, lc_searchLayer
+            pvlmd_current_search_result_searchLayer, smd_smd_current_dataLayer,under_registration_search_result_searchLayer, lc_searchLayer
         ].forEach(layer => maps[targetId].addLayer(layer));
     }
 }
+
 
 function destroyMap(targetId) {
     if (maps[targetId]) {

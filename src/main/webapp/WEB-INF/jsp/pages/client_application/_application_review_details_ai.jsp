@@ -1813,6 +1813,27 @@
             serverType : 'geoserver',
             transition : 0
         })
+
+
+
+var undergoing_registration_status_dataSource = new ol.source.TileWMS({
+	url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+	params : {
+		'LAYERS' : 'csau_geospatial:lc_spatial_objects_undergoing_registration',
+		'TILED' : true
+	},
+	// params: {'LAYERS':
+	// 'rating:spatial_unit_assembly', 'cql_filter':
+	// "assembly_code='AMA'" , 'TILED': true },,
+	serverType : 'geoserver',
+	transition : 0
+})
+
+var undergoing_registration_status_dataLayer = new ol.layer.Tile({
+	title : 'Under Registration Layer',
+	source : undergoing_registration_status_dataSource
+
+})
                     
         var lcfrs_registration_district_dataLayer = new ol.layer.Tile({
             title : 'Registration District',
@@ -1911,6 +1932,8 @@
         map.addLayer(googleLayerHybrid);
         map.addLayer(lcfrs_registration_district_dataLayer);
         map.addLayer(lrd_parcels_dataLayer);
+          map.addLayer(undergoing_registration_status_dataLayer);
+        
         map.addLayer(vectorLayer);
 
         // console.log("wktPolygon")
