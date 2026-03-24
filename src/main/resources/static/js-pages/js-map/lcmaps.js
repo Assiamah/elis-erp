@@ -4119,7 +4119,7 @@ window.initializeMap = function initializeMap(targetId) {
             registration_district_dataLayer, grid_lrd_dataLayer, lrd_parcels_dataLayer,
             parcels_smd_dataLayer, pvlmd_current_dataLayer, cro_parcels_dataLayer,
             garro_parcels_dataLayer, garro_search_result_searchLayer, cro_search_result_searchLayer,
-            pvlmd_current_search_result_searchLayer, smd_smd_current_dataLayer,under_registration_search_result_searchLayer, lc_searchLayer
+            pvlmd_current_search_result_searchLayer, smd_smd_current_dataLayer,undergoing_registration_status_dataLayer, under_registration_search_result_searchLayer, lc_searchLayer
         ].forEach(layer => maps[targetId].addLayer(layer));
     }
 }
