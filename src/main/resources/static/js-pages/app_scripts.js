@@ -694,7 +694,7 @@ function updateStepDisplayOnCase() {
         $('#btnCompleteProcessonCase').hide();
     } else {
         $('#btnNextSteponCase').hide();
-        $('#btnCompleteProcessonCase').show();
+        //$('#btnCompleteProcessonCase').show();
     }
 }
 

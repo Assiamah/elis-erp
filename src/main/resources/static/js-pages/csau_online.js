@@ -6775,6 +6775,8 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 										.createObjectURL(blob);
 									// window.open(objectUrl);
 
+									$('#btnCompleteProcessonCase').show();
+
 									$('#oncaseakblobfile')
 										.attr('src',
 											objectUrl);
