@@ -2943,6 +2943,35 @@ function getStatusBadgeClass(status) {
 }
 
 
+// Helper function to escape HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    if (!dateString) return '-';
+    try {
+        var date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString;
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    } catch(e) {
+        return dateString;
+    }
+}
+
 				$("#lc_btnprintmap").click(function(event) {
 
 					console.log("click_type");
