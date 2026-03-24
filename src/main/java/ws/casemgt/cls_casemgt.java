@@ -2308,6 +2308,7 @@ public class cls_casemgt {
 	public String load_count_application_batched_to_user(String web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
+		//System.out.print("userid:" + job_number);
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(web_service_url
@@ -5068,6 +5069,30 @@ public class cls_casemgt {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
 					web_service_url + "case_management_service/select_confirm_registration_transaction");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, job_number);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+	}
+
+	
+
+	public String select_confirm_lrd_parcel_noting(String web_service_url, String web_service_api_key, String job_number) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/select_confirm_lrd_parcel_noting");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
