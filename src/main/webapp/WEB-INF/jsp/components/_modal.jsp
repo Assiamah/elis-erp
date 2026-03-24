@@ -3265,60 +3265,115 @@
                             <!-- From Officer -->
                             <div class="form-floating">
                                 <input type="text" 
-                                       class="form-control" 
-                                       id="am_from_officer" 
-                                       name="am_from_officer" 
-                                       value="${fullname}" 
-                                       readonly 
-                                       placeholder="From Officer">
+                                    class="form-control" 
+                                    id="am_from_officer" 
+                                    name="am_from_officer" 
+                                    value="${fullname}" 
+                                    readonly 
+                                    placeholder="From Officer">
                                 <label for="am_from_officer" class="form-label">
                                     <i class="bi bi-person me-1"></i>From Officer
                                 </label>
                             </div>
+                            
                             <!-- To Officer -->
                             <div class="mt-3">
-                                <label for="am_to_officer" class="form-label fw-medium">
-                                    <i class="bi bi-person-plus me-1"></i>To Officer
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="bi bi-search"></i>
-                                    </span>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="am_to_officer" 
-                                           name="am_to_officer" 
-                                           list="listofusers"
-                                           placeholder="Search or select officer..."
-                                           autocomplete="off"
-                                           required>
-                                    <datalist id="listofusers">
-                                        <c:forEach items="${userlist}" var="user">
-                                            <option data-value="${user.userid}" value="${user.fullname}"></option>
-                                        </c:forEach>
-                                    </datalist>
-                                </div>
-                                <div class="invalid-feedback">
-                                    Please select an officer.
-                                </div>
-                                <div class="form-text">
-                                    Type to search from available officers
+                                <div class="card card-body">
+                                    <label for="am_to_officer" class="form-label fw-medium">
+                                        <i class="bi bi-person-plus me-1"></i>To Officer
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    
+                                    <!-- Division Select -->
+                                    <div class="mb-3">
+                                        <select class="form-select" id="am_to_division" name="am_to_division" required>
+                                            <option value="" selected disabled>Select Division</option>
+                                            <option value="LVD">LVD</option>
+                                            <option value="LRD">LRD</option>
+                                            <option value="PVLMD">PVLMD</option>
+                                            <option value="SMD">SMD</option>
+                                            <option value="RLO">RLO</option>
+                                            <option value="CORPORATE">CORPORATE</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Unit Select -->
+                                    <div class="mb-3">
+                                        <select class="form-select" id="am_to_unit" name="am_to_unit" required disabled>
+                                            <option value="" disabled selected>-- Select Unit --</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Officer Selection - Toggle between Select and Datalist -->
+                                    <div class="mb-2">
+                                        <div class="btn-group btn-group-sm w-100" role="group">
+                                            <input type="radio" class="btn-check" name="officer_input_type" id="officer_select_mode" autocomplete="off" checked>
+                                            <label class="btn btn-outline-danger" for="officer_select_mode">
+                                                <i class="bi bi-list-ul me-1"></i>Select from List
+                                            </label>
+                                            
+                                            <input type="radio" class="btn-check" name="officer_input_type" id="officer_search_mode" autocomplete="off">
+                                            <label class="btn btn-outline-danger" for="officer_search_mode">
+                                                <i class="bi bi-search me-1"></i>Search/Type
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Select Mode (Dropdown) -->
+                                    <div id="officer_select_container">
+                                        <select class="form-select" id="am_to_officer_select" name="am_to_officer_select" required disabled>
+                                            <option value="" disabled selected>-- Select Officer --</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select an officer.
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Search Mode (Datalist Input) -->
+                                    <div id="officer_search_container" style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                            <input type="text" 
+                                                class="form-control" 
+                                                id="am_to_officer_search" 
+                                                name="am_to_officer_search" 
+                                                list="listofusers"
+                                                placeholder="Search or select officer..."
+                                                autocomplete="off"
+                                                disabled>
+                                            <datalist id="listofusers">
+                                                <c:forEach items="${userlist}" var="user">
+                                                    <option data-value="${user.userid}" value="${user.fullname}"></option>
+                                                </c:forEach>
+                                            </datalist>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please select an officer.
+                                        </div>
+                                        <div class="form-text mt-1">
+                                            Type to search from available officers
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Hidden field to store the actual selected officer ID -->
+                                    <input type="hidden" id="am_to_officer" name="am_to_officer" value="">
                                 </div>
                             </div>
-                            
-                            <!-- Additional Fields (Optional - you can add more if needed) -->
-                            <div class="mt-4">
-                                <div class="alert alert-light border">
-                                    <h6 class="alert-heading mb-2">
-                                        <i class="bi bi-info-circle me-1"></i>Information
-                                    </h6>
-                                    <p class="mb-0 small">
-                                        Minutes will be recorded in the system and visible to assigned officers.
-                                        Make sure all information is accurate before saving.
-                                    </p>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Fields (Optional - you can add more if needed) -->
+                    <div class="mt-4">
+                        <div class="alert alert-light border">
+                            <h6 class="alert-heading mb-2">
+                                <i class="bi bi-info-circle me-1"></i>Information
+                            </h6>
+                            <p class="mb-0 small">
+                                Minutes will be recorded in the system and visible to assigned officers.
+                                Make sure all information is accurate before saving.
+                            </p>
                         </div>
                     </div>
                     

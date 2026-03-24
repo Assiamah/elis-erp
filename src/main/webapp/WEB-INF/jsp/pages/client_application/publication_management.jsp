@@ -485,7 +485,7 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-6">
-                                            <button type="button" class="btn btn-success w-100 btn-sm" 
+                                            <button type="submit" class="btn btn-success w-100 btn-sm" 
                                                     id="btnBarcoder" data-btn_name="NP">
                                                 <i class="ri-add-circle-line me-1"></i>Add to List
                                             </button>

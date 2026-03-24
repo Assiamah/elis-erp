@@ -990,7 +990,7 @@
                                             <c:forEach items="${application_munites}" var="application_munites_row">
                                                 <tr>
                                                     <td class="fs-15">${application_munites_row.am_description}</td>
-                                                    <td class="fs-12">${application_munites_row.ar_name}</td>
+                                                    <td class="fs-12">${application_munites_row.am_from_officer}</td>
                                                     <td class="fs-12">${application_munites_row.am_to_officer}</td>
                                                     <td class="fs-12">${application_munites_row.am_activity_date}</td>
                                                     <td>

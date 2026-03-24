@@ -2138,9 +2138,7 @@
                                         Note Description
                                     </label>
                                     <div class="border rounded p-3 bg-light" style="min-height: 150px;">
-                                        <div id="vi_note_description" class="note-content">
-                                            <!-- Note content will be displayed here -->
-                                        </div>
+                                        <div id="vi_note_description" class="note-content"></div>
                                     </div>
                                 </div>
                             </div>

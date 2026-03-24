@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
         // Redirect all errors to index
-        return "redirect:/";
+        return "redirect:/?error=server";
     }
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="ws.casemgt.Ws_client_application"%>
 <%@ page import="ws.users.Ws_users"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
@@ -519,6 +520,9 @@
                         Initial Approval
                     </h5>
                     <div class="ms-auto">
+                        <button type="button" class="btn btn-danger ${((division == 'LRD' || division == 'PVLMD') && user_level > 1) ? '' : 'd-none'}" id="btn_confirm_lrd_parcel_noting">
+                            <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
+                        </button>
                         <button type="button" class="btn btn-warning btn_send_inspection_request" 
                             data-job_number="${job_number}" 
                             data-ar_name="${ar_name}" 
@@ -527,7 +531,7 @@
                             data-bs-desc="${babyStep.bse_description}">
                             <i class="ri-send-plane-line me-1"></i>Inspection Request
                         </button>
-                        <button type="button" class="btn btn-info btn_ground_rent">
+                        <button type="button" class="btn btn-info btn_ground_rent ${division == 'LVD' || division == 'SMD' ? 'd-none' : ''}">
                             <i class="ri-coins-fill me-1"></i>Add Ground Rent
                         </button>
                     </div>
@@ -5956,7 +5960,7 @@ Thank you.</textarea>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label text-muted small mb-1">Serial Number</label>
-                                <div class="fw-medium text-dark">${empty fn:trim(serial_number) ? '--' : fn:trim(serial_number)}</div>
+                                <div class="fw-medium text-dark">${empty fn:trim(ls_number) ? '--' : fn:trim(ls_number)}</div>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label text-muted small mb-1">Deed Number</label>
@@ -6443,11 +6447,17 @@ Thank you.</textarea>
                                         <div class="row g-2 mb-3">
                                             <div class="col-6">
                                                 <label class="form-label small text-muted mb-1">Date of Document</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+                                                <!-- <div class="fw-medium text-dark">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div> -->
+                                                <fmt:parseDate value="${date_of_document}" pattern="yyyy-MM-dd" var="parsedDateOfDocument"/>
+                                                <fmt:formatDate value="${parsedDateOfDocument}" pattern="dd MMM yyyy" var="formattedDateOfDocument"/>
+                                                <div class="fw-medium text-dark">${empty formattedDateOfDocument ? '--' : formattedDateOfDocument}</div>
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label small text-muted mb-1">Date of Registration</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+                                                <!-- <div class="fw-medium text-dark">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div> -->
+                                                <fmt:parseDate value="${date_of_registration}" pattern="yyyy-MM-dd" var="parsedDateOfRegistration"/>
+                                                <fmt:formatDate value="${parsedDateOfRegistration}" pattern="dd MMM yyyy" var="formattedDateOfRegistration"/>
+                                                <div class="fw-medium text-dark">${empty formattedDateOfRegistration ? '--' : formattedDateOfRegistration}</div>
                                             </div>
                                         </div>
                                         <div class="row g-2">
@@ -6499,7 +6509,10 @@ Thank you.</textarea>
                                         <div class="row g-2 mb-3">
                                             <div class="col-6">
                                                 <label class="form-label small text-muted mb-1">Commencement Date</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+                                                <!-- <div class="fw-medium text-dark">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div> -->
+                                                <fmt:parseDate value="${commencement_date}" pattern="yyyy-MM-dd" var="parsedCommencementDate"/>
+                                                <fmt:formatDate value="${parsedCommencementDate}" pattern="dd MMM yyyy" var="formattedCommencementDate"/>
+                                                <div class="fw-medium text-dark">${empty formattedCommencementDate ? '--' : formattedCommencementDate}</div>
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label small text-muted mb-1">Option for Renewal</label>
@@ -6513,7 +6526,7 @@ Thank you.</textarea>
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label small text-muted mb-1">Serial Number</label>
-                                                <div class="fw-medium text-dark">${empty fn:trim(serial_number) ? '--' : fn:trim(serial_number)}</div>
+                                                <div class="fw-medium text-dark">${empty fn:trim(ls_number) ? '--' : fn:trim(ls_number)}</div>
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label small text-muted mb-1">File Number</label>
