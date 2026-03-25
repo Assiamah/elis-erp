@@ -123,6 +123,40 @@ public class lrd_certificate_section_serv {
 				}
 			}
 
+
+
+			if (request_type.equals("select_delete_lrd_certificate_details")) {
+
+				String case_number = request.getParameter("case_number");
+				String cs_id = request.getParameter("cs_id");
+
+				JSONArray jsonArr = new JSONArray();
+				JSONObject obj = new JSONObject();
+
+				obj.put("case_number", case_number);
+				obj.put("cs_id", cs_id);
+
+				jsonArr.put(obj);
+				String input = jsonArr.toString();
+
+				System.out.print(input);
+				
+				web_service_response = lrd_certificate_section_cl.select_delete_lrd_certificate_details(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						input);
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+					// System.out.println("nothing to " + web_service_response);
+
+				} else {
+					System.out.println(web_service_response);
+					// System.out.println("son=mtni to " +
+					// web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("select_lrd_certificate_section_all_by_id")) {
 
 				/*

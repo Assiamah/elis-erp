@@ -1209,7 +1209,12 @@
                                     data-bs-target="#collapseQueries">
                                 <i class="bi bi-question-circle me-2"></i>
                                 Queries
-                                <span class="badge bg-danger ms-2">${case_query.size()}</span>
+                                <!-- Dynamic badge: Green when 0 pending, Red when there are pending queries -->
+                                <span id="pendingQueriesBadge" 
+                                    class="badge ms-2 
+                                            ${case_query.stream().filter(q -> q.status == 1).count() > 0 ? 'bg-danger' : 'bg-success'}">
+                                    ${case_query.size() > 0 ? case_query.stream().filter(q -> q.status == 1).count() : 0}
+                                </span>
                             </button>
                         </h2>
                         <div id="collapseQueries" class="accordion-collapse collapse" 
@@ -1239,43 +1244,50 @@
                                                             ${case_query_row.status == 1 ? 'Pending' : 'Resolved'}
                                                         </span>
                                                     </td>
-                                                    <td class="d-flex gap-1">
-                                                        <button class="btn btn-sm ${case_query_row.status == 1 ? 'btn-warning' : 'btn-outline-info'}"
-                                                                data-bs-toggle="modal" data-bs-target="#viewQueryModal"
-                                                                data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"
-                                                                data-id="${case_query_row.qid}"
-                                                                data-job_number="${case_query_row.job_number}"
-																data-case_number="${case_query_row.case_number}"
-                                                                data-reasons="${case_query_row.reasons}"
-                                                                data-remarks="${case_query_row.remarks}"
-																data-general_reason="${case_query_row.query_general_reason}"
-																data-query_response="${case_query_row.query_response}"
-                                                                data-status="${case_query_row.status}"
-																data-created_by="${case_query_row.created_by}"
-																data-created_date="${case_query_row.created_date}"
-																data-modified_by="${case_query_row.modified_by}"
-																data-modified_date="${case_query_row.modified_date}"
-																data-attachment_required="${case_query_row.attachment_required}">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-danger"
-                                                                data-bs-toggle="modal" data-bs-target="#newQueryModal"
-                                                                data-action="edit"
-                                                                data-id="${case_query_row.qid}"
-                                                                data-job_number="${case_query_row.job_number}"
-																data-case_number="${case_query_row.case_number}"
-                                                                data-reasons="${case_query_row.reasons}"
-                                                                data-remarks="${case_query_row.remarks}"
-																data-general_reason="${case_query_row.query_general_reason}"
-																data-query_response="${case_query_row.query_response}"
-                                                                data-status="${case_query_row.status}"
-																data-created_by="${case_query_row.created_by}"
-																data-created_date="${case_query_row.created_date}"
-																data-modified_by="${case_query_row.modified_by}"
-																data-modified_date="${case_query_row.modified_date}"
-																data-attachment_required="${case_query_row.attachment_required}">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
+                                                    <td class="text-nowrap">
+                                                        <div class="d-flex gap-1">
+                                                            <!-- View / Edit Button -->
+                                                            <button class="btn btn-sm ${case_query_row.status == 1 ? 'btn-warning' : 'btn-outline-info'}"
+                                                                    data-bs-toggle="modal" 
+                                                                    data-bs-target="#viewQueryModal"
+                                                                    data-action="${case_query_row.status == 1 ? 'edit' : 'view'}"
+                                                                    data-id="${case_query_row.qid}"
+                                                                    data-job_number="${case_query_row.job_number}"
+                                                                    data-case_number="${case_query_row.case_number}"
+                                                                    data-reasons="${case_query_row.reasons}"
+                                                                    data-remarks="${case_query_row.remarks}"
+                                                                    data-general_reason="${case_query_row.query_general_reason}"
+                                                                    data-query_response="${case_query_row.query_response}"
+                                                                    data-status="${case_query_row.status}"
+                                                                    data-created_by="${case_query_row.created_by}"
+                                                                    data-created_date="${case_query_row.created_date}"
+                                                                    data-modified_by="${case_query_row.modified_by}"
+                                                                    data-modified_date="${case_query_row.modified_date}"
+                                                                    data-attachment_required="${case_query_row.attachment_required}">
+                                                                <i class="bi bi-eye"></i>
+                                                            </button>
+
+                                                            <!-- Edit Button -->
+                                                            <button class="btn btn-sm btn-outline-danger"
+                                                                    data-bs-toggle="modal" 
+                                                                    data-bs-target="#newQueryModal"
+                                                                    data-action="edit"
+                                                                    data-id="${case_query_row.qid}"
+                                                                    data-job_number="${case_query_row.job_number}"
+                                                                    data-case_number="${case_query_row.case_number}"
+                                                                    data-reasons="${case_query_row.reasons}"
+                                                                    data-remarks="${case_query_row.remarks}"
+                                                                    data-general_reason="${case_query_row.query_general_reason}"
+                                                                    data-query_response="${case_query_row.query_response}"
+                                                                    data-status="${case_query_row.status}"
+                                                                    data-created_by="${case_query_row.created_by}"
+                                                                    data-created_date="${case_query_row.created_date}"
+                                                                    data-modified_by="${case_query_row.modified_by}"
+                                                                    data-modified_date="${case_query_row.modified_date}"
+                                                                    data-attachment_required="${case_query_row.attachment_required}">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

@@ -3256,7 +3256,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 // console.log('Redirecting to publication list...');
 
-                                window.location.href = '/case_movement_module';
+                               //  window.location.href = '/case_movement_module';
                             }
                         });
                         
@@ -5509,10 +5509,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const es_forward = $(this).data('es_forward');
         const es_signature = $(this).data('es_signature');
         const es_entry_number = $(this).data('es_entry_number');
+
+        // Convert to Date object and format
+        if (es_date_of_instrument) {
+            const dateObj = new Date(es_date_of_instrument);
+            
+            // Format as YYYY-MM-DD
+            const formattedDate = dateObj.toISOString().split('T')[0];
+            
+            $("#es_date_of_instrument").val(formattedDate);
+        }
         
         $("#es_id").val(es_id);
         $("#es_registered_number").val(es_registered_number);
-        $("#es_date_of_instrument").val(es_date_of_instrument);
+        // $("#es_date_of_instrument").val(es_date_of_instrument);
         $("#es_date_of_registration").val(es_date_of_registration);
         $("#es_memorials").val(es_memorials);
         $("#es_remarks").val(es_remarks);
@@ -23008,7 +23018,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm" role="group">
-                            <button class="btn btn-outline-info edit-certificate"
+                            <button class="btn btn-outline-info editCertificateModal"
                                     data-target-id="${this.cs_id}"
                                     data-cs_id="${this.cs_id}"
                                     data-cs_case_number="${this.case_number}"
@@ -23021,14 +23031,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                     title="Edit Certificate">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <!-- <button class="btn btn-outline-danger delete-certificate"
+                            <button class="btn btn-danger btn-sm deleteCertificate"
                                     data-cs_id="${this.cs_id}"
-                                    data-cs_case_number="${this.cs_case_number}"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Delete Certificate">
+                                    data-cs_case_number="${this.case_number}"
+                                    data-cs_date_of_registration="${this.cs_date_of_registration}"
+                                    data-cs_to_whom_issued="${this.cs_to_whom_issued}"
+                                    data-cs_serial_number="${this.cs_serial_number}"
+                                    data-cs_official_notes="${this.cs_official_notes}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Certificate">
                                 <i class="fas fa-trash"></i>
-                            </button>-->
+                            </button>
                         </div>
                     </td>
                 </tr>`);
@@ -23040,62 +23052,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
             
-            // Add click handlers for edit buttons
-            $('.edit-certificate').off('click').on('click', function() {
-                const cs_id = $(this).data('cs_id');
-                const cs_case_number = $(this).data('cs_case_number');
-                const cs_date_of_registration = $(this).data('cs_date_of_registration');
-                const cs_to_whom_issued = $(this).data('cs_to_whom_issued');
-                const cs_serial_number = $(this).data('cs_serial_number');
-                const cs_official_notes = $(this).data('cs_official_notes');
+            // // Add click handlers for edit buttons
+            // $('.edit-certificate').off('click').on('click', function() {
+            //     const cs_id = $(this).data('cs_id');
+            //     const cs_case_number = $(this).data('cs_case_number');
+            //     const cs_date_of_registration = $(this).data('cs_date_of_registration');
+            //     const cs_to_whom_issued = $(this).data('cs_to_whom_issued');
+            //     const cs_serial_number = $(this).data('cs_serial_number');
+            //     const cs_official_notes = $(this).data('cs_official_notes');
                 
-                // Populate the modal form
-                $("#cs_id").val(cs_id);
-                $("#cs_case_number").val(cs_case_number);
-                $("#cs_date_of_registration").val(cs_date_of_registration);
-                $("#cs_to_whom_issued").val(cs_to_whom_issued);
-                $("#cs_serial_number").val(cs_serial_number);
-                $("#cs_official_notes").val(cs_official_notes);
-                $("#action_on_form_certificate").val('edit');
+            //     // Populate the modal form
+            //     $("#cs_id").val(cs_id);
+            //     $("#cs_case_number").val(cs_case_number);
+            //     $("#cs_date_of_registration").val(cs_date_of_registration);
+            //     $("#cs_to_whom_issued").val(cs_to_whom_issued);
+            //     $("#cs_serial_number").val(cs_serial_number);
+            //     $("#cs_official_notes").val(cs_official_notes);
+            //     $("#action_on_form_certificate").val('edit');
                 
-                // Show the modal
-                const modal = new bootstrap.Modal(document.getElementById('newCertificateModal'));
-                modal.show();
-            });
+            //     // Show the modal
+            //     const modal = new bootstrap.Modal(document.getElementById('newCertificateModal'));
+            //     modal.show();
+            // });
             
-            // Add click handlers for delete buttons (optional - if you want delete functionality)
-            $('.delete-certificate').off('click').on('click', function() {
-                const cs_id = $(this).data('cs_id');
-                const cs_case_number = $(this).data('cs_case_number');
+            // // Add click handlers for delete buttons (optional - if you want delete functionality)
+            // $('.delete-certificate').off('click').on('click', function() {
+            //     const cs_id = $(this).data('cs_id');
+            //     const cs_case_number = $(this).data('cs_case_number');
                 
-                // Show delete confirmation
-                Swal.fire({
-                    title: 'Delete Certificate?',
-                    html: `<div class="text-center">
-                            <div class="mb-3">
-                                <i class="fas fa-trash-alt text-danger fa-3x"></i>
-                            </div>
-                            <p>Are you sure you want to delete this certificate record?</p>
-                            <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-2">
-                                <strong>Case:</strong> ${cs_case_number}<br>
-                                <strong>Record ID:</strong> ${cs_id}
-                            </div>
-                            <p class="text-muted small">This action cannot be undone</p>
-                        </div>`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: '<i class="fas fa-trash me-1"></i>Delete',
-                    cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
-                    confirmButtonColor: '#dc3545',
-                    cancelButtonColor: '#6c757d',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Call delete API here if needed
-                        console.log('Delete certificate with ID:', cs_id);
-                    }
-                });
-            });
+            //     // Show delete confirmation
+            //     Swal.fire({
+            //         title: 'Delete Certificate?',
+            //         html: `<div class="text-center">
+            //                 <div class="mb-3">
+            //                     <i class="fas fa-trash-alt text-danger fa-3x"></i>
+            //                 </div>
+            //                 <p>Are you sure you want to delete this certificate record?</p>
+            //                 <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-2">
+            //                     <strong>Case:</strong> ${cs_case_number}<br>
+            //                     <strong>Record ID:</strong> ${cs_id}
+            //                 </div>
+            //                 <p class="text-muted small">This action cannot be undone</p>
+            //             </div>`,
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonText: '<i class="fas fa-trash me-1"></i>Delete',
+            //         cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            //         confirmButtonColor: '#dc3545',
+            //         cancelButtonColor: '#6c757d',
+            //         reverseButtons: true
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+                        
+            //         }
+            //     });
+            // });
             
         } else {
             // Show empty state
@@ -23112,7 +23123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
     }
 
-     $(document).on('click', '.editCertificateModal', function(e) {
+    $(document).on('click', '.editCertificateModal', function(e) {
 
         const $modal = $('#newCertificateModal');
 
@@ -23154,6 +23165,158 @@ document.addEventListener('DOMContentLoaded', function() {
             window.loadGatedWorkFlowDocuments('certificate');
         }
     });
+
+    $(document).on('click', '.deleteCertificate', function(e) {
+        e.preventDefault();
+        
+        const cs_id = $(this).data('cs_id');
+        const cs_case_number = $("#cs_main_case_number").val();
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delete Certificate',
+            html: `
+                <div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2 d-block"></i>
+                        <p class="fw-bold mb-2">Are you sure you want to delete this certificate?</p>
+                        <p class="text-muted small">This action cannot be undone.</p>
+                    </div>
+                    <div class="alert alert-light border">
+                        <div class="mb-1">
+                            <strong>Case Number:</strong> 
+                            <span class="text-primary">${escapeHtml(cs_case_number)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Warning: This will permanently delete the certificate</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "lrd_certificate_section_serv",
+                        data: {
+                            request_type: 'select_delete_lrd_certificate_details',
+                            cs_id: parseInt(cs_id),
+                            cs_case_number: cs_case_number,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            try {
+                                const jsonResponse = JSON.parse(response);
+                                resolve(jsonResponse);
+                            } catch(e) {
+                                reject('Invalid response format');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject('Server error: ' + error);
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response && response.success === true) {
+                    // Success - show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Certificate has been deleted successfully!</p>
+                                <p class="text-muted small">Case: ${escapeHtml(cs_case_number)}</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Remove the deleted certificate row from the table
+                        const $row = $(`.deleteCertificate[data-cs_id="${cs_id}"]`).closest('tr');
+                        if ($row.length) {
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // Check if table is empty and show empty message
+                                const $tbody = $row.closest('tbody');
+                                if ($tbody.children('tr:visible').length === 0) {
+                                    $tbody.html(`
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                                <p>No certificates found</p>
+                                            </td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        }
+                        
+                        // Refresh any related components
+                        refreshCertificateList();
+                    });
+                } else {
+                    // Error - show error message from server
+                    Swal.fire({
+                        title: 'Error!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Failed to delete certificate</p>
+                                <p class="text-muted small">${escapeHtml(response.msg || 'Please try again later')}</p>
+                            </div>
+                        `,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    // Function to refresh certificate list (if needed)
+    function refreshCertificateList() {
+        // Optional: Reload the certificate table or update counters
+        const $table = $('#certificatesTable');
+        if ($table.length) {
+            // Trigger a refresh event or reload the data
+            $(document).trigger('certificates:refresh');
+        }
+    }
 
     $('#linkSearchMotherfile_deed').on('submit', function(e) {
         e.preventDefault();

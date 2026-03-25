@@ -1039,7 +1039,7 @@ console.log (fileExtension);
                          type: "POST",
                          enctype: 'multipart/form-data',
                          //url: "document_upload_new",
-						 url: "document_upload_mutiple_new",
+						 url: "document_upload_multiple_new",
                          data: formdata,
                          processData: false,
                          contentType: false,

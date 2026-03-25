@@ -101,6 +101,7 @@ public class lc_case_query_serv {
 				String unit_name = (String) session.getAttribute("unit_name");
 				String query_attachment = request.getParameter("query_attachment");
 				String query_general_reason = request.getParameter("query_general_reason");
+				String request_id = request.getParameter("request_id");
 
 				obj.put("qid", qid);
 				obj.put("job_number", job_number);
@@ -114,6 +115,7 @@ public class lc_case_query_serv {
 				obj.put("unit_name", unit_name);
 				obj.put("query_attachment", query_attachment);
 				obj.put("query_general_reason", query_general_reason);
+				obj.put("request_id", request_id);
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();

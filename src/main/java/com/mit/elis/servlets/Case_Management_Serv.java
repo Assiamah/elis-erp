@@ -3571,9 +3571,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 				// System.out.println(input);
-				web_service_response = casemgt_cl_m.select_add_to_publication_v5(cls_url_config.getWeb_service_url_ser(),
+				web_service_response = casemgt_cl_m.select_add_to_publication(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
-						input);
+						case_number);
 				if (web_service_response != null) {
 					// System.out.println(web_service_response);
 				} else {
@@ -6481,6 +6481,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				return web_service_response;
 
+				
 			}
 			if (request_type.equals("select_get_party_by_party_id")) {
 
@@ -7250,38 +7251,39 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 			
 
 			if (request_type.equals("select_review_baby_steps_check_for_completion")) {
-
-				String job_number = request.getParameter("job_number");
-				String bs_id = request.getParameter("bs_id");
-				String bse_id = request.getParameter("bse_id");
+    
+				String job_number      = request.getParameter("job_number");
+				String bs_id           = request.getParameter("bs_id");
+				String bse_id          = request.getParameter("bse_id");
 				String approve_comment = request.getParameter("approve_comment");
+				
 				String fullname = (String) session.getAttribute("fullname");
-				String userid = (String) session.getAttribute("userid");
-
-				// System.out.println(list_of_application);
+				String userid   = (String) session.getAttribute("userid");
 
 				JSONObject obj = new JSONObject();
-				obj.put("job_number", job_number);
-				obj.put("bs_id", bs_id);
-				obj.put("bse_id", bse_id);
-				obj.put("approve_comment", approve_comment);
-				obj.put("fullname", fullname);
-				obj.put("userid", userid);
+				obj.put("job_number",      job_number);
+				obj.put("bs_id",           bs_id);
+				obj.put("bse_id",          bse_id);
+				obj.put("approve_comment", approve_comment != null ? approve_comment : "");
+				obj.put("fullname",        fullname != null ? fullname : "");
+				obj.put("userid",          userid);
 
-				System.out.print(obj.toString());
+				System.out.println("Request JSON: " + obj.toString());
 
-				web_service_response = casemgt_cl.select_review_baby_steps_check_for_completion(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(),
-						obj.toString());
+				web_service_response = casemgt_cl.select_review_baby_steps_check_for_completion(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(),
+					obj.toString()
+				);
+
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// System.out.println(web_service_response);   // uncomment if needed for debugging
 				} else {
-					System.out.println(web_service_response);
+					System.out.println("web_service_response returned null");
 				}
 
 				return web_service_response;
 			}
-
 			
 
 			if (request_type.equals("select_load_step_approved_comment")) {
@@ -8618,6 +8620,13 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
 
+				System.out.println("userid: " + modified_by_id);
+
+				// ✅ Correct way to check for null or empty userid
+				if (modified_by_id == null || modified_by_id.trim().isEmpty()) {
+					System.out.println("Warning: userid is null or empty. Returning null.");
+					return null;
+				}
 
 				JSONObject obj = new JSONObject();
 
