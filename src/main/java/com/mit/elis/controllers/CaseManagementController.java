@@ -5123,7 +5123,7 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				request.setAttribute("district", parcel_details_obj.optString("district", ""));
 				request.setAttribute("region", parcel_details_obj.optString("region", ""));
 				request.setAttribute("size_of_land", parcel_details_obj.get("land_size").toString());
-				request.setAttribute("extent", parcel_details_obj.es("extent", ""));
+				request.setAttribute("extent", parcel_details_obj.optString("extent", ""));
 				request.setAttribute("registry_mapref", parcel_details_obj.get("registry_mapref").toString());
 				request.setAttribute("plan_no", parcel_details_obj.get("plan_no").toString());
 				request.setAttribute("cc_no", parcel_details_obj.get("cc_no").toString());
