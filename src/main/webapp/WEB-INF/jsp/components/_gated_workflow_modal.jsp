@@ -3964,6 +3964,16 @@
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Certificate">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button class="btn btn-danger btn-sm deleteCertificate"
+                                                                data-cs_id="${certificate_section.cs_id}"
+                                                                data-cs_case_number="${certificate_section.case_number}"
+                                                                data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
+                                                                data-cs_to_whom_issued="${certificate_section.cs_to_whom_issued}"
+                                                                data-cs_serial_number="${certificate_section.cs_serial_number}"
+                                                                data-cs_official_notes="${certificate_section.cs_official_notes}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Certificate">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

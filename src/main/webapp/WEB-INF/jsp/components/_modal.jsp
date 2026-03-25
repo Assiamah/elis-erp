@@ -3611,9 +3611,9 @@
                             Document File(s)
                             <span class="text-danger">*</span>
                         </label>
-                        <button type="button" class="btn btn-sm btn-outline-primary" id="addFile">
+                        <!-- <button type="button" class="btn btn-sm btn-outline-primary" id="addFile">
                             <i class="bi bi-plus-circle me-1"></i>Add More Files
-                        </button>
+                        </button> -->
                     </div>
                     
                     <!-- File Upload Container -->
@@ -3852,9 +3852,9 @@
                             Document File(s)
                             <span class="text-danger">*</span>
                         </label>
-                        <button type="button" class="btn btn-sm btn-outline-primary" id="apAddFile">
+                        <!-- <button type="button" class="btn btn-sm btn-outline-primary" id="apAddFile">
                             <i class="bi bi-plus-circle me-1"></i>Add More Files
-                        </button>
+                        </button> -->
                     </div>
                     
                     <!-- File Upload Container -->

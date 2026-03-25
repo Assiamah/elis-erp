@@ -151,9 +151,9 @@ public class document_upload {
 	}
 
 	
-	@RequestMapping("/document_upload_mutiple_new")
+	@RequestMapping("/document_upload_multiple_new")
 	@PostMapping
-	public String document_upload_mutiple_new(HttpSession session, Model model, HttpServletRequest request, 
+	public String document_upload_multiple_new(HttpSession session, Model model, HttpServletRequest request, 
 						HttpServletResponse response,
 						@RequestParam(value = "sampleApplicationFile", required = true) MultipartFile[] files) 
 						throws IOException, ServletException {
@@ -166,7 +166,7 @@ public class document_upload {
 
 		// Get additional parameters
 		String caseNumber = request.getParameter("case_number");
-		String fileName = request.getParameter("file_name");
+		String file_name = request.getParameter("file_name");
 		String apiKey = cls_url_config.getWeb_service_url_ser_api_key(); 
 		String apiUrl = cls_url_config.getDoc_mgt_api() + "document_upload/file_upload_public_backend";
 		// Get the MIME type (document type) of the file
@@ -197,7 +197,7 @@ public class document_upload {
 						String filename=getFileNameWithoutExtension(file);
 						File tempFile = convertMultipartFileToFile(file);
 
-						uploadPdf(apiUrl, tempFile, caseNumber, cls_url_config.getDoc_mgt_api_key(), "case_docs", mimeType,filename);
+						uploadPdf(apiUrl, tempFile, caseNumber, cls_url_config.getDoc_mgt_api_key(), "case_docs", mimeType, file_name + "_" + filename);
 
 						// Delete the temporary file after uploading
 						tempFile.delete();

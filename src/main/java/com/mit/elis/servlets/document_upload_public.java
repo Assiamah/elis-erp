@@ -191,6 +191,7 @@ public class document_upload_public {
 
         // Get additional parameters
         String caseNumber = request.getParameter("case_number");
+		String file_name = request.getParameter("file_name");
         String apiKey = cls_url_config.getDoc_mgt_api_key(); 
         String apiUrl = cls_url_config.getDoc_mgt_api() + "document_upload/file_upload_public_backend";
 
@@ -204,7 +205,7 @@ public class document_upload_public {
 						String filename=getFileNameWithoutExtension(file);
 						File tempFile = convertMultipartFileToFile(file);
 
-						uploadPdf(apiUrl, tempFile, caseNumber, apiKey, "public_docs", mimeType,filename);
+						uploadPdf(apiUrl, tempFile, caseNumber, apiKey, "public_docs", mimeType, file_name + "_" + filename);
 
 						// Delete the temporary file after uploading
 						tempFile.delete();

@@ -4287,6 +4287,7 @@ $('#form_add_query').on('submit', function (e) {
             var query_attachment = $("input[name='query_attachement_requried']:checked").val();
             var query_general_reason = $("#query_general_reason").val();
             var query_response = $("#query_response").val();
+            var request_id = $("#request_id").val();
 
             var request_type = "";
 
@@ -4318,7 +4319,8 @@ $('#form_add_query').on('submit', function (e) {
                     remarks: query_remarks,
                     status: query_status,
                     query_attachment: query_attachment,
-                    query_general_reason: query_general_reason
+                    query_general_reason: query_general_reason,
+                    request_id: request_id,
                 },
                 cache: false,
                 success: function (jobdetails) {
@@ -4693,7 +4695,7 @@ $(document).ready(function () {
             progressBarId: '#fileUploadProgressBar',
             statusId: '#fileUploadStatus',
             spinnerId: '#apUploadSpinner',
-            endpoint: 'document_upload_mutiple_new',
+            endpoint: 'document_upload_multiple_new',
             maxFiles: 5
         }
     };
@@ -5099,7 +5101,7 @@ $(document).ready(function () {
         resetUploadState(modalType);
     }
 
-    // Preview file function - FIXED VERSION
+    // Preview file function - IMPROVED for large files (>1MB)
     function previewFile(file) {
         // Create preview modal if it doesn't exist
         if (!$('#previewModal').length) {
@@ -5111,17 +5113,14 @@ $(document).ready(function () {
                                 <h5 class="modal-title" id="previewModalLabel">Document Preview</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body p-0">
                                 <div id="previewLoading" class="text-center p-5">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <p class="mt-2">Loading preview...</p>
+                                    <p class="mt-2">Loading preview... (Large file may take a moment)</p>
                                 </div>
-                                <div id="previewError" class="d-none text-center p-5">
-                                    <i class="bi bi-exclamation-triangle text-warning fs-1"></i>
-                                    <p class="mt-2">Preview not available for this file type</p>
-                                </div>
+                                <div id="previewError" class="d-none text-center p-5"></div>
                                 <div id="previewContent" class="d-none"></div>
                             </div>
                             <div class="modal-footer">
@@ -5138,69 +5137,62 @@ $(document).ready(function () {
         const previewLoading = $('#previewLoading');
         const previewError = $('#previewError');
 
-        // Reset preview modal
+        // Reset modal
         previewContent.addClass('d-none').empty();
         previewError.addClass('d-none');
         previewLoading.removeClass('d-none');
 
-        // Show modal
         previewModal.show();
 
-        // Check file type and show appropriate preview
+        // Create object URL (much better for large files)
+        const fileURL = URL.createObjectURL(file);
+
+        // Clean up object URL when modal is closed (important to prevent memory leaks)
+        $('#previewModal').one('hidden.bs.modal', function () {
+            URL.revokeObjectURL(fileURL);
+        });
+
         if (file.type === 'application/pdf') {
-            // For PDF files
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                previewLoading.addClass('d-none');
-                previewContent.removeClass('d-none').html(`
-                    <div class="pdf-preview-container" style="height: 600px;">
-                        <iframe src="${e.target.result}" 
-                                width="100%" 
-                                height="100%" 
-                                frameborder="0"
-                                title="PDF Preview"></iframe>
-                    </div>
-                `);
-            };
-            reader.onerror = function () {
-                previewLoading.addClass('d-none');
-                previewError.removeClass('d-none');
-            };
-            reader.readAsDataURL(file);
+            // PDF Preview - Works well even for 20MB+ files
+            previewLoading.addClass('d-none');
+            previewContent.removeClass('d-none').html(`
+                <div style="height: 85vh; min-height: 500px;">
+                    <iframe src="${fileURL}" 
+                            width="100%" 
+                            height="100%" 
+                            frameborder="0"
+                            style="border: none;"
+                            title="PDF Preview"></iframe>
+                </div>
+            `);
+
         } else if (file.type.startsWith('image/')) {
-            // For image files
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                previewLoading.addClass('d-none');
-                previewContent.removeClass('d-none').html(`
-                    <div class="text-center">
-                        <img src="${e.target.result}" 
-                             class="img-fluid rounded" 
-                             alt="Document Preview"
-                             style="max-height: 500px;">
-                    </div>
-                `);
-            };
-            reader.onerror = function () {
-                previewLoading.addClass('d-none');
-                previewError.removeClass('d-none');
-            };
-            reader.readAsDataURL(file);
+            // Image Preview
+            previewLoading.addClass('d-none');
+            previewContent.removeClass('d-none').html(`
+                <div class="text-center p-3">
+                    <img src="${fileURL}" 
+                        class="img-fluid rounded shadow-sm" 
+                        alt="Image Preview"
+                        style="max-height: 75vh; max-width: 100%; object-fit: contain;">
+                </div>
+            `);
+
         } else {
-            // For unsupported preview types (Word documents, etc.)
-            setTimeout(function () {
-                previewLoading.addClass('d-none');
-                previewError.removeClass('d-none');
-                previewError.html(`
-                    <div class="text-center p-4">
-                        <i class="bi bi-file-earmark-text text-primary fs-1"></i>
-                        <h5 class="mt-3">${file.name}</h5>
-                        <p class="text-muted">${formatFileSize(file.size)}</p>
-                        <p class="text-muted mb-0">Preview not available for this file type.</p>
-                        <p class="text-muted">You can download the file to view it.</p>
-                    </div>
-                `);
-            }, 500);
+            // Unsupported file types
+            previewLoading.addClass('d-none');
+            previewError.removeClass('d-none').html(`
+                <div class="text-center p-5">
+                    <i class="bi bi-file-earmark-text text-primary fs-1"></i>
+                    <h5 class="mt-3">${file.name}</h5>
+                    <p class="text-muted">${formatFileSize(file.size)}</p>
+                    <p class="text-muted mb-0">Preview is not available for this file type.</p>
+                    <p class="text-muted">You can still download the file to view it.</p>
+                </div>
+            `);
+
+            // Cleanup URL since we're not using it
+            URL.revokeObjectURL(fileURL);
         }
     }
 
