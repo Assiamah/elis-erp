@@ -213,7 +213,7 @@
             </div>
 
             <!-- Reports Card -->
-            <div class="card border-0 shadow-sm">
+            <!-- <div class="card border-0 shadow-sm">
                 <div class="card-header bg-light py-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
@@ -271,10 +271,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Recent Activity -->
-            <div class="card border-0 shadow-sm mt-4">
+            <!-- <div class="card border-0 shadow-sm mt-4">
                 <div class="card-header bg-light py-3">
                     <h6 class="card-title mb-0">
                         <i class="fas fa-history me-2 text-primary"></i>Recent Activity
@@ -305,7 +305,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 

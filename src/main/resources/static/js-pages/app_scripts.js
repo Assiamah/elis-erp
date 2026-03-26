@@ -4287,7 +4287,7 @@ $('#form_add_query').on('submit', function (e) {
             var query_attachment = $("input[name='query_attachement_requried']:checked").val();
             var query_general_reason = $("#query_general_reason").val();
             var query_response = $("#query_response").val();
-            var request_id = $("#request_id").val();
+            var request_id = parseInt($("#request_id").val());
 
             var request_type = "";
 
@@ -4334,6 +4334,9 @@ $('#form_add_query').on('submit', function (e) {
                     })
 
                     $('#newQueryModal').modal('hide');
+
+                    //go back
+                    window.location.href = "/case_movement_module";
                 },
                 error: function (xhr, status, error) {
                     // Show error message

@@ -4819,7 +4819,7 @@ Thank you.</textarea>
                         <h5 class="modal-title text-white mb-0" id="generateConcurrenceCertificateLabel">
                             Generate Certificate
                         </h5>
-                        <p class="mb-0 small opacity-75">Create and manage concurrence certificates</p>
+                        <p class="mb-0 small opacity-75">Create and manage certificates</p>
                     </div>
                     <button type="button" class="btn-close btn-close-white ms-auto" 
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -6931,7 +6931,7 @@ Thank you.</textarea>
                     <input class="form-check-input" type="radio" name="link_search_type_d" 
                            id="rbtn_search_type4_d" value="serial_number" required>
                     <label class="form-check-label" for="rbtn_search_type4_d">
-                      Deed Number/ Serial Number
+                      File Number/ Deed Number/ Serial Number
                     </label>
                   </div>
                 </div>
@@ -7074,9 +7074,9 @@ Thank you.</textarea>
                     <div>
                         <!-- <i class="fas fa-certificate me-2"></i> -->
                         <h5 class="modal-title text-white mb-0" id="certificateAndRegisterDetailsLabel">
-                            Certificate and Transaction Details
+                            Application and Transaction Details
                         </h5>
-                        <small class="opacity-75 text-white" id="modalCaseNumber">Case: Loading...</small>
+                        <small class="opacity-75 text-white" id="modalCaseNumberDeed">Case: Loading...</small>
                     </div>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -7094,25 +7094,25 @@ Thank you.</textarea>
                     
                     <!-- Case Details Card -->
                     <div class="accordion-item border-0">
-                        <h2 class="accordion-header" id="caseDetailsHeading">
+                        <h2 class="accordion-header" id="rootOfTitleHeading_deed">
                             <button class="accordion-button bg-light text-dark fw-bold py-3 collapsed" 
                                     type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#caseDetailsAccordion_deed" 
-                                    aria-expanded="false" aria-controls="caseDetailsAccordion_deed">
+                                    data-bs-target="#rootOfTitleCollapse_deed" 
+                                    aria-expanded="false" aria-controls="rootOfTitleCollapse_deed">
                                 <div class="d-flex align-items-center w-100">
-                                    <i class="fas fa-folder-open text-primary me-3 fa-lg"></i>
+                                    <i class="fas fa-sitemap text-success me-3 fa-lg"></i>
                                     <div>
-                                        <h6 class="mb-0">Case Details</h6>
-                                        <small class="text-muted">Complete case information and registration details</small>
+                                        <h6 class="mb-0">Transaction Details</h6>
+                                        <!-- <small class="text-muted">Proprietorship, memorials, valuations, certificates & encumbrances</small> -->
                                     </div>
                                 </div>
                             </button>
                         </h2>
-                        <div id="caseDetailsAccordion_deed" class="accordion-collapse collapse" 
-                             aria-labelledby="caseDetailsHeading" data-bs-parent="#caseDetailsAccordion_deed">
+                        <div id="rootOfTitleCollapse_deed" class="accordion-collapse collapse" 
+                             aria-labelledby="rootOfTitleHeading_deed" data-bs-parent="#caseDetailsAccordion_deed">
                             <div class="accordion-body bg-white p-4">
                                 
-                                <!-- Case Information Grid -->
+                                <!-- Proprietorship Details -->
                                 <div class="row g-4">
                                     
                                     <!-- Basic Information -->
@@ -7148,11 +7148,25 @@ Thank you.</textarea>
                                                         <span class="fw-medium" id="ts_main_locality_sm_d">-</span>
                                                     </div>
                                                 </div>
-                                                <div class="info-item">
+                                                <div class="info-item mb-3">
                                                     <label class="form-label small text-muted mb-1">Transaction Number</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-exchange-alt text-primary me-2"></i>
                                                         <span class="fw-medium" id="ts_main_transaction_number_sm_d">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <label class="form-label small text-muted mb-1">Applicant Name</label>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-user text-primary me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_ar_name_sm_d">-</span>
+                                                    </div>
+                                                </div>
+                                                 <div class="info-item">
+                                                    <label class="form-label small text-muted mb-1">Application Type</label>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-briefcase text-primary me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_business_process_sub_name_sm_d">-</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -7187,8 +7201,6 @@ Thank you.</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="info-item mb-3">
-                                                </div>
-                                                <div class="info-item">
                                                     <label class="form-label small text-muted mb-1">Region</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-globe text-warning me-2"></i>
@@ -7198,7 +7210,7 @@ Thank you.</textarea>
                                                 <div class="info-item">
                                                     <label class="form-label small text-muted mb-1">District</label>
                                                     <div class="d-flex align-items-center">
-                                                        <i class="fas fa-building text-success me-2"></i>
+                                                        <i class="fas fa-building text-warning me-2"></i>
                                                         <span class="fw-medium" id="ts_main_district_sm_d">-</span>
                                                     </div>
                                                 </div>
@@ -7234,11 +7246,18 @@ Thank you.</textarea>
                                                         <span class="fw-medium" id="ts_main_type_of_interest_sm_d">-</span>
                                                     </div>
                                                 </div>
-                                                <div class="info-item">
+                                                <div class="info-item mb-3">
                                                     <label class="form-label small text-muted mb-1">Type of Use</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-tag text-info me-2"></i>
                                                         <span class="fw-medium" id="ts_main_type_of_use_sm_d">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <label class="form-label small text-muted mb-1">Term</label>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-clock text-info me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_term_sm_d">-</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -7278,11 +7297,18 @@ Thank you.</textarea>
                                                         <span class="fw-medium" id="ts_main_consideration_fee_sm_d">-</span>
                                                     </div>
                                                 </div>
-                                                <div class="info-item">
+                                                <div class="info-item mb-3">
                                                     <label class="form-label small text-muted mb-1">Consideration Currency</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-coins text-danger me-2"></i>
                                                         <span class="fw-medium" id="ts_main_case_consideration_fee_currency_sm_d">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-item">
+                                                    <label class="form-label small text-muted mb-1">Adopted Rate</label>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-percentage text-danger me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_case_consideration_fee_adopted_rate_sm_d">-</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -7293,7 +7319,7 @@ Thank you.</textarea>
                                     <div class="col-md-4">
                                         <div class="card h-100 border-light shadow-sm">
                                             <div class="card-header bg-light">
-                                                <h6 class="mb-0"><i class="fas fa-calendar-alt me-2 text-purple"></i>Dates & Applicant</h6>
+                                                <h6 class="mb-0"><i class="fas fa-calendar-alt me-2 text-purple"></i>Dates</h6>
                                             </div>
                                             <div class="card-body">
                                                 <div class="info-item mb-3">
@@ -7318,10 +7344,10 @@ Thank you.</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="info-item">
-                                                    <label class="form-label small text-muted mb-1">Applicant Name</label>
+                                                    <label class="form-label small text-muted mb-1">Date of Issue</label>
                                                     <div class="d-flex align-items-center">
-                                                        <i class="fas fa-user text-purple me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_ar_name_sm_d">-</span>
+                                                        <i class="fas fa-calendar-day text-purple me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_case_date_of_issue_sm_d">-</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -7343,24 +7369,24 @@ Thank you.</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Certificate Number</label>
+                                                    <label class="form-label small text-muted mb-1">Serial Number</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-certificate text-teal me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_certificate_number_sm_d">-</span>
+                                                        <span class="fw-medium" id="ts_main_serial_number_sm_d">-</span>
                                                     </div>
                                                 </div>
                                                 <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Registered Number</label>
+                                                    <label class="form-label small text-muted mb-1">Deed Number</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-registered text-teal me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_case_registered_number_sm_d">-</span>
+                                                        <span class="fw-medium" id="ts_main_deed_number_sm_d">-</span>
                                                     </div>
                                                 </div>
                                                 <div class="info-item">
-                                                    <label class="form-label small text-muted mb-1">Date of Issue</label>
+                                                    <label class="form-label small text-muted mb-1">File Number</label>
                                                     <div class="d-flex align-items-center">
-                                                        <i class="fas fa-calendar-day text-teal me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_case_date_of_issue_sm_d">-</span>
+                                                        <i class="fas fa-file text-teal me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_file_number_sm_d">-</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -7375,20 +7401,6 @@ Thank you.</textarea>
                                             </div>
                                             <div class="card-body">
                                                 <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Term</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-clock text-secondary me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_term_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item mb-3">
-                                                    <label class="form-label small text-muted mb-1">Adopted Rate</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-percentage text-secondary me-2"></i>
-                                                        <span class="fw-medium" id="ts_main_case_consideration_fee_adopted_rate_sm_d">-</span>
-                                                    </div>
-                                                </div>
-                                                <div class="info-item mb-3">
                                                     <label class="form-label small text-muted mb-1">Interest Number</label>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-hashtag text-secondary me-2"></i>
@@ -7402,67 +7414,24 @@ Thank you.</textarea>
                                                         <span class="fw-medium" id="ts_main_sub_interest_number_d">-</span>
                                                     </div>
                                                 </div>
+                                                <div class="info-item mb-3">
+                                                    <label class="form-label small text-muted mb-1">Extent of Land</label>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-hashtag text-secondary me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_extent_land_d">-</span>
+                                                    </div>
+                                                </div>
+                                                <div class="info-item mb-3">
+                                                    <label class="form-label small text-muted mb-1">Extent of Interest</label>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-hashtag text-secondary me-2"></i>
+                                                        <span class="fw-medium" id="ts_main_extent_interest_d">-</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Root of Title Section -->
-                    <div class="accordion-item border-0">
-                        <h2 class="accordion-header" id="rootOfTitleHeading_deed">
-                            <button class="accordion-button bg-light text-dark fw-bold py-3 collapsed" 
-                                    type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#rootOfTitleCollapse_deed" 
-                                    aria-expanded="false" aria-controls="rootOfTitleCollapse_deed">
-                                <div class="d-flex align-items-center w-100">
-                                    <i class="fas fa-sitemap text-success me-3 fa-lg"></i>
-                                    <div>
-                                        <h6 class="mb-0">Transaction Details</h6>
-                                        <!-- <small class="text-muted">Proprietorship, memorials, valuations, certificates & encumbrances</small> -->
-                                    </div>
-                                </div>
-                            </button>
-                        </h2>
-                        <div id="rootOfTitleCollapse_deed" class="accordion-collapse collapse" 
-                             aria-labelledby="rootOfTitleHeading_deed" data-bs-parent="#caseDetailsAccordion_deed">
-                            <div class="accordion-body bg-white p-4">
-                                
-                                <!-- Proprietorship Details -->
-                                <div class="card border-light shadow-sm mb-4">
-                                    <div class="card-header bg-success bg-opacity-10 border-success">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">
-                                                <i class="fas fa-user-tie text-success me-2"></i>
-                                                Transaction Details
-                                            </h6>
-                                            <span class="badge bg-success" id="proprietorshipCount_d">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover table-sm" id="lrd_proprietorship_details_dataTable_3">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th><i class="fas fa-hashtag me-1"></i> Registered No.</th>
-                                                        <th><i class="fas fa-user me-1"></i> Grantee</th>
-                                                        <th><i class="fas fa-calendar-alt me-1"></i> Date of Instrument</th>
-                                                        <th><i class="fas fa-file-contract me-1"></i> Nature of Instrument</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <!-- Data will be populated here -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="text-center py-4" id="noProprietorship_d">
-                                            <i class="fas fa-user-tie fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted mb-0">No transaction records found</p>
-                                        </div>
-                                    </div>
                                 </div>
                                
                             </div>
@@ -7508,11 +7477,11 @@ Thank you.</textarea>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="text-center py-5" id="tsNoDocuments_d">
+                                <!-- <div class="text-center py-5" id="tsNoDocuments_d">
                                     <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
                                     <h6 class="text-muted mb-2">No Documents Found</h6>
                                     <p class="text-muted small">Click "Load Documents" to view case documents</p>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

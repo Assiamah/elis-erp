@@ -3496,6 +3496,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#addeditpartyGeneral ._gated_workflow_documents');
         } else if (modalType === 'further_entry') {
             container = document.querySelector('#further_entry ._gated_workflow_documents');
+        } else if (modalType === 'enter_transaction_details_for_deed') {
+            container = document.querySelector('#enter_transaction_details_for_deed ._gated_workflow_documents');
         }
         
         if (!container) {
@@ -10132,6 +10134,189 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    $('#linkSearchMotherfileInterest_deed').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        $('#loadingResults_deed').removeClass('d-none');
+        $('#resultsContent_deed').addClass('d-none');
+        $('#noResultsMessage_deed').addClass('d-none');
+        $('#link-search-results-section__deed').show();
+        
+        var enq_search_type = "";
+        var selected_rbtn = $("input[name='link_search_type__deed']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        var enq_search_value = $("#link_search_value__deed").val();
+        
+        if (enq_search_type.length <= 0) {
+            // Show error notification
+            Swal.fire({
+                title: 'Search Type Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Please select the type of field for your search</p>
+                        <p class="text-muted small">Choose either "Job Number" or "Certificate Number"</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            
+            $('#loadingResults_deed').addClass('d-none');
+            $('#link-search-results-section__deed').hide();
+            return false;
+        }
+        
+        if (!enq_search_value.trim()) {
+            // Show error notification
+            Swal.fire({
+                title: 'Search Value Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Please enter a search value</p>
+                        <p class="text-muted small">Enter a job number or certificate number to search</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            
+            $('#loadingResults_deed').addClass('d-none');
+            return false;
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_application_details_by_job_number_or_certificate_number_for_deed',
+                job_number: enq_search_value,
+                search_type: enq_search_type
+            },
+            cache: false,
+            success: function(jobdetails) {
+                $('#loadingResults_deed').addClass('d-none');
+                
+                if (jobdetails.includes('Error Loading Data') || !jobdetails || jobdetails.includes('[]')) {
+                    // Show no results
+                    $('#noResultsMessage_deed').removeClass('d-none');
+                    $('#resultsContent_deed').addClass('d-none');
+                    
+                    // Show error notification
+                    Swal.fire({
+                        title: 'No Results Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-muted fa-2x"></i>
+                                </div>
+                                <p>No mother files found for "${enq_search_value}"</p>
+                                <p class="text-muted small">Try searching with a different job number or certificate number</p>
+                            </div>`,
+                        icon: 'info',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#0d6efd'
+                    });
+                    
+                } else {
+                    try {
+                        var json_p = JSON.parse(jobdetails);
+                        
+                        if (json_p && json_p.length > 0) {
+                            // Update display values
+                            $('#chk_interest_number_d').text(json_p[0].interest_number || 'Not Available');
+                            $('#chk_sub_interest_number_d').text(json_p[0].sub_interest_number || 'Not Available');
+                            
+                            // Style the values based on availability
+                            if (!json_p[0].interest_number) {
+                                $('#chk_interest_number_d').addClass('text-muted').removeClass('text-info');
+                            } else {
+                                $('#chk_interest_number_d').addClass('text-info').removeClass('text-muted');
+                            }
+                            
+                            if (!json_p[0].sub_interest_number) {
+                                $('#chk_sub_interest_number_d').addClass('text-muted').removeClass('text-warning');
+                            } else {
+                                $('#chk_sub_interest_number_d').addClass('text-warning').removeClass('text-muted');
+                            }
+                            
+                            // Show results
+                            $('#resultsContent_deed').removeClass('d-none');
+                            $('#noResultsMessage_deed').addClass('d-none');
+                            
+                            // Show success notification
+                            Swal.fire({
+                                title: 'Search Successful!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-check-circle text-success fa-2x"></i>
+                                        </div>
+                                        <p>Found mother file details</p>
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                            <div class="d-flex justify-content-between">
+                                                <span><strong>Interest:</strong> ${json_p[0].interest_number || 'N/A'}</span>
+                                                <span><strong>Sub-Interest:</strong> ${json_p[0].sub_interest_number || 'N/A'}</span>
+                                            </div>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: 'Continue',
+                                confirmButtonColor: '#198754',
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                            
+                        } else {
+                            // Show no results
+                            $('#noResultsMessage_deed').removeClass('d-none');
+                            $('#resultsContent_deed').addClass('d-none');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error parsing response:', error);
+                        
+                        // Show error state
+                        $('#noResultsMessage_deed').removeClass('d-none');
+                        $('#resultsContent_deed').addClass('d-none');
+                        
+                        Swal.fire({
+                            title: 'Processing Error',
+                            text: 'Failed to process server response',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingResults_deed').addClass('d-none');
+                $('#noResultsMessage_deed').removeClass('d-none');
+                $('#resultsContent_deed').addClass('d-none');
+                
+                Swal.fire({
+                    title: 'Search Failed',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                            </div>
+                            <p>Unable to complete search</p>
+                            <p class="text-danger small">${error || 'Server error occurred'}</p>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'Try Again',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        });
+    });
+
     $('#linkSearchMotherfile_').on('submit', function(e) {
         e.preventDefault();
         
@@ -14066,6 +14251,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('#further_entry').on('show.bs.modal', function () {
         window.loadGatedWorkFlowDocuments('further_entry');
+    });
+
+    $('#enter_transaction_details_for_deed').on('show.bs.modal', function () {
+        window.loadGatedWorkFlowDocuments('enter_transaction_details_for_deed');
     });
 
     // $('#viewNotesModal').on('shown.bs.modal', function () {
@@ -23610,10 +23799,10 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.show();
 
         // Update modal header with case number
-        $('#modalCaseNumber').text(`Case: ${case_number}`);
+        $('#modalCaseNumberDeed').text(`Case: ${case_number}`);
 
-        $("#certificateAndRegisterDetailsCaseNumber").val(case_number);
-        $("#certificateAndRegisterDetailsJobNumber").val(job_number);
+        $("#certificateAndRegisterDetailsCaseNumber_deed").val(case_number);
+        $("#certificateAndRegisterDetailsJobNumber_deed").val(job_number);
 
         // Load case details
         loadCaseDetailsDeed(job_number, case_number, transaction_number, business_process_sub_name);
@@ -23659,6 +23848,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateCaseDetailsDeed(result) {
 
+        console.log(result);
+
         $("#certificateAndRegisterDetailsTransactionNumber").val(result.transaction_details?.transaction_number);
         // Update all fields
         const fields = {
@@ -23700,9 +23891,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Reference Numbers
             'ts_main_job_number_sm_d': result.job_detail?.job_number,
-            'ts_main_certificate_number_sm_d': result.transaction_details?.certificate_number,
-            'ts_main_case_registered_number_sm_d': result.transaction_details?.registered_number,
+            'ts_main_serial_number_sm_d': result.transaction_details?.ls_number,
+            'ts_main_deed_number_sm_d': result.transaction_details?.deed_number,
             'ts_main_case_date_of_issue_sm_d': result.transaction_details?.date_of_issue,
+            'ts_main_file_number_sm_d': result.transaction_details?.file_number,
+            'ts_main_business_process_sub_name_sm_d': result.job_detail?.business_process_sub_name,
             
             // Plotting & Plans
             // 'ts_main_smd_type_of_plotting_sm_d': result.parcel_details?.smd_type_of_plotting,
@@ -23714,7 +23907,10 @@ document.addEventListener('DOMContentLoaded', function() {
             'ts_main_term_sm_d': result.transaction_details?.term,
             'ts_main_case_consideration_fee_adopted_rate_sm_d': result.transaction_details?.consideration_fee_adopted_rate,
             'ts_main_interest_number_d': result.transaction_details?.interest_number,
-            'ts_main_sub_interest_number_d': result.transaction_details?.sub_interest_number
+            'ts_main_sub_interest_number_d': result.transaction_details?.sub_interest_number,
+            'ts_main_extent_land_d': result.transaction_details?.intended_parcel, 
+            'ts_main_extent_interest_d': result.transaction_details?.intended_interest
+             
         };
         
         // Update all elements
@@ -25149,6 +25345,1186 @@ document.addEventListener('DOMContentLoaded', function() {
                 confirmButtonColor: '#dc3545'
             });
         });
+    });
+
+    $("#link_to_mother_file_for_deed").on('shown.bs.modal', function(e) {
+    var case_number = $("#cs_main_case_number").val();
+    var job_number = $("#cs_main_job_number").val();
+    
+    // Create loading alert
+    const loadingAlert = `
+        <div class="alert alert-info alert-dismissible fade show d-flex align-items-center" role="alert">
+            <div class="spinner-border spinner-border-sm me-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="flex-grow-1">
+                <strong>Checking Mother File Status...</strong>
+                <p class="mb-0 small">Please wait while we verify the mother file link status</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    
+    // Show loading state
+    $("#htmlLinkedMotherFile").html(loadingAlert);
+    
+        $.ajax({
+            url: "Case_Management_Serv",
+            type: "POST",
+            data: {
+                request_type: "select_check_if_motherfile_linked",
+                job_number: job_number,
+                case_number: case_number
+            },
+            success: function(response) {
+                // console.log(response);
+                
+                try {
+                    response = JSON.parse(response);
+                    
+                    if (response.count >= 1) {
+                        let mother_file_job_number = response.data.mc_job_number;
+                        
+                        // Success Alert - Linked
+                        const successAlert = `
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-check-circle fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="alert-heading mb-2">
+                                            <i class="fas fa-link me-2"></i>
+                                            Mother File Linked
+                                        </h5>
+                                        <p class="mb-2">
+                                            This application is successfully linked to mother file:
+                                            <span class="badge bg-success ms-2">${mother_file_job_number}</span>
+                                        </p>
+                                        <div class="d-flex align-items-center mt-3">
+                                            <i class="fas fa-info-circle me-2 text-success"></i>
+                                            <small class="text-success">No further action required. The link is already established.</small>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        $("#htmlLinkedMotherFile_deed").html(successAlert);
+                        
+                        // Disable form controls
+                        $("#lrd_search_for_mother_transction_to_child_deed")
+                            .prop('disabled', true)
+                            .addClass('bg-light')
+                            .attr('placeholder', 'Already linked to ' + mother_file_job_number);
+                        
+                        $("#lrd_btn_search_for_mother_transction_to_child_deed")
+                            .prop('disabled', true)
+                            .removeClass('btn-primary')
+                            .addClass('btn-secondary')
+                            .html('<i class="fas fa-lock me-2"></i>Already Linked');
+                            
+                        // Optional: Add badge to button
+                        $('<span class="badge bg-success ms-2">Linked</span>').appendTo("#lrd_btn_search_for_mother_transction_to_child");
+                        
+                    } else {
+                        // Warning Alert - Not Linked
+                        const warningAlert = `
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="alert-heading mb-2">
+                                            <i class="fas fa-unlink me-2"></i>
+                                            No Mother File Linked
+                                        </h5>
+                                        <p class="mb-3">
+                                            This application is not linked to any mother file yet. 
+                                            Please link it to enable full functionality.
+                                        </p>
+                                        <div class="alert alert-light border mt-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-lightbulb text-warning me-3"></i>
+                                                <div>
+                                                    <strong>To link a mother file:</strong>
+                                                    <ol class="mb-0 mt-2 ps-3">
+                                                        <li>Select search type (Job Number or Serial Number or File Number or Deed Number)</li>
+                                                        <li>Enter the mother file identifier</li>
+                                                        <li>Click "Link Application" button</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        $("#htmlLinkedMotherFile_deed").html(warningAlert);
+                        
+                        // Enable form controls
+                        $("#lrd_search_for_mother_transction_to_child_deed")
+                            .prop('disabled', false)
+                            .removeClass('bg-light')
+                            .attr('placeholder', 'Enter Job Number or Serial Number or File Number or Deed Number');
+                        
+                        $("#lrd_btn_search_for_mother_transction_to_child_deed")
+                            .prop('disabled', false)
+                            .removeClass('btn-secondary')
+                            .addClass('btn-primary')
+                            .html('<i class="fas fa-link me-2"></i>Link Application')
+                            .find('.badge').remove(); // Remove any existing badge
+                    }
+                    
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    
+                    // Error Alert
+                    const errorAlert = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="alert-heading mb-2">Unable to Check Status</h5>
+                                    <p class="mb-0">
+                                        There was an error checking the mother file link status. 
+                                        Please try again or contact support if the issue persists.
+                                    </p>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    $("#htmlLinkedMotherFile_deed").html(errorAlert);
+                    
+                    // Enable form controls anyway
+                    $("#lrd_search_for_mother_transction_to_child_deed").prop('disabled', false);
+                    $("#lrd_btn_search_for_mother_transction_to_child_deed").prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
+                
+                // Network Error Alert
+                const networkErrorAlert = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-wifi fa-2x"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="alert-heading mb-2">Connection Error</h5>
+                                <p class="mb-0">
+                                    Unable to connect to the server. Please check your internet connection and try again.
+                                </p>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                
+                $("#htmlLinkedMotherFile_deed").html(networkErrorAlert);
+                
+                // Enable form controls anyway
+                $("#lrd_search_for_mother_transction_to_child_deed").prop('disabled', false);
+                $("#lrd_btn_search_for_mother_transction_to_child_deed").prop('disabled', false);
+            }
+        });
+    });
+
+    $('#linkSearchMotherfile__deed').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get search parameters
+        let enq_search_type = "";
+        const selected_rbtn = $("input[name='link_search_type_deed']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        const enq_search_value = $("#link_search_value_deed").val().trim();
+        
+        // Validation
+        if (!enq_search_type) {
+            Swal.fire({
+                title: 'Search Type Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Select Search Type</h5>
+                        <p class="text-muted">Please select the type of field for your search</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Choose either Job Number or Serial Number or Deed Number
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        if (!enq_search_value) {
+            Swal.fire({
+                title: 'Search Value Required',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-search text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Enter Search Value</h5>
+                        <p class="text-muted">Please enter a ${enq_search_type.replace('_', ' ').toLowerCase()}</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Enter the ${enq_search_type === 'job_number' ? 'job number' : 'serial number or deed number'} to search
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                $("#link_search_value_deed").focus();
+            });
+            return;
+        }
+        
+        // Optional: Minimum length validation (commented out in original)
+        // if (enq_search_value.length < 8) {
+        //     Swal.fire({
+        //         title: 'Minimum Length Required',
+        //         html: `<div class="text-center">
+        //                 <div class="mb-3">
+        //                     <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+        //                 </div>
+        //                 <h5 class="mb-2">Search Too Short</h5>
+        //                 <p class="text-muted">Please enter 8 or more characters to search</p>
+        //                 <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+        //                     <i class="fas fa-ruler me-2"></i>
+        //                     Minimum 8 characters required for accurate search
+        //                 </div>
+        //             </div>`,
+        //         icon: 'warning',
+        //         confirmButtonText: 'OK',
+        //         confirmButtonColor: '#fd7e14'
+        //     });
+        //     return;
+        // }
+        
+        // Hide results section
+        $("#link-search-results-section_deed").hide();
+        
+        // Show search progress
+        const searchProgress = Swal.fire({
+            title: 'Searching...',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-search fa-spin text-primary fa-2x"></i>
+                    </div>
+                    <h5 class="mb-2">Searching Records</h5>
+                    <p class="text-muted">Looking for ${enq_search_type === 'job_number' ? 'job number' : 'serial number or deed number'}: <strong>${enq_search_value}</strong></p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                            role="progressbar" 
+                            style="width: 100%"></div>
+                    </div>
+                </div>`,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+        
+        // Perform AJAX search
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_application_details_by_job_number_or_certificate_number_for_deed',
+                job_number: enq_search_value,
+                search_type: enq_search_type
+            },
+            cache: false,
+            success: function(jobdetails) {
+                // Close progress dialog
+                searchProgress.close();
+                
+                // Show results section
+                $("#link-search-results-section_deed").show();
+                
+                const table = $('#link-search-results-table_deed');
+                table.find("tbody tr").remove();
+
+                // console.log(jobdetails);
+                
+                // Check for error or empty results
+                if (jobdetails.includes('Error Loading Data') || !jobdetails || jobdetails === '[]') {
+                    Swal.fire({
+                        title: 'No Results Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-warning fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Search Unsuccessful</h5>
+                                <p class="text-muted">No records found for ${enq_search_type === 'job_number' ? 'job number' : 'serial number or deed number'}: <strong>${enq_search_value}</strong></p>
+                                
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <div class="d-flex">
+                                        <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                                        <div>
+                                            <strong>Possible reasons:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>The ${enq_search_type === 'job_number' ? 'job number' : 'serial number or deed number'} may be incorrect</li>
+                                                <li>The record may not exist in the system</li>
+                                                <li>There may be a typo in your search</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-outline-primary" onclick="$('#link_search_value').focus()">
+                                        <i class="fas fa-redo me-1"></i>
+                                        Try Another Search
+                                    </button>
+                                </div>
+                            </div>`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#fd7e14',
+                        width: 550
+                    });
+                    return false;
+                }
+                
+                try {
+                    // Parse and display results
+                    const json_p = JSON.parse(jobdetails);
+                    
+                    // Show success message with result count
+                    const resultCount = json_p.length;
+                    Swal.fire({
+                        title: 'Search Complete',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-plus text-success fa-2x"></i>
+                                </div>
+                                <h5 class="mb-2">${resultCount} Record${resultCount !== 1 ? 's' : ''} Found</h5>
+                                <p class="text-muted">Search results for ${enq_search_type === 'job_number' ? 'job number' : 'serial number or deed number'}: <strong>${enq_search_value}</strong></p>
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <div class="text-start">
+                                            <strong>Results Summary:</strong>
+                                            <div class="small text-muted">
+                                                ${resultCount} matching record${resultCount !== 1 ? 's' : ''} displayed below
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Populate table with results
+                    $(json_p).each(function() {
+                        const row = `
+                            <tr>
+                                <td>${this.ar_name || 'N/A'}</td>
+                                <td>${this.certificate_number || 'N/A'}</td>
+                                <td>${this.job_number || 'N/A'}</td>
+                                <td>${this.locality || 'N/A'}</td>
+                                <td class="text-end">
+                                    <button type="button" 
+                                            data-job_number="${this.job_number}"
+                                            data-case_number="${this.case_number || ''}"
+                                            data-transaction_number="[0, 0]" 
+                                            business_process_sub_name="-"
+                                            class="btn btn-warning btn-view-mother-Child-details-deed" 
+                                            title="View Case Details">
+                                            <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                        table.append(row);
+                    });
+                    
+                    // Update results count display
+                    $('#searchResultsCount_deed').text(`Found ${resultCount} record${resultCount !== 1 ? 's' : ''}`);
+
+                    $('#resultsCount_deed').text(resultCount || 0 +' results');
+
+                    $('#lrd_search_for_mother_transction_to_child_deed').val(enq_search_value);
+                    
+                    // Scroll to results section
+                    $('html, body').animate({
+                        scrollTop: $("#link-search-results-section_deed").offset().top - 100
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('Error parsing search results:', error);
+                    
+                    Swal.fire({
+                        title: 'Data Error',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-database text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Unable to Process Results</h5>
+                                <p class="text-danger small">Error parsing search results data</p>
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-code me-2"></i>
+                                    <strong>Technical Issue:</strong> The server response could not be processed
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                // Close progress dialog
+                searchProgress.close();
+                
+                Swal.fire({
+                    title: 'Search Failed',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                            </div>
+                            <h5 class="mb-2">Connection Error</h5>
+                            <p class="text-danger small">${error || 'Unable to connect to server'}</p>
+                            <div class="alert alert-warning mt-3">
+                                <i class="fas fa-wifi me-2"></i>
+                                <strong>Network Issue:</strong> Please check your connection and try again
+                            </div>
+                        </div>`,
+                    icon: 'error',
+                    confirmButtonText: 'Retry Search',
+                    confirmButtonColor: '#dc3545'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#linkSearchMotherfile__deed').submit();
+                    }
+                });
+            }
+        });
+    });
+
+    $("#lrd_btn_search_for_mother_transction_to_child_deed").click(function(event) {
+        event.preventDefault();
+        
+        // Collect data
+        const mc_job_number = $('#lrd_search_for_mother_transction_to_child_deed').val().trim();
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        
+        let enq_search_type = "";
+        const selected_rbtn = $("input[name='rbtn_search_type_deed']:checked");
+        if (selected_rbtn.length > 0) {
+            enq_search_type = selected_rbtn.val();
+        }
+        
+        // Validation
+        const errors = [];
+        
+        if (!mc_job_number || mc_job_number.length < 3) {
+            errors.push('Please enter 3 or more characters to search');
+            $('#lrd_search_for_mother_transction_to_child_deed').focus();
+        }
+        
+        if (!enq_search_type) {
+            errors.push('Please select the type of field for your search');
+        }
+        
+        if (!job_number || !case_number || !transaction_number) {
+            errors.push('Current case information is incomplete');
+        }
+        
+        if (errors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <h5 class="mb-2">Please correct the following:</h5>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning text-start mt-3">
+                            <ul class="mb-0">
+                                ${errors.map(error => `<li>${error}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+        
+        // Determine search type display name
+        const searchTypeDisplay = enq_search_type === 'job_number' ? 'Job Number' : 
+                                enq_search_type === 'certificate_number' ? 'File Number/ Deed Number/ Serial Number' : 
+                                enq_search_type.replace('_', ' ').toUpperCase();
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Link to Mother File?',
+            html: `<div class="text-start">
+                    <h5 class="mb-3">Confirm Mother File Link</h5>
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x me-3"></i>
+                            <div>
+                                <h5 class="text-warning mb-2">Important Action</h5>
+                                <p class="mb-0">You are about to link this application to a mother file.</p>
+                                <p class="mb-0 mt-1">This will <strong class="text-danger">copy transaction data</strong> from the mother file.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-link me-2 mt-1"></i>
+                            <div>
+                                <strong>Link Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Search Type:</strong> ${searchTypeDisplay}</li>
+                                    <li><strong>Mother Job Number:</strong> ${mc_job_number}</li>
+                                    <li><strong>Baby Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Baby Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Baby Transaction Number:</strong> ${transaction_number}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-secondary bg-light border-secondary small mt-3">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        <strong>What will happen:</strong> Transaction data will be copied from the mother file to this child application
+                    </div>
+                    
+                    <p class="text-muted small mt-4">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This action creates a parent-child relationship between applications
+                    </p>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-link me-2"></i>Yes, Link to Mother File',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: {
+                            request_type: 'select_copy_mother_file_transaction_to_child_for_deed',
+                            mc_job_number: mc_job_number,
+                            job_number: job_number,
+                            case_number: case_number,
+                            transaction_number: transaction_number,
+                            type_of_value: enq_search_type
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                // console.log('Link response:', response);
+                
+                // Check if response is empty (mother file not found)
+                if (!response || response.trim() === '') {
+                    Swal.fire({
+                        title: 'Mother File Not Found',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-search-minus text-warning fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">No Matching Mother File</h5>
+                                <p class="text-muted">The ${searchTypeDisplay.toLowerCase()} <strong>${mc_job_number}</strong> was not found</p>
+                                
+                                <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <div>
+                                            <strong>Possible reasons:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>The ${searchTypeDisplay.toLowerCase()} may be incorrect</li>
+                                                <li>The mother file may not exist</li>
+                                                <li>There may be a typo in your search</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-outline-primary" onclick="$('#lrd_search_for_mother_transction_to_child_deed').focus()">
+                                        <i class="fas fa-redo me-1"></i>
+                                        Try Another Search
+                                    </button>
+                                </div>
+                            </div>`,
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#fd7e14',
+                        width: 550
+                    });
+                    return;
+                }
+                
+                try {
+                    // Parse JSON response
+                    const jsonResponse = JSON.parse(response);
+                    
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Mother File Linked</h5>
+                                <p class="text-muted">Application has been successfully linked to mother file</p>
+                                
+                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-link me-2"></i>
+                                        <div>
+                                            <strong>Linked Successfully</strong>
+                                            <div class="small text-muted mt-1">
+                                                Mother: ${mc_job_number} → Child: ${job_number}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Display response details if available -->
+                                ${jsonResponse.ar_name || jsonResponse.certificate_number || jsonResponse.job_number ? 
+                                    `<div class="alert alert-info bg-info bg-opacity-10 border-info mt-3 text-start">
+                                        <div class="d-flex">
+                                            <i class="fas fa-file-alt me-2 mt-1"></i>
+                                            <div>
+                                                <strong>Mother File Details:</strong>
+                                                <ul class="mb-0 ps-3 small">
+                                                    ${jsonResponse.ar_name ? `<li><strong>Applicant:</strong> ${jsonResponse.ar_name}</li>` : ''}
+                                                    ${jsonResponse.certificate_number ? `<li><strong>Certificate:</strong> ${jsonResponse.certificate_number}</li>` : ''}
+                                                    ${jsonResponse.job_number ? `<li><strong>Job Number:</strong> ${jsonResponse.job_number}</li>` : ''}
+                                                    ${jsonResponse.locality ? `<li><strong>Locality:</strong> ${jsonResponse.locality}</li>` : ''}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>` : ''
+                                }
+                                
+                                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <div>
+                                            <strong>Next Steps:</strong>
+                                            <ul class="mb-0 mt-1 small">
+                                                <li>Transaction data has been copied</li>
+                                                <li>Parent-child relationship established</li>
+                                                <li>You can now proceed with other operations</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`,
+                        icon: 'success',
+                        confirmButtonText: 'Ok',
+                        confirmButtonColor: '#198754',
+                        showCancelButton: true,
+                        //cancelButtonText: 'View Details',
+                        width: 550
+                    }).then((actionResult) => {
+                        if (actionResult.dismiss === Swal.DismissReason.cancel) {
+                            // Optional: Show detailed view or refresh page
+                           location.reload(); // Uncomment to refresh page
+                        }
+                    });
+                    
+                    // Optional: Clear search field after successful link
+                    $('#lrd_search_for_mother_transction_to_child_deed').val('');
+                    
+                } catch (e) {
+                    // Response is not JSON or parsing failed
+                    console.error('Response parsing error:', e);
+                    
+                    // Check if response contains success message
+                    const isTextSuccess = typeof response === 'string' && 
+                                        (response.toLowerCase().includes('success') || 
+                                        response.toLowerCase().includes('linked'));
+                    
+                    Swal.fire({
+                        title: isTextSuccess ? 'Linked' : 'Link Result',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="${isTextSuccess ? 'fas fa-check-circle text-success' : 'fas fa-info-circle text-info'} fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">${isTextSuccess ? 'Link Successful' : 'Processing Complete'}</h5>
+                                <div class="alert ${isTextSuccess ? 'alert-success' : 'alert-info'} mt-3">
+                                    ${response}
+                                </div>
+                            </div>`,
+                        icon: isTextSuccess ? 'success' : 'info',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: isTextSuccess ? '#198754' : '#0dcaf0'
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h5 class="mb-2">Link Cancelled</h5>
+                            <p class="text-muted">Mother file linking was not completed</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No changes were made to the application
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Link Failed',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Connection Error</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-server me-2"></i>
+                            <strong>Server Issue:</strong> Please check your connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
+    $('#form_transaction_details').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate required fields (only non-readonly fields that are required)
+        var isValid = true;
+        var requiredFields = [
+            'td_party1_plaintiff', 
+            // 'td_party1_plaintiff_tel_no', 
+            // 'td_party1_plaintiff_email',
+            'td_party2_defendant', 
+            // 'td_party2_defendant_tel_no', 
+            // 'td_party2_defendant_email',
+            'td_submission_date'
+        ];
+        
+        // Check if fields have values
+        $.each(requiredFields, function(index, fieldId) {
+            var field = $('#' + fieldId);
+            if (field.length && !field.val().trim()) {
+                field.addClass('is-invalid');
+                isValid = false;
+            } else {
+                field.removeClass('is-invalid');
+            }
+        });
+        
+        // Validate premium if it's required
+        // var premium = $('#td_premium').val();
+        // if (!premium || premium === '') {
+        //     $('#td_premium').addClass('is-invalid');
+        //     isValid = false;
+        // } else {
+        //     $('#td_premium').removeClass('is-invalid');
+        // }
+        
+        if (!isValid) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Please fill in all required fields.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Save Transaction Details',
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">Please confirm the transaction details:</p>
+                    <div class="alert alert-light border">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block">Grantor:</small>
+                                <strong>${escapeHtml($('#td_party1_plaintiff').val())}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">Grantee:</small>
+                                <strong>${escapeHtml($('#td_party2_defendant').val())}</strong>
+                            </div>
+                            <div class="col-6 mt-2">
+                                <small class="text-muted d-block">Consideration:</small>
+                                <strong>${escapeHtml($('#td_consideration').val() || '0')} ${escapeHtml($('#td_consideration_currency').val())}</strong>
+                            </div>
+                            <div class="col-6 mt-2">
+                                <small class="text-muted d-block">Premium:</small>
+                                <strong>${escapeHtml($('#td_premium').val() || '0')} ${escapeHtml($('#td_premium_currency').val())}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-2 mb-0">
+                        <i class="fas fa-info-circle me-1"></i>
+                        This will save the transaction details for this deed.
+                    </p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fas fa-save me-1"></i> Yes, Save Transaction',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () => !Swal.isLoading(),
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    // Collect form data
+                    var formData = {
+                        request_type: 'save_transaction_details_for_deed',
+                        td_id: $('#td_id').val(),
+                        region: $('#td_region').val(),
+                        reference_number: $('#td_reference_number').val(),
+                        file_number: $('#td_file_number').val(),
+                        submission_date: $('#td_submission_date').val(),
+                        deed_number: $('#td_deed_number').val(),
+                        serial_number: $('#td_serial_number').val(),
+                        instrument_date: $('#td_instrument_date').val(),
+                        instrument_type: $('#td_instrument_type').val(),
+                        doc_number: $('#td_doc_number').val(),
+                        party1_plaintiff: $('#td_party1_plaintiff').val(),
+                        party1_plaintiff_tel_no: $('#td_party1_plaintiff_tel_no').val(),
+                        party1_plaintiff_email: $('#td_party1_plaintiff_email').val(),
+                        party2_defendant: $('#td_party2_defendant').val(),
+                        party2_defendant_tel_no: $('#td_party2_defendant_tel_no').val(),
+                        party2_defendant_email: $('#td_party2_defendant_email').val(),
+                        term: $('#td_term').val(),
+                        commencement_date: $('#td_commencement_date').val(),
+                        consideration: $('#td_consideration').val(),
+                        consideration_currency: $('#td_consideration_currency').val(),
+                        premium: $('#td_premium').val(),
+                        premium_currency: $('#td_premium_currency').val(),
+                        remarks: $('#td_remarks').val()
+                    };
+                    
+                    // Submit via AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "Case_Management_Serv",
+                        data: formData,
+                        cache: false,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response && response.success === true) {
+                                resolve(response);
+                            } else {
+                                reject(new Error(response.msg || 'Failed to save transaction details'));
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject(new Error('Server error: ' + error));
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                // Success message
+                Swal.fire({
+                    title: 'Success!',
+                    html: `
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-check-circle text-success fa-4x"></i>
+                            </div>
+                            <p class="fw-bold mb-2">Transaction Details Saved Successfully!</p>
+                            <p class="text-muted small">
+                                Transaction has been recorded for Deed Number: 
+                                <strong>${escapeHtml($('#td_deed_number').val())}</strong>
+                            </p>
+                            <div class="mt-3 alert alert-success py-2">
+                                <i class="fas fa-check me-1"></i>
+                                Reference: ${escapeHtml($('#td_reference_number').val())}
+                            </div>
+                        </div>
+                    `,
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                    timer: 3000,
+                    timerProgressBar: true
+                }).then(() => {
+                    // Close the modal
+                    $('#enter_transaction_details_for_deed').modal('hide');
+                    
+                    // Reset form (clear only editable fields)
+                    resetEditableFields();
+                    
+                    // Trigger event to refresh table
+                    $(document).trigger('transaction:saved', {
+                        deed_number: $('#td_deed_number').val(),
+                        reference_number: $('#td_reference_number').val()
+                    });
+                    
+                    // Optional: Refresh the transaction table
+                    if (typeof loadTransactionDetails === 'function') {
+                        loadTransactionDetails();
+                    }
+                });
+            }
+        }).catch((error) => {
+            // Handle error
+            Swal.fire({
+                title: 'Error!',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-4x"></i>
+                        </div>
+                        <p class="fw-bold mb-2">Failed to Save Transaction</p>
+                        <p class="text-muted small">${error.message || 'Please try again or contact support'}</p>
+                    </div>
+                `,
+                icon: 'error',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'OK'
+            });
+        });
+    });
+    
+    // Reset button handler (if you have a reset button)
+    $('#btn_reset_transaction').on('click', function() {
+        resetEditableFields();
+    });
+    
+    // Function to reset only editable fields
+    function resetEditableFields() {
+        // Clear party information
+        $('#td_party1_plaintiff').val('');
+        $('#td_party1_plaintiff_tel_no').val('');
+        $('#td_party1_plaintiff_email').val('');
+        $('#td_party2_defendant').val('');
+        $('#td_party2_defendant_tel_no').val('');
+        $('#td_party2_defendant_email').val('');
+        
+        // Clear financial information (premium only, consideration is readonly)
+        $('#td_premium').val('');
+        $('#td_premium_currency').val('GHS');
+        $('#td_consideration_currency').val('GHS');
+        
+        // Clear remarks
+        $('#td_remarks').val('');
+        
+        // Remove validation classes
+        $('.is-invalid').removeClass('is-invalid');
+        
+        // Show success toast
+        Swal.fire({
+            icon: 'info',
+            title: 'Form Reset',
+            text: 'All editable fields have been cleared',
+            //toast: true,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+    
+    // Optional: Add validation on input change
+    $('.form-control, .form-select').on('input change', function() {
+        $(this).removeClass('is-invalid');
+    });
+
+    $("#verify_transaction_details_for_deed").on('shown.bs.modal', function(e) {
+        var case_number = $("#m_es_case_number").val();
+        var job_number = $("#m_es_job_number").val();
+        //console.log('Loading encumbrances for case:', case_number);
+        
+        // Show loading state
+        $('#loadingDeedTransactionDetails').removeClass('d-none');
+        $('#noDeedTransactionDetailsMc').addClass('d-none');
+        $('#lrd_deed_transaction_details_dataTable tbody').empty();
+        
+        $.ajax({
+            url: "Case_Management_Serv",
+            type: "POST",
+            data: {
+                request_type: "select_linked_motherfile_transaction_details",
+                job_number: job_number,
+                case_number: case_number
+            },
+            success: function(response) {
+                //console.log('Server response:', response);
+                
+                $('#loadingDeedTransactionDetails').addClass('d-none');
+                
+                try {
+                    var json_p = JSON.parse(response);
+                    
+                    // Update the registered number in the add modal
+                    if (json_p.data && json_p.data.registered_number) {
+                        $("#newEncumberancesOnMotherModal #m_es_registered_number").val(json_p.data.registered_number);
+                    }
+                    
+                    // Clear existing table rows
+                    var table_bp = $('#lrd_deed_transaction_details_dataTable tbody');
+                    table_bp.empty();
+                    
+                    // Check if there are encumbrances
+                    if (json_p.encumbrances) {
+                        // Hide empty state
+                        $('#noDeedTransactionDetailsMc').addClass('d-none');
+                        
+                        // Add each encumbrance as a row
+                        $(json_p.encumbrances).each(function() {
+                            var row = `
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger">
+                                            ${this.es_registered_number || '-'}
+                                        </span>
+                                    </td>
+                                    <td>${this.es_date_of_instrument || '-'}</td>
+                                    <td>${this.es_date_of_registration || '-'}</td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 400px;">
+                                            ${this.es_memorials || '-'}
+                                        </div>
+                                    </td>
+                                  <!--  <td>
+                                        <div class="text-truncate" style="max-width: 150px;">
+                                            ${this.es_remarks || '-'}
+                                        </div>
+                                    </td> -->
+                                    <td>
+                                        <span class="badge bg-secondary">${this.es_entry_number || '-'}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-outline-danger btn-sm editEncumberancesModalOnMother"
+                                                data-es_id="${this.es_id}"
+                                                data-es_registered_number="${this.es_registered_number}"
+                                                data-es_date_of_registration="${this.es_date_of_registration}"
+                                                data-es_case_number="${this.es_case_number}"
+                                                data-es_date_of_instrument="${this.es_date_of_instrument}"
+                                                data-es_memorials="${this.es_memorials}"
+                                                data-es_back="${this.es_back}"
+                                                data-es_forward="${this.es_forward}"
+                                                data-es_remarks="${this.es_remarks}"
+                                                data-es_signature="${this.es_signature}"
+                                                data-es_entry_number="${this.es_entry_number}"
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                title="Edit Encumbrance">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            table_bp.append(row);
+                        });
+                        
+                        // Initialize tooltips for new buttons
+                        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                            new bootstrap.Tooltip(tooltipTriggerEl);
+                        });
+                        
+                    } else {
+                        // Show empty state
+                        $('#noDeedTransactionDetailsMc').removeClass('d-none');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    
+                    // Show error state
+                    table_bp.html(`
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <div class="text-danger">
+                                    <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+                                    <p class="mb-2">Error loading deed transaction details records</p>
+                                    <small>Failed to parse server response</small>
+                                </div>
+                            </td>
+                        </tr>
+                    `);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
+                
+                $('#loadingDeedTransactionDetails').addClass('d-none');
+                
+                // Show error in table
+                var table_bp = $('#lrd_deed_transaction_details_dataTable tbody');
+                table_bp.html(`
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <div class="text-danger">
+                                <i class="fas fa-times-circle fa-2x mb-3"></i>
+                                <p class="mb-2">Connection Error</p>
+                                <small>Unable to load deed transaction details records</small>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            }
+        });
+    });
+
+    $(".enter_transaction_details_for_deed").on("click", function() {
+        $("#enter_transaction_details_for_deed").modal('show');
     });
 
 });

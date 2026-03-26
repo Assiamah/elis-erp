@@ -216,8 +216,8 @@
                             <div class="col-md-6">
                                 <label for="ur_passwordchanged" class="form-label">Force Password Change</label>
                                 <select id="ur_passwordchanged" class="form-select">
-                                    <option value="YES">Yes (Force Change)</option>
-                                    <option value="NO">No</option>
+                                    <option value="NO">Yes (Force Change)</option>
+                                    <option value="YES">No</option>
                                 </select>
                             </div>
                             

@@ -29,7 +29,7 @@
                         <h5 class="modal-title text-white mb-0" id="generateConcurrenceCertificateLabelrh">
                             Generate Certificate
                         </h5>
-                        <p class="mb-0 small opacity-75">Create and manage concurrence certificates</p>
+                        <p class="mb-0 small opacity-75">Create and manage certificates</p>
                     </div>
                     <button type="button" class="btn-close btn-close-white ms-auto" 
                             data-bs-dismiss="modal" aria-label="Close"></button>
@@ -638,4 +638,966 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="modal fade" id="check_interest_and_sub_interest_mother_file_for_deed" tabindex="-1"
+     aria-labelledby="checkInterestModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="checkInterestModalLabelDeed">
+          <i class="fas fa-archive me-2"></i>
+          Check Interest and Sub-Interest Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Search Form Card -->
+        <div class="card mb-4">
+          <div class="card-header bg-primary bg-opacity-10 text-primary">
+            <h6 class="mb-0">
+              <i class="fas fa-search me-2"></i>
+              Search Mother File
+            </h6>
+          </div>
+          <div class="card-body">
+            <form id="linkSearchMotherfileInterest_deed" method="post">
+              
+              <!-- Search Type Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-3">
+                  <i class="fas fa-filter me-1"></i>
+                  Search By:
+                </label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type__deed" 
+                           id="rbtn_search_type10_d" value="job_number" required>
+                    <label class="form-check-label" for="rbtn_search_type10_d">
+                      Job Number
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type__deed" 
+                           id="rbtn_search_type11_d" value="certificate_number" required>
+                    <label class="form-check-label" for="rbtn_search_type11_d">
+                      File Number/ Deed Number/ Serial Number
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Search Input -->
+              <div class="row g-3 align-items-end">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="link_search_value__deed" class="form-label fw-medium">
+                      <i class="fas fa-keyboard me-1"></i>
+                      Search Value
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                      </span>
+                      <input class="form-control" id="link_search_value__deed" name="link_search_value__deed" 
+                             type="text" placeholder="Enter job number or serial number or file number or deed number" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100" id="btnEnquiryJobSearch_deed">
+                      <i class="fas fa-search me-2"></i>
+                      Search
+                    </button>
+                  </div>
+                </div>
+                <div class="form-text">
+                    Enter the job number or certificate number to search for mother file
+                </div>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="card border-success" style="display:none" id="link-search-results-section__deed">
+          <div class="card-header bg-success bg-opacity-10 text-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>
+                Search Results
+              </h6>
+              <span class="badge bg-success rounded-pill">Found</span>
+            </div>
+          </div>
+          <div class="card-body">
+            
+            <!-- Loading State -->
+            <div id="loadingResults_deed" class="text-center py-5 d-none">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3 text-muted">Searching for mother file...</p>
+            </div>
+            
+            <!-- Results Content -->
+            <div id="resultsContent_deed" class="d-none">
+              <div class="row g-4">
+                
+                <!-- Interest Number Card -->
+                <div class="col-md-6">
+                  <div class="card border-info h-100">
+                    <div class="card-header bg-info bg-opacity-10 text-info">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                          <i class="fas fa-hashtag me-2"></i>
+                          Interest Number
+                        </h6>
+                        <span class="badge bg-info">Main</span>
+                      </div>
+                    </div>
+                    <div class="card-body text-center p-4">
+                      <div class="mb-3">
+                        <i class="fas fa-key fa-3x text-info"></i>
+                      </div>
+                      <div class="display-value fs-5 fw-bold text-info mb-3" id="chk_interest_number_d">
+                        -
+                      </div>
+                      <p class="text-muted small mb-0">
+                        Primary interest identifier for the mother file
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Sub-Interest Number Card -->
+                <div class="col-md-6">
+                  <div class="card border-warning h-100">
+                    <div class="card-header bg-warning bg-opacity-10 text-warning">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                          <i class="fas fa-layer-group me-2"></i>
+                          Sub-Interest Number
+                        </h6>
+                        <span class="badge bg-warning">Secondary</span>
+                      </div>
+                    </div>
+                    <div class="card-body text-center p-4">
+                      <div class="mb-3">
+                        <i class="fas fa-sitemap fa-3x text-warning"></i>
+                      </div>
+                      <div class="display-value fs-5 fw-bold text-warning mb-3" id="chk_sub_interest_number_d">
+                        -
+                      </div>
+                      <p class="text-muted small mb-0">
+                        Secondary interest identifier under the main interest
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              <!-- Additional Information -->
+              <div class="alert alert-info bg-info bg-opacity-10 border-info mt-4">
+                <div class="d-flex">
+                  <i class="fas fa-info-circle me-3 mt-1"></i>
+                  <div>
+                    <strong>About Interest Numbers:</strong>
+                    <ul class="mb-0 mt-2 ps-3">
+                      <li>Interest Number identifies the primary legal interest in the property</li>
+                      <li>Sub-Interest Number identifies subsidiary interests or divisions</li>
+                      <li>Both numbers are essential for complete mother file identification</li>
+                      <li>Used for cross-referencing and legal documentation</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResultsMessage" class="text-center py-5 d-none">
+              <div class="mb-3">
+                <i class="fas fa-file-excel fa-3x text-muted"></i>
+              </div>
+              <h6 class="text-muted">No Mother Files Found</h6>
+              <p class="text-muted small">Try searching with a different job number or certificate number</p>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="link_to_mother_file_for_deed" tabindex="-1"
+     aria-labelledby="linkToMotherFileModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="linkToMotherFileModalLabel_deed">
+          <i class="fas fa-link me-2"></i>
+          Link to Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+         <input class="form-control" hidden id="linkedMotherFile_deed" value="${mother_to_child_link_list}" />    
+         <div class="mb-3" id="htmlLinkedMotherFile_deed"></div>
+        <!-- Search Form Card -->
+        <div class="card">
+          <div class="card-header bg-primary bg-opacity-10 text-primary">
+            <h6 class="mb-0">
+              <i class="fas fa-search me-2"></i>
+              Search Mother File
+            </h6>
+          </div>
+          <div class="card-body">
+            <form id="linkSearchMotherfile__deed" method="post">
+              
+              <!-- Search Type Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-medium mb-3">
+                  <i class="fas fa-filter me-1"></i>
+                  Search By:
+                </label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type_deed" 
+                           id="rbtn_search_type7_d" value="job_number" required>
+                    <label class="form-check-label" for="rbtn_search_type7_d">
+                      Job Number
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="link_search_type_deed" 
+                           id="rbtn_search_type8_d" value="certificate_number" required>
+                    <label class="form-check-label" for="rbtn_search_type8_d">
+                      File Number/ Deed Number/ Serial Number
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Search Input -->
+              <div class="row g-3 align-items-end">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="link_search_value_" class="form-label fw-medium">
+                      <i class="fas fa-keyboard me-1"></i>
+                      Search Value
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                      </span>
+                      <input class="form-control" id="link_search_value_deed" name="link_search_value_deed" 
+                             type="text" placeholder="Enter job number or serial number or job number or deed number" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100" id="btnEnquiryJobSearch">
+                      <i class="fas fa-search me-2"></i>
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-text">
+                Enter the job number or certificate number to search for mother file
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Search Results Card -->
+        <div class="card border-success mt-4" style="display:none" id="link-search-results-section_deed">
+          <div class="card-header bg-success bg-opacity-10 text-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">
+                <i class="fas fa-file-alt me-2"></i>
+                Search Results
+              </h6>
+              <span class="badge bg-success" id="resultsCount_deed">0 results</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-striped" id="link-search-results-table_deed">
+                <thead class="table-light">
+                  <tr>
+                    <th width="25%">
+                      <!-- <i class="fas fa-user me-1"></i> -->
+                      Applicant Name
+                    </th>
+                    <th width="30%">
+                      <!-- <i class="fas fa-certificate me-1"></i> -->
+                     File Number/ Deed Number/ Serial Number
+                    </th>
+                    <th width="15%">
+                      <!-- <i class="fas fa-hashtag me-1"></i> -->
+                      Job Number
+                    </th>
+                    <th width="20%">
+                      <!-- <i class="fas fa-map-marker-alt me-1"></i> -->
+                      Locality
+                    </th>
+                    <th width="10%" class="text-end">
+                      <!-- <i class="fas fa-cogs me-1"></i> -->
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Results will be populated here -->
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="noResultsMessage_deed" class="text-center py-5 d-none">
+              <div class="mb-3">
+                <i class="fas fa-file-excel fa-3x text-muted"></i>
+              </div>
+              <h6 class="text-muted">No Mother Files Found</h6>
+              <p class="text-muted small">Try searching with a different job number or certificate number</p>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingResults_deed" class="text-center py-5 d-none">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3 text-muted">Searching for mother files...</p>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="card mt-2">
+            <div class="card-header bg-primary bg-opacity-10 text-primary">
+                <h6 class="mb-0">
+                    <i class="fas fa-link me-2"></i>
+                    Link Application to Mother File
+                </h6>
+            </div>
+            <div class="card-body">
+                
+                <!-- Search Type Selection -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium mb-3">
+                        <i class="fas fa-filter me-1"></i>
+                        Search By:
+                    </label>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rbtn_search_type_deed" 
+                                id="rbtn_search_type5_d" value="job_number" required>
+                            <label class="form-check-label" for="rbtn_search_type5_d">
+                                Job Number
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rbtn_search_type_deed" 
+                                id="rbtn_search_type6_d" value="certificate_number" required>
+                            <label class="form-check-label" for="rbtn_search_type6_d">
+                               File Number/ Deed Number/ Serial Number
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Input and Button -->
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="lrd_search_for_mother_transction_to_child_deed" class="form-label fw-medium">
+                                <i class="fas fa-search me-1"></i>
+                                Search Value
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-file-contract"></i>
+                                </span>
+                                <input class="form-control bg-light" id="lrd_search_for_mother_transction_to_child_deed" 
+                                    name="lrd_search_for_mother_transction_to_child_deed" type="text"  style="cursor: not-allowed;"
+                                    placeholder="Enter Job Number or Serial Number or File Number or Deed Number of the Mother File" readonly required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary w-100" 
+                                    id="lrd_btn_search_for_mother_transction_to_child_deed"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Search and Link">
+                                <i class="fas fa-link me-2"></i>
+                                Link Application
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-text">
+                        Enter the Job Number or Certificate Number of the mother file to link
+                    </div>
+                </div>
+                
+                <!-- Optional: Information Alert -->
+                <div class="alert alert-info bg-info bg-opacity-10 border-info mt-4">
+                    <div class="d-flex">
+                        <i class="fas fa-info-circle me-3 mt-1"></i>
+                        <div>
+                            <strong>About Linking:</strong>
+                            <p class="mb-0 mt-2">
+                                Linking applications to mother files creates a relationship between the current application 
+                                and existing mother file records for reference and tracking purposes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="enter_transaction_details_for_deed" tabindex="-1" 
+     aria-labelledby="enter_transaction_details_for_deed_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div>
+                    <h5 class="modal-title text-white mb-0" id="enter_transaction_details_for_deed_label">
+                        <i class="fas fa-file-contract me-2"></i>
+                        Enter Transaction Details
+                    </h5>
+                    <p class="mb-0 small opacity-75 mt-1">Complete the deed transaction information below</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        <form id="form_transaction_details" novalidate>
+                            <input type="hidden" id="td_id" name="td_id" value="0">
+                            
+                            <!-- Basic Information Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary bg-opacity-10 border-primary">
+                                    <h6 class="mb-0 text-primary">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Basic Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_region" name="region" 
+                                                    placeholder="Region" value="${region}" readonly style="cursor: not-allowed;">
+                                                <label for="td_region">
+                                                    <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+                                                    Region
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_reference_number" name="reference_number" 
+                                                    placeholder="Reference Number" value="${glpin}" readonly style="cursor: not-allowed;">
+                                                <label for="td_reference_number">
+                                                    <i class="fas fa-hashtag me-1 text-muted"></i>
+                                                    Reference Number
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_file_number" name="file_number" 
+                                                    placeholder="File Number" value="${file_number}" readonly style="cursor: not-allowed;">
+                                                <label for="td_file_number">
+                                                    <i class="fas fa-folder-open me-1 text-muted"></i>
+                                                    File Number
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="td_property_number" name="property_number" 
+                                                    placeholder="Property Number">
+                                                <label for="td_property_number">
+                                                    <i class="fas fa-home me-1 text-muted"></i>
+                                                    Property Number
+                                                </label>
+                                            </div>
+                                        </div> -->
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="date" class="form-control" id="td_submission_date" name="submission_date" 
+                                                    placeholder="Submission Date" value="${created_date}" >
+                                                <label for="td_submission_date">
+                                                    <i class="fas fa-calendar-alt me-1 text-muted"></i>
+                                                    Submission Date
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="date" class="form-control" id="td_entered_date" name="entered_date" 
+                                                    placeholder="Entered Date">
+                                                <label for="td_entered_date">
+                                                    <i class="fas fa-clock me-1 text-muted"></i>
+                                                    Entered Date
+                                                </label>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Deed Information Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-info bg-opacity-10 border-info">
+                                    <h6 class="mb-0 text-info">
+                                        <i class="fas fa-file-signature me-2"></i>
+                                        Deed Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_deed_number" name="deed_number" 
+                                                    placeholder="Deed Number" value="${deed_number}" readonly style="cursor: not-allowed;">
+                                                <label for="td_deed_number">
+                                                    <i class="fas fa-file-alt me-1 text-muted"></i>
+                                                    Deed Number
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_serial_number" name="serial_number" 
+                                                    placeholder="Serial Number" value="${ls_number}" readonly style="cursor: not-allowed;">
+                                                <label for="td_serial_number">
+                                                    <i class="fas fa-barcode me-1 text-muted"></i>
+                                                    Serial Number
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="date" class="form-control bg-light" id="td_instrument_date" name="instrument_date" 
+                                                    placeholder="Instrument Date" value="${date_of_document}" readonly style="cursor: not-allowed;">
+                                                <label for="td_instrument_date">
+                                                    <i class="fas fa-calendar-check me-1 text-muted"></i>
+                                                    Instrument Date
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_instrument_type" name="instrument_type" 
+                                                    placeholder="Instrument Type" value="${nature_of_instrument}" readonly style="cursor: not-allowed;">
+                                                <label for="td_instrument_type">
+                                                    <i class="fas fa-tag me-1 text-muted"></i>
+                                                    Instrument Type
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_doc_number" name="doc_number" 
+                                                    placeholder="Job Number" value="${job_number}" readonly style="cursor: not-allowed;">
+                                                <label for="td_doc_number">
+                                                    <i class="fas fa-file-pdf me-1 text-muted"></i>
+                                                    Job Number
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control bg-light" id="td_term" name="term" 
+                                                    placeholder="Term" value="${term}" readonly style="cursor: not-allowed;">
+                                                <label for="td_term">
+                                                    <i class="fas fa-hourglass-half me-1 text-muted"></i>
+                                                    Term
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="date" class="form-control bg-light" id="td_commencement_date" name="commencement_date" 
+                                                    placeholder="Commencement Date" value="${commencement_date}" readonly style="cursor: not-allowed;">
+                                                <label for="td_commencement_date">
+                                                    <i class="fas fa-play-circle me-1 text-muted"></i>
+                                                    Commencement Date
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-4">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="td_purpose" name="purpose" 
+                                                    placeholder="Purpose">
+                                                <label for="td_purpose">
+                                                    <i class="fas fa-bullseye me-1 text-muted"></i>
+                                                    Purpose
+                                                </label>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Party Information Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-success bg-opacity-10 border-success">
+                                    <h6 class="mb-0 text-success">
+                                        <i class="fas fa-users me-2"></i>
+                                        Party Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <!-- Party 1 (Plaintiff) -->
+                                        <div class="col-md-6">
+                                            <div class="card h-100 border">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">
+                                                        <i class="fas fa-user-shield me-1 text-primary"></i>
+                                                        Party 1 - Grantor
+                                                    </h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-medium">
+                                                            <i class="fas fa-user me-1 text-muted"></i>
+                                                            Name
+                                                        </label>
+                                                        <textarea class="form-control" id="td_party1_plaintiff" name="party1_plaintiff" 
+                                                                rows="2" placeholder="Enter plaintiff name"></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-medium">
+                                                            <i class="fas fa-phone me-1 text-muted"></i>
+                                                            Telephone Number
+                                                        </label>
+                                                        <input type="tel" class="form-control" id="td_party1_plaintiff_tel_no" 
+                                                            name="party1_plaintiff_tel_no" placeholder="+233 XX XXX XXXX">
+                                                    </div>
+                                                    <div class="mb-0">
+                                                        <label class="form-label fw-medium">
+                                                            <i class="fas fa-envelope me-1 text-muted"></i>
+                                                            Email Address
+                                                        </label>
+                                                        <input type="email" class="form-control" id="td_party1_plaintiff_email" 
+                                                            name="party1_plaintiff_email" placeholder="email@example.com">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Party 2 (Defendant) -->
+                                        <div class="col-md-6">
+                                            <div class="card h-100 border">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">
+                                                        <i class="fas fa-user-graduate me-1 text-danger"></i>
+                                                        Party 2 - Grantee
+                                                    </h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-medium">
+                                                            <i class="fas fa-user me-1 text-muted"></i>
+                                                            Name
+                                                        </label>
+                                                        <textarea class="form-control" id="td_party2_defendant" name="party2_defendant" 
+                                                                rows="2" placeholder="Enter defendant name"></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-medium">
+                                                            <i class="fas fa-phone me-1 text-muted"></i>
+                                                            Telephone Number
+                                                        </label>
+                                                        <input type="tel" class="form-control" id="td_party2_defendant_tel_no" 
+                                                            name="party2_defendant_tel_no" placeholder="+233 XX XXX XXXX">
+                                                    </div>
+                                                    <div class="mb-0">
+                                                        <label class="form-label fw-medium">
+                                                            <i class="fas fa-envelope me-1 text-muted"></i>
+                                                            Email Address
+                                                        </label>
+                                                        <input type="email" class="form-control" id="td_party2_defendant_email" 
+                                                            name="party2_defendant_email" placeholder="email@example.com">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Financial Information Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-warning bg-opacity-10 border-warning">
+                                    <h6 class="mb-0 text-warning">
+                                        <i class="fas fa-coins me-2"></i>
+                                        Financial Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-medium">
+                                                <i class="fas fa-money-bill-wave me-1 text-muted"></i>
+                                                Consideration
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control bg-light" id="td_consideration" name="consideration" 
+                                                    placeholder="Amount" value="${consideration_fee}" readonly style="cursor: not-allowed;">
+                                                <select class="form-select" id="td_consideration_currency" name="consideration_currency" 
+                                                        style="max-width: 100px;">
+                                                    <option value="GHS">GHS</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="GBP">GBP</option>
+                                                    <option value="EUR">EUR</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-medium">
+                                                <i class="fas fa-gem me-1 text-muted"></i>
+                                                Premium
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="td_premium" name="premium" 
+                                                    placeholder="Amount">
+                                                <select class="form-select" id="td_premium_currency" name="premium_currency" 
+                                                        style="max-width: 100px;">
+                                                    <option value="GHS">GHS</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="GBP">GBP</option>
+                                                    <option value="EUR">EUR</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-md-4">
+                                            <label for="td_compensation_status">
+                                                <i class="fas fa-hand-holding-usd me-1 text-muted"></i>
+                                                Compensation Status
+                                            </label>
+                                            <select class="form-select" id="td_compensation_status" name="compensation_status">
+                                                <option value="">Select Status</option>
+                                                <option value="Paid">Paid</option>
+                                                <option value="Pending">Pending</option>
+                                                <option value="Partially Paid">Partially Paid</option>
+                                                <option value="Not Applicable">Not Applicable</option>
+                                            </select>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Remarks Section -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-secondary bg-opacity-10 border-secondary">
+                                    <h6 class="mb-0 text-secondary">
+                                        <i class="fas fa-comment-dots me-2"></i>
+                                        Additional Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-0">
+                                        <label class="form-label fw-medium">
+                                            <i class="fas fa-sticky-note me-1 text-muted"></i>
+                                            Remarks / Comments
+                                        </label>
+                                        <textarea class="form-control" id="td_remarks" name="remarks" rows="3" 
+                                                placeholder="Enter any additional remarks or comments..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        
+                        <div class="_gated_workflow_documents"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <div class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        All fields marked with * are required
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>
+                            Cancel
+                        </button>
+                        <button type="reset" class="btn btn-outline-warning" id="btn_reset_transaction">
+                            <i class="fas fa-undo-alt me-1"></i>
+                            Reset
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn_save_transaction" form="form_transaction_details">
+                            <i class="fas fa-save me-1"></i>
+                            Save Transaction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur" id="verify_transaction_details_for_deed" tabindex="-1"
+     aria-labelledby="verifyTransactionDetailsForDeedModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="verifyTransactionDetailsForDeedModalLabel">
+          <i class="fas fa-file-contract me-2"></i>
+          Verify Transactions Details on Mother File
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        
+        <!-- Header with Add Button -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h6 class="mb-0">
+              <i class="fas fa-list-ul me-2 text-danger"></i>
+              Transaction Records
+            </h6>
+            <small class="text-muted">List of all transaction details on the mother file</small>
+          </div>
+          <button type="button" class="btn btn-danger enter_transaction_details_for_deed" 
+                  data-bs-toggle="tooltip" data-bs-placement="top" title="Add New Transaction">
+            <i class="fas fa-plus-circle me-2"></i>
+            Add New Transaction
+          </button>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="table table-hover table-sm" id="lrd_encumberance_details_dataTable">
+            <thead class="table-light">
+              <tr>
+                <th width="15%">
+                  <i class="fas fa-hashtag me-1"></i>
+                  Registered No.
+                </th>
+                <th width="15%">
+                  <i class="fas fa-calendar-alt me-1"></i>
+                  Date of Instrument
+                </th>
+                <th width="15%">
+                  <i class="fas fa-calendar-check me-1"></i>
+                  Date of Registration
+                </th>
+                <th width="40%">
+                  <i class="fas fa-file-alt me-1"></i>
+                  Memorials
+                </th>
+                <!-- <th width="15%">
+                  <i class="fas fa-sticky-note me-1"></i>
+                  Remarks
+                </th> -->
+                <th width="10%">
+                  <i class="fas fa-list-ol me-1"></i>
+                  Entry No.
+                </th>
+                <th width="5%" class="text-center">
+                  <i class="fas fa-cog me-1"></i>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data will be populated here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="text-center py-5" id="noEncumbrancesMc">
+          <div class="mb-3">
+            <i class="fas fa-file-contract fa-3x text-muted"></i>
+          </div>
+          <h6 class="text-muted mb-2">No Encumbrance Records Found</h6>
+          <p class="text-muted small">Click "Add Encumbrance" to create new encumbrance transactions</p>
+        </div>
+        
+        <!-- Loading State -->
+        <div class="text-center py-5 d-none" id="loadingEncumbrances">
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 text-muted">Loading encumbrance records...</p>
+        </div>
+        
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
 </div>

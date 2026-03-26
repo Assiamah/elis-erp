@@ -8968,6 +8968,134 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			
+			if (request_type.equals("select_copy_mother_file_transaction_to_child_for_deed")) {
+
+				String mc_job_number = (String) request.getParameter("mc_job_number");
+				String job_number = (String) request.getParameter("job_number");
+				String case_number = (String) request.getParameter("case_number");
+				String transaction_number = (String) request.getParameter("transaction_number");
+				String userid = (String) session.getAttribute("userid");
+				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
+
+				String type_of_value = (String) request.getParameter("type_of_value");
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("mc_job_number", mc_job_number);
+				obj.put("job_number", job_number);
+				obj.put("case_number", case_number);
+				obj.put("transaction_number", transaction_number);
+
+				obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
+
+				obj.put("userid", userid);
+				obj.put("type_of_value", type_of_value);
+
+				web_service_response = casemgt_cl.select_copy_mother_file_transaction_to_child_for_deed(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+				System.out.println(obj.toString());
+
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("save_transaction_details_for_deed")) {
+    
+				// Get form parameters
+				String td_id = (String) request.getParameter("td_id");
+				String region = (String) request.getParameter("region");
+				String reference_number = (String) request.getParameter("reference_number");
+				String file_number = (String) request.getParameter("file_number");
+				String submission_date = (String) request.getParameter("submission_date");
+				String deed_number = (String) request.getParameter("deed_number");
+				String serial_number = (String) request.getParameter("serial_number");
+				String instrument_date = (String) request.getParameter("instrument_date");
+				String instrument_type = (String) request.getParameter("instrument_type");
+				String doc_number = (String) request.getParameter("doc_number");
+				String party1_plaintiff = (String) request.getParameter("party1_plaintiff");
+				String party1_plaintiff_tel_no = (String) request.getParameter("party1_plaintiff_tel_no");
+				String party1_plaintiff_email = (String) request.getParameter("party1_plaintiff_email");
+				String party2_defendant = (String) request.getParameter("party2_defendant");
+				String party2_defendant_tel_no = (String) request.getParameter("party2_defendant_tel_no");
+				String party2_defendant_email = (String) request.getParameter("party2_defendant_email");
+				String term = (String) request.getParameter("term");
+				String commencement_date = (String) request.getParameter("commencement_date");
+				String consideration = (String) request.getParameter("consideration");
+				String consideration_currency = (String) request.getParameter("consideration_currency");
+				String premium = (String) request.getParameter("premium");
+				String premium_currency = (String) request.getParameter("premium_currency");
+				String remarks = (String) request.getParameter("remarks");
+				
+				// Get session attributes
+				String userid = (String) session.getAttribute("userid");
+				String fullname = (String) session.getAttribute("fullname");
+				String mac_address = (String) session.getAttribute("mac_address");
+				String ip_address = (String) session.getAttribute("ip_address");
+				
+				// Create JSON object to send to web service
+				JSONObject obj = new JSONObject();
+				
+				// Add form data
+				obj.put("td_id", td_id != null ? td_id : "0");
+				obj.put("region", region != null ? region : "");
+				obj.put("reference_number", reference_number != null ? reference_number : "");
+				obj.put("file_number", file_number != null ? file_number : "");
+				obj.put("submission_date", submission_date != null ? submission_date : "");
+				obj.put("deed_number", deed_number != null ? deed_number : "");
+				obj.put("serial_number", serial_number != null ? serial_number : "");
+				obj.put("instrument_date", instrument_date != null ? instrument_date : "");
+				obj.put("instrument_type", instrument_type != null ? instrument_type : "");
+				obj.put("doc_number", doc_number != null ? doc_number : "");
+				obj.put("party1_plaintiff", party1_plaintiff != null ? party1_plaintiff : "");
+				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no != null ? party1_plaintiff_tel_no : "");
+				obj.put("party1_plaintiff_email", party1_plaintiff_email != null ? party1_plaintiff_email : "");
+				obj.put("party2_defendant", party2_defendant != null ? party2_defendant : "");
+				obj.put("party2_defendant_tel_no", party2_defendant_tel_no != null ? party2_defendant_tel_no : "");
+				obj.put("party2_defendant_email", party2_defendant_email != null ? party2_defendant_email : "");
+				obj.put("term", term != null ? term : "");
+				obj.put("commencement_date", commencement_date != null ? commencement_date : "");
+				obj.put("consideration", consideration != null ? consideration : "0");
+				obj.put("consideration_currency", consideration_currency != null ? consideration_currency : "GHS");
+				obj.put("premium", premium != null ? premium : "0");
+				obj.put("premium_currency", premium_currency != null ? premium_currency : "GHS");
+				obj.put("remarks", remarks != null ? remarks : "");
+				
+				// Add session data
+				obj.put("userid", userid != null ? userid : "");
+				obj.put("fullname", fullname != null ? fullname : "");
+				obj.put("mac_address", mac_address != null ? mac_address : "");
+				obj.put("ip_address", ip_address != null ? ip_address : "");
+				
+				// Add audit information
+				obj.put("action_type", td_id != null && !td_id.equals("0") ? "update" : "insert");
+				obj.put("created_date", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
+				
+				// Log the request data
+				System.out.println("save_transaction_details_for_deed request: " + obj.toString());
+				
+				// Call web service
+				web_service_response = casemgt_cl.save_transaction_details_for_deed(
+						cls_url_config.getWeb_service_url_ser(), 
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+				
+				// Log the response
+				if (web_service_response != null) {
+					System.out.println("save_transaction_details_for_deed response: " + web_service_response);
+				} else {
+					System.err.println("save_transaction_details_for_deed response is null");
+				}
+				
+				return web_service_response;
+			}
+
 			if (request_type.equals("lc_certificate_search_relation_details_add_update")) {
 
 				String mc_job_number = (String) request.getParameter("mc_job_number");
@@ -10567,6 +10695,38 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				System.out.println(json_data.toString());
 
 				web_service_response = casemgt_cl_m.select_linked_motherfile_details(
+								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			
+			if (request_type.equals("select_linked_motherfile_transaction_details")) {
+				// String modified_by = (String) session.getAttribute("fullname");
+				// String modified_by_id = (String) session.getAttribute("userid");
+				// String division = (String) session.getAttribute("division");
+				String job_number = request.getParameter("job_number");
+				String case_number = request.getParameter("case_number");
+				//String transaction_number = request.getParameter("transaction_number");
+
+				JSONObject json_data = new JSONObject();
+
+				// json_data.put("send_by_name", modified_by);
+				// json_data.put("send_by_id", modified_by_id);
+				json_data.put("job_number", job_number);
+				json_data.put("case_number", case_number);
+				// json_data.put("division", division);
+				//json_data.put("transaction_number", transaction_number);
+
+				System.out.println(json_data.toString());
+
+				web_service_response = casemgt_cl_m.select_linked_motherfile_transaction_details(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
 				if (web_service_response != null) {
