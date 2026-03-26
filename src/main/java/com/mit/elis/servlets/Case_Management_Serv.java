@@ -6288,371 +6288,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				}
 			}
 
-			if (request_type.equals("select_address_register_edit_general")) {
-				JSONArray jsonArr = new JSONArray();
-				JSONObject obj = new JSONObject();
-
-				// System.out.println("select_address_register_edit_general");
-
-				String case_number = request.getParameter("case_number");
-				String ar_client_id = request.getParameter("ar_client_id");
-				String type_of_party = request.getParameter("type_of_party");
-				String ar_name = request.getParameter("ar_name");
-				String ar_gender = request.getParameter("ar_gender");
-				String ar_cell_phone = request.getParameter("ar_cell_phone");
-				String ar_id_type = request.getParameter("ar_id_type");
-				String ar_id_number = request.getParameter("ar_id_number");
-
-				String ar_cell_phone2 = request.getParameter("ar_cell_phone2");
-				String ar_nationality = request.getParameter("ar_nationality");
-				String ar_address = request.getParameter("ar_address");
-				String ar_tin_no = request.getParameter("ar_tin_no");
-				String ar_location = request.getParameter("ar_location");
-				String ar_district = request.getParameter("ar_district");
-				String ar_region = request.getParameter("ar_region");
-				String ar_person_type = request.getParameter("ar_person_type");
-				String created_by = (String) session.getAttribute("fullname");
-				String created_by_id = (String) session.getAttribute("userid");
-				String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
-
-				String fullname =  (String) session.getAttribute("fullname");
-				String userid =  (String) session.getAttribute("userid");
-
-				
-				obj.put("ar_client_id", ar_client_id);
-				obj.put("type_of_party", type_of_party);
-				obj.put("ar_name", ar_name);
-				obj.put("ar_gender", ar_gender);
-				obj.put("ar_cell_phone", ar_cell_phone);
-				obj.put("ar_id_type", ar_id_type);
-				obj.put("ar_id_number", ar_id_number);
-				obj.put("case_number", case_number);
-				obj.put("ar_cell_phone2", ar_cell_phone2);
-				obj.put("ar_nationality", ar_nationality);
-				obj.put("ar_address", ar_address);
-				obj.put("ar_tin_no", ar_tin_no);
-				obj.put("ar_location", ar_location);
-				obj.put("ar_district", ar_district);
-				obj.put("ar_region", ar_region);
-				obj.put("ar_person_type", ar_person_type);
-				obj.put("created_by", created_by);
-				obj.put("created_by_id", created_by_id);
-				obj.put("fullname", fullname);
-				obj.put("userid", userid); 
-				obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
-
-
-				jsonArr.put(obj);
-				String input = jsonArr.toString();
-
-				//System.out.println("Edit: " + input);
-
-				// System.out.println(ar_client_id);
-				web_service_response = casemgt_cl
-						.select_address_register_edit_general(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), input);
-				if (web_service_response != null) {
-					//System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
-
-			}
-			if (request_type.equals("select_address_register_add_new_general")) {
-				JSONArray jsonArr = new JSONArray();
-				JSONObject obj = new JSONObject();
-
-				// System.out.println("select_address_register_add_new_general");
-
-				String case_number = request.getParameter("case_number");
-				String type_of_party = request.getParameter("type_of_party");
-				String ar_name = request.getParameter("ar_name");
-				String ar_gender = request.getParameter("ar_gender");
-				String ar_cell_phone = request.getParameter("ar_cell_phone");
-				String ar_id_type = request.getParameter("ar_id_type");
-				String ar_id_number = request.getParameter("ar_id_number");
-
-				String ar_cell_phone2 = request.getParameter("ar_cell_phone2");
-				String ar_nationality = request.getParameter("ar_nationality");
-				String ar_address = request.getParameter("ar_address");
-				String ar_tin_no = request.getParameter("ar_tin_no");
-				String ar_location = request.getParameter("ar_location");
-				String ar_district = request.getParameter("ar_district");
-				String ar_region = request.getParameter("ar_region");
-				String ar_person_type = request.getParameter("ar_person_type");
-				String created_by = (String) session.getAttribute("fullname");
-				String created_by_id = (String) session.getAttribute("userid");
-
-				String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
-
-String fullname =  (String) session.getAttribute("fullname");
-String userid =  (String) session.getAttribute("userid");
-
-				obj.put("case_number", case_number);
-				obj.put("type_of_party", type_of_party);
-				obj.put("ar_name", ar_name);
-				obj.put("ar_gender", ar_gender);
-				obj.put("ar_cell_phone", ar_cell_phone);
-				obj.put("ar_id_type", ar_id_type);
-				obj.put("ar_id_number", ar_id_number);
-
-				obj.put("ar_cell_phone2", ar_cell_phone2);
-				obj.put("ar_nationality", ar_nationality);
-				obj.put("ar_address", ar_address);
-				obj.put("ar_tin_no", ar_tin_no);
-				obj.put("ar_location", ar_location);
-				obj.put("ar_district", ar_district);
-				obj.put("ar_region", ar_region);
-				obj.put("ar_person_type", ar_person_type);
-				obj.put("created_by", created_by);
-				obj.put("created_by_id", created_by_id);
-				obj.put("fullname", fullname);
-obj.put("userid", userid); 
-obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
-
-
-				jsonArr.put(obj);
-				String input = jsonArr.toString();
-
-				System.out.println("add: " + input);
-
-				// System.out.println(case_number);
-				web_service_response = casemgt_cl
-						.select_address_register_add_new_general(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), input);
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
-
-			}
-
-			
-
-			if (request_type.equals("select_delete_party")) {
-				JSONArray jsonArr = new JSONArray();
-				JSONObject obj = new JSONObject();
-
-				// System.out.println("select_address_register_add_new_general");
-
-				String case_number = request.getParameter("case_number");
-				String type_of_party = request.getParameter("type_of_party");
-				String ar_name = request.getParameter("ar_name");
-				String ar_gender = request.getParameter("ar_gender");
-				String ar_cell_phone = request.getParameter("ar_cell_phone");
-				String ar_id_type = request.getParameter("ar_id_type");
-				String ar_id_number = request.getParameter("ar_id_number");
-				String ar_client_id = request.getParameter("ar_client_id");
-				
-				String ar_cell_phone2 = request.getParameter("ar_cell_phone2");
-				String ar_nationality = request.getParameter("ar_nationality");
-				String ar_address = request.getParameter("ar_address");
-				String ar_tin_no = request.getParameter("ar_tin_no");
-				String ar_location = request.getParameter("ar_location");
-				String ar_district = request.getParameter("ar_district");
-				String ar_region = request.getParameter("ar_region");
-				String ar_person_type = request.getParameter("ar_person_type");
-				String created_by = (String) session.getAttribute("fullname");
-				String created_by_id = (String) session.getAttribute("userid");
-				String job_number = request.getParameter("job_number");
-				String ar_id = request.getParameter("ar_id");
-				String p_uid = request.getParameter("p_uid");
-
-				String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
-
-String fullname =  (String) session.getAttribute("fullname");
-String userid =  (String) session.getAttribute("userid");
-
-				obj.put("case_number", case_number);
-				obj.put("type_of_party", type_of_party);
-				obj.put("ar_name", ar_name);
-				obj.put("ar_gender", ar_gender);
-				obj.put("ar_cell_phone", ar_cell_phone);
-				obj.put("ar_id_type", ar_id_type);
-				obj.put("ar_id_number", ar_id_number);
-
-				obj.put("ar_cell_phone2", ar_cell_phone2);
-				obj.put("ar_nationality", ar_nationality);
-				obj.put("ar_address", ar_address);
-				obj.put("ar_tin_no", ar_tin_no);
-				obj.put("ar_location", ar_location);
-				obj.put("ar_district", ar_district);
-				obj.put("ar_region", ar_region);
-				obj.put("ar_person_type", ar_person_type);
-				obj.put("created_by", created_by);
-				obj.put("created_by_id", created_by_id);
-				obj.put("fullname", fullname);
-				obj.put("job_number", job_number);
-				obj.put("ar_client_id", ar_client_id);
-				obj.put("ar_id", ar_id);
-				obj.put("p_uid", p_uid);
-obj.put("userid", userid); 
-obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
-
-
-				jsonArr.put(obj);
-				String input = jsonArr.toString();
-
-				System.out.println("add: " + input);
-
-				// System.out.println(case_number);
-				web_service_response = casemgt_cl
-						.select_delete_party(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), input);
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
-
-			}
-
-			if (request_type.equals("select_get_parties_by_case")) {
-
-				String case_number = request.getParameter("case_number");
-
-				// System.out.println(case_number);
-				web_service_response = casemgt_cl.select_get_parties_by_case(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(),
-						case_number);
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-					// System.out.println("nothing to " + web_service_response);
-
-				} else {
-					System.out.println(web_service_response);
-					// System.out.println("son=mtni to " +
-					// web_service_response);
-				}
-
-				return web_service_response;
-
-				
-			}
-			if (request_type.equals("select_get_party_by_party_id")) {
-
-				String client_id = request.getParameter("client_id");
-
-				// System.out.println(client_id);
-				web_service_response = casemgt_cl.select_get_party_by_party_id(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(),
-						client_id);
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-					// System.out.println("nothing to " + web_service_response);
-
-				} else {
-					System.out.println(web_service_response);
-					// System.out.println("son=mtni to " +
-					// web_service_response);
-				}
-
-				return web_service_response;
-
-			}
-
-			if (request_type.equals("select_load_application_for_publication_management")) {
-				// String job_recieved_by_id =
-				// request.getParameter("job_recieved_by_id");
-				// System.out.println("loading ready for publication");
-				web_service_response = casemgt_cl
-						.select_load_application_for_publication_management(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key());
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
-			}
-
-			if (request_type.equals("select_address_register_by_id_number")) {
-				String id_number = request.getParameter("id_number");
-				// System.out.println(id_number);
-				web_service_response = casemgt_cl
-						.select_address_register_by_id_number(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), id_number);
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
-			}
-
-			if (request_type.equals("select_address_register_add_new")) {
-				JSONArray jsonArr = new JSONArray();
-				JSONObject obj = new JSONObject();
-
-				String case_number = request.getParameter("case_number");
-				String type_of_party = request.getParameter("type_of_party");
-				String ar_name = request.getParameter("ar_name");
-				String ar_gender = request.getParameter("ar_gender");
-				String ar_cell_phone = request.getParameter("ar_cell_phone");
-				String ar_id_type = request.getParameter("ar_id_type");
-				String ar_id_number = request.getParameter("ar_id_number");
-				String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
-
-				String fullname =  (String) session.getAttribute("fullname");
-				String userid =  (String) session.getAttribute("userid");
-				
-				obj.put("case_number", case_number);
-				obj.put("type_of_party", type_of_party);
-				obj.put("ar_name", ar_name);
-				obj.put("ar_gender", ar_gender);
-				obj.put("ar_cell_phone", ar_cell_phone);
-				obj.put("ar_id_type", ar_id_type);
-				obj.put("ar_id_number", ar_id_number);
-				obj.put("fullname", fullname);
-obj.put("userid", userid); 
-obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
-
-
-				jsonArr.put(obj);
-				String input = jsonArr.toString();
-
-				// System.out.println(input);
-
-				// System.out.println(case_number);
-				web_service_response = casemgt_cl
-						.select_address_register_add_new(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), input);
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
-
-			}
-
-			if (request_type.equals("load_application_details_by_job_number")) {
-				String job_number = request.getParameter("job_number");
-				// System.out.println(job_number);
-				web_service_response = casemgt_cl
-						.load_application_details_by_job_number(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), job_number);
-
-				JSONObject jsonobj = new JSONObject(web_service_response);
-				// web_service_response = (String) jsonobj.getString("data");
-
-				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-
-				return web_service_response;
+			String addressRegisterResponse = handleAddressRegisterAndPublicationRequests(request_type, session, request);
+			if (addressRegisterResponse != null) {
+				return addressRegisterResponse;
 			}
 
 			if (request_type.equals("load_application_details_by_job_number_within_unit")) {
@@ -11327,6 +10965,217 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 		}
 
 		return web_service_response;
+	}
+
+	private String handleAddressRegisterAndPublicationRequests(String request_type, HttpSession session,
+			HttpServletRequest request) throws Exception {
+		String web_service_response = null;
+
+		if (request_type.equals("select_address_register_edit_general")) {
+			String input = buildGeneralAddressRegisterPayload(session, request, true, false);
+
+			web_service_response = casemgt_cl.select_address_register_edit_general(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), input);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+		if (request_type.equals("select_address_register_add_new_general")) {
+			String input = buildGeneralAddressRegisterPayload(session, request, false, false);
+
+			System.out.println("add: " + input);
+
+			web_service_response = casemgt_cl
+					.select_address_register_add_new_general(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), input);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		if (request_type.equals("select_delete_party")) {
+			String input = buildGeneralAddressRegisterPayload(session, request, false, true);
+
+			System.out.println("add: " + input);
+
+			web_service_response = casemgt_cl.select_delete_party(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), input);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		if (request_type.equals("select_get_parties_by_case")) {
+			String case_number = request.getParameter("case_number");
+
+			web_service_response = casemgt_cl.select_get_parties_by_case(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), case_number);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+		if (request_type.equals("select_get_party_by_party_id")) {
+			String client_id = request.getParameter("client_id");
+
+			web_service_response = casemgt_cl.select_get_party_by_party_id(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), client_id);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		if (request_type.equals("select_load_application_for_publication_management")) {
+			web_service_response = casemgt_cl
+					.select_load_application_for_publication_management(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key());
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		if (request_type.equals("select_address_register_by_id_number")) {
+			String id_number = request.getParameter("id_number");
+			web_service_response = casemgt_cl.select_address_register_by_id_number(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), id_number);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		if (request_type.equals("select_address_register_add_new")) {
+			JSONArray jsonArr = new JSONArray();
+			JSONObject obj = new JSONObject();
+
+			String case_number = request.getParameter("case_number");
+			String type_of_party = request.getParameter("type_of_party");
+			String ar_name = request.getParameter("ar_name");
+			String ar_gender = request.getParameter("ar_gender");
+			String ar_cell_phone = request.getParameter("ar_cell_phone");
+			String ar_id_type = request.getParameter("ar_id_type");
+			String ar_id_number = request.getParameter("ar_id_number");
+			String mac_address = (String) session.getAttribute("mac_address");
+			String ip_address = (String) session.getAttribute("ip_address");
+
+			String fullname = (String) session.getAttribute("fullname");
+			String userid = (String) session.getAttribute("userid");
+
+			obj.put("case_number", case_number);
+			obj.put("type_of_party", type_of_party);
+			obj.put("ar_name", ar_name);
+			obj.put("ar_gender", ar_gender);
+			obj.put("ar_cell_phone", ar_cell_phone);
+			obj.put("ar_id_type", ar_id_type);
+			obj.put("ar_id_number", ar_id_number);
+			obj.put("fullname", fullname);
+			obj.put("userid", userid);
+			obj.put("mac_address", mac_address);
+			obj.put("ip_address", ip_address);
+
+			jsonArr.put(obj);
+			String input = jsonArr.toString();
+
+			web_service_response = casemgt_cl.select_address_register_add_new(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), input);
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		if (request_type.equals("load_application_details_by_job_number")) {
+			String job_number = request.getParameter("job_number");
+			web_service_response = casemgt_cl.load_application_details_by_job_number(
+					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), job_number);
+
+			JSONObject jsonobj = new JSONObject(web_service_response);
+
+			if (web_service_response == null) {
+				System.out.println(web_service_response);
+			}
+
+			return web_service_response;
+		}
+
+		return null;
+	}
+
+	private String buildGeneralAddressRegisterPayload(HttpSession session, HttpServletRequest request,
+			boolean includeClientId, boolean includeDeleteFields) throws JSONException {
+		JSONArray jsonArr = new JSONArray();
+		JSONObject obj = new JSONObject();
+
+		String case_number = request.getParameter("case_number");
+		String type_of_party = request.getParameter("type_of_party");
+		String ar_name = request.getParameter("ar_name");
+		String ar_gender = request.getParameter("ar_gender");
+		String ar_cell_phone = request.getParameter("ar_cell_phone");
+		String ar_id_type = request.getParameter("ar_id_type");
+		String ar_id_number = request.getParameter("ar_id_number");
+		String ar_cell_phone2 = request.getParameter("ar_cell_phone2");
+		String ar_nationality = request.getParameter("ar_nationality");
+		String ar_address = request.getParameter("ar_address");
+		String ar_tin_no = request.getParameter("ar_tin_no");
+		String ar_location = request.getParameter("ar_location");
+		String ar_district = request.getParameter("ar_district");
+		String ar_region = request.getParameter("ar_region");
+		String ar_person_type = request.getParameter("ar_person_type");
+		String created_by = (String) session.getAttribute("fullname");
+		String created_by_id = (String) session.getAttribute("userid");
+		String fullname = (String) session.getAttribute("fullname");
+		String userid = (String) session.getAttribute("userid");
+		String mac_address = (String) session.getAttribute("mac_address");
+		String ip_address = (String) session.getAttribute("ip_address");
+
+		obj.put("case_number", case_number);
+		obj.put("type_of_party", type_of_party);
+		obj.put("ar_name", ar_name);
+		obj.put("ar_gender", ar_gender);
+		obj.put("ar_cell_phone", ar_cell_phone);
+		obj.put("ar_id_type", ar_id_type);
+		obj.put("ar_id_number", ar_id_number);
+		obj.put("ar_cell_phone2", ar_cell_phone2);
+		obj.put("ar_nationality", ar_nationality);
+		obj.put("ar_address", ar_address);
+		obj.put("ar_tin_no", ar_tin_no);
+		obj.put("ar_location", ar_location);
+		obj.put("ar_district", ar_district);
+		obj.put("ar_region", ar_region);
+		obj.put("ar_person_type", ar_person_type);
+		obj.put("created_by", created_by);
+		obj.put("created_by_id", created_by_id);
+		obj.put("fullname", fullname);
+		obj.put("userid", userid);
+		obj.put("mac_address", mac_address);
+		obj.put("ip_address", ip_address);
+
+		if (includeClientId) {
+			obj.put("ar_client_id", request.getParameter("ar_client_id"));
+		}
+
+		if (includeDeleteFields) {
+			obj.put("job_number", request.getParameter("job_number"));
+			obj.put("ar_client_id", request.getParameter("ar_client_id"));
+			obj.put("ar_id", request.getParameter("ar_id"));
+			obj.put("p_uid", request.getParameter("p_uid"));
+		}
+
+		jsonArr.put(obj);
+		return jsonArr.toString();
 	}
 
 
