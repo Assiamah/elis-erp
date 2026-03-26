@@ -1106,7 +1106,7 @@ document.addEventListener('DOMContentLoaded', function() {
             client_name: $("#fe_client_name").val(),
             business_process_sub_name: $("#fe_business_process_sub_name").val(),
             job_number: $("#fe_job_number").val(),
-            annual_rent: $("#fe_annual_rent").val(),
+            annual_rent: $("#fe_annual_rent").val(), 
             surveyor_number: $("#fe_surveyor_number").val(),
             regional_number: $("#fe_regional_number").val(),
             land_size: $("#fe_land_size").val(),
