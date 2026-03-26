@@ -6951,6 +6951,11 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String fullname = (String) session.getAttribute("fullname");
 				String userid   = (String) session.getAttribute("userid");
 
+				if (userid == null || userid.trim().isEmpty()) {
+					System.out.println("Warning: userid is null or empty. Returning null.");
+					return null;
+				}
+
 				JSONObject obj = new JSONObject();
 				obj.put("job_number",      job_number);
 				obj.put("bs_id",           bs_id);

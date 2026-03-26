@@ -343,131 +343,125 @@
 
 
 <div class="modal fade modal-blur effect-scale" id="request_for_file_creation" tabindex="-1"
-	role="dialog" aria-labelledby="request_for_file_creation" aria-hidden="true"
->
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content border-0">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title text-white" id="request_for_file_creation_label">
-                    <i class="bi bi-file-earmark me-2"></i>
-                    Request for File Creation
-                </h5>
+     role="dialog" aria-labelledby="request_for_file_creation_label" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header with Gradient -->
+            <div class="modal-header bg-primary text-white border-0">
+                <div>
+                    <h5 class="modal-title text-white mb-0" id="request_for_file_creation_label">
+                        <i class="bi bi-folder2-open me-2"></i>
+                        Open File
+                    </h5>
+                    <p class="mb-0 small opacity-75 mt-1">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Batch this application to create a physical file at the file room
+                    </p>
+                </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-			
-			<div class="modal-body">
-				<!-- Job Number -->
-                <div class="mb-4">
-                    <label for="bl_job_number" class="form-label fw-bold">
-                        <i class="fas fa-hashtag me-2 text-primary"></i>
-                        Job Number
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">
-                            <i class="fas fa-barcode text-muted"></i>
-                        </span>
-                        <input class="form-control bg-light" type="text" placeholder="" value="${job_number}"
-                               id="req_job_number_rh" readonly style="cursor: not-allowed;">
+            
+            <div class="modal-body p-4">
+                
+                <!-- Application Information Card -->
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-header bg-white bg-opacity-50 border-0">
+                        <h6 class="mb-0">
+                            <i class="bi bi-file-text me-2 text-primary"></i>
+                            Application Details
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- <div class="avatar-sm bg-primary bg-opacity-10 rounded-circle me-2">
+                                        <i class="bi bi-briefcase text-primary mt-5 ms-2"></i>
+                                    </div> -->
+                                    <div>
+                                        <small class="text-muted d-block">Job Number</small>
+                                        <strong class="text-dark">${job_number}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- <div class="avatar-sm bg-success bg-opacity-10 rounded-circle me-2">
+                                        <i class="bi bi-person-badge text-success mt-5 ms-2"></i>
+                                    </div> -->
+                                    <div>
+                                        <small class="text-muted d-block">Application Type</small>
+                                        <strong class="text-dark">${business_process_sub_name}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- <div class="avatar-sm bg-info bg-opacity-10 rounded-circle me-2">
+                                        <i class="bi bi-person text-info"></i>
+                                    </div> -->
+                                    <div>
+                                        <small class="text-muted d-block">Applicant</small>
+                                        <strong class="text-dark">${ar_name}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Applicant Name -->
-                <div class="mb-4">
-                    <label for="bl_ar_name" class="form-label fw-bold">
-                        <i class="fas fa-user me-2 text-primary"></i>
-                        Applicant Name
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">
-                            <i class="fas fa-user-tag text-muted"></i>
-                        </span>
-                        <textarea rows="2" class="form-control bg-light" placeholder=""
-                                  id="req_ar_name_rh" readonly style="cursor: not-allowed;">${ar_name}</textarea>
+                
+                <!-- Batch Information Card -->
+                <div class="card border-0 mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0">
+                            <i class="bi bi-collection me-2 text-primary"></i>
+                            Batch Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning border-0">
+                            <div class="d-flex">
+                                <i class="bi bi-question-circle-fill fs-4 me-2"></i>
+                                <div>
+                                    <strong>Why add to a batch?</strong><br>
+                                    <small>
+                                        Adding to a batch helps organize multiple applications together for efficient 
+                                        file creation and management. The file room will process batched applications 
+                                        in order, ensuring systematic record keeping.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <small class="text-muted">Status: Ready for batching</small>
                     </div>
                 </div>
-
-                <!-- Application Type -->
-                <div class="mb-4">
-                    <label for="bl_business_process_sub_name" class="form-label fw-bold">
-                        <i class="fas fa-file-alt me-2 text-primary"></i>
-                        Application Type
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">
-                            <i class="fas fa-file-signature text-muted"></i>
-                        </span>
-                        <textarea rows="2" class="form-control bg-light" placeholder="" 
-                                  id="req_business_process_sub_name_rh" readonly style="cursor: not-allowed;">${business_process_sub_name}</textarea>
-                    </div>
+                
+                <!-- Action Buttons -->
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary flex-grow-1 py-3 ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#askForPurposeOfBatching"
+                            data-job_number="${job_number}" 
+                            data-ar_name="${ar_name}"
+                            data-req_id="${rq_id}"
+                            data-business_process_sub_name="${business_process_sub_name}">
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Add to Batch
+                        <small class="d-block mt-1 fs-12">Add this application to a batch for file creation</small>
+                    </button>
+                    
+                    <button class="btn btn-outline-secondary flex-grow-1 py-3" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancel
+                        <small class="d-block mt-1 fs-12">Return without batching</small>
+                    </button>
                 </div>
-
-                <!-- Locality -->
-                <div class="mb-4">
-                    <label for="bl_application_stage_name" class="form-label fw-bold">
-                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                        Locality
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">
-                            <i class="fas fa-map-pin text-muted"></i>
-                        </span>
-                        <textarea rows="2" class="form-control bg-light" placeholder="" value="${locality}"
-                                  id="req_locality_rh" readonly style="cursor: not-allowed;">${locality}</textarea>
-                    </div>
-                </div>
-
-                <!-- Sent Purpose -->
-                <div class="mb-4">
-                    <label for="bl_job_purpose" class="form-label fw-bold">
-                        <i class="fas fa-bullseye me-2 text-primary"></i>
-                        Sent Purpose
-                    </label>
-                    <div class="input-group">
-                        <input class="form-control bg-light" type="text" placeholder="" value="File Creation"
-                               id="req_job_purpose_rh" readonly style="cursor: not-allowed;">
-                    </div>
-                    <small class="text-muted mt-1 d-block">
-                        <i class="fas fa-lightbulb me-1"></i>
-                        Select the purpose for sending this request
-                    </small>
-                </div>
-
-                <!-- Remarks -->
-                <div class="mb-4">
-                    <label for="bl_application_stage_name_baby_step" class="form-label fw-bold">
-                        <i class="fas fa-comment-dots me-2 text-primary"></i>
-                        Remarks
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light">
-                            <i class="fas fa-sticky-note text-muted"></i>
-                        </span>
-                        <textarea rows="3" class="form-control" placeholder="Add any additional remarks or instructions..." 
-                                  id="req_remarks_rh"></textarea>
-                    </div>
-                    <small class="text-muted mt-1 d-block">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Optional: Add any special instructions or notes
-                    </small>
-                </div>
-			</div>
-			
-			<div class="modal-footer bg-light">
-				<button type="button" 
-					class="btn btn-outline-danger"
-					data-bs-dismiss="modal">
-					<i class="fas fa-times me-2"></i>
-					Close
-				</button>
-                <button type="button" 
-					class="btn btn-success"
-					id="req_file_creation_rh">
-					<i class="fas fa-check me-2"></i>
-					Request
-				</button>
-			</div>
-		</div>
-	</div>
+                
+            </div>
+            
+        </div>
+    </div>
 </div>
 
 
@@ -608,6 +602,16 @@
 							<div>
 								<span class="text-muted small d-block">Serial Number</span>
 								<strong class="fs-5">${ls_number}</strong>
+							</div>
+						</div>
+
+            <div class="d-flex align-items-center">
+							<div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+								<i class="ri-fingerprint-2-fill text-danger"></i>
+							</div>
+							<div>
+								<span class="text-muted small d-block">GLPIN</span>
+								<strong class="fs-5">${glpin}</strong>
 							</div>
 						</div>
 					</div>

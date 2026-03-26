@@ -3244,6 +3244,10 @@
                                                 <label class="form-label small text-muted mb-1">Size of Land</label>
                                                 <div class="fw-medium text-dark">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
                                             </div>
+                                            <div class="col-6">
+                                                <label class="form-label small text-muted mb-1">GLPIN</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

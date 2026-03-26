@@ -2861,7 +2861,7 @@ function viewRelatedJob(record) {
                     <div class="col-12">
                         <div class="border rounded p-2 bg-light">
                             <small class="text-muted d-block">Status</small>
-                            <span class="badge bg-${getStatusBadgeClass(record.status)}">${escapeHtml(record.status || '-')}</span>
+                            <span class="badge bg-${getStatusBadgeClass(record.status)}">${escapeHtml(record.status == 'U' ? 'Undergoing' : record.status == 'N' ? 'Noted' : 'Plotted')}</span>
                         </div>
                     </div>
                 </div>
@@ -2873,15 +2873,58 @@ function viewRelatedJob(record) {
         showCancelButton: true,
         cancelButtonText: 'View Full Details',
         cancelButtonColor: '#6c757d'
-    }).then((result) => {
+    }).then((result) => { 
         if (result.dismiss === Swal.DismissReason.cancel) {
             // Navigate to full job details page
             if (record.job_number) {
-                window.location.href = `job_details.jsp?job_number=${record.job_number}&case_number=${record.case_number}`;
+                //window.location.href = `job_details.jsp?job_number=${record.job_number}&case_number=${record.case_number}`;
+				window.viewApplicationDetails(record.job_number, '', record.case_number, '');
             }
         }
     });
 }
+
+window.viewApplicationDetails = function(job_number, transaction_number, case_number, business_process_sub_name) {
+     
+      // Create a form dynamically
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'front_office_view_application';
+      form.target = '_blank'
+      form.style.display = 'none'; // Hide the form
+      
+      // Add the case number as an input field
+      const caseNumberInput = document.createElement('input');
+      caseNumberInput.type = 'hidden';
+      caseNumberInput.name = 'search_text';
+      caseNumberInput.value = case_number;
+      form.appendChild(caseNumberInput);
+
+      // Add the case number as an input field
+      const jobNumberInput = document.createElement('input');
+      jobNumberInput.type = 'hidden';
+      jobNumberInput.name = 'job_number';
+      jobNumberInput.value = job_number;
+      form.appendChild(jobNumberInput);
+
+      // Add the case number as an input field
+      const transactionNumberInput = document.createElement('input');
+      transactionNumberInput.type = 'hidden';
+      transactionNumberInput.name = 'transaction_number';
+      transactionNumberInput.value = transaction_number;
+      form.appendChild(transactionNumberInput);
+
+      // Add the case number as an input field
+      const businessProcessSubNameInput = document.createElement('input');
+      businessProcessSubNameInput.type = 'hidden';
+      businessProcessSubNameInput.name = 'business_process_sub_name';
+      businessProcessSubNameInput.value = business_process_sub_name;
+      form.appendChild(businessProcessSubNameInput);
+      
+      // Add the form to the body and submit it
+      document.body.appendChild(form);
+      form.submit();
+};
 
 // Function to locate job on map
 function locateJobOnMap(record) {
@@ -2936,10 +2979,9 @@ function locateJobOnMap(record) {
 function getStatusBadgeClass(status) {
     if (!status) return 'secondary';
     var statusLower = status.toLowerCase();
-    if (statusLower.includes('completed') || statusLower.includes('approved')) return 'success';
-    if (statusLower.includes('pending') || statusLower.includes('processing')) return 'warning';
-    if (statusLower.includes('rejected') || statusLower.includes('cancelled')) return 'danger';
-    return 'secondary';
+    if (statusLower.includes('U')) return 'danger';
+    if (statusLower.includes('N')) return 'warning';
+    return 'success';
 }
 
 

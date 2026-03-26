@@ -975,20 +975,20 @@ $(document).ready(function() {
 							'data-bs-custom-class="tooltip-primary" title="View Milestone" data-bs-toggle="tooltip">' +
 							'<i class="fas fa-list"></i>' +
 						'</button>' +
-						(inbox_type == 9 ? 
-						'<button class="btn btn-icon btn-sm me-1 btn-warning btn-wave waves-effect waves-light btn_send_request" ' +
-								'id="btnAddToBatchlist-' + this.job_number + '" ' +
-								'data-job_number="' + this.job_number + '" ' +
-								'data-ar_name="' + this.ar_name + '" ' +
-								'data-business_process_sub_name="' + this.business_process_sub_name + '" ' +
-								'data-application_stage="' + this.application_stage + '" ' +
-								'data-locality="' + this.locality + '" ' +
-								'data-application_stage_name="' + this.application_stage_name + '" ' +
-								'data-application_stage_baby_step="' + this.application_stage_baby_step + '" ' +
-								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
-								'data-bs-custom-class="tooltip-primary" title="Send Request" data-bs-toggle="tooltip">' +
-								'<i class="fas fa-paper-plane"></i>' +
-							'</button>' :
+						// (inbox_type == 9 ? 
+						// '<button class="btn btn-icon btn-sm me-1 btn-warning btn-wave waves-effect waves-light btn_send_request" ' +
+						// 		'id="btnAddToBatchlist-' + this.job_number + '" ' +
+						// 		'data-job_number="' + this.job_number + '" ' +
+						// 		'data-ar_name="' + this.ar_name + '" ' +
+						// 		'data-business_process_sub_name="' + this.business_process_sub_name + '" ' +
+						// 		'data-application_stage="' + this.application_stage + '" ' +
+						// 		'data-locality="' + this.locality + '" ' +
+						// 		'data-application_stage_name="' + this.application_stage_name + '" ' +
+						// 		'data-application_stage_baby_step="' + this.application_stage_baby_step + '" ' +
+						// 		'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
+						// 		'data-bs-custom-class="tooltip-primary" title="Send Request" data-bs-toggle="tooltip">' +
+						// 		'<i class="fas fa-paper-plane"></i>' +
+						// 	'</button>' :
 							'<div data-bs-custom-class="tooltip-primary" title="Add to Batch" data-bs-toggle="tooltip" ><button class="btn btn-icon btn-sm me-1 btn-outline-info btn-wave waves-effect waves-light btn-add-batch" ' +
 								'id="btnAddToBatchlist-' + this.job_number + '" ' +
 								'data-job_number="' + this.job_number + '" ' +
@@ -1000,7 +1000,8 @@ $(document).ready(function() {
 								'data-application_stage_name_baby_step="' + this.application_stage_name_baby_step + '" ' +
 								'data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal">' +
 								'<i class="fas fa-plus"></i>' +
-							'</button></div>' )+
+							'</button></div>' +
+						//)+
 							'<form action="front_office_view_application" method="post" class="d-inline">' +
 								'<input type="hidden" name="case_number" value="' + this.transaction_number + '">' +
 								'<input type="hidden" name="search_text" value="' + this.case_number + '">' +

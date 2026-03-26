@@ -1719,7 +1719,18 @@
                     },
                     cache: false,
                     success: function(response) {
-                       console.log(response);
+                     //  console.log(response);
+                     if(!response) {
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Sorry! Your session has expired, logout and login again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+
+                        return;
+                     }
                      var json_result = JSON.parse(response);
                         
                         Swal.close();
