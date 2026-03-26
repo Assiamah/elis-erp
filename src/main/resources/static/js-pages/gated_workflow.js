@@ -25303,7 +25303,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = result.value;
                 console.log('Confirmation response:', response);
                 
-                const isSuccess = response === 'Application Successfully completed';
+                const isSuccess = response.success;
                 
                 if (isSuccess) {
                     // Show success message

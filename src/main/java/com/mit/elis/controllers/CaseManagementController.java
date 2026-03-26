@@ -10054,11 +10054,15 @@ request.setAttribute("rq_id",rq_id);
 				JSONObject menu_obj;
 				menu_obj = new JSONObject(web_service_response_menu);
 				String all_menus = menu_obj.get("total").toString();
+				String total_inspection = menu_obj.get("total_inspection").toString();
 
 				// Gson googleJson = new Gson();
 				// ArrayList javaArrayListFromGSON =
 				// googleJson.fromJson(all_menus, ArrayList.class);
 				request.setAttribute("applicationlistcount", all_menus);
+				request.setAttribute("total_inspection", total_inspection);
+
+				
 				//load_application_batched_to_user_all
 				web_service_response_menu_data = casemgt_web_service
 						.load_request_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),

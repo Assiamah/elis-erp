@@ -135,7 +135,7 @@
 
                             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#awaitingInspectionApplicationsModal">
                                 <i class="bi bi-eyeglasses fs-13"></i>
-                                Awaiting Inspection [ <span class="fw-semibold">0</span> ]
+                                Awaiting Inspection [ <span class="fw-semibold">${total_inspection}</span> ]
                             </button>
 
                             <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#batchedApplicationsModal">
