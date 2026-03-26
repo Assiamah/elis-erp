@@ -2662,14 +2662,14 @@ function loadRelatedJobsTable(jsonData) {
             }
             
             if (record.glpin) {
-                jobHtml += `<div class="small text-muted">
+                jobHtml += `<div class="small text-muted mt-1">
                                 <i class="fas fa-map-marker-alt me-1"></i>
                                 GLPIN: ${escapeHtml(record.glpin)}
                             </div>`;
             }
             
             if (record.locality) {
-                jobHtml += `<div class="small text-muted">
+                jobHtml += `<div class="small text-muted mt-1">
                                 <i class="fas fa-location-dot me-1"></i>
                                 Locality: ${escapeHtml(record.locality)}
                             </div>`;
@@ -2720,7 +2720,7 @@ function loadRelatedJobsTable(jsonData) {
             if (record.gid) {
                 var locateButton = $('<button>', {
                     type: 'button',
-                    class: 'btn btn-outline-info btn-sm',
+                    class: 'btn btn-outline-info btn-sm ms-2',
                     html: '<i class="fas fa-map-marker-alt me-1"></i> Locate',
                     click: function() {
                         locateJobOnMap(record);
