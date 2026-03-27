@@ -5521,11 +5521,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             $("#es_date_of_instrument").val(formattedDate);
         }
+
+        if (es_date_of_registration) {
+            const dateObj = new Date(es_date_of_registration);
+            
+            // Format as YYYY-MM-DD
+            const formattedDate = dateObj.toISOString().split('T')[0];
+            
+            $("#es_date_of_registration").val(formattedDate);
+        }
         
         $("#es_id").val(es_id);
         $("#es_registered_number").val(es_registered_number);
         // $("#es_date_of_instrument").val(es_date_of_instrument);
-        $("#es_date_of_registration").val(es_date_of_registration);
+        //$("#es_date_of_registration").val(es_date_of_registration);
         $("#es_memorials").val(es_memorials);
         $("#es_remarks").val(es_remarks);
         $("#es_back").val(es_back);
