@@ -302,6 +302,28 @@ under_registration_search_result_searchLayer = new ol.layer.Vector({
 	})
 });
 
+var underRegistrationDefaultStyle = new ol.style.Style({
+	stroke : new ol.style.Stroke({
+		color : 'yellow',
+		width : 3
+	}),
+	fill : new ol.style.Fill({
+		color : 'rgba(255, 255, 0, 0.12)'
+	})
+});
+
+var underRegistrationSelectedStyle = new ol.style.Style({
+	stroke : new ol.style.Stroke({
+		color : '#ff4d4f',
+		width : 5
+	}),
+	fill : new ol.style.Fill({
+		color : 'rgba(255, 77, 79, 0.28)'
+	})
+});
+
+under_registration_search_result_searchLayer.setStyle(underRegistrationDefaultStyle);
+
 
 lc_searchLayer = new ol.layer.Vector({
 	title : 'Search Layer',
@@ -2700,13 +2722,13 @@ function loadRelatedJobsTable(jsonData) {
             row.append(jobCell);
             
             // Actions column
-            var actionsCell = $('<td>', {'class': 'text-center'});
+            var actionsCell = $('<td>', {'class': 'text-end'});
             
             // View button
             var viewButton = $('<button>', {
                 type: 'button',
                 class: 'btn btn-outline-primary btn-sm me-1',
-                html: '<i class="fas fa-eye me-1"></i> View',
+                html: '<i class="fas fa-eye me-1"></i>',
                 click: function() {
                     viewRelatedJob(record);
                 }
@@ -2721,7 +2743,7 @@ function loadRelatedJobsTable(jsonData) {
                 var locateButton = $('<button>', {
                     type: 'button',
                     class: 'btn btn-outline-info btn-sm ms-2',
-                    html: '<i class="fas fa-map-marker-alt me-1"></i> Locate',
+                    html: '<i class="fas fa-map-marker-alt me-1"></i>',
                     click: function() {
                         locateJobOnMap(record);
                     }
@@ -2939,13 +2961,16 @@ function locateJobOnMap(record) {
         
         for (var i = 0; i < features.length; i++) {
             var props = features[i].getProperties();
-            if (props.gid === record.gid) {
+            features[i].setStyle(underRegistrationDefaultStyle);
+
+            if (String(props.gid) === String(record.gid)) {
                 foundFeature = features[i];
-                break;
             }
         }
         
         if (foundFeature) {
+            foundFeature.setStyle(underRegistrationSelectedStyle);
+
             var extent = foundFeature.getGeometry().getExtent();
             map.getView().fit(extent, {
                 padding: [50, 50, 50, 50],
@@ -2958,7 +2983,7 @@ function locateJobOnMap(record) {
                 title: 'Located!',
                 text: `Job ${record.job_number} has been located on the map`,
                 icon: 'success',
-                toast: true,
+               // toast: true,
                 timer: 2000,
                 showConfirmButton: false
             });
