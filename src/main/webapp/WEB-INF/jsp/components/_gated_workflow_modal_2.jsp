@@ -6525,6 +6525,10 @@ Thank you.</textarea>
                                                 <div class="fw-medium text-dark">${empty fn:trim(file_number) ? '--' : fn:trim(file_number)}</div>
                                             </div>
                                             <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Annual Rent</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(annual_rent) ? '--' : fn:trim(annual_rent)}</div>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label class="form-label text-muted small mb-1">Rent Review Period</label>
                                                 <div class="fw-medium text-dark">${empty fn:trim(rent_review_period) || consideration_fee_adopted_rate == '0' ? '--' : fn:trim(rent_review_period)}</div>
                                             </div>

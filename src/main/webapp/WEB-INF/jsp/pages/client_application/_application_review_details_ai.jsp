@@ -1720,7 +1720,7 @@
                     cache: false,
                     success: function(response) {
                      //  console.log(response);
-                     if(!response) {
+                     if(response == "session expired") {
 
                         Swal.fire({
                             title: 'Error!',
@@ -1731,6 +1731,7 @@
 
                         return;
                      }
+                     
                      var json_result = JSON.parse(response);
                         
                         Swal.close();

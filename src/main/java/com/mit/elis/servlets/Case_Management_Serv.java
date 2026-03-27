@@ -6953,7 +6953,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				if (userid == null || userid.trim().isEmpty()) {
 					System.out.println("Warning: userid is null or empty. Returning null.");
-					return null;
+					return "session expired";
 				}
 
 				JSONObject obj = new JSONObject();
@@ -7609,7 +7609,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				// String batchlistdivison = obj.toString();
 
-				// System.out.println(batchlistdivison);
+				System.out.println("batchdata:   "+ obj.toString());
+
 				web_service_response = casemgt_cl
 						.select_process_batch_list_unit(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());

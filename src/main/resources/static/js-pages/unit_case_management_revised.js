@@ -869,11 +869,11 @@ $(document).ready(function() {
 			success : function(jobdetails) {
 
 				if(inbox_type == 1) {
-					$(".officerInd").text("Completed By");
+					$(".officerInd").text("Sent By");
 				} else if(inbox_type == 2) {
 					$(".officerInd").text("Queried By");
 				} else if(inbox_type == 3) {
-					$(".officerInd").text("Completed By");
+					$(".officerInd").text("Sent By");
 				} else if(inbox_type == 4) {
 					$(".officerInd").text("Assessed By");
 				} else if(inbox_type == 5) {
@@ -947,7 +947,7 @@ $(document).ready(function() {
 
 						// 5: Status
 						'<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="' + (inbox_type == 6 ? this.job_purpose : this.job_status || '') + '" >' +
-							((inbox_type == 6 ? this.job_purpose : this.job_status || '').length > 30 ? (inbox_type == 6 ? this.job_purpose : this.job_status || '').substring(0, 30) + '...' : (inbox_type == 6 ? this.job_purpose : this.job_status || '')) +
+							(((inbox_type == 6 || inbox_type == 1 || inbox_type == 5)  ? this.job_purpose : this.job_status || '').length > 30 ? (inbox_type == 6 ? this.job_purpose : this.job_status || '').substring(0, 30) + '...' : (inbox_type == 6 ? this.job_purpose : this.job_status || '')) +
 						'</span>' +
 						((this.objections || 0) > 0 ? '<i class="fas fa-exclamation-circle ml-1 text-danger" data-toggle="tooltip" title="Has Objections"></i>' : ''),
 

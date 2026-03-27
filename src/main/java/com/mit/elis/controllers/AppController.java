@@ -675,6 +675,7 @@ public class AppController {
 							jsonArrayContent_tags_for_batching_jobs_list);
 					String all_list_tags_for_batching_jobs_list = tags_for_batching_jobs_list_obj.get("data")
 							.toString();
+							
 					session.setAttribute("tags_for_batching_jobs_list", all_list_tags_for_batching_jobs_list);
 
 					web_service_response_office_data = general_q_cl

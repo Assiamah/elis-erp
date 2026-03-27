@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="ws.casemgt.Ws_client_application"%>
 <%@ page import="ws.users.Ws_users"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
@@ -459,7 +460,7 @@
                 </div>
                 
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -575,6 +576,28 @@
 							</div>
 						</div>
 
+            <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+							<div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+								<i class="ri-fingerprint-2-fill text-danger"></i>
+							</div>
+							<div>
+								<span class="text-muted small d-block">GLPIN</span>
+								<strong class="fs-5">${glpin}</strong>
+							</div>
+						</div>
+
+            <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+							<div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+								<i class="ri-fingerprint-2-fill text-danger"></i>
+							</div>
+							<div>
+								<span class="text-muted small d-block">Registration Date</span>
+                <fmt:parseDate value="${date_of_registration}" pattern="yyyy-MM-dd" var="parsedRegistrationDate"/>
+                <div class="fw-medium text-dark"></div>
+								<strong class="fs-5">${empty formattedRegistrationDate ? '--' : formattedRegistrationDate}</strong>
+							</div>
+						</div>
+
 						<div class="d-flex align-items-center mb-3 pb-2 border-bottom">
 							<div class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
 								<i class="fas fa-folder-open text-primary"></i>
@@ -602,16 +625,6 @@
 							<div>
 								<span class="text-muted small d-block">Serial Number</span>
 								<strong class="fs-5">${ls_number}</strong>
-							</div>
-						</div>
-
-            <div class="d-flex align-items-center">
-							<div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-								<i class="ri-fingerprint-2-fill text-danger"></i>
-							</div>
-							<div>
-								<span class="text-muted small d-block">GLPIN</span>
-								<strong class="fs-5">${glpin}</strong>
 							</div>
 						</div>
 					</div>
