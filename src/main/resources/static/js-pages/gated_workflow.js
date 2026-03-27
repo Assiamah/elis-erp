@@ -25068,18 +25068,18 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>`,
                         icon: 'success',
-                        timer: 5000,
-                        timerProgressBar: true,
-                        showConfirmButton: false,
+                        //timer: 5000,
+                        //timerProgressBar: true,
+                        showConfirmButton: true,
                         allowOutsideClick: false
                     }).then(() => {
-                        location.reload();
+                        //location.reload();
                     });
                     
                     // Auto-refresh after 5 seconds (backup in case timer doesn't work)
-                    setTimeout(() => {
-                        location.reload();
-                    }, 5000);
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 5000);
                     
                 } else {
                     // Show error message
