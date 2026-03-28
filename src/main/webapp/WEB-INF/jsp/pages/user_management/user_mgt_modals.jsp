@@ -339,18 +339,21 @@
                             <table class="table table-hover align-middle mb-0" id="tbl_user_milestone_list_dataTable">
                                 <thead class="table-light">
                                     <tr>
-                                        <th width="50%">
+                                        <th width="35%">
                                             <i class="fa fa-align-left me-2 text-muted"></i>Description
                                         </th>
-                                        <th width="30%">
+										<th width="35%">
+                                            <i class="ri-flag-line me-2 text-muted"></i>Milestone
+                                        </th>
+                                        <th width="15%">
                                             <i class="fa fa-toggle-on me-2 text-muted"></i>Option
                                         </th>
-                                        <th width="20%" class="text-start">
+                                        <th width="15%" class="text-start">
                                             <i class="fa fa-cog me-2 text-muted"></i>MID
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="small">
                                     <!-- Dynamic content will be loaded here -->
                                     <tr class="text-muted">
                                         <td colspan="3" class="text-center py-4">

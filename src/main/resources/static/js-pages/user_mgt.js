@@ -802,6 +802,8 @@ $("#ur_department").on('input', function() {
 															if(this.option_check){
 																table.append("<tr><td>"
 																		+ this.bs_description
+																		+ "</td><td>"
+																		+ this.milestone_description
 																		+ "</td><td><input class='form-check-input' type='checkbox'checked/></td><td>"
 																		+ this.bs_id
 																		+ "</td>"
@@ -812,6 +814,8 @@ $("#ur_department").on('input', function() {
 															}else{
 																table.append("<tr><td>"
 																		+ this.bs_description
+																		+ "</td><td>"
+																		+ this.milestone_description
 																		+ "</td><td><input class='form-check-input' type='checkbox' /></td><td>"
 																		+ this.bs_id 
 																		+ "</td>"
@@ -1080,8 +1084,8 @@ $("#ur_department").on('input', function() {
 
 							$('#tbl_user_milestone_list_dataTable tr').has('td :checkbox:checked').each(function() {
 								const row = $(this);
-								const checkbox = row.find('td:eq(1) input[type="checkbox"]');
-								const milestoneId = row.find('td:eq(2)').text().trim(); // Assuming milestone ID is in second column
+								const checkbox = row.find('td:eq(2) input[type="checkbox"]');
+								const milestoneId = row.find('td:eq(3)').text().trim(); // Assuming milestone ID is in second column
 								const milestoneDesc = row.find('td:eq(0)').text().trim(); // Assuming description is in third column
 								
 								if (checkbox.is(':checked')) {
