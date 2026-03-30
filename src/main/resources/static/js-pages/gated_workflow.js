@@ -22686,15 +22686,15 @@ document.addEventListener('DOMContentLoaded', function() {
         var send_by_id = localStorage.getItem('userid');
         var send_by_name = localStorage.getItem('fullname');
 
-        if (!lc_txt_file_number_type) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please select a file number type.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
+        // if (!lc_txt_file_number_type) {
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Please select a file number type.',
+        //         icon: 'error',
+        //         confirmButtonText: 'OK'
+        //     });
+        //     return;
+        // }
         
         // SweetAlert2 confirmation
         Swal.fire({
@@ -26617,6 +26617,171 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $(".enter_transaction_details_for_deed").on("click", function() {
         $("#enter_transaction_details_for_deed").modal('show');
+    });
+
+
+     $('#lc_btn_update_deed_number').on('click', function(e) {
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var job_number = $("#cs_main_job_number").val();
+        var lc_txt_deed_number = $("#lc_txt_deed_number_up").val();
+        
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+
+        // if (!lc_txt_deed_number_type) {
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Please select a deed number type.',
+        //         icon: 'error',
+        //         confirmButtonText: 'OK'
+        //     });
+        //     return;
+        // }
+        
+        // SweetAlert2 confirmation
+        Swal.fire({
+            title: 'Generate Deed Number?',
+            text: "Are you sure you want to generate a new deed number?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, generate it!',
+            cancelButtonText: 'Cancel',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_deed_number_update',
+                        case_number: case_number,
+                        job_number: job_number,
+                        transaction_number: transaction_number,
+                        deed_number: lc_txt_deed_number,
+                        fullname: send_by_name,
+                        userid: send_by_id
+                    },
+                    cache: false,
+                    success: function(jobdetails) {
+                        console.log(jobdetails);
+                        var json_p = JSON.parse(jobdetails);
+                        
+                        if (jobdetails != "") {
+                            $('#lc_btn_generate_deed_number_only').prop("disabled", true);
+                        }
+                        
+                        $('#lc_txt_deed_number').val(json_p.deed_number);
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Deed number has been updated successfully',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Failed to update deed number. Please try again.'
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Optional: Additional actions after successful confirmation
+                console.log('Deed number updating confirmed and processed');
+            }
+        });
+    });
+
+     $('#lc_btn_update_serial_number').on('click', function(e) {
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var job_number = $("#cs_main_job_number").val();
+        var lc_txt_serial_number = $("#lc_txt_serial_number_up").val();
+        
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+
+        // if (!lc_txt_deed_number_type) {
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Please select a file number type.',
+        //         icon: 'error',
+        //         confirmButtonText: 'OK'
+        //     });
+        //     return;
+        // }
+        
+        // SweetAlert2 confirmation
+        Swal.fire({
+            title: 'Generate Serial Number?',
+            text: "Are you sure you want to generate a new serial number?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, generate it!',
+            cancelButtonText: 'Cancel',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_serial_number_update',
+                        case_number: case_number,
+                        job_number: job_number,
+                        transaction_number: transaction_number,
+                        serial_number: lc_txt_serial_number,
+                        fullname: send_by_name,
+                        userid: send_by_id
+                    },
+                    cache: false,
+                    success: function(jobdetails) {
+                        console.log(jobdetails);
+                        var json_p = JSON.parse(jobdetails);
+                        
+                        if (jobdetails != "") {
+                            $('#lc_btn_generate_serial_number_only').prop("disabled", true);
+                        }
+                        
+                        $('#lc_txt_serial_number').val(json_p.ls_number);
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Serial number has been updated successfully',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Failed to update serial number. Please try again.'
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Optional: Additional actions after successful confirmation
+                console.log('Serial number updating confirmed and processed');
+            }
+        });
     });
 
 });

@@ -3969,6 +3969,110 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("select_deed_number_update")) {
+				String case_number = request.getParameter("case_number");
+				String transaction_number = request.getParameter("transaction_number");
+				String job_number = request.getParameter("job_number");
+
+				String deed_number = request.getParameter("deed_number");
+
+				String fullname = (String) session.getAttribute("fullname"); 
+				String mac_address = (String) session.getAttribute("mac_address"); 
+				String ip_address =  (String) session.getAttribute("ip_address");
+				String region_code =  (String) session.getAttribute("regional_code");
+
+				String userid = (String) session.getAttribute("userid");
+				JSONObject obj = new JSONObject();
+				JSONArray jsonArr = new JSONArray();
+
+				//obj.put("registration_district_number", registration_district_number);
+				//obj.put("registration_section_number", registration_section_number);
+				//obj.put("type_of_certificate", type_of_certificate);
+				obj.put("transaction_number", transaction_number);
+				obj.put("case_number", case_number);
+				obj.put("job_number", job_number);
+
+				obj.put("region_code", region_code);
+				obj.put("deed_number", deed_number);
+			
+
+				obj.put("fullname", fullname); 
+				obj.put("mac_address", mac_address); 
+				obj.put("ip_address", ip_address);
+
+				obj.put("userid", userid);
+
+
+			
+				// jsonArr.put(obj);
+				String input = obj.toString();
+				// String wkt_polgon_wgs84 =
+				// request.getParameter("wkt_polgon_wgs84");
+				// System.out.println(input);
+				web_service_response = casemgt_cl_m
+						.select_deed_number_update(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), input);
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("select_serial_number_update")) {
+				String case_number = request.getParameter("case_number");
+				String transaction_number = request.getParameter("transaction_number");
+				String job_number = request.getParameter("job_number");
+
+				String serial_number = request.getParameter("serial_number");
+
+				String fullname = (String) session.getAttribute("fullname"); 
+				String mac_address = (String) session.getAttribute("mac_address"); 
+				String ip_address =  (String) session.getAttribute("ip_address");
+				String region_code =  (String) session.getAttribute("regional_code");
+
+				String userid = (String) session.getAttribute("userid");
+				JSONObject obj = new JSONObject();
+				JSONArray jsonArr = new JSONArray();
+
+				//obj.put("registration_district_number", registration_district_number);
+				//obj.put("registration_section_number", registration_section_number);
+				//obj.put("type_of_certificate", type_of_certificate);
+				obj.put("transaction_number", transaction_number);
+				obj.put("case_number", case_number);
+				obj.put("job_number", job_number);
+
+				obj.put("region_code", region_code);
+				obj.put("serial_number", serial_number);
+			
+
+				obj.put("fullname", fullname); 
+				obj.put("mac_address", mac_address); 
+				obj.put("ip_address", ip_address);
+
+				obj.put("userid", userid);
+
+
+			
+				// jsonArr.put(obj);
+				String input = obj.toString();
+				// String wkt_polgon_wgs84 =
+				// request.getParameter("wkt_polgon_wgs84");
+				// System.out.println(input);
+				web_service_response = casemgt_cl_m
+						.select_serial_number_update(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), input);
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("select_generate_ground_rent_only")) {
 				String case_number = request.getParameter("case_number");
 				String transaction_number = request.getParameter("transaction_number");

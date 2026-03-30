@@ -1636,23 +1636,6 @@
       
       <!-- Modal Body -->
       <div class="modal-body">
-         <!-- <div class="mb-3 fs-20">
-            <label for="lc_txt_file_number" class="form-label">
-              <i class="ri-map-2-line me-1"></i>
-              Locality:
-            </label>
-            <span class="text-danger fw-bold">${locality}</span>
-        </div>
-        <div class="mb-3">
-            <label for="lc_txt_file_number" class="form-label">
-              <i class="fas fa-landmark me-1"></i>
-              Type of Land Reference:
-            </label>
-            <select class="form-select" id="lc_txt_file_number_type">
-              <option disabled selected value="">-- select --</option>
-              
-            </select>
-        </div> -->
         <div class="mb-3">
           <label for="lc_txt_file_number" class="form-label">
             <i class="fas fa-hashtag me-1"></i>
@@ -1673,18 +1656,109 @@
             <i class="fas fa-save me-2"></i>
             Update File Number
           </button>
-          
-          <!-- Status Message -->
-          <!-- <div class="form-text mt-2 text-center">
-            <c:if test="${not empty file_number and file_number != 'null' and not fn:contains(file_number, '-')}">
-              <i class="fas fa-check-circle text-success me-1"></i>
-              <span class="text-success">File number already generated</span>
-            </c:if>
-            <c:if test="${empty file_number or file_number == 'null' or fn:contains(file_number, '-')}">
-              <i class="fas fa-info-circle text-info me-1"></i>
-              <span class="text-info selected_file_number">Click to generate a new file number</span>
-            </c:if>
-          </div> -->
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-fade modal-blur" id="update_deed_number" tabindex="-1"
+     aria-labelledby="updateDeedNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="updateDeedNumberLabel">
+          <i class="fas fa-folder-open me-2"></i>
+          Update Deed Number
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="lc_txt_deed_number" class="form-label">
+            <i class="fas fa-hashtag me-1"></i>
+            Deed Number:
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-file"></i>
+            </span>
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_deed_number_up" placeholder="Enter new deed number" value="${deed_number}" />
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <button type="button" id="lc_btn_update_deed_number" 
+                  class="btn btn-primary w-100 py-2" 
+                  value="Update">
+            <i class="fas fa-save me-2"></i>
+            Update Deed Number
+          </button>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade effect-fade modal-blur" id="update_serial_number" tabindex="-1"
+     aria-labelledby="updateSerialNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="updateSerialNumberLabel">
+          <i class="fas fa-folder-open me-2"></i>
+          Update Serial Number
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="lc_txt_serial_number" class="form-label">
+            <i class="fas fa-hashtag me-1"></i>
+            Serial Number:
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-file"></i>
+            </span>
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_serial_number_up" placeholder="Enter new serial number" value="${ls_number}" />
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <button type="button" id="lc_btn_update_serial_number" 
+                  class="btn btn-primary w-100 py-2" 
+                  value="Update">
+            <i class="fas fa-save me-2"></i>
+            Update Serial Number
+          </button>
         </div>
       </div>
       
