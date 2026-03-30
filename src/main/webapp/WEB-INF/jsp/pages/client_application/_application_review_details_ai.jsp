@@ -502,6 +502,20 @@
 											<label class="form-label text-muted small mb-1">Sub-Interest Number</label>
 											<div class="fw-medium text-dark">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
 										</div>
+                                        <c:if test="${not empty business_process_sub_name and fn:containsIgnoreCase(business_process_sub_name, 'deed')}">
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted small mb-1">File Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(file_number) ? '--' : fn:trim(file_number)}</div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted small mb-1">Serial Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(ls_number) ? '--' : fn:trim(ls_number)}</div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label text-muted small mb-1">Deed Number</label>
+                                                <div class="fw-medium text-dark">${empty fn:trim(deed_number) ? '--' : fn:trim(deed_number)}</div>
+                                            </div>
+                                        </c:if>
 									</div>
 								</div>
                             </div>

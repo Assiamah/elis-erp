@@ -520,9 +520,11 @@
                         Initial Approval
                     </h5>
                     <div class="ms-auto">
-                        <button type="button" class="btn btn-danger ${((division == 'LRD' || division == 'PVLMD') && user_level > 1) ? '' : 'd-none'}" id="btn_confirm_lrd_parcel_noting">
-                            <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
-                        </button>
+                        <c:if test="${(division == 'LRD' or division == 'PVLMD') and user_level > 1}">
+                            <button type="button" class="btn btn-danger" id="btn_confirm_lrd_parcel_noting">
+                                <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
+                            </button>
+                        </c:if>
                         <button type="button" class="btn btn-warning btn_send_inspection_request" 
                             data-job_number="${job_number}" 
                             data-ar_name="${ar_name}" 
@@ -531,9 +533,11 @@
                             data-bs-desc="${babyStep.bse_description}">
                             <i class="ri-send-plane-line me-1"></i>Inspection Request
                         </button>
-                        <button type="button" class="btn btn-info btn_ground_rent ${division == 'LVD' || division == 'SMD' ? 'd-none' : ''}">
-                            <i class="ri-coins-fill me-1"></i>Add Ground Rent
-                        </button>
+                        <c:if test="${division != 'LVD' and division != 'SMD'}">
+                            <button type="button" class="btn btn-info btn_ground_rent">
+                                <i class="ri-coins-fill me-1"></i>Add Ground Rent
+                            </button>
+                        </c:if>
                     </div>
                     
                 </div>
