@@ -7626,20 +7626,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    $("#compose_certificate").on('shown.bs.modal', function(e) {
-        var bs_id = $(e.relatedTarget).data("bs-id");
-        var bs_desc = $(e.relatedTarget).data("bs-desc");
+    // $("#compose_certificate").on('shown.bs.modal', function(e) {
+    //     var bs_id = $(e.relatedTarget).data("bs-id");
+    //     var bs_desc = $(e.relatedTarget).data("bs-desc");
 
-        // console.log(bs_id)
+    //     // console.log(bs_id)
 
-        if(parseInt(bs_id) == 23 || bs_desc == 'Check Certificate Details' || parseInt(bs_id) == 20){
+    //     if(bs_desc == 'Check Certificate Details' || bs_desc == 'Preview Certificate'){
          
-          $("#cert_type_for_reg").removeClass('d-none');
-        } else {
-          $("#cert_type_for_reg").addClass('d-none');
-        }
+    //       $("#cert_type_for_reg").removeClass('d-none');
+    //     } else {
+    //       $("#cert_type_for_reg").addClass('d-none');
+    //     }
 
-    })
+    // })
 
     $('#btn_save_lrd_certificate_update_details').on('click', function(e) {
         e.preventDefault();

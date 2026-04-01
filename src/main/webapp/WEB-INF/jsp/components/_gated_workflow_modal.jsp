@@ -4865,7 +4865,7 @@
             <div class="modal-body">
                 
                 <!-- Certificate Type Card (Hidden by default) -->
-                <div class="card mb-3 d-none" id="cert_type_for_reg">
+                <div class="card mb-3" id="cert_type_for_reg">
                     <div class="card-header bg-primary bg-opacity-10 text-primary">
                         <h6 class="mb-0">
                             <i class="fas fa-cogs me-2"></i>
