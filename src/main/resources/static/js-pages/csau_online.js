@@ -4168,6 +4168,122 @@ function createPaymentTableRow(item) {
     </tr>`;
 }
 
+function setSelectValueByTextOrValue($select, targetValue) {
+    if (!$select.length || !targetValue) {
+        return false;
+    }
+
+    const normalizedTarget = String(targetValue).trim().toLowerCase();
+    let matchedValue = '';
+
+    $select.find('option').each(function() {
+        const optionValue = String($(this).val() || '').trim();
+        const optionText = String($(this).text() || '').trim();
+
+        if (
+            optionValue.toLowerCase() === normalizedTarget ||
+            optionText.toLowerCase() === normalizedTarget ||
+            optionValue.split('-')[0].trim().toLowerCase() === normalizedTarget ||
+            optionValue.split('_')[0].trim().toLowerCase() === normalizedTarget
+        ) {
+            matchedValue = optionValue;
+            return false;
+        }
+    });
+
+    if (matchedValue) {
+        $select.val(matchedValue).trigger('change');
+        return true;
+    }
+
+    return false;
+}
+
+function loadDistrictOptions(regionValue, selectedDistrict) {
+    const $districtSelect = $('#new_bill_application_district');
+
+    if (!regionValue) {
+        return $.Deferred().resolve().promise();
+    }
+
+    return $.ajax({
+        type: 'POST',
+        url: 'Case_Management_Serv',
+        data: {
+            request_type: 'get_list_of_district',
+            region_id: String(regionValue).replace('.0', '')
+        },
+        cache: false
+    }).done(function(jobdetails) {
+        let json_p = [];
+        try {
+            json_p = JSON.parse(jobdetails);
+        } catch (error) {
+            console.error('Unable to parse district list', error);
+        }
+
+        $districtSelect.empty();
+        $districtSelect.append('<option value="">-- Select --</option>');
+
+        $(json_p).each(function() {
+            $districtSelect.append(
+                '<option value="' + this.district_name + '">' + this.district_name + '</option>'
+            );
+        });
+
+        if (selectedDistrict) {
+            setSelectValueByTextOrValue($districtSelect, selectedDistrict);
+        }
+    });
+}
+
+function loadLocalityOptions(officeRegionValue, selectedLocality) {
+    const $localitySelect = $('#new_bill_application_locality');
+
+    if (!officeRegionValue) {
+        return $.Deferred().resolve().promise();
+    }
+
+    const officeRegionParts = String(officeRegionValue).split('-');
+    const officeRegionId = (officeRegionParts[0] || '').replace('.0', '');
+
+    return $.ajax({
+        type: 'POST',
+        url: 'Case_Management_Serv',
+        data: {
+            request_type: 'get_list_of_locality',
+            region_id: officeRegionId
+        },
+        cache: false
+    }).done(function(jobdetails) {
+        let json_p = [];
+        try {
+            json_p = JSON.parse(jobdetails);
+        } catch (error) {
+            console.error('Unable to parse locality list', error);
+        }
+
+        $localitySelect.empty();
+        $localitySelect.append('<option value="">-- Select --</option>');
+
+        $(json_p).each(function() {
+            $localitySelect.append(
+                '<option value="' + this.location_name + '">' + this.location_name + '</option>'
+            );
+        });
+
+        if (selectedLocality) {
+            const matched = setSelectValueByTextOrValue($localitySelect, selectedLocality);
+            if (!matched) {
+                $localitySelect.append(
+                    '<option value="' + selectedLocality + '">' + selectedLocality + '</option>'
+                );
+                $localitySelect.val(selectedLocality).trigger('change');
+            }
+        }
+    });
+}
+
 // Handle Load Details button click with confirmation
 $(document).on('click', '.load-details-btn', function(e) {
     e.preventDefault();
@@ -4253,33 +4369,28 @@ $(document).on('click', '.load-details-btn', function(e) {
             $btn.html('<span class="spinner-border spinner-border-sm me-1"></span>Loading...');
             
             // Load data into form
-            setTimeout(() => {
+            setTimeout(async () => {
                 // Load applicant name
                 $('#ch_ar_name').val(arName);
                 
-                // Load region (convert to uppercase for consistency)
-                if (region) {
-                    $('#new_bill_application_region').val('11.0');
-                    // $('#new_bill_application_region').trigger('change');
-                }
+                const $regionSelect = $('#new_bill_application_region');
+                const $officeRegionSelect = $('#new_bill_application_office_region');
+                const regionMatched = setSelectValueByTextOrValue($regionSelect, region);
+                const officeRegionMatched = setSelectValueByTextOrValue($officeRegionSelect, region);
 
-				// const $regionSelect = $('#new_bill_application_district');
-                // $districtSelect.empty();
-                // $districtSelect.append(`<option value="${district}">${district}</option>`);
-                // $districtSelect.val(district).trigger('change');
-                
-                // Handle district - clear and set new option
-                const $districtSelect = $('#new_bill_application_district');
-                $districtSelect.empty();
-                $districtSelect.append(`<option value="${district}">${district}</option>`);
-                $districtSelect.val(district).trigger('change');
-                
 				console.log(locality, district, region);
 
-				const $localitySelect = $('#new_bill_application_locality');
-                $localitySelect.empty();
-                $localitySelect.append(`<option value="${locality}">${locality}</option>`);
-                $localitySelect.val(locality).trigger('change');
+                try {
+                    if (regionMatched) {
+                        await loadDistrictOptions($regionSelect.val(), district);
+                    }
+
+                    if (officeRegionMatched) {
+                        await loadLocalityOptions($officeRegionSelect.val(), locality);
+                    }
+                } catch (error) {
+                    console.error('Error loading district/locality options', error);
+                }
                 
                 // Load transaction number
                 $('#new_bill_application_transaction').val(transactionNumber);
@@ -4332,6 +4443,8 @@ $(document).on('click', '.load-details-btn', function(e) {
 												// 	':selected').attr('data-id');
 
 												var region_id = $(this).val();
+
+												console.log(region_id)
 
 										//const
 										// sub_service_name_id = sub_service
@@ -4874,26 +4987,26 @@ $('#btnResetChangeOfNames').on('click', function(e) {
 
 // Optional: Auto-save indicator
 let autoSaveTimer;
-$('#frmChangeofNames input, #frmChangeofNames textarea, #frmChangeofNames select').on('change input', function() {
-    clearTimeout(autoSaveTimer);
-    autoSaveTimer = setTimeout(function() {
-        // Show auto-save hint
-        const toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            background: 'white'
-        });
+// $('#frmChangeofNames input, #frmChangeofNames textarea, #frmChangeofNames select').on('change input', function() {
+//     clearTimeout(autoSaveTimer);
+//     autoSaveTimer = setTimeout(function() {
+//         // Show auto-save hint
+//         const toast = Swal.mixin({
+//             toast: true,
+//             position: 'top-end',
+//             showConfirmButton: false,
+//             timer: 2000,
+//             timerProgressBar: true,
+//             background: 'white'
+//         });
         
-        toast.fire({
-            icon: 'info',
-            title: 'Changes detected',
-            text: 'Click "Save Changes" to update application'
-        });
-    }, 1000);
-});
+//         toast.fire({
+//             icon: 'info',
+//             title: 'Changes detected',
+//             text: 'Click "Save Changes" to update application'
+//         });
+//     }, 1000);
+// });
 
 // Optional: Keyboard shortcut for save (Ctrl+S)
 $(document).on('keydown', function(e) {
