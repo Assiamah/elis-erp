@@ -16579,7 +16579,7 @@ JSONObject request_json = new JSONObject();
 			// document.add(new Phrase(Chunk.NEWLINE));
 
 			Paragraph p_5 = new Paragraph("CHAIRMAN OF THE REGIONAL LANDS COMMISSION ",
-					new Font(FontFamily.TIMES_ROMAN, 12));
+					new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
 			p_5.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_5);
 
