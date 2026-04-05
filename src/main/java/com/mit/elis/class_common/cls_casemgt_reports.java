@@ -16507,7 +16507,7 @@ JSONObject request_json = new JSONObject();
 				// document.add(new Phrase(Chunk.NEWLINE));
 
 				String cert_text2 = "";
-				cert_text2 += "CHAIRMAN OF THE REGIONAL LANDS COMMISSION ";
+				cert_text2 += "CHAIRPERSON OF THE REGIONAL LANDS COMMISSION ";
 				cert_text2 += " Lands Commission this " + specialNamesMonthDay_short[day] + " day of "
 						+ convertToTitleCaseIteratingChars(month.toString()) + ", " + year + ".";
 
@@ -16578,7 +16578,7 @@ JSONObject request_json = new JSONObject();
 
 			// document.add(new Phrase(Chunk.NEWLINE));
 
-			Paragraph p_5 = new Paragraph("CHAIRMAN OF THE REGIONAL LANDS COMMISSION ",
+			Paragraph p_5 = new Paragraph("CHAIRPERSON OF THE REGIONAL LANDS COMMISSION ",
 					new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
 			p_5.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_5);
