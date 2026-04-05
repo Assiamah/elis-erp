@@ -15548,8 +15548,8 @@ String ssc1 = String.format("%,.2f", total_amount);
 	}
 
 	public byte[] create_consent_certificate_typed(String web_service_url, String web_service_api_key,
-			String software_file_location, String notes, String case_number,
-			String job_number,
+			String software_file_location,  String transaction_number, String job_number,
+			String type_of_certificate,
 			String output_file) throws IOException, SQLException, JSONException, ParseException {
 		/*
 		 * Font bold = new Font(Font.FontFamily.HELVETICA, 8f, Font.BOLD); Font
@@ -15557,10 +15557,9 @@ String ssc1 = String.format("%,.2f", total_amount);
 		 */
 
 		/// cls_case_management.select_lrd_recodes_for_certificate_by_case_number(case_number);
+JSONObject request_json = new JSONObject();
 
-		JSONObject request_json = new JSONObject();
-
-		request_json.put("transaction_number", case_number);
+		request_json.put("transaction_number", transaction_number);
 		request_json.put("job_number", job_number);
 
 		String case_records = cls_case_management
@@ -15570,8 +15569,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
-
-		System.out.println("Result");
+		System.out.println(request_json.toString());
 
 		System.out.println(case_records);
 
@@ -15580,8 +15578,9 @@ String ssc1 = String.format("%,.2f", total_amount);
 		String job_detail = case_obj.get("job_detail").toString();
 		String json_lrd_memorials_section = (String) case_obj.getString("lrd_memorials_section");
 
-		System.out.println(parcel_details);
-
+		String certificete_approval_status = case_obj.get("certificete_approval_status").toString();
+		String certificate_approved_by = (String) case_obj.getString("certificate_approved_by");
+		
 		JSONObject parcel_details_obj;
 		parcel_details_obj = new JSONObject(parcel_details);
 		String glpin = (String) parcel_details_obj.get("glpin").toString();
@@ -15650,7 +15649,15 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String phone_number",
 		// job_detail_obj.get("phone_number").toString();
 		String case_process_stage = (String) transaction_details_obj.get("case_process_stage").toString();
+		String date_of_issue = (String) transaction_details_obj.get("date_of_issue").toString();
+		
+		String deed_number = (String) transaction_details_obj.optString("deed_number", "");
+		String file_number = (String) transaction_details_obj.optString("file_number", "");
+		String ls_number = (String) transaction_details_obj.optString("ls_number", "");
+		String ground_rent = (String) transaction_details_obj.optString("ground_rent", "");
+		
 
+		
 		JSONObject job_detail_obj;
 		job_detail_obj = new JSONObject(job_detail);
 		// String job_number = (String) job_number);
@@ -15670,7 +15677,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// file.;
 		try {
 
-			Document document = new Document(PageSize.A4, 40, 40, 25, 25);
+			Document document = new Document(PageSize.A4, 60, 60, 25, 25);
 			PdfWriter writer = PdfWriter.getInstance(document, out);
 			document.open();// PDF document opened........
 			PdfContentByte cb = writer.getDirectContent();
@@ -15685,34 +15692,38 @@ String ssc1 = String.format("%,.2f", total_amount);
 			 * code128Image.scalePercent(100); document.add(code128Image);
 			 */
 
-			BarcodeQRCode barcodeQRCode = new BarcodeQRCode(case_number, 1000, 1000, null);
+				BarcodeQRCode barcodeQRCode = new BarcodeQRCode(new_case_number, 1000, 1000, null);
 			Image codeQrImage = barcodeQRCode.getImage();
 			codeQrImage.scaleAbsolute(80, 80);
-			codeQrImage.setAbsolutePosition(420, 690);
+			//codeQrImage.setAbsolutePosition(420, 690);
+			codeQrImage.setAbsolutePosition(70, 690);
 			document.add(codeQrImage);
 
 			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image.scaleToFit(100.0F, 100.0F);
-			image.setAbsolutePosition(240, 710);
+			image.setAbsolutePosition(240, 690);
 			document.add(image);
 
 			Image image1 = Image.getInstance(software_file_location + "NewLogo.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image1.scaleToFit(70.0F, 70.0F);
-			image1.setAbsolutePosition(50, 700);
+				image1.setAbsolutePosition(420, 700);
+		//	image1.setAbsolutePosition(70, 690);
 			document.add(image1);
 
-			Font font = new Font(FontFamily.HELVETICA);
-			Font font14pt = new Font(FontFamily.HELVETICA, 14);
-			Font font10pt = new Font(FontFamily.HELVETICA, 10);
+			Font font = new Font(FontFamily.TIMES_ROMAN);
+			Font font14pt = new Font(FontFamily.TIMES_ROMAN, 14);
+			Font font10pt = new Font(FontFamily.TIMES_ROMAN, 10);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 
-			BaseFont bfaddress = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+			BaseFont bfaddress = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 			PdfContentByte cbaddress = writer.getDirectContent();
 			cbaddress.beginText();
 			cbaddress.setFontAndSize(bfaddress, 11);
+
+			cbaddress.setTextMatrix(70, 780); cbaddress.showText("File Number: " + file_number);
 
 			/*
 			 * cbaddress.setTextMatrix(70, 780); cbaddress.showText("Cert. No: "
@@ -15724,10 +15735,12 @@ String ssc1 = String.format("%,.2f", total_amount);
 			 * cbaddress.setTextMatrix(70, 750); cbaddress.showText("Folio: " +
 			 * folio_number);
 			 */
-			cbaddress.setTextMatrix(400, 780);
-			cbaddress.showText("LANDS COMMISSION");
+
+			// cbaddress.setTextMatrix(400, 780);
+			// cbaddress.showText("LANDS COMMISSION");
 
 			cbaddress.endText();
+
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
@@ -15741,116 +15754,170 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 			// Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
 			// Font.BOLD);
-			Paragraph p_1 = new Paragraph("REPUBLIC OF GHANA", new Font(FontFamily.HELVETICA, 12, Font.BOLD));
+			Paragraph p_1 = new Paragraph("REPUBLIC OF GHANA", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_1);
 
-			Paragraph y_1 = new Paragraph("CONSENT CERTIFICATE", new Font(FontFamily.HELVETICA, 16, Font.BOLD));
+			Paragraph y_1 = new Paragraph("CONCURRENCE CERTIFICATE", new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
 			y_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(y_1);
 
-			// document.add(new Phrase(Chunk.NEWLINE));
-
-			// Get the current date and time
-			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
-
-			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
-
-			Month month = currentTime.getMonth();
-			int day = currentTime.getDayOfMonth();
-			int year = currentTime.getYear();
-
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
-
-			document.add(new Phrase(Chunk.NEWLINE));
-
+			
 			// HTMLWorker htmlWorker = new HTMLWorker(document);
-			// htmlWorker.parse(new StringReader(notes));
+			// htmlWorker.parse(new StringReader(remark_or_comment_bob));
 
-   // Create a StyleSheet and set line spacing
-   StyleSheet styles = new StyleSheet();
-   styles.loadTagStyle("body", "leading", "40"); // Set line spacing (leading) to 20
+  			// Define your CSS for Times New Roman and justified text
+ 			 String css = "body { font-family: Times New Roman; text-align: justify; }";
+			  String remark_or_comment_bob = (String)  job_detail_obj.get("remark_or_comment").toString();
 
+  			// Use XMLWorkerHelper to parse HTML and apply CSS
+  			//XMLWorkerHelper.getInstance().parseXHtml(writer, document, new StringReader(htmlContent), new StringReader(css));
 
-   //HTMLWorker htmlWorker = new HTMLWorker(document);
-   //htmlWorker.parse(new StringReader(remark_or_comment_bob));
+			Font timesNewRoman = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL);
+			Font timesNewRoman_bold = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.BOLD);
 
-	 // Define your CSS for Times New Roman and justified text
-	 String css = "body { font-family: Times New Roman; text-align: justify; }";
+			String htmlContent = "<html><body><p>THIS IS TO CERTIFY THAT Sam of Accra in the Greater Accra Region of the Republic of Ghana is registered as tenant or lessee for the unexpired residue of a lease for a term of 99 years from the  twenty seventh day of September, 2023 subject to the reservations, restrictions, encumbrances, liens and interests as are notified by memorial underwritten or endorsed hereon, of and in ALL THAT piece or Parcel of land in extent 0.230 more or less being GLPIN No. GA329393-1148882, SECTION 024 BLOCK 123, situate at AJANGORTEY in the Greater Accra Region of the Republic of Ghana aforesaid which said piece or parcel of land is more particularly delineated on Registry Map No. 79ui in the Lands Commission, Cantonment Accra, and being the piece or parcel of land shown and edged with pink color on Survey Plan No. 7899 annexed to this Certificate except and reserved all minerals, oils, precious stones and timber whatsoever upon or under the said piece or parcel of land..</p></body></html>";
 
-	 // Use XMLWorkerHelper to parse HTML and apply CSS
-	 //XMLWorkerHelper.getInstance().parseXHtml(writer, document, new StringReader(htmlContent), new StringReader(css));
-
-   Font timesNewRoman = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
-
-// Replace a value in the string
-notes= notes.replace("<ol><li>", "<html><body><p>");
-notes= notes.replace("</li></ol>", "</p></body></html>");
-
-// Output the result
-//System.out.println(updatedString);  // Output: "This is the new comment."
-            // // Parse the HTML content
-             java.util.List<Element> elements = HTMLWorker.parseToList(new StringReader(notes), styles);
+		// Replace a value in the string
+		// remark_or_comment_bob= remark_or_comment_bob.replace("<ol><li>", "<html><body><p>");
+		// remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body></html>");
 
 
-			  // Process the parsed elements
-			  for (Element element : elements) {
-				if (element instanceof Paragraph) {
-					// Create a new Paragraph from the original one and set the font and alignment
-					Paragraph originalParagraph = (Paragraph) element;
-					Paragraph newParagraph = new Paragraph(originalParagraph.getContent(), timesNewRoman);
-					newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
-					newParagraph.setLeading(20f); 
-					newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
-					document.add(newParagraph);
-					System.out.println("Par 1");
-				} else if (element instanceof Phrase) {
-					// Create a new Paragraph from the Phrase and apply formatting
-					Phrase originalPhrase = (Phrase) element;
-					Paragraph newParagraph = new Paragraph(originalPhrase.getContent(), timesNewRoman);
-					newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
-					newParagraph.setLeading(30f); 
-					newParagraph.setSpacingAfter(20f);  // Add spacing after each paragraph
-					document.add(newParagraph);
-					System.out.println("Par 2");
-				} else if (element instanceof Chunk) {
-					// Create a new Chunk and apply font
-					Chunk originalChunk = (Chunk) element;
-					Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
-   System.out.println("Chunk ");
+			if (remark_or_comment_bob != null && !remark_or_comment_bob.trim().isEmpty()) {
 
-// // Convert the Chunk to a Paragraph to control line spacing
-// Chunk originalChunk = (Chunk) element;
-// Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
+				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
 
-// // Create a new Paragraph with the Chunk and set line spacing
-// Paragraph paragraph = new Paragraph(newChunk);
-// paragraph.setLeading(15f); // Set the line spacing, adjust the value as needed
+				// Load font from classpath
+				InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/times.ttf");
 
-// // Add the Paragraph (with line spacing) to the document
-// document.add(paragraph);
-					document.add(newChunk);
-				} else {
-					// For other types of elements, just add them without changes
-					document.add(element);
+				if (fontStream == null) {
+					throw new RuntimeException("Font file not found: fonts/times.ttf");
 				}
+
+				// Copy font to temp file (needed for iText)
+				File tempFont = File.createTempFile("times", ".ttf");
+				tempFont.deleteOnExit();
+
+				try (FileOutputStream fos = new FileOutputStream(tempFont)) {
+					byte[] buffer = new byte[1024];
+					int len;
+					while ((len = fontStream.read(buffer)) != -1) {
+						fos.write(buffer, 0, len);
+					}
+				}
+
+				fontProvider.register(tempFont.getAbsolutePath(), "Times New Roman");
+
+				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+				Pipeline<?> pipeline = new CssResolverPipeline(
+						XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+						new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+				);
+
+				XMLWorker worker = new XMLWorker(pipeline, true);
+				XMLParser parser = new XMLParser(worker);
+
+					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment_bob);
+					String fullHtml =
+							"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; text-align: justify'>"
+									+ normalizedRemark +
+									"</body></html>";
+
+				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
 			}
 
 
+//   // Create a StyleSheet
+//   StyleSheet styles = new StyleSheet();
+//   styles.loadTagStyle("body", "font-family", "Times-Roman");
+//   styles.loadTagStyle("body", "font-size", "12pt");
+//   styles.loadTagStyle("p", "alignment", "justify");
+//   styles.loadTagStyle("b", "font-weight", "bold");
 
-			document.add(new Phrase(Chunk.NEWLINE));
+//   // Parse the HTML content using HTMLWorker
+//   HTMLWorker htmlWorker = new HTMLWorker(document);
+//   htmlWorker.setStyleSheet(styles);
 
-			// String cert_text2 = "";
-			// cert_text2 += "Dated and Sealed with the Seal of the Greater Accra Regional ";
-			// cert_text2 += " Lands Commission this " + specialNamesMonthDay_short[day] + " day of "
-			// 		+ convertToTitleCaseIteratingChars(month.toString()) + ", " + year + ".";
+//   // Parse and add content to the document
+//   java.util.List<Element> elements = htmlWorker.parseToList(new StringReader(remark_or_comment_bob), styles);
+//   //for (Element element : elements) {
+// 	for (Element element : elements) {
+// 		if (element instanceof Paragraph) {
+// 			// Create a new Paragraph from the original one and set the font and alignment
+// 			// Paragraph originalParagraph = (Paragraph) element;
+// 			// Paragraph newParagraph = new Paragraph(originalParagraph.getContent(), timesNewRoman);
+			
+// 			// Paragraph paragraph = (Paragraph) element;
+			
+// 			// newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
+// 			// newParagraph.setLeading(30f); 
+// 			// newParagraph.setSpacingAfter(20f);  // Add spacing after each paragraph
+// 			// document.add(newParagraph);
+
+// 			// document.add(element);
+// 			//System.out.println("Par 1");
+// 			Paragraph paragraph = (Paragraph) element;
+// 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
+// 			paragraph.setLeading(25f); 
+// 			paragraph.setSpacingAfter(10f);  // Add spacing after each paragraph
+// 			document.add(paragraph);
+
+// 		} else if (element instanceof Phrase) {
+// 			// Create a new Paragraph from the Phrase and apply formatting
+// 			Phrase originalPhrase = (Phrase) element;
+// 			Paragraph newParagraph = new Paragraph(originalPhrase.getContent(), timesNewRoman);
+// 			newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
+// 			newParagraph.setLeading(25f); 
+// 			newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
+// 			document.add(newParagraph);
+// 			System.out.println("Par 2");
+// 		} else if (element instanceof Chunk) {
+// 			// Create a new Chunk and apply font
+// 			Chunk originalChunk = (Chunk) element;
+// 			Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
+
+// 			document.add(newChunk);
+// 		} else {
+// 			// For other types of elements, just add them without changes
+// 			document.add(element);
+// 		}
+// 	//document.add(element);
+//   }
+
+
+
+      
+			LocalDateTime currentTime = LocalDateTime.now();
+			System.out.println("Current DateTime: " + date_of_issue);
+
+
+			// if ( date_of_issue != null && date_of_issue != "null" ) {
+
+			// 	// Parse the string to OffsetDateTime
+			// 	//OffsetDateTime offsetDateTime = OffsetDateTime.parse(date_of_issue);
+			// 	LocalDateTime dateTime =LocalDateTime.parse(date_of_issue);
+			// 	//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			// 	//LocalDateTime dateTime = offsetDateTime.toLocalDateTime();
+			// 	System.out.println("Date of Issue as LocalDateTime: " + dateTime);
+			// 	LocalDate date1 = dateTime.toLocalDate();
+			// 	System.out.println("Date : " + date1);
+
+			// 	Month month = dateTime.getMonth();
+			// 	int day = dateTime.getDayOfMonth();
+			// 	int year = dateTime.getYear();
+
+				// System.out.println("Month : " + month);
+				// System.out.println("Day : " + day);
+				// System.out.println("Seconds : " + seconds);
+
+				document.add(new Phrase(Chunk.NEWLINE));
+				// document.add(new Phrase(Chunk.NEWLINE));
 
 			String cert_text2 = "";
-			cert_text2 += "Dated and Sealed with the Seal of the Greater Accra Regional ";
+			cert_text2 += "Dated and Sealed with the Seal of the Regional ";
 			cert_text2 += " Lands Commission this " + "              "+ "           day of "
 					+  "                               " + ", " + "20" + " ";
 
@@ -15866,7 +15933,7 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 			p_5.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_5);
 
-			Paragraph p_5_1 = new Paragraph("CHAIRPERSON OF THE GREATER ACCRA REGIONAL LANDS COMMISSION ",
+			Paragraph p_5_1 = new Paragraph("CHAIRPERSON OF THE REGIONAL LANDS COMMISSION ",
 					new Font(FontFamily.HELVETICA, 12, Font.BOLD));
 					p_5_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_5_1);

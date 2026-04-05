@@ -60,6 +60,7 @@ public class user_mgt_serv extends HttpServlet {
 			if (request_type.equals("add")) {
 				//// System.out.println("assmahfgf");
 
+				
 				String userid = request.getParameter("userid");
 				String username = request.getParameter("username");
 				String password = request.getParameter("password");
