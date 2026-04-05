@@ -357,7 +357,7 @@
                     </h5>
                     <p class="mb-0 small opacity-75 mt-1">
                         <i class="bi bi-info-circle me-1"></i>
-                        Batch this application to create a physical file at the file room
+                        This application process requires creation of a physical file at the file room
                     </p>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -408,16 +408,28 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- <div class="avatar-sm bg-info bg-opacity-10 rounded-circle me-2">
+                                        <i class="bi bi-person text-info"></i>
+                                    </div> -->
+                                    <div>
+                                        <small class="text-muted d-block">File Number</small>
+                                        <strong class="text-dark">${file_number}</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Batch Information Card -->
-                <div class="card border-0 mb-4">
+                <!-- <div class="card border-0 mb-4">
                     <div class="card-header bg-white border-0">
                         <h6 class="mb-0">
                             <i class="bi bi-collection me-2 text-primary"></i>
-                            Batch Information
+                            File Creation Information
                         </h6>
                     </div>
                     <div class="card-body">
@@ -425,39 +437,33 @@
                             <div class="d-flex">
                                 <i class="bi bi-question-circle-fill fs-4 me-2"></i>
                                 <div>
-                                    <strong>Why add to a batch?</strong><br>
+                                    <strong>Why physical file creation?</strong><br>
                                     <small>
-                                        Adding to a batch helps organize multiple applications together for efficient 
-                                        file creation and management. The file room will process batched applications 
-                                        in order, ensuring systematic record keeping.
+
                                     </small>
                                 </div>
                             </div>
                         </div>
-                        <small class="text-muted">Status: Ready for batching</small>
+                        <small class="text-muted">Status: Ready for file creation</small>
                     </div>
-                </div>
+                </div> -->
                 
                 <!-- Action Buttons -->
-                <div class="d-flex gap-3">
-                    <button class="btn btn-primary flex-grow-1 py-3 ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#askForPurposeOfBatching"
-                            data-job_number="${job_number}" 
-                            data-ar_name="${ar_name}"
-                            data-req_id="${rq_id}"
-                            data-business_process_sub_name="${business_process_sub_name}">
-                        <i class="bi bi-plus-circle me-2"></i>
-                        Add to Batch
-                        <small class="d-block mt-1 fs-12">Add this application to a batch for file creation</small>
-                    </button>
-                    
-                    <button class="btn btn-outline-secondary flex-grow-1 py-3" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle me-2"></i>
-                        Cancel
-                        <small class="d-block mt-1 fs-12">Return without batching</small>
-                    </button>
-                </div>
+                <c:if test="${fn:containsIgnoreCase(business_process_sub_name, 'CONSENT') or fn:containsIgnoreCase(business_process_sub_name, 'CONCURRENCE')}">
+                  <div class="d-flex gap-3">
+                      <button class="btn btn-primary flex-grow-1 py-3" id="lc_btn_activate_final_concurrence_certificate_cs_rh_3">
+                          <i class="bi bi-eye me-2"></i>
+                          View Generated Certificate
+                          <small class="d-block mt-1 fs-12">View and Download the certificate, and add to the physical file</small>
+                      </button>
+                      
+                      <button class="btn btn-outline-secondary flex-grow-1 py-3" data-bs-dismiss="modal">
+                          <i class="bi bi-x-circle me-2"></i>
+                          Cancel
+                          <small class="d-block mt-1 fs-12">Return to previous screen</small>
+                      </button>
+                  </div>
+                </c:if>
                 
             </div>
 

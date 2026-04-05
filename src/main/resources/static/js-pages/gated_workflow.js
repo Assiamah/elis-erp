@@ -24635,7 +24635,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    $('#lc_btn_activate_final_concurrence_certificate_cs_rh, #lc_btn_activate_final_concurrence_certificate_cs_rh_2').on('click', function(e) {
+    $('#lc_btn_activate_final_concurrence_certificate_cs_rh, #lc_btn_activate_final_concurrence_certificate_cs_rh_2, #lc_btn_activate_final_concurrence_certificate_cs_rh_3').on('click', function(e) {
         e.preventDefault();
         
         // Get form values
@@ -24791,7 +24791,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         job_number: job_number,
                         case_number: case_number,
                         transaction_number: transaction_number,
-                        cert_type: 'CONCURRENCE',
+                        cert_type: 'CONSENT',
                         registration_district_number: registration_district_number,
                         registration_section_number: registration_section_number,
                         type_of_certificate: type_of_certificate.trim()

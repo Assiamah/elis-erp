@@ -2557,8 +2557,14 @@ public class GenerateCaseReports {
 					
 					transaction_number, job_number, type_of_certificate,
 					files_pdf_jackets_p);
-				}else if (cert_type.equals("CERTIFICATE_FOR_REGISTRATION_OF_INSTRUMENT")) {
+				} else if (cert_type.equals("CERTIFICATE_FOR_REGISTRATION_OF_INSTRUMENT")) {
 				buffer = case_reports_cl.create_deeds_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+				cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+				
+				transaction_number, job_number, type_of_certificate,
+				files_pdf_jackets_p);
+				} else if (cert_type.equals("CONSENT")) {
+				buffer = case_reports_cl.create_consent_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 				cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 				
 				transaction_number, job_number, type_of_certificate,

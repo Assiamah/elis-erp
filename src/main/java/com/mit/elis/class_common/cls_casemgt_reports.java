@@ -68,6 +68,7 @@ import com.itextpdf.text.pdf.PdfPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.tool.xml.Pipeline;
 import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
@@ -132,6 +133,98 @@ public class cls_casemgt_reports {
 		}
 
 		return converted.toString();
+	}
+
+	private static String escapeHtml(String text) {
+		if (text == null) {
+			return "";
+		}
+
+		return text.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\"", "&quot;")
+				.replace("'", "&#39;");
+	}
+
+	private static String buildArNameTemplateMarkup(String arName) {
+		if (arName == null || arName.isEmpty()) {
+			return "";
+		}
+
+		return "<span style=\"border-bottom: 2px solid red;\">" + escapeHtml(arName) + "</span>";
+	}
+
+	private static String normalizeHtmlForXmlWorker(String htmlFragment) {
+		if (htmlFragment == null) {
+			return "";
+		}
+
+		org.jsoup.nodes.Document document = Jsoup.parseBodyFragment(htmlFragment);
+		document.outputSettings(new org.jsoup.nodes.Document.OutputSettings()
+				.syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
+				.escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml)
+				.prettyPrint(false));
+		return document.body().html();
+	}
+
+	private static void appendArNameStyledText(Phrase targetPhrase, String content, Font font, String arName) {
+		if (content == null || content.isEmpty()) {
+			return;
+		}
+
+		Font safeFont = font == null ? new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL) : font;
+		if (arName == null || arName.isEmpty()) {
+			targetPhrase.add(new Chunk(content, safeFont));
+			return;
+		}
+
+		int startIndex = 0;
+		int matchIndex = content.indexOf(arName);
+		while (matchIndex >= 0) {
+			if (matchIndex > startIndex) {
+				targetPhrase.add(new Chunk(content.substring(startIndex, matchIndex), safeFont));
+			}
+
+			Chunk underlinedName = new Chunk(arName, safeFont);
+			underlinedName.setUnderline(BaseColor.RED, 1f, 0f, -2f, 0f, PdfContentByte.LINE_CAP_BUTT);
+			targetPhrase.add(underlinedName);
+
+			startIndex = matchIndex + arName.length();
+			matchIndex = content.indexOf(arName, startIndex);
+		}
+
+		if (startIndex < content.length()) {
+			targetPhrase.add(new Chunk(content.substring(startIndex), safeFont));
+		}
+	}
+
+	private static Paragraph styleArNameInParagraph(Paragraph sourceParagraph, String arName, Font fallbackFont) {
+		Paragraph styledParagraph = new Paragraph();
+		styledParagraph.setAlignment(sourceParagraph.getAlignment());
+		styledParagraph.setLeading(sourceParagraph.getLeading(), sourceParagraph.getMultipliedLeading());
+		styledParagraph.setSpacingAfter(sourceParagraph.getSpacingAfter());
+		styledParagraph.setSpacingBefore(sourceParagraph.getSpacingBefore());
+		styledParagraph.setIndentationLeft(sourceParagraph.getIndentationLeft());
+		styledParagraph.setIndentationRight(sourceParagraph.getIndentationRight());
+		styledParagraph.setFirstLineIndent(sourceParagraph.getFirstLineIndent());
+		styledParagraph.setExtraParagraphSpace(sourceParagraph.getExtraParagraphSpace());
+		styledParagraph.setKeepTogether(sourceParagraph.getKeepTogether());
+
+		java.util.List<Chunk> sourceChunks = sourceParagraph.getChunks();
+		if (sourceChunks.isEmpty()) {
+			appendArNameStyledText(styledParagraph, sourceParagraph.getContent(), fallbackFont, arName);
+			return styledParagraph;
+		}
+
+		for (Chunk sourceChunk : sourceChunks) {
+			Font chunkFont = sourceChunk.getFont() == null ? fallbackFont : sourceChunk.getFont();
+			appendArNameStyledText(styledParagraph, sourceChunk.getContent(), chunkFont, arName);
+		}
+
+		styledParagraph.add(new Chunk(new LineSeparator(1f, 100f, BaseColor.RED, Element.ALIGN_LEFT, -2f)));
+
+		return styledParagraph;
 	}
 
 	private static final String[] specialNamesMonthDay = { "", " First", " Second", " Third", " Fourth", " Fifth",
@@ -8534,10 +8627,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 				XMLWorker worker = new XMLWorker(pipeline, true);
 				XMLParser parser = new XMLParser(worker);
 
-				String fullHtml =
-						"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
-								+ remark_or_comment1 +
-								"</body></html>";
+					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment1);
+					String fullHtml =
+							"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+									+ normalizedRemark +
+									"</body></html>";
 
 				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
 			}
@@ -10887,10 +10981,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 				XMLWorker worker = new XMLWorker(pipeline, true);
 				XMLParser parser = new XMLParser(worker);
 
-				String fullHtml =
-						"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
-								+ remark_or_comment1 +
-								"</body></html>";
+					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment1);
+					String fullHtml =
+							"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+									+ normalizedRemark +
+									"</body></html>";
 
 				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
 			}
@@ -16244,10 +16339,11 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 				XMLWorker worker = new XMLWorker(pipeline, true);
 				XMLParser parser = new XMLParser(worker);
 
-				String fullHtml =
-						"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; text-align: justify'>"
-								+ remark_or_comment_bob +
-								"</body></html>";
+					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment_bob);
+					String fullHtml =
+							"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; text-align: justify'>"
+									+ normalizedRemark +
+									"</body></html>";
 
 				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
 			}
@@ -16549,7 +16645,7 @@ notes= notes.replace("</li></ol>", "</p></body></html>");
 		String embossed = (String) job_detail_obj.get("embossed").toString();
 
 		output_cetfificate_template += "THIS IS TO CERTIFY THAT ";
-		output_cetfificate_template += ar_name;
+		output_cetfificate_template += buildArNameTemplateMarkup(ar_name);
 		output_cetfificate_template += " of Accra in the Greater Accra Region";
 		output_cetfificate_template += " of the Republic of Ghana is registered as tenant or lessee for the unexpired";
 		LocalDateTime localDateTime = LocalDateTime.parse(commencement_date);
@@ -17386,23 +17482,25 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
 			paragraph.setLeading(25f); 
 			paragraph.setSpacingAfter(10f);  // Add spacing after each paragraph
-			document.add(paragraph);
+			document.add(styleArNameInParagraph(paragraph, ar_name, timesNewRoman));
 
 		} else if (element instanceof Phrase) {
 			// Create a new Paragraph from the Phrase and apply formatting
 			Phrase originalPhrase = (Phrase) element;
-			Paragraph newParagraph = new Paragraph(originalPhrase.getContent(), timesNewRoman);
+			Paragraph newParagraph = new Paragraph();
 			newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);  // Set text justification
 			newParagraph.setLeading(25f); 
 			newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
+			appendArNameStyledText(newParagraph, originalPhrase.getContent(), timesNewRoman, ar_name);
+			newParagraph.add(new Chunk(new LineSeparator(1f, 100f, BaseColor.RED, Element.ALIGN_LEFT, -2f)));
 			document.add(newParagraph);
 			System.out.println("Par 2");
 		} else if (element instanceof Chunk) {
 			// Create a new Chunk and apply font
 			Chunk originalChunk = (Chunk) element;
-			Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
-
-			document.add(newChunk);
+			Phrase phrase = new Phrase();
+			appendArNameStyledText(phrase, originalChunk.getContent(), timesNewRoman, ar_name);
+			document.add(phrase);
 		} else {
 			// For other types of elements, just add them without changes
 			document.add(element);
