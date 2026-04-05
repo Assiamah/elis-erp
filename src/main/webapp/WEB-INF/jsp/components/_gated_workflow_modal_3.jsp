@@ -452,8 +452,8 @@
                 <c:if test="${fn:containsIgnoreCase(business_process_sub_name, 'CONSENT') or fn:containsIgnoreCase(business_process_sub_name, 'CONCURRENCE')}">
                   <div class="d-flex gap-3">
                       <button class="btn btn-primary flex-grow-1 py-3" id="lc_btn_activate_final_concurrence_certificate_cs_rh_3">
-                          <i class="bi bi-eye me-2"></i>
-                          View Generated Certificate
+                          <i class="bi bi-download me-2"></i>
+                          Download Generated Certificate
                           <small class="d-block mt-1 fs-12">View and Download the certificate, and add to the physical file</small>
                       </button>
                       

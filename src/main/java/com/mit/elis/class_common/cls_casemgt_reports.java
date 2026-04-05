@@ -8629,7 +8629,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment1);
 					String fullHtml =
-							"<html><body style='font-family: Times New Roman; font-size:12pt;'>"
+							"<html><body style='font-family: Times New Roman; line-height: 1.5; font-size:12pt;'>"
 									+ normalizedRemark +
 									"</body></html>";
 
@@ -15696,7 +15696,7 @@ JSONObject request_json = new JSONObject();
 			Image codeQrImage = barcodeQRCode.getImage();
 			codeQrImage.scaleAbsolute(80, 80);
 			//codeQrImage.setAbsolutePosition(420, 690);
-			codeQrImage.setAbsolutePosition(50, 690);
+			codeQrImage.setAbsolutePosition(48, 690);
 			document.add(codeQrImage);
 
 			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
@@ -15723,7 +15723,7 @@ JSONObject request_json = new JSONObject();
 			cbaddress.beginText();
 			cbaddress.setFontAndSize(bfaddress, 11);
 
-			cbaddress.setTextMatrix(50, 780); cbaddress.showText("File Number: " + file_number);
+			cbaddress.setTextMatrix(58, 780); cbaddress.showText("File Number: " + file_number);
 
 			/*
 			 * cbaddress.setTextMatrix(70, 780); cbaddress.showText("Cert. No: "
@@ -15822,7 +15822,7 @@ JSONObject request_json = new JSONObject();
 
 					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment_bob);
 					String fullHtml =
-							"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; text-align: justify'>"
+							"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; line-height: 1.5; text-align: justify'>"
 									+ normalizedRemark +
 									"</body></html>";
 
@@ -15929,12 +15929,12 @@ JSONObject request_json = new JSONObject();
 			document.add(new Phrase(Chunk.NEWLINE));
 
 			Paragraph p_5 = new Paragraph(".................................................",
-					new Font(FontFamily.HELVETICA, 12));
+					new Font(FontFamily.TIMES_ROMAN, 12));
 			p_5.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_5);
 
 			Paragraph p_5_1 = new Paragraph("CHAIRPERSON OF THE REGIONAL LANDS COMMISSION ",
-					new Font(FontFamily.HELVETICA, 12, Font.BOLD));
+					new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
 					p_5_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_5_1);
 
@@ -15949,7 +15949,7 @@ JSONObject request_json = new JSONObject();
 			// document.add(new Phrase(Chunk.NEWLINE));
 
 			Paragraph p_4 = new Paragraph(".......................................",
-					new Font(FontFamily.HELVETICA, 12));
+					new Font(FontFamily.TIMES_ROMAN, 12));
 			p_4.setAlignment(Element.ALIGN_CENTER);
 			// document.add(p_4);
 
@@ -16282,7 +16282,7 @@ JSONObject request_json = new JSONObject();
 			Image codeQrImage = barcodeQRCode.getImage();
 			codeQrImage.scaleAbsolute(80, 80);
 			//codeQrImage.setAbsolutePosition(420, 690);
-			codeQrImage.setAbsolutePosition(50, 690);
+			codeQrImage.setAbsolutePosition(48, 690);
 			document.add(codeQrImage);
 
 			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
@@ -16309,7 +16309,7 @@ JSONObject request_json = new JSONObject();
 			cbaddress.beginText();
 			cbaddress.setFontAndSize(bfaddress, 11);
 
-			cbaddress.setTextMatrix(50, 780); cbaddress.showText("File Number: " + file_number);
+			cbaddress.setTextMatrix(58, 780); cbaddress.showText("File Number: " + file_number);
 
 			/*
 			 * cbaddress.setTextMatrix(70, 780); cbaddress.showText("Cert. No: "
@@ -16408,7 +16408,7 @@ JSONObject request_json = new JSONObject();
 
 					String normalizedRemark = normalizeHtmlForXmlWorker(remark_or_comment_bob);
 					String fullHtml =
-							"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; text-align: justify'>"
+							"<html><body style='font-family: \"Times New Roman\"; font-size:12pt; line-height: 1.5; text-align: justify'>"
 									+ normalizedRemark +
 									"</body></html>";
 
