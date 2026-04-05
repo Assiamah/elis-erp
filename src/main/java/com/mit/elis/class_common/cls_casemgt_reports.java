@@ -15708,7 +15708,7 @@ JSONObject request_json = new JSONObject();
 			Image image1 = Image.getInstance(software_file_location + "NewLogo.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image1.scaleToFit(70.0F, 70.0F);
-				image1.setAbsolutePosition(480, 700);
+				image1.setAbsolutePosition(465, 700);
 		//	image1.setAbsolutePosition(70, 690);
 			document.add(image1);
 
