@@ -15696,7 +15696,7 @@ JSONObject request_json = new JSONObject();
 			Image codeQrImage = barcodeQRCode.getImage();
 			codeQrImage.scaleAbsolute(80, 80);
 			//codeQrImage.setAbsolutePosition(420, 690);
-			codeQrImage.setAbsolutePosition(70, 690);
+			codeQrImage.setAbsolutePosition(50, 690);
 			document.add(codeQrImage);
 
 			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
@@ -15708,7 +15708,7 @@ JSONObject request_json = new JSONObject();
 			Image image1 = Image.getInstance(software_file_location + "NewLogo.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image1.scaleToFit(70.0F, 70.0F);
-				image1.setAbsolutePosition(420, 700);
+				image1.setAbsolutePosition(500, 700);
 		//	image1.setAbsolutePosition(70, 690);
 			document.add(image1);
 
