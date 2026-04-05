@@ -21248,7 +21248,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     success: function(pdfBlob) {
                         // Create file object from blob
-                        const file = new File([pdfBlob], `Concurrence_Certificate_${job_number}_${case_number}.pdf`, {
+                        const type_of_certificate_pdf = business_process_sub_name.includes('CONCURRENCE') ? 'Concurrence_certificate' : 'Consent_certificate';
+
+                        const file = new File([pdfBlob], `${type_of_certificate_pdf}_${job_number}_${case_number}.pdf`, {
                             type: "application/pdf",
                             lastModified: Date.now()
                         });
@@ -22066,7 +22068,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     success: function(pdfBlob) {
                         // Create file object from blob
-                        const file = new File([pdfBlob], `Concurrence_Certificate_${job_number}_${case_number}.pdf`, {
+                        const type_of_certificate_pdf = business_process_sub_name.includes('CONCURRENCE') ? 'Concurrence_certificate' : 'Consent_certificate';
+
+                        const file = new File([pdfBlob], `${type_of_certificate_pdf}_${job_number}_${case_number}.pdf`, {
                             type: "application/pdf",
                             lastModified: Date.now()
                         });
@@ -24818,7 +24822,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     success: function(pdfBlob) {
                         // Create file object from blob
-                        const file = new File([pdfBlob], `Concurrence_Certificate_${job_number}_${case_number}.pdf`, {
+                        const type_of_certificate_pdf = business_process_sub_name.includes('CONCURRENCE') ? 'Concurrence_certificate' : 'Consent_certificate';
+
+                        const file = new File([pdfBlob], `${type_of_certificate_pdf}_${job_number}_${case_number}.pdf`, {
                             type: "application/pdf",
                             lastModified: Date.now()
                         });
