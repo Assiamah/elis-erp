@@ -16278,11 +16278,11 @@ JSONObject request_json = new JSONObject();
 			 * code128Image.scalePercent(100); document.add(code128Image);
 			 */
 
-			BarcodeQRCode barcodeQRCode = new BarcodeQRCode(new_case_number, 1000, 1000, null);
+				BarcodeQRCode barcodeQRCode = new BarcodeQRCode(new_case_number, 1000, 1000, null);
 			Image codeQrImage = barcodeQRCode.getImage();
 			codeQrImage.scaleAbsolute(80, 80);
 			//codeQrImage.setAbsolutePosition(420, 690);
-			codeQrImage.setAbsolutePosition(70, 690);
+			codeQrImage.setAbsolutePosition(50, 690);
 			document.add(codeQrImage);
 
 			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
@@ -16294,7 +16294,7 @@ JSONObject request_json = new JSONObject();
 			Image image1 = Image.getInstance(software_file_location + "NewLogo.jpg");
 			// imgPDF2.ScaleToFit(100.0F, 70.0F)
 			image1.scaleToFit(70.0F, 70.0F);
-				image1.setAbsolutePosition(420, 700);
+				image1.setAbsolutePosition(465, 700);
 		//	image1.setAbsolutePosition(70, 690);
 			document.add(image1);
 
@@ -16309,7 +16309,7 @@ JSONObject request_json = new JSONObject();
 			cbaddress.beginText();
 			cbaddress.setFontAndSize(bfaddress, 11);
 
-			cbaddress.setTextMatrix(70, 780); cbaddress.showText("File Number: " + file_number);
+			cbaddress.setTextMatrix(50, 780); cbaddress.showText("File Number: " + file_number);
 
 			/*
 			 * cbaddress.setTextMatrix(70, 780); cbaddress.showText("Cert. No: "
