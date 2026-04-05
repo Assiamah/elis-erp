@@ -3498,6 +3498,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#further_entry ._gated_workflow_documents');
         } else if (modalType === 'enter_transaction_details_for_deed') {
             container = document.querySelector('#enter_transaction_details_for_deed ._gated_workflow_documents');
+        } else if (modalType === 'generate_concurrence_certificate') {
+            container = document.querySelector('#generate_concurrence_certificate ._gated_workflow_documents');
         }
         
         if (!container) {
@@ -14266,6 +14268,10 @@ document.addEventListener('DOMContentLoaded', function() {
         window.loadGatedWorkFlowDocuments('enter_transaction_details_for_deed');
     });
 
+    $('#generate_concurrence_certificate').on('show.bs.modal', function () {
+        window.loadGatedWorkFlowDocuments('generate_concurrence_certificate');
+    });
+
     // $('#viewNotesModal').on('shown.bs.modal', function () {
     //     const $dialog = $(this).find('.modal-dialog');
     //     const $header = $(this).find('.modal-header');
@@ -21080,6 +21086,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var registration_section_number = $("#txt_lc_registration_section_number").val();
         var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
        // var certificate_summary = $("#lc_concurrence_certificate_summary_details").val().trim();
+        var business_process_sub_name = $("#cs_main_business_process_sub_name").val();
 
         let certificate_summary = '';
         const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details .ql-editor');
@@ -21225,7 +21232,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         job_number: job_number,
                         case_number: case_number,
                         transaction_number: transaction_number,
-                        cert_type: 'CONCURRENCE',
+                        //cert_type: 'CONCURRENCE',
+                        cert_type:  business_process_sub_name.includes('CONCURRENCE') ? 'CONCURRENCE' : 'CONSENT',
                         registration_district_number: registration_district_number,
                         registration_section_number: registration_section_number,
                         type_of_certificate: type_of_certificate.trim()
@@ -21923,6 +21931,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var registration_section_number = $("#txt_lc_registration_section_number").val();
         var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
         var certificate_summary = $("#lc_search_report_summary_details_cs").val().trim();
+        var business_process_sub_name = $("#cs_main_business_process_sub_name").val();
         
         // Format certificate type
         type_of_certificate = type_of_certificate == "Land Certificate" ? "LAND CERTIFICATE" : type_of_certificate;
@@ -22041,7 +22050,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         job_number: job_number,
                         case_number: case_number,
                         transaction_number: transaction_number,
-                        cert_type: 'CONCURRENCE',
+                        //cert_type: 'CONCURRENCE',
+                        cert_type:  business_process_sub_name.includes('CONCURRENCE') ? 'CONCURRENCE' : 'CONSENT',
                         registration_district_number: registration_district_number,
                         registration_section_number: registration_section_number,
                         type_of_certificate: type_of_certificate.trim()
@@ -24646,6 +24656,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var registration_section_number = $("#txt_lc_registration_section_number").val();
         var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text();
        // var certificate_summary = $("#lc_concurrence_certificate_summary_details").val().trim();
+       var business_process_sub_name = $("#cs_main_business_process_sub_name").val();
 
         let certificate_summary = '';
         const quillEditor = document.querySelector('#lc_concurrence_certificate_summary_details_rh .ql-editor');
@@ -24791,7 +24802,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         job_number: job_number,
                         case_number: case_number,
                         transaction_number: transaction_number,
-                        cert_type: 'CONSENT',
+                        //cert_type: 'CONCURRENCE',
+                        cert_type:  business_process_sub_name.includes('CONCURRENCE') ? 'CONCURRENCE' : 'CONSENT',
                         registration_district_number: registration_district_number,
                         registration_section_number: registration_section_number,
                         type_of_certificate: type_of_certificate.trim()
