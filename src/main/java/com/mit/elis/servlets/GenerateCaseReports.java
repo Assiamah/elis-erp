@@ -2588,39 +2588,39 @@ public class GenerateCaseReports {
 
 		//byte[] buffer = null;
 			
-		JSONObject pdf_upload_obj = new JSONObject();
-		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+	// 	JSONObject pdf_upload_obj = new JSONObject();
+	// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
 
 
-		pdf_upload_obj.put("jobNumber", job_number);
-		pdf_upload_obj.put("caseNumber",case_number);
-		pdf_upload_obj.put("fileData",base64Encoded);
+	// 	pdf_upload_obj.put("jobNumber", job_number);
+	// 	pdf_upload_obj.put("caseNumber",case_number);
+	// 	pdf_upload_obj.put("fileData",base64Encoded);
 					
 	
-		pdf_upload_obj.put("doc_name",job_number);
-		pdf_upload_obj.put("doc_description","Land Certificate");
-		pdf_upload_obj.put("doc_category","case_docs");
-		pdf_upload_obj.put("doc_app_uploaded","elis");
-		pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
-		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
-		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+	// 	pdf_upload_obj.put("doc_name",job_number);
+	// 	pdf_upload_obj.put("doc_description","Land Certificate");
+	// 	pdf_upload_obj.put("doc_category","case_docs");
+	// 	pdf_upload_obj.put("doc_app_uploaded","elis");
+	// 	pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+	// 	pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+	// 	pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 	
-                                                        // 1. Get size in bytes
-                            long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+    //                                                     // 1. Get size in bytes
+    //                         long sizeInBytes = buffer.length;
+    //                         System.out.println("Size in bytes: " + sizeInBytes);
 
-                            // 2. Human-readable format (KB, MB, GB...)
-                            String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+    //                         // 2. Human-readable format (KB, MB, GB...)
+    //                         String humanReadable = formatFileSize(sizeInBytes);
+    //                         System.out.println("Human readable: " + humanReadable);
                                     
-                        pdf_upload_obj.put("doc_file_size",humanReadable);
-                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
-                        pdf_upload_obj.put("doc_version",1);
-                        pdf_upload_obj.put("doc_type","Portable Document Format");
+    //                     pdf_upload_obj.put("doc_file_size",humanReadable);
+    //                     pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+    //                     pdf_upload_obj.put("doc_version",1);
+    //                     pdf_upload_obj.put("doc_type","Portable Document Format");
 
-	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
-	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+	//  String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	//  cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
 
 		if (buffer != null) {
 			// Set response content type to PDF
