@@ -25491,3 +25491,11 @@ input.form-control.otp-input {
     transform: translateX(10px);
     transition: transform 0.3s ease-in-out;
 }
+
+#lc_concurrence_certificate_summary_details .ql-editor {
+    height: 500px;
+}
+
+#lc_concurrence_certificate_summary_details .ql-editor {
+    overflow-y: auto;
+}

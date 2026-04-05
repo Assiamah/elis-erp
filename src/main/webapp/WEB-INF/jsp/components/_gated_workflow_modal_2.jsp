@@ -4809,7 +4809,7 @@ Thank you.</textarea>
 
 <div class="modal fade modal-blur effect-slide" id="generate_concurrence_certificate" tabindex="-1"
      aria-labelledby="generateConcurrenceCertificateLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog  modal-fullscreen modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <!-- Header -->
             <div class="modal-header bg-primary text-white border-bottom-0">
@@ -4832,107 +4832,119 @@ Thank you.</textarea>
 
             <!-- Body -->
             <div class="modal-body p-4">
-                <div class="certificate-container">
-                    <!-- Certificate Summary Section -->
-                    <div class="summary-section mb-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <h6 class="fw-semibold text-primary mb-0">
-                                <i class="bi bi-card-text me-2"></i>
-                                Certificate Summary
-                            </h6>
-                            <span class="ms-auto">
-                                <button class="btn btn-sm btn-danger" id="btn_compose_concurrence_certificate_template">
-                                    <i class="bi bi-pencil-square me-1"></i>
-                                    Compose Template
-                                </button>
-                            </span>
-                        </div>
+                <div class="row g-4" style="height: 100vh;">
                         
-                        <div class="form-floating">
-                            <!-- <textarea id="lc_search_report_summary_details_cs" 
-                                      name="lc_search_report_summary_details_cs" 
-                                      class="form-control" 
-                                      required 
-                                      style="height: 180px;">${remark_or_comment}</textarea> -->
-                            <!-- <label for="lc_search_report_summary_details_cs">
-                                <i class="bi bi-chat-left-text me-1"></i>
-                                Certificate Summary / Remarks
-                            </label> -->
-                            <div class="position-relative">
-                                <!-- <textarea id="lc_search_report_summary_details" 
-                                          name="lc_search_report_summary_details" 
-                                          class="form-control" 
-                                          required 
-                                          rows="7"
-                                          style="min-height: 200px; padding: 1.5rem !important;"
-                                          placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                </textarea> -->
-                                <div id="lc_concurrence_certificate_summary_details">
-                                  ${remark_or_comment}
+                    <!-- Left Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        <div class="certificate-container">
+                            <!-- Certificate Summary Section -->
+                            <div class="summary-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h6 class="fw-semibold text-primary mb-0">
+                                        <i class="bi bi-card-text me-2"></i>
+                                        Certificate Summary
+                                    </h6>
+                                    <span class="ms-auto">
+                                        <button class="btn btn-sm btn-danger" id="btn_compose_concurrence_certificate_template">
+                                            <i class="bi bi-pencil-square me-1"></i>
+                                            Compose Template
+                                        </button>
+                                    </span>
                                 </div>
-                                <div class="position-absolute top-0 end-0 p-3 text-muted">
-                                    <i class="fas fa-file-signature"></i>
+                                
+                                <div class="form-floating">
+                                    <!-- <textarea id="lc_search_report_summary_details_cs" 
+                                            name="lc_search_report_summary_details_cs" 
+                                            class="form-control" 
+                                            required 
+                                            style="height: 180px;">${remark_or_comment}</textarea> -->
+                                    <!-- <label for="lc_search_report_summary_details_cs">
+                                        <i class="bi bi-chat-left-text me-1"></i>
+                                        Certificate Summary / Remarks
+                                    </label> -->
+                                    <div class="position-relative">
+                                        <!-- <textarea id="lc_search_report_summary_details" 
+                                                name="lc_search_report_summary_details" 
+                                                class="form-control" 
+                                                required 
+                                                rows="7"
+                                                style="min-height: 200px; padding: 1.5rem !important;"
+                                                placeholder="Enter certificate summary and details...">${remark_or_comment}
+                                        </textarea> -->
+                                        <div id="lc_concurrence_certificate_summary_details">
+                                        ${remark_or_comment}
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 p-3 text-muted">
+                                            <i class="fas fa-file-signature"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-text mt-2">
+                                    <i class="bi bi-info-circle me-1 text-primary"></i>
+                                    Enter the summary details for the concurrence certificate
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-text mt-2">
-                            <i class="bi bi-info-circle me-1 text-primary"></i>
-                            Enter the summary details for the concurrence certificate
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <!-- Compose Template (commented out but ready to use) -->
+                                <!-- 
+                                <div class="col-4 mb-3">
+                                    <button type="button" name="btn_compose_certificate_template" 
+                                            id="btn_compose_certificate_template" 
+                                            class="btn btn-outline-primary w-100 py-3">
+                                        <i class="bi bi-file-earmark-plus me-2"></i>
+                                        <span>Compose Template</span>
+                                    </button>
+                                </div>
+                                -->
+
+                                <div class="row g-3">
+                                    <!-- Save Certificate Button -->
+                                    <div class="col-md-6">
+                                        <button type="button" name="lc_btn_save_search_report_cs" 
+                                                id="lc_btn_save_search_report_cs" 
+                                                class="btn btn-outline-secondary w-100 py-3 save-btn">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-cloud-arrow-up fs-5 me-2"></i>
+                                                <span>Save Certificate</span>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <!-- Generate Certificate Button -->
+                                    <div class="col-md-6">
+                                        <button type="button" name="lc_btn_activate_final_concurrence_certificate_cs" 
+                                                id="lc_btn_activate_final_concurrence_certificate_cs" 
+                                                class="btn btn-success w-100 py-3 generate-btn">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-check2-circle fs-5 me-2"></i>
+                                                <span>Generate Certificate</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hidden Inputs -->
+                            <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id" value="${transaction_id}">
+
+                            <!-- Action Status -->
+                            <div class="action-status mt-4" id="actionStatus" style="display: none;">
+                                <div class="alert alert-success d-flex align-items-center border-0" role="alert">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <div id="statusMessage"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="action-buttons">
-                        <!-- Compose Template (commented out but ready to use) -->
-                        <!-- 
-                        <div class="col-4 mb-3">
-                            <button type="button" name="btn_compose_certificate_template" 
-                                    id="btn_compose_certificate_template" 
-                                    class="btn btn-outline-primary w-100 py-3">
-                                <i class="bi bi-file-earmark-plus me-2"></i>
-                                <span>Compose Template</span>
-                            </button>
-                        </div>
-                        -->
-
-                        <div class="row g-3">
-                            <!-- Save Certificate Button -->
-                            <div class="col-md-6">
-                                <button type="button" name="lc_btn_save_search_report_cs" 
-                                        id="lc_btn_save_search_report_cs" 
-                                        class="btn btn-outline-secondary w-100 py-3 save-btn">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-cloud-arrow-up fs-5 me-2"></i>
-                                        <span>Save Certificate</span>
-                                    </div>
-                                </button>
-                            </div>
-
-                            <!-- Generate Certificate Button -->
-                            <div class="col-md-6">
-                                <button type="button" name="lc_btn_activate_final_concurrence_certificate_cs" 
-                                        id="lc_btn_activate_final_concurrence_certificate_cs" 
-                                        class="btn btn-success w-100 py-3 generate-btn">
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-check2-circle fs-5 me-2"></i>
-                                        <span>Generate Certificate</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Hidden Inputs -->
-                    <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id" value="${transaction_id}">
-
-                    <!-- Action Status -->
-                    <div class="action-status mt-4" id="actionStatus" style="display: none;">
-                        <div class="alert alert-success d-flex align-items-center border-0" role="alert">
-                            <i class="bi bi-check-circle-fill me-2"></i>
-                            <div id="statusMessage"></div>
-                        </div>
+                    <!-- Right Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        <div class="_gated_workflow_documents"></div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Footer -->
