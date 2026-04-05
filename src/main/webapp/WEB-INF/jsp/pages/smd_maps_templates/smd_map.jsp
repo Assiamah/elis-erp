@@ -13,487 +13,261 @@
 
 
 
-  
-  
+   <style>
+        /* Custom enhancements */
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+        }
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+        }
+        .card:hover {
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+        }
+        .card-header {
+            background: rgba(0, 123, 255, 0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            border-radius: 1rem 1rem 0 0 !important;
+            padding: 1rem 1.25rem;
+        }
+        .breadcrumb {
+            background: transparent;
+            padding: 0.75rem 0;
+        }
+        .btn-primary {
+            background: #2c7da0;
+            border-color: #2c7da0;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1f5e7e;
+            border-color: #1a526f;
+            transform: translateY(-1px);
+        }
+        .btn-outline-primary {
+            border-radius: 0.5rem;
+        }
+        #smd-map {
+            height: 500px;
+            width: 100%;
+            border-radius: 1rem;
+            background: #e9ecef;
+            z-index: 1;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05), 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+        }
+        .table-responsive-custom {
+            border-radius: 0.75rem;
+            overflow-x: auto;
+        }
+        .table th {
+            background-color: #eef2f7;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .badge-coord {
+            background-color: #e9ecef;
+            color: #1e466e;
+        }
+        .form-control, .form-select {
+            border-radius: 0.5rem;
+            border: 1px solid #ced4da;
+            transition: 0.2s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 0.2rem rgba(44,125,160,0.2);
+        }
+        .btn-group-sm-custom {
+            gap: 0.5rem;
+        }
+        footer.small {
+            font-size: 0.75rem;
+        }
+        .radio-group-inline .form-check {
+            margin-right: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .btn-group.mr-2, .btn-group {
+                flex-wrap: wrap;
+                margin-bottom: 0.5rem;
+            }
+            .col-lg-3, .col-lg-9 {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
 
+<div class="container-fluid py-3">
+    <!-- Enhanced Breadcrumbs with modern look -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#" class="text-decoration-none"><i class="fas fa-draw-polygon me-1"></i>SMD Plottings</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Interactive Maps</li>
+        </ol>
+    </nav>
 
-    <div class="container-fluid">
-      <!-- Breadcrumbs-->
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#">SMD Plottings</a>
-        </li>
-        <li class="breadcrumb-item active">Maps</li>
-      </ol>
-           
-           
-      
-      
-      
-       <div class="row">
-    
-    
-     <div class="col-lg-3">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-bar-chart"></i>Map Plotting</div>
-            <div class="card-body">
-            
-         
-		<div class="btn-group mr-2">
-		      <button type="button" class="btn btn-primary" id="smd_btn_add_coordinate" data-placement="top" data-toggle="modal" data-target="#addcoordinatetoplot" data-toggle="tooltip" title="Draw a Line">
-            <i class="fa fa-plus-circle"></i>
-           
-        </button>
-        
-         
-               
-          <button type="button" class="btn btn-primary"  id="lrd_btn_add_coordinate_by_csv" data-placement="top" data-toggle="modal" data-target="#uploadcoordiantecsv" data-toggle="tooltip" title="Upload CSV">
-            <i class="fa fa-upload"></i>
-        </button>
-        
-        
-		   <button type="button" class="btn btn-primary"  id="smd_btn_visualise_coordinate" data-placement="top" data-toggle="tooltip" title="Visualise Coordinate">
-            <i class="fa fa-eye"></i>
-        </button>
+    <div class="row g-4">
+        <!-- LEFT SIDEBAR: Tools & Data (Col-lg-3) -->
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <i class="fas fa-map-marked-alt me-2 text-primary"></i> Map Plotting Tools
+                </div>
+                <div class="card-body">
+                    <!-- Action buttons group -->
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <button type="button" class="btn btn-primary" id="smd_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" title="Draw a Line / Add Point">
+                            <i class="fas fa-plus-circle"></i> Add Coord
+                        </button>
+                        <button type="button" class="btn btn-primary" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" title="Upload CSV">
+                            <i class="fas fa-upload"></i> CSV
+                        </button>
+                        <button type="button" class="btn btn-primary" id="smd_btn_visualise_coordinate" title="Visualise Coordinate">
+                            <i class="fas fa-eye"></i> Visualise
+                        </button>
+                    </div>
 
-        
-        
-      
+                    <!-- Coordinates List Table (Dynamic) -->
+                    <label class="fw-semibold mb-2"><i class="fas fa-list me-1"></i>Coordinate List</label>
+                    <div class="table-responsive small mb-3" style="max-height: 220px; overflow-y: auto;">
+                        <table class="table table-sm table-bordered table-hover" id="coordinatelis_Table">
+                            <thead class="table-light">
+                                <tr><th>Name</th><th>Easting (X)</th><th>Northing (Y)</th><th style="width: 50px">Action</th></tr>
+                            </thead>
+                            <tbody id="coordinateTableBody">
+                                <!-- dynamic rows -->
+                                <tr><td colspan="4" class="text-muted text-center">No coordinates added</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-		 
-		 </div>
-		    
-		    
-		    
-		      <!--  WKT row here -->
-        <div class="form-group">
-       
-        <div class="form-row"> 
-        
-        
-        
-      
-        
+                    <!-- WKT Polygon Section -->
+                    <div class="mb-3">
+                        <label for="smd_bl_wkt_polygon" class="form-label fw-semibold"><i class="fas fa-shield-alt"></i> WKT Polygon</label>
+                        <textarea class="form-control" rows="2" id="smd_bl_wkt_polygon" placeholder="POLYGON((...))"></textarea>
+                        <div class="d-flex gap-2 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="smd_btn_visualise_wkt"><i class="fas fa-map"></i> Visualise Polygon</button>
+                            <button type="button" class="btn btn-sm btn-primary" id="smd_btn_save_wkt"><i class="fas fa-save"></i> Save Parcels</button>
+                        </div>
+                    </div>
+
+                    <!-- Zoom to Coordinate -->
+                    <div class="mb-3">
+                        <label class="fw-semibold mb-1">Zoom to Location</label>
+                        <div class="row g-2">
+                            <div class="col-5"><input type="text" class="form-control form-control-sm" id="smd_x_coordinate_mak" placeholder="Eastings"></div>
+                            <div class="col-5"><input type="text" class="form-control form-control-sm" id="smd_y_coordinate_mak" placeholder="Northings"></div>
+                            <div class="col-2"><button class="btn btn-sm btn-primary w-100" id="smd_btn_show_location"><i class="fas fa-map-marker-alt"></i></button></div>
+                        </div>
+                        <button class="btn btn-sm btn-secondary w-100 mt-2" id="smd_btn_load_for_scanned_maps_by_point"><i class="fas fa-check-circle"></i> Search Scanned Map</button>
+                    </div>
+
+                    <!-- Search by Reference -->
+                    <div class="mb-3">
+                        <label class="fw-semibold">Ref Number Search</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" id="smd_search_by_text" placeholder="Certificate / Ref Number">
+                            <button class="btn btn-primary" type="button" id="smd_btn_search_by_reference_number"><i class="fas fa-search"></i> Go</button>
+                        </div>
+                    </div>
+
+                    <!-- Scanned Maps Dropdown + actions -->
+                    <div class="mb-3">
+                        <label class="fw-semibold">Scanned Images</label>
+                        <select class="form-select form-select-sm mb-2" id="geoserverscannedimages_list">
+                            <option value="-1">No Scanned Image</option>
+                        </select>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="smd_btn_search_for_scanned_maps"><i class="fas fa-search"></i> Search</button>
+                            <button class="btn btn-sm btn-primary" id="smd_btn_load_for_scanned_maps"><i class="fas fa-check-circle"></i> Load</button>
+                        </div>
+                    </div>
+
+                    <!-- More than one overlay table -->
+                    <div class="mt-3">
+                        <h6 class="fw-semibold"><i class="fas fa-layer-group"></i> Overlays</h6>
+                        <div class="table-responsive small" style="max-height: 180px;">
+                            <table class="table table-sm table-bordered" id="smd_more_than_one_parcel_Table">
+                                <thead class="table-light"><tr><th>Ref Number</th><th>Locality</th><th>Plotted By</th><th>Details</th></tr></thead>
+                                <tbody><tr><td colspan="4" class="text-muted text-center">No overlays</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-         </div>
-         
-         
-               <!--  WKT row here -->
-       <!--  <div class="form-group">
-       
-        <div class="form-row"> 
-        
-        	<label class="radio-inline">
-      <input type="radio" name="optradio" checked>Answer 1</label>
-    <label class="radio-inline">
-      <input type="radio" name="optradio">Answer 2</label>
-   
-		       
-        
+
+        <!-- RIGHT SIDEBAR: Map & Controls (Col-lg-9) -->
+        <div class="col-lg-9">
+            <div class="card mb-4">
+                <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center">
+                    <span><i class="fas fa-globe-americas me-2 text-primary"></i>Interactive Map Canvas</span>
+                    <span class="badge bg-light text-dark">Spatial Data Platform</span>
+                </div>
+                <div class="card-body">
+                    <!-- Map interaction modes + action row -->
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+                        <div class="d-flex gap-4 radio-group-inline">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="interaction_type" id="draw" value="draw" checked>
+                                <label class="form-check-label" for="draw"><i class="fas fa-pencil-ruler"></i> Draw</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="interaction_type" id="modify" value="modify">
+                                <label class="form-check-label" for="modify"><i class="fas fa-edit"></i> Modify</label>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="smd_btnprintmap"><i class="fas fa-print"></i> Print Map</button>
+                            <button class="btn btn-sm btn-outline-primary" id="smd_btn_visualise_search"><i class="fas fa-search-location"></i> Visualise Search</button>
+                            <button class="btn btn-sm btn-outline-info" id="smd_btngeneratesearchreport"><i class="fas fa-file-alt"></i> Search Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Scale & Zoom controls -->
+                    <div class="row g-2 mb-3 align-items-end">
+                        <div class="col-md-4 col-sm-6">
+                            <label class="form-label small">Scale Value</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="smd_scale_value_e" placeholder="Custom scale">
+                                <select class="form-select" id="smd_scale_value" style="max-width: 100px;">
+                                    <option value="500">500</option><option value="1107">1107</option><option value="1250">1250</option>
+                                    <option value="2500">2500</option><option value="2140">2140</option><option value="2670">2670</option>
+                                    <option value="5000">5000</option><option value="10000">10000</option><option value="20000">20000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="smd_lockmapscale" checked>
+                                <label class="form-check-label small" for="smd_lockmapscale">Lock map scale</label>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-1" id="smd_btn_scale_zoom"><i class="fas fa-search-plus"></i> Zoom to Scale</button>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-md-end mt-2 mt-md-0">
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> Use draw/modify tools on map</small>
+                        </div>
+                    </div>
+
+                    <!-- The Map Container -->
+                    <div id="smd-map" style="height: 480px;"></div>
+                    <div class="card-footer bg-transparent border-0 text-muted small text-center pt-3">Plottings &copy; SMD - Real-time coordinate mapping</div>
+                </div>
+            </div>
         </div>
-         </div>
-		     -->
-		    
-                 <!--  WKT row here -->
-     <!--    <div class="form-group">
-       
-        <div class="form-row"> 
-        
-				        	<label for="selectsingle">Select a single option:</label>
-				 <select id="selectsingle" class="form-control">
-				    <option>Dogs</option>
-				    <option>Cats</option>
-				    <option>Fish</option>
-				    <option>Birds</option>
-				 </select>
-        </div>
-         </div>
-		     -->
-         
-    
-    
-                 <!--  Here is where the fee list comes -->
-             
-              <div  class="table w-auto small">
-           <table class="table table-bordered" id="coordinatelis_Table" width="100%" cellspacing="0">
-           
-              <thead>
-                <tr>
-                 
-                 
-                 
-                 <th>name</th>
-                 <th>x_coordinate</th>
-                 <th>y_coordinate</th>
-                 <th>remove</th>
-                  </tr>
-              </thead>
-              
-                <tbody>
-    
-  </tbody>
-             <!--  <tfoot>
-                <tr>
-                  <th>Job Number</th>
-                  <th>Applicant Name</th>
-                  <th>Status</th>
-                  <th>Case Details</th>
-                      
-                       <th>Add To List</th>
-                </tr>
-              </tfoot> -->
-            
-            </table>
-          </div>
-    
-    
-     <!--  WKT row here -->
-        <div class="form-group">
-       
-        <div class="form-row">  <label for="bl_job_purpose">WKT Polygon</label>
-        <textarea rows="2" class="form-control" placeholder="" id="smd_bl_wkt_polygon" ></textarea>
-        </div>
-        <br>
-        
-		     <div class="btn-group mr-2">
-		      
-        
-		   <button type="button" class="btn btn-primary"  id="smd_btn_visualise_wkt" data-placement="top" data-toggle="tooltip" title="Visualise Polygon(KKT)">
-            <i class="fa fa-map"></i>
-        </button>
-        
-          <button type="button" class="btn btn-primary"  id="smd_btn_save_wkt" data-placement="top" data-toggle="tooltip" title="Save Parcels">
-            <i class="fa fa-save"></i>
-        </button>
-        
-        
-        
-      
-
-		 
-		 </div>
-        
-         </div>
-         
-         
-         
-          <!--  Zoom to cooedinate -->
-         <div class="row">
-					                                                        
-            <div class="col-md-5">
-                <div class="form-group">
-                  
-                    <input class="form-control" type="text" name="name"  id="smd_x_coordinate_mak" placeholder="Eastings"> 
-                </div>
-            </div>
-            
-            
-            <div class="col-md-5">
-                <div class="form-group">
-                  
-                    <input class="form-control" type="text" name="name" id="smd_y_coordinate_mak" placeholder="Northings"> 
-                  
-            
-                </div>
-            </div>
-            
-            <div class="col-md-2">
-                <div class="form-group">
-                 <button type="button" class="btn btn-primary" id="smd_btn_show_location" data-placement="top" data-toggle="tooltip" title="Show Location"><i class="fa fa-map-marker"></i> </button>
-            
-                </div>
-            </div>
-            
-            
-             <div class="col-md-2">
-                <div class="form-group">
-                 <button type="button" class="btn btn-primary" id="smd_btn_load_for_scanned_maps_by_point" data-placement="top" data-toggle="tooltip" title="Search Scanned Map"><i class="fa fa-check-circle"></i> </button>
-            
-                </div>
-            </div>
-
-        </div>
-        
-        
-        
-       <!-- search by reference nunber -->
-         
-			          <div class="row">
-								                                                        
-			            <div class="col-md-8">
-			                <div class="form-group">
-			                  
-			        	  <input class="form-control" id="smd_search_by_text"  name="smd_search_by_text"  type="text"  placeholder="Search by Ref Number" required >
-						   
-			                </div>
-			            </div>
-			
-			          
-			          <!-- <div class="col-md-2">
-			                <div class="form-group">
-			                 <button type="button" class="btn btn-primary" id="smd_btn_search_by_certificate_number" data-placement="top" data-toggle="tooltip" title="Show Location"><i class="fa fa-retweet"></i> </button>
-			            
-			                </div>
-			            </div> -->
-			            
-			            <div class="col-md-2">
-			                <div class="form-group"> 
-			                 <button type="button" class="btn btn-primary" id="smd_btn_search_by_reference_number" data-placement="top" data-toggle="tooltip" title="Show Location"><i class="fa fa-search"></i> </button>
-			            
-			                </div>
-			            </div>
-			            
-			
-			        </div>
-			        
-        
-        
-    
-        
-          <!--  Scanned Maps -->
-          
-            <div class="row">
-					                                                        
-            <div class="col-md-8">
-                <div class="form-group">
-                  
-                       		 
-			
-              <select name="geoserverscannedimages_list" id="geoserverscannedimages_list" class="form-control input-sm" data-style="btn-info"  data-live-search="true">
-              <option value="-1">No Scanned Image</option>
-              </select> 
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group">
-                 <button type="button" class="btn btn-primary" id="smd_btn_search_for_scanned_maps" data-placement="top" data-toggle="tooltip" title="search_for_scanned_maps"><i class="fa fa-search"></i> </button>
-            
-                </div>
-            </div>
-             <div class="col-md-2">
-                <div class="form-group">
-                 <button type="button" class="btn btn-primary" id="smd_btn_load_for_scanned_maps" data-placement="top" data-toggle="tooltip" title="Show Location"><i class="fa fa-check-circle"></i> </button>
-            
-                </div>
-            </div>
-
-        </div>
-        
-        
-         <div class="row">
-        
-         <h5>More than one overlay</h5>
-         
-                       <div  class="table w-auto small table-responsive">
-           <table class="table table-bordered" id="smd_more_than_one_parcel_Table" width="100%" cellspacing="0">
-           
-              <thead>
-                <tr>
-                 
-                 
-                 
-                 <th>Ref Number</th>
-                 <th>Locality</th>
-                 <th>Plotted By</th>
-                 <th>Details</th>
-                  </tr>
-              </thead>
-              
-                <tbody>
-    
-  			</tbody>
-           
-            
-            </table>
-          </div>
-         
-         </div>
-         
-         
-         
-           
-
-    
-         
-         
-         
-    
-            
-          
-            </div>
-          
-          </div>
-          
-         
-        
-    
-   
-        
-      </div>
-    
-    
-    
-     <div class="col-lg-9">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-bar-chart"></i>Map sample</div>
-            <div class="card-body">
-            
-          
-          
-            <!-- Maps Details Starts Here  -->
-            <div class="bs-example">
-            
-            
-            
-            <div class="form-check form-check-inline">
-		  <input type="radio" class="form-check-input" id="draw" name="interaction_type" value="draw" checked>
-		  <label class="form-check-label" for="draw">Draw</label>
-		</div>
-		
-		<!-- Material inline 2 -->
-		<div class="form-check form-check-inline">
-		  <input type="radio" class="form-check-input" id="modify" name="interaction_type" value="modify">
-		  <label class="form-check-label" for="modify">Modify</label>
-		</div>
-		
-		
-		
-		<!-- <div id="rates">
-		  <input type="radio" id="r1" name="rate" value="Fixed Rate"> Fixed Rate
-		  <input type="radio" id="r2" name="rate" value="Variable Rate"> Variable Rate
-		  <input type="radio" id="r3" name="rate" value="Multi Rate" checked="checked"> Multi Rate  
-		</div> -->
-            
-            
-            
-    <div class="btn-group mr-2">
-       
-              
-       <button type="button" class="btn btn-primary" id="smd_btnprintmap" data-placement="top" data-toggle="tooltip" title="Print Map">
-            <i class="fa fa-print"></i>
-        </button>
-		 
-		  
-        <button type="button" class="btn btn-primary" id="smd_btn_visualise_search" data-placement="top" data-toggle="tooltip" title="Visualise Search">
-            <i class="fa fa-search"></i>
-        </button>
-		
-		 
-		 <button type="button" class="btn btn-primary" id="smd_btngeneratesearchreport" data-placement="top" data-toggle="tooltip" title="Print Search Report">
-            <i class="fa fa-print"></i>
-        </button> 
-		 
-       
-
-        
-        
     </div>
-   
-    
-     <div class="btn-group">
-       Scale:
-    </div>
-    <div class="btn-group">
-        <input class="form-control" id="smd_scale_value_e"  name="smd_scale_value_e" type="text" class="autocomplat" />
-   
-       
-       <select name="smd_scale_value" id="smd_scale_value">
-  <option value="500">500</option>
-  <option value="1107">1107</option>
-  <option value="1250">1250</option>
-  <option value="2500">2500</option>
-  <option value="2140">2140</option>
-  <option value="2670">2670</option>
-  <option value="2215">2215</option>
-  <option value="2825">2825</option>
-  <option value="5000">5000</option>
-  <option value="10000">10000</option>
-  <option value="15000">15000</option>
-  <option value="20000">20000</option>
- 
-</select>
-       
-
-		<!-- <datalist id="scalelist">
-		  <option>500</option>
-		  <option>1107</option>
-		  <option>1250</option>
-		  <option>2500</option>
-		   <option>2140</option>
-		  <option>2670</option>
-		  <option>2215</option>
-		  <option>2825</option>
-		   <option>5000</option>
-		  <option>10000</option>
-		  <option>15000</option>
-		  <option>20000</option>
-		</datalist> -->
-    </div>
-    
-   <div class="btn-group mr-2">
-         <input type="checkbox" checked="checked" id="smd_lockmapscale">
-          <button type="button" class="btn btn-primary" id="smd_btn_scale_zoom" data-placement="top" data-toggle="tooltip" title="Zoom to Scale">
-            <i class="fa fa-search"></i>
-        </button>
-    </div>
-   
-    
-     
-    
 </div>
 
-          
-            <!-- Maps Details Starts Here  -->
-   <div class="bs-example">
-   
-   
-    
 
-  
-    
-   
-
-    
-   
-    
-    
-    
-</div>
-       
-            
-            
-            
-             <div id="smd-map" ></div>
-             
-             
-             
-             
-         
-          
-          
-            
-          
-            </div>
-            <div class="card-footer small text-muted">Plottings</div>
-          </div>
-          
-         
-        
-    
-   
-        
-      </div>
-     </div>
-      
-      
-   
-      
-    </div>
-  
 
  
