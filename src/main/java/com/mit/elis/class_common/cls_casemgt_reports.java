@@ -15758,7 +15758,7 @@ JSONObject request_json = new JSONObject();
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_1);
 
-			Paragraph y_1 = new Paragraph("CONCURRENCE CERTIFICATE", new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
+			Paragraph y_1 = new Paragraph("CONSENT CERTIFICATE", new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
 			y_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(y_1);
 
@@ -15921,7 +15921,7 @@ JSONObject request_json = new JSONObject();
 			cert_text2 += " Lands Commission this " + "              "+ "           day of "
 					+  "                               " + ", " + "20" + " ";
 
-			Paragraph p_3 = new Paragraph(cert_text2, new Font(FontFamily.HELVETICA, 12, java.awt.Font.BOLD));
+			Paragraph p_3 = new Paragraph(cert_text2, new Font(FontFamily.TIMES_ROMAN, 12));
 			p_3.setAlignment(Element.ALIGN_JUSTIFIED);
 			p_3.setLeading(32);
 		    document.add(p_3);
