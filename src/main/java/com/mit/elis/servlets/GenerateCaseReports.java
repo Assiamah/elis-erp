@@ -3405,12 +3405,20 @@ public class GenerateCaseReports {
 			// 		System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
+
+			String regional_code = (String) session.getAttribute("regional_code");
+			//String regional_code = "14";
+
 			try {
-				buffer = case_reports_cl.create_publication_list(cls_url_config.getWeb_service_url_ser(),
+				buffer = regional_code.equals("11") || regional_code.equals("10") ? case_reports_cl.create_publication_list(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 						publication_list,
 						to_email_address, batching_officer,
-						files_pdf_jackets_p);
+						files_pdf_jackets_p) : case_reports_cl.create_publication_list_for_deed(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+						publication_list,
+						to_email_address, batching_officer,
+						files_pdf_jackets_p, regional_code);
 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

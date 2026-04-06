@@ -131,6 +131,13 @@
                                                 <th>Case Number</th>
                                                 <th>Application Type</th>
                                                 <th>GLPIN</th>
+                                                <th style="display: none">name</th>
+												<th style="display: none">Location</th>
+												<th style="display: none">Grantor</th>
+												<th style="display: none">Extent</th>
+												<th style="display: none">Type of Interest</th>
+												<th style="display: none">Registry Map</th>
+												<th style="display: none">Description</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -166,6 +173,13 @@
                                                     <td>
                                                         <span class="badge bg-info">${appfiles.glpin}</span>
                                                     </td>
+                                                    <td style="display: none">${appfiles.ar_name}</td>
+													<td style="display: none">${appfiles.locality}</td>
+													<td style="display: none">${appfiles.grantors_name}</td>
+													<td style="display: none">${appfiles.extent}</td>
+													<td style="display: none">${appfiles.type_of_interest}</td>
+													<td style="display: none">${appfiles.registry_mapref}</td>
+													<td style="display: none">${appfiles.parcel_description}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

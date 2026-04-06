@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -65,6 +67,8 @@ import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPage;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -83,6 +87,8 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
+
+import org.springframework.core.io.ClassPathResource;
 
 import ws.casemgt.HeaderFooterPageEvent;
 import ws.casemgt.cls_case_documents;
@@ -7452,6 +7458,32 @@ public class cls_casemgt_reports {
 
 			Document document = new Document(PageSize.A4, 60, 60, 25, 25);
 			PdfWriter writer = PdfWriter.getInstance(document, out);
+			final byte[] watermarkBytes;
+			try (InputStream logoStream = new ClassPathResource("static/assets/images/NewLogo.jpg").getInputStream()) {
+				watermarkBytes = logoStream.readAllBytes();
+			}
+			writer.setPageEvent(new PdfPageEventHelper() {
+				@Override
+				public void onEndPage(PdfWriter writer, Document document) {
+					try {
+						Image watermark = Image.getInstance(watermarkBytes);
+						watermark.scaleToFit(300f, 300f);
+						float x = (document.getPageSize().getWidth() - watermark.getScaledWidth()) / 2;
+						float y = (document.getPageSize().getHeight() - watermark.getScaledHeight()) / 2;
+						watermark.setAbsolutePosition(x, y);
+
+						PdfContentByte under = writer.getDirectContentUnder();
+						PdfGState graphicsState = new PdfGState();
+						graphicsState.setFillOpacity(0.08f);
+						under.saveState();
+						under.setGState(graphicsState);
+						under.addImage(watermark);
+						under.restoreState();
+					} catch (DocumentException | IOException e) {
+						throw new RuntimeException("Unable to add watermark to special publication list", e);
+					}
+				}
+			});
 			document.open();// PDF document opened........
 			PdfContentByte cb = writer.getDirectContent();
 
@@ -7481,107 +7513,93 @@ public class cls_casemgt_reports {
 			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MMMM YYYY");
 			SimpleDateFormat date_formatter = new SimpleDateFormat("dd MMMM YYYY");
 
+			System.out.print(list_of_applications);
+
 			if (list_of_applications != "null") {
 
-				JSONObject jsonObject = new JSONObject(list_of_applications.trim());
-				Integer NewCounter = 1;
-				int[] ordinal = { 1 };
-				jsonObject.keys().forEachRemaining(key -> {
-					Object value = null;
+					JSONObject jsonObject = new JSONObject(list_of_applications.trim());
+					int[] ordinal = { 1 };
+					Font localityFont = new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+					Font itemLabelFont = new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+					Font itemValueFont = new Font(FontFamily.TIMES_ROMAN, 10);
+					java.util.List<String> sortedLocalities = new ArrayList<>();
 
-					try {
-						value = jsonObject.get((String) key);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					Paragraph p_4 = new Paragraph("LOCALITY: " + ((String) key).toUpperCase(),
-							new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
-					try {
-						document.add(p_4);
-						// document.add(new Phrase(Chunk.NEWLINE));
-						// document.add(new Phrase(Chunk.NEWLINE));
-					} catch (DocumentException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					// System.out.println("Key: " + key);
-					String json_string = value.toString();
+					jsonObject.keys().forEachRemaining(key -> sortedLocalities.add((String) key));
+					Collections.sort(sortedLocalities, String.CASE_INSENSITIVE_ORDER);
 
-					try {
-						JSONArray jArr_list = new JSONArray(json_string);
+					sortedLocalities.forEach(key -> {
+						try {
+							Object value = jsonObject.get((String) key);
+							JSONArray jArr_list = new JSONArray(value.toString());
 
-						for (int i = 0; i < jArr_list.length(); i++) {
-							JSONObject obj_memorials = jArr_list.getJSONObject(i);
-							Paragraph p_41 = new Paragraph(NewCounter.toString() + ". ",
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_41.setIndentationLeft(25);
+							Paragraph localityParagraph = new Paragraph("LOCALITY: " + ((String) key).toUpperCase(), localityFont);
+							localityParagraph.setSpacingBefore(8f);
+							localityParagraph.setSpacingAfter(8f);
+							document.add(localityParagraph);
 
-							Paragraph p_01 = new Paragraph(
-								ordinal[0] + ".   " + "   a. GLPIN:  " + obj_memorials.getString("glpin").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_01.setIndentationLeft(50);
+							for (int i = 0; i < jArr_list.length(); i++) {
+								JSONObject obj_memorials = jArr_list.getJSONObject(i);
 
-							Paragraph p_5 = new Paragraph(
-								   "b. Lessee's Name:  "
-											+ obj_memorials.getString("ar_name").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_5.setIndentationLeft(25);
-							Paragraph p_6 = new Paragraph(
-									"c. Grantor:  " + obj_memorials.getString("grantor").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_6.setIndentationLeft(50);
-							// Paragraph p_7 = new Paragraph(
-							// 		"c. Description of Land:  " + obj_memorials.getString("description").toUpperCase(),
-							// 		new Font(FontFamily.TIMES_ROMAN, 12));
-							// p_7.setIndentationLeft(50);
-							Paragraph p_12 = new Paragraph(
-									"d. Extent:  " + obj_memorials.getString("extent").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_12.setIndentationLeft(50);
-							Paragraph p_9 = new Paragraph(
-									"e. Type of Interest:  " + obj_memorials.getString("interest").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_9.setIndentationLeft(50);
-							Paragraph p_10 = new Paragraph(
-									"f. Registry Map Ref:  " + obj_memorials.getString("registry_map").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_10.setIndentationLeft(50);
-							Paragraph p_11 = new Paragraph(
-									"g. Lodgement Number:  " + obj_memorials.getString("client_number").toUpperCase(),
-									new Font(FontFamily.TIMES_ROMAN, 12));
-							p_11.setIndentationLeft(50);
-							ordinal[0]++;
-							try {
-								document.add(p_01);
-								document.add(p_5);
-								document.add(p_6);
-								//document.add(p_7);
-								document.add(p_12);
-								document.add(p_9);
-								document.add(p_10);
-								document.add(p_11);
+								Paragraph glpinParagraph = new Paragraph();
+								glpinParagraph.setIndentationLeft(25);
+								glpinParagraph.setSpacingAfter(4f);
+								glpinParagraph.add(new Chunk(ordinal[0] + ".       a. ", itemLabelFont));
+								glpinParagraph.add(new Chunk("GLPIN: ", itemLabelFont));
+								glpinParagraph.add(new Chunk(obj_memorials.getString("glpin").toUpperCase(), itemValueFont));
+
+								Paragraph lesseeParagraph = new Paragraph();
+								lesseeParagraph.setIndentationLeft(50);
+								lesseeParagraph.setSpacingAfter(3f);
+								lesseeParagraph.add(new Chunk("b. Lessee's Name: ", itemLabelFont));
+								lesseeParagraph.add(new Chunk(obj_memorials.getString("ar_name").toUpperCase(), itemValueFont));
+
+								Paragraph grantorParagraph = new Paragraph();
+								grantorParagraph.setIndentationLeft(50);
+								grantorParagraph.setSpacingAfter(3f);
+								grantorParagraph.add(new Chunk("c. Grantor: ", itemLabelFont));
+								grantorParagraph.add(new Chunk(obj_memorials.getString("grantor").toUpperCase(), itemValueFont));
+
+								Paragraph extentParagraph = new Paragraph();
+								extentParagraph.setIndentationLeft(50);
+								extentParagraph.setSpacingAfter(3f);
+								extentParagraph.add(new Chunk("d. Extent: ", itemLabelFont));
+								extentParagraph.add(new Chunk(obj_memorials.getString("extent").toUpperCase(), itemValueFont));
+
+								Paragraph interestParagraph = new Paragraph();
+								interestParagraph.setIndentationLeft(50);
+								interestParagraph.setSpacingAfter(3f);
+								interestParagraph.add(new Chunk("e. Type of Interest: ", itemLabelFont));
+								interestParagraph.add(new Chunk(obj_memorials.getString("interest").toUpperCase(), itemValueFont));
+
+								Paragraph registryMapParagraph = new Paragraph();
+								registryMapParagraph.setIndentationLeft(50);
+								registryMapParagraph.setSpacingAfter(3f);
+								registryMapParagraph.add(new Chunk("f. Registry Map Ref: ", itemLabelFont));
+								registryMapParagraph.add(new Chunk(obj_memorials.getString("registry_map").toUpperCase(), itemValueFont));
+
+								Paragraph lodgementParagraph = new Paragraph();
+								lodgementParagraph.setIndentationLeft(50);
+								lodgementParagraph.setSpacingAfter(6f);
+								lodgementParagraph.add(new Chunk("g. Lodgement Number: ", itemLabelFont));
+								lodgementParagraph.add(new Chunk(obj_memorials.getString("client_number").toUpperCase(), itemValueFont));
+
+								document.add(glpinParagraph);
+								document.add(lesseeParagraph);
+								document.add(grantorParagraph);
+								document.add(extentParagraph);
+								document.add(interestParagraph);
+								document.add(registryMapParagraph);
+								document.add(lodgementParagraph);
 								document.add(new Phrase(Chunk.NEWLINE));
-								// document.add(new Phrase(Chunk.NEWLINE));
-								// document.add(p_12);
-							} catch (DocumentException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} finally {
 
+								ordinal[0]++;
 							}
 
+							document.add(new Phrase(Chunk.NEWLINE));
+						} catch (JSONException | DocumentException e) {
+							e.printStackTrace();
 						}
-						document.add(new Phrase(Chunk.NEWLINE));
-						document.add(new Phrase(Chunk.NEWLINE));
-						// document.add(new Phrase(Chunk.NEWLINE));
-
-					} catch (JSONException | DocumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				});
+					});
 
 			}
 
@@ -7589,9 +7607,9 @@ public class cls_casemgt_reports {
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
-			document.add((new Chunk("NOTES ", new Font(FontFamily.TIMES_ROMAN, 12))).setUnderline(0.1f, -2f));
+			document.add((new Chunk("NOTES ", new Font(FontFamily.TIMES_ROMAN, 10))).setUnderline(0.1f, -2f));
 
-			String end_notice = "The Acknowledgement Slip/�Yellow Card� issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
+			String end_notice = "The Acknowledgement Slip/Yellow Card issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
 			String end_notice_2 = "Plots of land for registration are to be dealt with in accordance with the Land Title Registration Law, 1986 (PNDCL. 152) which is administered as a function of the Land Registration Division of the Lands Commission.\n"
 					+ "a) \t\tAll transactions on public/state lands must first be handled by the Public and Vested Lands Management Division (PVLMD) of the Lands Commission which is legally mandated (Section 23 of Lands Commission Act, 2008 (Act 767) to manage public lands and all lands vested in the President.  All stool land transactions are also constitutionally required to be certified by the Regional Lands Commission of the Region where the lands are situated before submission to the Land Registration Division";
 			String end_notice_3 = "The rights of a registered proprietor under Section 43 of the PNDCL.152 are indefeasible and are superior to any conferred under any other form of registration";
@@ -7624,20 +7642,28 @@ public class cls_casemgt_reports {
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
-			Paragraph p_0 = new Paragraph("Dated " + date_formatter.format(date), new Font(FontFamily.TIMES_ROMAN, 12));
+			Paragraph p_0 = new Paragraph("Dated " + date_formatter.format(date), new Font(FontFamily.TIMES_ROMAN, 10));
 
-			Paragraph p_1 = new Paragraph("YAA AGYEMAN BOADI (MRS.)", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
-			Paragraph p_2 = new Paragraph("DIRECTOR", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
-			Paragraph p_3 = new Paragraph("LAND REGISTRATION DIVISION",
-					new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
+			Paragraph p_1 = new Paragraph("ANGELINA AWA ESQ", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_2 = new Paragraph("AG. DIRECTOR", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_3 = new Paragraph("LAND REGISTRATION DIVISION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_4 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_5 = new Paragraph("POST OFFICE BOX CT 5008", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_6 = new Paragraph("CANTONMENTS, ACCRA", new Font(FontFamily.TIMES_ROMAN, 10));
 			p_0.setAlignment(Element.ALIGN_CENTER);
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			p_3.setAlignment(Element.ALIGN_CENTER);
 			p_2.setAlignment(Element.ALIGN_CENTER);
+			p_4.setAlignment(Element.ALIGN_CENTER);
+			p_5.setAlignment(Element.ALIGN_CENTER);
+			p_6.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_0);
 			document.add(p_1);
 			document.add(p_2);
 			document.add(p_3);
+			document.add(p_4);
+			document.add(p_5);
+			document.add(p_6);
 			// Inserting Table in PDF
 
 			document.close();
@@ -7671,6 +7697,32 @@ public class cls_casemgt_reports {
 
 			Document document = new Document(PageSize.A4, 60, 60, 25, 25);
 			PdfWriter writer = PdfWriter.getInstance(document, out);
+			final byte[] watermarkBytes;
+			try (InputStream logoStream = new ClassPathResource("static/assets/images/NewLogo.jpg").getInputStream()) {
+				watermarkBytes = logoStream.readAllBytes();
+			}
+			writer.setPageEvent(new PdfPageEventHelper() {
+				@Override
+				public void onEndPage(PdfWriter writer, Document document) {
+					try {
+						Image watermark = Image.getInstance(watermarkBytes);
+						watermark.scaleToFit(300f, 300f);
+						float x = (document.getPageSize().getWidth() - watermark.getScaledWidth()) / 2;
+						float y = (document.getPageSize().getHeight() - watermark.getScaledHeight()) / 2;
+						watermark.setAbsolutePosition(x, y);
+
+						PdfContentByte under = writer.getDirectContentUnder();
+						PdfGState graphicsState = new PdfGState();
+						graphicsState.setFillOpacity(0.08f);
+						under.saveState();
+						under.setGState(graphicsState);
+						under.addImage(watermark);
+						under.restoreState();
+					} catch (DocumentException | IOException e) {
+						throw new RuntimeException("Unable to add watermark to special publication list", e);
+					}
+				}
+			});
 			document.open();// PDF document opened........
 			PdfContentByte cb = writer.getDirectContent();
 
@@ -7684,24 +7736,14 @@ public class cls_casemgt_reports {
 			Date date = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
 
-			// String notice = "LAND TITLE REGISTRATION REGULATION LAW, 1986 PNDCL. 152) \n"
-			// + "NOTICE OF APPLICATION FOR REGISTRATION OF TITLE TO LAND \n"
-			// + "Take Notice that the under mentioned persons have applied to be registered
-			// as proprietors of the under "
-			// + "mentioned lands and that I intend to register them as proprietors of the
-			// said lands if no objections are "
-			// + "lodged against the registration in accordance with regulation with 54 of
-			// the Land Title Registration Regulations, "
-			// + "1986 at the Land Registration Division - Lands Commission,
-			// Cantonment-Accra (Survey and Mapping Division (SMD) "
-			// + "Premises) before the expiration of fourteen (14) days from the date of
-			// this notice.";
+			
+			String notice = "LAND TITLE REGISTRATION REGULATION LAW, 1986 PNDCL. 152) \n"
+					+ "NOTICE OF APPLICATION FOR REGISTRATION OF TITLE TO LAND \n";
 
-			// Paragraph p_8 = new Paragraph(notice, new Font(FontFamily.TIMES_ROMAN, 10));
-
-			// p_8.setAlignment(Element.ALIGN_LEFT);
-			// document.add(p_8);
-			// document.add(new Phrase(Chunk.NEWLINE));
+			Paragraph p_8 = new Paragraph(notice, new Font(FontFamily.TIMES_ROMAN, 10));
+			p_8.setAlignment(Element.ALIGN_LEFT);
+			document.add(p_8);
+			document.add(new Phrase(Chunk.NEWLINE));
 
 			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MMMM YYYY");
 			SimpleDateFormat date_formatter = new SimpleDateFormat("dd MMMM YYYY");
@@ -7724,7 +7766,7 @@ public class cls_casemgt_reports {
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add((new Chunk("NOTES ", new Font(FontFamily.TIMES_ROMAN, 12))).setUnderline(0.1f, -2f));
 
-			String end_notice = "The Acknowledgement Slip/�Yellow Card� issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
+			String end_notice = "The Acknowledgement Slip/Yellow Card issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
 			String end_notice_2 = "Plots of land for registration are to be dealt with in accordance with the Land Title Registration Law, 1986 (PNDCL. 152) which is administered as a function of the Land Registration Division of the Lands Commission.\n"
 					+ "a) \t\tAll transactions on public/state lands must first be handled by the Public and Vested Lands Management Division (PVLMD) of the Lands Commission which is legally mandated (Section 23 of Lands Commission Act, 2008 (Act 767) to manage public lands and all lands vested in the President.  All stool land transactions are also constitutionally required to be certified by the Regional Lands Commission of the Region where the lands are situated before submission to the Land Registration Division";
 			String end_notice_3 = "The rights of a registered proprietor under Section 43 of the PNDCL.152 are indefeasible and are superior to any conferred under any other form of registration";
@@ -7758,19 +7800,443 @@ public class cls_casemgt_reports {
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
 			Paragraph p_0 = new Paragraph("Dated " + date_formatter.format(date), new Font(FontFamily.TIMES_ROMAN, 12));
-
-			Paragraph p_1 = new Paragraph("YAA AGYEMAN BOADI (MRS.)", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
-			Paragraph p_2 = new Paragraph("DIRECTOR", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
-			Paragraph p_3 = new Paragraph("LAND REGISTRATION DIVISION",
-					new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
+			document.add(new Phrase(Chunk.NEWLINE));
+			Paragraph p_1 = new Paragraph("ANGELINA AWA ESQ", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_2 = new Paragraph("AG. DIRECTOR", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			document.add(new Phrase(Chunk.NEWLINE));
+			Paragraph p_3 = new Paragraph("LAND REGISTRATION DIVISION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_4 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_5 = new Paragraph("POST OFFICE BOX CT 5008", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_6 = new Paragraph("CANTONMENTS, ACCRA", new Font(FontFamily.TIMES_ROMAN, 10));
 			p_0.setAlignment(Element.ALIGN_CENTER);
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			p_3.setAlignment(Element.ALIGN_CENTER);
 			p_2.setAlignment(Element.ALIGN_CENTER);
+			p_4.setAlignment(Element.ALIGN_CENTER);
+			p_5.setAlignment(Element.ALIGN_CENTER);
+			p_6.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_0);
 			document.add(p_1);
 			document.add(p_2);
 			document.add(p_3);
+			document.add(p_4);
+			document.add(p_5);
+			document.add(p_6);
+			// Inserting Table in PDF
+
+			document.close();
+			//file.close();
+		return out.toByteArray();
+		
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+
+		finally {
+
+			// release resources, if any
+			// outputStream.close();
+			// response_ws.close();
+			// client.close();
+
+		}
+	return out.toByteArray();
+
+	}
+
+
+	public byte[] create_publication_list_for_deed(String web_service_url, String web_service_api_key,
+			String software_file_location, String list_of_applications,
+			String to_email_address, String batching_officer,
+			String output_file, String regional_code) throws IOException, SQLException, JSONException, ParseException {
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		// file.;
+		try {
+
+			Document document = new Document(PageSize.A4, 60, 60, 25, 25);
+			PdfWriter writer = PdfWriter.getInstance(document, out);
+			final byte[] watermarkBytes;
+			try (InputStream logoStream = new ClassPathResource("static/assets/images/NewLogo.jpg").getInputStream()) {
+				watermarkBytes = logoStream.readAllBytes();
+			}
+			writer.setPageEvent(new PdfPageEventHelper() {
+				@Override
+				public void onEndPage(PdfWriter writer, Document document) {
+					try {
+						Image watermark = Image.getInstance(watermarkBytes);
+						watermark.scaleToFit(300f, 300f);
+						float x = (document.getPageSize().getWidth() - watermark.getScaledWidth()) / 2;
+						float y = (document.getPageSize().getHeight() - watermark.getScaledHeight()) / 2;
+						watermark.setAbsolutePosition(x, y);
+
+						PdfContentByte under = writer.getDirectContentUnder();
+						PdfGState graphicsState = new PdfGState();
+						graphicsState.setFillOpacity(0.08f);
+						under.saveState();
+						under.setGState(graphicsState);
+						under.addImage(watermark);
+						under.restoreState();
+					} catch (DocumentException | IOException e) {
+						throw new RuntimeException("Unable to add watermark to special publication list", e);
+					}
+				}
+			});
+			document.open();// PDF document opened........
+			PdfContentByte cb = writer.getDirectContent();
+
+			Font font = new Font(FontFamily.TIMES_ROMAN);
+			Font font14pt = new Font(FontFamily.TIMES_ROMAN, 14);
+			Font font10pt = new Font(FontFamily.TIMES_ROMAN, 10);
+
+			Font small_bold = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+			Font small = new Font(FontFamily.COURIER, 9, Font.NORMAL);
+
+			Date date = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
+
+			String region_locality = "";
+
+			if (regional_code.equals("14")) {
+				region_locality = "Sekondi";
+			} else if (regional_code.equals("12")) {
+				region_locality = "Koforidua";
+			} else if (regional_code.equals("11")) {
+				region_locality = "Accra";
+			} else if (regional_code.equals("10")) {
+				region_locality = "Tema";
+			}
+				
+			String notice = "LAND ACT, 2020 (ACT 1036) \n"
+					+ "NOTICE OF APPLICATION FOR REGISTRATION OF DEED TO LAND \n"
+					+ "Take Notice that the under mentioned persons have applied to be registered as proprietors of the under "
+					+ "mentioned lands and that I intend to register them as proprietors of the said lands if no objections are "
+					+ "lodged against the registration in accordance with Land Act 2020 (Act 1036) Section 212 (3) and The Lands "
+					+ " Commission, " + region_locality + " before the expiration of fourteen (14) days from the date of this notice.";
+
+			Paragraph p_8 = new Paragraph(notice, new Font(FontFamily.TIMES_ROMAN, 10));
+			p_8.setAlignment(Element.ALIGN_LEFT);
+			document.add(p_8);
+			document.add(new Phrase(Chunk.NEWLINE));
+
+			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MMMM YYYY");
+			SimpleDateFormat date_formatter = new SimpleDateFormat("dd MMMM YYYY");
+
+			System.out.print(list_of_applications);
+
+			if (list_of_applications != "null") {
+
+					JSONObject jsonObject = new JSONObject(list_of_applications.trim());
+					int[] ordinal = { 1 };
+					Font localityFont = new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+					Font itemLabelFont = new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+					Font itemValueFont = new Font(FontFamily.TIMES_ROMAN, 10);
+					java.util.List<String> sortedLocalities = new ArrayList<>();
+
+					jsonObject.keys().forEachRemaining(key -> sortedLocalities.add((String) key));
+					Collections.sort(sortedLocalities, String.CASE_INSENSITIVE_ORDER);
+
+					sortedLocalities.forEach(key -> {
+						try {
+							Object value = jsonObject.get((String) key);
+							JSONArray jArr_list = new JSONArray(value.toString());
+
+							Paragraph localityParagraph = new Paragraph("LOCALITY: " + ((String) key).toUpperCase(), localityFont);
+							localityParagraph.setSpacingBefore(8f);
+							localityParagraph.setSpacingAfter(8f);
+							document.add(localityParagraph);
+
+							for (int i = 0; i < jArr_list.length(); i++) {
+								JSONObject obj_memorials = jArr_list.getJSONObject(i);
+
+								Paragraph glpinParagraph = new Paragraph();
+								glpinParagraph.setIndentationLeft(25);
+								glpinParagraph.setSpacingAfter(4f);
+								glpinParagraph.add(new Chunk(ordinal[0] + ".       a. ", itemLabelFont));
+								glpinParagraph.add(new Chunk("GLPIN: ", itemLabelFont));
+								glpinParagraph.add(new Chunk(obj_memorials.getString("glpin").toUpperCase(), itemValueFont));
+
+								Paragraph lesseeParagraph = new Paragraph();
+								lesseeParagraph.setIndentationLeft(50);
+								lesseeParagraph.setSpacingAfter(3f);
+								lesseeParagraph.add(new Chunk("b. Lessee: ", itemLabelFont));
+								lesseeParagraph.add(new Chunk(obj_memorials.getString("ar_name").toUpperCase(), itemValueFont));
+
+								Paragraph grantorParagraph = new Paragraph();
+								grantorParagraph.setIndentationLeft(50);
+								grantorParagraph.setSpacingAfter(3f);
+								grantorParagraph.add(new Chunk("c. Lessor: ", itemLabelFont));
+								grantorParagraph.add(new Chunk(obj_memorials.getString("grantor").toUpperCase(), itemValueFont));
+
+								Paragraph extentParagraph = new Paragraph();
+								extentParagraph.setIndentationLeft(50);
+								extentParagraph.setSpacingAfter(3f);
+								extentParagraph.add(new Chunk("d. Extent: ", itemLabelFont));
+								extentParagraph.add(new Chunk(obj_memorials.getString("extent").toUpperCase(), itemValueFont));
+
+								Paragraph interestParagraph = new Paragraph();
+								interestParagraph.setIndentationLeft(50);
+								interestParagraph.setSpacingAfter(3f);
+								interestParagraph.add(new Chunk("e. Type of Interest: ", itemLabelFont));
+								interestParagraph.add(new Chunk(obj_memorials.getString("interest").toUpperCase(), itemValueFont));
+
+								// Paragraph registryMapParagraph = new Paragraph();
+								// registryMapParagraph.setIndentationLeft(50);
+								// registryMapParagraph.setSpacingAfter(3f);
+								// registryMapParagraph.add(new Chunk("f. Registry Map Ref: ", itemLabelFont));
+								// registryMapParagraph.add(new Chunk(obj_memorials.getString("registry_map").toUpperCase(), itemValueFont));
+
+								Paragraph lodgementParagraph = new Paragraph();
+								lodgementParagraph.setIndentationLeft(50);
+								lodgementParagraph.setSpacingAfter(6f);
+								lodgementParagraph.add(new Chunk("f. Lodgement Number: ", itemLabelFont));
+								lodgementParagraph.add(new Chunk(obj_memorials.getString("client_number").toUpperCase(), itemValueFont));
+
+								Paragraph gpsAddParagraph = new Paragraph();
+								gpsAddParagraph.setIndentationLeft(50);
+								gpsAddParagraph.setSpacingAfter(6f);
+								gpsAddParagraph.add(new Chunk("g. GPS Address: ", itemLabelFont));
+								gpsAddParagraph.add(new Chunk(obj_memorials.optString("gps_address", "").toUpperCase(), itemValueFont));
+
+								document.add(glpinParagraph);
+								document.add(lesseeParagraph);
+								document.add(grantorParagraph);
+								document.add(extentParagraph);
+								document.add(interestParagraph);
+								// document.add(registryMapParagraph);
+								document.add(lodgementParagraph);
+								document.add(gpsAddParagraph);
+								document.add(new Phrase(Chunk.NEWLINE));
+
+								ordinal[0]++;
+							}
+
+							document.add(new Phrase(Chunk.NEWLINE));
+						} catch (JSONException | DocumentException e) {
+							e.printStackTrace();
+						}
+					});
+
+			}
+
+			// ----------------------------------------------------------
+
+			// document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
+			// document.add((new Chunk("NOTES ", new Font(FontFamily.TIMES_ROMAN, 10))).setUnderline(0.1f, -2f));
+
+			// String end_notice = "The Acknowledgement Slip/Yellow Card issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
+			// String end_notice_2 = "Plots of land for registration are to be dealt with in accordance with the Land Title Registration Law, 1986 (PNDCL. 152) which is administered as a function of the Land Registration Division of the Lands Commission.\n"
+			// 		+ "a) \t\tAll transactions on public/state lands must first be handled by the Public and Vested Lands Management Division (PVLMD) of the Lands Commission which is legally mandated (Section 23 of Lands Commission Act, 2008 (Act 767) to manage public lands and all lands vested in the President.  All stool land transactions are also constitutionally required to be certified by the Regional Lands Commission of the Region where the lands are situated before submission to the Land Registration Division";
+			// String end_notice_3 = "The rights of a registered proprietor under Section 43 of the PNDCL.152 are indefeasible and are superior to any conferred under any other form of registration";
+			// String end_notice_4 = "Registration under the Law is compulsory for all land owners and penalties are payable by persons who fail to register their interest";
+			// String end_notice_5 = "Final judgments of Courts of competent jurisdiction are also to be registered";
+			// String end_notice_6 = "Application for first registration of land should be submitted by the owner/representative of the land at the the Client Service Access Unit (CSAU) of the Lands Commission, Cantonments - Accra, P. O. Box CT 5008, Cantonments � Accra";
+			// String end_notice_7 = "No pillar erected at the corner points on a registered parcel of land should be moved or disturbed.  It is an offence to remove or disturb any such pillar whether it is erected on your own land or not.  It is also a criminal offence punishable by a fine or imprisonment or both to enter upon any land without lawful authority and willfully destroy fences and/or buildings erected thereon";
+			// String end_notice_8 = "Further information in relation to compulsory land registration may be obtained from the CSAU";
+			// String end_notice_9 = "Any person(s) who seeks to object to an application as listed above is/are required to provide the basis and justification for the objection and should submit copies of all supporting documents such as Court judgments, wills, Letters of Administration and Court proceedings to the objection letter to the CSAU";
+			// String end_notice_10 = "If item 9 is not complied with the objection will not be accepted";
+			// // Paragraph p_8 = new Paragraph(notice);
+			// /*
+			//  * Chunk st2 = new Chunk(notice, small); st2.setTextRise(7);
+			//  * p_8.add(st2);
+			//  */
+			// Font list_font = FontFactory.getFont(FontFactory.HELVETICA, 10);
+			// List list1 = new List(List.ORDERED);
+			// list1.add(new ListItem(end_notice, list_font));
+			// list1.add(new ListItem(end_notice_2, list_font));
+			// list1.add(new ListItem(end_notice_3, list_font));
+			// list1.add(new ListItem(end_notice_4, list_font));
+			// list1.add(new ListItem(end_notice_5, list_font));
+			// list1.add(new ListItem(end_notice_6, list_font));
+			// list1.add(new ListItem(end_notice_7, list_font));
+			// list1.add(new ListItem(end_notice_8, list_font));
+			// list1.add(new ListItem(end_notice_9, list_font));
+			// list1.add(new ListItem(end_notice_10, list_font));
+			// list1.setAlignindent(true);
+			// document.add(list1);
+
+			// document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
+			Paragraph p_0 = new Paragraph("Dated " + date_formatter.format(date), new Font(FontFamily.TIMES_ROMAN, 10));
+
+			Paragraph p_1 = new Paragraph("ANGELINA AWA ESQ", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_2 = new Paragraph("AG. DIRECTOR", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_3 = new Paragraph("LAND REGISTRATION DIVISION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_4 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_5 = new Paragraph("POST OFFICE BOX CT 5008", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_6 = new Paragraph("CANTONMENTS, ACCRA", new Font(FontFamily.TIMES_ROMAN, 10));
+			p_0.setAlignment(Element.ALIGN_CENTER);
+			p_1.setAlignment(Element.ALIGN_CENTER);
+			p_3.setAlignment(Element.ALIGN_CENTER);
+			p_2.setAlignment(Element.ALIGN_CENTER);
+			p_4.setAlignment(Element.ALIGN_CENTER);
+			p_5.setAlignment(Element.ALIGN_CENTER);
+			p_6.setAlignment(Element.ALIGN_CENTER);
+			document.add(p_0);
+			document.add(p_1);
+			document.add(p_2);
+			document.add(p_3);
+			document.add(p_4);
+			document.add(p_5);
+			document.add(p_6);
+			// Inserting Table in PDF
+
+			document.close();
+			//file.close();
+		return out.toByteArray();
+		
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+
+		finally {
+
+			// release resources, if any
+			// outputStream.close();
+			// response_ws.close();
+			// client.close();
+
+		}
+	return out.toByteArray();
+
+	}
+
+
+	public byte[] create_special_publication_list_for_deed(String web_service_url, String web_service_api_key,
+			String software_file_location, String list_of_applications,
+			String to_email_address, String batching_officer,
+			String output_file) throws IOException, SQLException, JSONException, ParseException {
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		// file.;
+		try {
+
+			Document document = new Document(PageSize.A4, 60, 60, 25, 25);
+			PdfWriter writer = PdfWriter.getInstance(document, out);
+			final byte[] watermarkBytes;
+			try (InputStream logoStream = new ClassPathResource("static/assets/images/NewLogo.jpg").getInputStream()) {
+				watermarkBytes = logoStream.readAllBytes();
+			}
+			writer.setPageEvent(new PdfPageEventHelper() {
+				@Override
+				public void onEndPage(PdfWriter writer, Document document) {
+					try {
+						Image watermark = Image.getInstance(watermarkBytes);
+						watermark.scaleToFit(300f, 300f);
+						float x = (document.getPageSize().getWidth() - watermark.getScaledWidth()) / 2;
+						float y = (document.getPageSize().getHeight() - watermark.getScaledHeight()) / 2;
+						watermark.setAbsolutePosition(x, y);
+
+						PdfContentByte under = writer.getDirectContentUnder();
+						PdfGState graphicsState = new PdfGState();
+						graphicsState.setFillOpacity(0.08f);
+						under.saveState();
+						under.setGState(graphicsState);
+						under.addImage(watermark);
+						under.restoreState();
+					} catch (DocumentException | IOException e) {
+						throw new RuntimeException("Unable to add watermark to special publication list", e);
+					}
+				}
+			});
+			document.open();// PDF document opened........
+			PdfContentByte cb = writer.getDirectContent();
+
+			Font font = new Font(FontFamily.TIMES_ROMAN);
+			Font font14pt = new Font(FontFamily.TIMES_ROMAN, 14);
+			Font font10pt = new Font(FontFamily.TIMES_ROMAN, 10);
+
+			Font small_bold = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+			Font small = new Font(FontFamily.COURIER, 9, Font.NORMAL);
+
+			Date date = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
+
+			String notice = "LAND ACT, 2020 (ACT 1036) \n"
+					+ "NOTICE OF APPLICATION FOR REGISTRATION OF DEED TO LAND \n";
+
+			Paragraph p_8 = new Paragraph(notice, new Font(FontFamily.TIMES_ROMAN, 10));
+			p_8.setAlignment(Element.ALIGN_LEFT);
+			document.add(p_8);
+			document.add(new Phrase(Chunk.NEWLINE));
+
+			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MMMM YYYY");
+			SimpleDateFormat date_formatter = new SimpleDateFormat("dd MMMM YYYY");
+
+			if (list_of_applications != "null") {
+
+				try {
+					HTMLWorker htmlWorker = new HTMLWorker(document);
+					htmlWorker.parse(new StringReader(list_of_applications));
+
+				} catch (Exception e) {
+
+				}
+
+			}
+
+			// ----------------------------------------------------------
+
+			// document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
+			// document.add((new Chunk("NOTES ", new Font(FontFamily.TIMES_ROMAN, 12))).setUnderline(0.1f, -2f));
+
+			// String end_notice = "The Acknowledgement Slip/Yellow Card issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
+			// String end_notice_2 = "Plots of land for registration are to be dealt with in accordance with the Land Title Registration Law, 1986 (PNDCL. 152) which is administered as a function of the Land Registration Division of the Lands Commission.\n"
+			// 		+ "a) \t\tAll transactions on public/state lands must first be handled by the Public and Vested Lands Management Division (PVLMD) of the Lands Commission which is legally mandated (Section 23 of Lands Commission Act, 2008 (Act 767) to manage public lands and all lands vested in the President.  All stool land transactions are also constitutionally required to be certified by the Regional Lands Commission of the Region where the lands are situated before submission to the Land Registration Division";
+			// String end_notice_3 = "The rights of a registered proprietor under Section 43 of the PNDCL.152 are indefeasible and are superior to any conferred under any other form of registration";
+			// String end_notice_4 = "Registration under the Law is compulsory for all land owners and penalties are payable by persons who fail to register their interest";
+			// String end_notice_5 = "Final judgments of Courts of competent jurisdiction are also to be registered";
+			// String end_notice_6 = "Application for first registration of land should be submitted by the owner/representative of the land at the the Client Service Access Unit (CSAU) of the Lands Commission, Cantonments - Accra, P. O. Box CT 5008, Cantonments � Accra";
+			// String end_notice_7 = "No pillar erected at the corner points on a registered parcel of land should be moved or disturbed.  It is an offence to remove or disturb any such pillar whether it is erected on your own land or not.  It is also a criminal offence punishable by a fine or imprisonment or both to enter upon any land without lawful authority and willfully destroy fences and/or buildings erected thereon";
+			// String end_notice_8 = "Further information in relation to compulsory land registration may be obtained from the CSAU";
+			// String end_notice_9 = "Any person(s) who seeks to object to an application as listed above is/are required to provide the basis and justification for the objection and should submit copies of all supporting documents such as Court judgments, wills, Letters of Administration and Court proceedings to the objection letter to the CSAU";
+			// String end_notice_10 = "If item 9 is not complied with the objection will not be accepted";
+			// // Paragraph p_8 = new Paragraph(notice);
+			// /*
+			//  * Chunk st2 = new Chunk(notice, small); st2.setTextRise(7);
+			//  * p_8.add(st2);
+			//  */
+			// Font list_font = FontFactory.getFont(FontFactory.HELVETICA, 10);
+			// List list1 = new List(List.ORDERED);
+			// list1.add(new ListItem(end_notice, list_font));
+			// list1.add(new ListItem(end_notice_2, list_font));
+			// list1.add(new ListItem(end_notice_3, list_font));
+			// list1.add(new ListItem(end_notice_4, list_font));
+			// list1.add(new ListItem(end_notice_5, list_font));
+			// list1.add(new ListItem(end_notice_6, list_font));
+			// list1.add(new ListItem(end_notice_7, list_font));
+			// list1.add(new ListItem(end_notice_8, list_font));
+			// list1.add(new ListItem(end_notice_9, list_font));
+			// list1.add(new ListItem(end_notice_10, list_font));
+			// list1.setAlignindent(true);
+			// document.add(list1);
+
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+			Paragraph p_0 = new Paragraph("Dated " + date_formatter.format(date), new Font(FontFamily.TIMES_ROMAN, 12));
+
+			Paragraph p_1 = new Paragraph("ANGELINA AWA ESQ", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_2 = new Paragraph("AG. DIRECTOR", new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD));
+			Paragraph p_3 = new Paragraph("LAND REGISTRATION DIVISION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_4 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_5 = new Paragraph("POST OFFICE BOX CT 5008", new Font(FontFamily.TIMES_ROMAN, 10));
+			Paragraph p_6 = new Paragraph("CANTONMENTS, ACCRA", new Font(FontFamily.TIMES_ROMAN, 10));
+			p_0.setAlignment(Element.ALIGN_CENTER);
+			p_1.setAlignment(Element.ALIGN_CENTER);
+			p_3.setAlignment(Element.ALIGN_CENTER);
+			p_2.setAlignment(Element.ALIGN_CENTER);
+			p_4.setAlignment(Element.ALIGN_CENTER);
+			p_5.setAlignment(Element.ALIGN_CENTER);
+			p_6.setAlignment(Element.ALIGN_CENTER);
+			document.add(p_0);
+			document.add(p_1);
+			document.add(p_2);
+			document.add(p_3);
+			document.add(p_4);
+			document.add(p_5);
+			document.add(p_6);
 			// Inserting Table in PDF
 
 			document.close();
@@ -8405,6 +8871,33 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			Document document = new Document(PageSize.A4, 60, 60, 100, 25);
 			PdfWriter writer = PdfWriter.getInstance(document, out_pdf);
 
+			final byte[] watermarkBytes;
+			try (InputStream logoStream = new ClassPathResource("static/assets/images/NewLogo.jpg").getInputStream()) {
+				watermarkBytes = logoStream.readAllBytes();
+			}
+			writer.setPageEvent(new PdfPageEventHelper() {
+				@Override
+				public void onEndPage(PdfWriter writer, Document document) {
+					try {
+						Image watermark = Image.getInstance(watermarkBytes);
+						watermark.scaleToFit(300f, 300f);
+						float x = (document.getPageSize().getWidth() - watermark.getScaledWidth()) / 2;
+						float y = (document.getPageSize().getHeight() - watermark.getScaledHeight()) / 2;
+						watermark.setAbsolutePosition(x, y);
+
+						PdfContentByte under = writer.getDirectContentUnder();
+						PdfGState graphicsState = new PdfGState();
+						graphicsState.setFillOpacity(0.08f);
+						under.saveState();
+						under.setGState(graphicsState);
+						under.addImage(watermark);
+						under.restoreState();
+					} catch (DocumentException | IOException e) {
+						throw new RuntimeException("Unable to add watermark to special publication list", e);
+					}
+				}
+			});
+
 			// document.addHeader("Header", "Header Text");
 
 			HeaderFooterPageEvent event = new HeaderFooterPageEvent();
@@ -8456,15 +8949,15 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			cbaddress.beginText();
 			cbaddress.setFontAndSize(bfaddress, 11);
 
-			cbaddress.setTextMatrix(435, 780);
+			cbaddress.setTextMatrix(435, 790);
 			cbaddress.showText(web_comp_address);
-			cbaddress.setTextMatrix(435, 770);
+			cbaddress.setTextMatrix(435, 778);
 			cbaddress.showText(web_city);
-			cbaddress.setTextMatrix(435, 760);
+			cbaddress.setTextMatrix(435, 766);
 			cbaddress.showText(("Tel: " + web_telephone));
-			cbaddress.setTextMatrix(435, 750);
+			cbaddress.setTextMatrix(435, 754);
 			cbaddress.showText(("Fax: " + web_fax_number));
-			cbaddress.setTextMatrix(435, 740);
+			cbaddress.setTextMatrix(435, 742);
 			cbaddress.showText(("Email: " + web_email));
 			cbaddress.setTextMatrix(435, 730);
 			cbaddress.showText("Web: www.lc.gov.gh");
