@@ -7989,14 +7989,14 @@ public class cls_casemgt_reports {
 								Paragraph lodgementParagraph = new Paragraph();
 								lodgementParagraph.setIndentationLeft(50);
 								lodgementParagraph.setSpacingAfter(6f);
-								lodgementParagraph.add(new Chunk("f. Lodgement Number: ", itemLabelFont));
+								lodgementParagraph.add(new Chunk("f. Job Number: ", itemLabelFont));
 								lodgementParagraph.add(new Chunk(obj_memorials.getString("client_number").toUpperCase(), itemValueFont));
 
-								Paragraph gpsAddParagraph = new Paragraph();
-								gpsAddParagraph.setIndentationLeft(50);
-								gpsAddParagraph.setSpacingAfter(6f);
-								gpsAddParagraph.add(new Chunk("g. GPS Address: ", itemLabelFont));
-								gpsAddParagraph.add(new Chunk(obj_memorials.optString("gps_address", "").toUpperCase(), itemValueFont));
+								// Paragraph gpsAddParagraph = new Paragraph();
+								// gpsAddParagraph.setIndentationLeft(50);
+								// gpsAddParagraph.setSpacingAfter(6f);
+								// gpsAddParagraph.add(new Chunk("g. GPS Address: ", itemLabelFont));
+								// gpsAddParagraph.add(new Chunk(obj_memorials.optString("gps_address", "").toUpperCase(), itemValueFont));
 
 								document.add(glpinParagraph);
 								document.add(lesseeParagraph);
@@ -8005,7 +8005,7 @@ public class cls_casemgt_reports {
 								document.add(interestParagraph);
 								// document.add(registryMapParagraph);
 								document.add(lodgementParagraph);
-								document.add(gpsAddParagraph);
+								//document.add(gpsAddParagraph);
 								document.add(new Phrase(Chunk.NEWLINE));
 
 								ordinal[0]++;
