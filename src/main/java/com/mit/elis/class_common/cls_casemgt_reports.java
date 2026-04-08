@@ -16,8 +16,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -17773,7 +17771,7 @@ JSONObject request_json = new JSONObject();
 
 	public byte[] create_land_certificate_typed(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number,
-			String job_number, String type_of_certificate, String output_file)
+			String job_number, String output_file)
 			throws IOException, SQLException, JSONException, ParseException {
 		/*
 		 * Font bold = new Font(Font.FontFamily.HELVETICA, 8f, Font.BOLD); Font
@@ -17971,9 +17969,9 @@ JSONObject request_json = new JSONObject();
 			p_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(p_1);
 
-			type_of_certificate = (type_of_certificate == null) ? "" : type_of_certificate;
+			certificate_type = (certificate_type == null) ? "" : certificate_type;
 
-			Paragraph y_1 = new Paragraph(type_of_certificate.toUpperCase(), new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
+			Paragraph y_1 = new Paragraph(certificate_type.toUpperCase(), new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
 			y_1.setAlignment(Element.ALIGN_CENTER);
 			document.add(y_1);
 
