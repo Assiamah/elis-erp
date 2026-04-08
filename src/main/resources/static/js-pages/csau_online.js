@@ -15246,62 +15246,102 @@ function createTableRow(item) {
 			// })
 
 			$('#frmChangeofService').on('submit', function (e) {
+    e.preventDefault();
 
-				e.preventDefault();
+    var chs_job_number = $('#chs_job_number').val();
+    var chs_comment = $('#chs_comment').val();
+    var sub_service = $('#chs_business_process_sub_name').val();
 
-				var chs_job_number = $('#chs_job_number').val();
-				var chs_comment = $('#chs_comment').val();
-				var sub_service = $('#chs_business_process_sub_name').val();
+    if (sub_service == 0 || sub_service == '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Information',
+            text: 'Please select a business sub-service before proceeding.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
 
-				if (sub_service == 0) {
+	} else if(!chs_comment) {
+		Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Information',
+            text: 'Please provide a comment before proceeding.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    } else {
+        // Show confirmation dialog before submission
+        Swal.fire({
+            title: 'Confirm Service Change',
+            text: `Are you sure you want to change the service for Job #${chs_job_number}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, change it!',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we update the service.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
 
-					$
-						.notify({
-							message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Please bussiness service </span>',
-						}, {
-							type: 'danger', z_index: 9999
-						});
-				} else {
+                const sub_service_name_id = sub_service.split('-');
+                var chs_sub_service_id = sub_service_name_id[0];
+                var chs_sub_service_name = sub_service_name_id[1];
 
-					const
-						sub_service_name_id = sub_service
-							.split('-');
-
-					var chs_sub_service_id = sub_service_name_id[0];
-					var chs_sub_service_name = sub_service_name_id[1];
-
-					$.ajax({
-						type: "POST",
-						url: "Case_Management_Serv",
-						data: {
-							request_type: 'update_application_sub_service',
-							job_number: chs_job_number,
-							sub_service_id: chs_sub_service_id,
-							sub_service_name: chs_sub_service_name,
-							officer_comment: chs_comment
-
-						},
-
-
-						cache: false,
-						beforeSend: function () { },
-						success: function (
-							jobdetails) {
-							// console.log(jobdetails);
-							// alert(jobdetails);
-							$
-								.notify({
-									message: '<i class="fa fa-check  fa-3x fa-fw"></i><span class="text-bold">Data Changed Successfuly </span>',
-								}, {
-									type: 'success', z_index: 9999
-								});
-
-						}
-					});
-
-				}
-
-			});
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'update_application_sub_service',
+                        job_number: chs_job_number,
+                        sub_service_id: chs_sub_service_id,
+                        sub_service_name: chs_sub_service_name,
+                        officer_comment: chs_comment
+                    },
+                    cache: false,
+                    beforeSend: function () { },
+                    success: function (jobdetails) {
+                        // Success notification
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Service changed successfully!',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Great!',
+                            timer: 2000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            // Optional: Reset form or reload data
+                            $('#chs_business_process_sub_name').val('0');
+                            $('#chs_comment').val('');
+                            // You can also refresh the job details table here
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Error handling
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Submission Failed',
+                            text: 'There was an error changing the service. Please try again.',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                });
+            }
+        });
+    }
+});
 
 
 

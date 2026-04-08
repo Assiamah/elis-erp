@@ -420,6 +420,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- <div class="avatar-sm bg-info bg-opacity-10 rounded-circle me-2">
+                                        <i class="bi bi-person text-info"></i>
+                                    </div> -->
+                                    <div>
+                                        <small class="text-muted d-block">Locality</small>
+                                        <strong class="text-dark">${locality}</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -593,14 +604,25 @@
 						</div>
 
             <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
-							<div class="avatar-sm bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
-								<i class="ri-fingerprint-2-fill text-danger"></i>
+							<div class="avatar-sm bg-secondary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+								<i class="ri-calendar-2-line text-secondary"></i>
 							</div>
 							<div>
 								<span class="text-muted small d-block">Registration Date</span>
                 <fmt:parseDate value="${date_of_registration}" pattern="yyyy-MM-dd" var="parsedRegistrationDate"/>
+                <fmt:formatDate value="${parsedRegistrationDate}" pattern="dd MMM yyyy" var="formattedRegistrationDate"/>
                 <div class="fw-medium text-dark"></div>
 								<strong class="fs-5">${empty formattedRegistrationDate ? '--' : formattedRegistrationDate}</strong>
+							</div>
+						</div>
+ 
+            <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+							<div class="avatar-sm bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3">
+								<i class="ri-time-line text-info"></i>
+							</div>
+							<div>
+								<span class="text-muted small d-block">Registration Time</span>
+								<strong class="fs-5">${empty time_of_registration ? '--' : time_of_registration}</strong>
 							</div>
 						</div>
 

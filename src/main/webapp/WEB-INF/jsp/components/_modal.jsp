@@ -3808,35 +3808,26 @@
                     </label>
                     <select name="file_type_au" data-trigger id="file_type_au" class="form-select" required>
                         <option value="" selected disabled>-- Select document type --</option>
-                        <!-- <optgroup label="Personal Documents"> -->
-                            <option value="Birth Certificate">Birth Certificate</option>
-                            <option value="Identification Card">Identification Card</option>
-                            <option value="Statutory Declaration">Statutory Declaration</option>
-                        <!-- </optgroup>
-                        <optgroup label="Legal Documents"> -->
-                            <option value="Acknowledge Slip">Acknowledge Slip</option>
-                            <option value="Consent Letter">Consent Letter</option>
-                            <option value="Headlease">Headlease</option>
-                            <option value="Indenture">Indenture</option>
-                            <option value="Plotted Indenture">Plotted Indenture</option>
-                            <option value="Power of Attorney">Power of Attorney</option>
-                            <option value="Letters of Administration">Letters of Administration</option>
-                            <option value="Judgement">Judgement</option>
-                             <option value="Inspection Report">Inspection Report</option>
-                        <!-- </optgroup>
-                        <optgroup label="Company Documents"> -->
-                            <option value="Company Certificate">Company Certificate</option>
-                        <!-- </optgroup>
-                        <optgroup label="Property Documents"> -->
-                            <option value="Site Plan">Site Plan</option>
-                            <option value="Hatched Site Plan">Hatched Site Plan</option>
-                        <!-- </optgroup>
-                        <optgroup label="Financial Documents"> -->
-                            <option value="Receipts">Receipts</option>
-                        <!-- </optgroup>
-                        <optgroup label="Other Documents"> -->
-                            <option value="Others">Other Documents</option>
-                        <!-- </optgroup> -->
+                        <option value="Birth Certificate">Birth Certificate</option>
+                        <option value="Identification Card">Identification Card</option>
+                        <option value="Statutory Declaration">Statutory Declaration</option>
+                        <option value="Acknowledge Slip">Acknowledge Slip</option>
+                        <option value="Consent Letter">Consent Letter</option>
+                        <option value="Headlease">Headlease</option>
+                        <option value="Indenture">Indenture</option>
+                        <option value="Plotted Indenture">Plotted Indenture</option>
+                        <option value="Power of Attorney">Power of Attorney</option>
+                        <option value="Letters of Administration">Letters of Administration</option>
+                        <option value="Judgement">Judgement</option>
+                        <option value="Inspection Report">Inspection Report</option>
+                        <option value="Concurrence Certificate">Concurrence Certificate</option>
+                        <option value="Consent Certificate">Consent Certificate</option>
+                        <option value="Certificate">Certificate</option>
+                        <option value="Company Certificate">Company Certificate</option>
+                        <option value="Site Plan">Site Plan</option>
+                        <option value="Hatched Site Plan">Hatched Site Plan</option>
+                        <option value="Receipts">Receipts</option>
+                        <option value="Others">Other Documents</option>
                     </select>
                     <div class="form-text">
                         <i class="bi bi-info-circle me-1"></i>

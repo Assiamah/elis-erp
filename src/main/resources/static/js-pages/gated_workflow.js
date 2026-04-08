@@ -25332,8 +25332,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (result.isConfirmed) {
                 const response = result.value;
                 console.log('Confirmation response:', response);
-                
-                const isSuccess = response.success;
+                const jsonp = JSON.parse(response);
+                const isSuccess = jsonp.success;
                 
                 if (isSuccess) {
                     // Show success message
@@ -25346,7 +25346,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <h5 class="mb-2">Noting Confirmed</h5>
                                 <p class="text-muted">Parcel noting has been successfully confirmed</p>
                                 
-                                <div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                <!--<div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-certificate me-2"></i>
                                         <div>
@@ -25356,7 +25356,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 
                                 <div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
                                     <div class="d-flex align-items-center">
@@ -25395,7 +25395,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <h5 class="mb-2">Unable to Confirm Noting</h5>
                                 <p class="text-muted">The system encountered an error while processing your request</p>
                                 
-                                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                <!--<div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-exclamation-triangle me-2"></i>
                                         <div>
@@ -25405,7 +25405,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 
                                 <div class="alert alert-warning mt-3">
                                     <i class="fas fa-lightbulb me-2"></i>

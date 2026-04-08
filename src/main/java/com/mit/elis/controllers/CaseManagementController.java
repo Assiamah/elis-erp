@@ -5192,8 +5192,8 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 						transaction_details_obj.get("date_of_first_payment").toString());
 				request.setAttribute("outstanding_rent", transaction_details_obj.get("outstanding_rent").toString());
 				request.setAttribute("remark_or_comment", transaction_details_obj.get("remark_or_comment").toString());
-				request.setAttribute("date_of_registration",
-						transaction_details_obj.get("date_of_registration").toString());
+				request.setAttribute("date_of_registration", transaction_details_obj.get("date_of_registration").toString());
+				request.setAttribute("time_of_registration", transaction_details_obj.get("time_of_registration").toString());
 				request.setAttribute("case_status", transaction_details_obj.get("case_status").toString());
 
 				request.setAttribute("stool_family_name", transaction_details_obj.get("stool_family_name").toString());
