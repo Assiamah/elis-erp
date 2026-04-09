@@ -1374,13 +1374,13 @@ public class GenerateCaseReports {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 						
-							transaction_number, job_number, type_of_certificate,
+							transaction_number, job_number, 
 							files_pdf_jackets_p);
 				} else if (business_process_sub_name.equals("APPLICATION FOR PART TRANSFER")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 						
-							transaction_number, job_number, type_of_certificate,
+							transaction_number, job_number, 
 							files_pdf_jackets_p);
 				} else if (business_process_sub_name.equals("APPLICATION FOR DEED REGISTRATION")) {
 					buffer = case_reports_cl.create_deeds_certificate_typed(cls_url_config.getWeb_service_url_ser(),
@@ -1410,7 +1410,7 @@ public class GenerateCaseReports {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 							
-							transaction_number, job_number, type_of_certificate,
+							transaction_number, job_number, 
 							files_pdf_jackets_p);
 
 				}
@@ -2246,7 +2246,7 @@ public class GenerateCaseReports {
 
 				buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
-						case_number, type_of_certificate,
+						case_number,
 						job_number, files_pdf_jackets_p);
 
 			} catch (SQLException e) {
@@ -2264,39 +2264,39 @@ public class GenerateCaseReports {
 
 		//byte[] buffer = null;
 			
-		JSONObject pdf_upload_obj = new JSONObject();
-		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+	// 	JSONObject pdf_upload_obj = new JSONObject();
+	// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
 
 
-		pdf_upload_obj.put("jobNumber", job_number);
-		pdf_upload_obj.put("caseNumber",case_number);
-		pdf_upload_obj.put("fileData",base64Encoded);
+	// 	pdf_upload_obj.put("jobNumber", job_number);
+	// 	pdf_upload_obj.put("caseNumber",case_number);
+	// 	pdf_upload_obj.put("fileData",base64Encoded);
 			
-		pdf_upload_obj.put("doc_name",job_number);
-		pdf_upload_obj.put("doc_description","Land Certificate");
-		pdf_upload_obj.put("doc_category","case_docs");
-		pdf_upload_obj.put("doc_app_uploaded","elis");
-		pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
-		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
-		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+	// 	pdf_upload_obj.put("doc_name",job_number);
+	// 	pdf_upload_obj.put("doc_description","Land Certificate");
+	// 	pdf_upload_obj.put("doc_category","case_docs");
+	// 	pdf_upload_obj.put("doc_app_uploaded","elis");
+	// 	pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+	// 	pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+	// 	pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
 		
 
-                                                        // 1. Get size in bytes
-                            long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+    //                                                     // 1. Get size in bytes
+    //                         long sizeInBytes = buffer.length;
+    //                         System.out.println("Size in bytes: " + sizeInBytes);
 
-                            // 2. Human-readable format (KB, MB, GB...)
-                            String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+    //                         // 2. Human-readable format (KB, MB, GB...)
+    //                         String humanReadable = formatFileSize(sizeInBytes);
+    //                         System.out.println("Human readable: " + humanReadable);
                                     
-                        pdf_upload_obj.put("doc_file_size",humanReadable);
-                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
-                        pdf_upload_obj.put("doc_version",1);
-                        pdf_upload_obj.put("doc_type","Portable Document Format");
+    //                     pdf_upload_obj.put("doc_file_size",humanReadable);
+    //                     pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+    //                     pdf_upload_obj.put("doc_version",1);
+    //                     pdf_upload_obj.put("doc_type","Portable Document Format");
 			
 
-	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
-	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+	//  String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	//  cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
 
 		if (buffer != null) {
 			// Set response content type to PDF
@@ -2507,49 +2507,49 @@ public class GenerateCaseReports {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 					
-					transaction_number, job_number, type_of_certificate,
+					transaction_number, job_number, 
 					files_pdf_jackets_p);
 				} else if (cert_type.equals("LEASEHOLD")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 							
-							transaction_number, job_number, type_of_certificate,
+							transaction_number, job_number,
 							files_pdf_jackets_p);
 				} else if (cert_type.equals("COMPANY ASSIGNMENT")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 						
-							transaction_number, job_number, type_of_certificate,
+							transaction_number, job_number, 
 							files_pdf_jackets_p);
 				} else if (cert_type.equals("COMPANY LEASEHOLD")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 					
-					transaction_number, job_number, type_of_certificate,
+					transaction_number, job_number, 
 					files_pdf_jackets_p);
 				} else if (cert_type.equals("FREEHOLD")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 					
-					transaction_number, job_number, type_of_certificate,
+					transaction_number, job_number,
 					files_pdf_jackets_p);
 				} else if (cert_type.equals("CASDASTRAL LEASE")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 					
-					transaction_number, job_number, type_of_certificate,
+					transaction_number, job_number, 
 					files_pdf_jackets_p);
 				} else if (cert_type.equals("CASDASTRAL ASSIGNMENT")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 					
-					transaction_number, job_number, type_of_certificate,
+					transaction_number, job_number,
 					files_pdf_jackets_p);
 				} else if (cert_type.equals("CASDASTRAL FREEHOLD")) {
 					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
 					
-					transaction_number, job_number, type_of_certificate,
+					transaction_number, job_number, 
 					files_pdf_jackets_p);
 				} else if (cert_type.equals("CONCURRENCE")) {
 					buffer = case_reports_cl.create_concurrence_certificate_typed(cls_url_config.getWeb_service_url_ser(),
@@ -2755,6 +2755,8 @@ public class GenerateCaseReports {
 
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
+			String business_process_sub_name = request.getParameter("business_process_sub_name");
+			
 			System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
@@ -2779,11 +2781,23 @@ public class GenerateCaseReports {
 			try {
 				// buffer = case_reports_cl.create_primeval_report(case_nuiimber,
 				// files_pdf_jackets_p);
-				buffer = case_reports_cl.create_generate_memo_for_certificate(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
-						case_number,
-						job_number,
-						session.getAttribute("fullname").toString(), files_pdf_jackets_p);
+				
+						if (business_process_sub_name.equals("APPLICATION FOR DISCHARGE")) {
+							buffer = case_reports_cl.create_generate_discharge_memo_for_certificate(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+							case_number,
+							job_number,
+							session.getAttribute("fullname").toString(), files_pdf_jackets_p);
+						}
+						else{
+							buffer = case_reports_cl.create_generate_memo_for_certificate(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+							case_number,
+							job_number,
+							session.getAttribute("fullname").toString(), files_pdf_jackets_p);
+
+						}
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

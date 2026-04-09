@@ -12544,6 +12544,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var job_number = $("#cs_main_job_number").val();
         var case_number = $("#cs_main_case_number").val();
         var transaction_number = $("#cs_main_transaction_number").val();
+        var business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+              	
         
         $.ajax({
             type: "POST",
@@ -12552,7 +12554,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 request_type: 'request_to_generate_memo',
                 job_number:job_number,
                 case_number:transaction_number,
-                transaction_number:transaction_number
+                transaction_number:transaction_number,
+                business_process_sub_name:business_process_sub_name,
             },
             cache: false,
             xhrFields: {
