@@ -1386,14 +1386,29 @@
                                                     <td>${mother_to_child_link_row.mc_type_of_relationship}</td>
                                                     <td>${mother_to_child_link_row.created_date}</td>
                                                     <td>
-                                                        <button type="button"  
-                                                            data-job_number="${mother_to_child_link_row.mc_job_number}" 
-                                                            data-case_number="${mother_to_child_link_row.mc_case_number}" 
-                                                            data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
-                                                            class="btn btn-sm btn-warning btn-view-mother-Child-details"
-                                                        >
-                                                            <i class="fas fa-eye"></i>
-                                                        </button> 
+                                                        <c:choose>
+                                                            <c:when test="${not empty business_process_sub_name and fn:containsIgnoreCase(business_process_sub_name, 'deed')}">
+                                                                <button type="button"  
+                                                                    data-job_number="${mother_to_child_link_row.mc_job_number}" 
+                                                                    data-case_number="${mother_to_child_link_row.mc_case_number}" 
+                                                                    data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
+                                                                    class="btn btn-sm btn-warning btn-view-mother-Child-details-deed"
+                                                                >
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button> 
+                                                            </c:when>
+
+                                                            <c:otherwise>
+                                                                <button type="button"  
+                                                                    data-job_number="${mother_to_child_link_row.mc_job_number}" 
+                                                                    data-case_number="${mother_to_child_link_row.mc_case_number}" 
+                                                                    data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
+                                                                    class="btn btn-sm btn-warning btn-view-mother-Child-details"
+                                                                >
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button> 
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

@@ -3816,6 +3816,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 modalType = 'encumbrance';
             }
 
+            if (accordionId.includes('valuation')) {
+                modalType = 'valuation';
+            }
+
+            if (accordionId.includes('certificate')) {
+                modalType = 'certificate';
+            }
+
+            if (accordionId.includes('transaction')) {
+                modalType = 'transaction';
+            }
+
             if (accordionId.includes('addeditpartyGeneral')) {
                 modalType = 'addeditpartyGeneral';
             }
@@ -3827,6 +3839,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (accordionId.includes('further_entry')) {
                 modalType = 'further_entry';
             }
+
+            if (accordionId.includes('enter_transaction_details_for_deed')) {
+                modalType = 'enter_transaction_details_for_deed';
+            }
+
+            if (accordionId.includes('generate_concurrence_certificate')) {
+                modalType = 'generate_concurrence_certificate';
+            }
+
         }
         
         const previewContentId = `rotPreviewContent_${modalType}`;
@@ -22712,13 +22733,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // SweetAlert2 confirmation
         Swal.fire({
-            title: 'Generate File Number?',
-            text: "Are you sure you want to generate a new file number?",
+            title: 'Update File Number?',
+            text: "Are you sure you want to update file number?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, generate it!',
+            confirmButtonText: 'Yes, update it!',
             cancelButtonText: 'Cancel',
             showLoaderOnConfirm: true,
             preConfirm: () => {

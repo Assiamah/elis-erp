@@ -271,17 +271,11 @@
 					</small>
 				</div>
 
-                <div class="d-flex align-items-center mb-3 mt-4">
+                <!-- <div class="d-flex align-items-center mb-3 mt-4">
                     <h6 class="fw-semibold text-primary mb-0">
                         <i class="bi bi-card-text me-2"></i>
                         Application Minutes
                     </h6>
-                    <!-- <span class="ms-auto">
-                        <button class="btn btn-sm btn-danger" id="btn_compose_concurrence_certificate_template">
-                            <i class="bi bi-pencil-square me-1"></i>
-                            Compose Template
-                        </button>
-                    </span> -->
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -327,7 +321,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> -->
 			</div>
 			
 			<div class="modal-footer bg-light">
@@ -1673,7 +1667,7 @@
             <span class="input-group-text">
               <i class="fas fa-file"></i>
             </span>
-            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_file_number_up" placeholder="Enter new file number" value="${file_number}" />
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_file_number_up" placeholder="Enter file number" value="${file_number}" />
           </div>
         </div>
         

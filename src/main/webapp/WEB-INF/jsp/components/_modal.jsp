@@ -3582,6 +3582,7 @@
                             <option value="Letters of Administration">Letters of Administration</option>
                             <option value="Judgement">Judgement</option>
                              <option value="Inspection Report">Inspection Report</option>
+                              <option value="Certificate">Certificate</option>
                         <!-- </optgroup>
                         <optgroup label="Company Documents"> -->
                             <option value="Company Certificate">Company Certificate</option>
