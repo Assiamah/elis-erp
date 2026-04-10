@@ -31,7 +31,7 @@
         <!-- End::page-header -->
 
         <!-- Start::row-1 -->
-        <div class="row">
+        <!-- <div class="row">
             <c:if test="${published_but_not_worked_on > 0}">
                 <div class="col-xl-6 col-md-6">
                     <div class="card custom-card bg-danger-transparent border-0 shadow-none" 
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </c:if>
-        </div>
+        </div> -->
 
         <!-- Publication Tabs -->
         <div class="row">

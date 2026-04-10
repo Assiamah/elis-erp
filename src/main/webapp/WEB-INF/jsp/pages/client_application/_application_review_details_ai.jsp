@@ -1766,17 +1766,70 @@
                         Swal.close();
                         
                         if (json_result.success) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Step approved successfully',
-                                icon: 'success',
-                                confirmButtonText: 'OK',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                willClose: () => {
-                                    location.reload();
-                                }
-                            });
+
+                            if (json_result.operation_type == 'lrd_initial_approval' && json_result.msg == 'Application has been move to Awaiting Punlication') {
+                                // Swal.fire({
+                                //     title: '',
+                                //     text: 'Application has been moved to Awaiting Publication',
+                                //     icon: 'warning',
+                                //     confirmButtonText: 'OK'
+                                // });
+
+                                Swal.fire({
+                                    title: 'Success!',
+                                    html: `
+                                        <div class="text-center">
+                                            <i class="fas fa-calendar-alt fa-4x text-primary mb-3"></i>
+                                            <p class="mb-2"><strong>Application processing has been completed</strong></p>
+                                            
+                                            <div class="alert bg-light border-0 rounded-3 p-3 mt-3">
+                                                <div class="d-flex align-items-start gap-2">
+                                                    <i class="fas fa-info-circle text-primary mt-1"></i>
+                                                    <div class="text-start small">
+                                                        <strong>Publication Timeline:</strong>
+                                                        <ul class="mb-0 mt-1 ps-3">
+                                                            <li>14 days publication period required</li>
+                                                            <li>Application will remain in <span class="badge bg-warning text-dark">Awaiting Publication</span> status</li>
+                                                            <li>After 14 days of publication, application automatically moves to <span class="badge bg-success">Completed Request</span> in the unit case.</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!--<p class="text-muted small mt-3 mb-0">
+                                                <i class="fas fa-hashtag me-1"></i>
+                                                <strong>${jobNumber || 'Application'}</strong> has been moved to 
+                                                <span class="fw-semibold text-warning">Awaiting Publication</span>
+                                            </p>-->
+                                            <!--<p class="text-muted small">
+                                                <i class="fas fa-hourglass-half me-1"></i>
+                                                Publication countdown: <strong>14 days</strong> remaining
+                                            </p>-->
+                                        </div>
+                                    `,
+                                    icon: 'success',
+                                    confirmButtonText: '<i class="fas fa-arrow-right me-2"></i> Proceed',
+                                    confirmButtonColor: '#0d6efd',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false
+                                }).then(() => {
+                                    // Redirect after successful completion
+                                    window.location.href = "/case_movement_module";
+                                });
+
+                            } else {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Step approved successfully',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    willClose: () => {
+                                        location.reload();
+                                    }
+                                });
+                            }
                         } else {
                             Swal.fire({
                                 title: 'Failed!',

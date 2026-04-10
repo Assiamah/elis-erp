@@ -446,9 +446,9 @@ $(document).ready(function() {
     
     // Get the list of agencies
      var agencies = [
-        { email: '', name: 'Daily Graphic', icon: '📰' },
-        { email: '', name: 'The Spectator', icon: '📰' },
-        { email: '', name: 'Ghanaian Times', icon: '📰' },
+        { email: '', name: 'Email', icon: '@' },
+        // { email: '', name: 'The Spectator', icon: '📰' },
+        // { email: '', name: 'Ghanaian Times', icon: '📰' },
     ];
     
     // Build agency options for the modal
@@ -532,9 +532,9 @@ $(document).ready(function() {
                         
                         <!-- Agency Selection Grid -->
                         <div class="agency-selection-container mb-4">
-                            <label class="form-label fw-bold mb-3">
+                            <!--<label class="form-label fw-bold mb-3">
                                 <i class="fas fa-building me-2"></i>Available Agencies
-                            </label>
+                            </label>-->
                             <div class="row g-3">
                                 ${agencyOptions}
                             </div>
@@ -1184,9 +1184,9 @@ function processSpecialPublication(send_to_address, agencyName) {
     
     // Get the list of agencies (you can populate this from a database or keep static)
     var agencies = [
-        { email: '', name: 'Daily Graphic', icon: '📰' },
-        { email: '', name: 'The Spectator', icon: '📰' },
-        { email: '', name: 'Ghanaian Times', icon: '📰' },
+        { email: '', name: 'Email', icon: '@' },
+        // { email: '', name: 'The Spectator', icon: '📰' },
+        // { email: '', name: 'Ghanaian Times', icon: '📰' },
     ];
     
     // Build agency options for the modal
@@ -1269,9 +1269,9 @@ function processSpecialPublication(send_to_address, agencyName) {
                         
                         <!-- Agency Selection -->
                         <div class="agency-selection-container mb-4">
-                            <label class="form-label fw-bold mb-3">
+                            <!--<label class="form-label fw-bold mb-3">
                                 <i class="fas fa-building me-2"></i>Available Agencies
-                            </label>
+                            </label>-->
                             <div class="row g-3">
                                 ${agencyOptions}
                             </div>
@@ -1282,7 +1282,7 @@ function processSpecialPublication(send_to_address, agencyName) {
                             <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
                             <div>
                                 <strong>Important Note</strong><br>
-                                Once sent, the applications will be marked as published and cannot be modified.
+                                Once sent, the applications will be moved to awaiting publication date and cannot be modified.
                             </div>
                         </div>
                     </div>

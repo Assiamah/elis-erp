@@ -6930,3 +6930,22 @@ $('#am_to_unit').on('change', function() {
         }
     });
 });
+
+$(document).on('click', '#btnMoveToInspection', function (e) {
+
+    $("#askForPurposeOfSendingRequest").modal('show')
+    $("#batchedApplicationsModal").modal('hide')
+
+    $('#req_job_number').val($(e.currentTarget).data('job_number'));
+    $('#req_ar_name').val($(e.currentTarget).data('ar_name'));
+    $('#req_business_process_sub_name').val($(e.currentTarget).data('business_process_sub_name'));
+    $('#req_locality').val($(e.currentTarget).data('locality'));
+
+    var options = $("#req_job_purpose");
+    options.empty();
+    options.append(new Option("-- select Purpose --", 0));
+
+    $('#req_job_purpose').append(
+        '<option value="GeneralWorkRequest">General Work Request</option>'
+    );
+});
