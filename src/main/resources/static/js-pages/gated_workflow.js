@@ -22653,13 +22653,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // SweetAlert2 confirmation
         Swal.fire({
-            title: 'Update File Number?',
-            text: "Are you sure you want to update with a new file number?",
+            title: 'Generate File Number?',
+            text: "Are you sure you want to generate with a new file number?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, update it!',
+            confirmButtonText: 'Yes, Generate it!',
             cancelButtonText: 'Cancel',
             showLoaderOnConfirm: true,
             preConfirm: () => {
@@ -24363,155 +24363,155 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    $("#generate_file_number").on("show.bs.modal", function (event) {
-        $.ajax({
-            type: "POST",
-            url: "Case_Management_Serv",
-            data: {
-                request_type: 'load_get_file_number_format_per_region',
-            },
-            cache: false,
-            beforeSend: function () {
-                // Show loading state in select dropdown
-                $("#lc_txt_file_number_type").html(`
-                    <option disabled selected value="">-- loading... --</option>
-                `).prop('disabled', true);
+    // $("#generate_file_number").on("show.bs.modal", function (event) {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "Case_Management_Serv",
+    //         data: {
+    //             request_type: 'load_get_file_number_format_per_region',
+    //         },
+    //         cache: false,
+    //         beforeSend: function () {
+    //             // Show loading state in select dropdown
+    //             $("#lc_txt_file_number_type").html(`
+    //                 <option disabled selected value="">-- loading... --</option>
+    //             `).prop('disabled', true);
                 
-                // Also disable generate button while loading
-                $("#lc_btn_generate_file_number_only").prop('disabled', true);
-            },
-            success: function(serviceresponse) {
-                if (!serviceresponse) {
-                    return;
-                }
-                try {
-                    var json_p = JSON.parse(serviceresponse);
-                  //  console.log(json_p);
+    //             // Also disable generate button while loading
+    //             $("#lc_btn_generate_file_number_only").prop('disabled', true);
+    //         },
+    //         success: function(serviceresponse) {
+    //             if (!serviceresponse) {
+    //                 return;
+    //             }
+    //             try {
+    //                 var json_p = JSON.parse(serviceresponse);
+    //               //  console.log(json_p);
                     
-                    // Get the select element
-                    var selectElement = $("#lc_txt_file_number_type");
+    //                 // Get the select element
+    //                 var selectElement = $("#lc_txt_file_number_type");
                     
-                    // Clear existing options
-                    selectElement.empty();
+    //                 // Clear existing options
+    //                 selectElement.empty();
                     
-                    // Add default disabled option
-                    selectElement.html('<option disabled selected value="">-- select --</option>');
+    //                 // Add default disabled option
+    //                 selectElement.html('<option disabled selected value="">-- select --</option>');
                     
-                    // Check if data exists - FIXED: Check json_p.success directly
-                    if (json_p.success && json_p.data && json_p.data.length > 0) {
-                        // Enable the select
-                        selectElement.prop('disabled', false);
+    //                 // Check if data exists - FIXED: Check json_p.success directly
+    //                 if (json_p.success && json_p.data && json_p.data.length > 0) {
+    //                     // Enable the select
+    //                     selectElement.prop('disabled', false);
                         
-                        // Loop through data and add options
-                        $.each(json_p.data, function(index, item) {
-                            var optionText = '';
+    //                     // Loop through data and add options
+    //                     $.each(json_p.data, function(index, item) {
+    //                         var optionText = '';
                             
-                            // Build option text based on available fields
-                            if (item.type_pvlmd_number && item.prefix) {
-                                // Format: FAMILY_LAND (KD30)
-                                optionText = item.type_pvlmd_number.replace(/_/g, ' ') + ' (' + item.prefix + ')';
-                            } else if (item.type_pvlmd_number) {
-                                optionText = item.type_pvlmd_number.replace(/_/g, ' ');
-                            } else if (item.prefix) {
-                                optionText = item.prefix;
-                            } else {
-                                optionText = 'Option ' + (index + 1);
-                            }
+    //                         // Build option text based on available fields
+    //                         if (item.type_pvlmd_number && item.prefix) {
+    //                             // Format: FAMILY_LAND (KD30)
+    //                             optionText = item.type_pvlmd_number.replace(/_/g, ' ') + ' (' + item.prefix + ')';
+    //                         } else if (item.type_pvlmd_number) {
+    //                             optionText = item.type_pvlmd_number.replace(/_/g, ' ');
+    //                         } else if (item.prefix) {
+    //                             optionText = item.prefix;
+    //                         } else {
+    //                             optionText = 'Option ' + (index + 1);
+    //                         }
                             
-                            // Add counter info if counter > 0
-                            if (item.counter && item.counter > 0) {
-                                optionText += ' [Next: ' + (item.counter + 1) + ']';
-                            }
+    //                         // Add counter info if counter > 0
+    //                         if (item.counter && item.counter > 0) {
+    //                             optionText += ' [Next: ' + (item.counter + 1) + ']';
+    //                         }
                             
-                            // Create option element
-                            var option = $('<option></option>')
-                                .val(item.id)
-                                .text(optionText);
+    //                         // Create option element
+    //                         var option = $('<option></option>')
+    //                             .val(item.id)
+    //                             .text(optionText);
                             
-                            // Store additional data as data attributes
-                            option.data('id', item.id)
-                                .data('type_pvlmd_number', item.type_pvlmd_number)
-                                .data('prefix', item.prefix)
-                                .data('counter', item.counter)
-                                .data('division_unit', item.division_unit)
-                                .data('region_code', item.region_code)
-                                .data('file_number_description', item.file_number_description);
+    //                         // Store additional data as data attributes
+    //                         option.data('id', item.id)
+    //                             .data('type_pvlmd_number', item.type_pvlmd_number)
+    //                             .data('prefix', item.prefix)
+    //                             .data('counter', item.counter)
+    //                             .data('division_unit', item.division_unit)
+    //                             .data('region_code', item.region_code)
+    //                             .data('file_number_description', item.file_number_description);
                             
-                            selectElement.append(option);
-                        });
+    //                         selectElement.append(option);
+    //                     });
                         
-                        // Enable generate button when an option is selected
-                        selectElement.off('change').on('change', function() {
-                            var selectedOption = $(this).find('option:selected');
-                            var hasSelection = $(this).val() && $(this).val() !== '';
+    //                     // Enable generate button when an option is selected
+    //                     selectElement.off('change').on('change', function() {
+    //                         var selectedOption = $(this).find('option:selected');
+    //                         var hasSelection = $(this).val() && $(this).val() !== '';
                             
-                            if (hasSelection) {
-                                $("#lc_btn_generate_file_number_only").prop('disabled', false);
+    //                         if (hasSelection) {
+    //                             $("#lc_btn_generate_file_number_only").prop('disabled', false);
                                 
-                                // Optional: Update status message
-                                var prefix = selectedOption.data('prefix');
-                                var type = selectedOption.data('type_pvlmd_number');
-                                if (type && prefix) {
-                                    $(".form-text .selected_file_number").html(`
-                                        Selected: ${type.replace(/_/g, ' ')} (${prefix}) - Click to generate file number
-                                    `);
-                                }
-                            } else {
-                                $("#lc_btn_generate_file_number_only").prop('disabled', true);
-                                $(".form-text .selected_file_number").html(`
-                                    Please select a file number type first
-                                `);
-                            }
-                        });
+    //                             // Optional: Update status message
+    //                             var prefix = selectedOption.data('prefix');
+    //                             var type = selectedOption.data('type_pvlmd_number');
+    //                             if (type && prefix) {
+    //                                 $(".form-text .selected_file_number").html(`
+    //                                     Selected: ${type.replace(/_/g, ' ')} (${prefix}) - Click to generate file number
+    //                                 `);
+    //                             }
+    //                         } else {
+    //                             $("#lc_btn_generate_file_number_only").prop('disabled', true);
+    //                             $(".form-text .selected_file_number").html(`
+    //                                 Please select a file number type first
+    //                             `);
+    //                         }
+    //                     });
                         
-                        // Trigger change event if there's a previously selected value
-                        if (selectElement.val() && selectElement.val() !== '') {
-                            selectElement.trigger('change');
-                        }
+    //                     // Trigger change event if there's a previously selected value
+    //                     if (selectElement.val() && selectElement.val() !== '') {
+    //                         selectElement.trigger('change');
+    //                     }
                         
-                    } else {
-                        // No data received
-                        selectElement.html('<option disabled selected value="">-- no data available --</option>')
-                            .prop('disabled', true);
-                        $("#lc_btn_generate_file_number_only").prop('disabled', true);
+    //                 } else {
+    //                     // No data received
+    //                     selectElement.html('<option disabled selected value="">-- no data available --</option>')
+    //                         .prop('disabled', true);
+    //                     $("#lc_btn_generate_file_number_only").prop('disabled', true);
                         
-                        // Update status message
-                        $(".form-text").html(`
-                            <i class="fas fa-exclamation-triangle text-warning me-1"></i>
-                            <span class="text-warning">No file number formats available</span>
-                        `);
-                    }
+    //                     // Update status message
+    //                     $(".form-text").html(`
+    //                         <i class="fas fa-exclamation-triangle text-warning me-1"></i>
+    //                         <span class="text-warning">No file number formats available</span>
+    //                     `);
+    //                 }
                     
-                } catch(e) {
-                    console.log(e);
-                    // Error handling
-                    var selectElement = $("#lc_txt_file_number_type");
-                    selectElement.html('<option disabled selected value="">-- error loading data --</option>')
-                        .prop('disabled', true);
-                    $("#lc_btn_generate_file_number_only").prop('disabled', true);
+    //             } catch(e) {
+    //                 console.log(e);
+    //                 // Error handling
+    //                 var selectElement = $("#lc_txt_file_number_type");
+    //                 selectElement.html('<option disabled selected value="">-- error loading data --</option>')
+    //                     .prop('disabled', true);
+    //                 $("#lc_btn_generate_file_number_only").prop('disabled', true);
                     
-                    // Show error message
-                    $(".form-text").html(`
-                        <i class="fas fa-exclamation-circle text-danger me-1"></i>
-                        <span class="text-danger">Error loading file number formats. Please try again.</span>
-                    `);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error:", error);
-                var selectElement = $("#lc_txt_file_number_type");
-                selectElement.html('<option disabled selected value="">-- connection error --</option>')
-                    .prop('disabled', true);
-                $("#lc_btn_generate_file_number_only").prop('disabled', true);
+    //                 // Show error message
+    //                 $(".form-text").html(`
+    //                     <i class="fas fa-exclamation-circle text-danger me-1"></i>
+    //                     <span class="text-danger">Error loading file number formats. Please try again.</span>
+    //                 `);
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error("AJAX Error:", error);
+    //             var selectElement = $("#lc_txt_file_number_type");
+    //             selectElement.html('<option disabled selected value="">-- connection error --</option>')
+    //                 .prop('disabled', true);
+    //             $("#lc_btn_generate_file_number_only").prop('disabled', true);
                 
-                // Show error message
-                $(".form-text").html(`
-                    <i class="fas fa-exclamation-circle text-danger me-1"></i>
-                    <span class="text-danger">Failed to load data. Please check your connection.</span>
-                `);
-            }
-        });
-    });
+    //             // Show error message
+    //             $(".form-text").html(`
+    //                 <i class="fas fa-exclamation-circle text-danger me-1"></i>
+    //                 <span class="text-danger">Failed to load data. Please check your connection.</span>
+    //             `);
+    //         }
+    //     });
+    // });
 
     // Save Certificate Button Handler
     $('#lc_btn_save_search_report_cs_rh').on('click', function(e) {
@@ -26825,5 +26825,135 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    $('#btn_load_scanned_public_documents_ts_deed').on('click', function(e) { 
+        loadTSPublicDocumentsDeed();
+    });
+
+    function loadTSPublicDocumentsDeed() {
+        const case_number = $("#certificateAndRegisterDetailsCaseNumber_deed").val();
+        const tableBody = $('#publicDocumentsTableBody_ts_d');
+        const loadingIndicator = $('#publicDocumentsLoading_deed');
+        
+        if (!case_number) {
+            showToast('Case number is required', 'danger');
+            return;
+        }
+        
+        // Show loading state
+        loadingIndicator.removeClass('d-none');
+        tableBody.html('<tr><td colspan="4" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary me-2"></div><small>Loading documents...</small></td></tr>');
+        
+        $.ajax({
+            type: "POST",
+            url: "LoadLRDJackets",
+            data: {
+                request_type: 'load_case_scanned_document_public_new',
+                case_number: case_number
+            },
+            cache: false,
+            success: function(serviceresponse) {
+                loadingIndicator.addClass('d-none');
+                
+                if(!serviceresponse) {
+                    tableBody.html('<tr id="tsNoPublicDocuments_d"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-folder-x fs-1 mb-2 d-block"></i><p class="mb-0">No documents found</p><small>Click "Add Documents" to upload documents</small></div></td></tr>');
+                    updateDocumentStatistics(0, 0, 0, 0);
+                    return;
+                }
+                
+                try {
+                    const json_p = JSON.parse(serviceresponse);
+                    let html = '';
+                    let totalDocs = 0;
+                    
+                    $(json_p).each(function () {
+                        totalDocs++;
+                        const docName = this.doc_description || 'Unnamed Document';
+                        const docUuid = this.doc_uuid || '#';
+                        const docType = this.doc_type || 'PDF';
+                        
+                        html += `
+                            <tr>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <!--<div class="form-check me-2">
+                                            <input class="form-check-input document-checkbox" type="checkbox" value="${docUuid}">
+                                        </div>
+                                        <div class="avatar avatar-xs bg-light-primary rounded-circle me-2">
+                                            <i class="bi bi-file-earmark"></i>
+                                        </div>-->
+                                        <div>
+                                            <a href="${docUuid}" class="link-post fw-semibold text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to preview">
+                                                ${docName}
+                                            </a>
+                                            <small class="text-muted d-block">
+                                                <i class="bi bi-calendar me-1"></i> ${this.upload_date || 'Date not available'}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="badge bg-info">
+                                        ${docType}
+                                    </span>
+                                </td>
+                                <!--<td class="align-middle text-center">
+                                    <span class="badge bg-secondary">.pdf</span>
+                                </td>-->
+                                <td class="align-middle text-center">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-preview-document" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview Document"
+                                                data-document-path="${docUuid}"
+                                                data-document-name="${docName}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <a href="${docUuid}" 
+                                        class="btn btn-outline-success btn-sm" 
+                                        download="${docName}"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <!--<button type="button" class="btn btn-outline-primary btn-sm btn-open-document"
+                                                data-document-path="${docUuid}">
+                                            <i class="bi bi-folder2-open"></i>
+                                        </button>-->
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableBody.html(html);
+                    
+                    // Update statistics
+                    updateDocumentStatistics(totalDocs, 0, totalDocs, 0);
+                    
+                    // Initialize tooltips for new elements
+                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                    tooltipTriggerList.map(function (tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                    });
+
+                    $('#tsNoPublicDocuments_d').addClass('d-none');
+                    
+                    // Show success message
+                    showToast(`Successfully loaded ${totalDocs} document(s)`, 'success');
+                    
+                } catch(e) {
+                    console.error('Error parsing document data:', e);
+                    tableBody.html('<tr id="tsNoPublicDocuments_d"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                    updateDocumentStatistics(0, 0, 0, 0);
+                    showToast('Error loading documents. Please try again.', 'danger');
+                }
+            },
+            error: function(xhr, status, error) {
+                loadingIndicator.addClass('d-none');
+                tableBody.html('<tr id="tsNoPublicDocuments_d"><td colspan="4" class="text-center py-4"><div class="text-muted"><i class="bi bi-exclamation-triangle fs-1 mb-2 d-block"></i><p class="mb-0">Error loading documents</p><small>Please try again</small></div></td></tr>');
+                updateDocumentStatistics(0, 0, 0, 0);
+                showToast('Error loading documents. Please try again.', 'danger');
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
 
 });
