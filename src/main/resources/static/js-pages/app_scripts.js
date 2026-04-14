@@ -4095,29 +4095,60 @@ $('#newQueryModal').on('show.bs.modal', function (event) {
 function populateEditMode(button, modal) {
     $("#qid").val(button.data('id'));
 
-    const normalizedCreatedDate = button.data('created_date').replace('|', '');
-    const createdDate = new Date(normalizedCreatedDate);
-    createdDate.setMinutes(createdDate.getMinutes() + 5);
-    const formattedCreatedDate = new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-    }).format(createdDate);
+    let formattedCreatedDate = '';
+    let formattedModifiedDate = '';
 
-    const normalizedModifiedDate = button.data('modified_date').replace('|', '');
-    const modifiedDate = new Date(normalizedModifiedDate);
-    modifiedDate.setMinutes(modifiedDate.getMinutes() + 5);
-    const formattedModifiedDate = new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-    }).format(modifiedDate);
+    try {
+        const createdRaw = button.data('created_date');
+
+        if (createdRaw) {
+            const normalizedCreatedDate = String(createdRaw).replace('|', '');
+            const createdDate = new Date(normalizedCreatedDate);
+
+            if (!isNaN(createdDate)) {
+                createdDate.setMinutes(createdDate.getMinutes() + 5);
+
+                formattedCreatedDate = new Intl.DateTimeFormat('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                }).format(createdDate);
+            } else {
+                console.warn('Invalid created_date:', createdRaw);
+            }
+        }
+    } catch (error) {
+        console.error('Error processing created_date:', error);
+    }
+
+    try {
+        const modifiedRaw = button.data('modified_date');
+
+        if (modifiedRaw) {
+            const normalizedModifiedDate = String(modifiedRaw).replace('|', '');
+            const modifiedDate = new Date(normalizedModifiedDate);
+
+            if (!isNaN(modifiedDate)) {
+                modifiedDate.setMinutes(modifiedDate.getMinutes() + 5);
+
+                formattedModifiedDate = new Intl.DateTimeFormat('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                }).format(modifiedDate);
+            } else {
+                console.warn('Invalid modified_date:', modifiedRaw);
+            }
+        }
+    } catch (error) {
+        console.error('Error processing modified_date:', error);
+    }
 
     // Populate fields from button data attributes
     $("#query_created_by").val(button.data('created_by') || '');
@@ -4573,8 +4604,11 @@ function populateQueryData(data) {
     $('#timelineStatusMarker').removeClass().addClass(`timeline-marker ${isActive ? 'bg-danger' : 'bg-success'}`);
 
     // Dates
-    const createdDate = formatDate(data.created_date);
-    const modifiedDate = formatDate(data.modified_date);
+    // const createdDate = formatDate(data.created_date);
+    // const modifiedDate = formatDate(data.modified_date);
+
+    const createdDate = data.created_date;
+    const modifiedDate = data.modified_date;
 
     $('#queryCreatedDateDisplay').text(createdDate);
     $('#queryCreatedDateDisplay2').text(createdDate);

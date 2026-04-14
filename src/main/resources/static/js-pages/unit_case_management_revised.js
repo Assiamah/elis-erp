@@ -2100,16 +2100,16 @@ function createQueryActions(item) {
     return `
         <div class="action-btn-group">
             <!-- Add to Batch Button -->
-            <button type="button" class="btn btn-sm btn-outline-primary add-to-batch"
+            <button type="button" class="btn btn-sm btn-outline-info add-to-batch"
                     data-bs-toggle="modal" data-bs-target="#askForPurposeOfBatching"
                     data-job_number="${item.job_number}"
                     data-ar_name="${item.ar_name}"
                     data-business_process_sub_name="${item.business_process_sub_name}">
-                <i class="ri-list-check"></i>
+                <i class="ri-add-line" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" title="Add to Batch"></i>
             </button>
             
             <!-- View/Edit Query Button -->
-            <button type="button" class="btn btn-sm btn-outline-info edit-query"
+            <button type="button" class="btn btn-sm btn-outline-danger edit-query"
                     data-bs-toggle="modal" data-bs-target="#newQueryModal"
                     data-action="edit"
                     data-id="${item.qid}"
@@ -2125,17 +2125,17 @@ function createQueryActions(item) {
                     data-modified_date="${item.modified_date || ''}"
                     data-general_reason="${item.query_general_reason || ''}"
                     data-attachment_required="${item.attachment_required || ''}">
-                <i class="ri-edit-line"></i>
+                <i class="ri-edit-line" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" title="Edit Query"></i>
             </button>
             
             <!-- Work Button -->
-            <form action="registration_application_progress_details" method="post" class="d-inline">
+            <form action="front_office_view_application" method="post" class="d-inline">
                 <input type="hidden" name="case_number" value="${item.transaction_number}">
-                <input type="hidden" name="transaction_number" value="${item.transaction_number}">
+                <input type="hidden" name="search_text" value="${item.case_number}">
                 <input type="hidden" name="job_number" value="${item.job_number}">
                 <input type="hidden" name="business_process_sub_name" value="${item.business_process_sub_name}">
-                <button type="submit" name="save" class="btn btn-sm btn-outline-danger">
-                    <i class="ri-folder-open-line"></i>
+                <button type="submit" name="save" class="btn btn-sm btn-outline-primary">
+                    <i class="ri-eye-line" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-primary" title="View Application"></i>
                 </button>
             </form>
         </div>
@@ -2224,6 +2224,11 @@ function initializeRespondedQueriesTable(dataSet) {
             
             // Initialize select all checkbox
             initializeCheckboxSelection();
+
+			// Reinitialize tooltips after a brief delay
+			setTimeout(function() {
+				window.initializeTooltips();
+			}, 50);
         },
         drawCallback: function() {
             // Reinitialize checkbox selection after draw
