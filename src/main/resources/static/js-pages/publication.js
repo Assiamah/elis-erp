@@ -1874,9 +1874,8 @@ function proceedWithPublication(send_to_address, agencyName) {
                                 
                                 $(json_p).each(function() {
                                     table.append("<tr><td>" + this.ar_name + "</td><td>" + this.ar_gender + "</td><td>" + this.ar_cell_phone + "</td><td>" + this.type_of_party + "</td>"
-                                        + '<td><p data-placement="top" title="Edit Party"> '
-                                        + '<button class="btn btn-secondary btn-icon-split" data-title="Edit" data-toggle="modal"'
-                                        + 'data-target="#addeditpartyGeneral"'
+                                        + '<td>'
+                                        + '<button class="btn btn-sm btn-danger addeditpartyGeneralBtn"'
                                         + 'data-target-id="' + this.ar_client_id
                                         + '" data-ar_name="' + this.ar_name
                                         + '" data-ar_gender="' + this.ar_gender
@@ -1892,7 +1891,7 @@ function proceedWithPublication(send_to_address, agencyName) {
                                         + '" data-ar_region="' + this.ar_region
                                         + '" data-ar_person_type="' + this.ar_person_type
                                         + '"> '
-                                        + '<span class="icon text-white-50"> <i class="fas fa-pen"></i></span> <span class="text">Edit</span> </button></p></td>'
+                                        + '<i class="ri-edit-box-line"></i></button></td>'
                                         + "</tr>");
                                 });
                             }
@@ -2465,4 +2464,32 @@ function proceedWithPublication(send_to_address, agencyName) {
 														$(this).prop('checked'));
 
 									});
+
+
+    $('.addeditpartyGeneralBtn').on('click', function(e) {
+        var party_id ='';
+        //get data-id attribute of the clicked element
+        var party_id = $(this).data('target-id');
+        //console.log("party_id=" + party_id); 
+        //populate the textbox
+        $('#party_id_gen').val(party_id);
+        
+        $("#party_ar_name_gen").val($(this).data('ar_name')); 
+        $("#party_ar_gender_gen").find('option[value="' + $(this).data('ar_gender') + '"]').prop('selected', true); 
+        $("#party_ar_cell_phone_gen").val($(this).data('ar_cell_phone'));
+        $("#party_ar_cell_phone2_gen").val($(this).data('ar_cell_phone2'));
+        $("#party_ar_nationality_gen").find('option[value="' + $(this).data('ar_nationality') + '"]').prop('selected', true); 
+        $("#party_ar_address_gen").val($(this).data('ar_address'));
+        $("#party_ar_tin_no_gen").val($(this).data('ar_tin_no')); 
+        $("#party_ar_id_type_gen").find('option[value="' + $(this).data('ar_id_type') + '"]').prop('selected', true); 
+        $("#party_ar_id_number_gen").val($(this).data('ar_id_number'));
+        $("#party_ar_type_of_party_gen").find('option[value="' + $(this).data('type_of_party') + '"]').prop('selected', true);  
+        $("#party_ar_location_gen").val($(this).data('ar_location')); 
+        $("#party_ar_district_gen").val($(this).data('ar_district'));
+        $("#party_ar_region_gen_gen").val($(this).data('ar_region')); 
+        $("#party_ar_person_type_gen").find('option[value="' + $(this).data('ar_person_type') + '"]').prop('selected', true); 
+
+        $('#addeditpartyGeneral').modal('show');
+        
+    });
 });

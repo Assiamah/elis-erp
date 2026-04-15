@@ -526,12 +526,12 @@
 </div>
 
 <!-- Edit Application Modal -->
-<div class="modal fade" id="edit_application_for_publication" tabindex="-1">
+<div class="modal fade modal-blur" id="edit_application_for_publication" tabindex="-1">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update Application Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white">Update Application Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -548,14 +548,11 @@
                                 </h2>
                                 <div id="collapseParties" class="accordion-collapse collapse show">
                                     <div class="accordion-body">
-                                        <button type="button" class="btn btn-primary btn-sm mb-3"
-                                                id="lrd_btn_add_parties"
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#addeditpartyGeneral">
+                                        <button type="button" class="btn btn-primary btn-sm mb-3 addeditpartyGeneralBtn">
                                             <i class="ri-user-add-line me-1"></i>Add Party
                                         </button>
                                         <div class="table-responsive">
-                                            <table class="table table-hover align-middle mb-0" 
+                                            <table class="table table-hover table-striped align-middle mb-0" 
                                                    id="party_details_datatable">
                                                 <thead class="table-light">
                                                     <tr>
@@ -566,7 +563,7 @@
                                                         <th width="100">Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody class="small">
                                                 </tbody>
                                             </table>
                                         </div>
@@ -583,7 +580,7 @@
                                         <i class="ri-file-list-line me-2"></i>Application Details
                                     </button>
                                 </h2>
-                                <div id="collapseDetails" class="accordion-collapse collapse">
+                                <div id="collapseDetails" class="accordion-collapse  collapse show">
                                     <div class="accordion-body">
                                         <form id="frmFurtherEntries_pm">
                                             <input type="hidden" id="main_service_id_fe" name="main_service_id_fe">

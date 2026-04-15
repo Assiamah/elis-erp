@@ -326,7 +326,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="case_number_on_tc" class="form-label">
-                                <i class="bi bi-123 me-1"></i>Case Name
+                                <i class="bi bi-123 me-1"></i>Case Number
                             </label>
                             <input class="form-control" id="case_number_on_tc"
                                 name="applicant_name_on_tc" type="text"
@@ -354,7 +354,7 @@
         <div class="modal-content border-0">
             <div class="modal-header bg-info text-white">
                 <h5 class="modal-title" id="CreateJobNumberModalExistingLabel">
-                    <i class="bi bi-file-earmark-arrow-up me-2"></i>Insert Existing Job and New Case Number
+                    <i class="bi bi-file-earmark-arrow-up me-2"></i>Insert Existing Job To Create New Case
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
