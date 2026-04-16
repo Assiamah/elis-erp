@@ -134,10 +134,11 @@
                                                 <th style="display: none">name</th>
 												<th style="display: none">Location</th>
 												<th style="display: none">Grantor</th>
-												<th style="display: none">Extent</th>
+												<th>Extent</th>
 												<th style="display: none">Type of Interest</th>
 												<th style="display: none">Registry Map</th>
 												<th style="display: none">Description</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -176,10 +177,33 @@
                                                     <td style="display: none">${appfiles.ar_name}</td>
 													<td style="display: none">${appfiles.locality}</td>
 													<td style="display: none">${appfiles.grantors_name}</td>
-													<td style="display: none">${appfiles.extent}</td>
+													<td>
+                                                        <span class="badge bg-light text-dark">${appfiles.extent}</span>
+                                                    </td>
 													<td style="display: none">${appfiles.type_of_interest}</td>
 													<td style="display: none">${appfiles.registry_mapref}</td>
 													<td style="display: none">${appfiles.parcel_description}</td>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="#" class="btn btn-sm btn-success" 
+                                                               data-bs-toggle="modal" data-bs-target="#edit_application_for_publication" data-job_number="${appfiles.job_number}">
+                                                                <i class="ri-edit-line me-1"></i>
+                                                            </a>
+                                                            <button type="button"
+                                                                    class="btn btn-sm btn-outline-success btn-load-special-publication d-none"
+                                                                    data-ar-name="${fn:escapeXml(appfiles.ar_name)}"
+                                                                    data-grantor-name="${fn:escapeXml(appfiles.grantors_name)}"
+                                                                    data-case-number="${fn:escapeXml(appfiles.case_number)}"
+                                                                    data-locality="${fn:escapeXml(appfiles.locality)}"
+                                                                    data-job-number="${fn:escapeXml(appfiles.job_number)}"
+                                                                    data-type-of-interest="${fn:escapeXml(appfiles.type_of_interest)}"
+                                                                    data-extent="${fn:escapeXml(appfiles.extent)}"
+                                                                    data-registry-mapref="${fn:escapeXml(appfiles.registry_mapref)}"
+                                                                    title="Load to Special Publication">
+                                                                <i class="ri-arrow-right-up-line me-1"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -224,6 +248,8 @@
                                                 <th>Applicant Name</th>
                                                 <th>Case Number</th>
                                                 <th>Application Type</th>
+                                                <th>GLPIN</th>
+                                                <th>Extent</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -259,6 +285,12 @@
                                                     </td>
                                                     <td>
                                                         <span class="small">${appfiles.business_process_sub_name}</span>
+                                                    </td>
+                                                     <td>
+                                                        <span class="badge bg-info">${appfiles.glpin}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark">${appfiles.extent}</span>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -378,7 +410,7 @@
 </div>
 
 <!-- Published But Not Worked On Modal -->
-<div class="modal fade" id="publishedButNotWorkedOnModal" tabindex="-1">
+<div class="modal fade modal-blur" id="publishedButNotWorkedOnModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -412,11 +444,13 @@
 </div>
 
 <!-- Add Old Case Modal -->
-<div class="modal fade" id="addOldCaseModal" tabindex="-1">
+<div class="modal fade modal-blur" id="addOldCaseModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Application to Publication List</h5>
+        <div class="modal-content border-0">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white">
+                    <i class="ri-add-line me-2"></i>Add Application to Publication List
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -530,7 +564,8 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content border-0">
             <div class="modal-header bg-primary">
-                <h5 class="modal-title text-white">Update Application Details</h5>
+                <h5 class="modal-title text-white">
+                    <i class="ri-edit-line me-2"></i>Update Application Details</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">

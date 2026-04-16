@@ -150,6 +150,76 @@ $(document).ready(function() {
     });
 
     // Handle search response
+    // async function handleSearchResponse(response) {
+    //     if (!response || response.trim() === '') {
+    //         await showAlert('No Results', 'No records found!', 'info');
+    //         return;
+    //     }
+
+    //     if (response.includes('no search type')) {
+    //         await showAlert(
+    //             'Invalid Reference',
+    //             'Reference Number has not been acknowledged or does not exist',
+    //             'warning'
+    //         );
+    //         return;
+    //     }
+
+    //     try {
+    //         $resultsSection.show();
+    //         $resultsTable.find('tbody').empty();
+            
+    //         const jsonData = JSON.parse(response);
+    //         const resultsCount = jsonData.length;
+
+    //         jsonData.forEach(item => {
+    //             const rowHtml = `
+    //                 <tr>
+    //                     <td>${item.ar_name || ''}</td>
+    //                     <td>${item.case_number || ''}</td>
+    //                     <td>${item.job_number || ''}</td>
+    //                     <td>${item.business_process_sub_name || ''}</td>
+    //                     <td>${item.glpin || ''}</td>
+    //                     <td>${item.locality || ''}</td>
+    //                     <td>${item.regional_number || ''}</td>
+    //                     <td>
+    //                         <div class="btn-group" role="group">
+    //                             <button class="btn btn-primary btn-sm" 
+    //                                     data-bs-toggle="modal" 
+    //                                     data-bs-target="#publicFileUploadModal" 
+    //                                     data-br_case_number="${item.case_number}">
+    //                                 <i class="fas fa-upload"></i> Upload
+    //                             </button>
+    //                             <button class="btn btn-warning btn-sm" 
+    //                                     data-bs-toggle="modal" 
+    //                                     data-bs-target="#publicViewFileModal" 
+    //                                     data-br_ar_name="${item.ar_name}"
+    //                                     data-br_case_number="${item.case_number}">
+    //                                 <i class="fas fa-eye"></i> View
+    //                             </button>
+    //                         </div>
+    //                     </td>
+    //                 </tr>
+    //             `;
+                
+    //             $resultsTable.find('tbody').append(rowHtml);
+    //         });
+
+    //         await showAlert(
+    //             'Search Complete',
+    //             `Found ${resultsCount} record(s). Use the Upload/View buttons to manage files for each case.`,
+    //             'success'
+    //         );
+    //     } catch (error) {
+    //         console.error('Error parsing response:', error);
+    //         await showAlert(
+    //             'Processing Error',
+    //             'Error processing search results. Please try again.',
+    //             'error'
+    //         );
+    //     }
+    // }
+
     async function handleSearchResponse(response) {
         if (!response || response.trim() === '') {
             await showAlert('No Results', 'No records found!', 'info');
@@ -166,13 +236,17 @@ $(document).ready(function() {
         }
 
         try {
-            $resultsSection.show();
-            $resultsTable.find('tbody').empty();
-            
             const jsonData = JSON.parse(response);
-            const resultsCount = jsonData.length;
+
+            let addedCount = 0;
+            let duplicatesCount = 0;
 
             jsonData.forEach(item => {
+                if (isDuplicateJobNumber(item.job_number)) {
+                    duplicatesCount++;
+                    return;
+                }
+
                 const rowHtml = `
                     <tr>
                         <td>${item.ar_name || ''}</td>
@@ -201,15 +275,32 @@ $(document).ready(function() {
                         </td>
                     </tr>
                 `;
-                
+
                 $resultsTable.find('tbody').append(rowHtml);
+                addedCount++;
             });
 
-            await showAlert(
-                'Search Complete',
-                `Found ${resultsCount} record(s). Use the Upload/View buttons to manage files for each case.`,
-                'success'
-            );
+            if (addedCount > 0) {
+                $resultsSection.show();
+
+                let message = `Added ${addedCount} new record(s).`;
+
+                if (duplicatesCount > 0) {
+                    message += ` Skipped ${duplicatesCount} duplicate(s).`;
+                }
+
+                await showAlert('Search Complete', message, 'success');
+
+            } else if (duplicatesCount > 0) {
+                await showAlert(
+                    'Duplicate Records',
+                    `All ${duplicatesCount} record(s) already exist.`,
+                    'info'
+                );
+            } else {
+                await showAlert('No Results', 'No valid records found!', 'info');
+            }
+
         } catch (error) {
             console.error('Error parsing response:', error);
             await showAlert(
@@ -219,6 +310,22 @@ $(document).ready(function() {
             );
         }
     }
+
+
+    // Helper function to check for duplicate job numbers
+    function isDuplicateJobNumber(jobNumber) {
+        let isDuplicate = false;
+        $resultsTable.find('tr').each(function() {
+            const existingJobNumber = $(this).find('td').eq(2).text().trim();
+            if (existingJobNumber === jobNumber) {
+                isDuplicate = true;
+                return false; // Break loop
+            }
+        });
+        return isDuplicate;
+    }
+
+    
 
     // Handle batch processing
     $processBtn.on('click', async function() {

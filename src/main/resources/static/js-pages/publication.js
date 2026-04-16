@@ -1,4 +1,79 @@
 $(document).ready(function() {
+    function parseExtentValue(extentText) {
+        if (!extentText) {
+            return 0;
+        }
+
+        var sanitizedExtent = String(extentText).replace(/,/g, '');
+        var extentMatch = sanitizedExtent.match(/-?\d+(\.\d+)?/);
+        return extentMatch ? parseFloat(extentMatch[0]) : 0;
+    }
+
+    function showSpecialPublicationTab() {
+        var specialTabButton = document.querySelector('#special-tab');
+
+        if (specialTabButton && window.bootstrap && bootstrap.Tab) {
+            bootstrap.Tab.getOrCreateInstance(specialTabButton).show();
+            return;
+        }
+
+        $('#special-tab').trigger('click');
+    }
+
+    function populateSpecialPublicationForm(applicationData) {
+        $("#sp_ar_name").val(applicationData.ar_name || '');
+        $("#sp_grantor_name").val(applicationData.grantor_name || '');
+        $("#sp_case_number").val(applicationData.case_number || '');
+        $("#sp_locality").val(applicationData.locality || '');
+        $("#sp_job_number").val(applicationData.job_number || '');
+        $("#sp_type_of_interest").val(applicationData.type_of_interest || '');
+        $("#sp_extent").val(applicationData.extent || '');
+        $("#sp_registry_mapref").val(applicationData.registry_mapref || '');
+        $('#btnActionsSP').show();
+        showSpecialPublicationTab();
+    }
+
+    $('.btn-load-special-publication').each(function() {
+        var extentValue = parseExtentValue($(this).data('extent'));
+        if (extentValue > 5) {
+            $(this).removeClass('d-none');
+        }
+    });
+
+    $(document).on('click', '.btn-load-special-publication', function() {
+        var $button = $(this);
+        var extentText = $button.data('extent');
+        var extentValue = parseExtentValue(extentText);
+
+        if (extentValue <= 5) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Special Publication Not Required',
+                text: 'Only applications with extent greater than 5 acres can be sent to Special Publication.',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        populateSpecialPublicationForm({
+            ar_name: $button.data('ar-name'),
+            grantor_name: $button.data('grantor-name'),
+            case_number: $button.data('case-number'),
+            locality: $button.data('locality'),
+            job_number: $button.data('job-number'),
+            type_of_interest: $button.data('type-of-interest'),
+            extent: extentText,
+            registry_mapref: $button.data('registry-mapref')
+        });
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Loaded!',
+            text: 'Application details loaded into Special Publication.',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
     
     $('#frmFindJobForPublication').on('submit', function(e) {
         e.preventDefault();
@@ -313,17 +388,16 @@ $(document).ready(function() {
             if (result.isConfirmed) {
                 $("#addOldCaseModal").modal("hide");
                 
-                $("#sp_ar_name").val($("#rs_ar_name").val());
-                $("#sp_grantor_name").val($("#rs_grantor_name").val());
-                $("#sp_case_number").val($("#rs_case_number").val());
-                $("#sp_locality").val($("#rs_locality").val());
-                $("#sp_job_number").val($("#rs_job_number").val());
-                $("#sp_type_of_interest").val($("#rs_type_of_interest").val());
-                $("#sp_extent").val($("#rs_extent").val());
-                $("#sp_registry_mapref").val($("#rs_registry_mapref").val());
-                
-                $('#specialPublicationList').tab('show');
-                $('#btnActionsSP').show();
+                populateSpecialPublicationForm({
+                    ar_name: $("#rs_ar_name").val(),
+                    grantor_name: $("#rs_grantor_name").val(),
+                    case_number: $("#rs_case_number").val(),
+                    locality: $("#rs_locality").val(),
+                    job_number: $("#rs_job_number").val(),
+                    type_of_interest: $("#rs_type_of_interest").val(),
+                    extent: $("#rs_extent").val(),
+                    registry_mapref: $("#rs_registry_mapref").val()
+                });
                 
                 Swal.fire({
                     icon: 'success',
@@ -1788,7 +1862,9 @@ function proceedWithPublication(send_to_address, agencyName) {
     $('#edit_application_for_publication').on('shown.bs.modal', function(e) {
         e.preventDefault();
         
-        var job_number = $("#job_search_value").val().toUpperCase();
+        //var job_number = $("#job_search_value").val().toUpperCase();
+        var job_number = $(e.relatedTarget).data('job_number') == undefined ? $("#job_search_value").val().toUpperCase() : $(e.relatedTarget).data('job_number');
+        //console.log(job_number)
 
         if (!(job_number.length >= 10)) {
             Swal.fire({
