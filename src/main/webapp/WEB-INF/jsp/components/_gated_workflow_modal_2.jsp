@@ -16,7 +16,7 @@
 <div class="modal fade effect-scale modal-blur" id="preview_memo" tabindex="-1"
      aria-labelledby="previewMemoModalLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg">
+    <div class="modal-content border-0 shadow-lg">   
       
       <!-- Modal Header -->
       <div class="modal-header bg-primary text-white">
