@@ -8096,7 +8096,8 @@ public class cls_casemgt_reports {
 			// client.close();
 
 		}
-	return out.toByteArray();
+		
+		return out.toByteArray();
 
 	}
 

@@ -937,10 +937,12 @@ public class CaseManagementController {
 
 			String all_list = applications_obj.get("ready_for_publication_list").toString();
 			String all_list2 = applications_obj.get("awaiting_publication_date_list").toString();
+			String all_list3 = applications_obj.get("publication_date_Set").toString();
 
 			Gson googleJson = new Gson();
 			ArrayList javaArrayListFromGSON = googleJson.fromJson(all_list, ArrayList.class);
 			ArrayList javaArrayListFromGSON2 = googleJson.fromJson(all_list2, ArrayList.class);
+			ArrayList javaArrayListFromGSON3 = googleJson.fromJson(all_list3, ArrayList.class);
 
 			// System.out.printf("ready_for_publication_list : " +
 			// javaArrayListFromGSON);
@@ -951,6 +953,7 @@ public class CaseManagementController {
 
 			request.setAttribute("ready_for_publication_list", javaArrayListFromGSON);
 			request.setAttribute("awaiting_publication_date_list", javaArrayListFromGSON2);
+			request.setAttribute("publication_date_Set", javaArrayListFromGSON3);
 			request.setAttribute("published_but_not_worked_on",
 					applications_obj.get("published_but_not_worked_on".toString()));
 			request.setAttribute("page_name", "publication_management");

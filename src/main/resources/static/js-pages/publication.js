@@ -163,6 +163,7 @@ $(document).ready(function() {
                 case_number: v_case_number
             },
             success: function(data) {
+                console.log(data)
                 try {
                     if (parseInt(data) === 1) {
                         Swal.fire({

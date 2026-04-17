@@ -175,6 +175,43 @@ public class MapsController {
 
 	}
 
+	@RequestMapping("/deed_data_capture")
+	@GetMapping
+	public String deed_data_capture(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// Check if user allowed for page
+		// HttpSession session = request.getSession();
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			//
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		request.setAttribute("page_name", "deed_data_capture");
+		model.addAttribute("content", "../pages/lrd_maps_templates/deed_data_capture.jsp"); return "layouts/app";
+
+	}
+
 	@RequestMapping("/lrd_transaction_search")
 	@PostMapping
 	public String lrd_transaction_search(HttpSession session, Model model, HttpServletRequest request,

@@ -10,6 +10,7 @@
 <%@ page import="org.codehaus.jettison.json.JSONException"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!-- Start::app-content -->
 <div class="main-content app-content">
@@ -90,7 +91,15 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link text-success" id="special-tab" data-bs-toggle="tab" 
+                                <button class="nav-link" id="published-date-set-tab" data-bs-toggle="tab" 
+                                        data-bs-target="#publishedDateSetList" type="button" role="tab">
+                                    <i class="ri-calendar-check-line me-1 align-middle"></i>
+                                    Publication Date Set
+                                    <span class="badge bg-info ms-2">${fn:length(publication_date_Set)}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="special-tab" data-bs-toggle="tab" 
                                         data-bs-target="#specialPublicationList" type="button" role="tab">
                                     <i class="ri-star-line me-1 align-middle"></i>
                                     Special Publication
@@ -299,7 +308,86 @@
                                 </div>
                             </div>
 
-                            <!-- Tab 3: Special Publication -->
+                            <div class="tab-pane fade mt-3" id="publishedDateSetList" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <h5 class="mb-0">Publication Date Set</h5>
+                                        <p class="text-muted small mb-0">Applications with publication date set</p>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0" id="publishedDataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="50">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="selectAll">
+                                                    </div>
+                                                </th>
+                                                <th>Job Number</th>
+                                                <th>Applicant Name</th>
+                                                <th>Case Number</th>
+                                                <th>Application Type</th>
+                                                <th>GLPIN</th>
+                                                <th>Extent</th>
+                                                <th>Publication Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${publication_date_Set}" var="appfiles" varStatus="applicationLoop">
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="fw-semibold text-primary">${appfiles.job_number}</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="me-2">
+                                                                <span class="avatar avatar-xs bg-light bg-opacity-10 rounded-circle">
+                                                                    <i class="ri-user-line text-muted"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="d-block fw-medium" 
+                                                                      data-bs-toggle="tooltip" 
+                                                                      title="${appfiles.ar_name}">
+                                                                    ${fn:substring(appfiles.ar_name, 0, 20)}
+                                                                    ${fn:length(appfiles.ar_name) > 20 ? '...' : ''}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark">${appfiles.case_number}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="small">${appfiles.business_process_sub_name}</span>
+                                                    </td>
+                                                     <td>
+                                                        <span class="badge bg-info">${appfiles.glpin}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark">${appfiles.extent}</span>
+                                                    </td>
+                                                    <td>
+                                                        <fmt:parseDate value="${appfiles.publicity_date}" pattern="yyyy-MM-dd" var="parsedDocumentDate"/>
+                                                        <fmt:formatDate value="${parsedDocumentDate}" pattern="dd MMM yyyy" var="formattedDocumentDate"/>
+                                                        <span class="small">${formattedDocumentDate}</span>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                            <!-- Tab 4: Special Publication -->
                             <div class="tab-pane fade mt-3" id="specialPublicationList" role="tabpanel">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div>
