@@ -373,6 +373,8 @@ public class cls_valueadded_services {
 				obj.put("password", password);
 				// jsonArr.put(obj);
 				String input = obj.toString();
+				//System.out.println(input);
+
 			Client client = Client.create();
 			WebResource webResource = client
 					.resource(web_service_url + "value_added_service/select_user_for_two_factor_verification");
