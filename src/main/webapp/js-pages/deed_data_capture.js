@@ -158,7 +158,7 @@
 
         setLookupStatus(
             'success',
-            '<strong>Application loaded.</strong> Step two is now ready for `review_documents`, `add_edit_parties`, and `further_entry`.'
+            '<strong>Application loaded.</strong> Step two is now ready for Upload Documents, Add/Edit Parties, and Further Entry Details.'
         );
     }
 
@@ -219,7 +219,20 @@
                     'warning',
                     '<strong>No application was found for this job number.</strong> Use the existing-job modal to create it, then the page will reload the new job automatically.'
                 );
-                openCreateExistingJobModal();
+
+                //swal fire to confirm and open the openCreateExistingJobModal;
+                swal.fire({
+                    title: 'No application was found',
+                    text: 'Creating a new job will open the existing-job modal. Are you sure you want to create a new job instead?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        openCreateExistingJobModal();
+                    }
+                });
             },
             error: function () {
                 setLookupStatus('danger', 'We could not verify the job number right now. Please try again.');

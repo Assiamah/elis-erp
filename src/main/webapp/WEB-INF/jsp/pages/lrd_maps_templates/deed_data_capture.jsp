@@ -125,6 +125,8 @@
 <div class="main-content app-content">
     <div class="container-fluid page-container">
 
+        <input type="hidden" id="is_deed_data_capture" value="true" />
+
         <div class="page-header-breadcrumb mb-3">
             <div class="d-flex align-center justify-content-between flex-wrap">
                 <div>
@@ -186,7 +188,7 @@
 
                         <div class="alert alert-light border d-none mb-3" id="deedLookupStatus"></div>
 
-                        <div class="deed-stage-locked" id="deedCreationPrompt">
+                        <!-- <div class="deed-stage-locked" id="deedCreationPrompt">
                             <div class="d-flex align-items-start gap-3">
                                 <div class="deed-icon bg-warning-subtle text-warning">
                                     <i class="bi bi-folder-plus"></i>
@@ -199,7 +201,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -279,7 +281,7 @@
                                     <i class="bi bi-file-earmark-arrow-up"></i>
                                 </div>
                                 <h5 class="mb-2">Upload Documents</h5>
-                                <p class="text-muted small mb-4">Open the `review_documents` modal to review existing uploads and add missing application or public documents.</p>
+                                <p class="text-muted small mb-4">Open the Upload Documents modal to review existing uploads and add missing application or public documents.</p>
                                 <button type="button" class="btn btn-primary w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#review_documents" data-action-name="review_documents">
                                     <i class="bi bi-folder2-open me-1"></i>Open Documents
                                 </button>
@@ -292,7 +294,7 @@
                                     <i class="bi bi-people"></i>
                                 </div>
                                 <h5 class="mb-2">Add/Edit Parties</h5>
-                                <p class="text-muted small mb-4">Open the `add_edit_parties` modal to capture or revise grantors, applicants and other parties for this job.</p>
+                                <p class="text-muted small mb-4">Open the Add/Edit Parties modal to capture or revise grantors, applicants and other parties for this job.</p>
                                 <button type="button" class="btn btn-success w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#add_edit_parties" data-action-name="add_edit_parties">
                                     <i class="bi bi-person-lines-fill me-1"></i>Open Parties
                                 </button>
@@ -305,7 +307,7 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </div>
                                 <h5 class="mb-2">Further Entry Details</h5>
-                                <p class="text-muted small mb-4">Open the `further_entry` modal to complete the additional deed entry details for the loaded application.</p>
+                                <p class="text-muted small mb-4">Open the Further Entry Details modal to complete the additional deed entry details for the loaded application.</p>
                                 <button type="button" class="btn btn-warning text-dark w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#further_entry" data-action-name="further_entry">
                                     <i class="bi bi-journal-richtext me-1"></i>Open Further Entry
                                 </button>

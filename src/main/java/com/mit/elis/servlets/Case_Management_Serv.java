@@ -8474,6 +8474,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				// System.out.println(list_of_application);
 
 				JSONObject obj = new JSONObject();
+				
 				obj.put("case_number", case_number);
 				obj.put("job_number", job_number);
 				obj.put("applicant_name", applicant_name);
