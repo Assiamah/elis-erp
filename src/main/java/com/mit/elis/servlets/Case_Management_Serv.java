@@ -8484,6 +8484,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("send_email", send_email);
 				obj.put("modified_by", modified_by);
 				obj.put("modified_by_id", modified_by_id);
+				obj.put("request_id", request_id);
 
 				// String batchlistdivison = obj.toString();
 
