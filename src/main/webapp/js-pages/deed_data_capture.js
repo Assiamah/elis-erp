@@ -108,9 +108,14 @@
         $('#deedLoadedLocality').text(locality);
         $('#deedLoadedStatus').text(status);
         $('#deedCurrentJobPill').text(jobNumber + (caseNumber !== '--' ? ' / ' + caseNumber : ''));
+
+
     }
 
     function syncJobContextToModals(record) {
+
+        console.log('syncJobContextToModals', record);
+
         const jobNumber = firstNonEmpty(record.job_number, $('#deed_job_number').val());
         const caseNumber = firstNonEmpty(record.case_number);
         const applicant = firstNonEmpty(record.ar_name, record.client_name, record.applicant_name);
@@ -129,6 +134,9 @@
         $('#fe_case_number').val(caseNumber);
         $('#fe_client_name').val(applicant);
         $('#fe_business_process_sub_name').val(subService);
+        $('#fe_transaction_number').val(firstNonEmpty(record.transaction_number, ''));
+        $('#fe_locality').val(firstNonEmpty(record.locality, record.location_name));
+        $('#fe_land_size').val(firstNonEmpty(record.land_size, ''));
 
         if ($('#job_number_on_tc_e').length && !$('#job_number_on_tc_e').val()) {
             $('#job_number_on_tc_e').val(jobNumber);
@@ -137,6 +145,9 @@
         if ($('#case_number_on_tc_e').length && !$('#case_number_on_tc_e').val()) {
             $('#case_number_on_tc_e').val(caseNumber);
         }
+
+        $('#application_file_upload_case_number').val(caseNumber);
+        $('#public_file_upload_case_number').val(caseNumber);
     }
 
     function applyLoadedJob(record) {
