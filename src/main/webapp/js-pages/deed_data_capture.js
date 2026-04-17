@@ -138,6 +138,10 @@
         $('#fe_locality').val(firstNonEmpty(record.locality, record.location_name));
         $('#fe_land_size').val(firstNonEmpty(record.land_size, ''));
 
+        $('#cs_main_transaction_number').val(firstNonEmpty(record.transaction_number, ''));
+        $('#cs_main_case_number').val(firstNonEmpty(record.case_number, ''));
+        $('#cs_main_job_number').val(firstNonEmpty(record.job_number, ''));
+
         if ($('#job_number_on_tc_e').length && !$('#job_number_on_tc_e').val()) {
             $('#job_number_on_tc_e').val(jobNumber);
         }

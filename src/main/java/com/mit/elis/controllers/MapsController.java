@@ -17,6 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import ws.casemgt.Ws_client_application;
 import ws.casemgt.cls_casemgt;
 import ws.maps.Ws_maps;
 
@@ -25,6 +26,8 @@ public class MapsController {
 
 	@Autowired
 	private Ws_url_config cls_url_config;
+
+	Ws_client_application user_web_service = new Ws_client_application();
 
 	@RequestMapping("/lrd_generation_of_ls_deed_numbers")
 	@GetMapping
@@ -206,6 +209,18 @@ public class MapsController {
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
+
+		String get_gender_list = user_web_service.get_list_of_gender(
+						cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key());
+				// web_service_response = get_gender_list;
+				// menu_obj_data = new JSONObject(get_gender_list);
+				// String all_menus_data = menu_obj_data.get("data").toString();
+				// System.out.println(all_menus_data);
+				Gson googleJson = new Gson();
+				ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
+
+				request.setAttribute("genderlist", javaArrayListFromGSON);
 
 		request.setAttribute("page_name", "deed_data_capture");
 		model.addAttribute("content", "../pages/lrd_maps_templates/deed_data_capture.jsp"); return "layouts/app";

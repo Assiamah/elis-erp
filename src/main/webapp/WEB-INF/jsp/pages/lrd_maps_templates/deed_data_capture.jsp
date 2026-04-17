@@ -126,6 +126,14 @@
     <div class="container-fluid page-container">
 
         <input type="hidden" id="is_deed_data_capture" value="true" />
+        <input class="form-control" type="hidden" id="cs_main_case_number" name="cs_main_case_number">
+		<input class="form-control" type="hidden" id="cs_main_job_number" name="cs_main_job_number" >
+        <input class="form-control" type="hidden" id="cs_main_business_process_id" >
+        <input class="form-control" type="hidden" id="cs_main_business_process_name" >
+        <input class="form-control" type="hidden" id="cs_main_business_process_sub_id" >
+        <input class="form-control" type="hidden" id="cs_main_business_process_sub_name">
+        <input class="form-control" type="hidden" id="cs_main_client_number">
+        <input class="form-control" type="hidden" id="cs_main_transaction_number" name="cs_main_transaction_number">
 
         <div class="page-header-breadcrumb mb-3">
             <div class="d-flex align-center justify-content-between flex-wrap">
