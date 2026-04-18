@@ -134,6 +134,26 @@ public class lrd_encumbrances_section_serv {
 				}
 			}
 
+			if (request_type.equals("select_lrd_encumbrances_section_delete_by_id")) {
+				String es_id = request.getParameter("es_id");
+				String target_element = request.getParameter("target_element");
+				JSONObject obj = new JSONObject();
+
+				obj.put("del_id", es_id);
+				obj.put("target_element", target_element);
+				// System.out.println(" testing action" + obj.toString());
+				web_service_response = lrd_encumbrances_section_cl
+						.select_lrd_encumbrances_section_delete_by_id(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(),
+								obj.toString());
+				if (web_service_response != null) {
+					// System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+			}
+
 			return web_service_response;
 
 		} catch (Exception e) {

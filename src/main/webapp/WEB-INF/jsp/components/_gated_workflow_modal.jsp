@@ -3629,7 +3629,8 @@
                                                     </td>
                                                     <td>${proprietorship_section.ps_term}</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-outline-primary btn-sm editProprietorshipModal"
+                                                      <div class="d-flex justify-content-center">
+                                                        <button class="btn btn-outline-primary btn-sm me-1 editProprietorshipModal ${proprietorship_section.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-target-id="${proprietorship_section.ps_id}"
                                                                 data-ps_id="${proprietorship_section.ps_id}"
                                                                 data-ps_case_number="${proprietorship_section.ps_case_number}"
@@ -3647,6 +3648,13 @@
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Proprietor">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button class="btn btn-danger btn-sm deleteProprietorshipModal ${proprietorship_section.approval_status == 1 ? 'd-none' : ''}"
+                                                                data-ps_id="${proprietorship_section.ps_id}"
+                                                                data-ps_case_number="${proprietorship_section.ps_case_number}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Proprietorship">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                      </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -3704,7 +3712,8 @@
                                                         <span class="badge bg-secondary">${memorials_section.m_entry_number}</span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-outline-danger btn-sm editMemorialsModal"
+                                                      <div class="d-flex justify-content-center">
+                                                        <button class="btn btn-outline-danger btn-sm me-1 editMemorialsModal ${memorials_section.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-target-id="${memorials_section.mid}"
                                                                 data-mid="${memorials_section.mid}"
                                                                 data-m_case_number="${memorials_section.m_case_number}"
@@ -3718,6 +3727,13 @@
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Memorial">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button class="btn btn-danger btn-sm deleteMemorialsModal ${memorials_section.approval_status == 1 ? 'd-none' : ''}"
+                                                                data-target-id="${memorials_section.mid}"
+                                                                data-mid="${memorials_section.mid}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Memorial">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                      </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -3770,13 +3786,20 @@
                                                     </td>
                                                     <td>${reservation_section.created_date}</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-outline-success btn-sm editReservationModal"
+                                                      <div class="d-flex justify-content-center">
+                                                        <button class="btn btn-outline-success btn-sm me-1 editReservationModal ${reservation_section.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-rs_id="${reservation_section.rs_id}"
                                                                 data-rs_reservation_description="${reservation_section.reservation_description}"
                                                                 data-rs_case_number="${reservation_section.case_number}"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Reservation">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button class="btn btn-danger btn-sm deleteReservationModal ${reservation_section.approval_status == 1 ? 'd-none' : ''}"
+                                                                data-rs_id="${reservation_section.rs_id}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Reservation">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                      </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -3834,7 +3857,8 @@
                                                         <span class="badge bg-secondary">${lrd_encumbrances_section_row.es_entry_number}</span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-outline-warning btn-sm editEncumberancesModal"
+                                                      <div class="d-flex justify-content-center">
+                                                        <button class="btn btn-outline-warning btn-sm me-1 editEncumberancesModal ${lrd_encumbrances_section_row.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-es_id="${lrd_encumbrances_section_row.es_id}"
                                                                 data-es_case_number="${lrd_encumbrances_section_row.es_case_number}"
                                                                 data-es_registered_number="${lrd_encumbrances_section_row.es_registered_number}"
@@ -3850,6 +3874,12 @@
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Encumbrance">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
+                                                        <button class="btn btn-danger btn-sm deleteEncumberancesModal ${lrd_encumbrances_section_row.approval_status == 1 ? 'd-none' : ''}"
+                                                                data-es_id="${lrd_encumbrances_section_row.es_id}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Encumbrance">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                      </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -3897,8 +3927,8 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                      <div class="text-center">
-                                                        <button class="btn btn-outline-danger btn-sm editValuationModal"
+                                                      <div class="d-flex justify-content-center">
+                                                        <button class="btn btn-outline-danger btn-sm me-1 editValuationModal ${valuation_section.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-vs_id="${valuation_section.vs_id}"
                                                                 data-case_number="${valuation_section.case_number}"
                                                                 data-vs_date_of_valuation="${valuation_section.vs_date_of_valuation}"
@@ -3907,6 +3937,12 @@
                                                                 data-es_action_on_form_encumbrances="edit"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Valuation">
                                                             <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm deleteValuationModal ${valuation_section.approval_status == 1 ? 'd-none' : ''}"
+                                                                data-vs_id="${valuation_section.vs_id}"
+                                                                data-case_number="${valuation_section.case_number}"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Valuation">
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                       </div>
                                                     </td>
@@ -3958,7 +3994,8 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-outline-info btn-sm editCertificateModal"
+                                                      <div class="d-flex justify-content-center">
+                                                        <button class="btn btn-outline-info btn-sm me-1 editCertificateModal ${certificate_section.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-cs_id="${certificate_section.cs_id}"
                                                                 data-cs_case_number="${certificate_section.case_number}"
                                                                 data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
@@ -3968,7 +4005,7 @@
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Certificate">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-danger btn-sm deleteCertificate"
+                                                        <button class="btn btn-danger btn-sm deleteCertificateModal ${certificate_section.approval_status == 1 ? 'd-none' : ''}"
                                                                 data-cs_id="${certificate_section.cs_id}"
                                                                 data-cs_case_number="${certificate_section.case_number}"
                                                                 data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
@@ -3991,7 +4028,7 @@
                 
                 <!-- Register Description Section -->
                 <div class="card border mt-4">
-                    <div class="card-header bg-light d-flex justify-content-between">
+                    <div class="card-header  bg-success bg-opacity-10 text-success d-flex justify-content-between">
                         <h6 class="mb-0">
                             <i class="fas fa-file-alt me-2"></i>
                             Register: Description of Land

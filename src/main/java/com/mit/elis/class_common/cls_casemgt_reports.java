@@ -183,6 +183,9 @@ public class cls_casemgt_reports {
 			return;
 		}
 
+		// Build the styled arName with everything underlined except "and"
+		Phrase styledArNamePhrase = buildStyledArName(arName, safeFont);
+
 		int startIndex = 0;
 		int matchIndex = content.indexOf(arName);
 		while (matchIndex >= 0) {
@@ -190,9 +193,10 @@ public class cls_casemgt_reports {
 				targetPhrase.add(new Chunk(content.substring(startIndex, matchIndex), safeFont));
 			}
 
-			Chunk underlinedName = new Chunk(arName, safeFont);
-			underlinedName.setUnderline(BaseColor.RED, 1f, 0f, -2f, 0f, PdfContentByte.LINE_CAP_BUTT);
-			targetPhrase.add(underlinedName);
+			// Add the styled arName phrase (with "and" not underlined)
+			for (Object chunk : styledArNamePhrase.getChunks()) {
+				targetPhrase.add((Chunk) chunk);
+			}
 
 			startIndex = matchIndex + arName.length();
 			matchIndex = content.indexOf(arName, startIndex);
@@ -201,6 +205,35 @@ public class cls_casemgt_reports {
 		if (startIndex < content.length()) {
 			targetPhrase.add(new Chunk(content.substring(startIndex), safeFont));
 		}
+	}
+
+	private static Phrase buildStyledArName(String arName, Font font) {
+		Phrase phrase = new Phrase();
+		
+		// Split arName by " and " (with surrounding spaces, case-insensitive)
+		String[] parts = arName.split("(?i)( and )");
+		
+		for (int i = 0; i < parts.length; i++) {
+			// Add underlined part
+			if (!parts[i].trim().isEmpty()) {
+				Chunk underlinedChunk = new Chunk(parts[i], font);
+				underlinedChunk.setUnderline(BaseColor.RED, 1f, 0f, -2f, 0f, PdfContentByte.LINE_CAP_BUTT);
+				phrase.add(underlinedChunk);
+			}
+			
+			// Add " and " without underline (preserve original case)
+			if (i < parts.length - 1) {
+				// Find the position of this " and " in the original arName
+				int currentPos = 0;
+				for (int j = 0; j <= i; j++) {
+					currentPos += parts[j].length();
+				}
+				String andText = arName.substring(currentPos, currentPos + 5);
+				phrase.add(new Chunk(andText, font));
+			}
+		}
+		
+		return phrase;
 	}
 
 	private static Paragraph styleArNameInParagraph(Paragraph sourceParagraph, String arName, Font fallbackFont) {
@@ -18060,6 +18093,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 			Phrase phrase = new Phrase();
 			appendArNameStyledText(phrase, originalChunk.getContent(), timesNewRoman, ar_name);
 			document.add(phrase);
+;
 		} else {
 			// For other types of elements, just add them without changes
 			document.add(element);

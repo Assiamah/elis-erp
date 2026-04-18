@@ -3500,6 +3500,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#enter_transaction_details_for_deed ._gated_workflow_documents');
         } else if (modalType === 'generate_concurrence_certificate') {
             container = document.querySelector('#generate_concurrence_certificate ._gated_workflow_documents');
+        } else if (modalType === 'final_lrd_vetting') {
+            container = document.querySelector('#final_lrd_vetting ._gated_workflow_documents');
         }
         
         if (!container) {
@@ -3900,7 +3902,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     $(document).on('click', '.newProprietorshipModal', function() {
-        $("#newProprietorshipModal").modal('show');
+        //$("#newProprietorshipModal").modal('show');
+
+        const $modal = $('#newProprietorshipModal');
+
+        // Force higher z-index than existing modals
+        const highestZ = Math.max(
+            ...Array.from(document.querySelectorAll('.modal.show'))
+                .map(m => parseInt(window.getComputedStyle(m).zIndex) || 1050),
+            1050
+        );
+
+        $modal.css('z-index', highestZ + 10);
+
+        setTimeout(() => {
+            $('.modal-backdrop')
+                .not('.stacked-backdrop')
+                .css('z-index', highestZ + 5)
+                .addClass('stacked-backdrop');
+        });
+
+        $modal.modal('show');
 
         $("#ps_id").val(0);
         $("#ps_registration_number").val('');
@@ -4188,24 +4210,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     <!--<td>${this.ps_remarks}</td>-->
                     <td>${this.ps_term}</td>
                     <td class="text-center">
-                        <button class="btn btn-outline-primary btn-sm ${canEdit} editProprietorshipModal" 
-                                data-target-id="${this.ps_id}" 
-                                data-ps_id="${this.ps_id}"
-                                data-ps_case_number="${this.ps_case_number}"
-                                data-ps_registration_number="${this.ps_registration_number}"
-                                data-ps_proprietor="${this.ps_proprietor}"
-                                data-ps_date_of_instrument="${this.ps_date_of_instrument}"
-                                data-ps_nature_of_instrument="${this.ps_nature_of_instrument}"
-                                data-ps_date_of_registration="${this.ps_date_of_registration}"
-                                data-ps_transferor="${this.ps_transferor}"
-                                data-ps_transferee="${this.ps_transferee}"
-                                data-ps_price_paid="${this.ps_price_paid}"
-                                data-ps_remarks="${this.ps_remarks}"
-                                data-ps_signature="${this.ps_signature}"
-                                data-ps_term="${this.ps_term}"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-outline-primary btn-sm editProprietorshipModal ${this.approval_status == 1 ? 'd-none' : ''}" 
+                                    data-target-id="${this.ps_id}" 
+                                    data-ps_id="${this.ps_id}"
+                                    data-ps_case_number="${this.ps_case_number}"
+                                    data-ps_registration_number="${this.ps_registration_number}"
+                                    data-ps_proprietor="${this.ps_proprietor}"
+                                    data-ps_date_of_instrument="${this.ps_date_of_instrument}"
+                                    data-ps_nature_of_instrument="${this.ps_nature_of_instrument}"
+                                    data-ps_date_of_registration="${this.ps_date_of_registration}"
+                                    data-ps_transferor="${this.ps_transferor}"
+                                    data-ps_transferee="${this.ps_transferee}"
+                                    data-ps_price_paid="${this.ps_price_paid}"
+                                    data-ps_remarks="${this.ps_remarks}"
+                                    data-ps_signature="${this.ps_signature}"
+                                    data-ps_term="${this.ps_term}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Proprietorship">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm deleteProprietorshipModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-ps_id="${this.ps_id}"
+                                    data-ps_case_number="${this.ps_case_number}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Delete Proprietorship">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        <div>
                     </td>
                 </tr>`);
             });
@@ -4903,20 +4935,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="badge bg-secondary">${this.m_entry_number}</span>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-outline-danger btn-sm editMemorialsModal"
-                                data-target-id="${this.mid}"
-                                data-mid="${this.mid}"
-                                data-m_case_number="${this.m_case_number}"
-                                data-m_registered_no="${this.m_registered_no}"
-                                data-m_memorials="${this.m_memorials}"
-                                data-m_date_of_registration="${this.m_date_of_registration}"
-                                data-m_date_of_instrument="${this.m_date_of_instrument}"
-                                data-m_back="${this.m_back}"
-                                data-m_remarks="${this.m_remarks}"
-                                data-m_entry_number="${this.m_entry_number}"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Memorial">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-outline-danger btn-sm editMemorialsModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-target-id="${this.mid}"
+                                    data-mid="${this.mid}"
+                                    data-m_case_number="${this.m_case_number}"
+                                    data-m_registered_no="${this.m_registered_no}"
+                                    data-m_memorials="${this.m_memorials}"
+                                    data-m_date_of_registration="${this.m_date_of_registration}"
+                                    data-m_date_of_instrument="${this.m_date_of_instrument}"
+                                    data-m_back="${this.m_back}"
+                                    data-m_remarks="${this.m_remarks}"
+                                    data-m_entry_number="${this.m_entry_number}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Memorial">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm deleteMemorialsModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-mid="${this.mid}"
+                                    data-m_case_number="${this.m_case_number}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Delete Memorial">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        <div>
                     </td>
                 </tr>`);
             });
@@ -5180,13 +5222,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     </td>
                     <td>${this.created_date}</td>
                     <td class="text-center">
-                        <button class="btn btn-outline-success btn-sm editReservationModal"
-                                data-rs_id="${this.rs_id}"
-                                data-rs_reservation_description="${this.reservation_description}"
-                                data-rs_case_number="${this.case_number}"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Reservation">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-outline-success btn-sm editReservationModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-rs_id="${this.rs_id}"
+                                    data-rs_reservation_description="${this.reservation_description}"
+                                    data-rs_case_number="${this.case_number}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Reservation">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm deleteReservationModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-rs_id="${this.rs_id}"
+                                    data-rs_case_number="${this.rs_case_number}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Delete Reservation">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>`);
             });
@@ -5480,22 +5532,32 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="badge bg-secondary">${this.es_entry_number}</span>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-outline-warning btn-sm editEncumberancesModal"
-                                data-es_id="${this.es_id}"
-                                data-es_case_number="${this.es_case_number}"
-                                data-es_registered_number="${this.es_registered_number}"
-                                data-es_date_of_registration="${this.es_date_of_registration}"
-                                data-es_date_of_instrument="${this.es_date_of_instrument}"
-                                data-es_back="${this.es_back}"
-                                data-es_forward="${this.es_forward}"
-                                data-es_remarks="${this.es_remarks}"
-                                data-es_memorials="${this.es_memorials}"
-                                data-es_signature="${this.es_signature}"
-                                data-es_entry_number="${this.es_entry_number}"
-                                data-es_action_on_form_encumbrances="edit"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Encumbrance">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-warning btn-sm editEncumberancesModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-es_id="${this.es_id}"
+                                    data-es_case_number="${this.es_case_number}"
+                                    data-es_registered_number="${this.es_registered_number}"
+                                    data-es_date_of_registration="${this.es_date_of_registration}"
+                                    data-es_date_of_instrument="${this.es_date_of_instrument}"
+                                    data-es_back="${this.es_back}"
+                                    data-es_forward="${this.es_forward}"
+                                    data-es_remarks="${this.es_remarks}"
+                                    data-es_memorials="${this.es_memorials}"
+                                    data-es_signature="${this.es_signature}"
+                                    data-es_entry_number="${this.es_entry_number}"
+                                    data-es_action_on_form_encumbrances="edit"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Encumbrance">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm deleteEncumberancesModal ${this.approval_status == 1 ? 'd-none' : ''}"
+                                    data-es_id="${this.es_id}"
+                                    data-es_case_number="${this.es_case_number}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Delete Encumbrance">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>`);
             });
@@ -5871,8 +5933,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </td>
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button class="btn btn-outline-danger edit-valuation"
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-outline-danger btn-sm edit-valuation ${this.approval_status == 1 ? 'd-none' : ''}"
                                     data-target-id="${this.vs_id}"
                                     data-vs_id="${this.vs_id}"
                                     data-vs_case_number="${this.case_number}"
@@ -5884,14 +5946,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                     title="Edit Valuation">
                                 <i class="fas fa-edit"></i>
                             </button>
-                           <!-- <button class="btn btn-outline-danger delete-valuation"
+                            <button class="btn btn-danger btn-sm deleteValuationModal ${this.approval_status == 1 ? 'd-none' : ''}"
                                     data-vs_id="${this.vs_id}"
                                     data-vs_case_number="${this.vs_case_number}"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="top"
                                     title="Delete Valuation">
                                 <i class="fas fa-trash"></i>
-                            </button>-->
+                            </button>
                         </div>
                     </td>
                 </tr>`);
@@ -12504,7 +12566,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-     $('#newMemorialsModal').on('hidden.bs.modal', function () {
+    $('#newProprietorshipModal').on('hidden.bs.modal', function () {
+        // Remove any stacked / extra backdrops
+        $('.modal-backdrop.stacked-backdrop').remove();
+
+        // Safety: if no modal is open, remove ALL backdrops
+        if ($('.modal.show').length === 0) {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $('body').css('padding-right', '');
+        }
+    });
+
+    $('#newMemorialsModal').on('hidden.bs.modal', function () {
         // Remove any stacked / extra backdrops
         $('.modal-backdrop.stacked-backdrop').remove();
 
@@ -12538,6 +12612,11 @@ document.addEventListener('DOMContentLoaded', function() {
             $('body').removeClass('modal-open');
             $('body').css('padding-right', '');
         }
+    });
+
+    $('#enter_root_of_title').on('shown.bs.modal', function () {
+        // Remove any stacked / extra backdrops
+        $('.modal-backdrop.stacked-backdrop').remove();
     });
 
     $('#lc_btn_generate_memo_for_certificate, #lc_btn_generate_memo_for_certificate_2').on('click', function(e) {
@@ -23336,8 +23415,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </td>
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button class="btn btn-outline-info editCertificateModal"
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-outline-info editCertificateModal btn-sm ${this.approval_status == 1 ? 'd-none' : ''}"
                                     data-target-id="${this.cs_id}"
                                     data-cs_id="${this.cs_id}"
                                     data-cs_case_number="${this.case_number}"
@@ -23350,7 +23429,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     title="Edit Certificate">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm deleteCertificate"
+                            <button class="btn btn-danger btn-sm deleteCertificateModal ${this.approval_status == 1 ? 'd-none' : ''}"
                                     data-cs_id="${this.cs_id}"
                                     data-cs_case_number="${this.case_number}"
                                     data-cs_date_of_registration="${this.cs_date_of_registration}"
@@ -23485,11 +23564,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    $(document).on('click', '.deleteCertificate', function(e) {
+    $(document).on('click', '.deleteCertificateModal', function(e) {
         e.preventDefault();
         
         const cs_id = $(this).data('cs_id');
-        const cs_case_number = $("#cs_main_case_number").val();
+        const cs_case_number = $(this).data('cs_case_number');
         
         // Show confirmation dialog
         Swal.fire({
@@ -23570,7 +23649,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         timerProgressBar: true
                     }).then(() => {
                         // Remove the deleted certificate row from the table
-                        const $row = $(`.deleteCertificate[data-cs_id="${cs_id}"]`).closest('tr');
+                        const $row = $(`.deleteCertificateModal[data-cs_id="${cs_id}"]`).closest('tr');
                         if ($row.length) {
                             $row.fadeOut(300, function() {
                                 $(this).remove();
@@ -26955,5 +27034,1266 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    $(document).on('click', '.deleteProprietorshipModal', function(e) {
+        e.preventDefault();
+        
+        const ps_id = $(this).data('ps_id');
+        const ps_case_number = $(this).data('ps_case_number');
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delete Proprietorship',
+            html: `
+                <div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2 d-block"></i>
+                        <p class="fw-bold mb-2">Are you sure you want to delete this proprietorship?</p>
+                        <p class="text-muted small">This action cannot be undone.</p>
+                    </div>
+                    <div class="alert alert-light border">
+                        <div class="mb-1">
+                            <strong>Case Number:</strong> 
+                            <span class="text-primary">${escapeHtml(ps_case_number)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Warning: This will permanently delete the proprietorship</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "lrd_proprietorship_section_serv",
+                        data: {
+                            request_type: 'select_lrd_proprietorship_section_delete_by_id',
+                            ps_id: parseInt(ps_id),
+                            ps_case_number: ps_case_number,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            try {
+                                const jsonResponse = JSON.parse(response);
+                                resolve(jsonResponse);
+                            } catch(e) {
+                                reject('Invalid response format');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject('Server error: ' + error);
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response && response.success === true) {
+                    // Success - show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Proprietorship has been deleted successfully!</p>
+                                <p class="text-muted small">Case: ${escapeHtml(ps_case_number)}</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Remove the deleted certificate row from the table
+                        const $row = $(`.deleteProprietorshipModal[data-ps_id="${ps_id}"]`).closest('tr');
+                        if ($row.length) {
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // Check if table is empty and show empty message
+                                const $tbody = $row.closest('tbody');
+                                if ($tbody.children('tr:visible').length === 0) {
+                                    $tbody.html(`
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                                <p>No Proprietorship found</p>
+                                            </td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        }
+                        
+                        // Refresh any related components
+                        refreshProprietorshipList();
+                    });
+                } else {
+                    // Error - show error message from server
+                    Swal.fire({
+                        title: 'Error!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Failed to delete proprietorship</p>
+                                <p class="text-muted small">${escapeHtml(response.msg || 'Please try again later')}</p>
+                            </div>
+                        `,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+
+    // Function to refresh proprietorship list (if needed)
+    function refreshProprietorshipList() {
+        // Optional: Reload the proprietorship table or update counters
+        const $table = $('#proprietorshipsTable');
+        if ($table.length) {
+            // Trigger a refresh event or reload the data
+            $(document).trigger('proprietorships:refresh');
+        }
+    }
+
+    $(document).on('click', '.deleteMemorialsModal', function(e) {
+        e.preventDefault();
+        
+        const mid = $(this).data('mid');
+        const m_case_number = $(this).data('m_case_number');
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delete Memorial',
+            html: `
+                <div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2 d-block"></i>
+                        <p class="fw-bold mb-2">Are you sure you want to delete this memorial?</p>
+                        <p class="text-muted small">This action cannot be undone.</p>
+                    </div>
+                    <div class="alert alert-light border">
+                        <div class="mb-1">
+                            <strong>Case Number:</strong> 
+                            <span class="text-primary">${escapeHtml(m_case_number)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Warning: This will permanently delete the memorial</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "lrd_memorials_section_serv",
+                        data: {
+                            request_type: 'select_lrd_memorials_section_delete_by_id',
+                            mid: parseInt(mid),
+                            m_case_number: m_case_number,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            try {
+                                const jsonResponse = JSON.parse(response);
+                                resolve(jsonResponse);
+                            } catch(e) {
+                                reject('Invalid response format');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject('Server error: ' + error);
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response && response.success === true) {
+                    // Success - show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Memorial has been deleted successfully!</p>
+                                <p class="text-muted small">Case: ${escapeHtml(m_case_number)}</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Remove the deleted memorial row from the table
+                        const $row = $(`.deleteMemorialsModal[data-mid="${mid}"]`).closest('tr');
+                        if ($row.length) {
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // Check if table is empty and show empty message
+                                const $tbody = $row.closest('tbody');
+                                if ($tbody.children('tr:visible').length === 0) {
+                                    $tbody.html(`
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                                <p>No Memorials found</p>
+                                            </td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        }
+                        
+                        // Refresh any related components
+                        refreshMemorialsList();
+                    });
+                } else {
+                    // Error - show error message from server
+                    Swal.fire({
+                        title: 'Error!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Failed to delete memorial</p>
+                                <p class="text-muted small">${escapeHtml(response.msg || 'Please try again later')}</p>
+                            </div>
+                        `,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+
+    // Function to refresh memorials list (if needed)
+    function refreshMemorialsList() {
+        // Optional: Reload the memorials table or update counters
+        const $table = $('#memorialsTable');
+        if ($table.length) {
+            // Trigger a refresh event or reload the data
+            $(document).trigger('memorials:refresh');
+        }
+    }
+
+    $(document).on('click', '.deleteReservationModal', function(e) {
+        e.preventDefault();
+        
+        const rs_id = $(this).data('rs_id');
+        const rs_case_number = $(this).data('rs_case_number');
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delete Reservation',
+            html: `
+                <div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2 d-block"></i>
+                        <p class="fw-bold mb-2">Are you sure you want to delete this reservation?</p>
+                        <p class="text-muted small">This action cannot be undone.</p>
+                    </div>
+                    <div class="alert alert-light border">
+                        <div class="mb-1">
+                            <strong>Case Number:</strong> 
+                            <span class="text-primary">${escapeHtml(rs_case_number)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Warning: This will permanently delete the reservation</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "lrd_reservation_section_serv",
+                        data: {
+                            request_type: 'select_lrd_reservations_section_delete_by_id',
+                            rs_id: parseInt(rs_id),
+                            m_case_number: m_case_number,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            try {
+                                const jsonResponse = JSON.parse(response);
+                                resolve(jsonResponse);
+                            } catch(e) {
+                                reject('Invalid response format');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject('Server error: ' + error);
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response && response.success === true) {
+                    // Success - show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Reservation has been deleted successfully!</p>
+                                <p class="text-muted small">Case: ${escapeHtml(rs_case_number)}</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Remove the deleted reservation row from the table
+                        const $row = $(`.deleteReservationModal[data-mid="${rs_id}"]`).closest('tr');
+                        if ($row.length) {
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // Check if table is empty and show empty message
+                                const $tbody = $row.closest('tbody');
+                                if ($tbody.children('tr:visible').length === 0) {
+                                    $tbody.html(`
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                                <p>No Reservations found</p>
+                                            </td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        }
+                        
+                        // Refresh any related components
+                        refreshReservationsList();
+                    });
+                } else {
+                    // Error - show error message from server
+                    Swal.fire({
+                        title: 'Error!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Failed to delete reservation</p>
+                                <p class="text-muted small">${escapeHtml(response.msg || 'Please try again later')}</p>
+                            </div>
+                        `,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+
+    // Function to refresh reservation list (if needed)
+    function refreshReservationsList() {
+        // Optional: Reload the reservations table or update counters
+        const $table = $('#reservationsTable');
+        if ($table.length) {
+            // Trigger a refresh event or reload the data
+            $(document).trigger('reservations:refresh');
+        }
+    }
+
+    $(document).on('click', '.deleteEncumberancesModal', function(e) {
+        e.preventDefault();
+        
+        const es_id = $(this).data('es_id');
+        const es_case_number = $(this).data('es_case_number');
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delete Encumberance',
+            html: `
+                <div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2 d-block"></i>
+                        <p class="fw-bold mb-2">Are you sure you want to delete this encumberance?</p>
+                        <p class="text-muted small">This action cannot be undone.</p>
+                    </div>
+                    <div class="alert alert-light border">
+                        <div class="mb-1">
+                            <strong>Case Number:</strong> 
+                            <span class="text-primary">${escapeHtml(es_case_number)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Warning: This will permanently delete the encumberance</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "lrd_encumbrances_section_serv",
+                        data: {
+                            request_type: 'select_lrd_encumbrances_section_delete_by_id',
+                            es_id: parseInt(es_id),
+                            es_case_number: es_case_number,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            try {
+                                const jsonResponse = JSON.parse(response);
+                                resolve(jsonResponse);
+                            } catch(e) {
+                                reject('Invalid response format');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject('Server error: ' + error);
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response && response.success === true) {
+                    // Success - show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Encumbrance has been deleted successfully!</p>
+                                <p class="text-muted small">Case: ${escapeHtml(es_case_number)}</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Remove the deleted encumbrance row from the table
+                        const $row = $(`.deleteEncumberancesModal[data-es_id="${es_id}"]`).closest('tr');
+                        if ($row.length) {
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // Check if table is empty and show empty message
+                                const $tbody = $row.closest('tbody');
+                                if ($tbody.children('tr:visible').length === 0) {
+                                    $tbody.html(`
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                                <p>No Encumbrances found</p>
+                                            </td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        }
+                        
+                        // Refresh any related components
+                        refreshEncumbrancesList();
+                    });
+                } else {
+                    // Error - show error message from server
+                    Swal.fire({
+                        title: 'Error!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Failed to delete encumbrance</p>
+                                <p class="text-muted small">${escapeHtml(response.msg || 'Please try again later')}</p>
+                            </div>
+                        `,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+
+    // Function to refresh encumbrance list (if needed)
+    function refreshEncumbrancesList() {
+        // Optional: Reload the encumbrance table or update counters
+        const $table = $('#encumbrancesTable');
+        if ($table.length) {
+            // Trigger a refresh event or reload the data
+            $(document).trigger('encumbrances:refresh');
+        }
+    }
+
+    $(document).on('click', '.deleteValuationModal', function(e) {
+        e.preventDefault();
+        
+        const vs_id = $(this).data('vs_id');
+        const vs_case_number = $(this).data('vs_case_number');
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delete Valuation',
+            html: `
+                <div class="text-start">
+                    <div class="mb-3">
+                        <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2 d-block"></i>
+                        <p class="fw-bold mb-2">Are you sure you want to delete this valuation?</p>
+                        <p class="text-muted small">This action cannot be undone.</p>
+                    </div>
+                    <div class="alert alert-light border">
+                        <div class="mb-1">
+                            <strong>Case Number:</strong> 
+                            <span class="text-primary">${escapeHtml(vs_case_number)}</span>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Warning: This will permanently delete the valuation</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '<i class="fas fa-trash-alt me-1"></i> Yes, delete it!',
+            cancelButtonText: '<i class="fas fa-times me-1"></i> Cancel',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: "POST",
+                        url: "lrd_valuation_section_serv",
+                        data: {
+                            request_type: 'select_lrd_valuations_section_delete_by_id',
+                            vs_id: parseInt(vs_id),
+                            vs_case_number: vs_case_number,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            try {
+                                const jsonResponse = JSON.parse(response);
+                                resolve(jsonResponse);
+                            } catch(e) {
+                                reject('Invalid response format');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            reject('Server error: ' + error);
+                        }
+                    });
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                
+                if (response && response.success === true) {
+                    // Success - show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Valuation has been deleted successfully!</p>
+                                <p class="text-muted small">Case: ${escapeHtml(vs_case_number)}</p>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '<i class="fas fa-check me-1"></i> OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Remove the deleted valuation row from the table
+                        const $row = $(`.deleteValuationModal[data-vs_id="${vs_id}"]`).closest('tr');
+                        if ($row.length) {
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                
+                                // Check if table is empty and show empty message
+                                const $tbody = $row.closest('tbody');
+                                if ($tbody.children('tr:visible').length === 0) {
+                                    $tbody.html(`
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                                <p>No Valuations found</p>
+                                            </td>
+                                        </tr>
+                                    `);
+                                }
+                            });
+                        }
+                        
+                        // Refresh any related components
+                        refreshValuationsList();
+                    });
+                } else {
+                    // Error - show error message from server
+                    Swal.fire({
+                        title: 'Error!',
+                        html: `
+                            <div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                </div>
+                                <p class="fw-bold">Failed to delete valuation</p>
+                                <p class="text-muted small">${escapeHtml(response.msg || 'Please try again later')}</p>
+                            </div>
+                        `,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+
+    // Function to refresh valuation list (if needed)
+    function refreshValuationsList() {
+        // Optional: Reload the valuation table or update counters
+        const $table = $('#valuationsTable');
+        if ($table.length) {
+            // Trigger a refresh event or reload the data
+            $(document).trigger('valuations:refresh');
+        }
+    }
+
+    let finalLrdVettingQuill;
+    const finalLrdPrimaryColor = 'rgb(9 126 105)';
+
+    function getFinalLrdVettingEditor() {
+        if (finalLrdVettingQuill) {
+            return finalLrdVettingQuill;
+        }
+
+        const editorElement = document.getElementById('lc_search_report_summary_details_flv');
+        if (!editorElement) {
+            return null;
+        }
+
+        if (editorElement.__quill) {
+            finalLrdVettingQuill = editorElement.__quill;
+            return finalLrdVettingQuill;
+        }
+
+        if (typeof Quill === 'undefined') {
+            return null;
+        }
+
+        finalLrdVettingQuill = new Quill('#lc_search_report_summary_details_flv', {
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, 4, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    [{ align: [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            },
+            theme: 'snow',
+            placeholder: 'Compose the final certificate summary here...'
+        });
+
+        return finalLrdVettingQuill;
+    }
+
+    function getFinalLrdVettingEditorHtml() {
+        const quill = getFinalLrdVettingEditor();
+        if (quill) {
+            const html = quill.root.innerHTML;
+            return html === '<p><br></p>' ? '' : html;
+        }
+
+        const fallback = $('#lc_search_report_summary_details_flv').html() || '';
+        return fallback.trim() === '<p><br></p>' ? '' : fallback;
+    }
+
+    function setFinalLrdVettingEditorHtml(html) {
+        const quill = getFinalLrdVettingEditor();
+        if (quill) {
+            quill.clipboard.dangerouslyPasteHTML(html || '');
+            return;
+        }
+
+        $('#lc_search_report_summary_details_flv').html(html || '');
+    }
+
+    function showFinalLrdVettingError(title, text) {
+        Swal.fire({
+            icon: 'error',
+            title: title,
+            text: text,
+            confirmButtonColor: '#dc3545'
+        });
+    }
+
+    $('#final_lrd_vetting').on('shown.bs.modal', function(e) {
+        getFinalLrdVettingEditor();
+        $('.modal-backdrop.stacked-backdrop').remove();
+        window.loadGatedWorkFlowDocuments('final_lrd_vetting');
+        setTimeout(() => {
+            window.initializeMap('lc-map__flv');
+        }, 100);
+
+        const bsDesc = $(e.relatedTarget).data('bs-desc');
+        if (bsDesc === 'View and Confirm Parcel and Transaction') {
+            $('#btn_confirm_registration_transaction_flv').removeClass('d-none');
+        } else {
+            $('#btn_confirm_registration_transaction_flv').addClass('d-none');
+        }
+    });
+
+    function syncFinalLrdMapControls() {
+        const wkt = $('#lc_bl_wkt_polygon_flv').val();
+        const scaleInput = $('#lc_scale_value_e_flv').val();
+        const scaleSelect = $('#lc_scale_value_flv').val();
+        const lockScale = $('#lc_lockmapscale_flv').is(':checked');
+
+        $('#view_parcel_and_transaction #lc_bl_wkt_polygon').val(wkt);
+        $('#view_parcel_and_transaction #lc_scale_value_e').val(scaleInput);
+        $('#view_parcel_and_transaction #lc_scale_value').val(scaleSelect);
+        $('#view_parcel_and_transaction #lc_lockmapscale').prop('checked', lockScale);
+    }
+
+    $(document).on('click', '#flv-map-tab', function() {
+        setTimeout(() => {
+            window.initializeMap('lc-map__flv');
+            if (typeof maps !== 'undefined' && maps['lc-map__flv']) {
+                maps['lc-map__flv'].updateSize();
+            }
+        }, 100);
+    });
+
+    $(document).on('change', '#lc_scale_value_flv', function() {
+        $('#lc_scale_value_e_flv').val($(this).val());
+    });
+
+    $(document).on('click', '#lc_btn_visualise_wkt_flv', function(e) {
+        e.preventDefault();
+        syncFinalLrdMapControls();
+        $('#view_parcel_and_transaction #lc_btn_visualise_wkt_').first().trigger('click');
+        setTimeout(() => {
+            if (typeof maps !== 'undefined' && maps['lc-map__flv']) {
+                maps['lc-map__flv'].updateSize();
+            }
+        }, 150);
+    });
+
+    $(document).on('click', '#lc_btn_visualise_search_flv', function(e) {
+        e.preventDefault();
+        syncFinalLrdMapControls();
+        $('#view_parcel_and_transaction #lc_btn_visualise_search').first().trigger('click');
+        setTimeout(() => {
+            if (typeof maps !== 'undefined' && maps['lc-map__flv']) {
+                maps['lc-map__flv'].updateSize();
+            }
+        }, 150);
+    });
+
+    $(document).on('click', '#lc_btn_scale_zoom_flv', function(e) {
+        e.preventDefault();
+        syncFinalLrdMapControls();
+        $('#view_parcel_and_transaction #lc_btn_scale_zoom').first().trigger('click');
+    });
+
+    $(document).on('click', '#btn_zoom_full_flv', function(e) {
+        e.preventDefault();
+        syncFinalLrdMapControls();
+        $('#view_parcel_and_transaction #btn_zoom_full').first().trigger('click');
+    });
+
+    $(document).on('click', '#btn_zoom_out_flv', function(e) {
+        e.preventDefault();
+        syncFinalLrdMapControls();
+        $('#view_parcel_and_transaction #btn_zoom_out').first().trigger('click');
+    });
+
+    $(document).on('click', '#btn_zoom_in_flv', function(e) {
+        e.preventDefault();
+        syncFinalLrdMapControls();
+        $('#view_parcel_and_transaction #btn_zoom_in').first().trigger('click');
+    });
+
+    $(document).on('click', '#lc_btn_save_register_description_flv', function(e) {
+        e.preventDefault();
+
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const search_report = $("#lc_description_of_land_lrd_flv").val();
+
+        if (!search_report || search_report.trim() === '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty Description',
+                text: 'Register description cannot be empty.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        if (!job_number || !case_number) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Information',
+                text: 'Job Number and Case Number are required.',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_update_resgister_description',
+                search_report: search_report,
+                case_number: case_number,
+                job_number: job_number
+            },
+            cache: false,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Description Saved',
+                    text: response || 'Register description saved successfully.',
+                    confirmButtonColor: finalLrdPrimaryColor
+                });
+            },
+            error: function() {
+                showFinalLrdVettingError('Save Failed', 'Unable to save the register description.');
+            }
+        });
+    });
+
+    $(document).on('click', '#lc_btn_activate_final_register_flv', function(e) {
+        e.preventDefault();
+
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_transaction_number").val();
+
+        if (!job_number || !case_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Job Number and Transaction Number are required before generating the register.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_register',
+                job_number: job_number,
+                case_number: case_number
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                const file = new File([pdfBlob], `Register_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                const fileURL = URL.createObjectURL(file);
+                openPDFModal(file, fileURL);
+                hideLoadingIndicator();
+            },
+            error: function() {
+                hideLoadingIndicator();
+                showFinalLrdVettingError('Generation Failed', 'Unable to generate the final register.');
+            }
+        });
+    });
+
+    $(document).on('click', '.final-lrd-open-parcel-view', function(e) {
+        e.preventDefault();
+        const finalModal = bootstrap.Modal.getInstance(document.getElementById('final_lrd_vetting'));
+        if (finalModal) {
+            finalModal.hide();
+        }
+        setTimeout(() => {
+            $("#view_parcel_and_transaction").modal("show");
+        }, 200);
+    });
+
+    $(document).on('click', '#btn_compose_certificate_template_flv', function(e) {
+        e.preventDefault();
+
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_transaction_number").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val();
+        const button = $(this);
+
+        if (!job_number || !case_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Job Number and Case Number are required to compose the certificate template.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        const originalHtml = button.html();
+        button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Composing...');
+
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_compose_certificate_template',
+                job_number: job_number,
+                case_number: case_number,
+                business_process_sub_name: business_process_sub_name,
+                cert_type: 'concurrence_certificate'
+            },
+            cache: false,
+            success: function(response) {
+                setFinalLrdVettingEditorHtml(`<ol><li>${response}</li></ol>`);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Template Ready',
+                    text: 'The certificate template has been composed in the final vetting workspace.',
+                    confirmButtonColor: finalLrdPrimaryColor
+                });
+            },
+            error: function() {
+                showFinalLrdVettingError('Compose Failed', 'Unable to compose the certificate template right now.');
+            },
+            complete: function() {
+                button.prop('disabled', false).html(originalHtml);
+            }
+        });
+    });
+
+    $(document).on('click', '#btn_save_lrd_certificate_update_details_flv', function(e) {
+        e.preventDefault();
+
+        const payload = {
+            case_number: $("#cs_main_case_number").val(),
+            job_number: $("#cs_main_job_number").val(),
+            transaction_number: $("#cs_main_transaction_number").val(),
+            certificate_number: $("#lc_txt_certificate_number_flv").val(),
+            certificate_type: $("#lc_txt_type_of_certificate_flv").val()
+        };
+
+        if (!payload.certificate_number || !payload.certificate_type || !payload.case_number || !payload.job_number || !payload.transaction_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Certificate number, certificate type and case details are all required.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'select_update_title_plan_certificate_details',
+                ...payload
+            },
+            cache: false,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Certificate Updated',
+                    text: response || 'Certificate details updated successfully.',
+                    confirmButtonColor: finalLrdPrimaryColor
+                });
+            },
+            error: function() {
+                showFinalLrdVettingError('Update Failed', 'Unable to update the certificate details.');
+            }
+        });
+    });
+
+    $(document).on('click', '#lc_btn_save_search_report_flv', function(e) {
+        e.preventDefault();
+
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const search_report = getFinalLrdVettingEditorHtml();
+
+        if (!job_number || !case_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Job Number and Case Number are required before saving.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        if (!search_report || !search_report.replace(/<[^>]*>/g, ' ').trim()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty Certificate',
+                text: 'Please add certificate content before saving.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'online_select_update_search_summary',
+                search_report: search_report,
+                case_number: case_number,
+                job_number: job_number
+            },
+            cache: false,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Certificate Saved',
+                    text: response || 'Certificate content saved successfully.',
+                    confirmButtonColor: finalLrdPrimaryColor
+                });
+            },
+            error: function() {
+                showFinalLrdVettingError('Save Failed', 'Unable to save the certificate content.');
+            }
+        });
+    });
+
+    $(document).on('click', '#lc_btn_activate_final_certificate_flv', function(e) {
+        e.preventDefault();
+
+        const job_number = $("#cs_main_job_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        const registration_district_number = $("#txt_lc_registration_district_number").val();
+        const registration_section_number = $("#txt_lc_registration_section_number").val();
+        const type_of_certificate = ($('#lc_txt_type_of_certificate_flv').find(":selected").text() || '').trim();
+
+        if (!job_number || !case_number || !transaction_number || !type_of_certificate) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Complete the certificate details before generating the final certificate.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_certificate',
+                job_number: job_number,
+                case_number: case_number,
+                transaction_number: transaction_number,
+                cert_type: 'LEASEHOLD',
+                registration_district_number: registration_district_number,
+                registration_section_number: registration_section_number,
+                type_of_certificate: type_of_certificate === 'Land Certificate' ? 'LAND CERTIFICATE' : type_of_certificate
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                const file = new File([pdfBlob], `Certificate_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                const fileURL = URL.createObjectURL(file);
+                openPDFModal(file, fileURL);
+                hideLoadingIndicator();
+            },
+            error: function() {
+                hideLoadingIndicator();
+                showFinalLrdVettingError('Generation Failed', 'Unable to generate the certificate PDF.');
+            }
+        });
+    });
+
+    $(document).on('click', '#btn_confirm_registration_transaction_flv', function(e) {
+        e.preventDefault();
+
+        const case_number = $('#cs_main_case_number').val();
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+
+        if (!job_number || !case_number || !transaction_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Job number, case number and transaction number are required before confirmation.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Confirm Registration Transaction?',
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">This is the last step in the vetting flow and it cannot be undone.</p>
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                        <div><strong>Job Number:</strong> ${job_number}</div>
+                        <div><strong>Case Number:</strong> ${case_number}</div>
+                        <div><strong>Transaction Number:</strong> ${transaction_number}</div>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="swalFlvConfirmA">
+                        <label class="form-check-label" for="swalFlvConfirmA">I confirm the parcel and registration details have been reviewed.</label>
+                    </div>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="swalFlvConfirmB">
+                        <label class="form-check-label" for="swalFlvConfirmB">I understand this action cannot be reversed.</label>
+                    </div>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Confirm Transaction',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: finalLrdPrimaryColor,
+            cancelButtonColor: '#6c757d',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                const confirmA = document.getElementById('swalFlvConfirmA');
+                const confirmB = document.getElementById('swalFlvConfirmB');
+
+                if (!confirmA.checked || !confirmB.checked) {
+                    Swal.showValidationMessage('Please tick both confirmation boxes to continue.');
+                    return false;
+                }
+
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: "Case_Management_Serv",
+                        type: "POST",
+                        data: {
+                            request_type: "select_confirm_registration_transaction",
+                            job_number: job_number,
+                            case_number: case_number,
+                            transaction_number: transaction_number
+                        },
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            const response = result.value || '';
+            const isSuccess = response === 'Application Successfully completed';
+
+            Swal.fire({
+                icon: isSuccess ? 'success' : 'error',
+                title: isSuccess ? 'Transaction Confirmed' : 'Confirmation Failed',
+                text: response || 'The transaction could not be confirmed.',
+                confirmButtonColor: isSuccess ? finalLrdPrimaryColor : '#dc3545'
+            }).then(() => {
+                if (isSuccess) {
+                    location.reload();
+                }
+            });
+        }).catch((error) => {
+            showFinalLrdVettingError('Server Error', error || 'Unable to confirm the transaction.');
+        });
+    });
 
 });

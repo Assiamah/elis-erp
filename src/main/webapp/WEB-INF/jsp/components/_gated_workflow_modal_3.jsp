@@ -1808,3 +1808,1023 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade effect-scale modal-blur" id="final_lrd_vetting" tabindex="-1"
+     aria-labelledby="finalLrdVettingLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content border-0 final-vetting-shell">
+      <div class="modal-header border-0 px-4 px-lg-5 pt-4 pb-0 justify-content-end">
+        <button type="button" class="btn-close ms-3 mt-2" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body px-4 px-lg-5 pb-4 pb-lg-5 pt-4">
+        <div class="final-vetting-hero p-4 p-lg-5 mb-4">
+          <div class="d-flex flex-column flex-xl-row align-items-xl-start justify-content-between gap-4">
+            <div>
+              <div class="d-inline-flex align-items-center gap-2 px-3 py-2 mb-3 final-vetting-soft">
+                <i class="fas fa-shield-alt"></i>
+                <span class="fw-semibold">Final LRD Vetting Workspace</span>
+              </div>
+              <h3 class="mb-2 text-white" id="finalLrdVettingLabel">Review, validate and finalize in one place</h3>
+              <p class="mb-0 opacity-75">
+                Parcel review, root of title vetting and certificate composition are grouped here so the team can complete the final checks without bouncing between modals.
+              </p>
+            </div>
+            <div class="row g-3 flex-grow-1">
+              <div class="col-sm-6 col-xl-4">
+                <div class="final-vetting-soft p-3 h-100">
+                  <div class="small opacity-75 mb-1">Case Number</div>
+                  <div class="fw-bold">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="final-vetting-soft p-3 h-100">
+                  <div class="small opacity-75 mb-1">Job Number</div>
+                  <div class="fw-bold">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="final-vetting-soft p-3 h-100">
+                  <div class="small opacity-75 mb-1">Applicant</div>
+                  <div class="fw-bold">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-6 col-xl-3">
+            <div class="final-vetting-stat">
+              <div class="final-vetting-stat-label mb-2">Parcel GLPIN</div>
+              <div class="final-vetting-stat-value">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <div class="final-vetting-stat">
+              <div class="final-vetting-stat-label mb-2">Certificate Number</div>
+              <div class="final-vetting-stat-value">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <div class="final-vetting-stat">
+              <div class="final-vetting-stat-label mb-2">Registered Number</div>
+              <div class="final-vetting-stat-value">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <div class="final-vetting-stat">
+              <div class="final-vetting-stat-label mb-2">Certificate Type</div>
+              <div class="final-vetting-stat-value">${empty fn:trim(certificate_type) ? '--' : fn:trim(certificate_type)}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 align-items-start">
+          <div class="col-12 col-xl-6">
+            <div class="final-vetting-column-inner">
+            <div class="card final-vetting-card h-100">
+              <div class="card-header bg-white border-0 pb-0 px-4 pt-4">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                  <div>
+                    <div class="final-vetting-section-title">
+                      <i class="fas fa-map-marked-alt text-primary me-2"></i>
+                      Parcel and transaction review
+                    </div>
+                    <div class="final-vetting-subtle small mt-1">Cross-check the transaction, location, financials and final confirmation details.</div>
+                  </div>
+                  <span class="badge bg-light text-primary border border-primary">Stage 1</span>
+                </div>
+              </div>
+              <div class="card-body p-4">
+                <ul class="nav nav-pills flex-wrap mb-3 final-vetting-pill-nav" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="flv-details-tab" data-bs-toggle="tab"
+                            data-bs-target="#flv-details" type="button" role="tab">
+                      Details
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="flv-location-tab" data-bs-toggle="tab"
+                            data-bs-target="#flv-location" type="button" role="tab">
+                      Location
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="flv-financial-tab" data-bs-toggle="tab"
+                            data-bs-target="#flv-financial" type="button" role="tab">
+                      Financials
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="flv-map-tab" data-bs-toggle="tab"
+                            data-bs-target="#flv-map" type="button" role="tab">
+                      Map
+                    </button>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div class="tab-pane fade show active" id="flv-details" role="tabpanel">
+                    <div class="row g-3">
+                      <div class="col-lg-6">
+                        <div class="card border h-100">
+                          <div class="card-header bg-light border-0 py-3">
+                            <h6 class="mb-0"><i class="fas fa-file-contract me-2"></i>Basic information</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="row g-3">
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Transaction Number</div>
+                                <div class="fw-semibold">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Regional Number</div>
+                                <div class="fw-semibold">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Date of Document</div>
+                                <div class="fw-semibold">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Date of Registration</div>
+                                <div class="fw-semibold">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Nature of Instrument</div>
+                                <div class="fw-semibold">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Type of Interest</div>
+                                <div class="fw-semibold">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="card border h-100">
+                          <div class="card-header bg-light border-0 py-3">
+                            <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Term and renewal</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="row g-3">
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Term</div>
+                                <div class="fw-semibold">${empty fn:trim(term) ? '--' : fn:trim(term)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Type of Use</div>
+                                <div class="fw-semibold">${empty fn:trim(type_of_use) ? '--' : fn:trim(type_of_use)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Commencement Date</div>
+                                <div class="fw-semibold">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Option for Renewal</div>
+                                <div class="fw-semibold">${empty fn:trim(renewal_term) ? '--' : fn:trim(renewal_term)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Certificate Number</div>
+                                <div class="fw-semibold">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="small text-muted">Date of Issue</div>
+                                <div class="fw-semibold">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="card border">
+                          <div class="card-header bg-light border-0 py-3">
+                            <h6 class="mb-0"><i class="fas fa-certificate me-2"></i>Registration and planning details</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="row g-3">
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Plan Number</div>
+                                <div class="fw-semibold">${empty fn:trim(plan_no) ? '--' : fn:trim(plan_no)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">LTR Plan Number</div>
+                                <div class="fw-semibold">${empty fn:trim(ltr_plan_no) ? '--' : fn:trim(ltr_plan_no)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Registry Map Ref</div>
+                                <div class="fw-semibold">${empty fn:trim(registry_mapref) ? '--' : fn:trim(registry_mapref)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">CC Number</div>
+                                <div class="fw-semibold">${empty fn:trim(cc_no) ? '--' : fn:trim(cc_no)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">GLPIN</div>
+                                <div class="fw-semibold">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Interest Number</div>
+                                <div class="fw-semibold">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Sub-Interest Number</div>
+                                <div class="fw-semibold">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Registered Number</div>
+                                <div class="fw-semibold">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Type of Plotting</div>
+                                <div class="fw-semibold">${empty fn:trim(smd_type_of_plotting) ? '--' : fn:trim(smd_type_of_plotting)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">SMD Reference Number</div>
+                                <div class="fw-semibold">${empty fn:trim(smd_reference_number) ? '--' : fn:trim(smd_reference_number)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Publication Date</div>
+                                <div class="fw-semibold">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="flv-location" role="tabpanel">
+                    <div class="card border">
+                      <div class="card-header bg-light border-0 py-3">
+                        <h6 class="mb-0"><i class="fas fa-globe-africa me-2"></i>Location and registration details</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row g-3">
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Region</div>
+                            <div class="fw-semibold">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">District</div>
+                            <div class="fw-semibold">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
+                          </div>
+                          <div class="col-12">
+                            <div class="small text-muted">Locality</div>
+                            <div class="fw-semibold">${empty fn:trim(locality) ? '--' : fn:trim(locality)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Size of Land</div>
+                            <div class="fw-semibold">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">GLPIN</div>
+                            <div class="fw-semibold">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Registration District</div>
+                            <div class="fw-semibold">${empty fn:trim(registration_district_number) ? '--' : fn:trim(registration_district_number)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Registration Section</div>
+                            <div class="fw-semibold">${empty fn:trim(registration_section_number) ? '--' : fn:trim(registration_section_number)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Registration Block</div>
+                            <div class="fw-semibold">${empty fn:trim(registration_block_number) ? '--' : fn:trim(registration_block_number)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Created Date</div>
+                            <div class="fw-semibold">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Modified Date</div>
+                            <div class="fw-semibold">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="flv-financial" role="tabpanel">
+                    <div class="card border">
+                      <div class="card-header bg-light border-0 py-3">
+                        <h6 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i>Financial review</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row g-3">
+                          <div class="col-12">
+                            <div class="small text-muted">Assessed Value</div>
+                            <div class="h4 text-primary mb-0">${empty fn:trim(assessed_value) ? '--' : fn:trim(assessed_value)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Stamp Duty Payable</div>
+                            <div class="fw-semibold">${empty fn:trim(stamp_duty_payable) ? '--' : fn:trim(stamp_duty_payable)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Consideration in Document</div>
+                            <div class="fw-semibold">${empty fn:trim(consideration_fee) ? '--' : fn:trim(consideration_fee)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Consideration Currency</div>
+                            <div class="fw-semibold">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="small text-muted">Adopted Currency Rate</div>
+                            <div class="fw-semibold">${empty fn:trim(consideration_fee_adopted_rate) ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="flv-map" role="tabpanel">
+                    <div class="card border">
+                      <div class="card-header bg-light border-0 py-3">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                          <h6 class="mb-0"><i class="fas fa-map me-2"></i>Map visualization</h6>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary btn-sm" id="lc_btn_visualise_wkt_flv">
+                              <i class="fas fa-map me-1"></i>
+                              Visualise
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="lc_btn_visualise_search_flv">
+                              <i class="fas fa-search me-1"></i>
+                              Search
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm final-lrd-open-parcel-view">
+                              <i class="fas fa-expand me-1"></i>
+                              Full View
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <div class="mb-3">
+                          <label for="lc_bl_wkt_polygon_flv" class="form-label fw-semibold">WKT Polygon</label>
+                          <div class="input-group">
+                            <input class="form-control" id="lc_bl_wkt_polygon_flv" name="lc_bl_wkt_polygon_flv" type="text" value="${parcel_wkt}" placeholder="WKT polygon coordinates">
+                            <button class="btn btn-outline-secondary" type="button" id="btn_copy_wkt_flv" onclick="copyWktToClipboard('lc_bl_wkt_polygon_flv')">
+                              <i class="fas fa-copy"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                          <div class="d-flex align-items-center me-3">
+                            <label class="me-2 mb-0">Scale:</label>
+                            <div class="input-group input-group-sm me-2" style="width: 120px;">
+                              <input class="form-control form-control-sm" id="lc_scale_value_e_flv" name="lc_scale_value_e_flv" type="text" placeholder="Custom scale">
+                            </div>
+                            <select class="form-select form-select-sm" name="lc_scale_value_flv" id="lc_scale_value_flv" style="width: 120px;">
+                              <option value="500">1:500</option>
+                              <option value="1107">1:1,107</option>
+                              <option value="1250">1:1,250</option>
+                              <option value="2140">1:2,140</option>
+                              <option value="2215">1:2,215</option>
+                              <option value="2500">1:2,500</option>
+                              <option value="2670">1:2,670</option>
+                              <option value="2825">1:2,825</option>
+                              <option value="5000" selected>1:5,000</option>
+                              <option value="10000">1:10,000</option>
+                              <option value="15000">1:15,000</option>
+                              <option value="20000">1:20,000</option>
+                            </select>
+                          </div>
+
+                          <div class="d-flex align-items-center">
+                            <div class="form-check me-2">
+                              <input class="form-check-input" type="checkbox" checked id="lc_lockmapscale_flv">
+                              <label class="form-check-label small mb-0" for="lc_lockmapscale_flv">
+                                Lock Scale
+                              </label>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="lc_btn_scale_zoom_flv">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </div>
+
+                          <div class="ms-auto btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn_zoom_full_flv">
+                              <i class="fas fa-expand"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn_zoom_out_flv">
+                              <i class="fas fa-search-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn_zoom_in_flv">
+                              <i class="fas fa-search-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="mt-3 w-100">
+                          <div id="lc-map__flv"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-grid mt-4">
+                  <button type="button" id="btn_confirm_registration_transaction_flv"
+                          class="btn btn-success btn-lg py-3 d-none">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Confirm Registration Transaction
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card final-vetting-card mt-4">
+                  <div class="card-header bg-white border-0 pb-0 px-4 pt-4">
+                    <div class="final-vetting-section-title">
+                      <i class="fas fa-folder-open text-primary me-2"></i>
+                      Supporting documents
+                    </div>
+                    <div class="final-vetting-subtle small mt-1">Load application and public documents directly inside the final vetting workspace.</div>
+                  </div>
+                  <div class="card-body p-4 pt-3">
+                    <div class="_gated_workflow_documents"></div>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-xl-6">
+            <div class="final-vetting-column-inner">
+            <div class="row g-4">
+              <div class="col-12">
+                <div class="card final-vetting-card">
+                  <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
+                      <div>
+                        <div class="final-vetting-section-title">
+                          <i class="fas fa-file-alt text-primary me-2"></i>
+                          Register: Description of Land
+                        </div>
+                        <div class="final-vetting-subtle small mt-1">Keep the official land description updated before generating the final register.</div>
+                      </div>
+                      <span class="badge bg-light text-primary border border-primary">Stage 2</span>
+                    </div>
+                  </div>
+                  <div class="card-body p-4">
+                    <div class="mb-3">
+                      <label for="lc_description_of_land_lrd_flv" class="form-label fw-semibold">Land Description</label>
+                      <textarea id="lc_description_of_land_lrd_flv" name="lc_description_of_land_lrd_flv" class="form-control" rows="5" required>${smd_region}</textarea>
+                      <div class="form-text">Complete description of the land as it appears in the register.</div>
+                    </div>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <button type="button" id="lc_btn_save_register_description_flv" class="btn btn-primary w-100 py-3">
+                          <i class="fas fa-save me-2"></i>
+                          Save Register Description
+                        </button>
+                      </div>
+                      <div class="col-md-6">
+                        <button type="button" id="lc_btn_activate_final_register_flv" class="btn btn-success w-100 py-3">
+                          <i class="fas fa-file-export me-2"></i>
+                          Generate Final Register
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-12">
+                <div class="card final-vetting-card">
+                  <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
+                      <div>
+                        <div class="final-vetting-section-title">
+                          <i class="fas fa-book text-primary me-2"></i>
+                          Root of title register
+                        </div>
+                        <div class="final-vetting-subtle small mt-1">Review or update the register sections without leaving the vetting flow.</div>
+                      </div>
+                      <span class="badge bg-light text-warning border border-warning">Stage 3</span>
+                    </div>
+                  </div>
+                  <div class="card-body p-4">
+                    <ul class="nav nav-pills flex-wrap mb-4 final-vetting-pill-nav" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="flv-proprietorship-tab" data-bs-toggle="tab"
+                                data-bs-target="#flv-proprietorship" type="button" role="tab">
+                          Proprietorship <span class="badge bg-primary ms-1">${fn:length(lrd_proprietorship_section)}</span>
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="flv-memorial-tab" data-bs-toggle="tab"
+                                data-bs-target="#flv-memorial" type="button" role="tab">
+                          Memorials <span class="badge bg-primary ms-1">${fn:length(lrd_memorials_section)}</span>
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="flv-reservation-tab" data-bs-toggle="tab"
+                                data-bs-target="#flv-reservation" type="button" role="tab">
+                          Reservations <span class="badge bg-primary ms-1">${fn:length(lrd_reservation_section)}</span>
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="flv-encumbrance-tab" data-bs-toggle="tab"
+                                data-bs-target="#flv-encumbrance" type="button" role="tab">
+                          Encumbrances <span class="badge bg-primary ms-1">${fn:length(lrd_encumbrances_section)}</span>
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="flv-valuation-tab" data-bs-toggle="tab"
+                                data-bs-target="#flv-valuation" type="button" role="tab">
+                          Valuation <span class="badge bg-primary ms-1">${fn:length(lrd_valuation_section)}</span>
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="flv-certificate-tab" data-bs-toggle="tab"
+                                data-bs-target="#flv-certificate" type="button" role="tab">
+                          Certificate <span class="badge bg-primary ms-1">${fn:length(lrd_certificate_section)}</span>
+                        </button>
+                      </li>
+                    </ul>
+
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="flv-proprietorship" role="tabpanel">
+                        <div class="card border">
+                          <div class="card-header bg-primary bg-opacity-10 border-0">
+                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                              <h6 class="mb-0 text-primary"><i class="fas fa-user-tie me-2"></i>Proprietorship Details</h6>
+                              <button type="button" class="btn btn-primary btn-sm newProprietorshipModal">
+                                <i class="fas fa-plus me-1"></i>Add Proprietor
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive final-vetting-scroll">
+                              <table class="table table-hover table-sm mb-0" id="flv_lrd_proprietorship_details_dataTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Registered No.</th>
+                                    <th>Proprietors</th>
+                                    <th>Date of Instrument</th>
+                                    <th>Nature of Instrument</th>
+                                    <th>Date of Registration</th>
+                                    <th>Parties</th>
+                                    <th>Price Paid</th>
+                                    <th>Term</th>
+                                    <th class="text-center">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <c:forEach items="${lrd_proprietorship_section}" var="proprietorship_section">
+                                    <tr>
+                                      <td><span class="badge bg-info bg-opacity-10 text-info">${proprietorship_section.ps_registration_number}</span></td>
+                                      <td>${proprietorship_section.ps_proprietor}</td>
+                                      <td>${proprietorship_section.ps_date_of_instrument}</td>
+                                      <td><span class="badge bg-secondary">${proprietorship_section.ps_nature_of_instrument}</span></td>
+                                      <td>${proprietorship_section.ps_date_of_registration}</td>
+                                      <td>
+                                        <div class="small">
+                                          <div><strong>From:</strong> ${proprietorship_section.ps_transferor}</div>
+                                          <div><strong>To:</strong> ${proprietorship_section.ps_transferee}</div>
+                                        </div>
+                                      </td>
+                                      <td>${proprietorship_section.ps_price_paid}</td>
+                                      <td>${proprietorship_section.ps_term}</td>
+                                      <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                          <button class="btn btn-outline-primary btn-sm me-1 editProprietorshipModal ${proprietorship_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-target-id="${proprietorship_section.ps_id}"
+                                                  data-ps_id="${proprietorship_section.ps_id}"
+                                                  data-ps_case_number="${proprietorship_section.ps_case_number}"
+                                                  data-ps_registration_number="${proprietorship_section.ps_registration_number}"
+                                                  data-ps_proprietor="${proprietorship_section.ps_proprietor}"
+                                                  data-ps_date_of_instrument="${proprietorship_section.ps_date_of_instrument}"
+                                                  data-ps_nature_of_instrument="${proprietorship_section.ps_nature_of_instrument}"
+                                                  data-ps_date_of_registration="${proprietorship_section.ps_date_of_registration}"
+                                                  data-ps_transferor="${proprietorship_section.ps_transferor}"
+                                                  data-ps_transferee="${proprietorship_section.ps_transferee}"
+                                                  data-ps_price_paid="${proprietorship_section.ps_price_paid}"
+                                                  data-ps_remarks="${proprietorship_section.ps_remarks}"
+                                                  data-ps_signature="${proprietorship_section.ps_signature}"
+                                                  data-ps_term="${proprietorship_section.ps_term}">
+                                            <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm deleteProprietorshipModal ${proprietorship_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-ps_id="${proprietorship_section.ps_id}"
+                                                  data-ps_case_number="${proprietorship_section.ps_case_number}">
+                                            <i class="fas fa-trash"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="flv-memorial" role="tabpanel">
+                        <div class="card border">
+                          <div class="card-header bg-danger bg-opacity-10 border-0">
+                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                              <h6 class="mb-0 text-danger"><i class="fas fa-file-signature me-2"></i>Memorial Details</h6>
+                              <button type="button" class="btn btn-danger btn-sm newMemorialsModal">
+                                <i class="fas fa-plus me-1"></i>Add Memorial
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive final-vetting-scroll">
+                              <table class="table table-hover table-sm mb-0" id="flv_lrd_memorial_details_dataTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Registered No</th>
+                                    <th>Memorials</th>
+                                    <th>Date of Instrument</th>
+                                    <th>Date of Registration</th>
+                                    <th>Entry No</th>
+                                    <th class="text-center">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <c:forEach items="${lrd_memorials_section}" var="memorials_section">
+                                    <tr>
+                                      <td><span class="badge bg-danger bg-opacity-10 text-danger">${memorials_section.m_registered_no}</span></td>
+                                      <td>${memorials_section.m_memorials}</td>
+                                      <td>${memorials_section.m_date_of_instrument}</td>
+                                      <td>${memorials_section.m_date_of_registration}</td>
+                                      <td><span class="badge bg-secondary">${memorials_section.m_entry_number}</span></td>
+                                      <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                          <button class="btn btn-outline-danger btn-sm me-1 editMemorialsModal ${memorials_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-target-id="${memorials_section.mid}"
+                                                  data-mid="${memorials_section.mid}"
+                                                  data-m_case_number="${memorials_section.m_case_number}"
+                                                  data-m_registered_no="${memorials_section.m_registered_no}"
+                                                  data-m_memorials="${memorials_section.m_memorials}"
+                                                  data-m_date_of_registration="${memorials_section.m_date_of_registration}"
+                                                  data-m_date_of_instrument="${memorials_section.m_date_of_instrument}"
+                                                  data-m_back="${memorials_section.m_back}"
+                                                  data-m_remarks="${memorials_section.m_remarks}"
+                                                  data-m_entry_number="${memorials_section.m_entry_number}">
+                                            <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm deleteMemorialsModal ${memorials_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-target-id="${memorials_section.mid}"
+                                                  data-mid="${memorials_section.mid}">
+                                            <i class="fas fa-trash"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="flv-reservation" role="tabpanel">
+                        <div class="card border">
+                          <div class="card-header bg-success bg-opacity-10 border-0">
+                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                              <h6 class="mb-0 text-success"><i class="fas fa-flag me-2"></i>Reservation Details</h6>
+                              <button type="button" class="btn btn-success btn-sm newReservationModal">
+                                <i class="fas fa-plus me-1"></i>Add Reservation
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive final-vetting-scroll">
+                              <table class="table table-hover table-sm mb-0" id="flv_lrd_reservation_details_dataTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Reservation Description</th>
+                                    <th>Created By</th>
+                                    <th>Created On</th>
+                                    <th class="text-center">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <c:forEach items="${lrd_reservation_section}" var="reservation_section">
+                                    <tr>
+                                      <td>${reservation_section.reservation_description}</td>
+                                      <td>${reservation_section.modified_by}</td>
+                                      <td>${reservation_section.created_date}</td>
+                                      <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                          <button class="btn btn-outline-success btn-sm me-1 editReservationModal ${reservation_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-rs_id="${reservation_section.rs_id}"
+                                                  data-rs_reservation_description="${reservation_section.reservation_description}"
+                                                  data-rs_case_number="${reservation_section.case_number}">
+                                            <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm deleteReservationModal ${reservation_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-rs_id="${reservation_section.rs_id}">
+                                            <i class="fas fa-trash"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="flv-encumbrance" role="tabpanel">
+                        <div class="card border">
+                          <div class="card-header bg-warning bg-opacity-10 border-0">
+                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                              <h6 class="mb-0 text-warning"><i class="fas fa-lock me-2"></i>Encumbrance Details</h6>
+                              <button type="button" class="btn btn-warning btn-sm newEncumberancesModal">
+                                <i class="fas fa-plus me-1"></i>Add Encumbrance
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive final-vetting-scroll">
+                              <table class="table table-hover table-sm mb-0" id="flv_lrd_registration_encumbrance_dataTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Registered Number</th>
+                                    <th>Date of Instrument</th>
+                                    <th>Date of Registration</th>
+                                    <th>Memorials</th>
+                                    <th>Entry No.</th>
+                                    <th class="text-center">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <c:forEach items="${lrd_encumbrances_section}" var="lrd_encumbrances_section_row">
+                                    <tr>
+                                      <td><span class="badge bg-warning bg-opacity-10 text-warning">${lrd_encumbrances_section_row.es_registered_number}</span></td>
+                                      <td>${lrd_encumbrances_section_row.es_date_of_instrument}</td>
+                                      <td>${lrd_encumbrances_section_row.es_date_of_registration}</td>
+                                      <td>${lrd_encumbrances_section_row.es_memorials}</td>
+                                      <td><span class="badge bg-secondary">${lrd_encumbrances_section_row.es_entry_number}</span></td>
+                                      <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                          <button class="btn btn-outline-warning btn-sm me-1 editEncumberancesModal ${lrd_encumbrances_section_row.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-es_id="${lrd_encumbrances_section_row.es_id}"
+                                                  data-es_case_number="${lrd_encumbrances_section_row.es_case_number}"
+                                                  data-es_registered_number="${lrd_encumbrances_section_row.es_registered_number}"
+                                                  data-es_date_of_registration="${lrd_encumbrances_section_row.es_date_of_registration}"
+                                                  data-es_date_of_instrument="${lrd_encumbrances_section_row.es_date_of_instrument}"
+                                                  data-es_back="${lrd_encumbrances_section_row.es_back}"
+                                                  data-es_forward="${lrd_encumbrances_section_row.es_forward}"
+                                                  data-es_remarks="${lrd_encumbrances_section_row.es_remarks}"
+                                                  data-es_memorials="${lrd_encumbrances_section_row.es_memorials}"
+                                                  data-es_signature="${lrd_encumbrances_section_row.es_signature}"
+                                                  data-es_entry_number="${lrd_encumbrances_section_row.es_entry_number}"
+                                                  data-es_action_on_form_encumbrances="edit">
+                                            <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm deleteEncumberancesModal ${lrd_encumbrances_section_row.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-es_id="${lrd_encumbrances_section_row.es_id}">
+                                            <i class="fas fa-trash"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="flv-valuation" role="tabpanel">
+                        <div class="card border">
+                          <div class="card-header bg-danger bg-opacity-10 border-0">
+                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                              <h6 class="mb-0 text-danger"><i class="fas fa-money-bill-wave me-2"></i>Valuation Details</h6>
+                              <button type="button" class="btn btn-danger btn-sm newValuationModal">
+                                <i class="fas fa-plus me-1"></i>Add Valuation
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive final-vetting-scroll">
+                              <table class="table table-hover table-sm mb-0" id="flv_lrd_valuation_details_dataTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Date of Valuation</th>
+                                    <th class="text-end">Amount (GHS)</th>
+                                    <th>Remarks</th>
+                                    <th class="text-center">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <c:forEach items="${lrd_valuation_section}" var="valuation_section">
+                                    <tr>
+                                      <td>${valuation_section.vs_date_of_valuation}</td>
+                                      <td class="text-end text-success">${valuation_section.vs_amount}</td>
+                                      <td>${valuation_section.vs_remarks}</td>
+                                      <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                          <button class="btn btn-outline-danger btn-sm me-1 editValuationModal ${valuation_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-vs_id="${valuation_section.vs_id}"
+                                                  data-case_number="${valuation_section.case_number}"
+                                                  data-vs_date_of_valuation="${valuation_section.vs_date_of_valuation}"
+                                                  data-vs_amount="${valuation_section.vs_amount}"
+                                                  data-vs_remarks="${valuation_section.vs_remarks}"
+                                                  data-es_action_on_form_encumbrances="edit">
+                                            <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm deleteValuationModal ${valuation_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-vs_id="${valuation_section.vs_id}"
+                                                  data-case_number="${valuation_section.case_number}">
+                                            <i class="fas fa-trash"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="flv-certificate" role="tabpanel">
+                        <div class="card border">
+                          <div class="card-header bg-info bg-opacity-10 border-0">
+                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                              <h6 class="mb-0 text-info"><i class="fas fa-certificate me-2"></i>Certificate Details</h6>
+                              <button type="button" class="btn btn-info btn-sm newCertificateModal">
+                                <i class="fas fa-plus me-1"></i>Add Certificate
+                              </button>
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive final-vetting-scroll">
+                              <table class="table table-hover table-sm mb-0" id="flv_lrd_certificate_details_dataTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Date of Issue</th>
+                                    <th>To Whom Issued</th>
+                                    <th>Serial Number</th>
+                                    <th>Official Notes</th>
+                                    <th class="text-center">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <c:forEach items="${lrd_certificate_section}" var="certificate_section">
+                                    <tr>
+                                      <td>${certificate_section.cs_date_of_registration}</td>
+                                      <td>${certificate_section.cs_to_whom_issued}</td>
+                                      <td>${certificate_section.cs_serial_number}</td>
+                                      <td>${certificate_section.cs_official_notes}</td>
+                                      <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                          <button class="btn btn-outline-info btn-sm me-1 editCertificateModal ${certificate_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-cs_id="${certificate_section.cs_id}"
+                                                  data-cs_case_number="${certificate_section.case_number}"
+                                                  data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
+                                                  data-cs_to_whom_issued="${certificate_section.cs_to_whom_issued}"
+                                                  data-cs_serial_number="${certificate_section.cs_serial_number}"
+                                                  data-cs_official_notes="${certificate_section.cs_official_notes}">
+                                            <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm deleteCertificateModal ${certificate_section.approval_status == 1 ? 'd-none' : ''}"
+                                                  data-cs_id="${certificate_section.cs_id}"
+                                                  data-cs_case_number="${certificate_section.case_number}"
+                                                  data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
+                                                  data-cs_to_whom_issued="${certificate_section.cs_to_whom_issued}"
+                                                  data-cs_serial_number="${certificate_section.cs_serial_number}"
+                                                  data-cs_official_notes="${certificate_section.cs_official_notes}">
+                                            <i class="fas fa-trash"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="card final-vetting-card">
+                  <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
+                      <div>
+                        <div class="final-vetting-section-title">
+                          <i class="fas fa-file-signature text-primary me-2"></i>
+                          Certificate composition
+                        </div>
+                        <div class="final-vetting-subtle small mt-1">Update certificate details, review the content and generate the final certificate from the same workspace.</div>
+                      </div>
+                      <span class="badge bg-light text-success border border-success">Stage 4</span>
+                    </div>
+                  </div>
+                  <div class="card-body p-4">
+                    <div class="row g-4">
+                      <div class="col-12 col-lg-4">
+                        <div class="card border h-100">
+                          <div class="card-header bg-primary bg-opacity-10 border-0">
+                            <h6 class="mb-0 text-primary"><i class="fas fa-cogs me-2"></i>Certificate configuration</h6>
+                          </div>
+                          <div class="card-body">
+                            <div class="mb-3">
+                              <label for="lc_txt_type_of_certificate_flv" class="form-label fw-semibold">Certificate Type</label>
+                              <select name="lc_txt_type_of_certificate_flv" id="lc_txt_type_of_certificate_flv" class="form-select">
+                                <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
+                                  ${certificate_type == 'Individual' ? '-- Select Certificate Type --' : certificate_type}
+                                </option>
+                                <option value="Provisional Certificate">Provisional Certificate</option>
+                                <option value="Land Certificate">Land Certificate</option>
+                                <option value="Substituted Certificate">Substituted Certificate</option>
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <label for="lc_txt_certificate_number_flv" class="form-label fw-semibold">Certificate Number</label>
+                              <input type="text" class="form-control" id="lc_txt_certificate_number_flv" value="${certificate_number}">
+                            </div>
+                            <!-- <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                              <div class="small">
+                                <strong>Tip:</strong> Use <em>Compose Template</em> to generate a base draft, then review the text before saving or generating the certificate.
+                              </div>
+                            </div> -->
+                            <button type="button" id="btn_save_lrd_certificate_update_details_flv"
+                                    class="btn btn-primary w-100 mt-3">
+                              <i class="fas fa-save me-2"></i>
+                              Update Certificate Details
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-lg-8">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                          <div>
+                            <div class="fw-semibold">Certificate Content</div>
+                            <div class="small text-muted">Review the generated content and keep the final wording here.</div>
+                          </div>
+                          <!-- <button type="button" class="btn btn-outline-danger" id="btn_compose_certificate_template_flv">
+                            <i class="fas fa-edit me-2"></i>
+                            Compose Template
+                          </button> -->
+                        </div>
+                        <div class="final-vetting-editor">
+                          <div id="lc_search_report_summary_details_flv">${remark_or_comment}</div>
+                        </div>
+                        <div class="row g-3 mt-1">
+                          <div class="col-md-6">
+                            <button type="button" id="lc_btn_save_search_report_flv"
+                                    class="btn btn-outline-primary w-100 py-3">
+                              <i class="fas fa-cloud-upload-alt me-2"></i>
+                              Save Certificate
+                            </button>
+                          </div>
+                          <div class="col-md-6">
+                            <button type="button" id="lc_btn_activate_final_certificate_flv"
+                                    class="btn btn-success w-100 py-3">
+                              <i class="fas fa-file-pdf me-2"></i>
+                              Generate Certificate
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer bg-white border-0 px-4 px-lg-5 pb-4 pt-0">
+        <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center w-100">
+          <div class="small text-muted">
+            Existing modals remain available. This workspace only adds a consolidated final-review flow.
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              <i class="fas fa-times me-2"></i>
+              Close Workspace
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
