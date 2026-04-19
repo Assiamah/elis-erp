@@ -1408,7 +1408,7 @@
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="review_documents_label">
                     <i class="fas fa-file-alt me-2"></i>
-                    Uploaf PDF Plan
+                    Upload PDF Plan
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -1610,7 +1610,7 @@
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white" id="review_documents_label">
                     <i class="fas fa-file-alt me-2"></i>
-                    Uploaf Final PDF Plan
+                    Upload Final PDF Plan
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -3108,7 +3108,7 @@
         <div class="modal-header bg-primary text-white">
            <h5 class="modal-title text-white" id="update_case_date_of_issue_label">
               <i class="fas fa-calendar me-2"></i>
-              Update Case Date of Issue
+              Update Case Date of Issue & Registration
            </h5>
            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -3136,6 +3136,32 @@
                         <c:otherwise>
                             <input type="date" class="form-control" id="lc_txt_date_of_issue" 
                                    value="${date_of_issue}" placeholder="Enter date of issue" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <!-- <small class="form-text text-muted mt-1">Unique identifier for the certificate</small> -->
+            </div>
+
+            <div class="mb-4">
+                <label for="txt_lc_plan_no_pl_smd" class="form-label fw-medium">
+                    <i class="fas fa-hashtag me-1"></i>
+                    Date of Registration
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-calendar"></i>
+                    </span>
+                    <c:choose>
+                        <c:when test="${not empty date_of_registration and date_of_registration != 'null' and not fn:contains(date_of_registration, '-')}">
+                            <input type="date" class="form-control bg-light" id="lc_txt_date_of_registration" 
+                                   value="${date_of_registration}" readonly />
+                            <span class="input-group-text text-success">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="date" class="form-control" id="lc_txt_date_of_registration" 
+                                   value="${date_of_registration}" placeholder="Enter date of registration" />
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -3173,7 +3199,7 @@
                     <div>
                         <h6 class="alert-heading mb-2">Instructions</h6>
                         <p class="small mb-0">
-                            Update the date of issue if the date of issue has not been created.
+                            Update the date of issue and date of registration if the date of issue and date of registration has not been created.
                         </p>
                     </div>
                 </div>

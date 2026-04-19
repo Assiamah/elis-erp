@@ -3449,6 +3449,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String ip_address =  (String) session.getAttribute("ip_address");
 				String userid = (String) session.getAttribute("userid");
 				String date_of_issue = request.getParameter("date_of_issue");
+				String date_of_registration = request.getParameter("date_of_registration");
 
 
 				JSONObject obj = new JSONObject();
@@ -3459,6 +3460,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("ip_address", ip_address);
 				obj.put("userid", userid);
 				obj.put("date_of_issue", date_of_issue);
+				obj.put("date_of_registration", date_of_registration);
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();

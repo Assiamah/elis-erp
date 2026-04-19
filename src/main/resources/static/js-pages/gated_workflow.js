@@ -17629,15 +17629,16 @@ document.addEventListener('DOMContentLoaded', function() {
         var job_number = $("#cs_main_job_number").val();
         var case_number = $("#cs_main_case_number").val();
         var date_of_issue = $("#lc_txt_date_of_issue").val();
+        var date_of_registration = $("#lc_txt_date_of_registration").val();
         var send_by_id = localStorage.getItem('userid');
         var send_by_name = localStorage.getItem('fullname');
 
         // Validate date if needed
-        if (!date_of_issue) {
+        if (!date_of_issue || !date_of_registration) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Missing Date',
-                text: 'Please enter a date of issue',
+                text: 'Please enter a date of issue and date of registration',
                 confirmButtonText: 'OK'
             });
             return;
@@ -17649,6 +17650,7 @@ document.addEventListener('DOMContentLoaded', function() {
             html: `
                 <div style="text-align: left; margin: 15px 0;">
                     <p><strong>Date of Issue:</strong> ${date_of_issue}</p>
+                    <p><strong>Date of Registration:</strong> ${date_of_registration}</p>
                     <p><strong>Case Number:</strong> ${case_number}</p>
                     <p><strong>Job Number:</strong> ${job_number}</p>
                 </div>
@@ -17671,6 +17673,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         case_number: case_number,
                         job_number: job_number,
                         date_of_issue: date_of_issue,
+                        date_of_registration: date_of_registration,
                         fullname: send_by_name,
                         userid: send_by_id
                     },
@@ -28293,6 +28296,152 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }).catch((error) => {
             showFinalLrdVettingError('Server Error', error || 'Unable to confirm the transaction.');
+        });
+    });
+
+    $("#btn_upload_signed_certificate_and_register").on("click", function() {
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        const case_number = $("#cs_main_case_number").val();
+        const business_process_sub_name = $("#cs_main_business_process_sub_name").val(); // Make sure this field exists or get it from somewhere else
+
+        Swal.fire({
+            title: 'Upload Signed Certificate & Register',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-upload text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-2">Upload Signed Certificate & Register</h5>
+                    <p class="text-muted mb-3">
+                        This will generate and upload the final signed certificate and register for:<br>
+                        <strong>Job #: ${job_number}</strong><br>
+                        <strong>Case #: ${transaction_number}</strong>
+                    </p>
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-0">
+                        <i class="fas fa-exclamation-triangle me-2 text-warning"></i>
+                        <span class="small">This document will be added to the applicant's public record and cannot be removed.</span>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Upload Report',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Processing...',
+                    html: 'Generating and uploading signed certificate and register. Please wait...',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "GenerateCaseReports",
+                    data: {
+                        request_type: 'request_to_generate_signed_certificate_and_register_template_and_upload',
+                        job_number: job_number,
+                        case_number: case_number,
+                        transaction_number: transaction_number,
+                        business_process_sub_name: business_process_sub_name,
+                        //cert_type: 'concurrence_certificate'
+                    },
+                    cache: false,
+                    xhrFields: {
+                        responseType: 'blob' // Important for handling PDF response
+                    },
+                    beforeSend: function() {
+                        // Optional: Show additional loading indicator
+                    },
+                    success: function(response, status, xhr) {
+                        // Check if response is PDF (success) or error message
+                             console.log(response)
+                        const contentType = xhr.getResponseHeader('content-type');
+                        console.log(contentType)
+                        if (contentType === 'application/pdf') {
+                            // Create a blob from the PDF response
+                            const blob = new Blob([response], { type: 'application/pdf' });
+                            const url = window.URL.createObjectURL(blob);
+                            
+                            // Close the upload modal
+                            $('#upload_signed_certificate_and_register').modal('hide');
+                            
+                            // Show success message with option to view/download
+                            Swal.fire({
+                                title: 'Upload Successful!',
+                                html: `<div class="text-center">
+                                        <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
+                                        <p class="mb-3">The signed certificate and register has been successfully generated and uploaded to the application document.</p>
+                                        <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            <span class="small">The document is now part of the official case record.</span>
+                                        </div>
+                                    </div>`,
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: 'View Document',
+                                cancelButtonText: 'Close',
+                                confirmButtonColor: '#0d6efd'
+                            }).then((viewResult) => {
+                                if (viewResult.isConfirmed) {
+                                    // Open PDF in new window
+                                    window.open(url, '_blank');
+                                } else {
+                                    // Clean up the blob URL
+                                    window.URL.revokeObjectURL(url);
+                                }
+                            });
+                            
+                            // Optional: Trigger download automatically
+                            // const link = document.createElement('a');
+                            // link.href = url;
+                            // link.download = `${transaction_number}_search_report_letter.pdf`;
+                            // link.click();
+                        } else {
+                            // Handle error response (HTML error message)
+                            const reader = new FileReader();
+                            reader.onload = function() {
+                                Swal.fire({
+                                    title: 'Upload Failed',
+                                    text: reader.result || 'An error occurred while uploading the report.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            };
+                            reader.readAsText(response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Upload error:', error);
+                        console.error('Response:', xhr.responseText);
+                        
+                        let errorMessage = 'An error occurred while uploading the report.';
+                        
+                        // Try to parse error response if it's JSON
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            errorMessage = response.message || errorMessage;
+                        } catch (e) {
+                            // If not JSON, use status text
+                            errorMessage = xhr.statusText || errorMessage;
+                        }
+                        
+                        Swal.fire({
+                            title: 'Upload Failed',
+                            text: errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
         });
     });
 
