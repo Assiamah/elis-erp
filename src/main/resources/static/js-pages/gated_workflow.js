@@ -22723,15 +22723,15 @@ document.addEventListener('DOMContentLoaded', function() {
         var send_by_id = localStorage.getItem('userid');
         var send_by_name = localStorage.getItem('fullname');
 
-        if (!lc_txt_file_number_type) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Please select a file number type.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
+        // if (!lc_txt_file_number_type) {
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Please select a file number type.',
+        //         icon: 'error',
+        //         confirmButtonText: 'OK'
+        //     });
+        //     return;
+        // }
         
         // SweetAlert2 confirmation
         Swal.fire({
