@@ -2904,3 +2904,63 @@
 		</div>
 	</div>
 </div>
+
+
+<div class="modal fade effect-fade modal-blur" id="reset_certificate_number_and_indexing" tabindex="-1"
+     aria-labelledby="resetCertificateAndIndexingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-white" id="resetCertificateAndIndexingLabel">
+          <i class="fas fa-key me-2"></i>
+          Reset Certificate Number and Indexing
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="lc_txt_type_of_reset" class="form-label fw-semibold">Reset Type</label>
+          <select name="lc_txt_type_of_reset" id="lc_txt_type_of_reset" class="form-select">
+            <option value="">-- Select Reset Type --</option>
+            <option value="Certificate Number">Certificate Number</option>
+            <option value="Volume and Folio">Volume and Folio</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="lc_txt_remarks" class="form-label">
+            <i class="fas fa-sticky-note me-1"></i>
+            Remarks:
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-file"></i>
+            </span>
+            <textarea type="text" class="form-control" id="lc_txt_remarks"></textarea>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <button type="button" id="lc_btn_confirm_reset_of_certificate_number_and_indexing" 
+                  class="btn btn-primary w-100 py-2" 
+                  value="Confirm">
+            <i class="fas fa-save me-2"></i>
+            Confirm
+          </button>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>
+          Close
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
