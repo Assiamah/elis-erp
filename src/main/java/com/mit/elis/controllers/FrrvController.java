@@ -50,7 +50,7 @@ public class FrrvController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -95,7 +95,7 @@ public class FrrvController {
 
 					// Session is expired
 					request.setAttribute("login", "sessionout");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 				}
@@ -108,7 +108,7 @@ public class FrrvController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -142,7 +142,7 @@ public class FrrvController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -177,7 +177,7 @@ public class FrrvController {
 
 					// Session is expired
 					request.setAttribute("login", "sessionout");
-					System.out.println("If Not success");
+					//System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 				}
@@ -190,7 +190,7 @@ public class FrrvController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -223,7 +223,7 @@ public class FrrvController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
@@ -240,7 +240,7 @@ public class FrrvController {
 							.load_application_batched_to_user_frrv_staff(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									(String) session.getAttribute("userid"));
-					// System.out.println(web_service_response_menu);
+					// //System.out.println(web_service_response_menu);
 					JSONObject menu_obj;
 					menu_obj = new JSONObject(web_service_response_menu);
 					String all_menus = menu_obj.get("data").toString();
@@ -257,7 +257,7 @@ public class FrrvController {
 
 					// Session is expired
 					request.setAttribute("login", "sessionout");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 				}
@@ -270,7 +270,7 @@ public class FrrvController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}

@@ -45,7 +45,7 @@ public class Region {
 			JSONArray jsonArr = new JSONArray();
 			JSONObject obj = new JSONObject();
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("add")) {
 				String region_name = request.getParameter("region_name");
@@ -53,13 +53,13 @@ public class Region {
 				obj.put("region_name", region_name);
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				web_service_response = Ws_region.region_add(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -74,39 +74,39 @@ public class Region {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				web_service_response = Ws_region.region_update(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("delete")) {
 				String region_id = request.getParameter("region_id");
 				// obj.put( "userid" , userid );
-				// System.out.println(region_id);
+				// //System.out.println(region_id);
 				web_service_response = Ws_region.region_delete(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), region_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("get_all")) {
 
 				String search_by = request.getParameter("search_by");
-				// System.out.println(search_by);
+				// //System.out.println(search_by);
 				// web_service_response
 				// =Ws_region.get_list_of_users_division(search_by);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

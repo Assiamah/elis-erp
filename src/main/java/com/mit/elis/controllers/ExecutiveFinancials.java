@@ -55,7 +55,7 @@ public class ExecutiveFinancials {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -88,7 +88,7 @@ public class ExecutiveFinancials {
             jo81 = geodata81.getJSONObject(i);
            String daily_revenue = jo81.get("total").toString(); 
           request.setAttribute("daily_revenue",daily_revenue);
-          //System.out.println(daily_revenue);
+          ////System.out.println(daily_revenue);
         }
 
 
@@ -99,7 +99,7 @@ public class ExecutiveFinancials {
             jo  = geodata.getJSONObject(i);
            String yearly_revenue = jo.get("total").toString(); 
           request.setAttribute("yearly_revenue",yearly_revenue);
-		  //System.out.println(yearly_revenue);
+		  ////System.out.println(yearly_revenue);
         }
 
 
@@ -110,7 +110,7 @@ public class ExecutiveFinancials {
             jo1 = geodata1.getJSONObject(i);
            String monthly_revenue = jo1.get("total").toString(); 
           request.setAttribute("monthly_revenue",monthly_revenue);
-          //System.out.println(monthly_revenue);
+          ////System.out.println(monthly_revenue);
         }
 
            JSONObject jo2 = new JSONObject(web_service_response);
@@ -175,7 +175,7 @@ public class ExecutiveFinancials {
            String total_reg_june = jo7.get("total").toString(); 
           request.setAttribute("total_reg_june",total_reg_june);
           //int percentage = total_yearly_completed_apps * 100; 
-        //  System.out.println(total_december);
+        //  //System.out.println(total_december);
         }
 
 		JSONObject jo8 = new JSONObject(web_service_response);
@@ -186,7 +186,7 @@ public class ExecutiveFinancials {
            String total_reg_july = jo8.get("total").toString(); 
           request.setAttribute("total_reg_july",total_reg_july);
           //int percentage = total_yearly_completed_apps * 100; 
-        // System.out.println(total_january);
+        // //System.out.println(total_january);
         }
 
 
@@ -198,7 +198,7 @@ public class ExecutiveFinancials {
            String total_reg_aug = jo9.get("total").toString(); 
           request.setAttribute("total_reg_aug",total_reg_aug);
           //int percentage = total_yearly_completed_apps * 100; 
-        // System.out.println(total_february);
+        // //System.out.println(total_february);
         }
 
 
@@ -210,7 +210,7 @@ public class ExecutiveFinancials {
            String total_reg_sep = jo10.get("total").toString(); 
           request.setAttribute("total_reg_sep",total_reg_sep);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_march);
+         ////System.out.println(total_march);
         }
 
 
@@ -223,7 +223,7 @@ public class ExecutiveFinancials {
            String total_reg_oct = jo11.get("total").toString(); 
           request.setAttribute("total_reg_oct",total_reg_oct);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_march);
+         ////System.out.println(total_march);
         }
 
 		JSONObject jo12 = new JSONObject(web_service_response);
@@ -234,7 +234,7 @@ public class ExecutiveFinancials {
            String total_reg_nov = jo12.get("total").toString(); 
           request.setAttribute("total_reg_nov",total_reg_nov);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_april);
+         ////System.out.println(total_april);
         }
 
       
@@ -247,7 +247,7 @@ public class ExecutiveFinancials {
            String total_reg_dec = jo13.get("total").toString(); 
           request.setAttribute("total_reg_dec",total_reg_dec);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_april);
+         ////System.out.println(total_april);
         }
 
 
@@ -259,7 +259,7 @@ public class ExecutiveFinancials {
            String total_search_jan = jo14.get("total").toString(); 
           request.setAttribute("total_search_jan",total_search_jan);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_july);
+         ////System.out.println(total_july);
         }
 
 
@@ -271,7 +271,7 @@ public class ExecutiveFinancials {
            String total_search_feb = jo15.get("total").toString(); 
           request.setAttribute("total_search_feb",total_search_feb);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_august);
+         ////System.out.println(total_august);
         }
 
 
@@ -283,7 +283,7 @@ public class ExecutiveFinancials {
            String total_search_mar = jo16.get("total").toString(); 
           request.setAttribute("total_search_mar",total_search_mar);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_september);
+         ////System.out.println(total_september);
         }
 
 
@@ -295,7 +295,7 @@ public class ExecutiveFinancials {
            String total_search_apr = jo17.get("total").toString(); 
           request.setAttribute("total_search_apr",total_search_apr);
           //int percentage = total_yearly_completed_apps * 100; 
-          //System.out.println(total_october);
+          ////System.out.println(total_october);
         }
 
 
@@ -307,7 +307,7 @@ public class ExecutiveFinancials {
            String total_search_may = jo18.get("total").toString(); 
           request.setAttribute("total_search_may",total_search_may);
           //int percentage = total_yearly_completed_apps * 100; 
-           //System.out.println(total_november);
+           ////System.out.println(total_november);
         }
 
 
@@ -319,7 +319,7 @@ public class ExecutiveFinancials {
            String total_search_june = jo19.get("total").toString(); 
           request.setAttribute("total_search_june",total_search_june);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_december);
+         ////System.out.println(total_december);
         } 
 
 
@@ -331,7 +331,7 @@ public class ExecutiveFinancials {
            String total_search_july = jo20.get("total").toString(); 
           request.setAttribute("total_search_july",total_search_july);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_january);
+         ////System.out.println(total_pending_january);
         } 
 
 
@@ -343,7 +343,7 @@ public class ExecutiveFinancials {
            String total_search_aug = jo21.get("total").toString(); 
           request.setAttribute("total_search_aug",total_search_aug);
           //int percentage = total_yearly_completed_apps * 100; 
-        // System.out.println(total_pending_february);
+        // //System.out.println(total_pending_february);
         } 
 
 
@@ -355,7 +355,7 @@ public class ExecutiveFinancials {
            String total_search_sep = jo22.get("total").toString(); 
           request.setAttribute("total_search_sep",total_search_sep);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_march);
+         ////System.out.println(total_pending_march);
         } 
 
 
@@ -367,7 +367,7 @@ public class ExecutiveFinancials {
            String total_search_oct = jo23.get("total").toString(); 
           request.setAttribute("total_search_oct",total_search_oct);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_march);
+         ////System.out.println(total_pending_march);
         } 
 
 
@@ -379,7 +379,7 @@ public class ExecutiveFinancials {
            String total_search_nov = jo24.get("total").toString(); 
           request.setAttribute("total_search_nov",total_search_nov);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_march);
+         ////System.out.println(total_pending_march);
         } 
 
 
@@ -391,7 +391,7 @@ public class ExecutiveFinancials {
            String total_search_dec = jo25.get("total").toString(); 
           request.setAttribute("total_search_dec",total_search_dec);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_march);
+         ////System.out.println(total_pending_march);
         } 
 
 
@@ -403,7 +403,7 @@ public class ExecutiveFinancials {
            String total_stamp_jan = jo26.get("total").toString(); 
           request.setAttribute("total_stamp_jan",total_stamp_jan);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_july);
+         ////System.out.println(total_pending_july);
         } 
 
 
@@ -416,7 +416,7 @@ public class ExecutiveFinancials {
            String total_stamp_feb = jo27.get("total").toString(); 
           request.setAttribute("total_stamp_feb",total_stamp_feb);
           //int percentage = total_yearly_completed_apps * 100; 
-        // System.out.println(total_pending_august);
+        // //System.out.println(total_pending_august);
         } 
 
 
@@ -428,7 +428,7 @@ public class ExecutiveFinancials {
            String total_stamp_mar = jo28.get("total").toString(); 
           request.setAttribute("total_stamp_mar",total_stamp_mar);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_september);
+         ////System.out.println(total_pending_september);
         }
 		
 		
@@ -440,7 +440,7 @@ public class ExecutiveFinancials {
            String total_stamp_apr = jo29.get("total").toString(); 
           request.setAttribute("total_stamp_apr",total_stamp_apr);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_september);
+         ////System.out.println(total_pending_september);
         } 
 
 
@@ -452,7 +452,7 @@ public class ExecutiveFinancials {
            String total_stamp_may = jo30.get("total").toString(); 
           request.setAttribute("total_stamp_may",total_stamp_may);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_september);
+         ////System.out.println(total_pending_september);
         } 
 
 
@@ -465,7 +465,7 @@ public class ExecutiveFinancials {
            String total_stamp_june = jo31.get("total").toString(); 
           request.setAttribute("total_stamp_june",total_stamp_june);
           //int percentage = total_yearly_completed_apps * 100; 
-         //System.out.println(total_pending_december);
+         ////System.out.println(total_pending_december);
         } 
 
 
@@ -477,7 +477,7 @@ public class ExecutiveFinancials {
            String total_stamp_july = jo32.get("total").toString(); 
           request.setAttribute("total_stamp_july",total_stamp_july);
           //int percentage = total_yearly_completed_apps * 100; 
-        //System.out.println(total_completed_january);
+        ////System.out.println(total_completed_january);
         } 
 
 
@@ -489,7 +489,7 @@ public class ExecutiveFinancials {
            String total_stamp_aug = jo33.get("total").toString(); 
           request.setAttribute("total_stamp_aug",total_stamp_aug);
           //int percentage = total_yearly_completed_apps * 100; 
-        //System.out.println(total_completed_january);
+        ////System.out.println(total_completed_january);
         } 
 
 
@@ -501,7 +501,7 @@ public class ExecutiveFinancials {
            String total_stamp_sep = jo34.get("total").toString(); 
           request.setAttribute("total_stamp_sep",total_stamp_sep);
           //int percentage = total_yearly_completed_apps * 100; 
-        //System.out.println(total_completed_january);
+        ////System.out.println(total_completed_january);
         } 
 
 
@@ -513,7 +513,7 @@ public class ExecutiveFinancials {
            String total_stamp_oct = jo35.get("total").toString(); 
           request.setAttribute("total_stamp_oct",total_stamp_oct);
           //int percentage = total_yearly_completed_apps * 100; 
-        //System.out.println(total_completed_january);
+        ////System.out.println(total_completed_january);
         } 
 
 
@@ -525,7 +525,7 @@ public class ExecutiveFinancials {
            String total_stamp_nov = jo36.get("total").toString(); 
           request.setAttribute("total_stamp_nov",total_stamp_nov);
           //int percentage = total_yearly_completed_apps * 100; 
-        //System.out.println(total_completed_january);
+        ////System.out.println(total_completed_january);
         } 
 
 
@@ -568,7 +568,7 @@ public class ExecutiveFinancials {
             jo40= geodata40.getJSONObject(i);
            String total_plan_mar = jo40.get("total").toString(); 
           request.setAttribute("total_plan_mar",total_plan_mar);
-           //System.out.println(total_completed_september);
+           ////System.out.println(total_completed_september);
         } 
 
 
@@ -580,7 +580,7 @@ public class ExecutiveFinancials {
             jo41= geodata41.getJSONObject(i);
            String total_plan_apr = jo41.get("total").toString(); 
           request.setAttribute("total_plan_apr",total_plan_apr);
-          // System.out.println(total_completed_september);
+          // //System.out.println(total_completed_september);
         } 
 
 		JSONObject jo42 = new JSONObject(web_service_response3);
@@ -590,7 +590,7 @@ public class ExecutiveFinancials {
             jo42= geodata42.getJSONObject(i);
            String total_plan_may = jo42.get("total").toString(); 
           request.setAttribute("total_plan_may",total_plan_may);
-          // System.out.println(total_completed_september);
+          // //System.out.println(total_completed_september);
         } 
 
 		JSONObject jo43 = new JSONObject(web_service_response3);
@@ -674,7 +674,7 @@ public class ExecutiveFinancials {
             jo50= geodata50.getJSONObject(i);
            String yearly_accra_revenue = jo50.get("total").toString(); 
           request.setAttribute("yearly_accra_revenue",yearly_accra_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -685,7 +685,7 @@ public class ExecutiveFinancials {
             jo51= geodata51.getJSONObject(i);
            String yearly_kumasi_revenue = jo51.get("total").toString(); 
           request.setAttribute("yearly_kumasi_revenue",yearly_kumasi_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -698,7 +698,7 @@ public class ExecutiveFinancials {
             jo52= geodata52.getJSONObject(i);
            String yearly_secondi_revenue = jo52.get("total").toString(); 
           request.setAttribute("yearly_secondi_revenue",yearly_secondi_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
          
 
@@ -711,7 +711,7 @@ public class ExecutiveFinancials {
             jo53= geodata53.getJSONObject(i);
            String yearly_bolga_revenue = jo53.get("total").toString(); 
           request.setAttribute("yearly_bolga_revenue",yearly_bolga_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -723,7 +723,7 @@ public class ExecutiveFinancials {
             jo54= geodata54.getJSONObject(i);
            String yearly_tema_revenue = jo54.get("total").toString(); 
           request.setAttribute("yearly_tema_revenue",yearly_tema_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -736,7 +736,7 @@ public class ExecutiveFinancials {
             jo55= geodata55.getJSONObject(i);
            String yearly_techiman_revenue = jo55.get("total").toString(); 
           request.setAttribute("yearly_techiman_revenue",yearly_techiman_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -748,7 +748,7 @@ public class ExecutiveFinancials {
             jo56= geodata56.getJSONObject(i);
            String yearly_goaso_revenue = jo56.get("total").toString(); 
           request.setAttribute("yearly_goaso_revenue",yearly_goaso_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -760,7 +760,7 @@ public class ExecutiveFinancials {
             jo57= geodata57.getJSONObject(i);
            String yearly_damango_revenue = jo57.get("total").toString(); 
           request.setAttribute("yearly_damango_revenue",yearly_damango_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -773,7 +773,7 @@ public class ExecutiveFinancials {
             jo58= geodata58.getJSONObject(i);
            String yearly_dambai_revenue = jo58.get("total").toString(); 
           request.setAttribute("yearly_dambai_revenue",yearly_dambai_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -785,7 +785,7 @@ public class ExecutiveFinancials {
             jo59= geodata59.getJSONObject(i);
            String yearly_dambai_revenue = jo59.get("total").toString(); 
           request.setAttribute("yearly_dambai_revenue",yearly_dambai_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -798,7 +798,7 @@ public class ExecutiveFinancials {
             jo60= geodata60.getJSONObject(i);
            String yearly_wa_revenue = jo60.get("total").toString(); 
           request.setAttribute("yearly_wa_revenue",yearly_wa_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -810,7 +810,7 @@ public class ExecutiveFinancials {
             jo61= geodata61.getJSONObject(i);
            String yearly_kof_revenue = jo61.get("total").toString(); 
           request.setAttribute("yearly_kof_revenue",yearly_kof_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -822,7 +822,7 @@ public class ExecutiveFinancials {
             jo62= geodata62.getJSONObject(i);
            String yearly_suny_revenue = jo62.get("total").toString(); 
           request.setAttribute("yearly_suny_revenue",yearly_suny_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -835,7 +835,7 @@ public class ExecutiveFinancials {
             jo63= geodata63.getJSONObject(i);
            String yearly_cape_revenue = jo63.get("total").toString(); 
           request.setAttribute("yearly_cape_revenue",yearly_cape_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -847,7 +847,7 @@ public class ExecutiveFinancials {
             jo64= geodata64.getJSONObject(i);
            String yearly_tama_revenue = jo64.get("total").toString(); 
           request.setAttribute("yearly_tama_revenue",yearly_tama_revenue);
-         //System.out.println(yearly_accra_revenue);
+         ////System.out.println(yearly_accra_revenue);
 
 		}
 
@@ -859,7 +859,7 @@ public class ExecutiveFinancials {
             jo65= geodata65.getJSONObject(i);
            String monthly_accra_revenue = jo65.get("total").toString(); 
           request.setAttribute("monthly_accra_revenue",monthly_accra_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		}
 
 
@@ -871,7 +871,7 @@ public class ExecutiveFinancials {
             jo66= geodata66.getJSONObject(i);
            String monthly_secondi_revenue = jo66.get("total").toString(); 
           request.setAttribute("monthly_secondi_revenue",monthly_secondi_revenue);
-        // System.out.println(monthly_accra_revenue);
+        // //System.out.println(monthly_accra_revenue);
 		}
 
 
@@ -883,7 +883,7 @@ public class ExecutiveFinancials {
             jo67= geodata67.getJSONObject(i);
            String monthly_bolga_revenue = jo67.get("total").toString(); 
           request.setAttribute("monthly_bolga_revenue",monthly_bolga_revenue);
-        // System.out.println(monthly_accra_revenue);
+        // //System.out.println(monthly_accra_revenue);
 		}
 
 
@@ -894,7 +894,7 @@ public class ExecutiveFinancials {
             jo68= geodata68.getJSONObject(i);
            String monthly_tema_revenue = jo68.get("total").toString(); 
           request.setAttribute("monthly_tema_revenue",monthly_tema_revenue);
-        // System.out.println(monthly_accra_revenue);
+        // //System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -905,7 +905,7 @@ public class ExecutiveFinancials {
             jo69= geodata69.getJSONObject(i);
            String monthly_techiman_revenue = jo69.get("total").toString(); 
           request.setAttribute("monthly_techiman_revenue",monthly_techiman_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -916,7 +916,7 @@ public class ExecutiveFinancials {
             jo70= geodata70.getJSONObject(i);
            String monthly_goaso_revenue = jo70.get("total").toString(); 
           request.setAttribute("monthly_goaso_revenue",monthly_goaso_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -927,7 +927,7 @@ public class ExecutiveFinancials {
             jo71= geodata71.getJSONObject(i);
            String monthly_damango_revenue = jo71.get("total").toString(); 
           request.setAttribute("monthly_damango_revenue",monthly_damango_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -939,7 +939,7 @@ public class ExecutiveFinancials {
             jo72= geodata72.getJSONObject(i);
            String monthly_dambai_revenue = jo72.get("total").toString(); 
           request.setAttribute("monthly_dambai_revenue",monthly_dambai_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -950,7 +950,7 @@ public class ExecutiveFinancials {
             jo73= geodata73.getJSONObject(i);
            String monthly_wa_revenue = jo73.get("total").toString(); 
           request.setAttribute("monthly_wa_revenue",monthly_wa_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -962,7 +962,7 @@ public class ExecutiveFinancials {
             jo74= geodata74.getJSONObject(i);
            String monthly_kof_revenue = jo74.get("total").toString(); 
           request.setAttribute("monthly_kof_revenue",monthly_kof_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -974,7 +974,7 @@ public class ExecutiveFinancials {
             jo75= geodata75.getJSONObject(i);
            String monthly_suny_revenue = jo75.get("total").toString(); 
           request.setAttribute("monthly_suny_revenue",monthly_suny_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -986,7 +986,7 @@ public class ExecutiveFinancials {
             jo76= geodata76.getJSONObject(i);
            String monthly_cape_revenue = jo76.get("total").toString(); 
           request.setAttribute("monthly_cape_revenue",monthly_cape_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -998,7 +998,7 @@ public class ExecutiveFinancials {
             jo77= geodata77.getJSONObject(i);
            String monthly_tama_revenue = jo77.get("total").toString(); 
           request.setAttribute("monthly_tama_revenue",monthly_tama_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -1009,7 +1009,7 @@ public class ExecutiveFinancials {
             jo78= geodata78.getJSONObject(i);
            String monthly_secondi_revenue = jo78.get("total").toString(); 
           request.setAttribute("monthly_secondi_revenue",monthly_secondi_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
 
@@ -1020,11 +1020,11 @@ public class ExecutiveFinancials {
             jo79= geodata79.getJSONObject(i);
            String monthly_kumasi_revenue = jo79.get("total").toString(); 
           request.setAttribute("monthly_kumasi_revenue",monthly_kumasi_revenue);
-         //System.out.println(monthly_accra_revenue);
+         ////System.out.println(monthly_accra_revenue);
 		} 
 
              
-	      //System.out.println(web_service_response4);
+	      ////System.out.println(web_service_response4);
 
 					model.addAttribute("content", "../pages/client_application/executive_financials.jsp"); return "layouts/app";
 

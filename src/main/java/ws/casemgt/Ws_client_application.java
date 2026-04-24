@@ -2672,7 +2672,7 @@ public class Ws_client_application {
 				obj.put("business_process_sub_id", business_process_sub_id);
 				jsonArr.put(obj);
 				String input = obj.toString();
-				// System.out.println(input);
+				// //System.out.println(input);
 				ClientResponse response_ws = webResource.type("application/json")
 						.header("x-api-key", web_service_api_key).post(ClientResponse.class, input);
 				if (response_ws.getStatus() != 200) {
@@ -3186,7 +3186,7 @@ public class Ws_client_application {
 			String job_number)
 
 	{
-		System.out.println(job_number);
+		//System.out.println(job_number);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -3201,7 +3201,7 @@ public class Ws_client_application {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 			output = response.getEntity(String.class);
-			// System.out.println(output);
+			// //System.out.println(output);
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -3626,8 +3626,8 @@ public class Ws_client_application {
 
 	// String output = response.getEntity(String.class);
 
-	// // System.out.println("Output from Server .... \n");
-	// // System.out.println(output);
+	// // //System.out.println("Output from Server .... \n");
+	// // //System.out.println(output);
 
 	// } catch (Exception e) {
 

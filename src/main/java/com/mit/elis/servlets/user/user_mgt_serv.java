@@ -41,7 +41,7 @@ public class user_mgt_serv extends HttpServlet {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 			view.forward(request, response);
 
@@ -55,10 +55,10 @@ public class user_mgt_serv extends HttpServlet {
 			JSONArray jsonArr = new JSONArray();
 			JSONObject obj = new JSONObject();
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("add")) {
-				//// System.out.println("assmahfgf");
+				//// //System.out.println("assmahfgf");
 
 				
 				String userid = request.getParameter("userid");
@@ -129,13 +129,13 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 
-				System.out.println("Add User params: " + jsonArr.toString());
+				//System.out.println("Add User params: " + jsonArr.toString());
 				web_service_response = cls_users.add_new_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), jsonArr.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");
@@ -211,13 +211,13 @@ public class user_mgt_serv extends HttpServlet {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_users.update_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");
@@ -227,13 +227,13 @@ public class user_mgt_serv extends HttpServlet {
 			if (request_type.equals("delete")) {
 				String userid = request.getParameter("userid");
 				// obj.put( "userid" , userid );
-				// System.out.println(userid);
+				// //System.out.println(userid);
 				web_service_response = cls_users.delete_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), userid);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -254,15 +254,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = obj.toString();
-				// System.out.println(input);
-				// System.out.println(user_profile);
+				// //System.out.println(input);
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.select_update_user_profile_per_user(
 						cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", web_service_response);
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -288,15 +288,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = obj.toString();
-				// System.out.println(input);
-				// System.out.println(user_profile);
+				// //System.out.println(input);
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.select_update_user_milestone_per_user(
 						cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", web_service_response);
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -311,15 +311,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				// System.out.println(input);
-				// System.out.println(user_profile);
+				// //System.out.println(input);
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.user_profile_for_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), userid);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
-					// System.out.println(web_service_response.toString());
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -339,15 +339,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				System.out.println(obj.toString());
-				// System.out.println(user_profile);
+				//System.out.println(obj.toString());
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.select_lc_milestone_per_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
-					// System.out.println(web_service_response.toString());
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -363,15 +363,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				System.out.println(obj.toString());
-				// System.out.println(user_profile);
+				//System.out.println(obj.toString());
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.select_load_users_assigned_steps(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
-					// System.out.println(web_service_response.toString());
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -387,15 +387,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				System.out.println(obj.toString());
-				// System.out.println(user_profile);
+				//System.out.println(obj.toString());
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.select_load_users_assigned_steps_per_region(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
-					// System.out.println(web_service_response.toString());
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -414,15 +414,15 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				System.out.println(obj.toString());
-				// System.out.println(user_profile);
+				//System.out.println(obj.toString());
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.select_load_users_assigned_steps_per_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
-					// System.out.println(web_service_response.toString());
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -432,11 +432,11 @@ public class user_mgt_serv extends HttpServlet {
 			if (request_type.equals("get_all")) {
 
 				String search_by = request.getParameter("search_by");
-				// System.out.println(search_by);
+				// //System.out.println(search_by);
 				web_service_response = cls_users.get_list_of_users_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), search_by);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
 					/*
 					 * obj_r.put( "success" , false ); obj_r.put( "msg" ,
@@ -446,7 +446,7 @@ public class user_mgt_serv extends HttpServlet {
 			}
 
 			if (request_type.equals("corp_add")) {
-				//// System.out.println("assmahfgf");
+				//// //System.out.println("assmahfgf");
 
 				String userid = request.getParameter("userid");
 				String username = request.getParameter("username");
@@ -516,13 +516,13 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 
-				// System.out.println("Add User params: " + jsonArr.toString());
+				// //System.out.println("Add User params: " + jsonArr.toString());
 				web_service_response = cls_users.corp_add_new_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), jsonArr.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");
@@ -531,7 +531,7 @@ public class user_mgt_serv extends HttpServlet {
 			}
 
 			if (request_type.equals("corp_acc_add")) {
-				//// System.out.println("assmahfgf");
+				//// //System.out.println("assmahfgf");
 
 				String org_id = request.getParameter("org_id");
 				// String username = request.getParameter("username");
@@ -597,16 +597,16 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 
-				// System.out.println("Add User params: " + jsonArr.toString());
+				// //System.out.println("Add User params: " + jsonArr.toString());
 				web_service_response = cls_users.corp_update_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), jsonArr.toString());
 
-					System.out.println(jsonArr.toString());
-					System.out.println(web_service_response);
+					//System.out.println(jsonArr.toString());
+					//System.out.println(web_service_response);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");
@@ -615,7 +615,7 @@ public class user_mgt_serv extends HttpServlet {
 			}
 
 			if (request_type.equals("select_corporate_users_by_org")) {
-				//// System.out.println("assmahfgf");
+				//// //System.out.println("assmahfgf");
 
 				String corp_id = request.getParameter("corp_id");
 
@@ -623,13 +623,13 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 
-				System.out.println("Add User params: " + jsonArr.toString());
+				//System.out.println("Add User params: " + jsonArr.toString());
 				web_service_response = cls_users.select_corporate_portal_sub_users_all_by_org(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), corp_id);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");

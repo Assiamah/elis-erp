@@ -8,7 +8,7 @@ public class ws_executive_compliance {
 
 
 	// public String compliance_executive_dashboard10(String web_service_url, String web_service_api_key, String json_request) {
-	// 	//System.out.println(json_request);
+	// 	////System.out.println(json_request);
 	// 	String output = "Data Not Received";
 	// 	try {
 	// 		Client client = Client.create();
@@ -31,7 +31,7 @@ public class ws_executive_compliance {
 
 
 	// public String compliance_executive_dashboard11(String web_service_url, String web_service_api_key, String json_request) {
-	// 	//System.out.println(json_request);
+	// 	////System.out.println(json_request);
 	// 	String output = "Data Not Received";
 	// 	try {
 	// 		Client client = Client.create();
@@ -54,7 +54,7 @@ public class ws_executive_compliance {
 
 
 	// public String compliance_executive_dashboard12(String web_service_url, String web_service_api_key, String json_request) {
-	// 	//System.out.println(json_request);
+	// 	////System.out.println(json_request);
 	// 	String output = "Data Not Received";
 	// 	try {
 	// 		Client client = Client.create();
@@ -77,7 +77,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_report_all_count(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -100,7 +100,7 @@ public class ws_executive_compliance {
 
 
 		public String executive_dashboard_report_charts(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -122,7 +122,7 @@ public class ws_executive_compliance {
 
 
 		public String executive_dashboard_get_division_totals(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -146,7 +146,7 @@ public class ws_executive_compliance {
 
 
 		public String executive_dashboard_get_regional_received(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -169,7 +169,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_get_regional_completed_stats(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -193,7 +193,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_recieved(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -216,7 +216,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_by_subservices_recieved(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -239,7 +239,7 @@ public class ws_executive_compliance {
 
 
 		public String executive_dashboard_applications_recieved(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -262,7 +262,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_pending(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -285,7 +285,7 @@ public class ws_executive_compliance {
 
 	
 		public String executive_dashboard_apps_by_subservices_pending(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -308,7 +308,7 @@ public class ws_executive_compliance {
 
 		
 		public String executive_dashboard_applications_pending(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -334,7 +334,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -357,7 +357,7 @@ public class ws_executive_compliance {
 
 	
 		public String executive_dashboard_apps_by_subservices_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -380,7 +380,7 @@ public class ws_executive_compliance {
 
 		
 		public String executive_dashboard_applications_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -407,7 +407,7 @@ public class ws_executive_compliance {
 	//RECEIVED COMPLETED
 
 	public String executive_dashboard_apps_recieved_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -430,7 +430,7 @@ public class ws_executive_compliance {
 
 	
 		public String executive_dashboard_apps_by_subservices_received_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -453,7 +453,7 @@ public class ws_executive_compliance {
 
 		
 		public String executive_dashboard_applications_received_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -480,7 +480,7 @@ public class ws_executive_compliance {
 	// QUERIED
 
 	public String executive_dashboard_apps_queried(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -503,7 +503,7 @@ public class ws_executive_compliance {
 
 	
 		public String executive_dashboard_apps_by_subservices_queried(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -526,7 +526,7 @@ public class ws_executive_compliance {
 
 		
 		public String executive_dashboard_applications_queried(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -551,7 +551,7 @@ public class ws_executive_compliance {
 
 		
 		public String executive_dashboard_report_received_vs_pending(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -576,7 +576,7 @@ public class ws_executive_compliance {
 
 		
 		public String executive_dashboard_apps_by_regions(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -600,7 +600,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_regional_apps_division(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -623,7 +623,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_past_due(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -647,7 +647,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_past_due_regions(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -671,7 +671,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_pastdue_units(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -694,7 +694,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_pastdue_within_unit(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -718,7 +718,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_apps_pastdue_with_officer(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -743,7 +743,7 @@ public class ws_executive_compliance {
 
 
 		public String executive_dashboard_apps_by_regions_to_divisions(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -767,7 +767,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_divisions_services(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -789,7 +789,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_divisions_sub_services(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -812,7 +812,7 @@ public class ws_executive_compliance {
 
 
 		public String executive_dashboard_divisions_sub_services_applications(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -834,7 +834,7 @@ public class ws_executive_compliance {
 
 
 	public String executive_dashboard_get_apps_by_subservices_for_barchart(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();

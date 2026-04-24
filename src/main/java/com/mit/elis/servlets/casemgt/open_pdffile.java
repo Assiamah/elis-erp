@@ -57,11 +57,11 @@ public class open_pdffile {
 				if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 					// Session is expired
 					request.setAttribute("login", "sessionout");
-					System.out.println("If Not success");
+					//System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 		
 				}
-				System.out.println("If Not succcvccess");
+				//System.out.println("If Not succcvccess");
 				// Get the "file_to_open" parameter from the request (you can change this according to your form)
 				String fileToOpen = request.getParameter("file_to_open");
 			
@@ -70,7 +70,7 @@ public class open_pdffile {
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file_to_open parameter");
 					return null;
 				}
-				System.out.println("If Not 66666");
+				//System.out.println("If Not 66666");
 				// Create a JSON object with doc_uuid
 				JSONObject obj = new JSONObject();
 				try {
@@ -143,15 +143,15 @@ public class open_pdffile {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
-		System.out.println("If Not success");
+		//System.out.println("If Not success");
 		// Get the "file_to_open" parameter from the request (you can change this according to your form)
         String fileToOpen = request.getParameter("file_to_open");
-		System.out.println(fileToOpen);
-		System.out.println("fileToOpen");
+		//System.out.println(fileToOpen);
+		//System.out.println("fileToOpen");
         // Ensure file_to_open is not null or empty
         if (fileToOpen == null || fileToOpen.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file_to_open parameter");
@@ -165,11 +165,11 @@ public class open_pdffile {
 			try {
 				obj.put("doc_uuid", fileToOpen);
 				//obj.put("doc_uuid", "ec248374-7743-11ef-a814-000c2930f1ec");
-				System.out.println(fileToOpen);
-				System.out.println("fileToOpen");
+				//System.out.println(fileToOpen);
+				//System.out.println("fileToOpen");
 
-				System.out.println(obj.toString());
-				System.out.println("obj.toString()");
+				//System.out.println(obj.toString());
+				//System.out.println("obj.toString()");
 
 
 			// Read the InputStream from the external service
@@ -235,15 +235,15 @@ if (pdfBytes != null && pdfBytes.length > 0) {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
-		System.out.println("If Not success");
+		//System.out.println("If Not success");
 		// Get the "file_to_open" parameter from the request (you can change this according to your form)
         String fileToOpen = request.getParameter("file_to_open");
-		System.out.println(fileToOpen);
-		System.out.println("fileToOpen");
+		//System.out.println(fileToOpen);
+		//System.out.println("fileToOpen");
         // Ensure file_to_open is not null or empty
         if (fileToOpen == null || fileToOpen.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file_to_open parameter");
@@ -261,16 +261,16 @@ if (pdfBytes != null && pdfBytes.length > 0) {
 				obj.put("modified_by_id", (String) session.getAttribute("userid"));
 				obj.put("modified_by", (String) session.getAttribute("fullname"));
 	
-				System.out.println(fileToOpen);
+				//System.out.println(fileToOpen);
 				
 				webservice = cls_public_mgt
 						.delete_document_by_doc_uuid(cls_url_config.getDoc_mgt_api_v1(),
 						//"http://10.4.1.47:1031/",
 						cls_url_config.getDoc_mgt_api_v1_key(), obj.toString());
 				if (webservice != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(webservice);
+					//System.out.println(webservice);
 				}
 
 				return webservice;
@@ -294,15 +294,15 @@ if (pdfBytes != null && pdfBytes.length > 0) {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
-		System.out.println("If Not success");
+		//System.out.println("If Not success");
 		// Get the "file_to_open" parameter from the request (you can change this according to your form)
         String fileToOpen = request.getParameter("file_to_open");
-		System.out.println(fileToOpen);
-		System.out.println("fileToOpen");
+		//System.out.println(fileToOpen);
+		//System.out.println("fileToOpen");
         // Ensure file_to_open is not null or empty
         if (fileToOpen == null || fileToOpen.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file_to_open parameter");
@@ -320,16 +320,16 @@ if (pdfBytes != null && pdfBytes.length > 0) {
 				obj.put("modified_by_id", (String) session.getAttribute("userid"));
 				obj.put("modified_by", (String) session.getAttribute("fullname"));
 	
-				System.out.println(fileToOpen);
+				//System.out.println(fileToOpen);
 				
 				webservice = cls_public_mgt
 						.reverse_document_by_doc_uuid(cls_url_config.getDoc_mgt_api_v1(),
 						//"http://10.4.1.47:1031/",
 						cls_url_config.getDoc_mgt_api_v1_key(), obj.toString());
 				if (webservice != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(webservice);
+					//System.out.println(webservice);
 				}
 
 				return webservice;

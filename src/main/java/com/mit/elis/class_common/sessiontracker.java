@@ -32,7 +32,7 @@ public class sessiontracker implements HttpSessionListener {
 	public void sessionCreated(HttpSession arg0) {
 		// TODO Auto-generated method stub
 		totalActiveSessions++;
-		System.out.println("sessionCreated - add one session into counter");
+		//System.out.println("sessionCreated - add one session into counter");
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class sessiontracker implements HttpSessionListener {
 	public void sessionDestroyed(HttpSessionBindingEvent arg0) {
 		// TODO Auto-generated method stub
 		totalActiveSessions--;
-		System.out.println("sessionDestroyed - deduct one session from counter");
+		//System.out.println("sessionDestroyed - deduct one session from counter");
 	}
 
 }

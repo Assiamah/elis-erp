@@ -109,7 +109,7 @@ public class DateToWords {
 	 * };
 	 * 
 	 * public DateToWords() {
-	 * System.out.println("Pleaser date in dd-mm-yyyy format");
+	 * //System.out.println("Pleaser date in dd-mm-yyyy format");
 	 * Scanner in = new Scanner(System.in);
 	 * String date = in.next();
 	 * 
@@ -128,9 +128,9 @@ public class DateToWords {
 	 * int year = cal.get(Calendar.YEAR);
 	 * strDateToWords += " " + convert(year);
 	 * 
-	 * System.out.println(strDateToWords.toLowerCase());
+	 * //System.out.println(strDateToWords.toLowerCase());
 	 * } else {
-	 * System.out.println("Wrongt! Please enter date in dd-mm-yyyy format");
+	 * //System.out.println("Wrongt! Please enter date in dd-mm-yyyy format");
 	 * }
 	 * }
 	 * 

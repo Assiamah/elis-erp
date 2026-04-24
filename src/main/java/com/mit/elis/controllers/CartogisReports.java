@@ -68,7 +68,7 @@ public class CartogisReports {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -101,16 +101,16 @@ public class CartogisReports {
 	//  String web_service_response = cls_backoffice_monitoring.monitoring_backoffice_csau(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 
         
-           System.out.println(userid);
-           System.out.println(unit_id);
-           System.out.println(division);
-           System.out.println(unit_name);
-           System.out.println(region_id);
+           //System.out.println(userid);
+           //System.out.println(unit_id);
+           //System.out.println(division);
+           //System.out.println(unit_name);
+           //System.out.println(region_id);
            
            
            
 
-        //    System.out.println(userid);
+        //    //System.out.println(userid);
 
 
 

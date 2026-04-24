@@ -82,7 +82,7 @@ public class Ws_type_of_document {
 	public static String type_of_document_get_list(String web_service_url, String web_service_api_key) {
 		String output = "Data Not Received";
 		try {
-			System.out.println(web_service_url);
+			//System.out.println(web_service_url);
 			Client client = Client.create();
 			WebResource webResource = client
 					.resource(web_service_url + "ws_type_of_document/select_type_of_documents_list");

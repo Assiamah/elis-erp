@@ -48,14 +48,14 @@ public class DashboardAppsPastDueDate {
 					? request.getParameter("region_id")
 					: (String) session.getAttribute("regional_code"));
 
-			// System.out.println(String.format("Log level: %s", requestType));
+			// //System.out.println(String.format("Log level: %s", requestType));
 
 			String web_service_response = null;
 
 			if (requestType.equals("apps_past_due_year_units")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -67,9 +67,9 @@ public class DashboardAppsPastDueDate {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -77,8 +77,8 @@ public class DashboardAppsPastDueDate {
 				String division = request.getParameter("division");
 				String unit = request.getParameter("unit");
 
-				// System.out.println(division);
-				// System.out.println(unit);
+				// //System.out.println(division);
+				// //System.out.println(unit);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -92,16 +92,16 @@ public class DashboardAppsPastDueDate {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (requestType.equals("apps_past_due_year_applications")) {
 				String staff = request.getParameter("staff");
 
-				// System.out.println(staff);
+				// //System.out.println(staff);
 
 				JSONObject obj = new JSONObject();
 				obj.put("staff_id", staff);
@@ -114,9 +114,9 @@ public class DashboardAppsPastDueDate {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

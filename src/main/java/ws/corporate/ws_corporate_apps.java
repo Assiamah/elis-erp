@@ -11,7 +11,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_all(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -34,7 +34,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_division_apps(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -57,7 +57,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_division_apps_by_service(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -81,7 +81,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_created_today(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -102,7 +102,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_created_day_by_division(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -125,7 +125,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_created_day_by_service(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -149,7 +149,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_created_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -172,7 +172,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_created_month_by_divisi(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -196,7 +196,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_created_month_by_servic(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -220,7 +220,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_completed_today(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -243,7 +243,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_completed_day_by_divisi(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -266,7 +266,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_completed_day_by_servic(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -289,7 +289,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_completed_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -313,7 +313,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_completed_month_by_divi(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -337,7 +337,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_completed_month_by_serv(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -360,7 +360,7 @@ public class ws_corporate_apps {
 
 
     public String corporate_applications_report_dashboard_recieved_between_dates(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -383,7 +383,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_applications_report_dashboard_created_by_date_range(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -406,7 +406,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_applications_division_apps_by_service_date_range(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -429,7 +429,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_apps_report_dashboard_recieved_completed_by_dates(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -452,7 +452,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_apps_report_dashboard_created_comp_by_date_range(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -477,7 +477,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_app_division_apps_by_service_date_range_rec_comp(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -500,7 +500,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_applications_report_dashboard_completed_by_dates(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -522,7 +522,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_applications_report_dashboard_completed_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -545,7 +545,7 @@ public class ws_corporate_apps {
 
 
     public String  corporate_applications_report_dashboard_completed_by_serv_dates(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -567,7 +567,7 @@ public class ws_corporate_apps {
 
 
 	public String  corporate_sub_applications_report_dashboard_created_today(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -589,7 +589,7 @@ public class ws_corporate_apps {
 
 
 	public String  corporate_sub_applications_report_dashboard_created_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -612,7 +612,7 @@ public class ws_corporate_apps {
 
 
 	public String  corporate_sub_applications_report_dashboard_completed_day(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -634,7 +634,7 @@ public class ws_corporate_apps {
 
 
 	public String  corporate_sub_applications_report_dashboard_completed_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -661,7 +661,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_applications_report_dashboard_past_due_apps(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -684,7 +684,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_applications_report_dashboard_apps_past_due_officer(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -708,7 +708,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_all(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -732,7 +732,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_recieved(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -756,7 +756,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_pending(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -779,7 +779,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -803,7 +803,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_recieved(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -828,7 +828,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_completed(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -851,7 +851,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_pending(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -873,7 +873,7 @@ public class ws_corporate_apps {
 
 	
 	public String corporate_dashboard_two_apps_by_subservices_recieved_from_banks(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -896,7 +896,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_pending_from_banks(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -919,7 +919,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_completed_from_bank(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -943,7 +943,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_applications_recieved_from_bank(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -965,7 +965,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_applications_pending_from_bank(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -988,7 +988,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_applications_completed_from_bank(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1011,7 +1011,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_all_chart(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1033,7 +1033,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_applications_top_five_banks(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1056,7 +1056,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_all_barchart(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1078,7 +1078,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_queried(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1104,7 +1104,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_queried(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1128,7 +1128,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_apps_by_subservices_queried_from_banks(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1154,7 +1154,7 @@ public class ws_corporate_apps {
 
 
 	public String corporate_dashboard_two_applications_queried_from_bank(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1176,7 +1176,7 @@ public class ws_corporate_apps {
 
 
 	public String report_on_the_corporate_applications(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1199,7 +1199,7 @@ public class ws_corporate_apps {
 
 
 	public String report_on_the_corporate_applications_by_services(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1224,7 +1224,7 @@ public class ws_corporate_apps {
 
 
 	public String report_on_the_corporate_applications_by_sub_services(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -1249,7 +1249,7 @@ public class ws_corporate_apps {
 
 
 	public String report_on_the_corporate_applications_by_applications(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();

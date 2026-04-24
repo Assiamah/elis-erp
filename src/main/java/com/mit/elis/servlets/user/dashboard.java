@@ -35,10 +35,10 @@ public class dashboard {
 
 		}
 
-		///System.out.println(assigenedmenus);
-			//System.out.println(isFound);
-			//System.out.println("servletName");
-			//System.out.println(servletName);
+		/////System.out.println(assigenedmenus);
+			////System.out.println(isFound);
+			////System.out.println("servletName");
+			////System.out.println(servletName);
 		// Log User out if the user tries to access right not assigned
 		
 		// if (!isFound) {
@@ -150,10 +150,10 @@ public class dashboard {
 
 		}
 
-		///System.out.println(assigenedmenus);
-			//System.out.println(isFound);
-			//System.out.println("servletName");
-			//System.out.println(servletName);
+		/////System.out.println(assigenedmenus);
+			////System.out.println(isFound);
+			////System.out.println("servletName");
+			////System.out.println(servletName);
 		// Log User out if the user tries to access right not assigned
 		
 		// if (!isFound) {

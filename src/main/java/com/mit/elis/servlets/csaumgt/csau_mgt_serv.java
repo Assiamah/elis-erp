@@ -41,20 +41,20 @@ public class csau_mgt_serv {
 	public String doPost(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
-		// System.out.println("How are you");
+		// //System.out.println("How are you");
 		String web_service_response = null;
 
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		try {
 			String request_type = request.getParameter("request_type");
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("select_portal_users_add_update")) {
 				String cl_first_name = request.getParameter("cl_first_name");
@@ -109,24 +109,24 @@ String userid =  (String) session.getAttribute("userid");
 				obj_d.put("userid", userid); 
 				obj_d.put("mac_address", mac_address); obj_d.put("ip_address", ip_address);
 
-				// System.out.println(cl_first_name + "-" + cl_other_names + ""
+				// //System.out.println(cl_first_name + "-" + cl_other_names + ""
 				// + cl_last_name);
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj_d.toString());
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj_d.toString());
 
 				web_service_response = csaumgt_cl
 						.select_portal_users_add_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_portal_users_by_email")) {
 				String search_by = request.getParameter("search_by");
-				// System.out.println(polygon);
+				// //System.out.println(polygon);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("email", search_by);
@@ -135,11 +135,11 @@ String userid =  (String) session.getAttribute("userid");
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -147,7 +147,7 @@ String userid =  (String) session.getAttribute("userid");
 
 			if (request_type.equals("select_portal_users_by_job_number")) {
 				String search_by = request.getParameter("search_by");
-				// System.out.println(polygon);
+				// //System.out.println(polygon);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("job_number", search_by);
@@ -156,11 +156,11 @@ String userid =  (String) session.getAttribute("userid");
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}

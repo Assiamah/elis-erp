@@ -11,38 +11,38 @@ public class AmountInWords {
 		// double doubleNumber = 24.04;
 		// String doubleAsString = String.valueOf(doubleNumber);
 		// int indexOfDecimal = doubleAsString.indexOf(".");
-		// System.out.println("Double Number: " + doubleNumber);
-		/// System.out.println("Integer Part: " + doubleAsString.substring(0,
+		// //System.out.println("Double Number: " + doubleNumber);
+		/// //System.out.println("Integer Part: " + doubleAsString.substring(0,
 		// indexOfDecimal));
-		// System.out.println("Decimal Part: " +
+		// //System.out.println("Decimal Part: " +
 		// doubleAsString.substring(indexOfDecimal));
 
 		// BigDecimal bigDecimal = new BigDecimal(String.valueOf(doubleNumber));
 
 		BigDecimal bd = new BigDecimal(num);
 
-		// System.out.println("BigDecimal" + bd);
+		// //System.out.println("BigDecimal" + bd);
 
 		// int indexOfDecimal = num.indexOf(".");
 
 		// double doubleNumber1 = Double.parseDouble(num);
 
-		// System.out.println("InT VAlue" + doubleNumber1);
+		// //System.out.println("InT VAlue" + doubleNumber1);
 
-		// System.out.println("InT VAlue" + Math.floor(doubleNumber1));
-		// System.out.println("InT VAlue" + (doubleNumber1 -
+		// //System.out.println("InT VAlue" + Math.floor(doubleNumber1));
+		// //System.out.println("InT VAlue" + (doubleNumber1 -
 		// Math.floor(doubleNumber1)));
 
-		// System.out.println("Original" + num);
+		// //System.out.println("Original" + num);
 
 		// integral = Math.floor(x)
 		// s fractional = x - Math.floor(x)
 
 		long number = bd.longValue();
 		long no = bd.longValue();
-		// System.out.println("number" + bd);
+		// //System.out.println("number" + bd);
 
-		// System.out.println("no" + bd);
+		// //System.out.println("no" + bd);
 
 		int decimal = (int) (bd.remainder(BigDecimal.ONE).doubleValue() * 100);
 
@@ -55,9 +55,9 @@ public class AmountInWords {
 
 		// int digits_value = Integer.valueOf(no);
 
-		// System.out.println("decimal" + decimal);
+		// //System.out.println("decimal" + decimal);
 
-		/// System.out.println("digits_length" + digits_length);
+		/// //System.out.println("digits_length" + digits_length);
 
 		int i = 0;
 		ArrayList<String> str = new ArrayList<>();
@@ -94,17 +94,17 @@ public class AmountInWords {
 
 		/*
 		 * while (i < digits_length) { int divider = (i == 2) ? 10 : 100; number
-		 * = no % divider; System.out.println("number" + number); no = no /
+		 * = no % divider; //System.out.println("number" + number); no = no /
 		 * divider; i += divider == 10 ? 1 : 2; if (number > 0) { int counter =
 		 * str.size(); String plural = (counter > 0 && number > 9) ? "s" : "";
 		 * // String plural = (counter > 0 && number > 9) ? "s" : "";
-		 * System.out.println("counter" + counter); String tmp = (number < 21) ?
+		 * //System.out.println("counter" + counter); String tmp = (number < 21) ?
 		 * words.get(Integer.valueOf((int) number)) + " " + digits[counter] +
 		 * plural : words.get(Integer.valueOf((int) Math.floor(number / 10) *
 		 * 10)) + " " + words.get(Integer.valueOf((int) (number % 10))) + " " +
 		 * digits[counter] + plural;
 		 * 
-		 * str.add(tmp); System.out.println("tmp" + tmp); } else { str.add("");
+		 * str.add(tmp); //System.out.println("tmp" + tmp); } else { str.add("");
 		 * } }
 		 */
 
@@ -112,7 +112,7 @@ public class AmountInWords {
 		// String Rupees = String.join(" ", str).trim();
 
 		String Rupees = convertNumber(digits_value);
-		// System.out.println("digits_value" + digits_value);
+		// //System.out.println("digits_value" + digits_value);
 
 		String paise = (decimal) > 0 ? " And " + words.get(Integer.valueOf((int) (decimal - decimal % 10))) + " "
 				+ words.get(Integer.valueOf((int) (decimal % 10))) : "";
@@ -177,7 +177,7 @@ public class AmountInWords {
 	 * + convert(-n); } if (n < 20) { return units[n]; } if (n < 100) { return
 	 * tens[n / 10] + " " + units[n % 10]; } if (n < 1000) { return units[n /
 	 * 100] + " Hundred " + ((n % 100 != 0) ? "And " : "") + convert(n % 100); }
-	 * System.out.println("new n" + n);
+	 * //System.out.println("new n" + n);
 	 * 
 	 * if (n < 100000) { return convert(n / 1000) + " Thousand " + convert(n %
 	 * 1000); } if (n < 10000000) { return convert(n / 100000) + " Million " +

@@ -47,7 +47,7 @@ public class system_settings {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -78,9 +78,9 @@ public class system_settings {
 							cls_url_config.getWeb_service_url_ser_api_key());
 			JSONObject sub_service_obj = new JSONObject(jsonArrayContent);
 			String all_list = sub_service_obj.get("data").toString();
-			// System.out.println("all_list");
+			// //System.out.println("all_list");
 
-			// System.out.println(all_list);
+			// //System.out.println(all_list);
 
 			Gson googleJson_1 = new Gson();
 			ArrayList javaArrayListFromGSON = googleJson_1.fromJson(all_list, ArrayList.class);
@@ -104,7 +104,7 @@ public class system_settings {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -147,9 +147,9 @@ public class system_settings {
 							cls_url_config.getWeb_service_url_ser_api_key());
 			JSONObject sub_service_obj = new JSONObject(jsonArrayContent);
 			String all_list = sub_service_obj.get("data").toString();
-			// System.out.println("all_list");
+			// //System.out.println("all_list");
 
-			// System.out.println(all_list);
+			// //System.out.println(all_list);
 
 			Gson googleJson_1 = new Gson();
 			ArrayList javaArrayListFromGSON = googleJson_1.fromJson(all_list, ArrayList.class);
@@ -173,7 +173,7 @@ public class system_settings {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -222,7 +222,7 @@ public class system_settings {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -271,7 +271,7 @@ public class system_settings {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}

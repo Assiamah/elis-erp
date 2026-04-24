@@ -13,10 +13,10 @@
  
   <%--  <% 
 /* String id =request.getParameter("lsid");
-System.out.println("Surveyor id " + id); */
+//System.out.println("Surveyor id " + id); */
 String main_service = request.getParameter("main_service_id");
 String sub_service = request.getParameter("main_service_sub_id");
-System.out.println("Surveyor id " + main_service);
+//System.out.println("Surveyor id " + main_service);
 %>
  --%> 
  
@@ -93,7 +93,7 @@ System.out.println("Surveyor id " + main_service);
            			
            			String jsonArrayContent =null;
            			jsonArrayContent =user_web_service.get_check_list_for_a_service(request.getAttribute("main_service_id").toString(),request.getAttribute("main_service_sub_id").toString());
-           			//System.out.println(jsonArrayContent);
+           			////System.out.println(jsonArrayContent);
            			
            			
            		    JSONArray jArr;

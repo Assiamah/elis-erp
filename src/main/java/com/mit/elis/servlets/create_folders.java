@@ -38,7 +38,7 @@ public class create_folders {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -54,9 +54,9 @@ public class create_folders {
 		// 	// "\\"+ pdfFileName;
 		// 	if (!files_pdf_jackets.exists()) {
 		// 		if (files_pdf_jackets.mkdirs()) {
-		// 			System.out.println("Multiple directories are created!");
+		// 			//System.out.println("Multiple directories are created!");
 		// 		} else {
-		// 			System.out.println("Failed to create multiple directories!");
+		// 			//System.out.println("Failed to create multiple directories!");
 		// 		}
 		// 	}
 		// }
@@ -64,7 +64,7 @@ public class create_folders {
 
 		// String st;
 		// while ((st = br.readLine()) != null)
-		// System.out.println(st);
+		// //System.out.println(st);
 
 		// String.split("[\\r\\n]+")
 		// String lines[] = st.split("(\r\n|\r|\n)", -1);
@@ -74,18 +74,18 @@ public class create_folders {
 
 		// String[] strParts = st.split("\\r?\\n|\\r");
 
-		// System.out.println("Total lines: " + strParts.length);
+		// //System.out.println("Total lines: " + strParts.length);
 
 		// String lines[] = st.split("");
-		// System.out.println(lines.length);
+		// //System.out.println(lines.length);
 		/*
 		 * File pdfFile = new File(SAVE_DIR + st); File files_pdf_jackets = new
 		 * File(SAVE_DIR + File.separator+ st); //String files_pdf_jackets_p
 		 * =contextPath+
 		 * "LCGARGACN37542018" + File.separator+ pdfFileName; if
 		 * (!files_pdf_jackets.exists()) { if (files_pdf_jackets.mkdirs()) {
-		 * System.out.println("Multiple directories are created!"); } else {
-		 * System.out.println("Failed to create multiple directories!"); } }
+		 * //System.out.println("Multiple directories are created!"); } else {
+		 * //System.out.println("Failed to create multiple directories!"); } }
 		 */
 
 	}

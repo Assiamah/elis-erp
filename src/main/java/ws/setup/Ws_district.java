@@ -77,7 +77,7 @@ public class Ws_district {
 	public static String district_get_list(String web_service_url, String web_service_api_key) {
 		String output = "Data Not Received";
 		try {
-			System.out.println(web_service_url);
+			//System.out.println(web_service_url);
 			Client client = Client.create();
 			WebResource webResource = client
 					.resource(web_service_url + "ws_district/select_districts_list");

@@ -65,8 +65,8 @@ public class AppController {
 
 		// Find OS and set command according to OS
 		String OS = System.getProperty("os.name").toLowerCase();
-		System.out.println(OS);
-		//System.out.println(ip);
+		//System.out.println(OS);
+		////System.out.println(ip);
 
 		String[] cmd;
 		if (OS.contains("win")) {
@@ -96,8 +96,8 @@ public class AppController {
 				java.util.regex.Matcher m = macpt.matcher(line);
 				// when Matcher finds a Line then return it as result
 				if (m.find()) {
-					System.out.println("Found");
-					System.out.println("MAC: " + m.group(0));
+					//System.out.println("Found");
+					//System.out.println("MAC: " + m.group(0));
 					return m.group(0);
 				}
 
@@ -119,7 +119,7 @@ public class AppController {
 		String command = "ifconfig";
 	
 		String osName = System.getProperty("os.name");
-		System.out.println("Operating System is " + osName);
+		//System.out.println("Operating System is " + osName);
 	
 		if (osName.startsWith("Windows")) {
 			command = "ipconfig /all";
@@ -143,7 +143,7 @@ public class AppController {
 		Pattern p = Pattern.compile("([\\w]{1,2}(-|:)){5}[\\w]{1,2}");
 		while (true) {
 			String line = in.readLine();
-			System.out.println("line " + line);
+			//System.out.println("line " + line);
 			if (line == null)
 				break;
 	
@@ -177,7 +177,7 @@ public class AppController {
 					 continue;
 				  }
 				  if (address.isSiteLocalAddress()) {
-						System.out.println("IP address: " + address.getHostAddress());
+						//System.out.println("IP address: " + address.getHostAddress());
 						return address.getHostAddress();
 				  }
 			   }
@@ -198,7 +198,7 @@ public class AppController {
            String server_version = cls_url_config.getServer_version() ;
 
 	  // model.addAttribute("content", "../auth/login.jsp");
-	  System.out.println(server_version);
+	  //System.out.println(server_version);
 	   request.setAttribute("server_version", server_version);
 		model.addAttribute("content", "../auth/login.jsp");
         return "layouts/guest";
@@ -214,7 +214,7 @@ public class AppController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -302,7 +302,7 @@ public class AppController {
 
         }
  
-		// System.out.println(userName + password);
+		// //System.out.println(userName + password);
 		String web_service_response = null;
 		String web_service_response_all_users = null;
 		String web_service_response_verify = null;
@@ -310,10 +310,10 @@ public class AppController {
 
 		String vr_region_code = null;
 
-		// System.out.println(userName);
-		// System.out.println(password);
-		// System.out.println(cls_url_config.getWeb_service_url_ser());
-		// System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
+		// //System.out.println(userName);
+		// //System.out.println(password);
+		// //System.out.println(cls_url_config.getWeb_service_url_ser());
+		// //System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
 
 		try {
 
@@ -340,9 +340,9 @@ public class AppController {
 			obj_v.put("user_id", modified_by_id);
 
 			String input = obj_v.toString();
-			//System.out.println("code verification request");
+			////System.out.println("code verification request");
 
-			//System.out.println(input);
+			////System.out.println(input);
 
 			web_service_response_verify = cls_users.office_verify_verification_token(
 					cls_url_config.getWeb_service_url_ser(),
@@ -355,7 +355,7 @@ public class AppController {
 				web_service_response = cls_users.checkUser(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), user, pass);
 				// JSONObject obj = new JSONObject();
-				//System.out.println(web_service_response);
+				////System.out.println(web_service_response);
 
 				JSONObject obj_test = new JSONObject(web_service_response);
 				String arr_tester = obj_test.get("data").toString();
@@ -363,20 +363,20 @@ public class AppController {
 				/* JSONArray arr_tester = obj_test.getJSONArray("data"); */
 
 				if (arr_tester != null) {
-					// System.out.println("If success");
-					// System.out.println(arr_tester);
+					// //System.out.println("If success");
+					// //System.out.println(arr_tester);
 
 					// creating a session
 					// HttpSession session = request.getSession();
 					// session.setAttribute("", name);
 
 					// do this when user login success
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 					JSONObject obj = new JSONObject(web_service_response);
 					// String pageName = obj.get("data").toString();
 					String regional_code = "";
 					JSONArray arr = obj.getJSONArray("data");
-					// System.out.println("arra : " + arr);
+					// //System.out.println("arra : " + arr);
 					for (int i = 0; i < arr.length(); i++) {
 
 						String fullname = arr.getJSONObject(i).getString("fullname");
@@ -398,8 +398,8 @@ public class AppController {
 						vr_region_code = arr.getJSONObject(i).getString("regional_code");
 
 						new_userid = userid;
-						// System.out.println("regional code : " + regional_code);
-						// System.out.println("regional code : " + web_service_response);
+						// //System.out.println("regional code : " + regional_code);
+						// //System.out.println("regional code : " + web_service_response);
 						/*
 						 * request.setAttribute("fullname", fullname);
 						 * request.setAttribute("userid", userid);
@@ -428,8 +428,8 @@ public class AppController {
 
 						session.setAttribute("designation", designation);
 						/*
-						 * System.out.println("unit_name :" + unit_name);
-						 * System.out.println("unit_id : " + unit_id);
+						 * //System.out.println("unit_name :" + unit_name);
+						 * //System.out.println("unit_id : " + unit_id);
 						 */
 						// //HttpSession session = request.getSession();
 						// session.setAttribute("unit_id", unit_id);
@@ -452,7 +452,7 @@ public class AppController {
 					// 	if ((sOsName.startsWith("Linux")) || (sOsName.startsWith("Mac")) || (sOsName.startsWith("HP-UX"))) {
 					// 		command = "/sbin/ifconfig";
 					// 	} else {
-					// 		System.out.println("The current operating system '" + sOsName + "' is not supported.");
+					// 		//System.out.println("The current operating system '" + sOsName + "' is not supported.");
 					// 	}
 					// }
 
@@ -463,7 +463,7 @@ public class AppController {
 					// 	pa.waitFor();
 					// 	BufferedReader reader = new BufferedReader(new InputStreamReader(pa.getInputStream()));
 
-					// 	//System.out.println(reader.readLine());
+					// 	////System.out.println(reader.readLine());
 
 					// 	//String line;
 					// 	java.util.regex.Matcher m;
@@ -476,7 +476,7 @@ public class AppController {
 					// 			macAddress = m.group();
 					// 		break;
 					// 	}
-					// 	//System.out.println(line);
+					// 	////System.out.println(line);
 					// } catch (Exception e) {
 					// 	e.printStackTrace();
 					// }
@@ -488,7 +488,7 @@ public class AppController {
 
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					// System.out.println(dtf.format(now));
+					// //System.out.println(dtf.format(now));
 
 					JSONObject obj_usr_log = new JSONObject();
 					obj_usr_log.put("user_id", new_userid);
@@ -504,9 +504,9 @@ public class AppController {
 					obj_usr_log.put("t_date", dtf.format(now));
 					obj_usr_log.put("comp_id", "0");
 
-					//// System.out.println("Login Logs ");
-					// System.out.println(request.toString());
-					System.out.println(obj_usr_log.toString());
+					//// //System.out.println("Login Logs ");
+					// //System.out.println(request.toString());
+					//System.out.println(obj_usr_log.toString());
 					web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(),
 							obj_usr_log.toString());
@@ -543,9 +543,9 @@ public class AppController {
 					// }
 
 					// String milestone_result = String.join(",", msIds);
-					// //System.out.println(milestone_result); // Output: 854,855
+					// ////System.out.println(milestone_result); // Output: 854,855
 
-					// System.out.println("all_milestone: " + milestone_result);
+					// //System.out.println("all_milestone: " + milestone_result);
 
 					// // Gson googleJson = new Gson();
 					// //ArrayList javaArrayListFromGSON = googleJson.fromJson(all_milestone, ArrayList.class);
@@ -638,7 +638,7 @@ public class AppController {
 					// obj.put("case_number", case_number);
 
 					// String input_details = obj.toString();
-					// System.out.println(obj_rc.toString());
+					// //System.out.println(obj_rc.toString());
 
 					String jsonArrayContent_office_region = user_web_service
 							.select_lc_office_regions_districts_all(cls_url_config.getWeb_service_url_ser(),
@@ -698,8 +698,8 @@ public class AppController {
 					session.setAttribute("ip_address", ip_address);
 					session.setAttribute("request_purpose_all", request_purpose);
 					session.setAttribute("web_elis_app_levels", all_elis_app_levels_list);
-					// System.out.println("OrgVa");
-					// System.out.println(organisation_details);
+					// //System.out.println("OrgVa");
+					// //System.out.println(organisation_details);
 
 					JSONArray arr_sou = new JSONArray(organisation_details);
 					for (int i = 0; i < arr_sou.length(); i++) {
@@ -718,7 +718,7 @@ public class AppController {
 								.getString("chairman_regional_land_commission");
 						String office_region = arr_sou.getJSONObject(i).getString("office_region");
 
-						// System.out.println(fullname);
+						// //System.out.println(fullname);
 						request.setAttribute("compname", compname);
 						request.setAttribute("web_comp_address", comp_address);
 						request.setAttribute("web_city", city);
@@ -864,7 +864,7 @@ public class AppController {
 
 				} else {
 					request.setAttribute("login", "failed");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 				  model.addAttribute("content", "../auth/login.jsp");
         			return "layouts/guest";
 
@@ -881,7 +881,7 @@ public class AppController {
 
 			}
 
-			// System.out.println(pageName);
+			// //System.out.println(pageName);
 
 			// //HttpSession session = request.getSession();
 			// session.setAttribute("username", userName);
@@ -956,7 +956,7 @@ public class AppController {
 				web_service_response = cls_users.checkUser(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), user, pass);
 				// JSONObject obj = new JSONObject();
-			//	System.out.println(web_service_response);
+			//	//System.out.println(web_service_response);
 
 				JSONObject obj_test = new JSONObject(web_service_response);
 				String arr_tester = obj_test.get("data").toString();
@@ -964,20 +964,20 @@ public class AppController {
 				/* JSONArray arr_tester = obj_test.getJSONArray("data"); */
 
 				if (arr_tester != null) {
-					// System.out.println("If success");
-					// System.out.println(arr_tester);
+					// //System.out.println("If success");
+					// //System.out.println(arr_tester);
 
 					// creating a session
 					// HttpSession session = request.getSession();
 					// session.setAttribute("", name);
 
 					// do this when user login success
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 					JSONObject obj = new JSONObject(web_service_response);
 					// String pageName = obj.get("data").toString();
 					String regional_code = "";
 					JSONArray arr = obj.getJSONArray("data");
-					// System.out.println("arra : " + arr);
+					// //System.out.println("arra : " + arr);
 					for (int i = 0; i < arr.length(); i++) {
 
 						String fullname = arr.getJSONObject(i).getString("fullname");
@@ -999,8 +999,8 @@ public class AppController {
 						vr_region_code = arr.getJSONObject(i).getString("regional_code");
 
 						new_userid = userid;
-						// System.out.println("regional code : " + regional_code);
-						// System.out.println("regional code : " + web_service_response);
+						// //System.out.println("regional code : " + regional_code);
+						// //System.out.println("regional code : " + web_service_response);
 						/*
 						 * request.setAttribute("fullname", fullname);
 						 * request.setAttribute("userid", userid);
@@ -1029,8 +1029,8 @@ public class AppController {
 
 						session.setAttribute("designation", designation);
 						/*
-						 * System.out.println("unit_name :" + unit_name);
-						 * System.out.println("unit_id : " + unit_id);
+						 * //System.out.println("unit_name :" + unit_name);
+						 * //System.out.println("unit_id : " + unit_id);
 						 */
 						// //HttpSession session = request.getSession();
 						// session.setAttribute("unit_id", unit_id);
@@ -1053,7 +1053,7 @@ public class AppController {
 					// 	if ((sOsName.startsWith("Linux")) || (sOsName.startsWith("Mac")) || (sOsName.startsWith("HP-UX"))) {
 					// 		command = "/sbin/ifconfig";
 					// 	} else {
-					// 		System.out.println("The current operating system '" + sOsName + "' is not supported.");
+					// 		//System.out.println("The current operating system '" + sOsName + "' is not supported.");
 					// 	}
 					// }
 
@@ -1064,7 +1064,7 @@ public class AppController {
 					// 	pa.waitFor();
 					// 	BufferedReader reader = new BufferedReader(new InputStreamReader(pa.getInputStream()));
 
-					// 	//System.out.println(reader.readLine());
+					// 	////System.out.println(reader.readLine());
 
 					// 	//String line;
 					// 	java.util.regex.Matcher m;
@@ -1077,7 +1077,7 @@ public class AppController {
 					// 			macAddress = m.group();
 					// 		break;
 					// 	}
-					// 	//System.out.println(line);
+					// 	////System.out.println(line);
 					// } catch (Exception e) {
 					// 	e.printStackTrace();
 					// }
@@ -1089,7 +1089,7 @@ public class AppController {
 
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					// System.out.println(dtf.format(now));
+					// //System.out.println(dtf.format(now));
 
 					JSONObject obj_usr_log = new JSONObject();
 					obj_usr_log.put("user_id", new_userid);
@@ -1105,9 +1105,9 @@ public class AppController {
 					obj_usr_log.put("t_date", dtf.format(now));
 					obj_usr_log.put("comp_id", "0");
 
-					//// System.out.println("Login Logs ");
-					// System.out.println(request.toString());
-					System.out.println(obj_usr_log.toString());
+					//// //System.out.println("Login Logs ");
+					// //System.out.println(request.toString());
+					//System.out.println(obj_usr_log.toString());
 					web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(),
 							obj_usr_log.toString());
@@ -1144,9 +1144,9 @@ public class AppController {
 					// }
 
 					// String milestone_result = String.join(",", msIds);
-					// //System.out.println(milestone_result); // Output: 854,855
+					// ////System.out.println(milestone_result); // Output: 854,855
 
-					// System.out.println("all_milestone: " + milestone_result);
+					// //System.out.println("all_milestone: " + milestone_result);
 
 					// // Gson googleJson = new Gson();
 					// //ArrayList javaArrayListFromGSON = googleJson.fromJson(all_milestone, ArrayList.class);
@@ -1223,7 +1223,7 @@ public class AppController {
 					// obj.put("case_number", case_number);
 
 					// String input_details = obj.toString();
-					// System.out.println(obj_rc.toString());
+					// //System.out.println(obj_rc.toString());
 
 					String jsonArrayContent_office_region = user_web_service
 							.select_lc_office_regions_districts_all(cls_url_config.getWeb_service_url_ser(),
@@ -1280,8 +1280,8 @@ public class AppController {
 					session.setAttribute("mac_address", macAddress);
 					session.setAttribute("ip_address", ip_address);
 					session.setAttribute("request_purpose_all", request_purpose);
-					// System.out.println("OrgVa");
-					// System.out.println(organisation_details);
+					// //System.out.println("OrgVa");
+					// //System.out.println(organisation_details);
 
 					JSONArray arr_sou = new JSONArray(organisation_details);
 					for (int i = 0; i < arr_sou.length(); i++) {
@@ -1300,7 +1300,7 @@ public class AppController {
 								.getString("chairman_regional_land_commission");
 						String office_region = arr_sou.getJSONObject(i).getString("office_region");
 
-						// System.out.println(fullname);
+						// //System.out.println(fullname);
 						request.setAttribute("compname", compname);
 						request.setAttribute("web_comp_address", comp_address);
 						request.setAttribute("web_city", city);
@@ -1385,7 +1385,7 @@ public class AppController {
 
 				} else {
 					request.setAttribute("login", "failed");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 					// RequestDispatcher view =
 					// request.getRequestDispatcher("main_dashboard.jsp"); return "layouts/app";
@@ -1403,7 +1403,7 @@ public class AppController {
 	@PostMapping
 	public String change_password_rs(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 
-		// System.out.println(userName + password);
+		// //System.out.println(userName + password);
 		String web_service_response = null;
 		String web_service_response_all_users = null;
 		String web_service_response_verify = null;
@@ -1411,10 +1411,10 @@ public class AppController {
 
 		String vr_region_code = null;
 
-		// System.out.println(userName);
-		// System.out.println(password);
-		// System.out.println(cls_url_config.getWeb_service_url_ser());
-		// System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
+		// //System.out.println(userName);
+		// //System.out.println(password);
+		// //System.out.println(cls_url_config.getWeb_service_url_ser());
+		// //System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
 
 		try {
 
@@ -1441,9 +1441,9 @@ public class AppController {
 			obj_v.put("user_id", modified_by_id);
 
 			String input = obj_v.toString();
-			//System.out.println("code verification request");
+			////System.out.println("code verification request");
 
-			//System.out.println(input);
+			////System.out.println(input);
 
 			web_service_response_verify = cls_users.office_verify_verification_token(
 					cls_url_config.getWeb_service_url_ser(),
@@ -1456,7 +1456,7 @@ public class AppController {
 				web_service_response = cls_users.select_user_by_userid(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), user);
 				// JSONObject obj = new JSONObject();
-				//System.out.println(web_service_response);
+				////System.out.println(web_service_response);
 
 				JSONObject obj_test = new JSONObject(web_service_response);
 				String arr_tester = obj_test.get("data").toString();
@@ -1464,20 +1464,20 @@ public class AppController {
 				/* JSONArray arr_tester = obj_test.getJSONArray("data"); */
 
 				if (arr_tester != null) {
-					// System.out.println("If success");
-					// System.out.println(arr_tester);
+					// //System.out.println("If success");
+					// //System.out.println(arr_tester);
 
 					// creating a session
 					// HttpSession session = request.getSession();
 					// session.setAttribute("", name);
 
 					// do this when user login success
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 					JSONObject obj = new JSONObject(web_service_response);
 					// String pageName = obj.get("data").toString();
 				
 					JSONArray arr = obj.getJSONArray("data");
-					// System.out.println("arra : " + arr);
+					// //System.out.println("arra : " + arr);
 					for (int i = 0; i < arr.length(); i++) {
 						
 						session.setAttribute("username", arr.getJSONObject(i).getString("username"));
@@ -1490,7 +1490,7 @@ public class AppController {
 
 				} else {
 					request.setAttribute("login", "failed");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 					model.addAttribute("content", "../pages/two_factor_authentication_for_password_reset.jsp"); return "layouts/app";
 					// RequestDispatcher view =
 					// request.getRequestDispatcher("main_dashboard.jsp"); return "layouts/app";
@@ -1544,7 +1544,7 @@ public class AppController {
 			obj_usr_log.put("t_date", dtf.format(now));
 			obj_usr_log.put("comp_id", "0");
 
-			// System.out.println(obj_usr_log.toString());
+			// //System.out.println(obj_usr_log.toString());
 			web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					obj_usr_log.toString());
@@ -1604,7 +1604,7 @@ public class AppController {
 			obj_usr_log.put("t_date", dtf.format(now));
 			obj_usr_log.put("comp_id", "0");
 
-			// System.out.println(obj_usr_log.toString());
+			// //System.out.println(obj_usr_log.toString());
 			web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					obj_usr_log.toString());
@@ -1648,7 +1648,7 @@ public class AppController {
 			HttpServletResponse response) {
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
-		// System.out.println(userName + password);
+		// //System.out.println(userName + password);
 		String web_service_response = null;
 		String new_userid = null;
 		String vr_region_code = null;
@@ -1703,7 +1703,7 @@ public class AppController {
 			obj_usr_log.put("t_date", dtf.format(now));
 			obj_usr_log.put("comp_id", "0");
 
-			// System.out.println(obj_usr_log.toString());
+			// //System.out.println(obj_usr_log.toString());
 			web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					obj_usr_log.toString());

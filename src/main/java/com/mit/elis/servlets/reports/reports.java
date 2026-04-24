@@ -46,7 +46,7 @@ public class reports {
         if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
             // Session is expired
             request.setAttribute("login", "sessionout");
-            // System.out.println("If Not success");
+            // //System.out.println("If Not success");
              model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
         }
@@ -97,8 +97,8 @@ public class reports {
              * String[] output_sub = sub_service.split("-"); main_service_sub_id
              * = output_sub[0]; main_service_sub_desc = output_sub[1];
              */
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -112,7 +112,7 @@ public class reports {
                 // getServletContext().getRealPath("/resources/employee.csv");
                 String xmlLocation = "C:\\gelisscans\\scanpdf\\employee.csv";
 
-                // System.out.println(xmlLocation);
+                // //System.out.println(xmlLocation);
 
                 obj_r.put("type_of_report_name", type_of_report_name);
                 obj_r.put("business_process_id", business_process);
@@ -303,8 +303,8 @@ public class reports {
              * String[] output_sub = sub_service.split("-"); main_service_sub_id
              * = output_sub[0]; main_service_sub_desc = output_sub[1];
              */
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -318,7 +318,7 @@ public class reports {
                 // getServletContext().getRealPath("/resources/employee.csv");
                 String xmlLocation = "C:\\gelisscans\\scanpdf\\generalreport.xls";
 
-                // System.out.println(xmlLocation);
+                // //System.out.println(xmlLocation);
 
                 obj_r.put("type_of_report_name", type_of_report_name);
                 obj_r.put("business_process_id", business_process);
@@ -329,7 +329,7 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println(report_parameters);
+                // //System.out.println(report_parameters);
 
                 String json_output = " excel_cl.get_list_of_users(report_parameters)";
 
@@ -383,8 +383,8 @@ public class reports {
             String main_service = request.getParameter("main_service_rpt");
             String sub_service = request.getParameter("sub_service_rpt");
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -408,8 +408,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.get_list_of_users(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -437,8 +437,8 @@ public class reports {
             String main_service = request.getParameter("main_service_rpt");
             String sub_service = request.getParameter("sub_service_rpt");
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             // String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -462,8 +462,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.get_count_of_users(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -495,8 +495,8 @@ public class reports {
             String main_service = request.getParameter("main_service_rpt");
             String sub_service = request.getParameter("sub_service_rpt");
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             // String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -520,8 +520,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.get_count_of_query(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -547,8 +547,8 @@ public class reports {
             String main_service = request.getParameter("main_service_rpt");
             String sub_service = request.getParameter("sub_service_rpt");
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -573,8 +573,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_on_the_cases_stamping(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -600,8 +600,8 @@ public class reports {
             String main_service = request.getParameter("main_service_rpt");
             String sub_service = request.getParameter("sub_service_rpt");
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
@@ -622,19 +622,19 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                //System.out.println(report_parameters);
 
                 web_service_response = excel_report_cl
                         .report_landed_cases_gra_revised(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
-                System.out.println(web_service_response);
+                //System.out.println(web_service_response);
 
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -669,7 +669,7 @@ public class reports {
                 obj_r.put("staff_id", batch_to_id);
 
                 report_parameters = obj_r.toString();
-                // System.out.println(report_parameters);
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_dashboard_unit_for_each_staff(
                         cls_url_config.getWeb_service_url_ser(),
@@ -700,7 +700,7 @@ public class reports {
                 obj_r.put("staff_id", batch_to_id);
 
                 report_parameters = obj_r.toString();
-                // System.out.println(report_parameters);
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_audit_for_each_staff(
                         cls_url_config.getWeb_service_url_ser(),
@@ -747,8 +747,8 @@ public class reports {
             String main_service = request.getParameter("main_service_rpt");
             String sub_service = request.getParameter("sub_service_rpt");
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
             String type_of_report_name = request.getParameter("type_of_report_name");
             String business_process = main_service;
             String business_process_sub_name = sub_service;
@@ -762,7 +762,7 @@ public class reports {
                 // String xmlLocation = "C:\\gelisscans\\scanpdf\\employee.csv";
                 String xmlLocation = "C:\\gelisscans\\scanpdf\\employee.xls";
 
-                // System.out.println(xmlLocation);
+                // //System.out.println(xmlLocation);
 
                 obj_r.put("type_of_report_name", type_of_report_name);
                 obj_r.put("business_process_id", business_process);
@@ -842,8 +842,8 @@ public class reports {
 
     
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String ls_number = request.getParameter("ls_number");
 
@@ -867,8 +867,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_on_plan_approval(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -890,8 +890,8 @@ public class reports {
         if (request_type.equals("report_on_plan_approval2")) {
 
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String ls_number = request.getParameter("ls_number");
             String application_status = request.getParameter("application_status");
@@ -912,8 +912,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_on_plan_approval2(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -935,8 +935,8 @@ public class reports {
         if (request_type.equals("report_on_smd_cartogis")) {
 
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String application_status = request.getParameter("application_status");
             String date_from = request.getParameter("date_from");
@@ -961,8 +961,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_on_smd_cartogis(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
@@ -985,8 +985,8 @@ public class reports {
         if (request_type.equals("general_user_in_unit")) {
 
 
-            // System.out.println(main_service);
-            // System.out.println(sub_service);
+            // //System.out.println(main_service);
+            // //System.out.println(sub_service);
 
             String unitid = request.getParameter("unitid");
             
@@ -1005,8 +1005,8 @@ public class reports {
                 report_parameters = obj_r.toString();
 
                 report_parameters = obj_r.toString();
-                // System.out.println("Assiamah");
-                // System.out.println(report_parameters);
+                // //System.out.println("Assiamah");
+                // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.general_user_in_unit(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);

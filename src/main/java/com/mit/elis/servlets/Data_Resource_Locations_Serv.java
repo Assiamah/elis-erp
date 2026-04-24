@@ -36,7 +36,7 @@ public class Data_Resource_Locations_Serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -48,11 +48,11 @@ public class Data_Resource_Locations_Serv {
 
 		if (web_service_response != null) {
 
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		} else {
 			// obj.put( "success" , false );
 			// obj.put( "msg" , "Incorrect user or password.';" );
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		}
 
 		return web_service_response;

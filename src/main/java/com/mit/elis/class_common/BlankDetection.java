@@ -101,7 +101,7 @@ public class BlankDetection {
      * public static void main(String[] args) {
      * try {
      * if (args.length==0) {
-     * System.out.println("Missing parameter.");
+     * //System.out.println("Missing parameter.");
      * System.exit(FAILURE);
      * }
      * String path = args[0];

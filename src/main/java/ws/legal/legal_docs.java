@@ -266,10 +266,10 @@ public class legal_docs {
 
             // //file.close();
 
-            // System.out.println("Pdf created successfully..");
+            // //System.out.println("Pdf created successfully..");
 
             // results = timeStamp;
-            // System.out.println(results);
+            // //System.out.println(results);
             document.close();
             //file.close();
             return out.toByteArray();
@@ -305,7 +305,7 @@ public class legal_docs {
             String[] children = subdir.list();
 
             if (children == null) {
-                System.out.println("Either dir does not exist or is not a directory");
+                //System.out.println("Either dir does not exist or is not a directory");
             } else {
                 for (int j = 0; j < children.length; j++) {
                     String filename_doc = children[j];
@@ -323,7 +323,7 @@ public class legal_docs {
                     arr_r.put(obj_r);
                 }
 
-                System.out.println(arr_r.toString());
+                //System.out.println(arr_r.toString());
                 output = arr_r.toString();
             }
         } catch (Exception e) {
@@ -345,7 +345,7 @@ public class legal_docs {
             String[] children = subdir.list();
 
             if (children == null) {
-                System.out.println("Either dir does not exist or is not a directory");
+                //System.out.println("Either dir does not exist or is not a directory");
             } else {
                 for (int j = 0; j < children.length; j++) {
                     String filename_doc = children[j];
@@ -363,7 +363,7 @@ public class legal_docs {
                     arr_r.put(obj_r);
                 }
 
-                System.out.println(arr_r.toString());
+                //System.out.println(arr_r.toString());
                 output = arr_r.toString();
             }
         } catch (Exception e) {
@@ -528,10 +528,10 @@ public class legal_docs {
 
             // //file.close();
 
-            // System.out.println("Pdf created successfully..");
+            // //System.out.println("Pdf created successfully..");
 
             // results = timeStamp;
-            // System.out.println(results);
+            // //System.out.println(results);
             document.close();
             //file.close();
             return out.toByteArray();

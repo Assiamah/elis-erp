@@ -41,7 +41,7 @@ public class DashboardMenu {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -49,16 +49,16 @@ public class DashboardMenu {
 		String request_type = request.getParameter("request_type");
 		String web_service_response = null;
 
-		// System.out.println(request_type);
+		// //System.out.println(request_type);
 
 		if (request_type.equals("get_all")) {
 
 			web_service_response = cls_users.get_all_dashboard_menu(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key());
 			if (web_service_response != null) {
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 			} else {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 
 		}
@@ -67,13 +67,13 @@ public class DashboardMenu {
 
 			String userid = request.getParameter("userid");
 
-			// System.out.println(ap_number);
+			// //System.out.println(ap_number);
 			web_service_response = cls_users.user_profile_for_user(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), userid);
 			if (web_service_response != null) {
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 			} else {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 		}
 

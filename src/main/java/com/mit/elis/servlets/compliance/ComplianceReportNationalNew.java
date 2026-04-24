@@ -49,7 +49,7 @@ public class ComplianceReportNationalNew {
 					? request.getParameter("region_id")
 					: (String) session.getAttribute("regional_code"));
 
-			// System.out.println(String.format("Log level: %s",
+			// //System.out.println(String.format("Log level: %s",
 			// request.getParameter("request_type")));
 
 			String web_service_response = null;
@@ -63,9 +63,9 @@ public class ComplianceReportNationalNew {
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

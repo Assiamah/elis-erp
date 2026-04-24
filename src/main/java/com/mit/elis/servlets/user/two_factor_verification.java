@@ -71,20 +71,20 @@ public class two_factor_verification extends HttpServlet {
 			HttpServletResponse response) {
 		String userName = request.getParameter("email");
 		String password = request.getParameter("password");
-		// System.out.println(userName + password);
+		// //System.out.println(userName + password);
 		String web_service_response = null;
 		String new_userid = null;
 		String vr_region_code = null;
 
 		// code
 		try {
-System.out.println(userName);
-System.out.println(password);
-//System.out.println(web_service_response);
+//System.out.println(userName);
+//System.out.println(password);
+////System.out.println(web_service_response);
 			web_service_response = vas_cl.select_user_for_two_factor_verification(
 					cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), userName, password);
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 			JSONObject obj_test = new JSONObject(web_service_response);
 			String arr_login_response = obj_test.get("data").toString();
 			String success_obj = obj_test.get("success").toString();
@@ -114,7 +114,7 @@ System.out.println(password);
 				session.setAttribute("passKey", passKeyData);
 
 			} else {
-				System.out.println("user verification error");
+				//System.out.println("user verification error");
 				request.setAttribute("login", "failed");
 				  model.addAttribute("content", "../auth/login.jsp");
         return "layouts/guest";
@@ -137,7 +137,7 @@ System.out.println(password);
 
 			if (arr_login_response != "null") {
 
-				//System.out.println(verification_code_obj);
+				////System.out.println(verification_code_obj);
 
 				JSONObject obj = new JSONObject(arr_login_response);
 				new_userid = obj.get("userid").toString();
@@ -158,7 +158,7 @@ System.out.println(password);
 				}
 
 				String new_message = "Use this OTP Code: " + verification_code_obj + " to login to ELIS";
-				//System.out.println(new_phone);
+				////System.out.println(new_phone);
 				session.setAttribute("user_id_init", new_userid);
 				session.setAttribute("user_phone", new_phone);
 				session.setAttribute("user_emailaddress", emailaddress);
@@ -193,11 +193,11 @@ System.out.println(password);
 	
 						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 						LocalDateTime now = LocalDateTime.now();
-						// System.out.println(dtf.format(now));
+						// //System.out.println(dtf.format(now));
 	
-						System.out.println("userid");
+						//System.out.println("userid");
 	
-						System.out.println(new_userid);
+						//System.out.println(new_userid);
 	
 						if (new_userid != "null" || new_userid != null) {
 							request.setAttribute("user", userName);
@@ -216,7 +216,7 @@ System.out.println(password);
 							obj_usr_log.put("t_date", dtf.format(now));
 							obj_usr_log.put("comp_id", "0");
 	
-							System.out.println(obj_usr_log.toString());
+							//System.out.println(obj_usr_log.toString());
 							web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(), obj_usr_log.toString());
 
@@ -249,9 +249,9 @@ System.out.println(password);
 						//return "/configure_google_authenticator.jsp"; // Redirect to QR Code setup page
 	
 						} else {
-							System.out.println("attemted login");
+							//System.out.println("attemted login");
 	
-							System.out.println(new_userid);
+							//System.out.println(new_userid);
 	
 							new_userid = new_userid;
 							JSONObject obj_usr_log = new JSONObject();
@@ -267,12 +267,12 @@ System.out.println(password);
 							obj_usr_log.put("t_date", dtf.format(now));
 							obj_usr_log.put("comp_id", "0");
 	
-							System.out.println(obj_usr_log.toString());
+							//System.out.println(obj_usr_log.toString());
 							web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(), obj_usr_log.toString());
 	
 							request.setAttribute("login", "failed");
-							// System.out.println("If Not success");
+							// //System.out.println("If Not success");
 							  model.addAttribute("content", "../auth/login.jsp");
         return "layouts/guest";
 	
@@ -281,11 +281,11 @@ System.out.println(password);
 				
 				} else {
 					//Code to Send SMS 
-					//System.out.println(obj_sms.toString());
+					////System.out.println(obj_sms.toString());
 
 
 					//Code to Send SMS 
-					//System.out.println(obj_sms.toString());
+					////System.out.println(obj_sms.toString());
 
 
 						String smsm_result = "";
@@ -302,8 +302,8 @@ System.out.println(password);
 	
 			 if (otp_type_obj.equals("sms")) {
 							 smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
-				   //System.out.println("smsm_result");
-				// System.out.println(smsm_result);
+				   ////System.out.println("smsm_result");
+				// //System.out.println(smsm_result);
 	         
 				// JSONObject objVerify = new JSONObject(smsm_result);
 
@@ -324,8 +324,8 @@ System.out.println(password);
 				// statusCode="000";
 						} else{
 							 smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());	
-				//System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				////System.out.println("smsm_result");
+				//System.out.println(smsm_result);
 
 				// Use the autowired mail service
                 mail_sl.send_otp_mail(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(), obj_mail.toString());
@@ -367,11 +367,11 @@ System.out.println(password);
 
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					// System.out.println(dtf.format(now));
+					// //System.out.println(dtf.format(now));
 
-					System.out.println("userid");
+					//System.out.println("userid");
 
-					System.out.println(new_userid);
+					//System.out.println(new_userid);
 
 					if (new_userid != "null" || new_userid != null) {
 						request.setAttribute("user", userName);
@@ -390,7 +390,7 @@ System.out.println(password);
 						obj_usr_log.put("t_date", dtf.format(now));
 						obj_usr_log.put("comp_id", "0");
 
-						System.out.println(obj_usr_log.toString());
+						//System.out.println(obj_usr_log.toString());
 						web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_usr_log.toString());
 
@@ -420,9 +420,9 @@ System.out.println(password);
 						// return "/configure_google_authenticator.jsp"; // Redirect to QR Code setup page
 
 					} else {
-						System.out.println("attemted login");
+						//System.out.println("attemted login");
 
-						System.out.println(new_userid);
+						//System.out.println(new_userid);
 
 						new_userid = new_userid;
 						JSONObject obj_usr_log = new JSONObject();
@@ -438,19 +438,19 @@ System.out.println(password);
 						obj_usr_log.put("t_date", dtf.format(now));
 						obj_usr_log.put("comp_id", "0");
 
-						System.out.println(obj_usr_log.toString());
+						//System.out.println(obj_usr_log.toString());
 						web_service_response = cls_users.usp_users_access_logs(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_usr_log.toString());
 
 						request.setAttribute("login", "failed");
-						// System.out.println("If Not success");
+						// //System.out.println("If Not success");
 					  model.addAttribute("content", "../auth/login.jsp");
         return "layouts/guest";
 
 					}
 
 				// } else {
-				// 	System.out.println("sms error");
+				// 	//System.out.println("sms error");
 
 				// 	request.setAttribute("login", "SMS Error");
 				// 	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
@@ -462,7 +462,7 @@ System.out.println(password);
 				
 
 			} else {
-				System.out.println("user verification error");
+				//System.out.println("user verification error");
 				request.setAttribute("login", "failed");
 				  model.addAttribute("content", "../auth/login.jsp");
         return "layouts/guest";
@@ -485,14 +485,14 @@ System.out.println(password);
 		String new_userid = null;
 		String vr_region_code = null;
 
-		System.out.println(userName);
+		//System.out.println(userName);
 
 		try {
 			web_service_response = cls_users.send_code_for_password_reset(
 					cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), userName);
 
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 			JSONObject obj_test = new JSONObject(web_service_response);
 			String arr_login_response = obj_test.get("data").toString();
 			String success_obj = obj_test.get("success").toString();
@@ -557,7 +557,7 @@ System.out.println(password);
 						session.setAttribute("email_sent", true);
 						
 						// Log the email sending
-						System.out.println("Password reset email sent to: " + new_email);
+						//System.out.println("Password reset email sent to: " + new_email);
 						
 					} catch (Exception e) {
 						System.err.println("Failed to send email: " + e.getMessage());
@@ -645,7 +645,7 @@ System.out.println(password);
 				obj_sms.toString()
 			);
 			
-			System.out.println("SMS sent: " + smsm_result);
+			//System.out.println("SMS sent: " + smsm_result);
 		} catch (Exception e) {
 			System.err.println("Failed to send SMS: " + e.getMessage());
 		}
@@ -658,7 +658,7 @@ System.out.println(password);
 		String userName = session.getAttribute("user").toString();
 		String new_password = request.getParameter("new_password");
 		String confirm_password = request.getParameter("confirm_password");
-		// System.out.println(userName + password);
+		// //System.out.println(userName + password);
 		String web_service_response = null;
 		String new_userid = null;
 		String vr_region_code = null;
@@ -685,7 +685,7 @@ System.out.println(password);
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			} else {
-				System.out.println("user verification error");
+				//System.out.println("user verification error");
 				request.setAttribute("login", "failed");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 

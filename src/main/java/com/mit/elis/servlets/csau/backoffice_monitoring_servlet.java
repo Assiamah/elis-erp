@@ -77,15 +77,15 @@ public class backoffice_monitoring_servlet {
                     String regional_code = request.getParameter("regional_code");
     
                     obj.put( "regional_code" , regional_code );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = cls_backoffice_monitoring
                             .load_apps_backoffice_further_entries_applications_recieved_toda(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -98,15 +98,15 @@ public class backoffice_monitoring_servlet {
                     String regional_code = request.getParameter("regional_code");
     
                     obj.put( "regional_code" , regional_code );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = cls_backoffice_monitoring
                             .load_apps_backoffice_further_entries_applications_recieved_week(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -120,15 +120,15 @@ public class backoffice_monitoring_servlet {
                     String regional_code = request.getParameter("regional_code");
     
                     obj.put( "regional_code" , regional_code );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = cls_backoffice_monitoring
                             .load_apps_backoffice_further_entries_applications_recieved_mont(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -142,15 +142,15 @@ public class backoffice_monitoring_servlet {
                     String regional_code = request.getParameter("regional_code");
     
                     obj.put( "regional_code" , regional_code );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = cls_backoffice_monitoring
                             .load_apps_backoffice_further_entries_applications_recieved_year(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -165,15 +165,15 @@ public class backoffice_monitoring_servlet {
                   String regional_code = request.getParameter("regional_code");
   
                   obj.put( "regional_code" , regional_code );
-                //  System.out.println(obj.toString());
+                //  //System.out.println(obj.toString());
   
                   web_service_response = cls_backoffice_monitoring
                           .select_count_worked_on_batching_officers(cls_url_config.getWeb_service_url_ser(),
                                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                   if (web_service_response != null) {
-                    //  System.out.println(web_service_response);
+                    //  //System.out.println(web_service_response);
                   } else {
-                    //  System.out.println(web_service_response);
+                    //  //System.out.println(web_service_response);
                   }
   
                   return web_service_response;
@@ -187,15 +187,15 @@ public class backoffice_monitoring_servlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_backoffice_monitoring
                         .select_count_worked_on_batching_officers_week(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -209,15 +209,15 @@ public class backoffice_monitoring_servlet {
               String regional_code = request.getParameter("regional_code");
 
               obj.put( "regional_code" , regional_code );
-            //  System.out.println(obj.toString());
+            //  //System.out.println(obj.toString());
 
               web_service_response = cls_backoffice_monitoring
                       .select_count_worked_on_batching_officers_month(cls_url_config.getWeb_service_url_ser(),
                               cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
               if (web_service_response != null) {
-                //  System.out.println(web_service_response);
+                //  //System.out.println(web_service_response);
               } else {
-                //  System.out.println(web_service_response);
+                //  //System.out.println(web_service_response);
               }
 
               return web_service_response;
@@ -232,15 +232,15 @@ public class backoffice_monitoring_servlet {
             String regional_code = request.getParameter("regional_code");
 
             obj.put( "regional_code" , regional_code );
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
 
             web_service_response = cls_backoffice_monitoring
                     .select_count_worked_on_batching_officers_year(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
 
             return web_service_response;
@@ -255,15 +255,15 @@ public class backoffice_monitoring_servlet {
           String created_by_id = request.getParameter("created_by_id");
 
           obj.put( "created_by_id",created_by_id);
-        //  System.out.println(obj.toString());
+        //  //System.out.println(obj.toString());
 
           web_service_response = cls_backoffice_monitoring
                   .select_applications_workedon_today_by_csau_batching_officers(cls_url_config.getWeb_service_url_ser(),
                           cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
           if (web_service_response != null) {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           } else {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           }
 
           return web_service_response;
@@ -276,15 +276,15 @@ public class backoffice_monitoring_servlet {
         String created_by_id = request.getParameter("created_by_id");
 
         obj.put( "created_by_id",created_by_id);
-      //  System.out.println(obj.toString());
+      //  //System.out.println(obj.toString());
 
         web_service_response = cls_backoffice_monitoring
                 .select_applications_workedon_week_by_csau_batching_officers(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
         if (web_service_response != null) {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         } else {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         }
 
         return web_service_response;
@@ -298,15 +298,15 @@ public class backoffice_monitoring_servlet {
       String created_by_id = request.getParameter("created_by_id");
 
       obj.put( "created_by_id",created_by_id);
-    //  System.out.println(obj.toString());
+    //  //System.out.println(obj.toString());
 
       web_service_response = cls_backoffice_monitoring
               .select_applications_workedon_month_by_csau_batching_officers(cls_url_config.getWeb_service_url_ser(),
                       cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
       if (web_service_response != null) {
-        //  System.out.println(web_service_response);
+        //  //System.out.println(web_service_response);
       } else {
-        //  System.out.println(web_service_response);
+        //  //System.out.println(web_service_response);
       }
 
       return web_service_response;
@@ -320,15 +320,15 @@ public class backoffice_monitoring_servlet {
     String created_by_id = request.getParameter("created_by_id");
 
     obj.put( "created_by_id",created_by_id);
-  //  System.out.println(obj.toString());
+  //  //System.out.println(obj.toString());
 
     web_service_response = cls_backoffice_monitoring
             .select_applications_workedon_year_by_csau_batching_officers(cls_url_config.getWeb_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
-      //  System.out.println(web_service_response);
+      //  //System.out.println(web_service_response);
     } else {
-      //  System.out.println(web_service_response);
+      //  //System.out.println(web_service_response);
     }
 
     return web_service_response;
@@ -341,15 +341,15 @@ public class backoffice_monitoring_servlet {
             String regional_code = request.getParameter("regional_code");
 
             obj.put( "regional_code" , regional_code );
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
 
             web_service_response = cls_backoffice_monitoring
                     .select_count_worked_on_further_entries_officers_today(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
 
             return web_service_response;
@@ -363,15 +363,15 @@ public class backoffice_monitoring_servlet {
             String regional_code = request.getParameter("regional_code");
 
             obj.put( "regional_code" , regional_code );
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
 
             web_service_response = cls_backoffice_monitoring
                     .select_count_worked_on_further_entries_officers_week(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
 
             return web_service_response;
@@ -385,15 +385,15 @@ public class backoffice_monitoring_servlet {
             String regional_code = request.getParameter("regional_code");
 
             obj.put( "regional_code" , regional_code );
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
 
             web_service_response = cls_backoffice_monitoring
                     .select_count_worked_on_further_entries_officers_month(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
 
             return web_service_response;
@@ -407,15 +407,15 @@ public class backoffice_monitoring_servlet {
             String regional_code = request.getParameter("regional_code");
 
             obj.put( "regional_code" , regional_code );
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
 
             web_service_response = cls_backoffice_monitoring
                     .select_count_worked_on_further_entries_officers_year(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
 
             return web_service_response;
@@ -429,15 +429,15 @@ public class backoffice_monitoring_servlet {
             String created_by_id = request.getParameter("created_by_id");
         
             obj.put( "created_by_id",created_by_id);
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
         
             web_service_response = cls_backoffice_monitoring
                     .select_applications_workedon_today_by_csau_futher_entries_offic(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
         
             return web_service_response;
@@ -450,15 +450,15 @@ public class backoffice_monitoring_servlet {
           String created_by_id = request.getParameter("created_by_id");
       
           obj.put( "created_by_id",created_by_id);
-        //  System.out.println(obj.toString());
+        //  //System.out.println(obj.toString());
       
           web_service_response = cls_backoffice_monitoring
                   .select_applications_workedon_week_by_csau_futher_entries_offic(cls_url_config.getWeb_service_url_ser(),
                           cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
           if (web_service_response != null) {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           } else {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           }
       
           return web_service_response;
@@ -472,15 +472,15 @@ public class backoffice_monitoring_servlet {
         String created_by_id = request.getParameter("created_by_id");
     
         obj.put( "created_by_id",created_by_id);
-      //  System.out.println(obj.toString());
+      //  //System.out.println(obj.toString());
     
         web_service_response = cls_backoffice_monitoring
                 .select_applications_workedon_week_by_csau_futher_entries_offic(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
         if (web_service_response != null) {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         } else {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         }
     
         return web_service_response;
@@ -493,15 +493,15 @@ public class backoffice_monitoring_servlet {
             String created_by_id = request.getParameter("created_by_id");
         
             obj.put( "created_by_id",created_by_id);
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
         
             web_service_response = cls_backoffice_monitoring
                     .select_applications_workedon_year_by_csau_futher_entries_offic(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
         
             return web_service_response;
@@ -521,15 +521,15 @@ public class backoffice_monitoring_servlet {
           obj.put( "regional_code" , regional_code );
       
           obj.put( "regional_division",regional_division);
-        //  System.out.println(obj.toString());
+        //  //System.out.println(obj.toString());
       
           web_service_response = cls_backoffice_monitoring
                   .load_apps_backoffice_further_entries_apps_by_divisions_today(cls_url_config.getWeb_service_url_ser(),
                           cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
           if (web_service_response != null) {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           } else {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           }
       
           return web_service_response;
@@ -547,15 +547,15 @@ public class backoffice_monitoring_servlet {
         obj.put( "regional_code" , regional_code );
     
         obj.put( "regional_division",regional_division);
-      //  System.out.println(obj.toString());
+      //  //System.out.println(obj.toString());
     
         web_service_response = cls_backoffice_monitoring
                 .load_apps_backoffice_further_entries_apps_by_divisions_week(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
         if (web_service_response != null) {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         } else {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         }
     
         return web_service_response;
@@ -574,15 +574,15 @@ public class backoffice_monitoring_servlet {
       obj.put( "regional_code" , regional_code );
   
       obj.put( "regional_division",regional_division);
-    //  System.out.println(obj.toString());
+    //  //System.out.println(obj.toString());
   
       web_service_response = cls_backoffice_monitoring
               .load_apps_backoffice_further_entries_apps_by_divisions_month(cls_url_config.getWeb_service_url_ser(),
                       cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
       if (web_service_response != null) {
-        //  System.out.println(web_service_response);
+        //  //System.out.println(web_service_response);
       } else {
-        //  System.out.println(web_service_response);
+        //  //System.out.println(web_service_response);
       }
   
       return web_service_response;
@@ -600,15 +600,15 @@ public class backoffice_monitoring_servlet {
     obj.put( "regional_code" , regional_code );
 
     obj.put( "regional_division",regional_division);
-  //  System.out.println(obj.toString());
+  //  //System.out.println(obj.toString());
 
     web_service_response = cls_backoffice_monitoring
             .load_apps_backoffice_further_entries_apps_by_divisions_year(cls_url_config.getWeb_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
-      //  System.out.println(web_service_response);
+      //  //System.out.println(web_service_response);
     } else {
-      //  System.out.println(web_service_response);
+      //  //System.out.println(web_service_response);
     }
 
     return web_service_response;

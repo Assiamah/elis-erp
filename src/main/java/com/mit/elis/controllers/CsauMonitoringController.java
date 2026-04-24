@@ -75,7 +75,7 @@ public class CsauMonitoringController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -96,7 +96,7 @@ public class CsauMonitoringController {
 
 
 
-		//System.out.println(web_service_response);
+		////System.out.println(web_service_response);
 
 	      model.addAttribute("content", "../pages/client_application/csau_monitoring.jsp"); return "layouts/app";
 

@@ -74,7 +74,7 @@ public class ws_csau_monitoring {
 
 	
 	public String select_count_received_today_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -96,7 +96,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_received_month_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -118,7 +118,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_received_year_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -141,7 +141,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_received_year_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -164,7 +164,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_received_month_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -187,7 +187,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_6months_bills_created_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -210,7 +210,7 @@ public class ws_csau_monitoring {
 
 
 		public String select_bills_created_by_csau_front_officers_and_paid(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -234,7 +234,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_bills_created_by_csau_front_officers_and_acknowledged(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -256,7 +256,7 @@ public class ws_csau_monitoring {
 
 
 		public String get_bills_created_by_csau_front_officers_last6months(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -279,7 +279,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_bills_created_by_csau_front_officers_last6months_and_paid(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -303,7 +303,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_bills_created_by_csau_front_officers_last6months_and_acknow(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -327,7 +327,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_applications_signedout_year(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -351,7 +351,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_applications_signedout_today(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -375,7 +375,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_applications_signedout_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -397,7 +397,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_received_week_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -419,7 +419,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_received_week_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -440,7 +440,7 @@ public class ws_csau_monitoring {
 
 
 		public String select_applications_received_today_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -466,7 +466,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_applications_signedout_week(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -488,7 +488,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_signedout_today_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -512,7 +512,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_signedout_week_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -535,7 +535,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_signedout_month_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -558,7 +558,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_count_signedout_year_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -582,7 +582,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_signedout_year_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -604,7 +604,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_signedout_today_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -626,7 +626,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_signedout_week_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -649,7 +649,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_applications_signedout_month_by_csau_front_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -672,7 +672,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_bills_today_by_csau_front_officers_and_paid(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -695,7 +695,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_bills_created_by_csau_front_officers_today_and_paid(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -717,7 +717,7 @@ public class ws_csau_monitoring {
 
 
 	public String select_bills_today_by_csau_front_officers_and_acknowledged(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -740,7 +740,7 @@ public class ws_csau_monitoring {
 
 
 	public String get_bills_created_by_csau_front_officers_today_and_acknowledged(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -763,7 +763,7 @@ public class ws_csau_monitoring {
 
 
 	public String csau_report_count_received_by_csau_front_officers_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -788,7 +788,7 @@ public class ws_csau_monitoring {
 
 
 	public String csau_report_apps_received_by_csau_front_officers_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -813,7 +813,7 @@ public class ws_csau_monitoring {
 
 
 	public String csau_report_count_signedout_by_csau_front_officers_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -838,7 +838,7 @@ public class ws_csau_monitoring {
 
 
 	public String csau_report_apps_signedout_by_csau_front_officers_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -862,7 +862,7 @@ public class ws_csau_monitoring {
 
 
 	public String csau_report_count_bills_created_by_csau_front_officers_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -884,7 +884,7 @@ public class ws_csau_monitoring {
 
 
 	public String csau_report_all_bills_created_by_csau_front_officers_by_date(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -914,7 +914,7 @@ public class ws_csau_monitoring {
 
 
 	public String compliance_executive_dashboard10(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -937,7 +937,7 @@ public class ws_csau_monitoring {
 
 
 	public String compliance_executive_dashboard11(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -960,7 +960,7 @@ public class ws_csau_monitoring {
 
 
 	public String compliance_executive_dashboard12(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -983,7 +983,7 @@ public class ws_csau_monitoring {
 
 
 	public String compliance_executive_dashboard13(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();

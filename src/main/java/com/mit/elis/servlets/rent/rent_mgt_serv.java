@@ -45,7 +45,7 @@ public class rent_mgt_serv {
 	public String doPost(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
-		// System.out.println("How are you");
+		// //System.out.println("How are you");
 	
 		String web_service_response = null;
 		//JSONObject obj = new JSONObject();
@@ -53,69 +53,69 @@ public class rent_mgt_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		try {
 			String request_type = request.getParameter("request_type");
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			if (request_type.equals("select_rt_govt_estates_get_wkt")) {
 				String ge_id = request.getParameter("ge_id");
 				JSONObject obj_d = new JSONObject();
 
 				obj_d.put("ge_id", ge_id);
-				System.out.println(obj_d.toString());
+				//System.out.println(obj_d.toString());
 				web_service_response = rent_mgt_cl
 						.select_rt_govt_estates_get_wkt(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 	
 			}
 
 			if (request_type.equals("select_prepare_rent_demand_notice_single")) {
 				
-				System.out.println("dddddddd");
+				//System.out.println("dddddddd");
 				String ge_id = request.getParameter("rdn_rent_id");
 				JSONObject obj_d = new JSONObject();
 
 				obj_d.put("rl_id", ge_id);
-				System.out.println(obj_d.toString());
+				//System.out.println(obj_d.toString());
 				web_service_response = rent_mgt_cl
 						.select_prepare_rent_demand_notice_single(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
 			
-								System.out.println("web_service_response");
+								//System.out.println("web_service_response");
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 			
 if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				
-				System.out.println("dddddddd");
+				//System.out.println("dddddddd");
 				String ge_id = request.getParameter("rdn_rent_id");
 				JSONObject obj_d = new JSONObject();
 
 				obj_d.put("rl_id", ge_id);
-				System.out.println(obj_d.toString());
+				//System.out.println(obj_d.toString());
 				web_service_response = rent_mgt_cl
 						.select_prepare_rent_demand_notice_single_v1(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
-							////System.out.println("web_service_response");
+							//////System.out.println("web_service_response");
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -127,7 +127,7 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				String estate = request.getParameter("estate");	
 				String keyword = request.getParameter("keyword");			
 
-				// System.out.println(list_of_application);
+				// //System.out.println(list_of_application);
 
 				JSONObject obj = new JSONObject();
 				obj.put("select_type", select_type);
@@ -137,14 +137,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 
 				// String batchlistdivison = obj.toString();
 
-			  System.out.println("testing cabinet batch: " + obj.toString());
+			  //System.out.println("testing cabinet batch: " + obj.toString());
 				web_service_response = casemgt_cl_m.select_rent_leasee_details(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -262,14 +262,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.add_update_rent_leasee_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -326,14 +326,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.add_update_rent_transaction_history(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -361,14 +361,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.load_rent_transaction_history(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -396,14 +396,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.load_parcel_transaction_history(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -412,8 +412,8 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				
 			if (request_type.equals("get_estate_list")) {
 				web_service_response = (String) session.getAttribute("estate_list");
-				//System.out.println("get_estate_list");
-				System.out.println(web_service_response);
+				////System.out.println("get_estate_list");
+				//System.out.println(web_service_response);
 				return web_service_response;
 			}
 
@@ -451,14 +451,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.load_rent_transaction_history_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -486,14 +486,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.load_rent_transaction_remarks(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -521,14 +521,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.load_rent_transaction_remarks_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -556,14 +556,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				String input_details = obj.toString();
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.add_update_rent_transaction_remarks(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -586,14 +586,14 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 
 				// String batchlistdivison = obj.toString();
 
-				 System.out.println("testing cabinet batch: " +rent_data_upload_list);
+				 //System.out.println("testing cabinet batch: " +rent_data_upload_list);
 				web_service_response = casemgt_cl_m.select_rent_data_upload(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						rent_data_upload_list);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -617,15 +617,15 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 
 				// String batchlistdivison = obj.toString();
 
-				 System.out.println("testing new json: " +obj.toString());
-				  System.out.println("testing cabinet batch: " +rent_data_upload_list);
+				 //System.out.println("testing new json: " +obj.toString());
+				  //System.out.println("testing cabinet batch: " +rent_data_upload_list);
 				web_service_response = casemgt_cl_m.upload_bulk_rent_ledger(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						rent_data_upload_list);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;

@@ -70,7 +70,7 @@ public class Maps {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -81,7 +81,7 @@ public class Maps {
 
 			String web_service_response = null;
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("pvlmd_polygon_for_save")) {
 				String wkt_polgon = request.getParameter("wkt_polgon");
@@ -94,7 +94,7 @@ public class Maps {
 				String number_format = request.getParameter("number_format");
 
 				/*
-				 * System.out.println(wkt_polgon + "-" + pvlmd_unit + "-" +
+				 * //System.out.println(wkt_polgon + "-" + pvlmd_unit + "-" +
 				 * pvlmd_plot_type + "-" + number_format + "-" + created_by +
 				 * "-" + created_by_id);
 				 */
@@ -117,9 +117,9 @@ public class Maps {
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -136,7 +136,7 @@ public class Maps {
 				String remarks = request.getParameter("remarks");
 
 				/*
-				 * System.out.println(wkt_polgon + "-" + pvlmd_unit + "-" +
+				 * //System.out.println(wkt_polgon + "-" + pvlmd_unit + "-" +
 				 * pvlmd_plot_type + "-" + number_format + "-" + created_by +
 				 * "-" + created_by_id);
 				 */
@@ -160,9 +160,9 @@ public class Maps {
 						.select_save_pvlmd_parcels_with_info(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -180,7 +180,7 @@ public class Maps {
 				String remarks = request.getParameter("remarks");
 
 				/*
-				 * System.out.println(wkt_polgon + "-" + pvlmd_unit + "-" +
+				 * //System.out.println(wkt_polgon + "-" + pvlmd_unit + "-" +
 				 * pvlmd_plot_type + "-" + number_format + "-" + created_by +
 				 * "-" + created_by_id);
 				 */
@@ -205,9 +205,9 @@ public class Maps {
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -257,14 +257,14 @@ public class Maps {
 				String input_details = jsonArray.toString();
 
 				// String wkt_polgon_wgs84 =
-				// System.out.println(input_details);
+				// //System.out.println(input_details);
 				web_service_response = cls_maps.select_update_pvlmd_parcels(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -275,12 +275,12 @@ public class Maps {
 			 * String wkt_polgon = request.getParameter("wkt_polgon"); // String
 			 * wkt_polgon_wgs84 = request.getParameter("wkt_polgon_wgs84");
 			 * 
-			 * System.out.println(wkt_polgon); web_service_response
+			 * //System.out.println(wkt_polgon); web_service_response
 			 * =cls_maps.select_search_scan_maps_polygons_by_wkt(cls_url_config.
 			 * getWeb_service_url_ser(),wkt_polgon);
 			 * if(web_service_response!=null) {
-			 * System.out.println(web_service_response); }else{
-			 * System.out.println(web_service_response); }
+			 * //System.out.println(web_service_response); }else{
+			 * //System.out.println(web_service_response); }
 			 * 
 			 * }
 			 */
@@ -289,13 +289,13 @@ public class Maps {
 				String wkt_polgon = request.getParameter("wkt_polgon");
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(wkt_polgon);
+				// //System.out.println(wkt_polgon);
 				// web_service_response
 				// =cls_maps.select_save_pvlmd_stateland_consent(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),wkt_polgon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -321,14 +321,14 @@ public class Maps {
 				// String input = jsonArr.toString();
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps.select_save_spatial_objects_undergoing_registration(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -354,28 +354,28 @@ public class Maps {
 				// String input = jsonArr.toString();
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps.select_save_spatial_for_general_notiing(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_lc_plan_approval_plottings_search_by_job_number")) {
 				String search_by_text = request.getParameter("search_by_text");
-				// System.out.println(search_by_text);
+				// //System.out.println(search_by_text);
 				web_service_response = cls_maps.select_lc_plan_approval_plottings_search_by_job_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						search_by_text);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -431,13 +431,13 @@ public class Maps {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				// web_service_response
 				// =cls_maps.select_update_pvlmd_stateland_consent(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -446,14 +446,14 @@ public class Maps {
 				String parcel_id = request.getParameter("parcel_id");
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_search_parcels_lrd_by_parcel_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), parcel_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -462,14 +462,14 @@ public class Maps {
 				String parcel_id = request.getParameter("parcel_id");
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_search_parcels_smd_by_parcel_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), parcel_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -478,15 +478,15 @@ public class Maps {
 				String parcel_id = request.getParameter("parcel_id");
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_search_parcels_pvlmd_by_parcel_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), parcel_id);
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -496,14 +496,14 @@ public class Maps {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(wkt_polygon);
+				// //System.out.println(wkt_polygon);
 				web_service_response = cls_maps
 						.select_search_scan_maps_polygons_by_wkt(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), wkt_polygon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -513,14 +513,14 @@ public class Maps {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(wkt_polygon);
+				// //System.out.println(wkt_polygon);
 				web_service_response = cls_maps.select_search_scan_maps_all(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						"");
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -530,15 +530,15 @@ public class Maps {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(wkt_polgon);
+				// //System.out.println(wkt_polgon);
 				web_service_response = cls_maps
 						.select_search_scan_maps_polygons_by_point(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), wkt_polgon);
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -548,13 +548,13 @@ public class Maps {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_search_scan_maps_polygons_by_district(district);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -563,13 +563,13 @@ public class Maps {
 				String wkt_polgon = request.getParameter("wkt_polgon");
 				String wkt_polgon_wgs84 = request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_save_lvd_parcels(wkt_polgon,wkt_polgon_wgs84);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -577,13 +577,13 @@ public class Maps {
 			if (request_type.equals("select_comparables_by_locality_report")) {
 				String locality = request.getParameter("locality");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_comparables_by_locality_report(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),locality);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -593,13 +593,13 @@ public class Maps {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_search_parcels_smd_by_ccno(vr_cc_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -611,13 +611,13 @@ public class Maps {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_plot_lrd_parcel_from_smd_data(vr_fid,vr_user_name,vr_user_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -734,14 +734,14 @@ public class Maps {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps
 						.select_add_update_pvlmd_transaction_short(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -845,14 +845,14 @@ public class Maps {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps
 						.select_add_update_pvlmd_transaction(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -895,13 +895,13 @@ public class Maps {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				// web_service_response
 				// =cls_maps.select_update_pvlmd_parcels(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -938,14 +938,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// jsonArr.put(obj);
 				// String input = jsonArr.toString();
 
-				// System.out.println(obj.toString());
+				// //System.out.println(obj.toString());
 				web_service_response = cls_maps.select_parcels_smd_save(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -991,15 +991,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps.select_update_lvd_parcels(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input);
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1007,14 +1007,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String wkt_polgon = request.getParameter("vr_wkt_polygon");
 				String wkt_polgon_wgs84 = request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps.select_save_lvd_parcels(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						wkt_polgon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1022,13 +1022,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("select_comparables_by_locality_report")) {
 				String locality = request.getParameter("locality");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_comparables_by_locality_report(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),locality);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1076,13 +1076,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				// web_service_response
 				// =cls_maps.select_add_update_lvd_transaction(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1130,15 +1130,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps
 						.select_update_sp_parcels_lvd_point(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1160,15 +1160,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// jsonArr.put(obj);
 				String input = obj.toString();
 
-				System.out.println(input);
+				//System.out.println(input);
 				web_service_response = cls_maps.select_lvd_comparable_approve(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1176,14 +1176,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String wkt_polgon = request.getParameter("vr_wkt_polygon");
 				String wkt_polgon_wgs84 = request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_save_sp_parcels_lvd_point(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), wkt_polgon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1191,14 +1191,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("select_sp_parcels_lvd_point_unapproved_all")) {
 				String locality = request.getParameter("locality");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_sp_parcels_lvd_point_unapproved_all(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), locality);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1211,9 +1211,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 								cls_url_config.getWeb_service_url_ser_api_key(), pid_fk);
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1224,35 +1224,35 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// web_service_response
 				// =cls_maps.select_pvlmd_transactions_details_all(gid_id_fk,reference_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("load_pvlmd_transaction_details_by_gid_fk")) {
 				String gid_id_fk = request.getParameter("gid_id_fk");
-				// System.out.println(gid_id_fk);
+				// //System.out.println(gid_id_fk);
 				web_service_response = cls_maps
 						.select_pvlmd_transactions_details_by_fk(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), gid_id_fk);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("select_pvlmd_transactions_details_by_t_id")) {
 				String t_id = request.getParameter("t_id");
-				// System.out.println(t_id);
+				// //System.out.println(t_id);
 				web_service_response = cls_maps
 						.select_pvlmd_transactions_details_by_t_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), t_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1260,13 +1260,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// int pid_fk = Integer.parseInt(json_request);
 				int parcel_uid = Integer.parseInt(request.getParameter("parcel_uid"));
 				String vr_blade_linestring = request.getParameter("vr_blade_linestring");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_pvlmd_polgon_split(parcel_uid,vr_blade_linestring);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1275,14 +1275,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				String vr_search_text = request.getParameter("vr_search_text");
 
-				// System.out.println(vr_search_text);
+				// //System.out.println(vr_search_text);
 				web_service_response = cls_maps.select_search_pvlmd_parcles_by_other_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						vr_search_text);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1291,14 +1291,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				String vr_search_text = request.getParameter("vr_search_text");
 
-				// System.out.println(vr_search_text);
+				// //System.out.println(vr_search_text);
 				web_service_response = cls_maps.select_search_smd_parcles_by_other_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						vr_search_text);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1306,13 +1306,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("pvlmd_consent_search_by_attribute")) {
 
 				String vr_search_text = request.getParameter("vr_search_text");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_search_pvlmd_stateland_consent_by_other_number(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),vr_search_text);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1320,15 +1320,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("pvlmd_transaction_select_by_reference_number")) {
 
 				String reference_number = request.getParameter("reference_number");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_pvlmd_transactions_details_all_by_refernce_number(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), reference_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1338,15 +1338,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("get_rent_transaction_id_by_parcel_uuid")) {
 
 				String parcel_uuid = request.getParameter("parcel_uuid");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.get_rent_transaction_id_by_parcel_uuid(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), parcel_uuid);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1355,15 +1355,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("get_rent_transaction_id_by_file_number")) {
 
 				String file_number = request.getParameter("file_number");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.get_rent_transaction_id_by_file_number(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), file_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1371,15 +1371,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("pvlmd_transaction_select_by_reference_number_main")) {
 
 				String reference_number = request.getParameter("reference_number");
-				// //System.out.println(parcel_id);
+				// ////System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_pvlmd_transactions_details_all_by_refernce_number_main(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), reference_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1387,13 +1387,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("pvlmd_wkt_search")) {
 
 				String vr_wkt_polygon = request.getParameter("vr_wkt_polygon");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_search_by_wkt_polygon(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),vr_wkt_polygon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1401,13 +1401,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("pvlmd_search_transaction_by_wkt")) {
 
 				String vr_wkt_polygon = request.getParameter("vr_wkt_polygon");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_search_transaction_by_wkt(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),vr_wkt_polygon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1415,14 +1415,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("select_save_lvd_parcels")) {
 
 				String vr_wkt_polygon = request.getParameter("vr_wkt_polygon");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps.select_save_lvd_parcels(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						vr_wkt_polygon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1432,13 +1432,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String vr_wkt_polygon = request.getParameter("wkt_polgon");
 				String point_coordinate_list = request.getParameter("point_coordinate_list");
 
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_lc_spatial_objects_save(vr_wkt_polygon,point_coordinate_list);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1473,14 +1473,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps
 						.select_lc_spatial_objects_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1568,57 +1568,57 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps.select_lc_spatial_objects_transaction_add_update(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("load_lrd_transaction_details")) {
 				String fid_fk = request.getParameter("fid_fk");
-				// System.out.println(fid_fk);
+				// //System.out.println(fid_fk);
 
 				web_service_response = cls_maps.load_lrd_transaction_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						fid_fk);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("load_lrd_transaction_details_by_gid")) {
 				String fid_fk = request.getParameter("gid");
-				// System.out.println(fid_fk);
+				// //System.out.println(fid_fk);
 
 				web_service_response = cls_maps
 						.load_lrd_transaction_details_by_gid(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), fid_fk);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("load_lrd_transaction_details_by_certificate_number")) {
 				String certificate_number = request.getParameter("certificate_number");
-				// System.out.println(certificate_number);
+				// //System.out.println(certificate_number);
 
 				web_service_response = cls_maps.load_lrd_transaction_details_by_certificate_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						certificate_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1629,106 +1629,106 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						vr_search_text);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("lvd_search_for_comparables_by_wkt_polygon")) {
 				String wkt_polgon = request.getParameter("wkt_polgon");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps.select_sp_parcels_lvd_search_report_attribute_geom(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						wkt_polgon);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("lvd_search_for_comparables_by_locality")) {
 				String locality = request.getParameter("locality");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				// web_service_response
 				// =cls_maps.select_comparables_by_locality(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),locality);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_lc_locality_comparable_values_by_location")) {
 				String locality = request.getParameter("locality");
-				// System.out.println(locality);
+				// //System.out.println(locality);
 				web_service_response = cls_maps.select_lc_locality_comparable_values_by_location(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						locality);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_calculate_area_in_acres")) {
 				String locality = request.getParameter("wkt_polygon");
-				// System.out.println(locality);
+				// //System.out.println(locality);
 				web_service_response = cls_maps.select_calculate_area_in_acres(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						locality);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_lc_spatial_objects_smd_transaction_by_fk")) {
 				String fid_fk = request.getParameter("fid_fk");
-				// System.out.println(fid_fk);
+				// //System.out.println(fid_fk);
 
 				web_service_response = cls_maps.select_lc_spatial_objects_smd_transaction_by_fk(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						fid_fk);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("select_lc_spatial_objects_smd_transaction_by_reference_number")) {
 				String fid_fk = request.getParameter("reference_number");
-				// System.out.println(fid_fk);
+				// //System.out.println(fid_fk);
 
 				web_service_response = cls_maps.select_lc_spatial_objects_smd_transaction_by_reference_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						fid_fk);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("select_lc_spatial_objects_smd_transaction_by_gid")) {
 				String gid = request.getParameter("gid");
-				// System.out.println(gid);
+				// //System.out.println(gid);
 
 				web_service_response = cls_maps
 						.select_lc_spatial_objects_smd_transaction_by_gid(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), gid);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1763,9 +1763,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 						.select_lc_spatial_objects_smd_save(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1803,14 +1803,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps
 						.select_lc_spatial_objects_smd_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1879,14 +1879,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps.select_lc_spatial_objects_smd_transaction_add_update(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -1937,11 +1937,11 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			 * 
 			 * jsonArr.put(obj); String input = jsonArr.toString();
 			 * 
-			 * System.out.println(input); web_service_response =
+			 * //System.out.println(input); web_service_response =
 			 * cls_maps.select_lc_spatial_objects_smd_transaction_add_update(
 			 * input); if (web_service_response != null) {
-			 * System.out.println(web_service_response); } else {
-			 * System.out.println(web_service_response); }
+			 * //System.out.println(web_service_response); } else {
+			 * //System.out.println(web_service_response); }
 			 * 
 			 * }
 			 */
@@ -1973,14 +1973,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// jsonArr.put(obj);
 				// String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_maps
 						.pvlmd_number_generation_add_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2001,9 +2001,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 						.select_delete_pvlmd_transactions_all(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2022,14 +2022,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps.select_delete_pvlmd_parcles(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2047,14 +2047,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("id", parcel_id);
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_delete_lc_spatial_objects(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2072,14 +2072,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("id", parcel_id);
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
-				// System.out.println(parcel_id);
+				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_delete_lc_spatial_objects_smd(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2092,14 +2092,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				obj.put("reference_number", reference_number);
 
-				// System.out.println(obj.toString());
+				// //System.out.println(obj.toString());
 				web_service_response = cls_maps.select_search_smd_parcles_by_other_number_lrd(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2116,15 +2116,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// jsonArr.put(obj);
 				String input = obj.toString();
 
-				System.out.println(input);
+				//System.out.println(input);
 				web_service_response = cls_maps.select_lvd_comparable_approve(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2137,14 +2137,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps
 						.select_sp_parcels_lvd_search_report_geom(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), polygon);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2157,14 +2157,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps.select_sp_parcels_lvd_search_report_geom_locality(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						locality);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2175,14 +2175,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps.select_sp_parcels_lvd_search_report_attribute_geom(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						reference_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2196,15 +2196,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps
 						.select_sp_parcels_lvd_search_report_attribute_locality(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								reference_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2215,17 +2215,17 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String reference_number = request.getParameter("reference_number");
 
 				// obj.put("reference_number", reference_number);
-				// System.out.println(obj.toString());
-				// System.out.println(obj.toString());
-				// System.out.println(cls_url_config.getWeb_service_url_ser());
-				// System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
+				// //System.out.println(obj.toString());
+				// //System.out.println(obj.toString());
+				// //System.out.println(cls_url_config.getWeb_service_url_ser());
+				// //System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
 				web_service_response = cls_maps
 						.select_count_of_lc_spatial_objects(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), "No-Parameter");
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2238,14 +2238,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps
 						.select_sp_parcels_lvd_search_report_geom(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), polygon);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2258,14 +2258,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps.select_sp_parcels_lvd_search_report_geom_locality(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						locality);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2278,14 +2278,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				// obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				web_service_response = cls_maps.select_sp_parcels_lvd_search_report_attribute_geom(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						reference_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2304,9 +2304,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								reference_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2331,9 +2331,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								obj.toString());
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2358,9 +2358,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								obj.toString());
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2385,9 +2385,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								obj.toString());
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2435,7 +2435,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 							fileCopy(sourcePath,destinationPath);
 						}
 						else{
-							System.out.println("Sorry couldn't create specified directory");			
+							//System.out.println("Sorry couldn't create specified directory");			
 						}
 						obj.put("attachment_location", destinationPath);
 					}
@@ -2445,14 +2445,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 					}
 				}
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_pvlmd_initiate_delete_request(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2478,14 +2478,14 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("declined_by_id", declined_by_id);
 				obj.put("declined_by", declined_by);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_plvmd_cancel_delete_request(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2512,7 +2512,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("reviewed_by_id", reviewed_by_id);
 				obj.put("reviewed_by", reviewed_by);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				//if(initiate_type.equals("parcel")) {
 					web_service_response = cls_maps.select_pvlmd_review_delete_request(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
@@ -2523,9 +2523,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// }
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2534,10 +2534,10 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				String file_path = request.getParameter("file_path").trim();
 
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				File pdfFile = new File(file_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 				
                 byte[] buffer = null;
 
@@ -2576,7 +2576,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				session.setAttribute("delete_otp_code", number);
 
 				String new_message = "Use this OTP Code: " + number + " to initiate amendment request.";
-				System.out.println(number);
+				//System.out.println(number);
 
 				JSONObject obj_sms = new JSONObject();
 				obj_sms.put("recipient", new_phone);
@@ -2590,8 +2590,8 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 				// String new_message="Verification code is "+ smsm_result;
-				System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				//System.out.println("smsm_result");
+				//System.out.println(smsm_result);
 
 				cls_maps.select_save_pvlmd_amendment_outgoing_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj_sms.toString());
 				
@@ -2611,7 +2611,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				session.setAttribute("delete_otp_code", number);
 
 				String new_message = "Use this OTP Code: " + number + " to confirm review of amendment request.";
-				System.out.println(number);
+				//System.out.println(number);
 
 				JSONObject obj_sms = new JSONObject();
 				obj_sms.put("recipient", new_phone);
@@ -2625,8 +2625,8 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 				// String new_message="Verification code is "+ smsm_result;
-				System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				//System.out.println("smsm_result");
+				//System.out.println(smsm_result);
 				
 				cls_maps.select_save_pvlmd_amendment_outgoing_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj_sms.toString());
 
@@ -2646,7 +2646,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String new_phone = str.replaceFirst("0", "233");
 
 				String otp_code = vc_1 + vc_2 + vc_3 + vc_4 + vc_5 + vc_6;
-				System.out.println(otp_code);
+				//System.out.println(otp_code);
 
 				String delete_otp_code = String.valueOf(session.getAttribute("delete_otp_code"));
 
@@ -2682,7 +2682,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				session.setAttribute("delete_otp_code", number);
 
 				String new_message = "Use this OTP Code: " + number + " to approve amendment request.";
-				System.out.println(number);
+				//System.out.println(number);
 
 				JSONObject obj_sms = new JSONObject();
 				obj_sms.put("recipient", new_phone);
@@ -2698,8 +2698,8 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 				// String new_message="Verification code is "+ smsm_result;
-				System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				//System.out.println("smsm_result");
+				//System.out.println(smsm_result);
 				
 				cls_maps.select_save_pvlmd_amendment_outgoing_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj_sms.toString());
 
@@ -2718,7 +2718,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				session.setAttribute("delete_otp_code", number);
 
 				String new_message = "Use this OTP Code: " + number + " to confirm amendment request.";
-				System.out.println(number);
+				//System.out.println(number);
 
 				JSONObject obj_sms = new JSONObject();
 				obj_sms.put("recipient", new_phone);
@@ -2732,8 +2732,8 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 				// String new_message="Verification code is "+ smsm_result;
-				System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				//System.out.println("smsm_result");
+				//System.out.println(smsm_result);
 
 				cls_maps.select_save_pvlmd_amendment_outgoing_sms(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj_sms.toString());
 				
@@ -2750,7 +2750,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			// 	String vc_6 = request.getParameter("vc_6");
 
 			// 	String otp_code = vc_1 + vc_2 + vc_3 + vc_4 + vc_5 + vc_6;
-			// 	System.out.println(otp_code);
+			// 	//System.out.println(otp_code);
 
 			// 	String delete_otp_code = String.valueOf(session.getAttribute("delete_otp_code"));
 
@@ -2783,7 +2783,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("initiate_type", initiate_type);
 				obj.put("approve_note", approve_note);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				//if(initiate_type.equals("parcel")) {
 					web_service_response = cls_maps.select_pvlmd_review_delete_request(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
@@ -2794,9 +2794,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				// }
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2818,15 +2818,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("fullname", deleted_approved_by);
 				obj.put("initiate_type", initiate_type);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_delete_pvlmd_parcles(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2850,15 +2850,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("initiate_type", initiate_type);
 				obj.put("approve_note", approve_note);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_pvlmd_approve_delete_request(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2872,15 +2872,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("reference_number", reference_number);
 				obj.put("layer_type", layer_type);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_pvlmd_deletion_request_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2892,15 +2892,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 				obj.put("reference_number", reference_number);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_track_requested_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2914,15 +2914,15 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("from_date", from_date);
 				obj.put("to_date", to_date);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				web_service_response = cls_maps.select_generate_requested_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -2942,9 +2942,9 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								obj.toString());
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}

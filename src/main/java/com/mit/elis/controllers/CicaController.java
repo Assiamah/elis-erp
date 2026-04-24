@@ -69,7 +69,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -108,7 +108,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -156,7 +156,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -169,7 +169,7 @@ public class CicaController {
 
 			// String web_service_response = cls_cica.load_counts(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-            // System.out.println(web_service_response);
+            // //System.out.println(web_service_response);
             // JSONObject web_response_obj = new JSONObject(web_service_response); 
             // Integer open = web_response_obj.getInt("open");
             // Integer archived = web_response_obj.getInt("resolved");
@@ -208,7 +208,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -226,7 +226,7 @@ public class CicaController {
 
 			String web_service_response = cls_cica.load_focal_person_counts(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-            System.out.println(web_service_response);
+            //System.out.println(web_service_response);
             JSONObject web_response_obj = new JSONObject(web_service_response); 
             Integer incoming = web_response_obj.getInt("incoming");
             Integer outgoing = web_response_obj.getInt("outgoing");
@@ -255,7 +255,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -287,7 +287,7 @@ public class CicaController {
 
 				web_response = cls_cica.load_ticket_details(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String ticket_details = web_response_case.get("data").toString(); 
@@ -329,7 +329,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -347,7 +347,7 @@ public class CicaController {
 
 			String web_service_response = cls_cica.load_replies_counts(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-            System.out.println(web_service_response);
+            //System.out.println(web_service_response);
             JSONObject web_response_obj = new JSONObject(web_service_response); 
             Integer replies = web_response_obj.getInt("replies");
 		 	Integer archived = web_response_obj.getInt("archived");
@@ -376,7 +376,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -404,7 +404,7 @@ public class CicaController {
 
 				web_response = cls_cica.load_ticket_details(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String ticket_details = web_response_case.get("data").toString(); 
@@ -445,7 +445,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -461,7 +461,7 @@ public class CicaController {
 
 			String web_service_response = cls_cica.load_counts(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-            System.out.println(web_service_response);
+            //System.out.println(web_service_response);
             JSONObject web_response_obj = new JSONObject(web_service_response); 
             Integer open = web_response_obj.getInt("open");
             Integer hold = web_response_obj.getInt("hold");
@@ -506,7 +506,7 @@ public class CicaController {
 		// if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 		// 	// Session is expired
 		// 	request.setAttribute("login", "sessionout");
-		// 	System.out.println("If Not success");
+		// 	//System.out.println("If Not success");
 		// 	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		// }
@@ -522,7 +522,7 @@ public class CicaController {
 
 			String web_service_response = cls_cica.load_counts(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-            System.out.println(web_service_response);
+            //System.out.println(web_service_response);
             JSONObject web_response_obj = new JSONObject(web_service_response); 
             Integer open = web_response_obj.getInt("open");
             Integer hold = web_response_obj.getInt("hold");
@@ -553,7 +553,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -585,7 +585,7 @@ public class CicaController {
 
 				web_response = cls_cica.load_ticket_details(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String ticket_details = web_response_case.get("data").toString(); 
@@ -627,7 +627,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -666,7 +666,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -705,7 +705,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -733,7 +733,7 @@ public class CicaController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -765,7 +765,7 @@ public class CicaController {
 
 				web_response = cls_cica.load_ticket_details(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String ticket_details = web_response_case.get("data").toString(); 

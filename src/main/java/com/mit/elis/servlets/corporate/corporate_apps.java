@@ -90,15 +90,15 @@ public class corporate_apps {
                 
                  obj.put( "created_for_id" , created_for_id );
                 
-               //  System.out.println(obj.toString());
+               //  //System.out.println(obj.toString());
  
                  web_service_response = cls_corporate_apps
                          .corporate_applications_report_dashboard_all(cls_url_config.getWeb_service_url_ser(),
                                  cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                  if (web_service_response != null) {
-                   //  System.out.println(web_service_response);
+                   //  //System.out.println(web_service_response);
                  } else {
-                   //  System.out.println(web_service_response);
+                   //  //System.out.println(web_service_response);
                  }
  
                  return web_service_response;
@@ -115,15 +115,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "division" , division );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_division_apps(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -141,15 +141,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "service_type" , service_type );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_division_apps_by_service(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -164,15 +164,15 @@ public class corporate_apps {
                
                 obj.put( "created_for_id" , created_for_id );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_today(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -190,15 +190,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "division" , division );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_day_by_division(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -215,15 +215,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "service_type" , service_type );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_day_by_service(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -240,15 +240,15 @@ public class corporate_apps {
                
                 obj.put( "created_for_id" , created_for_id );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_month(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -266,15 +266,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "division" , division );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_month_by_divisi(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -292,15 +292,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "service_type" , service_type );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_month_by_servic(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -316,15 +316,15 @@ public class corporate_apps {
                
                 obj.put( "created_for_id" , created_for_id );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_today(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -342,15 +342,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "division" , division );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_day_by_divisi(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -368,15 +368,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "service_type" , service_type );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_day_by_servic(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -390,15 +390,15 @@ public class corporate_apps {
                
                 obj.put( "created_for_id" , created_for_id );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_month(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -416,15 +416,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "division" , division );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_month_by_divi(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -442,15 +442,15 @@ public class corporate_apps {
                 obj.put( "created_for_id" , created_for_id );
                 obj.put( "service_type" , service_type );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_month_by_serv(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -469,15 +469,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_recieved_between_dates(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -498,15 +498,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_created_by_date_range(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -529,15 +529,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_division_apps_by_service_date_range(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -558,15 +558,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_apps_report_dashboard_recieved_completed_by_dates(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -589,15 +589,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_apps_report_dashboard_created_comp_by_date_range(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -620,15 +620,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_app_division_apps_by_service_date_range_rec_comp(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -648,15 +648,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_by_dates(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -678,15 +678,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -707,15 +707,15 @@ public class corporate_apps {
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                
-              //  System.out.println(obj.toString());
+              //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
                         .corporate_applications_report_dashboard_completed_by_serv_dates(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -735,15 +735,15 @@ public class corporate_apps {
               obj.put( "process_id" , process_id );
               
              
-            //  System.out.println(obj.toString());
+            //  //System.out.println(obj.toString());
 
               web_service_response = cls_corporate_apps
                       .corporate_sub_applications_report_dashboard_created_today(cls_url_config.getWeb_service_url_ser(),
                               cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
               if (web_service_response != null) {
-                //  System.out.println(web_service_response);
+                //  //System.out.println(web_service_response);
               } else {
-                //  System.out.println(web_service_response);
+                //  //System.out.println(web_service_response);
               }
 
               return web_service_response;
@@ -762,15 +762,15 @@ public class corporate_apps {
             obj.put( "process_id" , process_id );
             
            
-          //  System.out.println(obj.toString());
+          //  //System.out.println(obj.toString());
 
             web_service_response = cls_corporate_apps
                     .corporate_sub_applications_report_dashboard_created_month(cls_url_config.getWeb_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             } else {
-              //  System.out.println(web_service_response);
+              //  //System.out.println(web_service_response);
             }
 
             return web_service_response;
@@ -790,15 +790,15 @@ public class corporate_apps {
           obj.put( "process_id" , process_id );
           
          
-        //  System.out.println(obj.toString());
+        //  //System.out.println(obj.toString());
 
           web_service_response = cls_corporate_apps
                   .corporate_sub_applications_report_dashboard_completed_day(cls_url_config.getWeb_service_url_ser(),
                           cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
           if (web_service_response != null) {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           } else {
-            //  System.out.println(web_service_response);
+            //  //System.out.println(web_service_response);
           }
 
           return web_service_response;
@@ -820,15 +820,15 @@ public class corporate_apps {
         obj.put( "process_id" , process_id );
         
        
-      //  System.out.println(obj.toString());
+      //  //System.out.println(obj.toString());
 
         web_service_response = cls_corporate_apps
                 .corporate_sub_applications_report_dashboard_completed_month(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
         if (web_service_response != null) {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         } else {
-          //  System.out.println(web_service_response);
+          //  //System.out.println(web_service_response);
         }
 
         return web_service_response;
@@ -846,15 +846,15 @@ public class corporate_apps {
      
       obj.put( "created_for_id" , created_for_id );
      
-    //  System.out.println(obj.toString());
+    //  //System.out.println(obj.toString());
 
       web_service_response = cls_corporate_apps
               .corporate_applications_report_dashboard_past_due_apps(cls_url_config.getWeb_service_url_ser(),
                       cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
       if (web_service_response != null) {
-        //  System.out.println(web_service_response);
+        //  //System.out.println(web_service_response);
       } else {
-        //  System.out.println(web_service_response);
+        //  //System.out.println(web_service_response);
       }
 
       return web_service_response;
@@ -869,19 +869,19 @@ public class corporate_apps {
     String date_to = request.getParameter("date_to");				
     // String staff_id = request.getParameter("staff_id");			
 
-    // System.out.println(list_of_application);
+    // //System.out.println(list_of_application);
     obj.put("date_from", date_from);
     obj.put("date_to", date_to);
    
-  //  System.out.println(obj.toString());
+  //  //System.out.println(obj.toString());
 
     web_service_response = cls_corporate_apps
             .corporate_dashboard_two_all(cls_url_config.getWeb_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
-      //  System.out.println(web_service_response);
+      //  //System.out.println(web_service_response);
     } else {
-      //  System.out.println(web_service_response);
+      //  //System.out.println(web_service_response);
     }
 
     return web_service_response;
@@ -897,19 +897,19 @@ if (request_type.equals("corporate_dashboard_two_apps_recieved")) {
   String date_to = request.getParameter("date_to");				
   // String staff_id = request.getParameter("staff_id");			
 
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
  
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_recieved(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -924,19 +924,19 @@ if (request_type.equals("corporate_dashboard_two_apps_pending")) {
   String date_to = request.getParameter("date_to");				
   // String staff_id = request.getParameter("staff_id");			
 
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
  
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_pending(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -954,19 +954,19 @@ if (request_type.equals("corporate_dashboard_two_apps_completed")) {
   String date_to = request.getParameter("date_to");				
   // String staff_id = request.getParameter("staff_id");			
 
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
  
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_completed(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -983,20 +983,20 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_recieved"))
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_id", sub_serv_id);
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_recieved(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1012,20 +1012,20 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_completed")
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_id", sub_serv_id);
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_completed(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1043,20 +1043,20 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_pending")) 
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_id", sub_serv_id);
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_pending(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1076,20 +1076,20 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_recieved_fr
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_recieved_from_banks(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1107,20 +1107,20 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_pending_fro
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_pending_from_banks(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1141,20 +1141,20 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_completed_f
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_completed_from_bank(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1177,22 +1177,22 @@ if (request_type.equals("corporate_dashboard_two_applications_recieved_from_bank
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
   obj.put("created_for_id", created_for_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_applications_recieved_from_bank(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1212,22 +1212,22 @@ if (request_type.equals("corporate_dashboard_two_applications_pending_from_bank"
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
   obj.put("created_for_id", created_for_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_applications_pending_from_bank(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1249,22 +1249,22 @@ if (request_type.equals("corporate_dashboard_two_applications_completed_from_ban
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
   obj.put("created_for_id", created_for_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_applications_completed_from_bank(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1282,20 +1282,20 @@ if (request_type.equals("corporate_dashboard_two_all_chart")) {
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("start_date", start_date);
   obj.put("end_date", end_date);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_all_chart(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1313,21 +1313,21 @@ if (request_type.equals("corporate_dashboard_two_applications_top_five_banks")) 
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("created_for_id", created_for_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_applications_top_five_banks(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1345,20 +1345,20 @@ if (request_type.equals("corporate_dashboard_two_all_barchart")) {
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_all_barchart(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1375,20 +1375,20 @@ if (request_type.equals("corporate_dashboard_two_apps_queried")) {
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_queried(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1410,21 +1410,21 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_queried")) 
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_id", sub_serv_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_queried(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1445,21 +1445,21 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_queried_fro
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_apps_by_subservices_queried_from_banks(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1483,22 +1483,22 @@ if (request_type.equals("corporate_dashboard_two_applications_queried_from_bank"
   
   
   // String staff_id = request.getParameter("staff_id");			
-  // System.out.println(list_of_application);
+  // //System.out.println(list_of_application);
   obj.put("date_from", date_from);
   obj.put("date_to", date_to);
   obj.put("sub_serv_sub_id", sub_serv_sub_id);
   obj.put("created_for_id", created_for_id);
   
 
-//  System.out.println(obj.toString());
+//  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
           .corporate_dashboard_two_applications_queried_from_bank(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1540,7 +1540,7 @@ if (request_type.equals("report_on_the_corporate_applications")) {
       bankEmailJsonArray.put("All");
   }
   
-  System.out.println("Final bank_email JSON: " + bankEmailJsonArray);
+  //System.out.println("Final bank_email JSON: " + bankEmailJsonArray);
   obj.put("bank_email", bankEmailJsonArray);
   obj.put("type_of_report_name", type_of_report_name);
   obj.put("business_process_id", business_process_id);
@@ -1555,9 +1555,9 @@ if (request_type.equals("report_on_the_corporate_applications")) {
           .report_on_the_corporate_applications(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1596,9 +1596,9 @@ if (request_type.equals("report_on_the_corporate_applications_by_services")) {
           .report_on_the_corporate_applications_by_services(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1638,9 +1638,9 @@ if (request_type.equals("report_on_the_corporate_applications_by_sub_services"))
           .report_on_the_corporate_applications_by_sub_services(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;
@@ -1679,9 +1679,9 @@ if (request_type.equals("report_on_the_corporate_applications_by_applications"))
           .report_on_the_corporate_applications_by_applications(cls_url_config.getWeb_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   } else {
-    //  System.out.println(web_service_response);
+    //  //System.out.println(web_service_response);
   }
 
   return web_service_response;

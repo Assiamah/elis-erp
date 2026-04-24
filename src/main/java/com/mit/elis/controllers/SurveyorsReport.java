@@ -83,7 +83,7 @@ public class SurveyorsReport {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -110,7 +110,7 @@ public class SurveyorsReport {
 	//  String web_service_response = cls_backoffice_monitoring.monitoring_backoffice_csau(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 
         
-           System.out.println(userlevel);
+           //System.out.println(userlevel);
 
 
            		model.addAttribute("content", "../pages/reports/plan_approval_reports.jsp"); return "layouts/app";

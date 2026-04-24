@@ -44,7 +44,7 @@ public class licensed_surveyors {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -55,14 +55,14 @@ public class licensed_surveyors {
 
 		if (request_type.equals("search_by_surveyor_number")) {
 			String surveyor_number = request.getParameter("surveyor_number");
-			// System.out.println(parcel_id);
+			// //System.out.println(parcel_id);
 			web_service_response = licensed_surveyors_cl.online_smd_licensed_surveyors_list_by_number(
 					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 					surveyor_number);
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			} else {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 
 		}

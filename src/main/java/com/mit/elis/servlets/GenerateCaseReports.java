@@ -56,7 +56,7 @@ public class GenerateCaseReports {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -66,7 +66,7 @@ public class GenerateCaseReports {
 		String request_type = request.getParameter("request_type");
 
 		String timeStamp = new SimpleDateFormat("yyyy_MM_dd_HHmmss").format(Calendar.getInstance().getTime());
-		// System.out.println(timeStamp);\
+		// //System.out.println(timeStamp);\
 
 		case_reports_cl.web_compname = (String) session.getAttribute("web_compname");
 		case_reports_cl.web_comp_address = (String) session.getAttribute("web_comp_address");
@@ -91,7 +91,7 @@ public class GenerateCaseReports {
 
 			String currentuserfullname = (String) session.getAttribute("fullname").toString();
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -107,9 +107,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -148,11 +148,11 @@ public class GenerateCaseReports {
 
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -188,7 +188,10 @@ public class GenerateCaseReports {
 					}
 		}
 
-		if (request_type.equals("request_to_generate_register_signed")) {
+
+		
+
+		if (request_type.equals("request_to_generate_signed_certificate_and_register_template_and_upload_v1")) {
 
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
@@ -197,7 +200,7 @@ public class GenerateCaseReports {
 
 			String currentuserfullname = (String) session.getAttribute("fullname").toString();
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -213,9 +216,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -255,11 +258,311 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");	
+	
+
+	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
+		if (buffer != null) {
+			// Set response content type to PDF
+			response.setContentType("application/pdf");
+			
+			// Set the content-disposition header to download the file with the specified name
+			response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+			
+			// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+			response.setContentLength(buffer.length);
+			
+			// Write the PDF byte array to the output stream to download it
+			response.getOutputStream().write(buffer, 0, buffer.length);
+			
+			// Flush the output stream
+			response.getOutputStream().flush();
+			
+			// Close the output stream
+			response.getOutputStream().close();
+		} else {
+			// Handle the case where the PDF generation failed
+			response.setContentType("text/html");
+			response.getWriter().write("Error generating PDF.");
+		}
+
+		
+		}
+
+		if (request_type.equals("request_to_generate_signed_certificate_and_register_template_and_upload")) {
+
+			String case_number = request.getParameter("case_number");
+			String job_number = request.getParameter("job_number");
+			String cert_type = request.getParameter("cert_type");
+			String registration_district_number = request.getParameter("registration_district_number");
+			String registration_section_number = request.getParameter("registration_section_number");
+			String type_of_certificate = request.getParameter("type_of_certificate");
+			// String case_number = request.getParameter("case_number");
+			// String job_number = request.getParameter("job_number");
+			String transaction_number = request.getParameter("transaction_number");
+			String business_process_sub_name = request.getParameter("ir_business_process_sub_name");
+			String notes = request.getParameter("notes");
+
+			String designation = (String) session.getAttribute("designation");
+
+
+			
+			//System.out.println(cert_type);
+			////System.out.println(case_number);
+			////System.out.println(job_number);
+			////System.out.println(transaction_number);
+
+
+			String contextPath = cls_url_config.getCase_upload_location();
+			// String contextPath
+			// ="C:\\gelisscans\\scanpdf\\LCGARGACN37542018\\";
+			String pdfFileName = case_number + "_certificate" + timeStamp + ".pdf";
+
+			// String pdfFileName = "timer.pdf";
+
+			// String contextPath =
+			// getServletContext().getRealPath(File.separator);
+			File pdfFile = new File(contextPath + case_number + "/" + pdfFileName);
+			File files_pdf_jackets = new File(contextPath + case_number);
+			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
+			// if (!files_pdf_jackets.exists()) {
+			// 	if (files_pdf_jackets.mkdirs()) {
+			// 		// //System.out.println("Multiple directories are created!");
+			// 	} else {
+			// 		//System.out.println("Failed to create multiple directories!");
+			// 	}
+			// }
+			try {
+
+				// cls_case_m.select_generate_cert_volume_folio_number(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),cls_url_config.getSoftfile_location(),case_number,registration_district_number,registration_section_number);
+
+				if (cert_type.equals("ASSIGNMENT")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("LEASEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+							
+							transaction_number, job_number,
+							files_pdf_jackets_p);
+				} else if (cert_type.equals("COMPANY ASSIGNMENT")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+						
+							transaction_number, job_number, 
+							files_pdf_jackets_p);
+				} else if (cert_type.equals("COMPANY LEASEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("FREEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number,
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CASDASTRAL LEASE")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CASDASTRAL ASSIGNMENT")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number,
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CASDASTRAL FREEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CONCURRENCE")) {
+					buffer = case_reports_cl.create_concurrence_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, type_of_certificate,
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CERTIFICATE_FOR_REGISTRATION_OF_INSTRUMENT")) {
+				buffer = case_reports_cl.create_deeds_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+				cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+				
+				transaction_number, job_number, type_of_certificate,
+				files_pdf_jackets_p);
+				} else if (cert_type.equals("CONSENT")) {
+				buffer = case_reports_cl.create_consent_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+				cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+				
+				transaction_number, job_number, type_of_certificate,
+				files_pdf_jackets_p);
+			}
+
+				
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// File pdfFile = new File(contextPath + pdfFileName);
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+	//	byte[] buffer = null;
+			
+		JSONObject pdf_upload_obj = new JSONObject();
+		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+
+
+		pdf_upload_obj.put("jobNumber", job_number);
+		pdf_upload_obj.put("caseNumber",case_number);
+		pdf_upload_obj.put("fileData",base64Encoded);
+					
+	
+		pdf_upload_obj.put("doc_name",job_number);
+		pdf_upload_obj.put("doc_description","Land Certificate");
+		pdf_upload_obj.put("doc_category","case_docs");
+		pdf_upload_obj.put("doc_app_uploaded","elis");
+		pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+		
+	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            //System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            //System.out.println("Human readable: " + humanReadable);
+                                    
+                        pdf_upload_obj.put("doc_file_size",humanReadable);
+                        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+                        pdf_upload_obj.put("doc_version",1);
+                        pdf_upload_obj.put("doc_type","Portable Document Format");
+
+	 String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	 cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
+		if (buffer != null) {
+			// Set response content type to PDF
+			response.setContentType("application/pdf");
+			
+			// Set the content-disposition header to download the file with the specified name
+			response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+			
+			// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+			response.setContentLength(buffer.length);
+			
+			// Write the PDF byte array to the output stream to download it
+			response.getOutputStream().write(buffer, 0, buffer.length);
+			
+			// Flush the output stream
+			response.getOutputStream().flush();
+			
+			// Close the output stream
+			response.getOutputStream().close();
+		} else {
+			// Handle the case where the PDF generation failed
+			response.setContentType("text/html");
+			response.getWriter().write("Error generating PDF.");
+		}
+		}
+
+		if (request_type.equals("request_to_generate_register_signed")) {
+
+			String case_number = request.getParameter("case_number");
+			String job_number = request.getParameter("job_number");
+
+			String currentuser = (String) session.getAttribute("designation");
+
+			String currentuserfullname = (String) session.getAttribute("fullname").toString();
+
+			//System.out.println(request_type);
+
+			String contextPath = cls_url_config.getCase_upload_location();
+			// String contextPath
+			// ="C:\\gelisscans\\scanpdf\\LCGARGACN37542018\\";
+			String pdfFileName = case_number + "_register_signed" + timeStamp + ".pdf";
+
+			// String pdfFileName = "timer.pdf";
+
+			// String contextPath =
+			// getServletContext().getRealPath(File.separator);
+			File pdfFile = new File(contextPath + case_number + "/" + pdfFileName);
+			File files_pdf_jackets = new File(contextPath + case_number);
+			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
+			// if (!files_pdf_jackets.exists()) {
+			// 	if (files_pdf_jackets.mkdirs()) {
+			// 		//System.out.println("Multiple directories are created!");
+			// 	} else {
+			// 		//System.out.println("Failed to create multiple directories!");
+			// 	}
+			// }
+
+			try {
+				buffer = case_reports_cl.create_land_register(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					case_number, job_number,
+					files_pdf_jackets_p);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// File pdfFile = new File(contextPath + pdfFileName);
+		//byte[] buffer = null;
+			
+		JSONObject pdf_upload_obj = new JSONObject();
+		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+
+	
+		pdf_upload_obj.put("jobNumber", job_number);
+		pdf_upload_obj.put("caseNumber",case_number);
+		pdf_upload_obj.put("fileData",base64Encoded);
+					
+	
+		pdf_upload_obj.put("doc_name",job_number);
+		pdf_upload_obj.put("doc_description","Land Register");
+		pdf_upload_obj.put("doc_category","case_docs");
+		pdf_upload_obj.put("doc_app_uploaded","elis");
+		pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+		
+	
+                                                        // 1. Get size in bytes
+                            long sizeInBytes = buffer.length;
+                            //System.out.println("Size in bytes: " + sizeInBytes);
+
+                            // 2. Human-readable format (KB, MB, GB...)
+                            String humanReadable = formatFileSize(sizeInBytes);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -302,7 +605,7 @@ public class GenerateCaseReports {
 			String job_number = request.getParameter("job_number");
 			// String wkt_polygon = request.getParameter("wkt_polygon");
 			// String case_number = request.getParameter("case_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -318,9 +621,9 @@ public class GenerateCaseReports {
 			// String files_pdf_jackets_p = contextPath + "temporal_barcode" + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -391,7 +694,7 @@ public class GenerateCaseReports {
 
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -407,9 +710,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
@@ -448,11 +751,11 @@ public class GenerateCaseReports {
 	
             // 1. Get size in bytes
 			long sizeInBytes = buffer.length;
-			System.out.println("Size in bytes: " + sizeInBytes);
+			//System.out.println("Size in bytes: " + sizeInBytes);
 
 			// 2. Human-readable format (KB, MB, GB...)
 			String humanReadable = formatFileSize(sizeInBytes);
-			System.out.println("Human readable: " + humanReadable);
+			//System.out.println("Human readable: " + humanReadable);
 						
 			pdf_upload_obj.put("doc_file_size",humanReadable);
 			pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -496,10 +799,10 @@ public class GenerateCaseReports {
 			String leter_details = request.getParameter("lc_search_report_summary_details_final");
 			String currentuser = (String) session.getAttribute("designation");
 
-			// System.out.println(leter_details);
-			// System.out.println(ir_business_process_sub_name);
-			// System.out.println(case_number);
-			// System.out.println("CC1: " + lc_letter_cc);
+			// //System.out.println(leter_details);
+			// //System.out.println(ir_business_process_sub_name);
+			// //System.out.println(case_number);
+			// //System.out.println("CC1: " + lc_letter_cc);
 
 			String contextPath = cls_url_config.getPublic_docs_upload_location();
 			// String contextPath
@@ -515,9 +818,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					// System.out.println("Multiple directories are created!");
+					// //System.out.println("Multiple directories are created!");
 				} else {
-					// System.out.println("Failed to create multiple
+					// //System.out.println("Failed to create multiple
 					// directories!");
 				}
 			}
@@ -532,14 +835,14 @@ public class GenerateCaseReports {
 
 				/*
 				 * if (lc_letter_type.equals("inspection_letter")) {
-				 * System.out.println("inspection_letter");
+				 * //System.out.println("inspection_letter");
 				 * buffer = case_reports_cl.create_inspection_letter(cls_url_config.getSoftfile_location(
 				 * ),case_number,
 				 * job_number, ir_business_process_sub_name,
 				 * session.getAttribute("fullname").toString(),
 				 * files_pdf_jackets_p); } else if
 				 * (lc_letter_type.equals("planning_comments_letter")) {
-				 * System.out.println("planning_comments_letter");
+				 * //System.out.println("planning_comments_letter");
 				 * buffer = case_reports_cl.create_planning_comments_letter(cls_url_config.
 				 * getSoftfile_location(),case_number,
 				 * job_number, ir_business_process_sub_name,
@@ -583,11 +886,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -627,8 +930,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -644,9 +947,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
@@ -689,11 +992,11 @@ public class GenerateCaseReports {
 			
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -734,8 +1037,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -751,9 +1054,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
@@ -796,11 +1099,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -840,8 +1143,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -857,9 +1160,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
@@ -901,11 +1204,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -946,8 +1249,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -963,9 +1266,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
@@ -1007,11 +1310,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -1051,8 +1354,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1068,9 +1371,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
@@ -1111,11 +1414,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -1155,8 +1458,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1172,9 +1475,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -1244,11 +1547,11 @@ public class GenerateCaseReports {
 
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -1294,8 +1597,8 @@ public class GenerateCaseReports {
 			String type_of_certificate = request.getParameter("type_of_certificate");
 			String designation = (String) session.getAttribute("designation");
 
-			System.out.println(business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1311,14 +1614,14 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			if (!files_pdf_jackets.exists()) {
 				if (files_pdf_jackets.mkdirs()) {
-					System.out.println("Multiple directories are created!");
+					//System.out.println("Multiple directories are created!");
 				} else {
-					System.out.println("Failed to create multiple directories!");
+					//System.out.println("Failed to create multiple directories!");
 				}
 			}
 
 			try {
-				// System.out.println(files_pdf_jackets_p);
+				// //System.out.println(files_pdf_jackets_p);
 
 				if (business_process_sub_name.equals("APPLICATION FOR CONSENT TO ASSIGN OR SUBLET (WHOLE SITE)")) {
 
@@ -1447,11 +1750,11 @@ public class GenerateCaseReports {
 			
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -1492,8 +1795,8 @@ public class GenerateCaseReports {
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1509,9 +1812,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -1551,11 +1854,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -1596,7 +1899,7 @@ public class GenerateCaseReports {
 			String job_number = request.getParameter("job_number");
 			String wkt_polygon = request.getParameter("wkt_polygon");
 			String transaction_number = request.getParameter("transaction_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1612,9 +1915,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -1656,11 +1959,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -1701,7 +2004,7 @@ public class GenerateCaseReports {
 			String job_number = request.getParameter("job_number");
 			String wkt_polygon = request.getParameter("wkt_polygon");
 			// String case_number = request.getParameter("case_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1717,9 +2020,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -1793,7 +2096,7 @@ public class GenerateCaseReports {
 			String job_number = request.getParameter("job_number");
 			String wkt_polygon = request.getParameter("wkt_polygon");
 			// String case_number = request.getParameter("case_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -1809,9 +2112,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -1867,7 +2170,7 @@ public class GenerateCaseReports {
 			String business_process_sub_name = request.getParameter("business_process_sub_name");
 			String signature = request.getParameter("signature");
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getPublic_docs_upload_location();
 			String case_docs_location = cls_url_config.getCase_upload_location();
@@ -1887,9 +2190,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -2099,7 +2402,7 @@ public class GenerateCaseReports {
 
 				String userid = (String) session.getAttribute("userid");
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getPublic_docs_upload_location();
 			String case_docs_location = cls_url_config.getCase_upload_location();
@@ -2119,7 +2422,7 @@ public class GenerateCaseReports {
 			try {
 
 				if  (business_process_sub_name.equals("APPLICATION FOR OFFICIAL SEARCH (CONSOLIDATED)")) {
-					System.out.println("contextPath-0");
+					//System.out.println("contextPath-0");
 					buffer = case_reports_cl.create_search_report_lc_consolidated_search(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(),cls_url_config.getSoftfile_location(),
 							case_number, transaction_number,job_number, files_pdf_jackets_p, sign_path, case_docs_location, contextPath);
@@ -2135,7 +2438,7 @@ public class GenerateCaseReports {
 					 String pdf_upload_response= casemgt_cl.select_complete_search_report_after_upload(cls_url_config.getWeb_service_url_ser(),
 						 cls_url_config.getWeb_service_url_ser_api_key(),upload_obj.toString());
 
-					//	 System.out.println(upload_obj.toString());
+					//	 //System.out.println(upload_obj.toString());
 
 				// buffer = case_reports_cl.create_search_report_smd(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),cls_url_config.getSoftfile_location(),case_number,
 				// job_number, fullname, files_pdf_jackets_p);
@@ -2159,7 +2462,7 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("fileData",base64Encoded);
 
 
-		//	 System.out.println(base64Encoded);
+		//	 //System.out.println(base64Encoded);
 					
 		pdf_upload_obj.put("doc_name",job_number);
 		pdf_upload_obj.put("doc_description","Final_Search_Report_" + timeStamp  );
@@ -2170,25 +2473,25 @@ public class GenerateCaseReports {
 		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
                         pdf_upload_obj.put("doc_version",1);
                         pdf_upload_obj.put("doc_type","Portable Document Format");
 
-	//System.out.println("contextPath-03");
-		//System.out.println(pdf_upload_obj.toString());
+	////System.out.println("contextPath-03");
+		////System.out.println(pdf_upload_obj.toString());
 
 	    String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	    cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
 
-		//System.out.println("buffer");
-		//System.out.println(buffer);
+		////System.out.println("buffer");
+		////System.out.println(buffer);
 
 		if (buffer != null) {
 			// Set response content type to PDF
@@ -2219,7 +2522,7 @@ public class GenerateCaseReports {
 			String registration_district_number = request.getParameter("registration_district_number");
 			String registration_section_number = request.getParameter("registration_section_number");
 			String type_of_certificate = request.getParameter("type_of_certificate");
-			System.out.println(cert_type);
+			//System.out.println(cert_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -2235,9 +2538,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -2283,11 +2586,11 @@ public class GenerateCaseReports {
 
     //                                                     // 1. Get size in bytes
     //                         long sizeInBytes = buffer.length;
-    //                         System.out.println("Size in bytes: " + sizeInBytes);
+    //                         //System.out.println("Size in bytes: " + sizeInBytes);
 
     //                         // 2. Human-readable format (KB, MB, GB...)
     //                         String humanReadable = formatFileSize(sizeInBytes);
-    //                         System.out.println("Human readable: " + humanReadable);
+    //                         //System.out.println("Human readable: " + humanReadable);
                                     
     //                     pdf_upload_obj.put("doc_file_size",humanReadable);
     //                     pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -2331,7 +2634,7 @@ public class GenerateCaseReports {
 			String registration_district_number = request.getParameter("registration_district_number");
 			String registration_section_number = request.getParameter("registration_section_number");
 
-			System.out.println(cert_type);
+			//System.out.println(cert_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -2347,9 +2650,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -2474,10 +2777,10 @@ public class GenerateCaseReports {
 
 
 			
-			System.out.println(cert_type);
-			//System.out.println(case_number);
-			//System.out.println(job_number);
-			//System.out.println(transaction_number);
+			//System.out.println(cert_type);
+			////System.out.println(case_number);
+			////System.out.println(job_number);
+			////System.out.println(transaction_number);
 
 
 			String contextPath = cls_url_config.getCase_upload_location();
@@ -2494,9 +2797,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -2608,11 +2911,11 @@ public class GenerateCaseReports {
 	
     //                                                     // 1. Get size in bytes
     //                         long sizeInBytes = buffer.length;
-    //                         System.out.println("Size in bytes: " + sizeInBytes);
+    //                         //System.out.println("Size in bytes: " + sizeInBytes);
 
     //                         // 2. Human-readable format (KB, MB, GB...)
     //                         String humanReadable = formatFileSize(sizeInBytes);
-    //                         System.out.println("Human readable: " + humanReadable);
+    //                         //System.out.println("Human readable: " + humanReadable);
                                     
     //                     pdf_upload_obj.put("doc_file_size",humanReadable);
     //                     pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -2652,7 +2955,7 @@ public class GenerateCaseReports {
 
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -2668,9 +2971,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -2712,11 +3015,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -2757,7 +3060,7 @@ public class GenerateCaseReports {
 			String job_number = request.getParameter("job_number");
 			String business_process_sub_name = request.getParameter("business_process_sub_name");
 			
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -2773,9 +3076,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -2829,11 +3132,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -2872,7 +3175,7 @@ public class GenerateCaseReports {
 
 			String case_number = request.getParameter("case_number");
 			String job_number = request.getParameter("job_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath
@@ -2888,9 +3191,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -2975,9 +3278,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -3022,11 +3325,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -3069,7 +3372,7 @@ public class GenerateCaseReports {
 			String modified_by = request.getParameter("send_to_name");
 			String batching_officer = (String) session.getAttribute("fullname");
 
-			System.out.println(list_of_application);
+			//System.out.println(list_of_application);
 
 			String contextPath = cls_url_config.getBatching_files_location(); // "C:\\elis\\documents\\batchlist\\";
 			// String contextPath
@@ -3086,9 +3389,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -3134,11 +3437,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -3181,7 +3484,7 @@ public class GenerateCaseReports {
 			String modified_by = request.getParameter("send_to_name");
 			String batching_officer = (String) session.getAttribute("fullname");
 
-			System.out.println(list_of_application);
+			//System.out.println(list_of_application);
 
 			String contextPath = cls_url_config.getBatching_files_location(); // "C:\\elis\\documents\\batchlist\\";
 			// String contextPath
@@ -3198,9 +3501,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			//}
 			try {
@@ -3245,11 +3548,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -3293,7 +3596,7 @@ public class GenerateCaseReports {
 			String modified_by = request.getParameter("send_to_name");
 			String batching_officer = (String) session.getAttribute("fullname");
 
-			System.out.println(list_of_application);
+			//System.out.println(list_of_application);
 
 			String contextPath = cls_url_config.getBatching_files_location(); // "C:\\elis\\documents\\batchlist\\";
 			// String contextPath
@@ -3310,9 +3613,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -3358,11 +3661,11 @@ public class GenerateCaseReports {
 
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -3403,7 +3706,7 @@ public class GenerateCaseReports {
 			String to_email_address = request.getParameter("to_email_address");
 			String batching_officer = (String) session.getAttribute("fullname");
 
-			// System.out.println(list_of_application);
+			// //System.out.println(list_of_application);
 
 			String contextPath = cls_url_config.getPublicaton_files_location(); // "C:\\elis\\documents\\batchlist\\";
 
@@ -3414,9 +3717,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -3469,11 +3772,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -3523,9 +3826,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -3578,11 +3881,11 @@ public class GenerateCaseReports {
 			
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -3626,12 +3929,12 @@ public class GenerateCaseReports {
 			// String user_to_batch_to =
 			// request.getParameter("user_to_batch_to");
 			// String modified_by = request.getParameter("send_to_name");
-			// System.out.println("Testing List : " +
+			// //System.out.println("Testing List : " +
 			// request.getParameter("publication_list"));
-			// System.out.println("Testing eMAIL TO : " + to_email_address);
+			// //System.out.println("Testing eMAIL TO : " + to_email_address);
 			String batching_officer = (String) session.getAttribute("fullname");
 
-			// System.out.println(list_of_application);
+			// //System.out.println(list_of_application);
 
 			String contextPath = cls_url_config.getPublic_docs_upload_location();
 			// String contextPath
@@ -3648,9 +3951,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 			try {
@@ -3729,8 +4032,8 @@ public class GenerateCaseReports {
 			String job_number = request.getParameter("job_number");
 			String ir_business_process_sub_name = request.getParameter("ir_business_process_sub_name");
 
-			System.out.println(ir_business_process_sub_name);
-			System.out.println(request_type);
+			//System.out.println(ir_business_process_sub_name);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getPublic_docs_upload_location();
 			// String contextPath
@@ -3746,9 +4049,9 @@ public class GenerateCaseReports {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		System.out.println("Multiple directories are created!");
+			// 		//System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -3792,11 +4095,11 @@ public class GenerateCaseReports {
 	
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);

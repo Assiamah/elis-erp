@@ -44,7 +44,7 @@ public class Case_SMS_Serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -53,7 +53,7 @@ public class Case_SMS_Serv {
 
 			String web_service_response = null;
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			if (request_type.equals("send_final_registration_massage_to_register")) {
 				// String case_number = request.getParameter("case_number");
@@ -78,7 +78,7 @@ public class Case_SMS_Serv {
 
 				String input = obj.toString();
 
-				// System.out.println(case_number);
+				// //System.out.println(case_number);
 				web_service_response = casemgt_cl
 						.online_select_verification_code_create(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
@@ -98,15 +98,15 @@ public class Case_SMS_Serv {
 				String smsm_result = sms_sl.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 				// String new_message="Verification code is "+ smsm_result;
-				System.out.println("smsm_result");
-				System.out.println(smsm_result);
+				//System.out.println("smsm_result");
+				//System.out.println(smsm_result);
 
 				JSONObject obj_verify = new JSONObject(smsm_result);
 				String arr_verify = obj_verify.get("msg").toString();
 
-				System.out.println("sms response");
+				//System.out.println("sms response");
 
-				System.out.println(arr_verify);
+				//System.out.println(arr_verify);
 
 				if (arr_verify.equals("Sms send Sucessfull")) {
 					web_service_response = "OTP has been generatent to your phone";
@@ -116,9 +116,9 @@ public class Case_SMS_Serv {
 				}
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -127,13 +127,13 @@ public class Case_SMS_Serv {
 
 			if (request_type.equals("auto_generate_file_number")) {
 				String vr_type_of_number = request.getParameter("vr_type_of_number");
-				// System.out.println(polygon);
+				// //System.out.println(polygon);
 				// web_service_response
 				// =casemgt_cl_m.select_create_lc_file_numbering(vr_type_of_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}

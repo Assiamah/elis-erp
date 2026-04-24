@@ -68,7 +68,7 @@ public class DirectorCompliance {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -90,14 +90,14 @@ public class DirectorCompliance {
 
         
     String office_region_list = (String) session.getAttribute("office_region_list");
-    // System.out.println(office_region_list);
+    // //System.out.println(office_region_list);
     Gson googleJson = new Gson();
     ArrayList javaArrayListFromGSON = googleJson.fromJson(office_region_list, ArrayList.class);
     request.setAttribute("officeregionlist", javaArrayListFromGSON);
 
     request.setAttribute("page_name", "director_compliance");
 		
-	//  System.out.println(web_service_response);
+	//  //System.out.println(web_service_response);
 
 					model.addAttribute("content", "../pages/client_application/director_compliance.jsp"); return "layouts/app";
 

@@ -52,7 +52,7 @@
 		
 	
 	String job_number = request.getParameter("job_number");
-	 System.out.println(job_number);
+	 //System.out.println(job_number);
    web_service_response =casemgt_cl.select_load_details_for_payment(job_number);
 
 
@@ -60,9 +60,9 @@
 
 	 if(web_service_response!=null)
         {
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
         }else{
-        	System.out.println(web_service_response);
+        	//System.out.println(web_service_response);
         } 
 	
 	
@@ -75,9 +75,9 @@
 		  payments = (String)jsonobj.getString("payments");	
 		  clients = (String)jsonobj.getString("parties");	
 		  
-		System.out.println(jobdetails_bf);
-		System.out.println(payments);
-		System.out.println(clients);
+		//System.out.println(jobdetails_bf);
+		//System.out.println(payments);
+		//System.out.println(clients);
 		
 		 JSONObject jsonObject_jn = new JSONObject(jobdetails_bf);
 		   jn_id =(String) jsonObject_jn.getString("jn_id");
@@ -114,14 +114,14 @@
 	
    
 /* String id =request.getParameter("lsid");
-System.out.println("Surveyor id " + id); */
+//System.out.println("Surveyor id " + id); */
 //String jobdetails = request.getParameter("jobdetails");
 //String payments = request.getParameter("payments");
 //String clients = request.getParameter("clients");
 
-/* System.out.println("Surveyor id " + jobdetails);
-System.out.println("payments id " + payments);
-System.out.println("clients " + clients); */
+/* //System.out.println("Surveyor id " + jobdetails);
+//System.out.println("payments id " + payments);
+//System.out.println("clients " + clients); */
 %>
  
  
@@ -241,7 +241,7 @@ System.out.println("clients " + clients); */
            			
            			String jsonArrayContent =null;
            			jsonArrayContent =user_web_service.get_check_list_for_a_service(business_process_id,business_process_id);
-           			//System.out.println(jsonArrayContent);
+           			////System.out.println(jsonArrayContent);
            			
            			
            		    JSONArray jArr;
@@ -337,7 +337,7 @@ System.out.println("clients " + clients); */
            			
            			String jsonArrayContent =null;
            			jsonArrayContent =payments;
-           			//System.out.println(jsonArrayContent);
+           			////System.out.println(jsonArrayContent);
            			
            			
            		    JSONArray jArr;
@@ -480,7 +480,7 @@ System.out.println("clients " + clients); */
            			
            			String jsonArrayContent =null;
            			jsonArrayContent =clients ;
-           			//System.out.println(jsonArrayContent);
+           			////System.out.println(jsonArrayContent);
            			
            			
            		    JSONArray jArr;

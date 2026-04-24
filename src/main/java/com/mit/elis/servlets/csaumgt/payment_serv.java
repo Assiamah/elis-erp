@@ -59,7 +59,7 @@ public class payment_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -71,7 +71,7 @@ public class payment_serv {
 
 			String web_service_response = null;
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("generate_payment_payment_checkout")) {
 
@@ -103,14 +103,14 @@ public class payment_serv {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 				web_service_response = csaupayment_cl
 						.generate_payment_payment_checkout(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				/*
 				 * 
@@ -131,9 +131,9 @@ public class payment_serv {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				return web_service_response;
 			}
@@ -152,9 +152,9 @@ public class payment_serv {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				return web_service_response;
 			}
@@ -167,9 +167,9 @@ public class payment_serv {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				return web_service_response;
 			}
@@ -178,7 +178,7 @@ public class payment_serv {
 
 			if (request_type.equals("lc_payment_verification_for_bill")) {
 				String ref_number = request.getParameter("ref_number");
-				// System.out.println(ref_number);
+				// //System.out.println(ref_number);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("ref_number", ref_number);
@@ -188,9 +188,9 @@ public class payment_serv {
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -199,7 +199,7 @@ public class payment_serv {
 
 			if (request_type.equals("lc_payment_verification_for_name_change")) {
 				String ref_number = request.getParameter("ref_number");
-				// System.out.println(ref_number);
+				// //System.out.println(ref_number);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("ref_number", ref_number);
@@ -209,9 +209,9 @@ public class payment_serv {
 						obj_d.toString());
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -220,7 +220,7 @@ public class payment_serv {
 
 			if (request_type.equals("lc_payment_verification_for_bill_revised")) {
 				String ref_number = request.getParameter("ref_number");
-				// System.out.println(ref_number);
+				// //System.out.println(ref_number);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("ref_number", ref_number);
@@ -230,9 +230,9 @@ public class payment_serv {
 						obj_d.toString());
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -241,7 +241,7 @@ public class payment_serv {
 
 			if (request_type.equals("lc_payment_verification_for_bill_stamping")) {
 				String ref_number = request.getParameter("ref_number");
-				// System.out.println(ref_number);
+				// //System.out.println(ref_number);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("ref_number", ref_number);
@@ -251,9 +251,9 @@ public class payment_serv {
 						obj_d.toString());
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -262,7 +262,7 @@ public class payment_serv {
 
 			if (request_type.equals("load_bill_for_payment_individual")) {
 				String bill_number = request.getParameter("bill_number");
-				// System.out.println(bill_number);
+				// //System.out.println(bill_number);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("bill_number", bill_number);
@@ -272,9 +272,9 @@ public class payment_serv {
 								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -283,7 +283,7 @@ public class payment_serv {
 
 			if (request_type.equals("load_bill_for_payment_individual_old")) {
 				String job_number = request.getParameter("job_number");
-				// System.out.println(job_number);
+				// //System.out.println(job_number);
 
 				JSONObject obj_d = new JSONObject();
 				obj_d.put("job_number", job_number);
@@ -293,9 +293,9 @@ public class payment_serv {
 						obj_d.toString());
 
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;
@@ -304,8 +304,8 @@ public class payment_serv {
 			if (request_type.equals("generate_egcr")) {
 				String ref_number = request.getParameter("ref_number");
 				String receipt_number = request.getParameter("receipt_number");
-				// System.out.println(ref_number);
-				// System.out.println(receipt_number);
+				// //System.out.println(ref_number);
+				// //System.out.println(receipt_number);
 				/*
 				 * JSONObject obj_d = new JSONObject(); obj_d.put("ref_number",
 				 * ref_number); obj_d.put("receipt_number", ref_number);
@@ -322,15 +322,15 @@ public class payment_serv {
 
 					// if (!files_pdf_jackets.exists()) {
 					// 	if (files_pdf_jackets.mkdirs()) {
-					// 		// System.out.println("Multiple directories are
+					// 		// //System.out.println("Multiple directories are
 					// 		// created!");
 					// 	} else {
-					// 		// System.out.println("Failed to create multiple
+					// 		// //System.out.println("Failed to create multiple
 					// 		// directories!");
 					// 	}
 					// }
 
-					// System.out.println("EGCR number : " + receipt_number);
+					// //System.out.println("EGCR number : " + receipt_number);
 
 					InputStream pdf_blob = billgeneration_cl.generate_egcr_get_pdf(cls_url_config.getEgcr_url(),
 							cls_url_config.getEgcr_apikey(), receipt_number);
@@ -360,7 +360,7 @@ public class payment_serv {
 							output.write(buffer, 0, len);
 						}
 
-						// System.out.println("File downloaded: " +
+						// //System.out.println("File downloaded: " +
 						// files_pdf_jackets_p);
 					} catch (IOException ex) {
 						System.err.println(ex);
@@ -385,8 +385,8 @@ public class payment_serv {
 
 				/*
 				 * if (web_service_response != null) {
-				 * System.out.println(web_service_response); } else {
-				 * System.out.println(web_service_response); } PrintWriter out =
+				 * //System.out.println(web_service_response); } else {
+				 * //System.out.println(web_service_response); } PrintWriter out =
 				 * response.getWriter(); return web_service_response;
 				 */
 
@@ -424,12 +424,12 @@ public class payment_serv {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 				web_service_response = csaupayment_cl.lc_payment_confirmation_for_bill_individual(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 
 					String pdfFileName = "bill_payment_capture.pdf";
 
@@ -440,7 +440,7 @@ public class payment_serv {
 					// String ws_bill_details_db=
 					// case_mgt_cl.check_payment_status_of_bill_generate_bill(ws_bill_number);
 
-					// System.out.println(bill_number);
+					// //System.out.println(bill_number);
 
 					// String pdf_dest = "C:\\gelisdocs\\billspdf\\";
 
@@ -472,7 +472,7 @@ public class payment_serv {
  				// String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
  				// cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
 
-					// System.out.println(files_pdf_jackets_p);
+					// //System.out.println(files_pdf_jackets_p);
 					// File pdfFile = new File(files_pdf_jackets_p);
 					// byte[] buffer = null;
 
@@ -525,7 +525,7 @@ public class payment_serv {
 					}
 
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				/*
 				 * 
@@ -566,12 +566,12 @@ public class payment_serv {
 				// String wkt_polgon_wgs84 =
 				// request.getParameter("wkt_polgon_wgs84");
 
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 				web_service_response = csaupayment_cl.lc_payment_confirmation_for_bill_individual(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 
 					String pdfFileName = "bill_gra.pdf";
 
@@ -582,7 +582,7 @@ public class payment_serv {
 					// String ws_bill_details_db=
 					// case_mgt_cl.check_payment_status_of_bill_generate_bill(ws_bill_number);
 
-					// System.out.println(bill_number);
+					// //System.out.println(bill_number);
 
 					// String pdf_dest = "C:\\gelisdocs\\billspdf\\";
 
@@ -600,7 +600,7 @@ public class payment_serv {
 							cls_url_config.getSoftfile_location(), input_details,
 							web_service_response, session.getAttribute("fullname").toString(), files_pdf_jackets_p);
 
-					// System.out.println(files_pdf_jackets_p);
+					// //System.out.println(files_pdf_jackets_p);
 					// File pdfFile = new File(files_pdf_jackets_p);
 					// byte[] buffer = null;
 
@@ -653,7 +653,7 @@ public class payment_serv {
 					}
 
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 				/*
 				 * 

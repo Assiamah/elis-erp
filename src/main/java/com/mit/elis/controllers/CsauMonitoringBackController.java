@@ -74,7 +74,7 @@ public class CsauMonitoringBackController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -103,7 +103,7 @@ public class CsauMonitoringBackController {
             jo  = geodata.getJSONObject(i);
            String recieved_today = jo.get("total").toString(); 
           request.setAttribute("recieved_today",recieved_today);
-		 // System.out.println(recieved_month);
+		 // //System.out.println(recieved_month);
         }
 
 
@@ -114,7 +114,7 @@ public class CsauMonitoringBackController {
             jo11  = geodata11.getJSONObject(i);
            String recieved_week = jo11.get("total").toString(); 
           request.setAttribute("recieved_week",recieved_week);
-		 // System.out.println(recieved_week);
+		 // //System.out.println(recieved_week);
         }
 
 
@@ -184,7 +184,7 @@ public class CsauMonitoringBackController {
         
 		
 
-	 System.out.println(web_service_response);
+	 //System.out.println(web_service_response);
 
 					model.addAttribute("content", "../pages/client_application/csau_monitoring_backoffice.jsp"); return "layouts/app";
 

@@ -41,15 +41,15 @@ public class GeneratePdf {
 		 * String directories = "D:\\scandoc\\casenumber\\jobume2"; File file =
 		 * new File(directories); boolean result= false;
 		 * 
-		 * if (!file.exists()) { System.out.println("creating directory: " +
+		 * if (!file.exists()) { //System.out.println("creating directory: " +
 		 * file.getName()); // boolean result = false;
 		 * 
 		 * try { result = file.mkdirs(); file.mkdirs(); result = true;
-		 * System.out.println("Status = " + result); } catch (SecurityException
-		 * se) { // handle it System.out.println(se.getMessage()); } if (result)
-		 * { System.out.println("Folder created"); } } else if (file.exists()) {
+		 * //System.out.println("Status = " + result); } catch (SecurityException
+		 * se) { // handle it //System.out.println(se.getMessage()); } if (result)
+		 * { //System.out.println("Folder created"); } } else if (file.exists()) {
 		 * 
-		 * System.out.println("Folder exist"); }
+		 * //System.out.println("Folder exist"); }
 		 * 
 		 * try { obj_r.put( "success" , true ); obj_r.put( "msg" , result );
 		 * 
@@ -64,18 +64,18 @@ public class GeneratePdf {
 		 * File("D:\\gelisscans\\jackets"); File[] files = dir.listFiles();
 		 * FileFilter fileFilter = new FileFilter() { public boolean accept(File
 		 * file) { return file.isDirectory(); } }; files =
-		 * dir.listFiles(fileFilter); System.out.println(files.length);
+		 * dir.listFiles(fileFilter); //System.out.println(files.length);
 		 * 
 		 * if (files.length == 0) {
-		 * System.out.println("Either dir does not exist or is not a directory"
+		 * //System.out.println("Either dir does not exist or is not a directory"
 		 * ); } else { for (int i = 0; i< files.length; i++) { File foldername =
-		 * files[i]; System.out.println("Folder: " + foldername.toString());
+		 * files[i]; //System.out.println("Folder: " + foldername.toString());
 		 * //List All Files In a Folder File subdir = new
 		 * File(foldername.toString()); String[] children = subdir.list(); if
-		 * (children == null) { System.out.println(
+		 * (children == null) { //System.out.println(
 		 * "Either dir does not exist or is not a directory"); } else { for (int
 		 * j = 0; j< children.length; j++) { String filename = children[j];
-		 * System.out.println("File: " +filename); } } //List All Files In a
+		 * //System.out.println("File: " +filename); } } //List All Files In a
 		 * Folder// End
 		 * 
 		 * } }
@@ -96,8 +96,8 @@ public class GeneratePdf {
 		// String pdf_dest ="C:\\gelisscans\\scanpdf\\";
 		// File dir = new File("C:\\gelisscans\\jackets");
 
-		// System.out.println(pdf_dest);
-		// System.out.println(dir);
+		// //System.out.println(pdf_dest);
+		// //System.out.println(dir);
 
 		File[] files = dir.listFiles();
 		FileFilter fileFilter = new FileFilter() {
@@ -107,30 +107,30 @@ public class GeneratePdf {
 		};
 
 		files = dir.listFiles(fileFilter);
-		// System.out.println(files.length);
+		// //System.out.println(files.length);
 
 		if (files.length == 0) {
-			// System.out.println("Either dir does not exist or is not a
+			// //System.out.println("Either dir does not exist or is not a
 			// directory");
 		} else {
 			for (int i = 0; i < files.length; i++) {
 				File foldername = files[i];
-				// System.out.println("Folder: " + foldername.toString());
-				// System.out.println("pdf_dest: " + pdf_dest);
-				// System.out.println("Folder: " +
+				// //System.out.println("Folder: " + foldername.toString());
+				// //System.out.println("pdf_dest: " + pdf_dest);
+				// //System.out.println("Folder: " +
 				// foldername.getName().toString());
 
 				File files_pdf_jackets = new File(pdf_dest + foldername.getName().toString());
 				String files_pdf_jackets_p = pdf_dest + foldername.getName().toString() + File.separator;
 				// if (!files_pdf_jackets.exists()) {
 				// 	if (files_pdf_jackets.mkdirs()) {
-				// 		// System.out.println("Folder Created for" +
+				// 		// //System.out.println("Folder Created for" +
 				// 		// foldername.getName().toString());
 				// 	} else {
-				// 		// //System.out.println("Failed to create multiple
+				// 		// ////System.out.println("Failed to create multiple
 				// 		// directories!""Pdf for the Folder " +
 				// 		// foldername.getName().toString() + " Already exist");
-				// 		// System.out.println("Folder Created for" +
+				// 		// //System.out.println("Folder Created for" +
 				// 		// foldername.getName().toString());
 				// 	}
 
@@ -147,7 +147,7 @@ public class GeneratePdf {
 				// }
 
 				// else {
-				// 	// System.out.println("Pdf for the Folder " +
+				// 	// //System.out.println("Pdf for the Folder " +
 				// 	// foldername.getName().toString() + " Already exist");
 				// }
 
