@@ -28445,4 +28445,88 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+     $('#lc_btn_confirm_reset_of_certificate_number_and_indexing').on('click', function(e) {
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var job_number = $("#cs_main_job_number").val();
+        var lc_txt_type_of_reset = $("#lc_txt_type_of_reset").val();
+        var lc_txt_remarks = $("#lc_txt_remarks").val();
+        
+        var send_by_id = localStorage.getItem('userid');
+        var send_by_name = localStorage.getItem('fullname');
+
+        // if (!lc_txt_file_number_type) {
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Please select a file number type.',
+        //         icon: 'error',
+        //         confirmButtonText: 'OK'
+        //     });
+        //     return;
+        // }
+        
+        // SweetAlert2 confirmation
+        Swal.fire({
+            title: 'Reset Certificate Number and Indexing?',
+            text: "Are you sure you want to reset certificate number and indexing?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, reset it!',
+            cancelButtonText: 'Cancel',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv",
+                    data: {
+                        request_type: 'select_reset_certificate_number_and_indexing',
+                        case_number: case_number,
+                        job_number: job_number,
+                        transaction_number: transaction_number,
+                        type_of_reset: lc_txt_type_of_reset,
+                        remarks: lc_txt_remarks,
+                        fullname: send_by_name,
+                        userid: send_by_id
+                    },
+                    cache: false,
+                    success: function(jobdetails) {
+                        console.log(jobdetails);
+                        var json_p = JSON.parse(jobdetails);
+                        
+                        if (jobdetails != "") {
+                            $('#lc_btn_confirm_reset_of_certificate_number_and_indexing').prop("disabled", true);
+                        }
+                        
+                       // $('#lc_txt_file_number').val(json_p.file_number);
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Certificate number and indexing has been updated successfully',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Failed to reset certificate number and indexing. Please try again.'
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Optional: Additional actions after successful confirmation
+                console.log('Certificate number and indexing updating confirmed and processed');
+            }
+        });
+    });
+
 });
