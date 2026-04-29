@@ -203,6 +203,9 @@ $(document).ready(function() {
     // Helper function to group by location using native JavaScript
     function groupByLocation(dataArray) {
         return dataArray.reduce(function(acc, current) {
+            if (!current || !current.location) {
+                return acc;
+            }
             var location = current.location;
             if (!acc[location]) {
                 acc[location] = [];
@@ -219,7 +222,14 @@ $(document).ready(function() {
         function storeTblValues() {
             var TableData = new Array();
             $('#unpublishedDataTable tr').each(function(row, tr) {
-                TableData[row] = {
+                var extentText = $(tr).find('td:eq(9)').text().trim();
+                var extentValue = parseExtentValue(extentText);
+
+                if (row !== 0 && extentValue >= 5) {
+                    return;
+                }
+
+                TableData.push({
                     "client_number": $(tr).find('td:eq(1)').text().trim(),
                     "case_number": $(tr).find('td:eq(3)').text().trim(),
                     "business_process_sub_name": $(tr).find('td:eq(4)').text().trim(),
@@ -227,11 +237,11 @@ $(document).ready(function() {
                     "ar_name": $(tr).find('td:eq(6)').text().trim(),
                     "location": $(tr).find('td:eq(7)').text().trim(),
                     "grantor": $(tr).find('td:eq(8)').text().trim(),
-                    "extent": $(tr).find('td:eq(9)').text().trim(),
+                    "extent": extentText,
                     "interest": $(tr).find('td:eq(10)').text().trim(),
                     "registry_map": $(tr).find('td:eq(11)').text().trim(),
                     "description": $(tr).find('td:eq(12)').text().trim()
-                }
+                });
             });
             TableData.shift();
             return TableData;
@@ -1534,7 +1544,14 @@ function proceedWithPublication(send_to_address, agencyName) {
         function storeTblValues() {
             var TableData = new Array();
             $('#unpublishedDataTable tbody tr').each(function(row, tr) {
-                TableData[row] = {
+                var extentText = $(tr).find('td:eq(9)').text().trim();
+                var extentValue = parseExtentValue(extentText);
+
+                if (extentValue >= 5) {
+                    return;
+                }
+
+                TableData.push({
                     "client_number": $(tr).find('td:eq(1)').text().trim(),
                     "case_number": $(tr).find('td:eq(3)').text().trim(),
                     "business_process_sub_name": $(tr).find('td:eq(4)').text().trim(),
@@ -1542,11 +1559,11 @@ function proceedWithPublication(send_to_address, agencyName) {
                     "ar_name": $(tr).find('td:eq(6)').text().trim(),
                     "location": $(tr).find('td:eq(7)').text().trim(),
                     "grantor": $(tr).find('td:eq(8)').text().trim(),
-                    "extent": $(tr).find('td:eq(9)').text().trim(),
+                    "extent": extentText,
                     "interest": $(tr).find('td:eq(10)').text().trim(),
                     "registry_map": $(tr).find('td:eq(11)').text().trim(),
                     "description": $(tr).find('td:eq(12)').text().trim()
-                }
+                });
             });
             return TableData;
         }
@@ -1592,6 +1609,9 @@ function proceedWithPublication(send_to_address, agencyName) {
                 
                 // Group by location
                 var groupedByLocation = json_p.reduce(function(acc, current) {
+                    if (!current || !current.location) {
+                        return acc;
+                    }
                     var location = current.location;
                     if (!acc[location]) {
                         acc[location] = [];

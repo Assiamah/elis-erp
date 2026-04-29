@@ -131,7 +131,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0" id="unpublishedDataTable">
+                                    <table class="table table-hover align-middle mb-0" width="100%" id="unpublishedDataTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="50">#</th>
@@ -245,7 +245,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0" id="publishedDataTable">
+                                    <table class="table table-hover align-middle mb-0" width="100%" id="publishedDataTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="50">
@@ -317,7 +317,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0" id="publishedDataTable">
+                                    <table class="table table-hover align-middle mb-0" width="100%" id="publishedDataTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="50">
