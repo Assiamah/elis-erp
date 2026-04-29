@@ -51,7 +51,7 @@ public class CQRController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -60,7 +60,7 @@ public class CQRController {
 		try {
 
             String office_region_list = (String) session.getAttribute("office_region_list");
-            // System.out.println(office_region_list);
+            // //System.out.println(office_region_list);
             Gson googleJson = new Gson();
             ArrayList javaArrayListFromGSON = googleJson.fromJson(office_region_list, ArrayList.class);
             request.setAttribute("officeregionlist", javaArrayListFromGSON);
@@ -102,7 +102,7 @@ public class CQRController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -111,7 +111,7 @@ public class CQRController {
 		try {
 
             String office_region_list = (String) session.getAttribute("office_region_list");
-            // System.out.println(office_region_list);
+            // //System.out.println(office_region_list);
             Gson googleJson = new Gson();
             ArrayList javaArrayListFromGSON = googleJson.fromJson(office_region_list, ArrayList.class);
             request.setAttribute("officeregionlist", javaArrayListFromGSON);
@@ -128,7 +128,7 @@ public class CQRController {
 			
 			String input_details = obj.toString();
 
-			//System.out.println(input_details);
+			////System.out.println(input_details);
 
 			String web_service_response = cls_compliance.select_compliance_application_notice_count_per_region(
 					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
@@ -175,7 +175,7 @@ public class CQRController {
 				// request.setAttribute("warnings_count", warnings_count);
 
 			} else {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 
             request.setAttribute("page_name", "regional_compliance_query_and_response");
@@ -215,7 +215,7 @@ public class CQRController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -224,7 +224,7 @@ public class CQRController {
 		try {
 
             String office_region_list = (String) session.getAttribute("office_region_list");
-            // System.out.println(office_region_list);
+            // //System.out.println(office_region_list);
             Gson googleJson = new Gson();
             ArrayList javaArrayListFromGSON = googleJson.fromJson(office_region_list, ArrayList.class);
             request.setAttribute("officeregionlist", javaArrayListFromGSON);

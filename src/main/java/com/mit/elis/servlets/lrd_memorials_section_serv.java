@@ -45,7 +45,7 @@ public class lrd_memorials_section_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -55,35 +55,35 @@ public class lrd_memorials_section_serv {
 
 			String web_service_response = null;
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			if (request_type.equals("select_lrd_memorials_section_all_by_case_number")) {
 				String case_number = request.getParameter("case_number");
-				// System.out.println("Assiamah");
-				System.out.println(case_number);
+				// //System.out.println("Assiamah");
+				//System.out.println(case_number);
 				web_service_response = lrd_memorials_section_cl
 						.select_lrd_memorials_section_all_by_case_number(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								case_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_lrd_memorials_section_all_by_id")) {
 				String case_number = request.getParameter("case_number");
-				// System.out.println("Assiamah");
-				System.out.println(case_number);
+				// //System.out.println("Assiamah");
+				//System.out.println(case_number);
 				web_service_response = lrd_memorials_section_cl
 						.select_lrd_memorials_section_all_by_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), case_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -121,28 +121,28 @@ public class lrd_memorials_section_serv {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				System.out.println(input);
+				//System.out.println(input);
 				web_service_response = lrd_memorials_section_cl
 						.select_lrd_memorials_section_add_and_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("select_lrd_memorials_section_mother_registered_no")) {
 				String case_number = request.getParameter("case_number");
-				// System.out.println("Assiamah");
-				System.out.println(case_number);
+				// //System.out.println("Assiamah");
+				//System.out.println(case_number);
 				web_service_response = lrd_memorials_section_cl
 						.select_lrd_memorials_section_mother_registered_no(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), case_number);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -154,15 +154,15 @@ public class lrd_memorials_section_serv {
 
 				obj.put("del_id", mid);
 				obj.put("target_element", target_element);
-				// System.out.println(" testing action" + obj.toString());
+				// //System.out.println(" testing action" + obj.toString());
 				web_service_response = lrd_memorials_section_cl
 						.select_lrd_memorials_section_delete_by_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}

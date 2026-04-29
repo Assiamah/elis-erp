@@ -42,7 +42,7 @@ public class user_mgt_module_servlet_per_region extends HttpServlet {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 			view.forward(request, response);
 

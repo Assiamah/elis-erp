@@ -46,14 +46,14 @@ public class SendComplianceMessage {
 		try {
 			String request_type = request.getParameter("request_type");
 
-			// System.out.println(String.format("Log level: %s",
+			// //System.out.println(String.format("Log level: %s",
 			// request.getParameter("request_type")));
 
 			/*
 			 * final Enumeration<String> parameterNames =
 			 * request.getParameterNames(); while
 			 * (parameterNames.hasMoreElements()) {
-			 * System.out.println("{parameter} " +
+			 * //System.out.println("{parameter} " +
 			 * request.getParameter(parameterNames.nextElement())); }
 			 */
 
@@ -71,15 +71,15 @@ public class SendComplianceMessage {
 				obj.put("csd_compliance", request.getParameter("csd_compliance"));
 
 				String input_details = obj.toString();
-				System.out.println("ff" + input_details);
+				//System.out.println("ff" + input_details);
 				
 				web_service_response = cls_compliance
 						.send_compliance_message_post(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -94,15 +94,15 @@ public class SendComplianceMessage {
 				obj.put("message", request.getParameter("message"));
 
 				String input_details = obj.toString();
-				System.out.println("ff" + input_details);
+				//System.out.println("ff" + input_details);
 				
 				web_service_response = cls_compliance
 						.send_compliance_focal_person_message(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -111,14 +111,14 @@ public class SendComplianceMessage {
 				obj.put("job_number", request.getParameter("job_number"));
 
 				String input_details = obj.toString();
-				// System.out.println("ff" + input_details);
+				// //System.out.println("ff" + input_details);
 				web_service_response = cls_compliance
 						.update_compliance_application_notice(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -127,14 +127,14 @@ public class SendComplianceMessage {
 				obj.put("notice_id", request.getParameter("notice_id"));
 
 				String input_details = obj.toString();
-				// System.out.println("ff" + input_details);
+				// //System.out.println("ff" + input_details);
 				web_service_response = cls_compliance
 						.select_responses_on_compliance_application_notice(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

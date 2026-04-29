@@ -79,15 +79,15 @@ public class RequestMonitoring {
                     String unit_id = request.getParameter("unit_id");
     
                     obj.put( "unit_id" , unit_id );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = clRequest_monitoring
                             .select_staff_apps_with_unit_monitoring(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -102,15 +102,15 @@ public class RequestMonitoring {
                     String unit_id = request.getParameter("unit_id");
     
                     obj.put( "unit_id" , unit_id );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = clRequest_monitoring
                             .select_all_staff_apps_with_unit_monitoring(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -125,15 +125,15 @@ public class RequestMonitoring {
                     String staff_id = request.getParameter("staff_id");
     
                     obj.put( "staff_id" , staff_id );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = clRequest_monitoring
                             .all_staff_apps_with_unit_monitoring(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -149,15 +149,15 @@ public class RequestMonitoring {
                     String unit_id = request.getParameter("unit_id");
     
                     obj.put( "unit_id" , unit_id );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = clRequest_monitoring
                             .select_staff_apps_with_unit_request_incoming_applications(cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -176,16 +176,16 @@ public class RequestMonitoring {
     
                     obj.put( "unit_id" , unit_id );
                     obj.put( "inbox_type" , inbox_type );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = clRequest_monitoring
                             .select_staff_apps_with_officers_request_withinunit_applications
                             (cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;
@@ -203,16 +203,16 @@ public class RequestMonitoring {
     
                     obj.put( "unit_id" , unit_id );
                     obj.put( "inbox_type" , inbox_type );
-                  //  System.out.println(obj.toString());
+                  //  //System.out.println(obj.toString());
     
                     web_service_response = clRequest_monitoring
                             .select_staff_apps_with_officers_request_withinuni
                             (cls_url_config.getWeb_service_url_ser(),
                                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                     if (web_service_response != null) {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     } else {
-                      //  System.out.println(web_service_response);
+                      //  //System.out.println(web_service_response);
                     }
     
                     return web_service_response;

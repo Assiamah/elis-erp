@@ -78,16 +78,16 @@ public class LegalServlet {
 				// JSONObject obj = new JSONObject();
 				// obj.put("region_id", region_id);
 				// String input_details = obj.toString();
-				// System.out.println(input_details + " Started @ : " + new java.util.Date());
+				// //System.out.println(input_details + " Started @ : " + new java.util.Date());
 				web_service_response = cls_suits.secretariat_writs(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -96,16 +96,16 @@ public class LegalServlet {
 				// JSONObject obj = new JSONObject();
 				// obj.put("region_id", region_id);
 				// String input_details = obj.toString();
-				// System.out.println(input_details + " Started @ : " + new java.util.Date());
+				// //System.out.println(input_details + " Started @ : " + new java.util.Date());
 				web_service_response = cls_suits.get_courts(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				// return web_service_response;
@@ -115,7 +115,7 @@ public class LegalServlet {
 
 				String list = request.getParameter("list");
 				obj.put("list", list);
-				//System.out.println(list);
+				////System.out.println(list);
 
 				cls_suits.forward_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), list);
@@ -186,15 +186,15 @@ public class LegalServlet {
 
 		obj.put("case_id", new Double(m_case_id).intValue());
 		obj.put("suit_number", m_suit_number);
-		// System.out.println(obj);
+		// //System.out.println(obj);
 
 		web_service_response = cls_suits.load_minutes_on_case(cls_url_config.getWeb_service_url_ser(),
 				cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 		if (web_service_response != null) {
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		} else {
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		}
 
 		return web_service_response;
@@ -213,15 +213,15 @@ public class LegalServlet {
 
 		obj.put("case_id", m_case_id);
 		// obj.put("suit_number", m_suit_number);
-		// System.out.println(obj);
+		// //System.out.println(obj);
 
 		web_service_response = cls_suits.case_details(cls_url_config.getWeb_service_url_ser(),
 				cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 		if (web_service_response != null) {
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		} else {
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		}
 
 		return web_service_response;
@@ -258,17 +258,17 @@ public class LegalServlet {
 				obj.put("created_by", created_by);
 				obj.put("case_id", n_case_id.equals("") ? "999999" : n_case_id);
 
-				System.out.println(obj);
+				//System.out.println(obj);
 
 				web_service_response = cls_suits.case_note_insert(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -279,12 +279,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.case_note_select(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -295,12 +295,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -330,12 +330,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), case_obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -358,12 +358,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.update_case_status(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -373,12 +373,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_suit_number_timeline(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -388,12 +388,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_timeline(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -405,12 +405,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_user_timeline(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -427,12 +427,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.update_releifs_and_summary(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -449,12 +449,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.update_status_form_with_note(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -475,12 +475,12 @@ public class LegalServlet {
 				web_service_response = cls_suits.add_minutes_on_case(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -503,7 +503,7 @@ public class LegalServlet {
 
 		try {
 			String suit_number = request.getParameter("suit_number");
-			System.out.println(suit_number);
+			//System.out.println(suit_number);
 			String case_id = request.getParameter("case_id");
 			String type_of_document = request.getParameter("type_of_document");
 			String scan_type = request.getParameter("scan_type");
@@ -525,7 +525,7 @@ public class LegalServlet {
 			boolean success = writeToFile(is, path);
 
 			if (success) {
-				System.out.println("File Uploaded to this directory: " + path);
+				//System.out.println("File Uploaded to this directory: " + path);
 
 				// File file = new File(path + fileName);
 
@@ -549,7 +549,7 @@ public class LegalServlet {
 					if (bool) {
 						fileCopy(sourcePath, destinationPath);
 					} else {
-						System.out.println("Sorry couldn't create specified directory");
+						//System.out.println("Sorry couldn't create specified directory");
 					}
 				} else {
 					fileCopy(sourcePath, destinationPath);
@@ -560,8 +560,8 @@ public class LegalServlet {
 					web_service_response = cls_suits.update_initial_scan(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				} else if (scan_type.equals("full")) {
-					System.out.println("Testing");
-					System.out.println(obj);
+					//System.out.println("Testing");
+					//System.out.println(obj);
 					web_service_response = cls_suits.update_full_scan(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				} else {
@@ -593,7 +593,7 @@ public class LegalServlet {
 		try {
 			String suit_number = request.getParameter("suit_number");
 			// String case_id = request.getParameter("case_id");
-			System.out.println(suit_number);
+			//System.out.println(suit_number);
 			// String web_response = null;
 			JSONObject obj = new JSONObject();
 			// Gson googleJson = new Gson();
@@ -627,12 +627,12 @@ public class LegalServlet {
 				obj.put("court_description", court_description);
 				obj.put("court_process", court_process);
 
-				// System.out.println(obj);
+				// //System.out.println(obj);
 
 				web_service_response = cls_suits.further_entry(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 
 			return web_service_response;
@@ -654,7 +654,7 @@ public class LegalServlet {
 
 		try {
 			String suit_number = request.getParameter("suit_number");
-			System.out.println(suit_number);
+			//System.out.println(suit_number);
 			JSONObject obj = new JSONObject();
 			JSONObject obj_r = new JSONObject();
 			;
@@ -668,7 +668,7 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_legal_head_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 
 			else if (request_type.equals("load_incoming_cases")) {
@@ -676,10 +676,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_incoming_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -696,10 +696,10 @@ public class LegalServlet {
 				// cls_suits.receive_cases(cls_url_config.getWeb_service_url_ser(),
 				// cls_url_config.getWeb_service_url_ser_api_key(), list);
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 
 				// if (web_service_response != null) {
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				// } else {
 
 				// obj_r.put("success", false);
@@ -708,7 +708,7 @@ public class LegalServlet {
 
 				String list = request.getParameter("list");
 				obj.put("list", list);
-				System.out.println(list);
+				//System.out.println(list);
 
 				cls_suits.receive_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), list);
@@ -785,10 +785,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_pending_actions(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -801,10 +801,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_archived_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -827,15 +827,15 @@ public class LegalServlet {
 				obj.put("case_id", case_id);
 				obj.put("reasons", reasons);
 
-				// //System.out.println(obj);
+				// ////System.out.println(obj);
 
 				web_service_response = cls_suits.assign_one_case(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put(" success", false);
@@ -852,15 +852,15 @@ public class LegalServlet {
 				obj.put("suit_number", suit_number);
 				obj.put("case_id", case_id);
 
-				// //System.out.println(obj);
+				// ////System.out.println(obj);
 
 				web_service_response = cls_suits.restore_one_case(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put(" success", false);
@@ -879,15 +879,15 @@ public class LegalServlet {
 				obj.put("case_id", case_id);
 				obj.put("reasons", reasons);
 
-				// //System.out.println(obj);
+				// ////System.out.println(obj);
 
 				web_service_response = cls_suits.archive_one_case(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put(" success", false);
@@ -901,15 +901,15 @@ public class LegalServlet {
 
 				obj.put("suit_number", case_id);
 
-				// //System.out.println(obj);
+				// ////System.out.println(obj);
 
 				web_service_response = cls_suits.search_archived_case(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put(" success", false);
@@ -983,7 +983,7 @@ public class LegalServlet {
 
 				web_service_response = cls_suits.suit_exist(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 			}
 			if (request_type.equals("add_case")) {
@@ -1001,7 +1001,7 @@ public class LegalServlet {
 				String summary = request.getParameter("summary");
 				String files_location = request.getParameter("files_location");
 
-				// System.out.println(parties);
+				// //System.out.println(parties);
 				JSONArray parties_obj = new JSONArray(parties);
 
 				obj.put("suit_number", suit_number);
@@ -1017,7 +1017,7 @@ public class LegalServlet {
 				obj.put("releifs", releifs);
 				obj.put("summary", summary);
 				obj.put("files_location", files_location);
-				// System.out.println(obj);
+				// //System.out.println(obj);
 
 				web_service_response = cls_suits.addcase(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
@@ -1054,7 +1054,7 @@ public class LegalServlet {
 				obj.put("summary", summary);
 				obj.put("court_region", court_region);
 
-				System.out.println(obj);
+				//System.out.println(obj);
 
 				web_service_response = cls_suits.secretariat_addcase(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
@@ -1080,7 +1080,7 @@ public class LegalServlet {
 				obj.put("case_id", new Double(case_id).intValue());
 				obj.put("parties", parties_obj);
 
-				System.out.println(obj);
+				//System.out.println(obj);
 
 				web_service_response = cls_suits.update_suit_parties(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
@@ -1156,7 +1156,7 @@ public class LegalServlet {
 
 		try {
 			String request_type = request.getParameter("request_type");
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 			JSONObject obj = new JSONObject();
 			JSONObject obj_r = new JSONObject();
 
@@ -1172,14 +1172,14 @@ public class LegalServlet {
 				obj.put("unit_name", unit_name);
 				obj.put("movement", movement);
 
-				System.out.println(obj);
+				//System.out.println(obj);
 				web_service_response = cls_suits.load_requests(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1207,7 +1207,7 @@ public class LegalServlet {
 
 		try {
 			String request_type = request.getParameter("request_type");
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 			JSONObject obj = new JSONObject();
 			JSONObject obj_r = new JSONObject();
 
@@ -1220,14 +1220,14 @@ public class LegalServlet {
 				obj.put("nature_of_case_id", nature_of_case_id.equals("") ? nature_of_case_id
 						: Double.valueOf(nature_of_case_id).intValue());
 
-				System.out.println(obj);
+				//System.out.println(obj);
 				web_service_response = cls_suits.add_nature(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1250,14 +1250,14 @@ public class LegalServlet {
 				obj.put("description", description);
 				obj.put("court_id", court_id.equals("") ? court_id : Double.valueOf(court_id).intValue());
 
-				System.out.println(obj);
+				//System.out.println(obj);
 				web_service_response = cls_suits.add_court(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1285,7 +1285,7 @@ public class LegalServlet {
 
 		try {
 			String request_type = request.getParameter("request_type");
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 			JSONObject obj = new JSONObject();
 
 			if (request_type.equals("report_by_nature_of_case")) {
@@ -1300,7 +1300,7 @@ public class LegalServlet {
 				obj.put("date_from", date_from);
 				obj.put("date_to", date_to);
 
-				System.out.println(obj);
+				//System.out.println(obj);
 
 				web_service_response = cls_suits.report_by_nature_of_case(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
@@ -1326,7 +1326,7 @@ public class LegalServlet {
 
 		try {
 			String request_type = request.getParameter("request_type");
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 			JSONObject obj = new JSONObject();
 			JSONObject obj_r = new JSONObject();
 
@@ -1335,10 +1335,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_unit_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1351,10 +1351,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_unit_cases_unassigned(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1367,10 +1367,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_unit_cases_assigned(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1383,10 +1383,10 @@ public class LegalServlet {
 				web_service_response = cls_suits.load_incoming_cases(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1396,13 +1396,13 @@ public class LegalServlet {
 
 			else if (request_type.equals("open_pdf")) {
 				String file_path = request.getParameter("file_path").trim();
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(
 						cls_url_config.getLegal_batch_list_location() + "batch_list" + "_" + file_path + ".pdf");
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				// response.setContentType("application/pdf");
 				// // response.addHeader("Content-Disposition", "attachment; filename=" +
@@ -1449,12 +1449,12 @@ public class LegalServlet {
 				String file_path = request.getParameter("file_path").trim();
 				String suit_number = request.getParameter("suit_number").trim();
 				suit_number = suit_number.replace("/", "_");
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(cls_url_config.getLegal_document_location() + suit_number + "/" + file_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -1484,10 +1484,10 @@ public class LegalServlet {
 				String file_path = request.getParameter("file_path").trim();
 				String suit_number = request.getParameter("suit_number").trim();
 				suit_number = suit_number.replace("/", "_");
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				File pdfFile = new File(cls_url_config.getLegal_request_document() + suit_number + "/" + file_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -1516,12 +1516,12 @@ public class LegalServlet {
 				String file_path = request.getParameter("file_path").trim();
 				String suit_number = request.getParameter("suit_number").trim();
 				suit_number = suit_number.replace("/", "_");
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(file_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -1548,13 +1548,13 @@ public class LegalServlet {
 
 			else if (request_type.equals("open_request_pdf")) {
 				String file_path = request.getParameter("file_path").trim();
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(
 						cls_url_config.getLegal_batch_list_location() + "batch_list" + "_" + file_path + ".pdf");
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -1610,10 +1610,10 @@ public class LegalServlet {
 				File subdir = new File(folderpath.toString());
 				String[] children = subdir.list();
 
-				System.out.println(folderpath);
+				//System.out.println(folderpath);
 
 				if (children == null) {
-					System.out.println("Either dir does not exist or is not a directory");
+					//System.out.println("Either dir does not exist or is not a directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
@@ -1631,11 +1631,11 @@ public class LegalServlet {
 						arr_r.put(obj_r);
 					}
 
-					System.out.println(arr_r.toString());
+					//System.out.println(arr_r.toString());
 
 				}
 
-				// System.out.println(children);
+				// //System.out.println(children);
 			}
 
 			if (request_type.equals("load_requested_document")) {
@@ -1648,7 +1648,7 @@ public class LegalServlet {
 				String[] children = subdir.list();
 
 				if (children == null) {
-					System.out.println("Either dir does not exist or is not a directory");
+					//System.out.println("Either dir does not exist or is not a directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
@@ -1666,7 +1666,7 @@ public class LegalServlet {
 						arr_r.put(obj_r);
 					}
 
-					System.out.println(arr_r.toString());
+					//System.out.println(arr_r.toString());
 
 				}
 
@@ -1704,15 +1704,15 @@ public class LegalServlet {
 				obj.put("case_id", new Double(case_id).intValue());
 				obj.put("suit_number", suit_number);
 
-				// System.out.println(obj);
+				// //System.out.println(obj);
 
 				web_response = cls_suits.load_provided_record_info(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				// System.out.println(web_response);
+				// //System.out.println(web_response);
 
 				if (web_response != null) {
-					// System.out.println(web_response);
+					// //System.out.println(web_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1727,15 +1727,15 @@ public class LegalServlet {
 				obj.put("case_id", new Double(case_id).intValue());
 				obj.put("suit_number", suit_number);
 
-				// System.out.println(obj);
+				// //System.out.println(obj);
 
 				web_response = cls_suits.load_requested_record_info(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				// System.out.println(web_response);
+				// //System.out.println(web_response);
 
 				if (web_response != null) {
-					// System.out.println(web_response);
+					// //System.out.println(web_response);
 				} else {
 
 					obj_r.put("success", false);
@@ -1762,8 +1762,8 @@ public class LegalServlet {
 				obj.put("unit", unit_name);
 				obj.put("provided_by", provided_by);
 
-				System.out.println(obj);
-				System.out.println(attach_file);
+				//System.out.println(obj);
+				//System.out.println(attach_file);
 
 				if (attach_file.equals("")) {
 					attach_file = "false";
@@ -1773,7 +1773,7 @@ public class LegalServlet {
 							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 					if (web_service_response != null) {
-						System.out.println(web_service_response);
+						//System.out.println(web_service_response);
 
 					} else {
 						obj_r.put("success", false);
@@ -1806,7 +1806,7 @@ public class LegalServlet {
 					boolean success = writeToFile(is, path);
 
 					if (success) {
-						System.out.println("File Uploaded to this directory: " + path);
+						//System.out.println("File Uploaded to this directory: " + path);
 
 						// File file = new File(path + fileName);
 
@@ -1838,13 +1838,13 @@ public class LegalServlet {
 								// return "/legal/work_record_info.jsp?success=true";
 								// return web_response;
 							} else {
-								System.out.println("Sorry couldn't create specified directory");
+								//System.out.println("Sorry couldn't create specified directory");
 								request.setAttribute("status", "failed");
 
 								// return web_service_response;
 							}
 						} else {
-							System.out.println("Directory already exist");
+							//System.out.println("Directory already exist");
 
 							fileCopy(sourcePath, destinationPath);
 							obj.put("location", destinationPath);
@@ -1880,7 +1880,7 @@ public class LegalServlet {
 
 		try {
 			String suit_number = request.getParameter("suit_number");
-			System.out.println(suit_number);
+			//System.out.println(suit_number);
 			JSONObject obj = new JSONObject();
 			// JSONObject obj_r = new JSONObject();;
 

@@ -79,18 +79,18 @@ public class InspectionController {
 			isFound = true;
 		} catch (Exception e) {
 		}
-		// System.out.println(servletName + ' ' + assigenedmenus);
+		// //System.out.println(servletName + ' ' + assigenedmenus);
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -119,7 +119,7 @@ public class InspectionController {
 				 * web_service_response_menu = casemgt_web_service
 				 * .load_count_application_batched_to_user((String)
 				 * session.getAttribute("userid")); //
-				 * System.out.println(web_service_response_menu); JSONObject
+				 * //System.out.println(web_service_response_menu); JSONObject
 				 * menu_obj; menu_obj = new
 				 * JSONObject(web_service_response_menu); String all_menus =
 				 * menu_obj.get("total").toString();
@@ -129,7 +129,7 @@ public class InspectionController {
 				// ArrayList javaArrayListFromGSON =
 				// googleJson.fromJson(all_menus, ArrayList.class);
 				// request.setAttribute("applicationlistcount", all_menus);
-				System.out.println("user_id : " + (String) session.getAttribute("userid"));
+				//System.out.println("user_id : " + (String) session.getAttribute("userid"));
 				JSONObject obj = new JSONObject();
 				obj.put("userid", (String) session.getAttribute("userid"));
 				// obj.put("modified_by_id", modified_by_id);
@@ -142,7 +142,7 @@ public class InspectionController {
 				JSONObject menu_obj_data;
 				menu_obj_data = new JSONObject(web_service_response_menu_data);
 				String all_menus_data = menu_obj_data.get("data").toString();
-				System.out.println(all_menus_data);
+				//System.out.println(all_menus_data);
 				Gson googleJson = new Gson();
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus_data, ArrayList.class);
 
@@ -154,7 +154,7 @@ public class InspectionController {
 
 				// Session is expired
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -175,7 +175,7 @@ public class InspectionController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -204,8 +204,8 @@ public class InspectionController {
 			String business_process_sub_name = request.getParameter("business_process_sub_name");
 
 			/*
-			 * System.out.println(transaction_number);
-			 * System.out.println(case_number); System.out.println(job_number);
+			 * //System.out.println(transaction_number);
+			 * //System.out.println(case_number); //System.out.println(job_number);
 			 */
 
 			JSONObject obj = new JSONObject();
@@ -213,12 +213,12 @@ public class InspectionController {
 			obj.put("case_number", transaction_number);
 			obj.put("job_number", job_number);
 			String batchlistdivison = obj.toString();
-			// System.out.println(batchlistdivison);
+			// //System.out.println(batchlistdivison);
 			web_service_response = casemagt_cl.select_general_case_details(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					batchlistdivison);
 			if (web_service_response != null) {
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				JSONObject case_obj;
 				case_obj = new JSONObject(web_service_response);
 
@@ -297,7 +297,7 @@ public class InspectionController {
 				request.setAttribute("case_letters", case_letters_list);
 				request.setAttribute("parcel_wkt", case_obj.get("parcel_wkt").toString());
 
-				// System.out.println(case_obj.get("parcel_wkt").toString());
+				// //System.out.println(case_obj.get("parcel_wkt").toString());
 				String new_case_number = "";
 				JSONObject parcel_details_obj;
 				try {
@@ -327,7 +327,7 @@ public class InspectionController {
 					request.setAttribute("need_for_new_transaction",
 							parcel_details_obj.get("need_for_new_transaction").toString());
 				} catch (Exception e) {
-					System.out.println(e);
+					//System.out.println(e);
 				}
 				JSONObject transaction_details_obj;
 				transaction_details_obj = new JSONObject(transaction_details);
@@ -406,7 +406,7 @@ public class InspectionController {
 				request.setAttribute("application_stage", "0");
 				request.setAttribute("created_date", job_detail_obj.get("created_date").toString());
 				request.setAttribute("modified_date", job_detail_obj.get("modified_date").toString());
-				// System.out.println(job_detail_obj.get("application_stage").toString());
+				// //System.out.println(job_detail_obj.get("application_stage").toString());
 				request.setAttribute("business_process_id", job_detail_obj.get("business_process_id").toString());
 				request.setAttribute("business_process_name", job_detail_obj.get("business_process_name").toString());
 				request.setAttribute("business_process_sub_id",
@@ -420,18 +420,18 @@ public class InspectionController {
 				business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
 
 				String folderpath = cls_url_config.getCase_upload_location() + new_case_number;
-				// System.out.println("folderpath: " +folderpath);
+				// //System.out.println("folderpath: " +folderpath);
 				// List All Files In a Folder
 				File subdir = new File(folderpath.toString());
 				String[] children = subdir.list();
 				if (children == null) {
-					// System.out.println("Either dir does not exist or is not a
+					// //System.out.println("Either dir does not exist or is not a
 					// directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
-						// System.out.println("case_number: " + case_number);
-						// System.out.println("File: " + filename_doc);
+						// //System.out.println("case_number: " + case_number);
+						// //System.out.println("File: " + filename_doc);
 						String path = folderpath.toString() + "/" + filename_doc;
 
 						String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -455,18 +455,18 @@ public class InspectionController {
 
 				JSONArray arr_r_public = new JSONArray();
 				String folderpath_public = cls_url_config.getPublic_docs_upload_location() + new_case_number;
-				// System.out.println("folderpath: " +folderpath);
+				// //System.out.println("folderpath: " +folderpath);
 				// List All Files In a Folder
 				File subdir_public = new File(folderpath_public.toString());
 				String[] children_public = subdir_public.list();
 				if (children_public == null) {
-					// System.out.println("Either dir does not exist or is not a
+					// //System.out.println("Either dir does not exist or is not a
 					// directory");
 				} else {
 					for (int j = 0; j < children_public.length; j++) {
 						String filename_doc_public = children_public[j];
-						// System.out.println("case_number: " + case_number);
-						// System.out.println("File: " + filename_doc_public);
+						// //System.out.println("case_number: " + case_number);
+						// //System.out.println("File: " + filename_doc_public);
 						String path = folderpath_public.toString() + "/" + filename_doc_public;
 
 						String extension = filename_doc_public.substring(filename_doc_public.lastIndexOf("."));
@@ -488,15 +488,15 @@ public class InspectionController {
 				// request.setAttribute("casescanneddocuments_public",
 				// arr_r_public.toString());
 				request.setAttribute("page_name", "case_processing");
-				// System.out.println(arr_r.toString());
-				// System.out.println(arr_r_public.toString());
+				// //System.out.println(arr_r.toString());
+				// //System.out.println(arr_r_public.toString());
 
-				// System.out.println(business_process_sub_name);
+				// //System.out.println(business_process_sub_name);
 
 						model.addAttribute("content", "../pages/inspection_module/landed_inspection_application.jsp"); return "layouts/app";
 
 			} else {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
 
 		} catch (

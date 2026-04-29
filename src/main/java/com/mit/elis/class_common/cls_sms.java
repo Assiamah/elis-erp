@@ -34,7 +34,7 @@ public class cls_sms {
 
 	// return stringBuffer.toString();
 	// } catch (Exception e) {
-	// System.out.println("Error SMS " + e);
+	// //System.out.println("Error SMS " + e);
 	// return "Error " + e;
 	// }
 	// }
@@ -52,7 +52,7 @@ public class cls_sms {
 	// // Send data
 	// HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 	// String data = token + from + to + msg;
-	// // System.out.println(data);
+	// // //System.out.println(data);
 	// conn.setDoOutput(true);
 	// conn.setRequestMethod("POST");
 	// conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
@@ -68,7 +68,7 @@ public class cls_sms {
 
 	// return stringBuffer.toString();
 	// } catch (Exception e) {
-	// System.out.println("Error SMS " + e);
+	// //System.out.println("Error SMS " + e);
 	// return "Error " + e;
 	// }
 	// }

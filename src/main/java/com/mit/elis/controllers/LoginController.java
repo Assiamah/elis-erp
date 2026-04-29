@@ -33,7 +33,7 @@ public class LoginController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -107,7 +107,7 @@ public class LoginController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -183,7 +183,7 @@ public class LoginController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -240,7 +240,7 @@ public class LoginController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -253,10 +253,10 @@ public class LoginController {
 			JSONArray jsonArr = new JSONArray();
 			JSONObject obj = new JSONObject();
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("add")) {
-				//// System.out.println("assmahfgf");
+				//// //System.out.println("assmahfgf");
 
 				/*
 				 * String createdby = (String) session.getAttribute("fullname");
@@ -338,14 +338,14 @@ public class LoginController {
 
 				jsonArr.put(obj);
 
-				// System.out.println("Add User params: " + jsonArr.toString());
+				// //System.out.println("Add User params: " + jsonArr.toString());
 				web_service_response = cls_users.add_new_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						jsonArr.toString());
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");
@@ -419,13 +419,13 @@ public class LoginController {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(input);
+				// //System.out.println(input);
 				web_service_response = cls_users.update_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Saving User.';");
@@ -435,13 +435,13 @@ public class LoginController {
 			if (request_type.equals("delete")) {
 				String userid = request.getParameter("userid");
 				// obj.put( "userid" , userid );
-				// System.out.println(userid);
+				// //System.out.println(userid);
 				web_service_response = cls_users.delete_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), userid);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -462,15 +462,15 @@ public class LoginController {
 
 				jsonArr.put(obj);
 				String input = obj.toString();
-				// System.out.println(input);
-				// System.out.println(user_profile);
+				// //System.out.println(input);
+				// //System.out.println(user_profile);
 				web_service_response = cls_users
 						.select_update_user_profile_per_user(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", web_service_response);
-					// System.out.println(obj_r.toString());
+					// //System.out.println(obj_r.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -485,15 +485,15 @@ public class LoginController {
 
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				// System.out.println(input);
-				// System.out.println(user_profile);
+				// //System.out.println(input);
+				// //System.out.println(user_profile);
 				web_service_response = cls_users.user_profile_for_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), userid);
 				if (web_service_response != null) {
 					obj_r.put("success", true);
 					obj_r.put("msg", "User Saved!");
-					// System.out.println(obj_r.toString());
-					// System.out.println(web_service_response.toString());
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
 				} else {
 					obj_r.put("success", false);
 					obj_r.put("msg", "Error Delete User.';");
@@ -503,12 +503,12 @@ public class LoginController {
 			if (request_type.equals("get_all")) {
 
 				String search_by = request.getParameter("search_by");
-				// System.out.println(search_by);
+				// //System.out.println(search_by);
 				web_service_response = cls_users.get_list_of_users_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						search_by);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
 					/*
 					 * obj_r.put( "success" , false ); obj_r.put( "msg" ,

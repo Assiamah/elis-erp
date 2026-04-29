@@ -71,7 +71,7 @@ public class rent_mgt_pdf_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -123,7 +123,7 @@ public class rent_mgt_pdf_serv {
 
 				rs_result = property_data_json.toString();
 
-				 System.out.println(rs_result);
+				 //System.out.println(rs_result);
 
 				// web_service_response = "data";
 				web_service_response = rent_cl.select_rent_leasee_details_by_rl_id(
@@ -131,7 +131,7 @@ public class rent_mgt_pdf_serv {
 						property_data_json.toString());
 
 				if (web_service_response != null) {
-					 System.out.println(web_service_response);
+					 //System.out.println(web_service_response);
 					String pdfFileName = "rent_demand_notice.pdf";
 
 					//String pdf_dest = cls_url_config.getCase_upload_location();
@@ -141,9 +141,9 @@ public class rent_mgt_pdf_serv {
 
 					// if (!files_pdf_jackets.exists()) {
 					// 	if (files_pdf_jackets.mkdirs()) {
-					// 		System.out.println("Multiple directories are created!");
+					// 		//System.out.println("Multiple directories are created!");
 					// 	} else {
-					// 		// System.out.println("Failed to create multiple
+					// 		// //System.out.println("Failed to create multiple
 					// 		// directories!");
 					// 	}
 					// }
@@ -207,7 +207,7 @@ public class rent_mgt_pdf_serv {
 
 
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -216,17 +216,17 @@ public class rent_mgt_pdf_serv {
 
 				String client_id = request.getParameter("client_id");
 
-				// System.out.println(client_id);
+				// //System.out.println(client_id);
 				// web_service_response = casemgt_cl.select_get_party_by_party_id(cls_url_config.getWeb_service_url_ser(),
 				// 		cls_url_config.getWeb_service_url_ser_api_key(),
 				// 		client_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
-					// System.out.println("nothing to " + web_service_response);
+					// //System.out.println(web_service_response);
+					// //System.out.println("nothing to " + web_service_response);
 
 				} else {
-					System.out.println(web_service_response);
-					// System.out.println("son=mtni to " +
+					//System.out.println(web_service_response);
+					// //System.out.println("son=mtni to " +
 					// web_service_response);
 				}
 
@@ -243,7 +243,7 @@ public class rent_mgt_pdf_serv {
 				String estate = request.getParameter("estate");	
 				String keyword = request.getParameter("keyword");			
 
-				// System.out.println(list_of_application);
+				// //System.out.println(list_of_application);
 
 				JSONObject obj = new JSONObject();
 				obj.put("select_type", select_type);
@@ -253,14 +253,14 @@ public class rent_mgt_pdf_serv {
 
 				// String batchlistdivison = obj.toString();
 
-				// System.out.println("testing cabinet batch: " + obj.toString());
+				// //System.out.println("testing cabinet batch: " + obj.toString());
 				web_service_response = casemgt_cl_m.select_rent_leasee_details(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				return web_service_response;

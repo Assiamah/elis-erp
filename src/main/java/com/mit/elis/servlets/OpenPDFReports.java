@@ -44,13 +44,13 @@ public class OpenPDFReports {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 
 		String document_path = request.getParameter("document_path");
-		System.out.println(document_path);
+		//System.out.println(document_path);
 		// String pdfFileName = "case_doc.pdf";
 
 		File pdfFile = new File(document_path);

@@ -71,7 +71,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -114,7 +114,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -124,7 +124,7 @@ public class LegalController {
 
             String suit_number = request.getParameter("suit_number");
 			//String case_id =request.getParameter("case_id");
-            System.out.println(suit_number);
+            //System.out.println(suit_number);
             String web_response = null;
 			JSONObject obj = new JSONObject();
 			Gson googleJson = new Gson();
@@ -134,7 +134,7 @@ public class LegalController {
 
 			web_response = cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_case = new JSONObject(web_response); 
 			String case_details = web_response_case.get("data").toString(); 
@@ -162,7 +162,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -172,7 +172,7 @@ public class LegalController {
 
             String suit_number = request.getParameter("suit_number");
 			String case_id =request.getParameter("case_id");
-            System.out.println(suit_number);
+            //System.out.println(suit_number);
             String web_response = null;
 			JSONObject obj = new JSONObject();
 			Gson googleJson = new Gson();
@@ -186,7 +186,7 @@ public class LegalController {
 
 				web_response = cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String case_details = web_response_case.get("data").toString(); 
@@ -204,7 +204,7 @@ public class LegalController {
 
 				web_response = cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String case_details = web_response_case.get("data").toString(); 
@@ -247,7 +247,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -258,7 +258,7 @@ public class LegalController {
             Gson googleJson = new Gson();
 			web_response = cls_suits.all_cases(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 				
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_case = new JSONObject(web_response); 
 			String all_cases = web_response_case.get("data").toString(); 
@@ -286,7 +286,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -296,7 +296,7 @@ public class LegalController {
 
             String suit_number = request.getParameter("suit_number");
 			String case_id = request.getParameter("case_id");
-            System.out.println(suit_number);
+            //System.out.println(suit_number);
             String web_response = null;
 			JSONObject obj = new JSONObject();
 			Gson googleJson = new Gson();
@@ -310,7 +310,7 @@ public class LegalController {
 
 				web_response = cls_suits.load_case_details(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 
@@ -341,7 +341,7 @@ public class LegalController {
 
 				web_response = cls_suits.load_case_details(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 
@@ -398,7 +398,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -411,7 +411,7 @@ public class LegalController {
             JSONObject typesObj = new JSONObject();
 
 			String courts_web_service_response = cls_suits.get_courts(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
-			System.out.println(courts_web_service_response);
+			//System.out.println(courts_web_service_response);
             courtsObj = new JSONObject(courts_web_service_response);
 
             String courts = courtsObj.get("data").toString(); 
@@ -420,7 +420,7 @@ public class LegalController {
 			request.setAttribute("courts",courts_list);
 
             String types_web_service_response=cls_suits.get_types_of_cases(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
-            System.out.println(types_web_service_response);
+            //System.out.println(types_web_service_response);
             typesObj = new JSONObject(courts_web_service_response);
 
             String type_of_cases = typesObj.get("data").toString(); 
@@ -455,7 +455,7 @@ public class LegalController {
 			web_service_response = cls_suits.file_locations(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_loc.toString());
 
-            System.out.println(web_service_response);
+            //System.out.println(web_service_response);
             JSONObject loc_obj = new JSONObject(web_service_response); 
             String locs = loc_obj.get("data").toString();
             Gson locsJson = new Gson();
@@ -492,7 +492,7 @@ public class LegalController {
                 boolean success = writeToFile(is,path);
 
                 if(success) {
-                    System.out.println("File Uploaded to this directory: "+path);
+                    //System.out.println("File Uploaded to this directory: "+path);
                         
                     //File file = new File(path + fileName);
                     
@@ -521,14 +521,14 @@ public class LegalController {
                             		model.addAttribute("content", "../pages/legal/document_upload.jsp"); return "layouts/app";
                         }
                         else{
-                            System.out.println("Sorry couldn't create specified directory");
+                            //System.out.println("Sorry couldn't create specified directory");
                             request.setAttribute("status","failed");	
                             
                             		model.addAttribute("content", "../pages/legal/document_upload.jsp"); return "layouts/app";
                         }
                     }
                     else {
-                        System.out.println("Directory already exist");
+                        //System.out.println("Directory already exist");
 
                         fileCopy(sourcePath,destinationPath);
                         obj.put("location", destinationPath);
@@ -575,7 +575,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -607,12 +607,12 @@ public class LegalController {
 			JSONObject obj =new JSONObject();
 			JSONObject obj_r=new JSONObject();
 
-            System.out.println(request_type);
+            //System.out.println(request_type);
 
 			// web_service_response = cls_suits.file_locations(cls_url_config.getWeb_service_url_ser(),
 			// 			cls_url_config.getWeb_service_url_ser_api_key(), obj.toString(_)loc);
 
-            // System.out.println(web_service_response);
+            // //System.out.println(web_service_response);
             // JSONObject loc_obj = new JSONObject(web_service_response); 
             // String locs = loc_obj.get("data").toString();
             // Gson locsJson = new Gson();
@@ -628,10 +628,10 @@ public class LegalController {
                     web_response= cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(),
 						    cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 
-                    System.out.println(web_response);
+                    //System.out.println(web_response);
             
                     if (web_response != null) {
-                        //System.out.println(web_response);
+                        ////System.out.println(web_response);
                     } else {
                         
                         obj_r.put("success", false);
@@ -640,7 +640,7 @@ public class LegalController {
 
                     JSONObject web_response_case = new JSONObject(web_response); 
 					String case_details = web_response_case.get("data").toString(); 
-                    System.out.println(case_details);
+                    //System.out.println(case_details);
 
                     Gson caseJson = new Gson();
                     ArrayList case_list = caseJson.fromJson(case_details, ArrayList.class);
@@ -650,7 +650,7 @@ public class LegalController {
 						    cls_url_config.getWeb_service_url_ser_api_key()); 
 					JSONObject s_obj =new JSONObject(courts_web_service_response); 
 					String courts = s_obj.get("data").toString(); 
-                    System.out.println(courts);
+                    //System.out.println(courts);
 
 					Gson courtsJson = new Gson(); 
                     ArrayList court_list = courtsJson.fromJson(courts, ArrayList.class);
@@ -703,7 +703,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -763,7 +763,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -817,7 +817,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -839,7 +839,7 @@ public class LegalController {
                     cls_url_config.getWeb_service_url_ser_api_key()); 
             JSONObject s_obj =new JSONObject(courts_web_service_response); 
             String courts = s_obj.get("data").toString(); 
-            System.out.println(courts);
+            //System.out.println(courts);
 
             Gson courtsJson = new Gson(); 
             ArrayList court_list = courtsJson.fromJson(courts, ArrayList.class);
@@ -880,7 +880,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -893,9 +893,9 @@ public class LegalController {
 			obj.put("user_id", user_id);
 			String web_response = cls_suits.assigned_cases(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				
-			System.out.println(web_response);
-
 			//System.out.println(web_response);
+
+			////System.out.println(web_response);
 			JSONObject web_response_obj=new JSONObject(web_response);
 			
 			Integer unit_count = web_response_obj.getInt("unit_count");
@@ -943,7 +943,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -997,7 +997,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1019,7 +1019,7 @@ public class LegalController {
 			
 			String web_response = cls_suits.load_total_request_status(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 			
-			//System.out.println(web_response);
+			////System.out.println(web_response);
 			JSONObject web_response_obj=new JSONObject(web_response);
 			
 			//String assigned_cases = web_response_obj.get("cases").toString();
@@ -1067,7 +1067,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1089,7 +1089,7 @@ public class LegalController {
                     cls_url_config.getWeb_service_url_ser_api_key()); 
             JSONObject s_obj =new JSONObject(courts_web_service_response); 
             String courts = s_obj.get("data").toString(); 
-            System.out.println(courts);
+            //System.out.println(courts);
 
             Gson courtsJson = new Gson(); 
             ArrayList court_list = courtsJson.fromJson(courts, ArrayList.class);
@@ -1130,7 +1130,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1140,7 +1140,7 @@ public class LegalController {
 
             String web_service_response = cls_suits.load_unit_cases(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 
-			 System.out.println(web_service_response);
+			 //System.out.println(web_service_response);
 			 JSONObject web_response_obj = new JSONObject(web_service_response); 
 			 Integer incoming = web_response_obj.getInt("incoming");
 			 Integer unit_count = web_response_obj.getInt("unit_count");
@@ -1221,7 +1221,7 @@ public class LegalController {
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 					
 					if (web_response != null) {
-						System.out.println(web_response);
+						//System.out.println(web_response);
 						
 						request.setAttribute("suit_number",suit_number);
                         request.setAttribute("stage", "1");
@@ -1258,7 +1258,7 @@ public class LegalController {
                     boolean success = writeToFile(is,path);
 
                     if(success) {
-                        System.out.println("File Uploaded to this directory: "+path);
+                        //System.out.println("File Uploaded to this directory: "+path);
                             
                         //File file = new File(path + fileName); 
                         
@@ -1287,14 +1287,14 @@ public class LegalController {
                                 		model.addAttribute("content", "../pages/legal/record_info.jsp?success=true"); return "layouts/app";
                             }
                             else{
-                                System.out.println("Sorry couldn't create specified directory");
+                                //System.out.println("Sorry couldn't create specified directory");
                                 request.setAttribute("status","failed");	
                                 
                                //		model.addAttribute("content", "../pages/legal/record_info.jsp"); return "layouts/app";
                             }
                         }
                         else {
-                            System.out.println("Directory already exist");
+                            //System.out.println("Directory already exist");
 
                             fileCopy(sourcePath,destinationPath);
                             obj.put("location", destinationPath);
@@ -1311,7 +1311,7 @@ public class LegalController {
                                 cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 					
 					if (web_response != null) {
-						System.out.println(web_response);
+						//System.out.println(web_response);
 						
 						request.setAttribute("suit_number",suit_number);
 						request.setAttribute("stage", "1");
@@ -1375,7 +1375,7 @@ public class LegalController {
             //         boolean success = writeToFile(is,path);
 
             //         if(success) {
-            //             System.out.println("File Uploaded to this directory: "+path);
+            //             //System.out.println("File Uploaded to this directory: "+path);
                             
             //             //File file = new File(path + fileName);
                         
@@ -1405,14 +1405,14 @@ public class LegalController {
             //                     		model.addAttribute("content", "../pages/legal/work_record_info.jsp?success=true";
             //                 }
             //                 else{
-            //                     System.out.println("Sorry couldn't create specified directory");
+            //                     //System.out.println("Sorry couldn't create specified directory");
             //                     request.setAttribute("status","failed");	
                                 
             //                     //return web_service_response;
             //                 }
             //             }
             //             else {
-            //                 System.out.println("Directory already exist");
+            //                 //System.out.println("Directory already exist");
 
             //                 fileCopy(sourcePath,destinationPath);
             //                 obj.put("location", destinationPath);
@@ -1456,15 +1456,15 @@ public class LegalController {
                 obj.put("case_id", new Double(case_id).intValue());
 				obj.put("suit_number", suit_number);
 				
-				//System.out.println(obj);
+				////System.out.println(obj);
 
 				web_response = cls_suits.load_further_entry(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				
-				//System.out.println(web_response);
+				////System.out.println(web_response);
 				
 				if (web_response != null) {
-					//System.out.println(web_response);
+					////System.out.println(web_response);
 				} else {
 					
 					obj_r.put("success", false);
@@ -1475,7 +1475,7 @@ public class LegalController {
                 String case_details = web_response_case.get("data").toString(); 
 
 
-                //System.out.println(case_details);
+                ////System.out.println(case_details);
 
                 Gson caseJson=new Gson();
                 ArrayList case_list = caseJson.fromJson(case_details, ArrayList.class);
@@ -1520,7 +1520,7 @@ public class LegalController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1542,7 +1542,7 @@ public class LegalController {
                     cls_url_config.getWeb_service_url_ser_api_key()); 
             JSONObject s_obj =new JSONObject(courts_web_service_response); 
             String courts = s_obj.get("data").toString(); 
-            System.out.println(courts);
+            //System.out.println(courts);
 
             Gson courtsJson = new Gson(); 
             ArrayList court_list = courtsJson.fromJson(courts, ArrayList.class);
@@ -1578,15 +1578,15 @@ public class LegalController {
                 obj.put("case_id", new Double(case_id).intValue());
 				obj.put("suit_number", suit_number);
 				
-				//System.out.println(obj);
+				////System.out.println(obj);
 
 				web_response = cls_suits.load_record_case_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 				
-				//System.out.println(web_response);
+				////System.out.println(web_response);
 				
 				if (web_response != null) {
-					//System.out.println(web_response);
+					////System.out.println(web_response);
 				} else {
 					
 					obj_r.put("success", false);
@@ -1597,7 +1597,7 @@ public class LegalController {
                 String case_details = web_response_case.get("data").toString(); 
 
 
-                //System.out.println(case_details);
+                ////System.out.println(case_details);
 
                 Gson caseJson=new Gson();
                 ArrayList case_list = caseJson.fromJson(case_details, ArrayList.class);

@@ -73,7 +73,7 @@ public class Case_Management_Serv_Upload {
         if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
             // Session is expired
             request.setAttribute("login", "sessionout");
-            // System.out.println("If Not success");
+            // //System.out.println("If Not success");
             return "index.jsp";
 
         }
@@ -103,7 +103,7 @@ public class Case_Management_Serv_Upload {
                     .getAttribute("web_chairman_regional_land_commission");
             billgeneration_cl.web_office_region = (String) session.getAttribute("web_office_region");
 
-            System.out.println(request_type);
+            //System.out.println(request_type);
 
             if (request_type.equals("process_online_select_acknowledgement_not_on_case")) {
 
@@ -200,12 +200,12 @@ public class Case_Management_Serv_Upload {
 
                 rs_result = jsonArray.toString();
 
-                System.out.println(rs_result);
+                //System.out.println(rs_result);
                 web_service_response = casemgt_cl.online_select_process_acknowledgement_not_on_case_sub(
                         cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
                         rs_result);
                 if (web_service_response != null) {
-                    // System.out.println(web_service_response);
+                    // //System.out.println(web_service_response);
                     String pdfFileName = "acnkwledgeslip.pdf";
 
                     JSONObject jsonobject = new JSONObject(web_service_response);
@@ -255,20 +255,20 @@ public class Case_Management_Serv_Upload {
                             ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
 
                             if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                                System.out.println("Response: " + "File forwarded successfully!");
+                                //System.out.println("Response: " + "File forwarded successfully!");
                             } else {
-                                System.out.println("Failed to upload file. Status code: " + responseEntity.getStatusCode());
+                                //System.out.println("Failed to upload file. Status code: " + responseEntity.getStatusCode());
                             }
 
                         } catch (Exception e) {
                             //response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                             //response.getWriter().write("Error forwarding file: " + e.getMessage());
-                            System.out.println("Error forwarding file!"  + e.getMessage());
+                            //System.out.println("Error forwarding file!"  + e.getMessage());
                         }
                     } else {
                        // response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         //response.getWriter().write("No file found in request!");
-                        System.out.println("No file found in request!");
+                        //System.out.println("No file found in request!");
                     }
 
 
@@ -299,11 +299,11 @@ public class Case_Management_Serv_Upload {
                     
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -338,7 +338,7 @@ public class Case_Management_Serv_Upload {
 					}
 
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
             }
 
@@ -424,12 +424,12 @@ public class Case_Management_Serv_Upload {
 
                 rs_result = jsonArray.toString();
 
-                System.out.println(rs_result);
+                //System.out.println(rs_result);
                 web_service_response = casemgt_cl.online_select_process_acknowledgement_on_case_sub(
                         cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
                         rs_result);
                 if (web_service_response != null) {
-                    // System.out.println(web_service_response);
+                    // //System.out.println(web_service_response);
                     String pdfFileName = "acknowledgeslip";
 
                     JSONObject jsonobject = new JSONObject(web_service_response);
@@ -449,29 +449,29 @@ public class Case_Management_Serv_Upload {
 
                     // if (!files_pdf_jackets.exists()) {
                     //     if (files_pdf_jackets.mkdirs()) {
-                    //         // System.out.println("Multiple directories are
+                    //         // //System.out.println("Multiple directories are
                     //         // created!");
                     //     } else {
-                    //         System.out.println("Failed to create multiple directories!");
+                    //         //System.out.println("Failed to create multiple directories!");
                     //     }
                     // }
 
                     // String savePath = pdf_dest + ws_case_number;
 
                     // String file_extension = "";
-                    // // System.out.println(files_pdf_jackets_p);
+                    // // //System.out.println(files_pdf_jackets_p);
 
-                    // // System.out.println(savePath);
-                    // // System.out.println(savePath + File.separator);
-                    // // System.out.println(request.getParts());
+                    // // //System.out.println(savePath);
+                    // // //System.out.println(savePath + File.separator);
+                    // // //System.out.println(request.getParts());
 
                     // // Save attached uploaded File
 
                     // for (Part part : request.getParts()) {
                     //     String fileName = extractFileName(part);
                     //     // refines the fileName in case it is an absolute path
-                    //     // System.out.println("path");
-                    //     // System.out.println(fileName);
+                    //     // //System.out.println("path");
+                    //     // //System.out.println(fileName);
 
                     //     fileName = new File(fileName).getName();
                     //     // fileName = new File(fileName).getName();
@@ -481,9 +481,9 @@ public class Case_Management_Serv_Upload {
                     //     else
                     //         file_extension = "";
 
-                    //     // System.out.println("file");
-                    //     // System.out.println(fileName);
-                    //     // System.out.println(savePath + "/" +
+                    //     // //System.out.println("file");
+                    //     // //System.out.println(fileName);
+                    //     // //System.out.println(savePath + "/" +
                     //     // fileName);
                     //     // part.write(savePath + "/" +
                     //     // file_name_incoming);
@@ -541,20 +541,20 @@ public class Case_Management_Serv_Upload {
                     ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
 
                     if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                        System.out.println("Response: " + "File forwarded successfully!");
+                        //System.out.println("Response: " + "File forwarded successfully!");
                     } else {
-                        System.out.println("Failed to upload file. Status code: " + responseEntity.getStatusCode());
+                        //System.out.println("Failed to upload file. Status code: " + responseEntity.getStatusCode());
                     }
 
                 } catch (Exception e) {
                     //response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     //response.getWriter().write("Error forwarding file: " + e.getMessage());
-                    System.out.println("Error forwarding file!"  + e.getMessage());
+                    //System.out.println("Error forwarding file!"  + e.getMessage());
                 }
             } else {
                // response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 //response.getWriter().write("No file found in request!");
-                System.out.println("No file found in request!");
+                //System.out.println("No file found in request!");
             }
 
 
@@ -586,11 +586,11 @@ public class Case_Management_Serv_Upload {
                 
                                                         // 1. Get size in bytes
                             long sizeInBytes = buffer.length;
-                            System.out.println("Size in bytes: " + sizeInBytes);
+                            //System.out.println("Size in bytes: " + sizeInBytes);
 
                             // 2. Human-readable format (KB, MB, GB...)
                             String humanReadable = formatFileSize(sizeInBytes);
-                            System.out.println("Human readable: " + humanReadable);
+                            //System.out.println("Human readable: " + humanReadable);
                                     
                         pdf_upload_obj.put("doc_file_size",humanReadable);
                         pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
@@ -626,7 +626,7 @@ public class Case_Management_Serv_Upload {
 					}
 
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
             }
 
@@ -713,9 +713,9 @@ public class Case_Management_Serv_Upload {
 
 		// Handle response
 		if (response.getStatusCode().is2xxSuccessful()) {
-			System.out.println("Response: " + response.getBody());
+			//System.out.println("Response: " + response.getBody());
 		} else {
-			System.out.println("Failed to upload file. Status code: " + response.getStatusCode());
+			//System.out.println("Failed to upload file. Status code: " + response.getStatusCode());
 		}
 	}
 

@@ -38,7 +38,7 @@ public class nationality {
             JSONArray jsonArr = new JSONArray();
             JSONObject obj = new JSONObject();
 
-            // System.out.println(request_type);
+            // //System.out.println(request_type);
 
             if (request_type.equals("add")) {
                 String nationality_name = request.getParameter("nationality_name");
@@ -46,13 +46,13 @@ public class nationality {
                 obj.put("nationality_name", nationality_name);
                 jsonArr.put(obj);
                 String input = jsonArr.toString();
-                // System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+                // //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
                 web_service_response = Ws_nationality.nationality_add(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), input);
                 if (web_service_response != null) {
-                    // System.out.println(web_service_response);
+                    // //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
             }
@@ -67,41 +67,41 @@ public class nationality {
                 jsonArr.put(obj);
                 String input = jsonArr.toString();
 
-                // System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+                // //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
                 web_service_response = Ws_nationality.nationality_update(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),
                         input);
                 if (web_service_response != null) {
-                    // System.out.println(web_service_response);
+                    // //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
             }
 
             if (request_type.equals("delete")) {
                 String nationality_id = request.getParameter("nationality_id");
                 // obj.put( "userid" , userid );
-                // System.out.println(nationality_id);
+                // //System.out.println(nationality_id);
                 web_service_response = Ws_nationality.nationality_delete(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),
                         nationality_id);
                 if (web_service_response != null) {
-                    // System.out.println(web_service_response);
+                    // //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
             }
 
             if (request_type.equals("get_all")) {
 
                 String search_by = request.getParameter("search_by");
-                // System.out.println(search_by);
+                // //System.out.println(search_by);
                 // web_service_response
                 // =Ws_nationality.get_list_of_users_division(search_by);
                 if (web_service_response != null) {
-                    // System.out.println(web_service_response);
+                    // //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
             }
 

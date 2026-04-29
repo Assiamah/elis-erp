@@ -41,38 +41,38 @@ public class FileMovement {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
-		// System.out.println(userName + password);
+		// //System.out.println(userName + password);
 		String web_service_response = null;
 
 		web_service_response = cls_users.checkUser(cls_url_config.getWeb_service_url_ser(),
 				cls_url_config.getWeb_service_url_ser_api_key(), userName, password);
 		// JSONObject obj = new JSONObject();
-		// System.out.println(web_service_response);
+		// //System.out.println(web_service_response);
 		try {
 			if (web_service_response != null) {
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			} else {
 				/*
 				 * obj_r.put( "success" , false ); obj_r.put( "msg" ,
 				 * "Error Delete User.';" );
 				 */
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 			}
-			// System.out.println(web_service_response);
+			// //System.out.println(web_service_response);
 			JSONObject obj = new JSONObject(web_service_response);
 			// String pageName = obj.get("data").toString();
 
 			JSONArray arr = obj.getJSONArray("data");
 			for (int i = 0; i < arr.length(); i++) {
 				String fullname = arr.getJSONObject(i).getString("fullname");
-				// System.out.println(fullname);
+				// //System.out.println(fullname);
 				request.setAttribute("jjson", fullname);
 			}
 
@@ -85,7 +85,7 @@ public class FileMovement {
 			Gson googleJson = new Gson();
 			ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus, ArrayList.class);
 			request.setAttribute("menus", javaArrayListFromGSON);
-			// System.out.println(pageName);
+			// //System.out.println(pageName);
 
 			// //HttpSession session = request.getSession();
 			// session.setAttribute("username", userName);

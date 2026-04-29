@@ -56,7 +56,7 @@ public class ComplianceReport {
 				String start_date = request.getParameter("start_date");
 				String end_date = request.getParameter("end_date");
 
-			// System.out.println(String.format("Log level: %s",
+			// //System.out.println(String.format("Log level: %s",
 			// request.getParameter("request_type")));
 
 			String web_service_response = null;
@@ -68,17 +68,17 @@ public class ComplianceReport {
 				   obj.put( "start_date" , start_date );
                   obj.put( "end_date" , end_date );
 				String input_details = obj.toString();
-				System.out.println(input_details + " Shade @ : " + new java.util.Date());
+				//System.out.println(input_details + " Shade @ : " + new java.util.Date());
 				web_service_response = cls_compliance.report_dashboard_all_post(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

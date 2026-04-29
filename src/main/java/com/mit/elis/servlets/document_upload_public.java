@@ -79,7 +79,7 @@ public class document_upload_public {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -104,25 +104,25 @@ public class document_upload_public {
 
 		// if (!files_pdf_jackets.exists()) {
 		// 	if (files_pdf_jackets.mkdirs()) {
-		// 		System.out.println("Multiple directories are created!");
+		// 		//System.out.println("Multiple directories are created!");
 		// 	} else {
-		// 		System.out.println("Failed to create multiple directories!");
+		// 		//System.out.println("Failed to create multiple directories!");
 		// 	}
 		// }
 
-		System.out.println(savePath);
-		System.out.println(savePath + File.separator);
-		System.out.println(request.getParts());
+		//System.out.println(savePath);
+		//System.out.println(savePath + File.separator);
+		//System.out.println(request.getParts());
 		for (Part part : request.getParts()) {
 			String fileName = extractFileName(part);
 			// refines the fileName in case it is an absolute path
-			System.out.println("path");
-			System.out.println(fileName);
+			//System.out.println("path");
+			//System.out.println(fileName);
 
 			fileName = new File(fileName).getName();
-			System.out.println("file");
-			System.out.println(fileName);
-			System.out.println(savePath + "/" + fileName);
+			//System.out.println("file");
+			//System.out.println(fileName);
+			//System.out.println(savePath + "/" + fileName);
 			part.write(savePath + "/" + file_name_incoming);
 		}
 
@@ -180,7 +180,7 @@ public class document_upload_public {
                                     @RequestParam(value = "samplePublicFile", required = false) MultipartFile[] files) 
                                     throws IOException, ServletException {
 
-										//System.out.println("files: " + files.length);
+										////System.out.println("files: " + files.length);
 
         // Check if session is valid
         if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
@@ -211,8 +211,8 @@ public class document_upload_public {
 						tempFile.delete();
 
                     } catch (Exception e) {
-                        System.out.println("Error uploading file: " + file.getOriginalFilename() + 
-                                         ". Error: " + e.getMessage());
+                        //System.out.println("Error uploading file: " + file.getOriginalFilename() + 
+                                        System.out.println( ". Error: " + e.getMessage());
                     }
                 }
             }
@@ -231,7 +231,7 @@ public class document_upload_public {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -256,30 +256,30 @@ public class document_upload_public {
 
 		// if (!files_pdf_jackets.exists()) {
 		// 	if (files_pdf_jackets.mkdirs()) {
-		// 		System.out.println("Multiple directories are created!");
+		// 		//System.out.println("Multiple directories are created!");
 		// 	} else {
-		// 		System.out.println("Failed to create multiple directories!");
+		// 		//System.out.println("Failed to create multiple directories!");
 		// 	}
 		// }
 
-		// System.out.println(savePath);
-		System.out.println(savePath + File.separator);
-		System.out.println(request.getParts());
+		// //System.out.println(savePath);
+		//System.out.println(savePath + File.separator);
+		//System.out.println(request.getParts());
 
 		File fName = new File("site_plan_for_final_report.pdf");
 
 		for (Part part : request.getParts()) {
 			String fileName = extractFileName(part);
 			// refines the fileName in case it is an absolute path
-			System.out.println("path");
-			System.out.println(fileName);
+			//System.out.println("path");
+			//System.out.println(fileName);
 
 			// fName.renameTo(new File(fName));
 
 			fileName = new File(fileName).getName();
-			System.out.println("file");
-			System.out.println(fileName);
-			System.out.println(savePath + "/" + fName);
+			//System.out.println("file");
+			//System.out.println(fileName);
+			//System.out.println(savePath + "/" + fName);
 			part.write(savePath + File.separator + fName);
 		}
 
@@ -345,9 +345,9 @@ public class document_upload_public {
 
 		// Handle response
 		if (response.getStatusCode().is2xxSuccessful()) {
-			System.out.println("Response: " + response.getBody());
+			//System.out.println("Response: " + response.getBody());
 		} else {
-			System.out.println("Failed to upload file. Status code: " + response.getStatusCode());
+			//System.out.println("Failed to upload file. Status code: " + response.getStatusCode());
 		}
 	}
 	public String getFileNameWithoutExtension(MultipartFile file) {

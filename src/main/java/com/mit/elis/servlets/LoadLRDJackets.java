@@ -46,7 +46,7 @@ public class LoadLRDJackets {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -61,19 +61,19 @@ public class LoadLRDJackets {
 
 				String certificate_number = request.getParameter("case_number");
 				String folderpath = cls_url_config.getCase_upload_location() + certificate_number;
-				// System.out.println("folderpath: " +folderpath);
+				// //System.out.println("folderpath: " +folderpath);
 				// List All Files In a Folder
 				File subdir = new File(folderpath.toString());
 				String[] children = subdir.list();
 				if (children == null) {
-					// System.out.println("Either dir does not exist or is not a
+					// //System.out.println("Either dir does not exist or is not a
 					// directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
-						// System.out.println("case_number: " +
+						// //System.out.println("case_number: " +
 						// certificate_number);
-						// System.out.println("File: " + filename_doc);
+						// //System.out.println("File: " + filename_doc);
 						String path = folderpath.toString() + "/" + filename_doc;
 
 						String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -94,7 +94,7 @@ public class LoadLRDJackets {
 					}
 
 				}
-				// System.out.println(arr_r.toString());
+				// //System.out.println(arr_r.toString());
 
 			}
 
@@ -102,19 +102,19 @@ public class LoadLRDJackets {
 
 				String certificate_number = request.getParameter("case_number");
 				String folderpath = cls_url_config.getPublic_docs_upload_location() + certificate_number;
-				// System.out.println("folderpath: " +folderpath);
+				// //System.out.println("folderpath: " +folderpath);
 				// List All Files In a Folder
 				File subdir = new File(folderpath.toString());
 				String[] children = subdir.list();
 				if (children == null) {
-					// System.out.println("Either dir does not exist or is not a
+					// //System.out.println("Either dir does not exist or is not a
 					// directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
-						// System.out.println("case_number: " +
+						// //System.out.println("case_number: " +
 						// certificate_number);
-						// System.out.println("File: " + filename_doc);
+						// //System.out.println("File: " + filename_doc);
 						String path = folderpath.toString() + File.separator + filename_doc;
 
 						String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -135,7 +135,7 @@ public class LoadLRDJackets {
 					}
 
 				}
-				System.out.println(arr_r.toString());
+				//System.out.println(arr_r.toString());
 			}
 
 			if (request_type.equals("load_case_scanned_document_new")) {
@@ -145,14 +145,14 @@ public class LoadLRDJackets {
 				obj.put("document_type", "case_docs");
 				
 					
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				String web_response = cls_case_documents.select_case_documents_by_case_number(cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(), obj.toString());
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String docs_data = web_response_case.get("data").toString(); 
-				//System.out.println(docs_data);
+				////System.out.println(docs_data);
 
 				return docs_data;
 			}
@@ -164,14 +164,14 @@ public class LoadLRDJackets {
 				obj.put("document_type", "case_docs");
 				
 					
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				String web_response = cls_case_documents.select_doc_files_details_by_reference_number_backend_admin(cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(), obj.toString());
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String docs_data = web_response_case.get("data").toString(); 
-				//System.out.println(docs_data);
+				////System.out.println(docs_data);
 
 				return docs_data;
 			}
@@ -184,14 +184,14 @@ public class LoadLRDJackets {
 				obj.put("doc_reference_number", case_number);
 				obj.put("document_type", "public_docs");
 				
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				
 				String web_response = cls_case_documents.select_case_documents_by_case_number(cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(), obj.toString());
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String docs_data = web_response_case.get("data").toString(); 
-				//System.out.println(docs_data);
+				////System.out.println(docs_data);
 
 				return docs_data;
 			}
@@ -204,14 +204,14 @@ public class LoadLRDJackets {
 				obj.put("doc_reference_number", case_number);
 				obj.put("document_type", "public_docs");
 				
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 				
 				String web_response = cls_case_documents.select_doc_files_details_by_reference_number_backend_admin(cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(), obj.toString());
-				System.out.println(web_response);
+				//System.out.println(web_response);
 
 				JSONObject web_response_case = new JSONObject(web_response); 
 				String docs_data = web_response_case.get("data").toString(); 
-				//System.out.println(docs_data);
+				////System.out.println(docs_data);
 
 				return docs_data;
 			}
@@ -220,19 +220,19 @@ public class LoadLRDJackets {
 
 				String certificate_number = request.getParameter("certificate_number");
 				String folderpath = cls_url_config.getLrd_jacket_raw_path() + certificate_number;
-				// System.out.println("folderpath: " +folderpath);
+				// //System.out.println("folderpath: " +folderpath);
 				// List All Files In a Folder
 				File subdir = new File(folderpath.toString());
 				String[] children = subdir.list();
 				if (children == null) {
-					// System.out.println("Either dir does not exist or is not a
+					// //System.out.println("Either dir does not exist or is not a
 					// directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
-						// System.out.println("case_number: " +
+						// //System.out.println("case_number: " +
 						// certificate_number);
-						// System.out.println("File: " + filename_doc);
+						// //System.out.println("File: " + filename_doc);
 						String path = folderpath.toString() + File.separator + filename_doc;
 
 						String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -253,7 +253,7 @@ public class LoadLRDJackets {
 					}
 
 				}
-				// System.out.println(arr_r.toString());
+				// //System.out.println(arr_r.toString());
 
 			}
 
@@ -261,19 +261,19 @@ public class LoadLRDJackets {
 
 				String certificate_number = request.getParameter("certificate_number");
 				String folderpath = cls_url_config.getLrd_jacket_raw_path() + certificate_number;
-				// System.out.println("folderpath: " +folderpath);
+				// //System.out.println("folderpath: " +folderpath);
 				// List All Files In a Folder
 				File subdir = new File(folderpath.toString());
 				String[] children = subdir.list();
 				if (children == null) {
-					// System.out.println("Either dir does not exist or is not a
+					// //System.out.println("Either dir does not exist or is not a
 					// directory");
 				} else {
 					for (int j = 0; j < children.length; j++) {
 						String filename_doc = children[j];
-						// System.out.println("case_number: " +
+						// //System.out.println("case_number: " +
 						// certificate_number);
-						// System.out.println("File: " + filename_doc);
+						// //System.out.println("File: " + filename_doc);
 						String path = folderpath.toString() + File.separator + filename_doc;
 
 						String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -294,10 +294,10 @@ public class LoadLRDJackets {
 					}
 
 				}
-				// System.out.println(arr_r.toString());
+				// //System.out.println(arr_r.toString());
 
 			}
-			// System.out.println(arr_r.toString());
+			// //System.out.println(arr_r.toString());
 
 			return arr_r.toString();
 			// out.println(arr_r.toString());

@@ -44,7 +44,7 @@ public class DashboardAppsWithDivision {
 		try {
 			String requestType = request.getParameter("request_type");
 
-			// System.out.println(String.format("Log level: %s", requestType));
+			// //System.out.println(String.format("Log level: %s", requestType));
 			// HttpSession session = request.getSession();
 			String region_id = (String) (request.getParameter("region_id") != null
 					? request.getParameter("region_id")
@@ -55,7 +55,7 @@ public class DashboardAppsWithDivision {
 			if (requestType.equals("apps_with_division_units")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -66,9 +66,9 @@ public class DashboardAppsWithDivision {
 						.report_dashboard_units_with_apps_post(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -76,8 +76,8 @@ public class DashboardAppsWithDivision {
 				String division = request.getParameter("division");
 				String unit = request.getParameter("unit");
 
-				// System.out.println(division);
-				// System.out.println(unit);
+				// //System.out.println(division);
+				// //System.out.println(unit);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -90,16 +90,16 @@ public class DashboardAppsWithDivision {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (requestType.equals("apps_with_division_applications")) {
 				String staff = request.getParameter("staff");
 
-				// System.out.println(staff);
+				// //System.out.println(staff);
 
 				JSONObject obj = new JSONObject();
 				obj.put("staff_id", staff);
@@ -110,9 +110,9 @@ public class DashboardAppsWithDivision {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -120,7 +120,31 @@ public class DashboardAppsWithDivision {
 				String unit_name = (String) session.getAttribute("unit_name");
 				String division = (String) session.getAttribute("division");
 
-				// System.out.println(staff);
+				// //System.out.println(staff);
+
+				JSONObject obj = new JSONObject();
+				obj.put("unit_name", unit_name);
+				obj.put("division", division);
+				obj.put("region_id", region_id);
+				String input_details = obj.toString();
+
+				////System.out.println(input_details);
+
+				web_service_response = cls_compliance.select_reminder_apps_from_complaince_notice_by_unit(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						input_details);
+				if (web_service_response != null) {
+					//System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+			}
+
+			if (requestType.equals("warning_apps_officers")) {
+				String unit_name = (String) session.getAttribute("unit_name");
+				String division = (String) session.getAttribute("division");
+
+				// //System.out.println(staff);
 
 				JSONObject obj = new JSONObject();
 				obj.put("unit_name", unit_name);
@@ -130,37 +154,13 @@ public class DashboardAppsWithDivision {
 
 				//System.out.println(input_details);
 
-				web_service_response = cls_compliance.select_reminder_apps_from_complaince_notice_by_unit(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
-						input_details);
-				if (web_service_response != null) {
-					System.out.println(web_service_response);
-				} else {
-					System.out.println(web_service_response);
-				}
-			}
-
-			if (requestType.equals("warning_apps_officers")) {
-				String unit_name = (String) session.getAttribute("unit_name");
-				String division = (String) session.getAttribute("division");
-
-				// System.out.println(staff);
-
-				JSONObject obj = new JSONObject();
-				obj.put("unit_name", unit_name);
-				obj.put("division", division);
-				obj.put("region_id", region_id);
-				String input_details = obj.toString();
-
-				System.out.println(input_details);
-
 				web_service_response = cls_compliance.select_warning_apps_from_complaince_notice_by_unit(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -178,15 +178,15 @@ public class DashboardAppsWithDivision {
 				
 				String input_details = obj.toString();
 
-				System.out.println(input_details);
+				//System.out.println(input_details);
 
 				web_service_response = cls_compliance.select_update_compliance_notice_to_active(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -194,7 +194,7 @@ public class DashboardAppsWithDivision {
 				String unit_name = (String) session.getAttribute("unit_name");
 				String division = (String) session.getAttribute("division");
 
-				// System.out.println(staff);
+				// //System.out.println(staff);
 
 				JSONObject obj = new JSONObject();
 				obj.put("unit_name", unit_name);
@@ -202,15 +202,15 @@ public class DashboardAppsWithDivision {
 				obj.put("region_id", region_id);
 				String input_details = obj.toString();
 
-				System.out.println(input_details);
+				//System.out.println(input_details);
 
 				web_service_response = cls_compliance.select_compliance_application_notice_by_unit(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

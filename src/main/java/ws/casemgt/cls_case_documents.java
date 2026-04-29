@@ -174,7 +174,7 @@ public class cls_case_documents {
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 
-			System.out.println("Requested load bill: " + json_request);
+			//System.out.println("Requested load bill: " + json_request);
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.header("x-api-key", egcr_apikey).post(ClientResponse.class,json_request);
 

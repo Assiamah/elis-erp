@@ -93,12 +93,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_complaints(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -147,12 +147,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_reports(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -192,12 +192,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_complaints(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -246,12 +246,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_focal_person_tickets(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -268,12 +268,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.reply_ticket(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -288,12 +288,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_ticket_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -307,12 +307,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_client_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -328,12 +328,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.client_reply(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -352,12 +352,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.status_update(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -374,12 +374,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.search_archived(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -394,12 +394,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_enquiry_service(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -412,12 +412,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_tickets_by_id(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -430,12 +430,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_tickets_by_id(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -448,12 +448,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_status_note(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -466,12 +466,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_ticket_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -479,14 +479,14 @@ public class CicaServlet {
 				String attachment_path = request.getParameter("attachment_path").trim();
 				String ticket_no = request.getParameter("ticket_no").trim();
 				ticket_no = ticket_no.replace("/", "_");
-				System.out.println(attachment_path);
+				//System.out.println(attachment_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				// File pdfFile = new File(cls_url_config.getLegal_document_location() +
 				// suit_number + "/" + file_path);
 				File pdfFile = new File(attachment_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -516,17 +516,17 @@ public class CicaServlet {
 
 				String list = request.getParameter("list");
 
-				System.out.println(list);
+				//System.out.println(list);
 
 				web_service_response = cls_cica.forward_focal_tickets(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), list);
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -608,7 +608,7 @@ public class CicaServlet {
 
 
 				if (web_response != null) {
-					System.out.println(web_response);
+					//System.out.println(web_response);
 
 				} else {
 					obj_r.put("success", false);
@@ -620,13 +620,13 @@ public class CicaServlet {
 			if (request_type.equals("open_request_pdf")) {
 				String ticket_no = request.getParameter("ticket_no");
 				String file_path = request.getParameter("file_path").trim();
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(cls_url_config.getCica_request_form() + ticket_no + "/" + "request_slip" + "_"
 						+ file_path + ".pdf");
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -654,12 +654,12 @@ public class CicaServlet {
 			if (request_type.equals("open_requested_pdf")) {
 				String ticket_no = request.getParameter("ticket_no");
 				String file_path = request.getParameter("file_path").trim();
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(file_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -723,12 +723,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -742,12 +742,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_ticket_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -772,28 +772,28 @@ public class CicaServlet {
 				obj.put("phone", phone);
 				obj.put("date", date);
 
-				// System.out.println(receiver);
-				// System.out.println(message);
-				// System.out.println(phone);
-				// System.out.println(date);
+				// //System.out.println(receiver);
+				// //System.out.println(message);
+				// //System.out.println(phone);
+				// //System.out.println(date);
 				cls_cica.sendMail(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 				obj_sms.put("msg", message);
 				obj_sms.put("recipient", phone);
-				// System.out.println(obj_sms);
+				// //System.out.println(obj_sms);
 				cls_cica.sendText(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 				web_service_response = cls_cica.client_reply(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -808,12 +808,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_unit_tickets(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -821,17 +821,17 @@ public class CicaServlet {
 
 				String list = request.getParameter("list");
 
-				System.out.println(list);
+				//System.out.println(list);
 
 				web_service_response = cls_cica.archive_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), list);
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -854,7 +854,7 @@ public class CicaServlet {
 					sms_response = cls_cica.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 
-					System.out.println(sms_response);
+					//System.out.println(sms_response);
 
 					obj.put("ticket_no", ticket_no);
 					obj.put("contact_by", contact_by);
@@ -866,7 +866,7 @@ public class CicaServlet {
 							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 					if (web_service_response != null) {
-						System.out.println(web_service_response);
+						//System.out.println(web_service_response);
 					} else {
 
 						obj_r.put("success", false);
@@ -918,12 +918,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_tickets(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -940,12 +940,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.reply_ticket(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -960,12 +960,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_ticket_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -979,12 +979,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_client_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1000,12 +1000,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.client_reply(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1024,12 +1024,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.status_update(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1046,12 +1046,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.search_archived(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1066,12 +1066,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_enquiry_service(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1084,12 +1084,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.get_tickets_by_id(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1106,12 +1106,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.forward_ticket(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1128,12 +1128,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.forward_ticket(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1171,15 +1171,15 @@ public class CicaServlet {
 				cls_cica.send_single_sms(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj_sms.toString());
 
-				System.out.println(obj_sms.toString());
+				//System.out.println(obj_sms.toString());
 				//}
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1192,12 +1192,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_status_note(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1210,12 +1210,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_ticket_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1228,12 +1228,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_ticket_one_replies(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1241,14 +1241,14 @@ public class CicaServlet {
 				String attachment_path = request.getParameter("attachment_path").trim();
 				String ticket_no = request.getParameter("ticket_no").trim();
 				ticket_no = ticket_no.replace("/", "_");
-				System.out.println(attachment_path);
+				//System.out.println(attachment_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				// File pdfFile = new File(cls_url_config.getLegal_document_location() +
 				// suit_number + "/" + file_path);
 				File pdfFile = new File(attachment_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -1289,12 +1289,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.forward_tickets(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1307,12 +1307,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.load_sms_messages(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1335,12 +1335,12 @@ public class CicaServlet {
 				web_service_response = cls_cica.update_ticket_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -1396,7 +1396,7 @@ public class CicaServlet {
 				obj.put("reply_from", reply_from);
 				obj.put("move_to", move_to);
 
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				if (attach_file.equals("")) {
 					attach_file = "false";
@@ -1406,7 +1406,7 @@ public class CicaServlet {
 							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 					if (web_service_response != null) {
-						System.out.println(web_service_response);
+						//System.out.println(web_service_response);
 
 					} else {
 						obj_r.put("success", false);
@@ -1441,7 +1441,7 @@ public class CicaServlet {
 					boolean success = writeToFile(is, path);
 
 					if (success) {
-						System.out.println("File Uploaded to this directory: " + path);
+						//System.out.println("File Uploaded to this directory: " + path);
 
 						// File file = new File(path + fileName);
 
@@ -1462,7 +1462,7 @@ public class CicaServlet {
 								fileCopy(sourcePath, destinationPath);
 								obj.put("location", destinationPath);
 							} else {
-								System.out.println("Sorry couldn't create specified directory");
+								//System.out.println("Sorry couldn't create specified directory");
 								obj.put("location", destinationPath);
 							}
 						} else {
@@ -1472,12 +1472,12 @@ public class CicaServlet {
 
 					}
 
-					System.out.println(obj);
+					//System.out.println(obj);
 
 					
 
 					if (web_service_response != null) {
-						System.out.println(web_service_response);
+						//System.out.println(web_service_response);
 
 					} else {
 						obj_r.put("success", false);
@@ -1536,7 +1536,7 @@ public class CicaServlet {
 			// cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 			// if (web_service_response != null) {
-			// System.out.println(web_service_response);
+			// //System.out.println(web_service_response);
 
 			// } else {
 			// obj_r.put("success", false);
@@ -1566,7 +1566,7 @@ public class CicaServlet {
 			// boolean success = writeToFile(is,path);
 
 			// if(success) {
-			// System.out.println("File Uploaded to this directory: "+path);
+			// //System.out.println("File Uploaded to this directory: "+path);
 
 			// //File file = new File(path + fileName);
 
@@ -1587,7 +1587,7 @@ public class CicaServlet {
 			// fileCopy(sourcePath,destinationPath);
 			// }
 			// else{
-			// System.out.println("Sorry couldn't create specified directory");
+			// //System.out.println("Sorry couldn't create specified directory");
 			// }
 			// }
 			// else {
@@ -1602,7 +1602,7 @@ public class CicaServlet {
 			// cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 			// if (web_service_response != null) {
-			// System.out.println(web_service_response);
+			// //System.out.println(web_service_response);
 
 			// } else {
 			// obj_r.put("success", false);
@@ -1656,7 +1656,7 @@ public class CicaServlet {
 				//String request_by_id = request.getParameter("request_by_id");
 				String request_by_id = (String) session.getAttribute("userid");
 				String regional_code = (String) session.getAttribute("regional_code");
-				// System.out.println(regional_code);
+				// //System.out.println(regional_code);
 				String within_time_frame = "";
 				String subject = "";
 				String description = "";
@@ -1670,7 +1670,7 @@ public class CicaServlet {
 				obj.put("purpose", purpose);
 				obj.put("regional_code", regional_code);
 
-				System.out.println("Data: " + obj.toString());
+				//System.out.println("Data: " + obj.toString());
 
 				switch (purpose) {
 					case "1":
@@ -1744,7 +1744,7 @@ public class CicaServlet {
 
 						break;
 					default:
-						System.out.println("Non Service Complaint");
+						//System.out.println("Non Service Complaint");
 
 				}
 
@@ -1753,9 +1753,9 @@ public class CicaServlet {
 				web_service_response = cls_cica.save_client_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
 					obj_r.put("success", false);
@@ -1794,9 +1794,9 @@ public class CicaServlet {
 				web_service_response = cls_cica.open_ticket(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				System.out.println(web_service_response);
+				//System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
 					obj_r.put("success", false);
@@ -1825,7 +1825,7 @@ public class CicaServlet {
 				String request_by_id = request.getParameter("request_by_id");
 				String milestone_status = request.getParameter("milestone_status");
 				// String regional_code=(String) session.getAttribute("regional_code");
-				// System.out.println(regional_code);
+				// //System.out.println(regional_code);
 				String contact_type = request.getParameter("contact_type");
 				String priority = request.getParameter("priority");
 				String user_region =  (String) session.getAttribute("region_id");
@@ -1982,18 +1982,18 @@ public class CicaServlet {
 							session.getAttribute("web_fax_number").toString(),
 							session.getAttribute("web_email").toString());
 
-							 System.out.println(buffer);
-							// System.out.println(ticket_no);
-							// System.out.println(client_name);
-							// System.out.println(purpose);
-							// System.out.println(request_by);
-							// System.out.println(files_pdf_jackets_p);
-							// System.out.println(timeStamp);
-							// System.out.println(session.getAttribute("web_comp_address").toString());
-							// System.out.println(session.getAttribute("web_city").toString());
-							// System.out.println(session.getAttribute("web_telephone").toString());
-							// System.out.println(session.getAttribute("web_fax_number").toString());
-							// System.out.println(session.getAttribute("web_email").toString());
+							 //System.out.println(buffer);
+							// //System.out.println(ticket_no);
+							// //System.out.println(client_name);
+							// //System.out.println(purpose);
+							// //System.out.println(request_by);
+							// //System.out.println(files_pdf_jackets_p);
+							// //System.out.println(timeStamp);
+							// //System.out.println(session.getAttribute("web_comp_address").toString());
+							// //System.out.println(session.getAttribute("web_city").toString());
+							// //System.out.println(session.getAttribute("web_telephone").toString());
+							// //System.out.println(session.getAttribute("web_fax_number").toString());
+							// //System.out.println(session.getAttribute("web_email").toString());
 
 							if (buffer != null) {
 								// Set response content type to PDF
@@ -2023,9 +2023,9 @@ public class CicaServlet {
 					web_service_response = null;
 				}
 
-				//System.out.println(web_service_response);
+				////System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
+					// //System.out.println("Ended a@ : " + new java.util.Date() + " \n" +
 					// web_service_response);
 				} else {
 					obj_r.put("success", false);
@@ -2037,14 +2037,14 @@ public class CicaServlet {
 				String file_path = request.getParameter("file_path").trim();
 				// String ticket_no = request.getParameter("ticket_no").trim();
 				// ticket_no = ticket_no.replace("/", "_");
-				System.out.println(file_path);
+				//System.out.println(file_path);
 
 				// File pdfFile = new
 				// File("C:\\legal_docs\\batchlist\\batch_list_"+file_path+".pdf");
 				File pdfFile = new File(
 						cls_url_config.getCica_created_ticket() + "batch_list" + "_" + file_path + ".pdf");
 				// File pdfFile = new File(attachment_path);
-				System.out.println(pdfFile);
+				//System.out.println(pdfFile);
 
 				byte[] buffer = null;
 
@@ -2151,9 +2151,9 @@ public class CicaServlet {
 
 		// Handle response
 		if (response.getStatusCode().is2xxSuccessful()) {
-			System.out.println("Response: " + response.getBody());
+			//System.out.println("Response: " + response.getBody());
 		} else {
-			System.out.println("Failed to upload file. Status code: " + response.getStatusCode());
+			//System.out.println("Failed to upload file. Status code: " + response.getStatusCode());
 		}
 	}
 }

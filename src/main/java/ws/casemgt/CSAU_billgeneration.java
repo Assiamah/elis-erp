@@ -242,7 +242,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			//out.close();
 
-			System.out.println("Pdf created successfully..");
+			//System.out.println("Pdf created successfully..");
 
 			/*
 			 * response.setContentType("application/pdf");
@@ -307,7 +307,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			return stringBuffer.toString();
 		} catch (Exception e) {
-			System.out.println("Error SMS " + e);
+			//System.out.println("Error SMS " + e);
 			return "Error " + e;
 		}
 	}
@@ -806,7 +806,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			 * JSONObject(bill_details);
 			 * 
 			 * JSONObject obj = jArr.getJSONObject(i);
-			 * System.out.println(obj.toString());
+			 * //System.out.println(obj.toString());
 			 * 
 			 * ;
 			 * 
@@ -953,7 +953,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 				// JSONObject(bill_details);
 
 				JSONObject obj = jArr.getJSONObject(i);
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				table.addCell(new PdfPCell(new Phrase(NumberCount.toString(), font10pt)));
 				table.addCell(new PdfPCell(new Phrase((String) obj.getString("bill_number"), font10pt)));
@@ -1308,7 +1308,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			 * JSONObject(bill_details);
 			 * 
 			 * JSONObject obj = jArr.getJSONObject(i);
-			 * System.out.println(obj.toString());
+			 * //System.out.println(obj.toString());
 			 * 
 			 * ;
 			 * 
@@ -1455,7 +1455,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 				// JSONObject(bill_details);
 
 				JSONObject obj = jArr.getJSONObject(i);
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				table.addCell(new PdfPCell(new Phrase(NumberCount.toString(), font10pt)));
 				table.addCell(new PdfPCell(new Phrase((String) obj.getString("bill_number"), font10pt)));
@@ -1752,7 +1752,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 
-			System.out.println("Requested egcr: " + json_request);
+			//System.out.println("Requested egcr: " + json_request);
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.header("X-Api-Key", egcr_apikey).get(ClientResponse.class);
 
@@ -2125,7 +2125,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			// convert to acres amount entered in hectors
 			double bd_size_acres = Double.parseDouble(bd_land_size) * 0.404686;
-			System.out.println("value in hect is : " + bd_size_acres);
+			//System.out.println("value in hect is : " + bd_size_acres);
 			BigDecimal instance = new BigDecimal(Double.toString(bd_size_acres));
 			instance = instance.setScale(2, RoundingMode.HALF_UP);
 
@@ -2332,7 +2332,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			// convert to acres amount entered in hectors
 			// double bd_size_acres = Double.parseDouble(bd_land_size) * 0.404686;
-			// System.out.println("value in hect is : " + bd_size_acres);
+			// //System.out.println("value in hect is : " + bd_size_acres);
 			// BigDecimal instance = new BigDecimal(Double.toString(bd_size_acres));
 			// instance = instance.setScale(2, RoundingMode.HALF_UP);
 
@@ -2527,7 +2527,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			p10.setAlignment(Element.ALIGN_LEFT);
 			document.add(p10);
 
-			System.out.println(bd_business_process_name);
+			//System.out.println(bd_business_process_name);
 			if (bd_business_process_name.equals("APPLICATION FOR REGIONAL NUMBER")) {
 
 				// bd_locality_of_parcel = (String)
@@ -2840,7 +2840,7 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			 * p3.setAlignment(Element.ALIGN_LEFT); document.add(p3);
 			 */
 
-			// System.out.println(bd_business_process_name);
+			// //System.out.println(bd_business_process_name);
 
 			// Paragraph p11 = new Paragraph("Locality of Parcel: " +
 			// bd_locality_of_parcel, new Font(FontFamily.TIMES_ROMAN, 10));
@@ -3408,11 +3408,11 @@ document.add(propertyAndAccount);
         DecimalFormat df_1 = new DecimalFormat("####.00");
         String formattedAmountDue_1= df_1.format(amountDueValue_1);
 
-			System.out.println("amountDue");
-		System.out.println(amountDue);
+			//System.out.println("amountDue");
+		//System.out.println(amountDue);
 
-			System.out.println("formattedAmountDue");
-		System.out.println(formattedAmountDue);
+			//System.out.println("formattedAmountDue");
+		//System.out.println(formattedAmountDue);
 
 
         Paragraph p5 = new Paragraph();
@@ -3884,7 +3884,7 @@ document.add(signTable);
 					new Font(FontFamily.TIMES_ROMAN, 12));
 			p6.setAlignment(Element.ALIGN_LEFT);
 			document.add(p6);
-			// System.out.println(bd_business_process_name);
+			// //System.out.println(bd_business_process_name);
 
 			// document.add(new Phrase(Chunk.NEWLINE));
 
@@ -3971,7 +3971,7 @@ table.addCell(new PdfPCell(new Phrase(formatted, font12pt)));
 			 * JSONObject(bill_details);
 			 * 
 			 * JSONObject obj = jArr.getJSONObject(i);
-			 * System.out.println(obj.toString());
+			 * //System.out.println(obj.toString());
 			 * 
 			 * ;
 			 * 
@@ -5216,7 +5216,7 @@ table.addCell(new PdfPCell(new Phrase(formatted, font12pt)));
 				// JSONObject obj = new JSONObject(bill_details);
 
 				JSONObject obj = jArr.getJSONObject(i);
-				System.out.println(obj.toString());
+				//System.out.println(obj.toString());
 
 				;
 
@@ -5448,7 +5448,7 @@ table.addCell(new PdfPCell(new Phrase(formatted, font12pt)));
 
 			// convert to acres amount entered in hectors
 			double bd_size_acres = Double.parseDouble(bd_land_size) * 0.404686;
-			System.out.println("value in hect is : " + bd_size_acres);
+			//System.out.println("value in hect is : " + bd_size_acres);
 			BigDecimal instance = new BigDecimal(Double.toString(bd_size_acres));
 			instance = instance.setScale(2, RoundingMode.HALF_UP);
 

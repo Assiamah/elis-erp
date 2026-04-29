@@ -64,7 +64,7 @@ public class payment_serv_egcr {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -76,13 +76,13 @@ public class payment_serv_egcr {
 
 			String web_service_response = null;
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("generate_egcr")) {
 				String ref_number = request.getParameter("ref_number");
 				String receipt_number = request.getParameter("receipt_number");
-				System.out.println(ref_number);
-				System.out.println(receipt_number);
+				//System.out.println(ref_number);
+				//System.out.println(receipt_number);
 				/*
 				 * JSONObject obj_d = new JSONObject(); obj_d.put("ref_number",
 				 * ref_number); obj_d.put("receipt_number", ref_number);

@@ -55,7 +55,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -70,7 +70,7 @@ public class MapsController {
 				 * web_service_response_menu = casemgt_web_service
 				 * .load_application_batched_to_user((String)
 				 * session.getAttribute("userid"));
-				 * System.out.println(web_service_response_menu); JSONObject
+				 * //System.out.println(web_service_response_menu); JSONObject
 				 * menu_obj; menu_obj = new
 				 * JSONObject(web_service_response_menu); String all_menus =
 				 * menu_obj.get("data").toString();
@@ -87,7 +87,7 @@ public class MapsController {
 
 				// Session is expired
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -127,7 +127,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -143,7 +143,7 @@ public class MapsController {
 							.load_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									(String) session.getAttribute("userid"));
-					System.out.println(web_service_response_menu);
+					//System.out.println(web_service_response_menu);
 					JSONObject menu_obj;
 					menu_obj = new JSONObject(web_service_response_menu);
 					String all_menus = menu_obj.get("data").toString();
@@ -157,7 +157,7 @@ public class MapsController {
 
 					// Session is expired
 					request.setAttribute("login", "sessionout");
-					System.out.println("If Not success");
+					//System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 				}
@@ -170,7 +170,7 @@ public class MapsController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -205,7 +205,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -216,7 +216,7 @@ public class MapsController {
 				// web_service_response = get_gender_list;
 				// menu_obj_data = new JSONObject(get_gender_list);
 				// String all_menus_data = menu_obj_data.get("data").toString();
-				// System.out.println(all_menus_data);
+				// //System.out.println(all_menus_data);
 				Gson googleJson = new Gson();
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
 
@@ -253,7 +253,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -287,16 +287,16 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		Ws_maps cls_maps = new Ws_maps();
 		String web_service_response = null;
 
-		// System.out.println(obj.toString());
-		System.out.println(cls_url_config.getWeb_service_url_ser());
-		System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
+		// //System.out.println(obj.toString());
+		//System.out.println(cls_url_config.getWeb_service_url_ser());
+		//System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
 
 		try {
 			web_service_response = cls_maps.select_count_of_lc_spatial_objects(cls_url_config.getWeb_service_url_ser(),
@@ -341,16 +341,16 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		Ws_maps cls_maps = new Ws_maps();
 		String web_service_response = null;
 
-		// System.out.println(obj.toString());
-		// System.out.println(cls_url_config.getWeb_service_url_ser());
-		// System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
+		// //System.out.println(obj.toString());
+		// //System.out.println(cls_url_config.getWeb_service_url_ser());
+		// //System.out.println(cls_url_config.getWeb_service_url_ser_api_key());
 
 		try {
 			web_service_response = cls_maps.select_count_of_lc_spatial_objects(cls_url_config.getWeb_service_url_ser(),
@@ -395,7 +395,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -410,7 +410,7 @@ public class MapsController {
 				 * web_service_response_menu = casemgt_web_service
 				 * .load_application_batched_to_user((String)
 				 * session.getAttribute("userid"));
-				 * System.out.println(web_service_response_menu); JSONObject
+				 * //System.out.println(web_service_response_menu); JSONObject
 				 * menu_obj; menu_obj = new
 				 * JSONObject(web_service_response_menu); String all_menus =
 				 * menu_obj.get("data").toString();
@@ -427,7 +427,7 @@ public class MapsController {
 
 				// Session is expired
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -466,7 +466,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -481,7 +481,7 @@ public class MapsController {
 				 * web_service_response_menu = casemgt_web_service
 				 * .load_application_batched_to_user((String)
 				 * session.getAttribute("userid"));
-				 * System.out.println(web_service_response_menu); JSONObject
+				 * //System.out.println(web_service_response_menu); JSONObject
 				 * menu_obj; menu_obj = new
 				 * JSONObject(web_service_response_menu); String all_menus =
 				 * menu_obj.get("data").toString();
@@ -498,7 +498,7 @@ public class MapsController {
 
 				// Session is expired
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -522,7 +522,7 @@ public class MapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}

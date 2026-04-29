@@ -38,7 +38,7 @@ public class religion {
 			JSONArray jsonArr = new JSONArray();
 			JSONObject obj = new JSONObject();
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("add")) {
 				String religion_name = request.getParameter("religion_name");
@@ -46,13 +46,13 @@ public class religion {
 				obj.put("religion_name", religion_name);
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				web_service_response = Ws_religion.religion_add(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -67,40 +67,40 @@ public class religion {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				web_service_response = Ws_religion.religion_update(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("delete")) {
 				String religion_id = request.getParameter("religion_id");
 				// obj.put( "userid" , userid );
-				// System.out.println(religion_id);
+				// //System.out.println(religion_id);
 				web_service_response = Ws_religion.religion_delete(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						religion_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("get_all")) {
 
 				String search_by = request.getParameter("search_by");
-				// System.out.println(search_by);
+				// //System.out.println(search_by);
 				// web_service_response
 				// =Ws_religion.get_list_of_users_division(search_by);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

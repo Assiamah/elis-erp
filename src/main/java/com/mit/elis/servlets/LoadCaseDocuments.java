@@ -39,7 +39,7 @@ public class LoadCaseDocuments {
 			if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 				// Session is expired
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -52,17 +52,17 @@ public class LoadCaseDocuments {
 			// List All Folders in a Folder
 
 			String folderpath = cls_url_config.getCase_upload_location() + case_number;
-			// System.out.println("folderpath: " +folderpath);
+			// //System.out.println("folderpath: " +folderpath);
 			// List All Files In a Folder
 			File subdir = new File(folderpath.toString());
 			String[] children = subdir.list();
 			if (children == null) {
-				System.out.println("Either dir does not exist or is not a directory");
+				//System.out.println("Either dir does not exist or is not a directory");
 			} else {
 				for (int j = 0; j < children.length; j++) {
 					String filename_doc = children[j];
-					System.out.println("case_number: " + case_number);
-					System.out.println("File: " + filename_doc);
+					//System.out.println("case_number: " + case_number);
+					//System.out.println("File: " + filename_doc);
 					String path = folderpath.toString() + "/" + filename_doc;
 
 					String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -87,7 +87,7 @@ public class LoadCaseDocuments {
 			// obj_ar.put( "success" , true );
 
 			// obj_ar.put( "data" , arr_r.toString() );
-			System.out.println(arr_r.toString());
+			//System.out.println(arr_r.toString());
 
 			return arr_r.toString();
 			// out.println(arr_r.toString());

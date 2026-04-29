@@ -19,8 +19,8 @@ public class Ws_users {
 
 				Client client = Client.create();
 
-				//System.out.println(web_service_url + "user_management_service/load_user_for_login");
-				//System.out.println(web_service_api_key);
+				////System.out.println(web_service_url + "user_management_service/load_user_for_login");
+				////System.out.println(web_service_api_key);
 				WebResource webResource = client
 						.resource(web_service_url + "user_management_service/load_user_for_login");
 				JSONObject obj = new JSONObject();
@@ -28,7 +28,7 @@ public class Ws_users {
 				obj.put("password", password);
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				System.out.println(input);
+				//System.out.println(input);
 				ClientResponse response_ws = webResource.type("application/json")
 						.header("x-api-key", web_service_api_key).post(ClientResponse.class, input);
 				if (response_ws.getStatus() != 200) {
@@ -55,8 +55,8 @@ public class Ws_users {
 
 				Client client = Client.create();
 
-				System.out.println(web_service_url + "user_management_service/select_user_by_userid");
-				System.out.println(web_service_api_key);
+				//System.out.println(web_service_url + "user_management_service/select_user_by_userid");
+				//System.out.println(web_service_api_key);
 				WebResource webResource = client
 						.resource(web_service_url + "user_management_service/select_user_by_userid");
 				JSONObject obj = new JSONObject();
@@ -64,7 +64,7 @@ public class Ws_users {
 				//obj.put("password", password);
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				System.out.println(input);
+				//System.out.println(input);
 				ClientResponse response_ws = webResource.type("application/json")
 						.header("x-api-key", web_service_api_key).post(ClientResponse.class, input);
 				if (response_ws.getStatus() != 200) {

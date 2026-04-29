@@ -60,7 +60,7 @@ public class UploadRegionalNumberCSV {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -83,8 +83,8 @@ public class UploadRegionalNumberCSV {
 			String fileName = extractFileName(part);
 
 			filename1 = fileName;
-			// System.out.println(filename1);
-			// System.out.println(fileName);
+			// //System.out.println(filename1);
+			// //System.out.println(fileName);
 			// refines the fileName in case it is an absolute path
 			fileName = new File(fileName).getName();
 			part.write(savePath + "/" + file_name_incoming);
@@ -147,7 +147,7 @@ public class UploadRegionalNumberCSV {
 
 				}
 				jsonArr.put(obj);
-				//// System.out.println();
+				//// //System.out.println();
 
 			}
 		} catch (FileNotFoundException e) {
@@ -183,7 +183,7 @@ public class UploadRegionalNumberCSV {
 		 * 
 		 * // use comma as separator String[] country = line.split(cvsSplitBy);
 		 * 
-		 * // //System.out.println("x_coodinate [code= " + country[1] + " , //
+		 * // ////System.out.println("x_coodinate [code= " + country[1] + " , //
 		 * y_coodinate=" + country[2] + "]");
 		 * 
 		 * JSONObject obj = new JSONObject();
@@ -192,7 +192,7 @@ public class UploadRegionalNumberCSV {
 		 * request.getParameter("sheet_number"); // String file_number =
 		 * request.getParameter("file_number");
 		 * 
-		 * System.out.println(country.toString()); obj.put("coordinate_name",
+		 * //System.out.println(country.toString()); obj.put("coordinate_name",
 		 * country[0]); obj.put("x_coordinate", country[1]);
 		 * obj.put("y_coordinate", country[2]);
 		 * 
@@ -208,7 +208,7 @@ public class UploadRegionalNumberCSV {
 		 * 
 		 * }
 		 * 
-		 * input = jsonArr.toString(); System.out.println(input);
+		 * input = jsonArr.toString(); //System.out.println(input);
 		 * 
 		 * } catch (FileNotFoundException e) { e.printStackTrace(); } catch
 		 * (IOException e) { e.printStackTrace(); } catch (JSONException e) { //

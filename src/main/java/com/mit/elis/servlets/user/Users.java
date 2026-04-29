@@ -37,7 +37,7 @@ public class Users extends HttpServlet {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 			view.forward(request, response);
 
@@ -47,11 +47,11 @@ public class Users extends HttpServlet {
 
 		if (web_service_response != null) {
 
-			// System.out.println(web_service_response);
+			// //System.out.println(web_service_response);
 		} else {
 			// obj.put( "success" , false );
 			// obj.put( "msg" , "Incorrect user or password.';" );
-			System.out.println(web_service_response);
+			//System.out.println(web_service_response);
 		}
 
 		PrintWriter out = response.getWriter();

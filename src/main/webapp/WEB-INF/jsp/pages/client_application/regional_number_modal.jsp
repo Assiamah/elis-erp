@@ -1,7 +1,7 @@
 
 <% 
 String id =request.getParameter("cafeId");
-System.out.println("working " + id);
+//System.out.println("working " + id);
 %>
       
 

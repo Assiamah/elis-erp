@@ -48,7 +48,7 @@ public class CaseDocsFromFolder {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -58,7 +58,7 @@ public class CaseDocsFromFolder {
 		if (request_type.equals("case_documents_list")) {
 
 			String case_number = request.getParameter("case_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 
@@ -77,9 +77,9 @@ public class CaseDocsFromFolder {
 			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 		// System.out.println("Multiple directories are created!");
+			// 		// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 		System.out.println("Failed to create multiple directories!");
+			// 		//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -121,7 +121,7 @@ public class CaseDocsFromFolder {
 		if (request_type.equals("request_to_generate_certificate")) {
 
 			String case_number = request.getParameter("case_number");
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			String contextPath = cls_url_config.getCase_upload_location();
 			// String contextPath

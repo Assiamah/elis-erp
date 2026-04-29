@@ -38,7 +38,7 @@ public class locality {
 			JSONArray jsonArr = new JSONArray();
 			JSONObject obj = new JSONObject();
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			if (request_type.equals("add")) {
 				String locality_name = request.getParameter("locality_name");
@@ -46,13 +46,13 @@ public class locality {
 				obj.put("locality_name", locality_name);
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				web_service_response = Ws_locality.locality_add(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -67,40 +67,40 @@ public class locality {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
+				// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),input);
 				web_service_response = Ws_locality.locality_update(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("delete")) {
 				String locality_id = request.getParameter("locality_id");
 				// obj.put( "userid" , userid );
-				// System.out.println(locality_id);
+				// //System.out.println(locality_id);
 				web_service_response = Ws_locality.locality_delete(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						locality_id);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("get_all")) {
 
 				String search_by = request.getParameter("search_by");
-				// System.out.println(search_by);
+				// //System.out.println(search_by);
 				// web_service_response
 				// =Ws_locality.get_list_of_users_division(search_by);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

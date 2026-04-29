@@ -386,7 +386,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -500,7 +500,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -589,18 +589,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			//System.out.println("Current DateTime: " + currentTime);
+			////System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-		//	System.out.println("Date : " + date1);
+		//	//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -619,8 +619,8 @@ public class cls_casemgt_reports {
 
 			// String approval_status = (String)
 			// obj_proprietors.getString("approval_status");
-			// System.out.println("approval_status");
-			// System.out.println(certificete_approval_status);
+			// //System.out.println("approval_status");
+			// //System.out.println(certificete_approval_status);
 
 			if ( certificete_approval_status != null && certificete_approval_status != "null" && certificete_approval_status.equals("1") ) {
 
@@ -766,7 +766,7 @@ public class cls_casemgt_reports {
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 					myTable_memorials.addCell(new PdfPCell(new Phrase(NumberCount_memo.toString(), font10pt)));
-					// System.out.println("Seconds : " + seconds);
+					// //System.out.println("Seconds : " + seconds);
 
 					LocalDateTime localDateTime1 = LocalDateTime
 							.parse((String) obj_memorials.getString("m_date_of_instrument"));
@@ -948,7 +948,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -1062,7 +1062,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -1151,18 +1151,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			//System.out.println("Current DateTime: " + currentTime);
+			////System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			//System.out.println("Date : " + date1);
+			////System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -1181,8 +1181,8 @@ public class cls_casemgt_reports {
 
 			// String approval_status = (String)
 			// obj_proprietors.getString("approval_status");
-			// System.out.println("approval_status");
-			// System.out.println(certificete_approval_status);
+			// //System.out.println("approval_status");
+			// //System.out.println(certificete_approval_status);
 
 			if ( certificete_approval_status != null && certificete_approval_status != "null" && certificete_approval_status.equals("1") ) {
 
@@ -1328,7 +1328,7 @@ public class cls_casemgt_reports {
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 					myTable_memorials.addCell(new PdfPCell(new Phrase(NumberCount_memo.toString(), font10pt)));
-					// System.out.println("Seconds : " + seconds);
+					// //System.out.println("Seconds : " + seconds);
 
 					LocalDateTime localDateTime1 = LocalDateTime
 							.parse((String) obj_memorials.getString("m_date_of_instrument"));
@@ -1515,7 +1515,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -1639,7 +1639,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -1728,18 +1728,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			//System.out.println("Current DateTime: " + currentTime);
+			////System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			//System.out.println("Date : " + date1);
+			////System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -1761,7 +1761,7 @@ public class cls_casemgt_reports {
 
 			// String approval_status = (String)
 			// obj_proprietors.getString("approval_status");
-			// System.out.println(approval_status);
+			// //System.out.println(approval_status);
 
 			if (certificete_approval_status.equals("1")) {
 
@@ -1907,7 +1907,7 @@ public class cls_casemgt_reports {
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 					myTable_memorials.addCell(new PdfPCell(new Phrase(NumberCount_memo.toString(), font10pt)));
-					// System.out.println("Seconds : " + seconds);
+					// //System.out.println("Seconds : " + seconds);
 
 					LocalDateTime localDateTime1 = LocalDateTime
 							.parse((String) obj_memorials.getString("m_date_of_instrument"));
@@ -2007,8 +2007,8 @@ public class cls_casemgt_reports {
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
-		// System.out.println(request_json.toString());
-		// System.out.println(case_records);
+		// //System.out.println(request_json.toString());
+		// //System.out.println(case_records);
 
 
 		String parcel_details = case_obj.get("parcel_details").toString();
@@ -2021,8 +2021,8 @@ public class cls_casemgt_reports {
 		String json_lrd_proprietorship_section = (String) case_obj.getString("lrd_proprietorship_section");
 		String json_lrd_reservation_section = (String) case_obj.getString("lrd_reservation_section");
 
-		// System.out.println("json_lrd_encumbrances_section");
-		// System.out.println(json_lrd_encumbrances_section);
+		// //System.out.println("json_lrd_encumbrances_section");
+		// //System.out.println(json_lrd_encumbrances_section);
 
 		JSONObject parcel_details_obj;
 		parcel_details_obj = new JSONObject(parcel_details);
@@ -2098,7 +2098,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -2582,11 +2582,11 @@ public class cls_casemgt_reports {
 
 
 					String app_approval_status = (String) obj_proprietors.getString("approval_status");
-					//System.out.println("app_approval_status");
-					///System.out.println(app_approval_status);
-					//System.out.println("approval_by_id");
-					//System.out.println((String) obj_proprietors.getString("approval_by_id"));
-					//System.out.println(software_file_location + (String) obj_proprietors.getString("approval_by_id") + ".jpg");
+					////System.out.println("app_approval_status");
+					/////System.out.println(app_approval_status);
+					////System.out.println("approval_by_id");
+					////System.out.println((String) obj_proprietors.getString("approval_by_id"));
+					////System.out.println(software_file_location + (String) obj_proprietors.getString("approval_by_id") + ".jpg");
 					
 					//if ( app_approval_status != null && app_approval_status != "null" && app_approval_status.equals("1") ) {
 					if ( !app_approval_status.equals("0") && !app_approval_status.equals("null") && app_approval_status.equals("1") ) {
@@ -2702,10 +2702,10 @@ public class cls_casemgt_reports {
 			myTable_encumbrances.addCell(EmptyCell_encumbrances);
 			myTable_encumbrances.addCell(EmptyCell_encumbrances);
 
-			// System.out.println(json_lrd_encumbrances_section);
+			// //System.out.println(json_lrd_encumbrances_section);
 
-		// 	System.out.println("json_lrd_encumbrances_section");
-		// System.out.println(json_lrd_encumbrances_section);
+		// 	//System.out.println("json_lrd_encumbrances_section");
+		// //System.out.println(json_lrd_encumbrances_section);
 			Integer NumberCount_memo = 1; //
 			String json_data_land_certificate = "";
 			if (json_lrd_encumbrances_section != "null" && json_lrd_encumbrances_section != null) {
@@ -2713,8 +2713,8 @@ public class cls_casemgt_reports {
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 
-		// 			System.out.println("obj_memorials");
-		// System.out.println(obj_memorials);
+		// 			//System.out.println("obj_memorials");
+		// //System.out.println(obj_memorials);
 
 					myTable_encumbrances.addCell(new PdfPCell(new Phrase(NumberCount_memo.toString(), font10pt)));
 					// myTable_encumbrances.addCell(new PdfPCell(new Phrase((String) obj_memorials.getString("es_entry_number"), font10pt)));
@@ -2918,7 +2918,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -3526,7 +3526,7 @@ public class cls_casemgt_reports {
 		// request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
 
-		//System.out.println(request_json.toString());
+		////System.out.println(request_json.toString());
 
 		// String case_records =
 		// cls_case_management.select_log_who_generated_smd_temp_barcode(web_service_url,web_service_api_key,request_json.toString());
@@ -3656,7 +3656,7 @@ public class cls_casemgt_reports {
 		 * String application_stage = (String)
 		 * job_detail_obj.get("application_stage").toString();
 		 * 
-		 * System.out.println(job_detail_obj.get("application_stage").toString()
+		 * //System.out.println(job_detail_obj.get("application_stage").toString()
 		 * ); String business_process_id = (String)
 		 * job_detail_obj.get("business_process_id").toString(); String
 		 * business_process_name = (String)
@@ -3747,8 +3747,8 @@ public class cls_casemgt_reports {
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
-		// System.out.println(case_records);
-		// System.out.println(request_json.toString());
+		// //System.out.println(case_records);
+		// //System.out.println(request_json.toString());
 
 		String parcel_details = case_obj.get("parcel_details").toString();
 		String transaction_details = case_obj.get("transaction_details").toString();
@@ -3799,9 +3799,9 @@ public class cls_casemgt_reports {
 		// String parcel_description = (String)
 		// transaction_details_obj.get("plot_number").toString();
 		String publicity_date = (String) transaction_details_obj.get("publicity_date").toString();
-//System.out.println(publicity_date);
+////System.out.println(publicity_date);
 		String family_of_grantor = (String) transaction_details_obj.get("family_of_grantor").toString();
-		System.out.println(family_of_grantor);
+		//System.out.println(family_of_grantor);
 		String rent_review_period = (String) transaction_details_obj.get("rent_review_period").toString();
 		String annual_rent = (String) transaction_details_obj.get("annual_rent").toString();
 
@@ -3829,7 +3829,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -4000,7 +4000,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -4157,18 +4157,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			//System.out.println("Current DateTime: " + currentTime);
+			////System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			//System.out.println("Date : " + date1);
+			////System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -4446,7 +4446,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -4501,18 +4501,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			//System.out.println("Current DateTime: " + currentTime);
+			////System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			//System.out.println("Date : " + date1);
+			////System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -4665,7 +4665,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -4787,7 +4787,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -4844,18 +4844,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -5016,7 +5016,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -5137,7 +5137,7 @@ public class cls_casemgt_reports {
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -5222,18 +5222,18 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -5448,8 +5448,8 @@ public class cls_casemgt_reports {
 				// String IMG_farmer = "C:\\gelisdocs\\D001.jpg";
 				// String IMG_farmer = "C:\\gelisdocs\\"+Path;
 
-				System.out.println("path");
-				System.out.println(IMG_farmer);
+				//System.out.println("path");
+				//System.out.println(IMG_farmer);
 				Image image1 = Image.getInstance(IMG_farmer);
 				// imgPDF2.ScaleToFit(100.0F, 70.0F)
 				image1.scaleToFit(250.0F, 250.0F);
@@ -5524,18 +5524,18 @@ public class cls_casemgt_reports {
 
 				// Get the current date and time
 				LocalDateTime currentTime = LocalDateTime.now();
-				System.out.println("Current DateTime: " + currentTime);
+				//System.out.println("Current DateTime: " + currentTime);
 
 				LocalDate date1 = currentTime.toLocalDate();
-				System.out.println("Date : " + date1);
+				//System.out.println("Date : " + date1);
 
 				Month month = currentTime.getMonth();
 				int day = currentTime.getDayOfMonth();
 				int year = currentTime.getYear();
 
-				// System.out.println("Month : " + month);
-				// System.out.println("Day : " + day);
-				// System.out.println("Seconds : " + seconds);
+				// //System.out.println("Month : " + month);
+				// //System.out.println("Day : " + day);
+				// //System.out.println("Seconds : " + seconds);
 
 				/*
 				 * String cert_text2 =""; cert_text2 +=
@@ -5677,8 +5677,8 @@ public class cls_casemgt_reports {
 				String crop_details_data = (String) obj_crop_details.getString("data");
 				// JSONObject obj_main_data = new JSONObject(crop_details_data);
 
-				System.out.println("New Data");
-				System.out.println(crop_details_data);
+				//System.out.println("New Data");
+				//System.out.println(crop_details_data);
 				if (crop_details_data != "null") {
 					JSONArray jArr_memorials = new JSONArray(crop_details_data);
 					for (int J = 0; J < jArr_memorials.length(); J++) {
@@ -5966,8 +5966,8 @@ public class cls_casemgt_reports {
 				// String IMG_farmer = "C:\\gelisdocs\\D001.jpg";
 				// String IMG_farmer = "C:\\gelisdocs\\"+Path;
 
-				System.out.println("path");
-				System.out.println(IMG_farmer);
+				//System.out.println("path");
+				//System.out.println(IMG_farmer);
 				Image image1 = Image.getInstance(IMG_farmer);
 				// imgPDF2.ScaleToFit(100.0F, 70.0F)
 				image1.scaleToFit(250.0F, 250.0F);
@@ -6060,20 +6060,20 @@ public class cls_casemgt_reports {
 				 * 
 				 * 
 				 * // Get the current date and time LocalDateTime currentTime =
-				 * LocalDateTime.now(); System.out.println("Current DateTime: "
+				 * LocalDateTime.now(); //System.out.println("Current DateTime: "
 				 * + currentTime);
 				 * 
 				 * LocalDate date1 = currentTime.toLocalDate();
-				 * System.out.println("Date : " + date1);
+				 * //System.out.println("Date : " + date1);
 				 * 
 				 * Month month = currentTime.getMonth(); int day =
 				 * currentTime.getDayOfMonth(); int year =
 				 * currentTime.getYear();
 				 */
 
-				// System.out.println("Month : " + month);
-				// System.out.println("Day : " + day);
-				// System.out.println("Seconds : " + seconds);
+				// //System.out.println("Month : " + month);
+				// //System.out.println("Day : " + day);
+				// //System.out.println("Seconds : " + seconds);
 
 				/*
 				 * String cert_text2 =""; cert_text2 +=
@@ -6198,8 +6198,8 @@ public class cls_casemgt_reports {
 				 * (String)obj_crop_details.getString("data"); // JSONObject
 				 * obj_main_data = new JSONObject(crop_details_data);
 				 * 
-				 * System.out.println("New Data");
-				 * System.out.println(crop_details_data); if(crop_details_data
+				 * //System.out.println("New Data");
+				 * //System.out.println(crop_details_data); if(crop_details_data
 				 * != "null" ){ JSONArray jArr_memorials = new
 				 * JSONArray(crop_details_data); for (int J=0; J <
 				 * jArr_memorials.length(); J++) { JSONObject obj_memorials =
@@ -6417,7 +6417,7 @@ public class cls_casemgt_reports {
 
 			Date date = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			// System.out.println(formatter.format(date));
+			// //System.out.println(formatter.format(date));
 
 			Paragraph p_7 = new Paragraph("BATCH DATE : " + formatter.format(date),
 					new Font(FontFamily.TIMES_ROMAN, 12));
@@ -6727,7 +6727,7 @@ public class cls_casemgt_reports {
 
 			Date date = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			// System.out.println(formatter.format(date));
+			// //System.out.println(formatter.format(date));
 
 			Paragraph p_7 = new Paragraph("REQUEST DATE : " + formatter.format(date),
 					new Font(FontFamily.TIMES_ROMAN, 12));
@@ -7043,7 +7043,7 @@ public class cls_casemgt_reports {
 
 			Date date = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			// System.out.println(formatter.format(date));
+			// //System.out.println(formatter.format(date));
 
 			Paragraph p_7 = new Paragraph("COLLECTION DATE : " + formatter.format(date),
 					new Font(FontFamily.TIMES_ROMAN, 12));
@@ -7280,7 +7280,7 @@ public class cls_casemgt_reports {
 
 			Date date = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			// System.out.println(formatter.format(date));
+			// //System.out.println(formatter.format(date));
 
 			Paragraph p_7 = new Paragraph("BATCH DATE : " + formatter.format(date),
 					new Font(FontFamily.TIMES_ROMAN, 12));
@@ -8299,14 +8299,14 @@ public class cls_casemgt_reports {
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -8391,7 +8391,7 @@ public class cls_casemgt_reports {
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -8536,7 +8536,7 @@ public class cls_casemgt_reports {
 			DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 			Date date = new Date();
 			// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			// System.out.println(dateFormat.format(date)); // 2016/11/16
+			// //System.out.println(dateFormat.format(date)); // 2016/11/16
 			// 12:08:43
 
 			Paragraph reportTitle3 = new Paragraph(dateFormat.format(date), new Font(FontFamily.TIMES_ROMAN, 12));
@@ -8647,10 +8647,10 @@ public class cls_casemgt_reports {
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -8660,7 +8660,7 @@ public class cls_casemgt_reports {
 			// Date date = formatter.parse(date1);
 			// String formatted_date_of_registration = formatter.format(date1);
 
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			if (signature.equals("Yes")) {
 				Paragraph reportsignpad = new Paragraph("...........................................................",
@@ -8697,9 +8697,9 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			/*
 			 * document.add(new Phrase(Chunk.NEWLINE)); // document.add(new
@@ -8765,14 +8765,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", transactions_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -8859,7 +8859,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -9040,7 +9040,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 			Date date = new Date();
 			// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			// System.out.println(dateFormat.format(date)); // 2016/11/16
+			// //System.out.println(dateFormat.format(date)); // 2016/11/16
 			// 12:08:43
 
 			// LocalDateTime localDateTime = LocalDateTime.parse(date);
@@ -9179,10 +9179,10 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			SimpleDateFormat dateTimeInGMT1 = new SimpleDateFormat("hh:mm:ss aa");
 			// Setting the time zone
 			dateTimeInGMT.setTimeZone(TimeZone.getTimeZone("GMT"));
-			System.out.println(dateTimeInGMT.format(new Date()));
+			//System.out.println(dateTimeInGMT.format(new Date()));
 
-			System.out.println(dateTimeInGMT1.format(new Date()));
-			System.out.println(day_c_d);
+			//System.out.println(dateTimeInGMT1.format(new Date()));
+			//System.out.println(day_c_d);
 
 			Paragraph reportTitle_7 = new Paragraph(
 					"The Seal of this Registry was affixed to this Certificate at the hour of "
@@ -9197,10 +9197,10 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -9212,7 +9212,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// Date date = formatter.parse(date1);
 			// String formatted_date_of_registration = formatter.format(date1);
 
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			if (type_of_transaction.equals("approval_of_consolidated_search_signature")) {
 				if (approval_status.equals("1")) {
@@ -9266,9 +9266,9 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			/*
 			 * document.add(new Phrase(Chunk.NEWLINE)); // document.add(new
@@ -9319,9 +9319,9 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// File files_pdf_jackets = new File(public_docs_location + vr_case_number);
 			// if (!files_pdf_jackets.exists()) {
 			// 	if (files_pdf_jackets.mkdirs()) {
-			// 	// System.out.println("Multiple directories are created!");
+			// 	// //System.out.println("Multiple directories are created!");
 			// 	} else {
-			// 	System.out.println("Failed to create multiple directories!");
+			// 	//System.out.println("Failed to create multiple directories!");
 			// 	}
 			// }
 
@@ -9349,11 +9349,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			JSONObject obj_pdf = new JSONObject();
 			obj_pdf.put("doc_reference_number", vr_case_number);
 			obj_pdf.put("document_type", "case_docs");
-			System.out.println(obj_pdf.toString());
+			//System.out.println(obj_pdf.toString());
 			
 			String web_response = cls_case_documents.select_case_documents_by_case_number(
 					doc_web_service_url, doc_web_service_api_key, obj_pdf.toString());
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_case = new JSONObject(web_response);
 			String docs_data = web_response_case.get("data").toString();
@@ -9469,14 +9469,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -9561,7 +9561,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		//System.out.println(job_detail_obj.get("application_stage").toString());
+		////System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -9780,10 +9780,10 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -9793,11 +9793,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// Date date = formatter.parse(date1);
 			// String formatted_date_of_registration = formatter.format(date1);
 
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			Date date = new Date();
-			// System.out.println(dateFormat.format(date)); // 2016/11/16
+			// //System.out.println(dateFormat.format(date)); // 2016/11/16
 			// 12:08:43
 
 			Paragraph reportTitle3 = new Paragraph(dateFormat.format(date), new Font(FontFamily.TIMES_ROMAN, 12));
@@ -9826,9 +9826,9 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			/*
 			 * document.add(new Phrase(Chunk.NEWLINE)); // document.add(new
@@ -9893,14 +9893,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -9985,7 +9985,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -10168,7 +10168,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			Date date = new Date();
-			// System.out.println(dateFormat.format(date)); // 2016/11/16
+			// //System.out.println(dateFormat.format(date)); // 2016/11/16
 			// 12:08:43
 
 			Paragraph reportTitle_DATE = new Paragraph(dateFormat.format(date), new Font(FontFamily.TIMES_ROMAN, 12));
@@ -10286,10 +10286,10 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
@@ -10299,11 +10299,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// Date date = formatter.parse(date1);
 			// String formatted_date_of_registration = formatter.format(date1);
 
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = new Date();
-			// System.out.println(dateFormat.format(date)); // 2016/11/16
+			// //System.out.println(dateFormat.format(date)); // 2016/11/16
 			// 12:08:43
 
 			/*
@@ -10341,9 +10341,9 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			// document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			/*
 			 * document.add(new Phrase(Chunk.NEWLINE)); // document.add(new
@@ -10408,14 +10408,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -10500,7 +10500,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -10800,14 +10800,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -10892,7 +10892,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -11146,14 +11146,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -11245,7 +11245,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -11516,7 +11516,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			}
 
 				// Output the result
-				//System.out.println(updatedString);  // Output: "This is the new comment."
+				////System.out.println(updatedString);  // Output: "This is the new comment."
             // // Parse the HTML content
              java.util.List<Element> elements = HTMLWorker.parseToList(new StringReader(remark_or_comment1), styles);
 
@@ -11531,7 +11531,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 					newParagraph.setLeading(15f); 
 					newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
 					document.add(newParagraph);
-					System.out.println("Par 1");
+					//System.out.println("Par 1");
 				} else if (element instanceof Phrase) {
 					// Create a new Paragraph from the Phrase and apply formatting
 					Phrase originalPhrase = (Phrase) element;
@@ -11540,12 +11540,12 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 					newParagraph.setLeading(30f); 
 					newParagraph.setSpacingAfter(20f);  // Add spacing after each paragraph
 					document.add(newParagraph);
-					System.out.println("Par 2");
+					//System.out.println("Par 2");
 				} else if (element instanceof Chunk) {
 					// Create a new Chunk and apply font
 					Chunk originalChunk = (Chunk) element;
 					Chunk newChunk = new Chunk(originalChunk.getContent(), timesNewRoman);
-   System.out.println("Chunk ");
+   //System.out.println("Chunk ");
 
 // // Convert the Chunk to a Paragraph to control line spacing
 // Chunk originalChunk = (Chunk) element;
@@ -11567,11 +11567,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 
 			 LocalDateTime myDateObj = LocalDateTime.now();
-             //System.out.println("Before formatting: " + myDateObj);
+             ////System.out.println("Before formatting: " + myDateObj);
               DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
              String formattedDate = myDateObj.format(myFormatObj);
-              //System.out.println("After formatting: " + formattedDate);
+              ////System.out.println("After formatting: " + formattedDate);
 
 
 		//	document.add(new Phrase(Chunk.NEWLINE));
@@ -11731,14 +11731,14 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-		// System.out.println("Result");
-		// System.out.println(case_records);
+		// //System.out.println("Result");
+		// //System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -11823,7 +11823,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -12104,7 +12104,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
 
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
@@ -12193,7 +12193,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -12394,18 +12394,18 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -12590,7 +12590,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			document.add(new Phrase(Chunk.NEWLINE));
 
 			leter_details = "<p style='font-family: Times, serif !important;'>" + leter_details + "</p>";
-			System.out.println("html: " + leter_details);
+			//System.out.println("html: " + leter_details);
 			HTMLWorker htmlWorker = new HTMLWorker(document);
 			htmlWorker.parse(new StringReader(leter_details));
 
@@ -12616,7 +12616,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 			p_8.setAlignment(Element.ALIGN_LEFT);
 			document.add(p_8);
 
-			// System.out.println("CC: " + letter_cc);
+			// //System.out.println("CC: " + letter_cc);
 			if (!letter_cc.equals("none") || letter_cc.length() > 4) {
 				document.add(new Phrase(Chunk.NEWLINE));
 				Paragraph p_9 = new Paragraph("CC: " + letter_cc, new Font(FontFamily.TIMES_ROMAN, 12));
@@ -12757,7 +12757,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -12963,18 +12963,18 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -13048,11 +13048,11 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 						web_service_api_key,
 						request_json.toString());
 
-System.out.println("request_json");
-System.out.println(request_json.toString());
+//System.out.println("request_json");
+//System.out.println(request_json.toString());
 
-System.out.println("case_records");
-System.out.println(case_records);
+//System.out.println("case_records");
+//System.out.println(case_records);
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
@@ -13136,7 +13136,7 @@ System.out.println(case_records);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -13395,7 +13395,7 @@ System.out.println(case_records);
 			// JSONObject(bill_details);
 
 			JSONObject obj = jArr.getJSONObject(i);
-			System.out.println(obj.toString());
+			//System.out.println(obj.toString());
 
 			table.addCell(new PdfPCell(new Phrase(NumberCount.toString(), font10pt)));
 		//	table.addCell(new PdfPCell(new Phrase((String) obj.getString("bill_number"), font10pt)));
@@ -13564,18 +13564,18 @@ System.out.println(case_records);
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -13659,11 +13659,11 @@ System.out.println(case_records);
 						web_service_api_key,
 						request_json.toString());
 
-System.out.println("request_json");
-System.out.println(request_json.toString());
+//System.out.println("request_json");
+//System.out.println(request_json.toString());
 
-System.out.println("case_records");
-System.out.println(case_records);
+//System.out.println("case_records");
+//System.out.println(case_records);
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
@@ -13754,7 +13754,7 @@ System.out.println(case_records);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -14066,7 +14066,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 			// JSONObject(bill_details);
 
 			JSONObject obj = jArr.getJSONObject(i);
-			System.out.println(obj.toString());
+			//System.out.println(obj.toString());
 
 			table.addCell(new PdfPCell(new Phrase(NumberCount.toString(), font12pt)));
 		//	table.addCell(new PdfPCell(new Phrase((String) obj.getString("bill_number"), font10pt)));
@@ -14269,18 +14269,18 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -14442,7 +14442,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -14644,18 +14644,18 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -14807,7 +14807,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -14927,7 +14927,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 			// DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			// Date date = formatter.parse(date_of_registration);
 			// String formatted_date_of_registration = formatter.format(date);
-			// System.out.println("Today : " + today);
+			// //System.out.println("Today : " + today);
 
 			/*
 			 * LocalDateTime localDateTime =
@@ -15017,18 +15017,18 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -15162,7 +15162,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 					myTable_memorials.addCell(new PdfPCell(new Phrase(NumberCount_memo.toString(), font10pt)));
-					// System.out.println("Seconds : " + seconds);
+					// //System.out.println("Seconds : " + seconds);
 
 					LocalDateTime localDateTime1 = LocalDateTime
 							.parse((String) obj_memorials.getString("m_date_of_instrument"));
@@ -15257,7 +15257,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
 
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
@@ -15346,7 +15346,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -15427,7 +15427,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		JSONObject request_json = new JSONObject();
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
 		String case_records = cls_case_management
 				.select_generate_2d_barcode(web_service_url,
@@ -15495,7 +15495,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		JSONObject request_json = new JSONObject();
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
 		String case_records = cls_case_management
 				.select_generate_2d_barcode(web_service_url,
@@ -15571,7 +15571,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
-		System.out.println(request_json);
+		//System.out.println(request_json);
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
 						web_service_api_key,
@@ -15659,7 +15659,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -15882,7 +15882,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -15891,10 +15891,10 @@ String ssc1 = String.format("%,.2f", total_amount);
 		String embossed = (String) job_detail_obj.get("embossed").toString();
 
 		LocalDateTime currentTime = LocalDateTime.now();
-		System.out.println("Current DateTime: " + currentTime);
+		//System.out.println("Current DateTime: " + currentTime);
 
 		LocalDate date1 = currentTime.toLocalDate();
-		System.out.println("Date : " + date1);
+		//System.out.println("Date : " + date1);
 
 		Month month = currentTime.getMonth();
 		int day = currentTime.getDayOfMonth();
@@ -16021,7 +16021,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		// System.out.println(job_detail_obj.get("application_stage").toString());
+		// //System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -16030,7 +16030,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		String embossed = (String) job_detail_obj.get("embossed").toString();
 
 		// LocalDateTime currentTime = LocalDateTime.now();
-		// System.out.println("Current DateTime: " + currentTime);
+		// //System.out.println("Current DateTime: " + currentTime);
 
 		DateTimeFormatter formattern = DateTimeFormatter.ofPattern("HH:mm:ss a");
 
@@ -16046,7 +16046,7 @@ String ssc1 = String.format("%,.2f", total_amount);
 		// int year_c = localDateTime.getYear();
 
 		// LocalDate date1 = currentTime.toLocalDate();
-		// System.out.println("Date : " + date1);
+		// //System.out.println("Date : " + date1);
 
 		Month month = localDateTime.getMonth();
 		int day = localDateTime.getDayOfMonth();
@@ -16094,9 +16094,9 @@ JSONObject request_json = new JSONObject();
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
-		System.out.println(case_records);
+		//System.out.println(case_records);
 
 		String parcel_details = case_obj.get("parcel_details").toString();
 		String transaction_details = case_obj.get("transaction_details").toString();
@@ -16188,7 +16188,7 @@ JSONObject request_json = new JSONObject();
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -16383,7 +16383,7 @@ JSONObject request_json = new JSONObject();
 // 			// document.add(newParagraph);
 
 // 			// document.add(element);
-// 			//System.out.println("Par 1");
+// 			////System.out.println("Par 1");
 // 			Paragraph paragraph = (Paragraph) element;
 // 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
 // 			paragraph.setLeading(25f); 
@@ -16398,7 +16398,7 @@ JSONObject request_json = new JSONObject();
 // 			newParagraph.setLeading(25f); 
 // 			newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
 // 			document.add(newParagraph);
-// 			System.out.println("Par 2");
+// 			//System.out.println("Par 2");
 // 		} else if (element instanceof Chunk) {
 // 			// Create a new Chunk and apply font
 // 			Chunk originalChunk = (Chunk) element;
@@ -16416,7 +16416,7 @@ JSONObject request_json = new JSONObject();
 
       
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + date_of_issue);
+			//System.out.println("Current DateTime: " + date_of_issue);
 
 
 			// if ( date_of_issue != null && date_of_issue != "null" ) {
@@ -16426,17 +16426,17 @@ JSONObject request_json = new JSONObject();
 			// 	LocalDateTime dateTime =LocalDateTime.parse(date_of_issue);
 			// 	//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			// 	//LocalDateTime dateTime = offsetDateTime.toLocalDateTime();
-			// 	System.out.println("Date of Issue as LocalDateTime: " + dateTime);
+			// 	//System.out.println("Date of Issue as LocalDateTime: " + dateTime);
 			// 	LocalDate date1 = dateTime.toLocalDate();
-			// 	System.out.println("Date : " + date1);
+			// 	//System.out.println("Date : " + date1);
 
 			// 	Month month = dateTime.getMonth();
 			// 	int day = dateTime.getDayOfMonth();
 			// 	int year = dateTime.getYear();
 
-				// System.out.println("Month : " + month);
-				// System.out.println("Day : " + day);
-				// System.out.println("Seconds : " + seconds);
+				// //System.out.println("Month : " + month);
+				// //System.out.println("Day : " + day);
+				// //System.out.println("Seconds : " + seconds);
 
 				document.add(new Phrase(Chunk.NEWLINE));
 				// document.add(new Phrase(Chunk.NEWLINE));
@@ -16605,7 +16605,7 @@ JSONObject request_json = new JSONObject();
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -16680,9 +16680,9 @@ JSONObject request_json = new JSONObject();
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
-		System.out.println(case_records);
+		//System.out.println(case_records);
 
 		String parcel_details = case_obj.get("parcel_details").toString();
 		String transaction_details = case_obj.get("transaction_details").toString();
@@ -16774,7 +16774,7 @@ JSONObject request_json = new JSONObject();
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -16969,7 +16969,7 @@ JSONObject request_json = new JSONObject();
 // 			// document.add(newParagraph);
 
 // 			// document.add(element);
-// 			//System.out.println("Par 1");
+// 			////System.out.println("Par 1");
 // 			Paragraph paragraph = (Paragraph) element;
 // 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
 // 			paragraph.setLeading(25f); 
@@ -16984,7 +16984,7 @@ JSONObject request_json = new JSONObject();
 // 			newParagraph.setLeading(25f); 
 // 			newParagraph.setSpacingAfter(10f);  // Add spacing after each paragraph
 // 			document.add(newParagraph);
-// 			System.out.println("Par 2");
+// 			//System.out.println("Par 2");
 // 		} else if (element instanceof Chunk) {
 // 			// Create a new Chunk and apply font
 // 			Chunk originalChunk = (Chunk) element;
@@ -17002,7 +17002,7 @@ JSONObject request_json = new JSONObject();
 
       
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + date_of_issue);
+			//System.out.println("Current DateTime: " + date_of_issue);
 
 			
 			
@@ -17016,17 +17016,17 @@ JSONObject request_json = new JSONObject();
 				LocalDateTime dateTime =LocalDateTime.parse(date_of_issue);
 				//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				//LocalDateTime dateTime = offsetDateTime.toLocalDateTime();
-				System.out.println("Date of Issue as LocalDateTime: " + dateTime);
+				//System.out.println("Date of Issue as LocalDateTime: " + dateTime);
 				LocalDate date1 = dateTime.toLocalDate();
-				System.out.println("Date : " + date1);
+				//System.out.println("Date : " + date1);
 
 				Month month = dateTime.getMonth();
 				int day = dateTime.getDayOfMonth();
 				int year = dateTime.getYear();
 
-				// System.out.println("Month : " + month);
-				// System.out.println("Day : " + day);
-				// System.out.println("Seconds : " + seconds);
+				// //System.out.println("Month : " + month);
+				// //System.out.println("Day : " + day);
+				// //System.out.println("Seconds : " + seconds);
 
 				document.add(new Phrase(Chunk.NEWLINE));
 				// document.add(new Phrase(Chunk.NEWLINE));
@@ -17228,7 +17228,7 @@ JSONObject request_json = new JSONObject();
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -17439,7 +17439,7 @@ JSONObject request_json = new JSONObject();
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -17548,18 +17548,18 @@ JSONObject request_json = new JSONObject();
 
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			Month month = currentTime.getMonth();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			// document.add(new Phrase(Chunk.NEWLINE));
@@ -17724,7 +17724,7 @@ JSONObject request_json = new JSONObject();
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 					
 					myTable_memorials.addCell(new PdfPCell(new Phrase((String) obj_memorials.getString("m_entry_number"), font10pt)));
-					// System.out.println("Seconds : " + seconds);
+					// //System.out.println("Seconds : " + seconds);
 
 					LocalDateTime localDateTime1 = LocalDateTime
 							.parse((String) obj_memorials.getString("m_date_of_instrument"));
@@ -17911,7 +17911,7 @@ JSONObject request_json = new JSONObject();
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -18069,7 +18069,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 			// document.add(newParagraph);
 
 			// document.add(element);
-			//System.out.println("Par 1");
+			////System.out.println("Par 1");
 			Paragraph paragraph = (Paragraph) element;
 			paragraph.setAlignment(Element.ALIGN_JUSTIFIED); // Ensure justification
 			paragraph.setLeading(25f); 
@@ -18086,7 +18086,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 			appendArNameStyledText(newParagraph, originalPhrase.getContent(), timesNewRoman, ar_name);
 			newParagraph.add(new Chunk(new LineSeparator(1f, 100f, BaseColor.RED, Element.ALIGN_LEFT, -2f)));
 			document.add(newParagraph);
-			System.out.println("Par 2");
+			//System.out.println("Par 2");
 		} else if (element instanceof Chunk) {
 			// Create a new Chunk and apply font
 			Chunk originalChunk = (Chunk) element;
@@ -18105,7 +18105,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 
       
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + date_of_issue);
+			//System.out.println("Current DateTime: " + date_of_issue);
 
 			
 			
@@ -18119,17 +18119,17 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 				OffsetDateTime dateTime = OffsetDateTime.parse(date_of_issue);
 				//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				//LocalDateTime dateTime = offsetDateTime.toLocalDateTime();
-				System.out.println("Date of Issue as LocalDateTime: " + dateTime);
+				//System.out.println("Date of Issue as LocalDateTime: " + dateTime);
 				LocalDate date1 = dateTime.toLocalDate();
-				System.out.println("Date : " + date1);
+				//System.out.println("Date : " + date1);
 
 				Month month = dateTime.getMonth();
 				int day = dateTime.getDayOfMonth();
 				int year = dateTime.getYear();
 
-				// System.out.println("Month : " + month);
-				// System.out.println("Day : " + day);
-				// System.out.println("Seconds : " + seconds);
+				// //System.out.println("Month : " + month);
+				// //System.out.println("Day : " + day);
+				// //System.out.println("Seconds : " + seconds);
 
 				document.add(new Phrase(Chunk.NEWLINE));
 				// document.add(new Phrase(Chunk.NEWLINE));
@@ -18263,7 +18263,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 				for (int i = 0; i < jArr_memorials.length(); i++) {
 					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
 					myTable_memorials.addCell(new PdfPCell(new Phrase((String) obj_memorials.getString("m_entry_number"), font10pt)));
-					// System.out.println("Seconds : " + seconds);
+					// //System.out.println("Seconds : " + seconds);
 
 					LocalDateTime localDateTime1 = LocalDateTime.parse((String) obj_memorials.getString("m_date_of_instrument"));
 					String m_date_of_instrument = localDateTime1.format(formatter1);
@@ -18451,7 +18451,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -18538,18 +18538,18 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 			// Font.BOLD);
 			// Get the current date and time
 			LocalDateTime currentTime = LocalDateTime.now();
-			System.out.println("Current DateTime: " + currentTime);
+			//System.out.println("Current DateTime: " + currentTime);
 
 			LocalDate date1 = currentTime.toLocalDate();
-			System.out.println("Date : " + date1);
+			//System.out.println("Date : " + date1);
 
 			int month = currentTime.getMonthValue();
 			int day = currentTime.getDayOfMonth();
 			int year = currentTime.getYear();
 
-			// System.out.println("Month : " + month);
-			// System.out.println("Day : " + day);
-			// System.out.println("Seconds : " + seconds);
+			// //System.out.println("Month : " + month);
+			// //System.out.println("Day : " + day);
+			// //System.out.println("Seconds : " + seconds);
 
 			document.add(new Phrase(Chunk.NEWLINE));
 			document.add(new Phrase(Chunk.NEWLINE));
@@ -18575,7 +18575,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 			document.add(y_1);
 
 
-			System.out.println("Registration DateTime: " + date_of_registration);
+			//System.out.println("Registration DateTime: " + date_of_registration);
 
 			SimpleDateFormat datetimeFormatter2 = new SimpleDateFormat(
                 "yyyy-MM-dd");
@@ -18680,13 +18680,13 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		request_json.put("job_number", job_number);
 
 
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 		
 		String case_records = cls_case_management
 				.select_records_for_certificate_search_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
-						System.out.println(case_records.toString());
+						//System.out.println(case_records.toString());
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
 
@@ -18763,15 +18763,15 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String description_of_land = (String) job_detail_obj.get("smd_region").toString();
 		String business_process_sub_name = (String) job_detail_obj.get("business_process_sub_name").toString();
 
 		LocalDateTime currentTime = LocalDateTime.now();
-		System.out.println("Current DateTime: " + currentTime);
+		//System.out.println("Current DateTime: " + currentTime);
 
 		LocalDate date1 = currentTime.toLocalDate();
-		System.out.println("Date : " + date1);
+		//System.out.println("Date : " + date1);
 
 		Month month = currentTime.getMonth();
 		int day = currentTime.getDayOfMonth();
@@ -18891,7 +18891,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
 
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_mortgage_certificate_by_case_number(web_service_url,
@@ -18985,7 +18985,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
@@ -19249,14 +19249,14 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		request_json.put("transaction_number", case_number);
 		request_json.put("job_number", job_number);
 
-		System.out.println(request_json.toString());
+		//System.out.println(request_json.toString());
 
 		String case_records = cls_case_management
 				.select_lrd_recodes_for_mortgage_certificate_by_case_number(web_service_url,
 						web_service_api_key,
 						request_json.toString());
 
-						System.out.println(case_records);
+						//System.out.println(case_records);
 
 		JSONObject case_obj;
 		case_obj = new JSONObject(case_records);
@@ -19345,7 +19345,7 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 		// String job_number = (String) job_number);
 		String application_stage = (String) job_detail_obj.get("application_stage").toString();
 
-		System.out.println(job_detail_obj.get("application_stage").toString());
+		//System.out.println(job_detail_obj.get("application_stage").toString());
 		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
 		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
 		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();

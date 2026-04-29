@@ -78,20 +78,20 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "regional_code" , regional_code );
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
-            //    System.out.println(obj.toString());
+            //    //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .load_csau_monitoring_dashboard(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -107,7 +107,7 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "regional_code" , regional_code );
                 obj.put( "start_date" , start_date );
@@ -117,9 +117,9 @@ public class CsauServlet {
                         .select_count_received_today_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -131,15 +131,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-               // System.out.println(obj.toString());
+               // //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_received_month_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                 //  System.out.println(web_service_response);
+                 //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -155,15 +155,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_received_year_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -176,15 +176,15 @@ public class CsauServlet {
                 String created_by = request.getParameter("created_by");
 
                 obj.put( "created_by",created_by);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_received_year_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -197,15 +197,15 @@ public class CsauServlet {
                 String created_by = request.getParameter("created_by");
 
                 obj.put( "created_by",created_by);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_received_month_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -218,7 +218,7 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "regional_code" , regional_code );
                 obj.put( "start_date" , start_date );
@@ -229,9 +229,9 @@ public class CsauServlet {
                         .select_6months_bills_created_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -245,7 +245,7 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "regional_code" , regional_code );
                 obj.put( "start_date" , start_date );
@@ -255,9 +255,9 @@ public class CsauServlet {
                         .select_bills_created_by_csau_front_officers_and_paid(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -270,15 +270,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_bills_created_by_csau_front_officers_and_acknowledged(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -292,7 +292,7 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
@@ -302,9 +302,9 @@ public class CsauServlet {
                         .get_bills_created_by_csau_front_officers_last6months(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -318,7 +318,7 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
@@ -328,9 +328,9 @@ public class CsauServlet {
                         .get_bills_created_by_csau_front_officers_last6months_and_paid(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -345,15 +345,15 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
 
                 obj.put( "created_by_id",created_by_id);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .get_bills_created_by_csau_front_officers_last6months_and_acknow(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -366,15 +366,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .get_applications_signedout_year(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -389,15 +389,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .get_applications_signedout_today(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -411,15 +411,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .get_applications_signedout_month(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -433,15 +433,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_received_week_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -455,15 +455,15 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
 
                 obj.put( "created_by_id",created_by_id);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_received_week_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -476,20 +476,20 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                 obj.put( "created_by_id",created_by_id);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_received_today_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -506,15 +506,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .get_applications_signedout_week(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -527,20 +527,20 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_signedout_today_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -554,15 +554,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_signedout_week_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -576,15 +576,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_signedout_week_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -597,15 +597,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_signedout_today_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -619,15 +619,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_signedout_month_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -641,15 +641,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_count_signedout_year_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -663,15 +663,15 @@ public class CsauServlet {
                 String created_by = request.getParameter("created_by");
 
                 obj.put( "created_by",created_by);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_signedout_year_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -684,20 +684,20 @@ public class CsauServlet {
                 String created_by = request.getParameter("created_by");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
                 obj.put( "created_by",created_by);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_signedout_today_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -710,15 +710,15 @@ public class CsauServlet {
                 String created_by = request.getParameter("created_by");
 
                 obj.put( "created_by",created_by);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_signedout_week_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -732,15 +732,15 @@ public class CsauServlet {
                 String created_by = request.getParameter("created_by");
 
                 obj.put( "created_by",created_by);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_applications_signedout_month_by_csau_front_officers(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -753,15 +753,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-               // System.out.println(obj.toString());
+               // //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .select_bills_today_by_csau_front_officers_and_paid(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                 //  System.out.println(web_service_response);
+                 //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -774,15 +774,15 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
 
                 obj.put( "created_by_id",created_by_id);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .get_bills_created_by_csau_front_officers_today_and_paid(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -794,7 +794,7 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
@@ -804,9 +804,9 @@ public class CsauServlet {
                         .select_bills_today_by_csau_front_officers_and_acknowledged(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                 //  System.out.println(web_service_response);
+                 //  //System.out.println(web_service_response);
                 } else {
-                  //  System.out.println(web_service_response);
+                  //  //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -820,7 +820,7 @@ public class CsauServlet {
                 String created_by_id = request.getParameter("created_by_id");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
-                // System.out.println(regional_code);
+                // //System.out.println(regional_code);
 
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
@@ -831,9 +831,9 @@ public class CsauServlet {
                         .get_bills_created_by_csau_front_officers_today_and_acknowledged(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -853,15 +853,15 @@ public class CsauServlet {
                 obj.put( "regional_code",regional_code);
                 obj.put( "end_date",end_date);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .csau_report_count_received_by_csau_front_officers_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -882,15 +882,15 @@ public class CsauServlet {
                 obj.put( "created_by_id",created_by_id);
                 obj.put( "end_date",end_date);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .csau_report_apps_received_by_csau_front_officers_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -911,15 +911,15 @@ public class CsauServlet {
                 obj.put( "regional_code",regional_code);
                 obj.put( "end_date",end_date);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .csau_report_count_signedout_by_csau_front_officers_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -938,15 +938,15 @@ public class CsauServlet {
                 obj.put( "collection_issued_by",collection_issued_by);
                 obj.put( "end_date",end_date);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .csau_report_apps_signedout_by_csau_front_officers_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -968,15 +968,15 @@ public class CsauServlet {
                 obj.put( "end_date",end_date);
                 obj.put( "mode_of_query",mode_of_query);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .csau_report_count_bills_created_by_csau_front_officers_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -999,15 +999,15 @@ public class CsauServlet {
                 obj.put( "end_date",end_date);
                 obj.put( "mode_of_query",mode_of_query);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .csau_report_all_bills_created_by_csau_front_officers_by_date(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1022,15 +1022,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .compliance_executive_dashboard10(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1044,15 +1044,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .compliance_executive_dashboard11(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1066,15 +1066,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .compliance_executive_dashboard12(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1087,15 +1087,15 @@ public class CsauServlet {
                 String regional_code = request.getParameter("regional_code");
 
                 obj.put( "regional_code" , regional_code );
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
                         .compliance_executive_dashboard13(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;

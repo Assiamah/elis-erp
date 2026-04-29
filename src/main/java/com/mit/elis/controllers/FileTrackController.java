@@ -26,18 +26,18 @@ public class FileTrackController {
 			isFound = true;
 		} catch (Exception e) {
 		}
-		// System.out.println(servletName + ' ' + assigenedmenus);
+		// //System.out.println(servletName + ' ' + assigenedmenus);
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}

@@ -68,7 +68,7 @@ public class ws_backoffice_monitoring {
 
 
     public String load_apps_backoffice_further_entries_applications_recieved_toda(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -90,7 +90,7 @@ public class ws_backoffice_monitoring {
 
 
      public String load_apps_backoffice_further_entries_applications_recieved_week(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -112,7 +112,7 @@ public class ws_backoffice_monitoring {
 
 
     public String load_apps_backoffice_further_entries_applications_recieved_mont(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -134,7 +134,7 @@ public class ws_backoffice_monitoring {
 
 
     public String load_apps_backoffice_further_entries_applications_recieved_year(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -158,7 +158,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_batching_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -181,7 +181,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_batching_officers_week(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -204,7 +204,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_batching_officers_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -228,7 +228,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_batching_officers_year(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -250,7 +250,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_year_by_csau_batching_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -272,7 +272,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_week_by_csau_batching_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -294,7 +294,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_today_by_csau_batching_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -317,7 +317,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_month_by_csau_batching_officers(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -340,7 +340,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_further_entries_officers_today(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -364,7 +364,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_further_entries_officers_week(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -386,7 +386,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_further_entries_officers_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -408,7 +408,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_count_worked_on_further_entries_officers_year(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -431,7 +431,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_today_by_csau_futher_entries_offic(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -453,7 +453,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_week_by_csau_futher_entries_offic(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -476,7 +476,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_month_by_csau_futher_entries_offic(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -498,7 +498,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String select_applications_workedon_year_by_csau_futher_entries_offic(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -520,7 +520,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String load_apps_backoffice_further_entries_apps_by_divisions_today(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -542,7 +542,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String load_apps_backoffice_further_entries_apps_by_divisions_week(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -564,7 +564,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String load_apps_backoffice_further_entries_apps_by_divisions_month(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -587,7 +587,7 @@ public class ws_backoffice_monitoring {
 
 
 	public String load_apps_backoffice_further_entries_apps_by_divisions_year(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();

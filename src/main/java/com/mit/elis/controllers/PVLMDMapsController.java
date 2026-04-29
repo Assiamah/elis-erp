@@ -53,7 +53,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -117,7 +117,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -152,7 +152,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -188,7 +188,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -223,7 +223,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -257,7 +257,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -292,7 +292,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -328,7 +328,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -365,7 +365,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -402,7 +402,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -415,7 +415,7 @@ public class PVLMDMapsController {
 
 			web_response = cls_maps.select_pvlmd_deletion_count(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 				
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_obj = new JSONObject(web_response); 
             Integer parcel_delete_request_count = web_response_obj.getInt("parcel_delete_request_count");
@@ -468,7 +468,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -481,7 +481,7 @@ public class PVLMDMapsController {
 
 			web_response = cls_maps.select_pvlmd_deletion_count(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 				
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_obj = new JSONObject(web_response); 
             Integer parcel_delete_review_count = web_response_obj.getInt("parcel_delete_review_count");
@@ -533,7 +533,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -546,7 +546,7 @@ public class PVLMDMapsController {
 
 			web_response = cls_maps.select_pvlmd_deletion_count(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 				
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_obj = new JSONObject(web_response); 
             Integer parcel_delete_request_count = web_response_obj.getInt("parcel_delete_request_count");
@@ -602,7 +602,7 @@ public class PVLMDMapsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -615,7 +615,7 @@ public class PVLMDMapsController {
 
 			web_response = cls_maps.select_pvlmd_deletion_count(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 				
-			System.out.println(web_response);
+			//System.out.println(web_response);
 
 			JSONObject web_response_obj = new JSONObject(web_response); 
             Integer parcel_deleted_count = web_response_obj.getInt("parcel_deleted_count");

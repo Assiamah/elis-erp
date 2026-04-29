@@ -16,7 +16,7 @@ public class cls_casemgt {
 
 	public String select_general_case_details(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -49,7 +49,7 @@ public class cls_casemgt {
 
 	public String load_transaction_details_for_deed(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -80,7 +80,7 @@ public class cls_casemgt {
 
 	public String load_get_file_number_format_per_region(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -112,7 +112,7 @@ public class cls_casemgt {
 
 	public String select_general_case_details_new_app_flow(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -144,7 +144,7 @@ public class cls_casemgt {
 
 	public String select_general_case_details_new_general_request(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -4346,9 +4346,9 @@ public class cls_casemgt {
 	 * try ( Connection conn = dbcon.getCon(); PreparedStatement pstmt =
 	 * conn.prepareStatement(SQL)) { pstmt.setString(1,json_request); ResultSet
 	 * rs = pstmt.executeQuery(); while (rs.next()) {
-	 * System.out.println(rs.getString("select_bulk_regional_number_bill"));
+	 * //System.out.println(rs.getString("select_bulk_regional_number_bill"));
 	 * result=rs.getString("select_bulk_regional_number_bill"); } } catch
-	 * (SQLException e) { System.out.println(e.getMessage()); } return result; }
+	 * (SQLException e) { //System.out.println(e.getMessage()); } return result; }
 	 */
 
 	public String load_application_details_by_job_number_all(String web_service_url, String web_service_api_key,
@@ -4900,7 +4900,7 @@ public class cls_casemgt {
 
 	public String load_application_stage_tpp(String web_service_url, String web_service_api_key, String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -4923,7 +4923,7 @@ public class cls_casemgt {
 	public String select_approve_job_note_tpp_sealed(String web_service_url, String web_service_api_key,
 			String json_request) {
 		String output = "Data Not Received";
-		// System.out.println("Testing Service select_general_case_details");
+		// //System.out.println("Testing Service select_general_case_details");
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
@@ -4946,7 +4946,7 @@ public class cls_casemgt {
 	public String divisions_get_list(String web_service_url, String web_service_api_key) {
 		String output = "Data Not Received";
 		try {
-			System.out.println(web_service_url);
+			//System.out.println(web_service_url);
 			Client client = Client.create();
 			WebResource webResource = client
 					.resource(web_service_url + "case_management_service/divisions_list");
@@ -4968,7 +4968,7 @@ public class cls_casemgt {
 	public String get_region_list(String web_service_url, String web_service_api_key) {
 		String output = "Data Not Received";
 		try {
-			System.out.println(web_service_url);
+			//System.out.println(web_service_url);
 			Client client = Client.create();
 			WebResource webResource = client
 					.resource(web_service_url + "case_management_service/get_region");

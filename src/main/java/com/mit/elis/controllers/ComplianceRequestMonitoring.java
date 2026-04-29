@@ -58,7 +58,7 @@ public class ComplianceRequestMonitoring {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -68,7 +68,7 @@ public class ComplianceRequestMonitoring {
 
 
 
-				// System.out.println(instrument_brand_list);
+				// //System.out.println(instrument_brand_list);
 
 
 
@@ -89,7 +89,7 @@ public class ComplianceRequestMonitoring {
 	// //  String web_service_response = cls_backoffice_monitoring.monitoring_backoffice_csau(cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key());
 
         
-    //        System.out.println(userlevel);
+    //        //System.out.println(userlevel);
 
 
            		model.addAttribute("content", "../pages/client_application/compliance_unit_request_monitoring.jsp"); return "layouts/app";

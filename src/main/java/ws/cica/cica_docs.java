@@ -248,10 +248,10 @@ public class cica_docs {
 
             // //file.close();
 
-            // System.out.println("Pdf created successfully..");
+            // //System.out.println("Pdf created successfully..");
 
             // results = timeStamp;
-            // System.out.println(results);
+            // //System.out.println(results);
             document.close();
             //file.close();
             return out.toByteArray();
@@ -459,10 +459,10 @@ public class cica_docs {
 
             // //file.close();
 
-            // System.out.println("Pdf created successfully..");
+            // //System.out.println("Pdf created successfully..");
 
             // results = timeStamp;
-            // System.out.println(results);
+            // //System.out.println(results);
             document.close();
             //file.close();
             return out.toByteArray();

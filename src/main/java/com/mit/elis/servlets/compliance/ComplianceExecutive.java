@@ -82,19 +82,19 @@ public class ComplianceExecutive {
                 
                 
             //     // String staff_id = request.getParameter("staff_id");			
-            //     // System.out.println(list_of_application);
+            //     // //System.out.println(list_of_application);
             //     obj.put("start_date", start_date);
             //     obj.put("end_date", end_date);
             //     obj.put( "regional_code" , regional_code );
-            //     System.out.println(obj.toString());
+            //     //System.out.println(obj.toString());
 
             //     web_service_response = cls_executivedashboard
             //             .compliance_executive_dashboard10(cls_url_config.getWeb_service_url_ser(),
             //                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             //     if (web_service_response != null) {
-            //         System.out.println(web_service_response);
+            //         //System.out.println(web_service_response);
             //     } else {
-            //         System.out.println(web_service_response);
+            //         //System.out.println(web_service_response);
             //     }
 
             //     return web_service_response;
@@ -112,19 +112,19 @@ public class ComplianceExecutive {
                 
                 
             //     // String staff_id = request.getParameter("staff_id");			
-            //     // System.out.println(list_of_application);
+            //     // //System.out.println(list_of_application);
             //     obj.put("start_date", start_date);
             //     obj.put("end_date", end_date);
             //     obj.put( "regional_code" , regional_code );
-            //     System.out.println(obj.toString());
+            //     //System.out.println(obj.toString());
 
             //     web_service_response = cls_executivedashboard
             //             .compliance_executive_dashboard11(cls_url_config.getWeb_service_url_ser(),
             //                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             //     if (web_service_response != null) {
-            //         System.out.println(web_service_response);
+            //         //System.out.println(web_service_response);
             //     } else {
-            //         System.out.println(web_service_response);
+            //         //System.out.println(web_service_response);
             //     }
 
             //     return web_service_response;
@@ -142,19 +142,19 @@ public class ComplianceExecutive {
                 
                 
             //     // String staff_id = request.getParameter("staff_id");			
-            //     // System.out.println(list_of_application);
+            //     // //System.out.println(list_of_application);
             //     obj.put("start_date", start_date);
             //     obj.put("end_date", end_date);
             //     obj.put( "regional_code" , regional_code );
-            //     System.out.println(obj.toString());
+            //     //System.out.println(obj.toString());
 
             //     web_service_response = cls_executivedashboard
             //             .compliance_executive_dashboard12(cls_url_config.getWeb_service_url_ser(),
             //                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             //     if (web_service_response != null) {
-            //         System.out.println(web_service_response);
+            //         //System.out.println(web_service_response);
             //     } else {
-            //         System.out.println(web_service_response);
+            //         //System.out.println(web_service_response);
             //     }
 
             //     return web_service_response;
@@ -171,18 +171,18 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_report_all_count(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -198,18 +198,18 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_report_charts(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -227,18 +227,18 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_get_division_totals(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -256,18 +256,18 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_get_regional_received(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -286,18 +286,18 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_get_regional_completed_stats(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -317,19 +317,19 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_recieved(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -349,20 +349,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_id", sub_serv_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_subservices_recieved(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -382,20 +382,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_applications_recieved(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -415,19 +415,19 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_pending(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -448,20 +448,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_id", sub_serv_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_subservices_pending(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -481,20 +481,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_applications_pending(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -517,19 +517,19 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_completed(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -550,20 +550,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_id", sub_serv_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_subservices_completed(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -583,20 +583,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_applications_completed(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -619,19 +619,19 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_recieved_completed(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -652,20 +652,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_id", sub_serv_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_subservices_received_completed(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -685,20 +685,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_applications_received_completed(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -722,19 +722,19 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_queried(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -755,20 +755,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_id", sub_serv_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_subservices_queried(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -788,20 +788,20 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                  obj.put("sub_serv_sub_id", sub_serv_sub_id);
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_applications_queried(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -821,19 +821,19 @@ public class ComplianceExecutive {
                 
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_report_received_vs_pending(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -851,20 +851,20 @@ public class ComplianceExecutive {
             
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 obj.put("status", status);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_regions(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -885,21 +885,21 @@ public class ComplianceExecutive {
             
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 obj.put("v_region", v_region);
                   obj.put("status", status);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_regional_apps_division(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -920,19 +920,19 @@ public class ComplianceExecutive {
             
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_past_due(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -953,20 +953,20 @@ public class ComplianceExecutive {
             
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("vrdivision", vrdivision);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_past_due_regions(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -989,21 +989,21 @@ public class ComplianceExecutive {
             
                 
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("division", division);
                  obj.put("region_id", region_id);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
                 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_pastdue_units(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1024,7 +1024,7 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("division", division);
                  obj.put("region_id", region_id);
                 obj.put("date_from", date_from);
@@ -1032,15 +1032,15 @@ public class ComplianceExecutive {
                  obj.put("unit", unit);
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_pastdue_within_unit(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1059,7 +1059,7 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("division", division);
                  obj.put("region_code", region_code);
                 obj.put("date_from", date_from);
@@ -1067,15 +1067,15 @@ public class ComplianceExecutive {
                  obj.put("staff_id", staff_id);
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_pastdue_with_officer(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1093,22 +1093,22 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("status", status);
                  obj.put("region_code", region_code);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_apps_by_regions_to_divisions(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1126,7 +1126,7 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("status", status);
                 obj.put("division", division);
                  obj.put("region_code", region_code);
@@ -1134,15 +1134,15 @@ public class ComplianceExecutive {
                 obj.put("date_to", date_to);
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_divisions_services(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1163,7 +1163,7 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("status", status);
                 obj.put("division", division);
                  obj.put("region_code", region_code);
@@ -1174,15 +1174,15 @@ public class ComplianceExecutive {
                 
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_divisions_sub_services(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1204,7 +1204,7 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("status", status);
                 obj.put("division", division);
                  obj.put("region_code", region_code);
@@ -1215,15 +1215,15 @@ public class ComplianceExecutive {
                 
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_divisions_sub_services_applications(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -1240,22 +1240,22 @@ public class ComplianceExecutive {
                 
                         
                 // String staff_id = request.getParameter("staff_id");			
-                // System.out.println(list_of_application);
+                // //System.out.println(list_of_application);
                 obj.put("date_from", date_from);
                 obj.put("date_to", date_to);
 
                 
 
 
-                System.out.println(obj.toString());
+                //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
                         .executive_dashboard_get_apps_by_subservices_for_barchart(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 } else {
-                    System.out.println(web_service_response);
+                    //System.out.println(web_service_response);
                 }
 
                 return web_service_response;

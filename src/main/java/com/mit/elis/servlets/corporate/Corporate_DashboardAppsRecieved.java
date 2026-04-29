@@ -54,8 +54,8 @@ public class Corporate_DashboardAppsRecieved {
 					requestType = split[0];
 					corp_id = split[1];
 
-					System.out.println("Request Type: " + requestType);
-					System.out.println("Corp ID: " + corp_id);
+					//System.out.println("Request Type: " + requestType);
+					//System.out.println("Corp ID: " + corp_id);
 				}
 
 				if (corp_id != null && corp_id.contains("+")) {
@@ -63,8 +63,8 @@ public class Corporate_DashboardAppsRecieved {
 					corp_id = splitAfterPlus[0];
 					additionalInfo = splitAfterPlus[1];
 
-					System.out.println("Corp ID after splitting: " + corp_id);
-					System.out.println("Additional Info: " + additionalInfo);
+					//System.out.println("Corp ID after splitting: " + corp_id);
+					//System.out.println("Additional Info: " + additionalInfo);
 				}
 
 
@@ -79,7 +79,7 @@ public class Corporate_DashboardAppsRecieved {
 				String division = request.getParameter("division");
                 String created_for_id = request.getParameter("created_for_id");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", corp_id);
@@ -90,9 +90,9 @@ public class Corporate_DashboardAppsRecieved {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -100,7 +100,7 @@ public class Corporate_DashboardAppsRecieved {
 				String service = request.getParameter("service");
                 
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", corp_id);
@@ -112,9 +112,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -123,7 +123,7 @@ public class Corporate_DashboardAppsRecieved {
             if (requestType.equals("apps_completed_year")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", corp_id);
@@ -135,9 +135,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -146,7 +146,7 @@ public class Corporate_DashboardAppsRecieved {
             if (requestType.equals("apps_completed_year_applications")) {
 				String service = request.getParameter("service");
 
-				System.out.println(service);
+				//System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", corp_id);
@@ -158,9 +158,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -170,7 +170,7 @@ public class Corporate_DashboardAppsRecieved {
             if (requestType.equals("apps_received_completed_year")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", corp_id);
@@ -183,9 +183,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -194,14 +194,14 @@ public class Corporate_DashboardAppsRecieved {
             if (requestType.equals("apps_received_completed_year_applications")) {
 				String service = request.getParameter("service");
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", corp_id);
 				obj.put("created_for_id", additionalInfo);
 
-				System.out.println(service);
-                System.out.println(corp_id);
+				//System.out.println(service);
+                //System.out.println(corp_id);
 
 
 
@@ -212,9 +212,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -225,7 +225,7 @@ public class Corporate_DashboardAppsRecieved {
             if (requestType.equals("corporate_apps_past_due")) {
 				// String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				// obj.put("division", division);
@@ -237,9 +237,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -249,7 +249,7 @@ public class Corporate_DashboardAppsRecieved {
 			if (requestType.equals("corporate_apps_past_due_applications")) {
 				// String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				// obj.put("division", division);
@@ -261,9 +261,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -275,7 +275,7 @@ public class Corporate_DashboardAppsRecieved {
 			if (requestType.equals("apps_with_division")) {
 				// String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				// obj.put("division", division);
@@ -287,9 +287,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -299,7 +299,7 @@ public class Corporate_DashboardAppsRecieved {
 			if (requestType.equals("apps_with_division_services")) {
 				// String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				// obj.put("division", division);
@@ -311,9 +311,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -323,7 +323,7 @@ public class Corporate_DashboardAppsRecieved {
 			if (requestType.equals("apps_with_division_applications")) {
 				// String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				// obj.put("division", division);
@@ -337,9 +337,9 @@ public class Corporate_DashboardAppsRecieved {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

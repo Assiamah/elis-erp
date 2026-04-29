@@ -62,7 +62,7 @@ public class UploadRentDataCSVNew {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -85,8 +85,8 @@ public class UploadRentDataCSVNew {
 			String fileName = extractFileName(part);
 
 			filename1 = fileName;
-			// System.out.println(filename1);
-			// System.out.println(fileName);
+			// //System.out.println(filename1);
+			// //System.out.println(fileName);
 			// refines the fileName in case it is an absolute path
 			fileName = new File(fileName).getName();
 			part.write(savePath + "/" + file_name_incoming);
@@ -108,15 +108,15 @@ public class UploadRentDataCSVNew {
                         BufferedReader br = new BufferedReader(new FileReader(csvFile));       
                         while ((line = br.readLine()) != null)   //returns a Boolean value  
                         {  
-							//System.out.println(line.toString());
+							////System.out.println(line.toString());
 							if (coordinate_count==0){
 
                             }else{
                                 JSONObject obj = new JSONObject();
                                 
-								//System.out.println(splitBy);
+								////System.out.println(splitBy);
 								String[] coordinates = line.split(splitBy);  
-                                // System.out.println(coordinates.toString());
+                                // //System.out.println(coordinates.toString());
 									obj.put("owners_name", coordinates[0]);
 									obj.put("address", coordinates[1]);
 									obj.put("file_number", coordinates[2]);
@@ -136,7 +136,7 @@ public class UploadRentDataCSVNew {
 									obj.put("rent_passing", coordinates[16]);
 									obj.put("period_in_arrears", coordinates[17]);
 
-									//System.out.println(obj.toString());
+									////System.out.println(obj.toString());
                              jsonArr.put(obj);
                             }
                             
@@ -149,7 +149,7 @@ public class UploadRentDataCSVNew {
 			
                 
                  result_of_csv=jsonArr.toString();
-                // System.out.println(result_of_csv);
+                // //System.out.println(result_of_csv);
                
 		
 

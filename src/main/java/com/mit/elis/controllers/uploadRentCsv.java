@@ -23,7 +23,7 @@ public ResponseEntity<String> uploadRentCsv(
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
         String line;
         while ((line = reader.readLine()) != null) {
-            System.out.println("CSV Line: " + line);
+            //System.out.println("CSV Line: " + line);
         }
     } catch (IOException e) {
         return ResponseEntity.internalServerError().body("Error reading file: " + e.getMessage());

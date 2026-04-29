@@ -48,7 +48,7 @@ public class valueadded_services_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -58,7 +58,7 @@ public class valueadded_services_serv {
 
 			String web_service_response = null;
 
-			// System.out.println(request_type);
+			// //System.out.println(request_type);
 
 			
 
@@ -72,9 +72,9 @@ public class valueadded_services_serv {
 				String modified_by = request.getParameter("modified_by");
 				String modified_by_id = request.getParameter("modified_by_id");
 
-				 System.out.println(rq_id);
-				  System.out.println(job_number);
-				   System.out.println(transaction_number);
+				 //System.out.println(rq_id);
+				  //System.out.println(job_number);
+				   //System.out.println(transaction_number);
 
 				obj.put("rq_id", rq_id);
 				obj.put("job_number", job_number);
@@ -84,15 +84,15 @@ public class valueadded_services_serv {
 
 				//jsonArr.put(obj);
 				String input = obj.toString();
- System.out.println("How are you");
-				 System.out.println(input);
+ //System.out.println("How are you");
+				 //System.out.println(input);
 				web_service_response = vas_cl
 						.select_set_request_as_completed(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 			if (request_type.equals("get_all_baby_steps_for_job")) {
@@ -105,14 +105,14 @@ public class valueadded_services_serv {
 				obj.put("workflow_type", workflow_type);
 
 				String input = obj.toString();
-				//System.out.println(input);
+				////System.out.println(input);
 				web_service_response = vas_cl
 						.get_all_baby_steps_for_job(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -123,14 +123,14 @@ public class valueadded_services_serv {
 				obj.put("bse_id", bse_id);
 
 				String input = obj.toString();
-				//System.out.println(input);
+				////System.out.println(input);
 				web_service_response = vas_cl
 						.get_process_milestone_update_baby_steps_for_job(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -153,7 +153,7 @@ public class valueadded_services_serv {
 
 				String division = (String) session.getAttribute("division");
 
-				// System.out.println(list_of_application);
+				// //System.out.println(list_of_application);
 
 				
 				obj.put("send_by_name", fullname);
@@ -161,27 +161,27 @@ public class valueadded_services_serv {
 				obj.put("send_to_id", send_to_id);
 				obj.put("send_to_name", send_to_name);
 				/*
-				 * System.out.println("=====================");
-				 * System.out.println(obj.toString());
-				 * System.out.println("=====================");
+				 * //System.out.println("=====================");
+				 * //System.out.println(obj.toString());
+				 * //System.out.println("=====================");
 				 */
 				obj.put("division", division);
 				obj.put("job_number", job_number);
 
 				// String batchlistdivison = obj.toString();
 
-				System.out.println("testing cabinet batch: " + obj.toString());
+				//System.out.println("testing cabinet batch: " + obj.toString());
 				//jsonArr.put(obj);
 				String input = obj.toString();
- System.out.println("How are you");
-				 System.out.println(input);
+ //System.out.println("How are you");
+				 //System.out.println(input);
 				web_service_response = vas_cl
 						.process_sent_jobs_for_records_verification(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

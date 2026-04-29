@@ -44,7 +44,7 @@ public class lc_case_query_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -55,32 +55,32 @@ public class lc_case_query_serv {
 
 			String web_service_response = null;
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			if (request_type.equals("select_lc_case_query_all_by_case_number")) {
 				String case_number = request.getParameter("case_number");
-				// System.out.println(case_number);
+				// //System.out.println(case_number);
 				web_service_response = lc_case_query_cl.select_lc_case_query_all_by_am_case_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						case_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_lc_case_query_all_by_id")) {
 				String case_number = request.getParameter("case_number");
-				// System.out.println(case_number);
+				// //System.out.println(case_number);
 				web_service_response = lc_case_query_cl
 						.select_lc_case_query_all_by_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), case_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -120,14 +120,14 @@ public class lc_case_query_serv {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				System.out.println(input);
+				//System.out.println(input);
 				web_service_response = lc_case_query_cl
 						.select_lc_case_query_add_and_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

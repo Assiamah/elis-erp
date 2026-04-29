@@ -9,7 +9,7 @@ public class ws_request_monitoring {
 
 
     public String select_staff_apps_with_unit_monitoring(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -32,7 +32,7 @@ public class ws_request_monitoring {
 
 
     public String select_all_staff_apps_with_unit_monitoring(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -55,7 +55,7 @@ public class ws_request_monitoring {
 
 
     public String all_staff_apps_with_unit_monitoring(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -78,7 +78,7 @@ public class ws_request_monitoring {
 
 
     public String select_staff_apps_with_unit_request_incoming_applications(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -101,7 +101,7 @@ public class ws_request_monitoring {
 
 
     public String select_staff_apps_with_officers_request_withinunit_applications(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
@@ -125,7 +125,7 @@ public class ws_request_monitoring {
 
 
     public String select_staff_apps_with_officers_request_withinuni(String web_service_url, String web_service_api_key, String json_request) {
-		//System.out.println(json_request);
+		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();

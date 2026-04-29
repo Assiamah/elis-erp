@@ -56,7 +56,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -73,7 +73,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				// System.out.println("If Not success");
+				// //System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -115,7 +115,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -169,7 +169,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -181,7 +181,7 @@ public class CsauController {
 
 				cls_casemgt casemgt_web_service = new cls_casemgt();
 
-				// System.out.println(Ws_url_config.web_main_services);
+				// //System.out.println(Ws_url_config.web_main_services);
 				ArrayList javaArrayListFromGSON_sub_service = googleJson
 						.fromJson((String) session.getAttribute("web_main_services"), ArrayList.class);
 				request.setAttribute("main_services", javaArrayListFromGSON_sub_service);
@@ -192,7 +192,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				// System.out.println("If Not success");
+				// //System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -235,7 +235,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -285,7 +285,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -329,7 +329,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -357,7 +357,7 @@ public class CsauController {
 
 
 
-					// System.out.println(web_service_response_menu);
+					// //System.out.println(web_service_response_menu);
 					JSONObject menu_obj;
 					menu_obj = new JSONObject(web_service_response_menu);
 					String all_menus = menu_obj.get("total").toString();
@@ -371,13 +371,13 @@ public class CsauController {
 					// 		.load_application_batched_to_user(cls_url_config.getWeb_service_url_ser(),
 					// 				cls_url_config.getWeb_service_url_ser_api_key(),
 					// 				(String) session.getAttribute("userid"));
-	//System.out.println("In correct data all_menus_data all all");
-	//System.out.println(web_service_response_menu_data);
+	////System.out.println("In correct data all_menus_data all all");
+	////System.out.println(web_service_response_menu_data);
 					 //menu_obj_data;
 					//JSONObject menu_obj_data_n = new JSONObject(web_service_response_menu_data_n);
 					String all_menus_data = menu_obj.get("data").toString(); 
-					//System.out.println("In correct data all_menus_data");
-					//System.out.println(all_menus_data);
+					////System.out.println("In correct data all_menus_data");
+					////System.out.println(all_menus_data);
 					Gson googleJson = new Gson();
 					ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus_data, ArrayList.class);
 	
@@ -408,7 +408,7 @@ public class CsauController {
 	
 					// Session is expired
 					request.setAttribute("login", "sessionout");
-					System.out.println("If Not success");
+					//System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 	
 				}
@@ -454,7 +454,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -470,7 +470,7 @@ public class CsauController {
 				JSONObject menu_obj_data;
 				menu_obj_data = new JSONObject(web_service_response_menu);
 				String all_menus_data = menu_obj_data.get("data").toString();
-				// System.out.println(all_menus_data);
+				// //System.out.println(all_menus_data);
 				Gson googleJson = new Gson();
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus_data, ArrayList.class);
 
@@ -519,7 +519,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -535,7 +535,7 @@ public class CsauController {
 				JSONObject menu_obj_data;
 				menu_obj_data = new JSONObject(web_service_response_menu);
 				String all_menus_data = menu_obj_data.get("data").toString();
-				// System.out.println(all_menus_data);
+				// //System.out.println(all_menus_data);
 				Gson googleJson = new Gson();
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus_data, ArrayList.class);
 
@@ -586,7 +586,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -602,7 +602,7 @@ public class CsauController {
 				JSONObject menu_obj_data;
 				menu_obj_data = new JSONObject(web_service_response_menu);
 				String all_menus_data = menu_obj_data.get("data").toString();
-				// System.out.println(all_menus_data);
+				// //System.out.println(all_menus_data);
 				Gson googleJson = new Gson();
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(all_menus_data, ArrayList.class);
 
@@ -649,7 +649,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			// request.setAttribute("login", "sessionout");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			//  model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 			//
 
@@ -749,7 +749,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -791,7 +791,7 @@ public class CsauController {
 
 				// Session is expired
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -831,7 +831,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -854,7 +854,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -891,7 +891,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -952,7 +952,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -999,7 +999,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1046,7 +1046,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1093,7 +1093,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1140,7 +1140,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1181,7 +1181,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1221,7 +1221,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -1258,7 +1258,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1298,7 +1298,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -1334,7 +1334,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1384,7 +1384,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -1421,7 +1421,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1459,7 +1459,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -1498,7 +1498,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1549,7 +1549,7 @@ public class CsauController {
 
 			} else {
 				request.setAttribute("login", "sessionout");
-				System.out.println("If Not success");
+				//System.out.println("If Not success");
 				 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 			}
@@ -1598,20 +1598,20 @@ public class CsauController {
 				String job_number = request.getParameter("job_number");
 				String business_process_sub_name = request.getParameter("business_process_sub_name");
 
-				// System.out.println(case_number);
-				// System.out.println(job_number);
+				// //System.out.println(case_number);
+				// //System.out.println(job_number);
 
 				JSONObject obj = new JSONObject();
 
 				obj.put("case_number", case_number);
 				obj.put("job_number", job_number);
 				String batchlistdivison = obj.toString();
-				// System.out.println(batchlistdivison);
+				// //System.out.println(batchlistdivison);
 				web_service_response = casemagt_cl.select_general_case_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						batchlistdivison);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 					JSONObject case_obj;
 					case_obj = new JSONObject(web_service_response);
 
@@ -1685,7 +1685,7 @@ public class CsauController {
 
 					request.setAttribute("parcel_wkt", case_obj.get("parcel_wkt").toString());
 
-					// System.out.println(case_obj.get("parcel_wkt").toString());
+					// //System.out.println(case_obj.get("parcel_wkt").toString());
 
 					JSONObject parcel_details_obj;
 					parcel_details_obj = new JSONObject(parcel_details);
@@ -1794,7 +1794,7 @@ public class CsauController {
 					request.setAttribute("job_number", job_number);
 					request.setAttribute("application_stage", job_detail_obj.get("application_stage").toString());
 
-					// System.out.println(job_detail_obj.get("application_stage").toString());
+					// //System.out.println(job_detail_obj.get("application_stage").toString());
 					request.setAttribute("business_process_id", job_detail_obj.get("business_process_id").toString());
 					request.setAttribute("business_process_name",
 							job_detail_obj.get("business_process_name").toString());
@@ -1807,20 +1807,20 @@ public class CsauController {
 					JSONArray arr_r = new JSONArray();
 
 					String folderpath = cls_url_config.getCase_upload_location() + new_case_number;
-					// System.out.println("folderpath: " +folderpath);
+					// //System.out.println("folderpath: " +folderpath);
 					// List All Files In a Folder
 					File subdir = new File(folderpath.toString());
 					String[] children = subdir.list();
 					if (children == null) {
-						// System.out.println("Either dir does not exist or is
+						// //System.out.println("Either dir does not exist or is
 						// not a
 						// directory");
 					} else {
 						for (int j = 0; j < children.length; j++) {
 							String filename_doc = children[j];
-							// System.out.println("case_number: " +
+							// //System.out.println("case_number: " +
 							// case_number);
-							// System.out.println("File: " + filename_doc);
+							// //System.out.println("File: " + filename_doc);
 							String path = folderpath.toString() + "/" + filename_doc;
 
 							String extension = filename_doc.substring(filename_doc.lastIndexOf("."));
@@ -1844,23 +1844,23 @@ public class CsauController {
 						cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key());
 				// web_service_response = get_gender_list;
-				System.out.println(get_gender_list);
+				//System.out.println(get_gender_list);
 				JSONObject menu_obj_data;
 				// menu_obj_data = new JSONObject(get_gender_list);
 				// String all_menus_data = menu_obj_data.get("data").toString();
-				// System.out.println(all_menus_data);
+				// //System.out.println(all_menus_data);
 				// Gson googleJson = new Gson();
 				ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
 
 				request.setAttribute("genderlist", javaArrayListFromGSON);
-					// System.out.println(arr_r.toString());
+					// //System.out.println(arr_r.toString());
 					// request.setAttribute("casescanneddocuments",
 					// arr_r.toString());
 
-					// System.out.println(business_process_sub_name);
+					// //System.out.println(business_process_sub_name);
 
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 				/*
@@ -1868,15 +1868,15 @@ public class CsauController {
 				 * 
 				 * String folderpath
 				 * =ws_url_config.get_lrd_jacket_pdf_path_final_app() +
-				 * case_number; //System.out.println("folderpath: "
+				 * case_number; ////System.out.println("folderpath: "
 				 * +folderpath); //List All Files In a Folder File subdir = new
 				 * File(folderpath.toString()); String[] children =
-				 * subdir.list(); if (children == null) { System.out.println(
+				 * subdir.list(); if (children == null) { //System.out.println(
 				 * "Either dir does not exist or is not a directory"); } else {
 				 * for (int j = 0; j< children.length; j++) { String
 				 * filename_doc = children[j];
-				 * System.out.println("case_number: " +case_number);
-				 * System.out.println("File: " +filename_doc); String path =
+				 * //System.out.println("case_number: " +case_number);
+				 * //System.out.println("File: " +filename_doc); String path =
 				 * folderpath.toString()+"\\"+filename_doc;
 				 * 
 				 * String extension =
@@ -1890,7 +1890,7 @@ public class CsauController {
 				 * 
 				 * arr_r.add(obj_r); }
 				 * 
-				 * } System.out.println(arr_r.toString());
+				 * } //System.out.println(arr_r.toString());
 				 * 
 				 * request.setAttribute("casescanneddocuments",
 				 * arr_r.toString());
@@ -1906,7 +1906,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -1940,7 +1940,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2012,7 +2012,7 @@ public class CsauController {
 
 				} else {
 					request.setAttribute("login", "sessionout");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 				}
@@ -2025,7 +2025,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2058,7 +2058,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2127,7 +2127,7 @@ public class CsauController {
 
 				} else {
 					request.setAttribute("login", "sessionout");
-					// System.out.println("If Not success");
+					// //System.out.println("If Not success");
 					 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 				}
@@ -2140,7 +2140,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2174,7 +2174,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2213,7 +2213,7 @@ public class CsauController {
 				 * }
 				 */
 				/*
-				 * System.out.println(Ws_url_config.web_main_services);
+				 * //System.out.println(Ws_url_config.web_main_services);
 				 * ArrayList javaArrayListFromGSON_sub_service =
 				 * googleJson.fromJson(Ws_url_config.web_main_services,
 				 * ArrayList.class); request.setAttribute("main_services",
@@ -2238,7 +2238,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2267,14 +2267,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2300,7 +2300,7 @@ public class CsauController {
 			 * }
 			 */
 			/*
-			 * System.out.println(Ws_url_config.web_main_services); ArrayList
+			 * //System.out.println(Ws_url_config.web_main_services); ArrayList
 			 * javaArrayListFromGSON_sub_service =
 			 * googleJson.fromJson(Ws_url_config.web_main_services,
 			 * ArrayList.class); request.setAttribute("main_services",
@@ -2352,7 +2352,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2391,7 +2391,7 @@ public class CsauController {
 				 * }
 				 */
 				/*
-				 * System.out.println(Ws_url_config.web_main_services);
+				 * //System.out.println(Ws_url_config.web_main_services);
 				 * ArrayList javaArrayListFromGSON_sub_service =
 				 * googleJson.fromJson(Ws_url_config.web_main_services,
 				 * ArrayList.class); request.setAttribute("main_services",
@@ -2423,7 +2423,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2452,14 +2452,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2504,14 +2504,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2562,7 +2562,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2571,7 +2571,7 @@ public class CsauController {
 			Gson googleJson = new Gson();
 			try {
 
-				System.out.println((String) session.getAttribute("web_main_services"));
+				//System.out.println((String) session.getAttribute("web_main_services"));
 				ArrayList javaArrayListFromGSON_sub_service = googleJson
 						.fromJson((String) session.getAttribute("web_main_services"), ArrayList.class);
 				request.setAttribute("main_services", javaArrayListFromGSON_sub_service);
@@ -2584,9 +2584,9 @@ public class CsauController {
 								cls_url_config.getWeb_service_url_ser_api_key());
 				JSONObject sub_service_obj = new JSONObject(jsonArrayContent);
 				String all_list = sub_service_obj.get("data").toString();
-				// System.out.println("all_list");
+				// //System.out.println("all_list");
 
-				// System.out.println(all_list);
+				// //System.out.println(all_list);
 
 				String office_region_list = (String) session.getAttribute("office_region_list");
 				Gson googleJson_officeregions = new Gson();
@@ -2614,7 +2614,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2649,7 +2649,7 @@ public class CsauController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2668,7 +2668,7 @@ public class CsauController {
 				// request.setAttribute("division", Ws_url_config.web_division);
 				// request.setAttribute("user_level", Ws_url_config.user_level);
 
-				System.out.println((String) session.getAttribute("web_main_services"));
+				//System.out.println((String) session.getAttribute("web_main_services"));
 				ArrayList javaArrayListFromGSON_sub_service = googleJson
 						.fromJson((String) session.getAttribute("web_main_services"), ArrayList.class);
 				request.setAttribute("main_services", javaArrayListFromGSON_sub_service);
@@ -2687,7 +2687,7 @@ public class CsauController {
 
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2716,14 +2716,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2768,14 +2768,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2819,14 +2819,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -2870,14 +2870,14 @@ public class CsauController {
 		// Log User out if the user tries to access right not assigned
 		if (!isFound) {
 			request.setAttribute("login", "Please this is not alllowed");
-			// System.out.println("If Not success");
+			// //System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}

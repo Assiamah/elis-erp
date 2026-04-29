@@ -189,7 +189,7 @@ public class ws_csaupayment {
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 
-			System.out.println(json_request);
+			//System.out.println(json_request);
 			ClientResponse response = webResource.accept("application/json").header("x-api-key", web_service_api_key)
 					.type("application/json")
 					.post(ClientResponse.class, json_request);

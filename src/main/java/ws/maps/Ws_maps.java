@@ -1328,11 +1328,11 @@ public class Ws_maps {
 		String output = "Data Not Received";
 		try {
 
-			// System.out.println(obj.toString());
-			System.out.println(web_service_url);
-			System.out.println(web_service_api_key);
+			// //System.out.println(obj.toString());
+			//System.out.println(web_service_url);
+			//System.out.println(web_service_api_key);
 
-			System.out.println(job_number);
+			//System.out.println(job_number);
 
 			Client client = Client.create();
 			WebResource webResource = client

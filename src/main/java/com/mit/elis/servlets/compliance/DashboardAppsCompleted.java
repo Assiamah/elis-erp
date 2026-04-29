@@ -49,7 +49,7 @@ public class DashboardAppsCompleted {
 					? request.getParameter("region_id")
 					: (String) session.getAttribute("regional_code"));
 
-			// System.out.println(String.format("Log level: %s", requestType));
+			// //System.out.println(String.format("Log level: %s", requestType));
 
 			String web_service_response = null;
 
@@ -58,7 +58,7 @@ public class DashboardAppsCompleted {
 				String start_date = request.getParameter("start_date");
                  String end_date = request.getParameter("end_date");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -72,9 +72,9 @@ public class DashboardAppsCompleted {
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -83,7 +83,7 @@ public class DashboardAppsCompleted {
 				String start_date = request.getParameter("start_date");
                  String end_date = request.getParameter("end_date");
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
@@ -97,9 +97,9 @@ public class DashboardAppsCompleted {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

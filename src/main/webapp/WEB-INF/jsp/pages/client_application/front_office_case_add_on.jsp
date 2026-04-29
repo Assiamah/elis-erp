@@ -950,7 +950,7 @@
                           String rv_item_id = (String) jsonObject.getString("id");
                           
                           
-                        //  System.out.println("<option value=" + revenue_items_name + "-" + revenue_items_amount + ">"+ revenue_items_name+ "</option>");
+                        //  //System.out.println("<option value=" + revenue_items_name + "-" + revenue_items_amount + ">"+ revenue_items_name+ "</option>");
                           
                           %>
                      <%--  <option value="<%=business_process_id%>"><%=business_process_name%></option>--%>

@@ -42,7 +42,7 @@ public class app_modal_fills_serv {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 		}
 		// HttpSession session = request.getSession();
@@ -50,7 +50,7 @@ public class app_modal_fills_serv {
 		try {
 			String request_type = request.getParameter("request_type");
 
-			System.out.println(request_type);
+			//System.out.println(request_type);
 
 			// session.setAttribute("office_region_list", all_list_office_region);
 			// session.setAttribute("division_list", all_list_division_list);
@@ -118,11 +118,11 @@ public class app_modal_fills_serv {
 				// request.setAttribute("data_row", javaArrayListFromGSON);
 				web_service_response = all_list;
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -132,17 +132,17 @@ public class app_modal_fills_serv {
 				String jsonArrayContent = casemgt_cl
 						.divisions_get_list(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key());
-				// System.out.println(jsonArrayContent);
+				// //System.out.println(jsonArrayContent);
 
 				JSONObject sub_service_obj = new JSONObject(jsonArrayContent);
 				String all_list = sub_service_obj.get("data").toString();
 				web_service_response = all_list;
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -152,18 +152,18 @@ public class app_modal_fills_serv {
 				String jsonArrayContent = casemgt_cl
 						.get_region_list(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key());
-				// System.out.println("new get_region_list");
-				// System.out.println(jsonArrayContent);
+				// //System.out.println("new get_region_list");
+				// //System.out.println(jsonArrayContent);
 
 				JSONObject sub_service_obj = new JSONObject(jsonArrayContent);
 				String all_list = sub_service_obj.get("data").toString();
 				web_service_response = all_list;
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -173,7 +173,7 @@ public class app_modal_fills_serv {
 				String jsonArrayContent = user_web_service
 						.get_list_of_designation(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key());
-				// System.out.println(jsonArrayContent);
+				// //System.out.println(jsonArrayContent);
 
 				// JSONObject sub_service_obj = new JSONObject(jsonArrayContent);
 				// String all_list = sub_service_obj.get("data").toString();
@@ -184,25 +184,25 @@ public class app_modal_fills_serv {
 				// request.setAttribute("data_row", javaArrayListFromGSON);
 				web_service_response = jsonArrayContent;
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
 
 			if (request_type.equals("select_lc_case_query_all_by_id")) {
 				String case_number = request.getParameter("case_number");
-				// System.out.println(case_number);
+				// //System.out.println(case_number);
 				web_service_response = lc_case_query_cl
 						.select_lc_case_query_all_by_id(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), case_number);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}
@@ -226,14 +226,14 @@ public class app_modal_fills_serv {
 				jsonArr.put(obj);
 				String input = jsonArr.toString();
 
-				System.out.println(input);
+				//System.out.println(input);
 				web_service_response = lc_case_query_cl
 						.select_lc_case_query_add_and_update(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -255,11 +255,11 @@ public class app_modal_fills_serv {
 				// ArrayList.class);
 				// request.setAttribute("localitylist", javaArrayListFromGSON_locality);
 
-				// System.out.println(web_service_response);
+				// //System.out.println(web_service_response);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 
 			}

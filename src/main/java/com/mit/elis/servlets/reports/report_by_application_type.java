@@ -69,7 +69,7 @@ public class report_by_application_type {
 				JSONObject obj = new JSONObject();
 				Gson googleJson = new Gson();
 				if (request.getParameter("transactions_form") != null) {
-					// System.out.println("good");
+					// //System.out.println("good");
 					request.setAttribute("active", "trans");
 					String date_from = (String) request.getParameter("t_date_from") != null
 							? request.getParameter("t_date_from")
@@ -89,13 +89,13 @@ public class report_by_application_type {
 						}
 					}
 
-					// System.out.println("division: " + division_list);
+					// //System.out.println("division: " + division_list);
 					obj.put("date_from", date_from);
 					obj.put("date_to", date_to);
 					obj.put("division",
 							division_list != "" ? division_list : (String) session.getAttribute("division"));
 					obj.put("region_id", region_id);
-					// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
+					// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 					web_service_response_menu = casemgt_web_service
 							.account_report_on_bill_by_dates(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
@@ -105,7 +105,7 @@ public class report_by_application_type {
 					String total_count = summary.get("total_count").toString();
 					String total_amount = summary.get("total_amount").toString();
 					String data = (String) result_obj.get("data").toString();
-					// System.out.println("testing : " +
+					// //System.out.println("testing : " +
 					// total_count.toString());
 
 					ArrayList<?> javaArrayListFromGSON = googleJson.fromJson(data, ArrayList.class);
@@ -140,7 +140,7 @@ public class report_by_application_type {
 						}
 					}
 
-					// System.out.println("division: " + division_list);
+					// //System.out.println("division: " + division_list);
 					obj.put("date_from", date_from);
 					obj.put("date_to", date_to);
 					obj.put("limit", limit);
@@ -148,7 +148,7 @@ public class report_by_application_type {
 					obj.put("division",
 							division_list != "" ? division_list : (String) session.getAttribute("division"));
 					obj.put("region_id", region_id);
-					// System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
+					// //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),obj.toString());
 					web_service_response_menu = casemgt_web_service
 							.account_report_on_bill_by_dates_graph(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
@@ -159,7 +159,7 @@ public class report_by_application_type {
 					String total_count = summary.get("total_count").toString();
 					String total_amount = summary.get("total_amount").toString();
 					String data = (String) result_obj.get("data").toString();
-					// System.out.println("testing : " +
+					// //System.out.println("testing : " +
 					// total_count.toString());
 
 					ArrayList<?> javaArrayListFromGSON = googleJson.fromJson(data, ArrayList.class);
@@ -183,7 +183,7 @@ public class report_by_application_type {
 				request.setAttribute("page_name", "reports_by_application_type");
 
 			} catch (Exception e) {
-				System.out.println("error : " + e);
+				//System.out.println("error : " + e);
 				e.printStackTrace();
 			}
 
@@ -191,7 +191,7 @@ public class report_by_application_type {
 
 		} else {
 			request.setAttribute("login", "sessionout");
-			System.out.println("If Not success");
+			//System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}

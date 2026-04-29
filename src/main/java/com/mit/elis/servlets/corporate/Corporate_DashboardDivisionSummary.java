@@ -47,12 +47,12 @@ public class Corporate_DashboardDivisionSummary {
 			String request_type = request.getParameter("request_type");
             String corp_id = request.getParameter("corp_id");
 
-            System.out.println(corp_id);
+            //System.out.println(corp_id);
 			// HttpSession session = request.getSession();
 			String region_id = (String) (request.getParameter("region_id") != null
 					? request.getParameter("region_id")
 					: (String) session.getAttribute("regional_code"));
-			// System.out.println(String.format(" REGION FROM : %s",
+			// //System.out.println(String.format(" REGION FROM : %s",
 			// region_id));
 
 			String web_service_response = null;
@@ -66,16 +66,16 @@ public class Corporate_DashboardDivisionSummary {
 						.report_dashboard_created_today_post(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_created_day_service_type")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -86,16 +86,16 @@ public class Corporate_DashboardDivisionSummary {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_created_day_service_type_applications")) {
 				String service = request.getParameter("service");
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
@@ -107,9 +107,9 @@ public class Corporate_DashboardDivisionSummary {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -122,16 +122,16 @@ public class Corporate_DashboardDivisionSummary {
 						.report_dashboard_created_month_post(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_created_month_service_type")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -143,16 +143,16 @@ public class Corporate_DashboardDivisionSummary {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_created_month_service_type_applications")) {
 				String service = request.getParameter("service");
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
@@ -165,9 +165,9 @@ public class Corporate_DashboardDivisionSummary {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
+					// ////System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -181,16 +181,16 @@ public class Corporate_DashboardDivisionSummary {
 						.report_dashboard_completed_today_post(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_completed_day_service_type")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
@@ -201,16 +201,16 @@ public class Corporate_DashboardDivisionSummary {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_completed_day_service_type_applications")) {
 				String service = request.getParameter("service");
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
@@ -223,9 +223,9 @@ public class Corporate_DashboardDivisionSummary {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
@@ -233,43 +233,43 @@ public class Corporate_DashboardDivisionSummary {
 				JSONObject obj = new JSONObject();
 				obj.put("region_id", region_id);
 				String input_details = obj.toString();
-				System.out.println("testing comp  by divsion: " + input_details);
+				//System.out.println("testing comp  by divsion: " + input_details);
 
 				web_service_response = cls_compliance
 						.report_dashboard_completed_month_post(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_completed_month_service_type")) {
 				String division = request.getParameter("division");
 
-				// System.out.println(division);
+				// //System.out.println(division);
 
 				JSONObject obj = new JSONObject();
 				obj.put("division", division);
 				obj.put("region_id", region_id);
 				String input_details = obj.toString();
-				System.out.println("testing comp  by service: " + input_details);
+				//System.out.println("testing comp  by service: " + input_details);
 
 				web_service_response = cls_compliance.report_dashboard_completed_month_by_division_post(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 
 			if (request_type.equals("summary_completed_month_service_type_applications")) {
 				String service = request.getParameter("service");
 
-				// System.out.println(service);
+				// //System.out.println(service);
 
 				JSONObject obj = new JSONObject();
 				obj.put("service_type", service);
@@ -281,9 +281,9 @@ public class Corporate_DashboardDivisionSummary {
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
-					// System.out.println(web_service_response);
+					// //System.out.println(web_service_response);
 				} else {
-					System.out.println(web_service_response);
+					//System.out.println(web_service_response);
 				}
 			}
 

@@ -38,7 +38,7 @@ public class download_all_files {
             throws IOException, ServletException {
 
         String file_path = request.getParameter("file_path");
-        System.out.println(file_path);
+        //System.out.println(file_path);
 
         if (file_path == null || file_path.equals("")) {
             throw new ServletException("File Name can't be null or empty");
@@ -47,7 +47,7 @@ public class download_all_files {
         if (!file.exists()) {
             throw new ServletException("File doesn't exists on server.");
         }
-        System.out.println("File location on server::" + file.getAbsolutePath());
+        //System.out.println("File location on server::" + file.getAbsolutePath());
         // ServletContext ctx = getServletContext();
         InputStream fis = new FileInputStream(file);
         /// String mimeType = ctx.getMimeType(file.getAbsolutePath());
@@ -66,7 +66,7 @@ public class download_all_files {
         os.flush();
         os.close();
         fis.close();
-        System.out.println("File downloaded at client successfully");
+        //System.out.println("File downloaded at client successfully");
         return file_path;
 
     }

@@ -96,13 +96,13 @@ public class Menu {
 		 * obj_main_1.put( "success" , true ); obj_main_1.put( "items" ,
 		 * jArr_main.toString());
 		 * 
-		 * System.out.println(obj_main_1);
+		 * //System.out.println(obj_main_1);
 		 */
 		/*
 		 * }else{ obj.put( "success" , false ); obj.put( "msg" ,
 		 * "Incorrect user or password.';" );
 		 * 
-		 * System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.
+		 * //System.out.println(cls_url_config.getWeb_service_url_ser(),cls_url_config.
 		 * getWeb_service_url_ser_api_key(),obj.toString()); }
 		 */
 		try {
@@ -111,7 +111,7 @@ public class Menu {
 			web_service_response = cls_users.get_all_menu(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key());
 
-			// System.out.println(web_service_response);
+			// //System.out.println(web_service_response);
 
 			return web_service_response;
 		} catch (Exception e) {
