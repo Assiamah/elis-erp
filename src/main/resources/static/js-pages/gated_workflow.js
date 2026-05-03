@@ -1,6 +1,77 @@
 // Initialize the map when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
 
+    const objectionModalTitle = $('#newObjectionModalLabel').html();
+
+    function resetObjectionModal(modal) {
+        modal.find('#action_on_form').val('add');
+        modal.find('#obj_id').val('');
+        modal.find('#obj_objector_name').val('');
+        modal.find('#obj_objector_address').val('');
+        modal.find('#obj_object_contact').val('');
+        modal.find('#obj_reasons').val('');
+        modal.find('#obj_remarks').val('');
+        modal.find('#obj_status').val('true');
+        modal.find('#newObjectionModalLabel').html(objectionModalTitle);
+    }
+
+    function setObjectionStatus(status) {
+        const statusSelect = $('#newObjectionModal #obj_status');
+        const statusValue = status === undefined || status === null ? '' : String(status);
+
+        if (!statusValue) {
+            statusSelect.val('true');
+            return;
+        }
+
+        if (statusSelect.find('option').filter(function() {
+            return $(this).val() === statusValue;
+        }).length) {
+            statusSelect.val(statusValue);
+            return;
+        }
+
+        const normalizedStatus = statusValue.toLowerCase();
+        if (['active', 'pending', 'open', 'true', '1'].includes(normalizedStatus)) {
+            statusSelect.val('true');
+            return;
+        }
+
+        if (['inactive', 'resolved', 'closed', 'false', '0'].includes(normalizedStatus)) {
+            statusSelect.val('false');
+        }
+    }
+
+    function populateObjectionModal(trigger) {
+        const modal = $('#newObjectionModal');
+        const button = $(trigger);
+        const action = button.data('action') || 'add';
+
+        resetObjectionModal(modal);
+        modal.find('#action_on_form').val(action);
+
+        if (action !== 'edit') {
+            return;
+        }
+
+        modal.find('#newObjectionModalLabel').html(`<i class="fas fa-gavel me-2"></i>Edit Objection Section`);
+        modal.find('#obj_id').val(button.data('target-id') || '');
+        modal.find('#obj_objector_name').val(button.data('objector_name') || button.data('objector-name') || '');
+        modal.find('#obj_objector_address').val(button.data('objector_address') || button.data('objector-address') || '');
+        modal.find('#obj_object_contact').val(button.data('objector_contact') || button.data('objector-contact') || '');
+        modal.find('#obj_reasons').val(button.data('reasons') || '');
+        modal.find('#obj_remarks').val(button.data('remarks') || '');
+        setObjectionStatus(button.data('status'));
+    }
+
+    $('#newObjectionModal').on('show.bs.modal', function(event) {
+        populateObjectionModal(event.relatedTarget);
+    });
+
+    $(document).on('click', '[data-target="#newObjectionModal"], [data-bs-target="#newObjectionModal"]', function() {
+        populateObjectionModal(this);
+    });
+
     // Export payments button
     $('#exportPayments').on('click', function() {
         Swal.fire({
@@ -28527,6 +28598,250 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Certificate number and indexing updating confirmed and processed');
             }
         });
+    });
+
+    $('#update_smd_plan_details').on('click', function(e) {
+
+		var job_number = $("#cs_main_job_number").val();
+		var case_number = $("#cs_main_case_number").val();
+		// var gid = $("#gid_pl_smd").val();
+		var registry_mapref = $("#txt_lc_registry_mapref_up").val();
+		// var size_of_land = $("#txt_lc_size_of_land_pl_smd").val();
+		var plan_no = $("#txt_lc_plan_no_up").val();
+		var ltr_plan_no = $("#ltr_plan_no_up").val();
+		var cc_no = $("#txt_lc_cc_no_up").val();
+        // var transaction_number = $("#lc_txt_transaction_number_pl_smd").val();
+
+         // Validation
+        if (!registry_mapref || !plan_no || !ltr_plan_no || !cc_no) {
+            Swal.fire({
+                title: 'Required Fields',
+                text: 'Plan Number and Registry Map Reference are required',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+         Swal.fire({
+            title: 'Save Plan Details?',
+            html: `<div class="text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-map-marked-alt text-primary fa-3x"></i>
+                    </div>
+                    <h5 class="mb-3">Confirm Plan Details</h5>
+                    <div class="text-start">
+                        <p><strong>Plan Number:</strong> ${plan_no}</p>
+                        <p><strong>Registry Map Ref:</strong> ${registry_mapref}</p>
+                        <p><strong>CC Number:</strong> ${cc_no || 'Not provided'}</p>
+                        <p><strong>LTR Number:</strong> ${ltr_plan_no || 'Not provided'}</p>
+                    </div>
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <small>These details will be used for official title plan generation</small>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-save me-1"></i>Save Details',
+            cancelButtonText: '<i class="fas fa-times me-1"></i>Cancel',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            width: 550
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading
+                const btn = $('#btn_save_lrd_title_plan_update_details_smd_new_update');
+                const originalText = btn.html();
+                btn.prop('disabled', true);
+                btn.html('<span class="mdi mdi-loading mdi-spin me-1" role="status"></span>Saving...');
+			
+
+                $.ajax({
+                    type : "POST",
+                    url : "Case_Management_Serv",
+                    // target:'_blank',
+                    data : {
+                        request_type : 'select_update_title_plan_details_smd',
+                        //gid : gid,
+                        case_number:case_number,
+                        job_number:job_number,
+                        registry_mapref : registry_mapref,
+                        //size_of_land : size_of_land,
+                        plan_no : plan_no,
+                        ltr_plan_no : ltr_plan_no,
+                        cc_no : cc_no,
+                        //transaction_number : transaction_number
+                    },
+                    cache : false,
+                    /*
+                        * xhrFields:{ responseType:
+                        * 'blob' },
+                        */
+                    beforeSend : function() {
+                        // $('#district').html('<img
+                        // src="img/loading.gif"
+                        // alt="" width="24"
+                        // height="24">');
+                    },
+                    success : function(jobdetails) {
+
+
+                        // Update UI on success
+                        btn.removeClass('btn-primary').addClass('btn-success');
+                        btn.html('<i class="fas fa-check me-1"></i>Details Saved');
+
+                        // Make fields readonly
+                        $('#txt_lc_plan_no_pl_smd, #txt_lc_registry_mapref_pl_smd, #txt_cc_no_pl_smd, #ltr_plan_no_pl_smd')
+                            .prop('readonly', true)
+                            .closest('.input-group').find('.input-group-text:last-child').removeClass('text-success').addClass('text-success');
+                        
+                        // Update status badge
+                        $('.alert-info .badge').removeClass('bg-warning').addClass('bg-success').text('Completed');
+                    
+                        // Update last updated timestamp
+                        $('#planLastUpdated').text('Just now');
+                    
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success!',
+                            html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5>Plan Details Saved</h5>
+                                <p class="text-muted">Title plan information has been successfully updated</p>
+                                <div class="alert alert-info mt-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Plan is now ready for title plan generation process
+                                </div>
+                            </div>`,
+                            icon: 'success',
+                            confirmButtonText: 'Continue',
+                            confirmButtonColor: '#198754'
+                        });
+                 
+                    }
+                });
+            }
+        });
+    });
+
+    $('#btn_update_objection_section').on('click', function(e) {
+        e.preventDefault();
+
+        const form = document.getElementById('form_add_objection');
+        if (form && !form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const btn = $(this);
+        const originalText = btn.html();
+        const action_on_form = $('#action_on_form').val() || 'add';
+        const obj_id = $('#obj_id').val();
+        const obj_case_number = $('#obj_case_number').val();
+        const obj_job_number = $('#obj_job_number').val();
+        const obj_objector_name = $('#obj_objector_name').val();
+        const obj_objector_address = $('#obj_objector_address').val();
+        const obj_object_contact = $('#obj_object_contact').val();
+        const obj_reasons = $('#obj_reasons').val();
+        const obj_remarks = $('#obj_remarks').val();
+        const obj_status = $('#obj_status').val();
+
+        btn.prop('disabled', true);
+        btn.html('<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Saving...');
+        $('#alert-display-space-objection').html('');
+
+        $.ajax({
+            type: 'POST',
+            url: 'Case_Management_Serv',
+            data: {
+                request_type: 'select_lc_case_objection_add_and_update',
+                action_on_form: action_on_form,
+                obj_id: obj_id,
+                obj_case_number: obj_case_number,
+                obj_job_number: obj_job_number,
+                obj_objector_name: obj_objector_name,
+                obj_objector_address: obj_objector_address,
+                obj_object_contact: obj_object_contact,
+                obj_reasons: obj_reasons,
+                obj_remarks: obj_remarks,
+                obj_status: obj_status
+            },
+            cache: false,
+            success: function(serviceresponse) {
+                let response = serviceresponse;
+
+                if (typeof response === 'string') {
+                    try {
+                        response = JSON.parse(response);
+                    } catch (e) {
+                        if (!response.trim()) {
+                            response = {
+                                status: 'error',
+                                message: 'No response received from the server'
+                            };
+                        } else {
+                            response = {
+                                status: 'success',
+                                message: response || 'Objection details saved successfully'
+                            };
+                        }
+                    }
+                }
+
+                const isSuccess = response && (
+                    response.status === 'success' ||
+                    response.success === true ||
+                    response.success === 'true' ||
+                    response.response === 'success'
+                );
+
+                if (isSuccess) {
+                    $('#newObjectionModal').modal('hide');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Saved',
+                        text: response && response.message ? response.message : 'Objection details saved successfully',
+                        confirmButtonColor: '#198754'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                    return;
+                }
+
+                const errorMessage = response && (response.message || response.msg)
+                    ? (response.message || response.msg)
+                    : 'Unable to save objection details';
+                $('#alert-display-space-objection').html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${errorMessage}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+            },
+            error: function(xhr, status, error) {
+                const errorMessage = status === 'timeout'
+                    ? 'Request timed out. Please try again.'
+                    : 'Unable to save objection details. Please try again.';
+
+                $('#alert-display-space-objection').html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${errorMessage}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `);
+
+                console.error('Objection save failed:', error || xhr.responseText);
+            },
+            complete: function() {
+                btn.prop('disabled', false);
+                btn.html(originalText);
+            }
+        });
+
     });
 
 });

@@ -183,3 +183,18 @@ window.initializeTooltips = function() {
                  '</div>'
     });
 }
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        var globalScript = document.currentScript || document.querySelector('script[src$="/js-pages/global.js"]');
+        var contextPath = '';
+
+        if (globalScript && globalScript.src) {
+            contextPath = new URL(globalScript.src, window.location.href).pathname.replace(/\/js-pages\/global\.js$/, '');
+        }
+
+        navigator.serviceWorker.register(contextPath + '/sw.js', { updateViaCache: 'none' }).catch(function (error) {
+            console.error('Service worker registration failed:', error);
+        });
+    });
+}

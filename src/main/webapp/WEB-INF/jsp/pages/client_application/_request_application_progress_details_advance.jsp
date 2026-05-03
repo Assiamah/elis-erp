@@ -1381,16 +1381,16 @@
                                                             <button type="button" 
                                                             
                                                             id="editOjectionModal"  
-                                                            data-toggle="modal" 
-                                                            data-target="#newObjectionModal"  
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#newObjectionModal"  
                                                             data-action="edit"  
-                                                            data-target-id= ${case_objection_row.id} 
-                                                            data-objector_name= ${case_objection_row.objector_name}  
-                                                            data-objector_address=${case_objection_row.objector_address} 
-                                                            data-objector_contact=${case_objection_row.objector_contact} 
-                                                            data-reasons= ${case_objection_row.reasons} 
-                                                            data-remarks=${case_objection_row.remarks} 
-                                                            data-status=${case_objection_row.status} 
+                                                            data-target-id="${case_objection_row.id}"
+                                                            data-objector_name="${case_objection_row.objector_name}"  
+                                                            data-objector_address="${case_objection_row.objector_address}" 
+                                                            data-objector_contact="${case_objection_row.objector_contact}" 
+                                                            data-reasons="${case_objection_row.reasons}" 
+                                                            data-remarks="${case_objection_row.remarks}" 
+                                                            data-status="${case_objection_row.status}" 
                                                             
 
                                                             class="btn btn-danger btn-icon-split "  

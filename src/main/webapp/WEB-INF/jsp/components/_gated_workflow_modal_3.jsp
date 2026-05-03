@@ -2964,3 +2964,203 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade modal-blur effect-scale" id="update_and_review_plan_details" tabindex="-1"
+    role="dialog" aria-labelledby="reviewPlanDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white" id="reviewPlanDetailsLabel">
+                    <i class="fas fa-search me-2"></i>Review Plan Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Property Information Card -->
+                <div class="card border mb-4">
+                    <div class="card-header bg-light py-3">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-info-circle me-2 text-danger"></i>Plan Information
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <!-- Row 1 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-fingerprint me-1 text-muted"></i>GLPIN
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-id-card text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" type="text" style="cursor: not-allowed;"
+                                            value="${glpin}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-drafting-compass me-1 text-muted"></i>Type of Plotting
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marked-alt text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" type="text" style="cursor: not-allowed;"
+                                            name="txt_lc_smd_type_of_plotting" type="text" style="cursor: not-allowed;"
+                                            value="${smd_type_of_plotting}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-hashtag me-1 text-muted"></i>SMD Reference Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-file-signature text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" type="text" style="cursor: not-allowed;"
+                                            name="txt_lc_smd_reference_number" type="text"
+                                            value="${smd_reference_number}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 2 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-pin me-1 text-muted"></i>Registration District
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-city text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" style="cursor: not-allowed;" readonly
+                                            name="txt_lc_registration_district_number" type="text"
+                                            value="${registration_district_number}">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-th-large me-1 text-muted"></i>Section Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-layer-group text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" style="cursor: not-allowed;" readonly
+                                            type="text" value="${registration_section_number}">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-cube me-1 text-muted"></i>Block Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-cubes text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light"  style="cursor: not-allowed;" readonly
+                                            type="text" value="${registration_block_number}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 3 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-ruler-combined me-1 text-muted"></i>Land Size
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-expand-arrows-alt text-primary"></i>
+                                        </span>
+                                        <input class="form-control bg-light" 
+                                            type="text" style="cursor: not-allowed;" value="${size_of_land}" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map me-1 text-muted"></i>Plan Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-map-marked text-primary"></i>
+                                        </span>
+                                        <input class="form-control" id="txt_lc_plan_no_up" 
+                                            type="text" value="${plan_no}">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-file-alt me-1 text-muted"></i>LTR Plan Number
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-file-contract text-primary"></i>
+                                        </span>
+                                        <input class="form-control" id="ltr_plan_no_up" 
+                                            type="text"  value="${ltr_plan_no}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Row 4 -->
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-map-signs me-1 text-muted"></i>Registry Map No
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-landmark text-primary"></i>
+                                        </span>
+                                        <input class="form-control" id="txt_lc_registry_mapref_up" 
+                                            type="text"  value="${registry_mapref}">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">
+                                        <i class="fas fa-file-certificate me-1 text-muted"></i>CC No
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">
+                                            <i class="fas fa-certificate text-primary"></i>
+                                        </span>
+                                        <input class="form-control" id="txt_lc_cc_no_up" 
+                                            type="text" value="${cc_no}">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-primary" id="update_smd_plan_details">
+                    <i class="fas fa-save me-1"></i>Update Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

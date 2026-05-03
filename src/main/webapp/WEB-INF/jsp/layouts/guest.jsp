@@ -68,6 +68,16 @@
     <!-- SweetAlert2 JS -->
     <script src="${pageContext.request.contextPath}/assets/libs/sweetalert2/dist/sweetalert2.min.js"></script>
 
+     <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('${pageContext.request.contextPath}/sw.js', { updateViaCache: 'none' }).catch(function(error) {
+                    console.error('Service worker registration failed:', error);
+                });
+            });
+        }
+    </script>
+
 </body>
 
 </html>

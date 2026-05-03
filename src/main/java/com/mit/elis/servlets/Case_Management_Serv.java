@@ -2139,6 +2139,54 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("select_lc_case_objection_add_and_update")) {
+				String job_number = request.getParameter("obj_job_number");
+				String obj_id = request.getParameter("obj_id");
+				String obj_case_number = request.getParameter("obj_case_number");
+				String obj_job_number = request.getParameter("obj_job_number");
+				String obj_objector_name = request.getParameter("obj_objector_name");
+				String obj_objector_address = request.getParameter("obj_objector_address");
+				String obj_object_contact = request.getParameter("obj_object_contact");
+				String obj_reasons = request.getParameter("obj_reasons");
+				String obj_remarks = request.getParameter("obj_remarks");
+				String obj_status = request.getParameter("obj_status");
+				
+				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
+
+				String userid = (String) session.getAttribute("userid");
+
+				JSONObject obj_d = new JSONObject();
+
+				obj_d.put("obj_id", obj_id);
+				obj_d.put("obj_case_number", obj_case_number);
+				obj_d.put("obj_job_number", obj_job_number);
+				obj_d.put("obj_objector_name", obj_objector_name);
+				obj_d.put("obj_objector_address", obj_objector_address);
+				obj_d.put("obj_object_contact", obj_object_contact);
+				obj_d.put("obj_reasons", obj_reasons);
+				obj_d.put("obj_remarks", obj_remarks);
+				obj_d.put("obj_status", obj_status);
+
+				obj_d.put("modified_by_name", fullname);
+				obj_d.put("modified_by_id", userid);
+				obj_d.put("fullname", fullname);
+				obj_d.put("userid", userid); 
+				obj_d.put("mac_address", mac_address); obj_d.put("ip_address", ip_address);
+
+				
+				web_service_response = casemgt_cl_m
+						.select_lc_case_objection_add_and_update(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
+
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("select_load_record_notes")) {
 
 				String job_number = request.getParameter("job_number");

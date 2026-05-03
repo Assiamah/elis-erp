@@ -796,4 +796,88 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="newObjectionModal" tabindex="-1" aria-labelledby="newObjectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title" id="newObjectionModalLabel">
+          <i class="fas fa-gavel me-2"></i>Objection Section
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div id="alert-display-space-objection"></div>
+        <form id="form_add_objection">
+          <input id="action_on_form" type="hidden">
+          <input id="obj_id" name="obj_id" type="hidden" value="${userid}">
+          
+          <div class="row g-3">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group mb-3">
+                <label for="obj_job_number" class="form-label fw-semibold">
+                  <i class="fas fa-briefcase me-1"></i>Job Number
+                </label>
+                <input type="text" name="obj_job_number" id="obj_job_number" class="form-control bg-light" required readonly value="${job_number}">
+              </div>
+              <div class="form-group mb-3">
+                <label for="obj_case_number" class="form-label fw-semibold">
+                  <i class="fas fa-folder-open me-1"></i>Case Number
+                </label>
+                <input type="text" name="obj_case_number" id="obj_case_number" class="form-control bg-light" required readonly value="${case_number}">
+              </div>
+              <div class="form-group mb-3">
+                <label for="obj_objector_name" class="form-label fw-semibold">
+                  <i class="fas fa-user me-1"></i>Objector Name
+                </label>
+                <input type="text" name="obj_objector_name" id="obj_objector_name" class="form-control" required>
+              </div>
+              <div class="form-group mb-3">
+                <label for="obj_objector_address" class="form-label fw-semibold">
+                  <i class="fas fa-map-marker-alt me-1"></i>Objector Address
+                </label>
+                <input type="text" name="obj_objector_address" id="obj_objector_address" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="form-group mb-3">
+                <label for="obj_object_contact" class="form-label fw-semibold">
+                  <i class="fas fa-phone-alt me-1"></i>Objector Contact
+                </label>
+                <input type="text" name="obj_object_contact" id="obj_object_contact" class="form-control" required>
+              </div>
+              <div class="form-group mb-3">
+                <label for="obj_reasons" class="form-label fw-semibold">
+                  <i class="fas fa-exclamation-triangle me-1"></i>Reasons
+                </label>
+                <textarea name="obj_reasons" id="obj_reasons" class="form-control" rows="3" required></textarea>
+              </div>
+              <div class="form-group mb-3">
+                <label for="obj_remarks" class="form-label fw-semibold">
+                  <i class="fas fa-comment me-1"></i>Remarks
+                </label>
+                <textarea name="obj_remarks" id="obj_remarks" class="form-control" rows="3" required></textarea>
+              </div>
+              <div class="form-group mb-3">
+                <label for="obj_status" class="form-label fw-semibold">
+                  <i class="fas fa-toggle-on me-1"></i>Status
+                </label>
+                <select name="obj_status" id="obj_status" class="form-select" required>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer bg-light border-0">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Close
+        </button>
+        <button type="button" id="btn_update_objection_section" class="btn btn-primary">
+          <i class="fas fa-save me-1"></i>Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
