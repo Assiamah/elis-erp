@@ -5486,16 +5486,30 @@ function initializeBatchedAppsTable(data) {
                 orderable: false,
                 searchable: false,
                 render: function (data, type, row) {
-                    return `
+                    return `<div class="d-flex align-item-center">
             <button class="btn btn-sm btn-danger"
                 data-job_number="${row.job_number}" 
                 data-ar_name="${row.ar_name}" 
                 data-business_process_sub_name="${row.business_process_sub_name}" 
                 data-locality="${row.locality}" 
-                id="btnGeneralWorkRequest">
-                <i class="bi bi-send"></i>
-                Send Request
-            </button>
+                id="btnGeneralWorkRequest"
+                data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="Send Request">
+                <i class="bi bi-send""></i>
+            </button> 
+            <button class="btn btn-icon btn-sm ms-2 btn-outline-info btn-wave waves-effect waves-light btn-add-batch" 
+                id="btnAddToBatchlist-SMDGAPA41892019" 
+                data-job_number="${row.job_number}" 
+                data-ar_name="${row.ar_name}" 
+                data-business_process_sub_name="${row.business_process_sub_name}" 
+                data-locality="${row.locality}" 
+                data-application_stage="0" 
+                data-application_stage_name="" 
+                data-application_stage_baby_step="1" d
+                ata-application_stage_name_baby_step="-"
+                data-bs-target="#askForPurposeOfBatching" 
+                data-bs-toggle="modal">
+                <i class="fas fa-plus" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary" data-bs-placement="top" title="Add to Batch"></i>
+             </button></div>
           `;
                 }
             }
@@ -5529,6 +5543,10 @@ function initializeBatchedAppsTable(data) {
             // You can add additional callbacks here if needed
         }
     });
+
+    setTimeout(function() {
+      window.initializeTooltips();
+    }, 50);
 
     return table;
 }
