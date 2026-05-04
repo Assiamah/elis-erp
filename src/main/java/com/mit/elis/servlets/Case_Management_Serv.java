@@ -6566,6 +6566,49 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			
+			if (request_type.equals("get_application_steps")) {
+				String job_number = request.getParameter("job_number");
+				String workflow_type = request.getParameter("workflow_type");
+				// //System.out.println(job_number);
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("job_number", job_number);
+				obj.put("workflow_type", workflow_type);
+
+				web_service_response = casemgt_cl.get_application_steps(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("remove_application_steps")) {
+				String step_type = request.getParameter("step_type");
+				String step_ids = request.getParameter("step_ids");
+				String job_number = request.getParameter("job_number");
+				String workflow_type = request.getParameter("workflow_type");
+				// //System.out.println(job_number);
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("job_number", job_number);
+				obj.put("workflow_type", workflow_type);
+				obj.put("step_type", step_type);
+				obj.put("step_ids", step_ids);
+				
+				System.out.println(obj.toString());
+
+				web_service_response = casemgt_cl.remove_application_steps(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+			}
+
 			if (request_type.equals("select_load_details_for_batching")) {
 				String job_number = request.getParameter("job_number");
 				// //System.out.println(job_number);
