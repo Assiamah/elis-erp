@@ -1,4 +1,167 @@
 $(document).ready(function() {
+    var specialPublicationEditorId = 'lc_search_report_summary_details_pp';
+    var specialPublicationQuill = null;
+
+    function initSpecialPublicationEditor() {
+        var editorSelector = '#' + specialPublicationEditorId;
+        var $editor = $(editorSelector);
+
+        if (!$editor.length) {
+            return;
+        }
+
+        var $tabPane = $editor.closest('.tab-pane');
+        if ($tabPane.length && !$tabPane.hasClass('active') && !$tabPane.is(':visible')) {
+            return;
+        }
+
+        if (window.hugerte && hugerte.get(specialPublicationEditorId)) {
+            return;
+        }
+
+        if (specialPublicationQuill) {
+            return;
+        }
+
+        if (window.Quill) {
+            initSpecialPublicationQuill();
+            return;
+        }
+
+        if (window.hugerte && !hugerte.get(specialPublicationEditorId)) {
+            var hugeRteInit = hugerte.init({
+                selector: editorSelector,
+                height: 300,
+                menubar: false,
+                toolbar: 'undo redo | blocks | bold italic underline | ' +
+                    'alignleft aligncenter alignright alignjustify | ' +
+                    'bullist numlist outdent indent | removeformat',
+                toolbar_mode: 'floating',
+                content_style: [
+                    'body { font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.6; padding: 16px; }',
+                    'p { margin: 0 0 10px; }'
+                ].join(' '),
+                setup: function(editor) {
+                    editor.on('change keyup setcontent', function() {
+                        editor.save();
+                    });
+                }
+            });
+
+            if (hugeRteInit && hugeRteInit.catch) {
+                hugeRteInit.catch(function() {
+                    initSpecialPublicationQuill();
+                });
+            }
+
+            setTimeout(function() {
+                if (!hugerte.get(specialPublicationEditorId)) {
+                    initSpecialPublicationQuill();
+                }
+            }, 1200);
+
+            return;
+        }
+
+        if (!window.hugerte && !window.Quill && !$.fn.summernote) {
+            setTimeout(function() {
+                initSpecialPublicationQuill();
+            }, 250);
+            return;
+        }
+
+        initSpecialPublicationQuill();
+    }
+
+    function initSpecialPublicationQuill() {
+        var editorSelector = '#' + specialPublicationEditorId;
+        var $editor = $(editorSelector);
+
+        if (!$editor.length || specialPublicationQuill) {
+            return;
+        }
+
+        if (window.Quill) {
+            var quillContainerId = specialPublicationEditorId + '_quill';
+
+            if (!$('#' + quillContainerId).length) {
+                $editor.after('<div id="' + quillContainerId + '" style="height: 420px;"></div>');
+                $editor.hide();
+            }
+
+            specialPublicationQuill = new Quill('#' + quillContainerId, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ header: [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ align: [] }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            if ($editor.val()) {
+                specialPublicationQuill.root.innerHTML = $editor.val();
+            }
+
+            specialPublicationQuill.on('text-change', function() {
+                $editor.val(specialPublicationQuill.root.innerHTML);
+            });
+            return;
+        }
+
+        if ($.fn.summernote && !$(editorSelector).next('.note-editor').length) {
+            $(editorSelector).summernote({
+                minHeight: 400,
+                placeholder: 'Write here ...',
+                focus: false,
+                fontName: 'Times New Roman',
+                fontNames: ['Times New Roman'],
+                dialogsInBody: true,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['style', 'ul', 'ol', 'paragraph']],
+                    ['fontsize', ['fontsize']],
+                    ['height', ['height']],
+                    ['misc', ['undo', 'redo', 'fullscreen', 'help']]
+                ]
+            });
+        }
+    }
+
+    function getSpecialPublicationContent() {
+        var editor = window.hugerte ? hugerte.get(specialPublicationEditorId) : null;
+
+        if (editor) {
+            editor.save();
+            return editor.getContent().trim();
+        }
+
+        if (specialPublicationQuill) {
+            var quillContent = specialPublicationQuill.root.innerHTML.trim();
+            $('#' + specialPublicationEditorId).val(quillContent);
+            return quillContent;
+        }
+
+        if ($.fn.summernote && $('#' + specialPublicationEditorId).next('.note-editor').length) {
+            return $('#' + specialPublicationEditorId).summernote('code').trim();
+        }
+
+        return $('#' + specialPublicationEditorId).val().trim();
+    }
+
+    window.getSpecialPublicationContent = getSpecialPublicationContent;
+
+    initSpecialPublicationEditor();
+    $(window).on('load', initSpecialPublicationEditor);
+    $('#special-tab, button[data-bs-target="#specialPublicationList"]').on('shown.bs.tab click', function() {
+        setTimeout(initSpecialPublicationEditor, 50);
+    });
+
     function parseExtentValue(extentText) {
         if (!extentText) {
             return 0;
@@ -318,9 +481,7 @@ $(document).ready(function() {
     
     $("#btnPreviewSP").click(function(e) {
         let send_to_address = "test";
-        let publication_list = $("#lc_search_report_summary_details").val() == '' ? 
-                              $("#lc_search_report_summary_details_2").val() : 
-                              $("#lc_search_report_summary_details").val();
+        let publication_list = getSpecialPublicationContent();
 
         $.ajax({
             type: "POST",
@@ -451,7 +612,7 @@ $(document).ready(function() {
     //         if (result.isConfirmed && result.value) {
     //             try {
     //                 let send_to_address = result.value;
-    //                 let publication_list = $("#lc_search_report_summary_details").val();
+    //                 let publication_list = $("#lc_search_report_summary_details_pp").val();
                     
     //                 Swal.fire({
     //                     title: 'Generating...',
@@ -882,7 +1043,7 @@ $(document).ready(function() {
 });
 
 function processSpecialPublication(send_to_address, agencyName) {
-    let publication_list = $("#lc_search_report_summary_details").val();
+    let publication_list = window.getSpecialPublicationContent ? window.getSpecialPublicationContent() : $("#lc_search_report_summary_details_pp").val().trim();
     let caseNumber = $('#sp_case_number').val();
     
     if (!publication_list) {
