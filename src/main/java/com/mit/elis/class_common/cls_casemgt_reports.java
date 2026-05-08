@@ -2205,8 +2205,8 @@ public class cls_casemgt_reports {
 			myTable_admin.setSpacingAfter(10);
 			myTable_admin.setTotalWidth(new float[] { 50, 100 });
 
-			myTable_admin.addCell(new PdfPCell(new Phrase("Administrative District", font10pt_bold)));
-			myTable_admin.addCell(new PdfPCell(new Phrase(district, font10pt)));
+			// myTable_admin.addCell(new PdfPCell(new Phrase("Administrative District", font10pt_bold)));
+			// myTable_admin.addCell(new PdfPCell(new Phrase(district, font10pt)));
 
 			myTable_admin.addCell(new PdfPCell(new Phrase("Nature of Interest", font10pt_bold)));
 			myTable_admin.addCell(new PdfPCell(new Phrase(type_of_interest, font10pt)));
@@ -3005,8 +3005,8 @@ public class cls_casemgt_reports {
 			myTable_admin.setSpacingAfter(10);
 			myTable_admin.setTotalWidth(new float[] { 50, 100 });
 
-			myTable_admin.addCell(new PdfPCell(new Phrase("Administrative District", font10pt)));
-			myTable_admin.addCell(new PdfPCell(new Phrase(district, font10pt)));
+			// myTable_admin.addCell(new PdfPCell(new Phrase("Administrative District", font10pt)));
+			// myTable_admin.addCell(new PdfPCell(new Phrase(district, font10pt)));
 
 			myTable_admin.addCell(new PdfPCell(new Phrase("Nature of Interest", font10pt)));
 			myTable_admin.addCell(new PdfPCell(new Phrase(type_of_interest, font10pt)));
