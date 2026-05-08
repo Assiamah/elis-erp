@@ -38,6 +38,12 @@
      * Initialize DataTable with search configuration
      */
     function initializeDataTable() {
+        // Destroy existing table if it exists
+        if (state.searchTable) {
+            state.searchTable.destroy();
+            $('#search_results_table').empty();
+        }
+
         state.searchTable = $('#search_results_table').DataTable({
             responsive: true,
             processing: true,
@@ -47,22 +53,11 @@
                 selector: 'td:first-child input[type="checkbox"]'
             },
             ajax: {
-                url: 'RegionalTransactionSearchServ',
+                url: 'Case_Management_Serv',
                 type: 'POST',
                 data: function(d) {
                     d.request_type = 'search_regional_transactions';
-                    d.reference_number = $('#adv_search_reference').val();
-                    d.file_number = $('#adv_search_file_number').val();
-                    d.jacket_name = $('#adv_search_jacket_name').val();
-                    d.plan_number = $('#adv_search_plan_number').val();
-                    d.party1 = $('#adv_search_party1').val();
-                    d.party2 = $('#adv_search_party2').val();
-                    d.instrument_type = $('#adv_search_instrument_type').val();
-                    d.region = $('#adv_search_region').val();
-                    d.date_from = $('#adv_search_date_from').val();
-                    d.date_to = $('#adv_search_date_to').val();
-                    d.status = $('#adv_search_status').val();
-                    d.qc_status = $('#adv_search_qc_status').val();
+                    d.search_text = $('#simple_search').val();
                 },
                 dataSrc: function(json) {
                     const payload = parseJsonSafely(json);
@@ -155,19 +150,16 @@
      * Bind event listeners to buttons and inputs
      */
     function bindEventListeners() {
-        // Advanced search button
-        $('#btn_advanced_search').on('click', function() {
+        // Simple search button
+        $('#btn_simple_search').on('click', function() {
             performSearch();
         });
 
-        // Reset search button
-        $('#btn_reset_advanced_search').on('click', function() {
-            resetAdvancedSearch();
-        });
-
-        // Save search criteria
-        $('#btn_save_search_criteria').on('click', function() {
-            saveSearchCriteria();
+        // Enter key on simple search input
+        $('#simple_search').on('keypress', function(e) {
+            if (e.which === 13) {
+                performSearch();
+            }
         });
 
         // Export buttons
@@ -191,11 +183,6 @@
             printResults();
         });
 
-        // Toggle filters
-        $('#btn_toggle_filters').on('click', function() {
-            toggleFilters();
-        });
-
         // Select all checkbox
         $('#select_all_records').on('change', function() {
             const isChecked = $(this).is(':checked');
@@ -207,31 +194,41 @@
         $('#btn_export_search_results').on('click', function() {
             exportResults('excel');
         });
-
-        // Enter key on search inputs
-        $('input[id^="adv_search_"]').on('keypress', function(e) {
-            if (e.which === 13) {
-                performSearch();
-            }
-        });
     }
 
     /**
-     * Perform initial search (load all approved transactions)
-     */
-    function performInitialSearch() {
-        $('#adv_search_status').val('approved');
-        performSearch();
-    }
-
-    /**
-     * Perform search with current criteria
+     * Perform search - Initialize or reload DataTable
      */
     function performSearch() {
-        if (state.searchTable) {
-            state.searchTable.ajax.reload();
+        const searchText = $('#simple_search').val().trim();
+        
+        // Validate search input
+        if (!searchText) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Search Required',
+                text: 'Please enter a search term to find transactions'
+            });
+            return;
         }
-        loadStatistics();
+        
+        // Show loading indicator
+        Swal.fire({
+            title: 'Searching...',
+            text: 'Please wait',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Initialize or reload DataTable
+        initializeDataTable();
+        
+        // Close loading indicator after a short delay
+        setTimeout(() => {
+            Swal.close();
+        }, 500);
     }
 
     /**
@@ -757,10 +754,8 @@
      * Initialize the page when DOM is ready
      */
     $(function() {
-        initializeDataTable();
         bindEventListeners();
-        loadStatistics();
-        performInitialSearch();
+        // Do NOT initialize DataTable on load - wait for user to search
     });
 
 }(jQuery));
