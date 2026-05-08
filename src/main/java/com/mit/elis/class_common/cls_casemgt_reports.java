@@ -7779,22 +7779,75 @@ public class cls_casemgt_reports {
 			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MMMM YYYY");
 			SimpleDateFormat date_formatter = new SimpleDateFormat("dd MMMM YYYY");
 
-			if (list_of_applications != "null") {
+			if (list_of_applications != "null" && list_of_applications != null && !list_of_applications.isEmpty()) {
+				// try {
+				// 	// Use XMLWorkerHelper for better HTML/CSS support including justification
+				// 	ByteArrayInputStream htmlStream = new ByteArrayInputStream(
+				// 			list_of_applications.getBytes(StandardCharsets.UTF_8));
+				// 	XMLWorkerHelper.getInstance().parseXHtml(writer, document, htmlStream, StandardCharsets.UTF_8);
+				// } catch (Exception e) {
+				// 	e.printStackTrace();
+				// 	// Fallback to HTMLWorker if XMLWorker fails
+				// 	try {
+				// 		HTMLWorker htmlWorker = new HTMLWorker(document);
+				// 		StyleSheet styleSheet = new StyleSheet();
+				// 		styleSheet.loadTagStyle("p", "align", "justify");
+				// 		htmlWorker.setStyleSheet(styleSheet);
+				// 		htmlWorker.parse(new StringReader(list_of_applications));
+				// 	} catch (Exception ex) {
+				// 		ex.printStackTrace();
+				// 	}
+				// }
 
-				try {
-					HTMLWorker htmlWorker = new HTMLWorker(document);
-					htmlWorker.parse(new StringReader(list_of_applications));
+				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
 
-				} catch (Exception e) {
+				// Load font from classpath
+				InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/times.ttf");
 
+				if (fontStream == null) {
+					throw new RuntimeException("Font file not found: fonts/times.ttf");
 				}
 
+				// Copy font to temp file (needed for iText)
+				File tempFont = File.createTempFile("times", ".ttf");
+				tempFont.deleteOnExit();
+
+				try (FileOutputStream fos = new FileOutputStream(tempFont)) {
+					byte[] buffer = new byte[1024];
+					int len;
+					while ((len = fontStream.read(buffer)) != -1) {
+						fos.write(buffer, 0, len);
+					}
+				}
+
+				fontProvider.register(tempFont.getAbsolutePath(), "Times New Roman");
+
+				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+				Pipeline<?> pipeline =
+						new CssResolverPipeline(
+								XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+								new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+						);
+
+				XMLWorker worker = new XMLWorker(pipeline, true);
+				XMLParser parser = new XMLParser(worker);
+
+					String normalizedRemark = normalizeHtmlForXmlWorker(list_of_applications);
+					String fullHtml =
+							"<html><body style='font-family: Times New Roman; line-height: 1.5; font-size:12pt; text-align: justify;'>"
+									+ normalizedRemark +
+									"</body></html>";
+
+				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
 			}
 
 			// ----------------------------------------------------------
 
 			document.add(new Phrase(Chunk.NEWLINE));
-			document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
 			document.add((new Chunk("NOTES ", new Font(FontFamily.TIMES_ROMAN, 12))).setUnderline(0.1f, -2f));
 
 			String end_notice = "The Acknowledgement Slip/Yellow Card issued by the Land Registration Division (upon lodgement of an application for registration) is not the Land Certificate but only an acknowledgement card, which cannot be substituted for a land certificate (Section 58 of the Land Title Registration Law,  1986 (PNDCL 152)";
@@ -7813,18 +7866,38 @@ public class cls_casemgt_reports {
 			 * Chunk st2 = new Chunk(notice, small); st2.setTextRise(7);
 			 * p_8.add(st2);
 			 */
-			Font list_font = FontFactory.getFont(FontFactory.HELVETICA, 10);
+			Font list_font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12);
 			List list1 = new List(List.ORDERED);
-			list1.add(new ListItem(end_notice, list_font));
-			list1.add(new ListItem(end_notice_2, list_font));
-			list1.add(new ListItem(end_notice_3, list_font));
-			list1.add(new ListItem(end_notice_4, list_font));
-			list1.add(new ListItem(end_notice_5, list_font));
-			list1.add(new ListItem(end_notice_6, list_font));
-			list1.add(new ListItem(end_notice_7, list_font));
-			list1.add(new ListItem(end_notice_8, list_font));
-			list1.add(new ListItem(end_notice_9, list_font));
-			list1.add(new ListItem(end_notice_10, list_font));
+			ListItem item1 = new ListItem(end_notice, list_font);
+			item1.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item1);
+			ListItem item2 = new ListItem(end_notice_2, list_font);
+			item2.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item2);
+			ListItem item3 = new ListItem(end_notice_3, list_font);
+			item3.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item3);
+			ListItem item4 = new ListItem(end_notice_4, list_font);
+			item4.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item4);
+			ListItem item5 = new ListItem(end_notice_5, list_font);
+			item5.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item5);
+			ListItem item6 = new ListItem(end_notice_6, list_font);
+			item6.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item6);
+			ListItem item7 = new ListItem(end_notice_7, list_font);
+			item7.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item7);
+			ListItem item8 = new ListItem(end_notice_8, list_font);
+			item8.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item8);
+			ListItem item9 = new ListItem(end_notice_9, list_font);
+			item9.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item9);
+			ListItem item10 = new ListItem(end_notice_10, list_font);
+			item10.setAlignment(Element.ALIGN_JUSTIFIED);
+			list1.add(item10);
 			list1.setAlignindent(true);
 			document.add(list1);
 
@@ -8196,18 +8269,73 @@ public class cls_casemgt_reports {
 			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd MMMM YYYY");
 			SimpleDateFormat date_formatter = new SimpleDateFormat("dd MMMM YYYY");
 
-			if (list_of_applications != "null") {
+			System.out.print("list_of_applications: " + list_of_applications);
 
-				try {
-					HTMLWorker htmlWorker = new HTMLWorker(document);
-					htmlWorker.parse(new StringReader(list_of_applications));
+			if (list_of_applications != "null" && list_of_applications != null && !list_of_applications.isEmpty()) {
+				// try {
+				// 	// Use XMLWorkerHelper for better HTML/CSS support including justification
+				// 	ByteArrayInputStream htmlStream = new ByteArrayInputStream(
+				// 			list_of_applications.getBytes(StandardCharsets.UTF_8));
+				// 	XMLWorkerHelper.getInstance().parseXHtml(writer, document, htmlStream, StandardCharsets.UTF_8);
+				// } catch (Exception e) {
+				// 	e.printStackTrace();
+				// 	// Fallback to HTMLWorker if XMLWorker fails
+				// 	try {
+				// 		HTMLWorker htmlWorker = new HTMLWorker(document);
+				// 		StyleSheet styleSheet = new StyleSheet();
+				// 		styleSheet.loadTagStyle("p", "align", "justify");
+				// 		htmlWorker.setStyleSheet(styleSheet);
+				// 		htmlWorker.parse(new StringReader(list_of_applications));
+				// 	} catch (Exception ex) {
+				// 		ex.printStackTrace();
+				// 	}
+				// }
 
-				} catch (Exception e) {
+				XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS);
 
+				// Load font from classpath
+				InputStream fontStream = getClass().getClassLoader().getResourceAsStream("fonts/times.ttf");
+
+				if (fontStream == null) {
+					throw new RuntimeException("Font file not found: fonts/times.ttf");
 				}
 
-			}
+				// Copy font to temp file (needed for iText)
+				File tempFont = File.createTempFile("times", ".ttf");
+				tempFont.deleteOnExit();
 
+				try (FileOutputStream fos = new FileOutputStream(tempFont)) {
+					byte[] buffer = new byte[1024];
+					int len;
+					while ((len = fontStream.read(buffer)) != -1) {
+						fos.write(buffer, 0, len);
+					}
+				}
+
+				fontProvider.register(tempFont.getAbsolutePath(), "Times New Roman");
+
+				CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
+				HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+				htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+				Pipeline<?> pipeline =
+						new CssResolverPipeline(
+								XMLWorkerHelper.getInstance().getDefaultCssResolver(true),
+								new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, writer))
+						);
+
+				XMLWorker worker = new XMLWorker(pipeline, true);
+				XMLParser parser = new XMLParser(worker);
+
+					String normalizedRemark = normalizeHtmlForXmlWorker(list_of_applications);
+					String fullHtml =
+							"<html><body style='font-family: Times New Roman; line-height: 1.5; font-size:12pt; text-align: justify;'>"
+									+ normalizedRemark +
+									"</body></html>";
+
+				parser.parse(new ByteArrayInputStream(fullHtml.getBytes(StandardCharsets.UTF_8)));
+			}
+ 
 			// ----------------------------------------------------------
 
 			// document.add(new Phrase(Chunk.NEWLINE));

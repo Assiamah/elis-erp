@@ -5637,4 +5637,370 @@ public class cls_casemgt {
 		}
 		return output;
 	}
+
+	// ==================== REGIONAL PVLMD TRANSACTION METHODS ====================
+
+	public String get_regional_transactions_list(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/get_regional_transactions_list");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String get_regional_transaction_by_id(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/get_regional_transaction_by_id");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String create_regional_transaction(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/create_regional_transaction");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String update_regional_transaction(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/update_regional_transaction");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String delete_regional_transaction(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/delete_regional_transaction");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String export_regional_transactions_excel(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/export_regional_transactions_excel");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String export_regional_transactions_pdf(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/export_regional_transactions_pdf");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	// ==================== QC METHODS ====================
+
+	public String get_qc_pending_transactions(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/get_qc_pending_transactions");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String get_qc_statistics(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/get_qc_statistics");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String mark_transaction_under_review(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/mark_transaction_under_review");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String approve_transaction_qc(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/approve_transaction_qc");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String decline_transaction_qc(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/decline_transaction_qc");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String batch_approve_qc(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/batch_approve_qc");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String export_qc_data(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/export_qc_data");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	// ==================== SEARCH METHODS ====================
+
+	public String search_regional_transactions(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/search_regional_transactions");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String get_search_statistics(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/get_search_statistics");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String export_search_results(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/export_search_results");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String approve_regional_transaction(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/approve_regional_transaction");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String decline_regional_transaction(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/decline_regional_transaction");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	public String batch_approve_transactions(String web_service_url, String web_service_api_key, String json_request) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/batch_approve_transactions");
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
 }

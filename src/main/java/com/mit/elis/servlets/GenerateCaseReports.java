@@ -3832,8 +3832,8 @@ public class GenerateCaseReports {
 			// 	}
 			// }
 
-			//String regional_code = (String) session.getAttribute("regional_code");
-			String regional_code = "14";
+			String regional_code = (String) session.getAttribute("regional_code");
+			// String regional_code = "14";
 			try {
 				buffer = regional_code.equals("11") || regional_code.equals("10") ? case_reports_cl.create_special_publication_list(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),

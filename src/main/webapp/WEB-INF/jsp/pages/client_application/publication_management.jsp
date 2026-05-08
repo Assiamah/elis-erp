@@ -407,8 +407,8 @@
                                                 <h6 class="mb-0"><i class="ri-file-text-line me-2"></i>Publication Details</h6>
                                             </div>
                                             <div class="card-body">
-                                                <textarea id="lc_search_report_summary_details" 
-                                                          name="lc_search_report_summary_details" 
+                                                <textarea id="lc_search_report_summary_details_pp" 
+                                                          name="lc_search_report_summary_details_pp" 
                                                           class="form-control" rows="12" 
                                                           placeholder="Enter publication details here..."></textarea>
                                             </div>

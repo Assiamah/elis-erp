@@ -14,7 +14,7 @@
   
   
 
-
+<div class="main-content app-content">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
@@ -126,7 +126,7 @@
      </div>
      
     
-    
+    </div>
 
      
      
