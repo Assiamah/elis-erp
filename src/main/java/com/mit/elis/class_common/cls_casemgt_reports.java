@@ -9538,11 +9538,12 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 					
 					// Get overlay content for this page
 					PdfContentByte over = pdfStamper.getOverContent(i);
+					Rectangle pageSize = s_pdfReader.getPageSizeWithRotation(i);
 
 					// Write text (job number and date)
 					over.beginText();
 					over.setFontAndSize(baseFont, 10);
-					over.setTextMatrix(50, 745);
+					over.setTextMatrix(50, calculateTopPosition(pageSize, 10, 25));
 					over.showText(job_number + " Date " + currentTime);
 					over.endText();
 
@@ -9553,7 +9554,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 						try {
 							Image imagesign = Image.getInstance(sign_path + report_approved_by_id + ".jpg");
 							imagesign.scaleToFit(80.0F, 80.0F);
-							imagesign.setAbsolutePosition(10, 760);
+							positionSignatureDynamic(pageSize, imagesign, 150, 25);
 							over.addImage(imagesign);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -9565,7 +9566,7 @@ Paragraph reportTitle5 = new Paragraph("LANDS COMMISSION", new Font(FontFamily.T
 					BarcodeQRCode barcodeQRCode1 = new BarcodeQRCode(job_number, 1000, 1000, null);
 					Image codeQrImage1 = barcodeQRCode1.getImage();
 					codeQrImage1.scaleAbsolute(80, 80);
-					codeQrImage1.setAbsolutePosition(500, 750);
+					positionBarcodeDynamic(pageSize, codeQrImage1, 60, 25); 
 					over.addImage(codeQrImage1);
 				}
 			}
@@ -15682,6 +15683,76 @@ String ssc1 = String.format("%,.2f", total_amount);
 		}
 	return out.toByteArray();
 
+	}
+
+	/**
+	 * Calculate dynamic X position for right-aligned elements (barcode, signature)
+	 * Based on page width to work with any page dimension
+	 * @param document The PDF document
+	 * @param elementWidth Width of the element to position
+	 * @param rightMargin Margin from right edge (default 60)
+	 * @return Calculated X position
+	 */
+	private float calculateRightPosition(Document document, float elementWidth, float rightMargin) {
+		return calculateRightPosition(document.getPageSize(), elementWidth, rightMargin);
+	}
+
+	private float calculateRightPosition(Rectangle pageSize, float elementWidth, float rightMargin) {
+		float x = pageSize.getWidth() - elementWidth - rightMargin;
+		return Math.max(0, x);
+	}
+
+	/**
+	 * Calculate dynamic Y position for top-aligned elements
+	 * Based on page height to work with any page dimension
+	 * @param document The PDF document
+	 * @param elementHeight Height of the element to position
+	 * @param topMargin Margin from top edge (default 25)
+	 * @return Calculated Y position
+	 */
+	private float calculateTopPosition(Document document, float elementHeight, float topMargin) {
+		return calculateTopPosition(document.getPageSize(), elementHeight, topMargin);
+	}
+
+	private float calculateTopPosition(Rectangle pageSize, float elementHeight, float topMargin) {
+		float y = pageSize.getHeight() - elementHeight - topMargin;
+		return Math.max(0, y);
+	}
+
+	/**
+	 * Position barcode/QR code dynamically based on page size
+	 * Places it in the top-right corner regardless of page dimensions
+	 * @param document The PDF document
+	 * @param qrImage The QR code image to position
+	 * @param rightMargin Margin from right edge (default 60)
+	 * @param topMargin Margin from top edge (default 25)
+	 */
+	private void positionBarcodeDynamic(Document document, Image qrImage, float rightMargin, float topMargin) {
+		positionBarcodeDynamic(document.getPageSize(), qrImage, rightMargin, topMargin);
+	}
+
+	private void positionBarcodeDynamic(Rectangle pageSize, Image qrImage, float rightMargin, float topMargin) {
+		float x = calculateRightPosition(pageSize, qrImage.getScaledWidth(), rightMargin);
+		float y = calculateTopPosition(pageSize, qrImage.getScaledHeight(), topMargin);
+		qrImage.setAbsolutePosition(x, y);
+	}
+
+	/**
+	 * Position signature image dynamically based on page size
+	 * Places it relative to page dimensions
+	 * @param document The PDF document
+	 * @param signatureImage The signature image to position
+	 * @param rightMargin Margin from right edge
+	 * @param topMargin Margin from top edge
+	 */
+	private void positionSignatureDynamic(Document document, Image signatureImage, float rightMargin, float topMargin) {
+		positionSignatureDynamic(document.getPageSize(), signatureImage, rightMargin, topMargin);
+	}
+
+	private void positionSignatureDynamic(Rectangle pageSize, Image signatureImage, float rightMargin, float topMargin) {
+		float x = calculateRightPosition(pageSize, signatureImage.getScaledWidth(), rightMargin);
+		float y = calculateTopPosition(pageSize, signatureImage.getScaledHeight(), topMargin);
+		signatureImage.setAbsolutePosition(x, y);
 	}
 
 	public byte[] create_title_plan(String web_service_url, String web_service_api_key, String software_file_location,
