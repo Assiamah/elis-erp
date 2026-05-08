@@ -375,6 +375,117 @@ public class PVLMDMapsController {
 
 	}
 
+	@RequestMapping("/regional_digital_transaction_search")
+	@GetMapping
+	public String regional_digital_transaction_search(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// Check if user allowed for page
+		// HttpSession session = request.getSession();
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			//
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			//System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		request.setAttribute("page_name", "case_processing");
+				model.addAttribute("content", "../pages/pvlmd_maps_templates/regional_digital_transaction_search.jsp"); return "layouts/app";
+
+	}
+
+	@RequestMapping("/quality_control_for_regional_transaction_data_capture")
+	@GetMapping
+	public String quality_control_for_regional_transaction_data_capture(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// Check if user allowed for page
+		// HttpSession session = request.getSession();
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			//
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			//System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		request.setAttribute("page_name", "case_processing");
+				model.addAttribute("content", "../pages/pvlmd_maps_templates/quality_control_for_regional_transaction_data_capture.jsp"); return "layouts/app";
+
+	}
+
+	@RequestMapping("/regional_transaction_data_capture")
+	@GetMapping
+	public String regional_transaction_data_capture(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// Check if user allowed for page
+		// HttpSession session = request.getSession();
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		if (!isFound) {
+			request.setAttribute("login", "Please this is not alllowed");
+			//
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			//System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		request.setAttribute("page_name", "case_processing");
+				model.addAttribute("content", "../pages/pvlmd_maps_templates/regional_transaction_data_capture.jsp"); return "layouts/app";
+
+	}
+
 	@RequestMapping("/pvlmd_deletion_request")
 	@GetMapping
 	public String pvlmd_deletion_request(HttpSession session, Model model, HttpServletRequest request,
