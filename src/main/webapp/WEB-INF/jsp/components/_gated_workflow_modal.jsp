@@ -6455,7 +6455,7 @@
                                 <div class="d-flex align-items-center w-100">
                                     <i class="fas fa-file-alt text-info me-3 fa-lg"></i>
                                     <div>
-                                        <h6 class="mb-0">Documents on Application</h6>
+                                        <h6 class="mb-0">Application Documents</h6>
                                         <small class="text-muted">Scanned documents and attachments</small>
                                     </div>
                                 </div>
@@ -6484,11 +6484,58 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="text-center py-5" id="tsNoDocuments">
+                                <!-- <div class="text-center py-5" id="tsNoDocuments">
                                     <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
                                     <h6 class="text-muted mb-2">No Documents Found</h6>
                                     <p class="text-muted small">Click "Load Documents" to view case documents</p>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border-0">
+                        <h2 class="accordion-header" id="publicDocumentsHeading">
+                            <button class="accordion-button bg-light text-dark fw-bold py-3 collapsed" 
+                                    type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#publicDocumentsCollapse" 
+                                    aria-expanded="false" aria-controls="publicDocumentsCollapse">
+                                <div class="d-flex align-items-center w-100">
+                                    <i class="fas fa-file-alt text-secondary me-3 fa-lg"></i>
+                                    <div>
+                                        <h6 class="mb-0">Public Documents</h6>
+                                        <small class="text-muted">Scanned public documents and attachments</small>
+                                    </div>
                                 </div>
+                            </button>
+                        </h2>
+                        <div id="publicDocumentsCollapse" class="accordion-collapse collapse" 
+                             aria-labelledby="publicDocumentsHeading" data-bs-parent="#caseDetailsAccordion">
+                            <div class="accordion-body bg-white p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <button type="button" class="btn btn-outline-secondary" id="btn_load_scanned_public_documents_ts_deed">
+                                        <i class="fas fa-eye me-2"></i>
+                                        Load Documents
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm" id="lc_main_scanned_public_documents_dataTable_ts">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th><i class="fas fa-file me-1"></i> Document Name</th>
+                                                <th><i class="fas fa-file-alt me-1"></i> Document Type</th>
+                                                <th class="text-center"><i class="fas fa-cog me-1"></i> Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="publicDocumentsTableBody_ts">
+                                            <!-- Data will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- <div class="text-center py-5" id="tsNoDocuments_d">
+                                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                                    <h6 class="text-muted mb-2">No Documents Found</h6>
+                                    <p class="text-muted small">Click "Load Documents" to view case documents</p>
+                                </div> -->
                             </div>
                         </div>
                     </div>
