@@ -27153,6 +27153,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_lrd_proprietorship_section_delete_by_id',
                             ps_id: parseInt(ps_id),
                             ps_case_number: ps_case_number,
+                            target_element: 'proprietor'
                         },
                         cache: false,
                         success: function(response) {
@@ -27293,6 +27294,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_lrd_memorials_section_delete_by_id',
                             mid: parseInt(mid),
                             m_case_number: m_case_number,
+                            target_element: 'memorials'
                         },
                         cache: false,
                         success: function(response) {
@@ -27433,6 +27435,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_lrd_reservations_section_delete_by_id',
                             rs_id: parseInt(rs_id),
                             m_case_number: m_case_number,
+                            target_element: 'reservation'
                         },
                         cache: false,
                         success: function(response) {
@@ -27713,6 +27716,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_lrd_valuations_section_delete_by_id',
                             vs_id: parseInt(vs_id),
                             vs_case_number: vs_case_number,
+                            target_element: 'valuation'
                         },
                         cache: false,
                         success: function(response) {
