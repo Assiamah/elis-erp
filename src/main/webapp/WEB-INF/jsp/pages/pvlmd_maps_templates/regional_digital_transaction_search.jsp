@@ -44,9 +44,6 @@
                     <table class="table table-bordered table-hover datatable" id="search_results_table" width="100%">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 40px;">
-                                    <input type="checkbox" class="form-check-input" id="select_all_records">
-                                </th>
                                 <th>ID</th>
                                 <th>Reference Number</th>
                                 <th>Jacket Name</th>
@@ -65,16 +62,6 @@
                         <tbody>
                         </tbody>
                     </table>
-                </div>
-                
-                <!-- Pagination Info -->
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="text-muted">
-                        Showing <span id="showing_from">0</span> to <span id="showing_to">0</span> of <span id="total_entries">0</span> entries
-                    </div>
-                    <div id="custom_pagination">
-                        <!-- Custom pagination will be inserted here -->
-                    </div>
                 </div>
             </div>
         </div>

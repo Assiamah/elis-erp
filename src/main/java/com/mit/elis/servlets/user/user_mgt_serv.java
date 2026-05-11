@@ -129,7 +129,7 @@ public class user_mgt_serv extends HttpServlet {
 
 				jsonArr.put(obj);
 
-				//System.out.println("Add User params: " + jsonArr.toString());
+				System.out.println("Add User params: " + jsonArr.toString());
 				web_service_response = cls_users.add_new_user(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), jsonArr.toString());
 				if (web_service_response != null) {

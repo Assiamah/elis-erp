@@ -10,7 +10,8 @@
     const state = {
         transactionsTable: null,
         currentTransactionId: null,
-        loadedTransaction: null
+        loadedTransaction: null,
+        lastDraw: 1
     };
 
     // Helper function to parse JSON safely
@@ -39,6 +40,22 @@
         return '';
     }
 
+    function renderText(data) {
+        if (data === undefined || data === null || data === '' || data === 'null') {
+            return 'N/A';
+        }
+        return $('<div>').text(data).html();
+    }
+
+    function emptyDataTableResponse() {
+        return JSON.stringify({
+            draw: state.lastDraw || 1,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: []
+        });
+    }
+
     /**
      * Initialize DataTable with configuration
      */
@@ -51,7 +68,11 @@
                 url: 'Case_Management_Serv',
                 type: 'POST',
                 dataType: 'json',
+                dataFilter: function(response) {
+                    return parseJsonSafely(response) ? response : emptyDataTableResponse();
+                },
                 data: function(d) {
+                    state.lastDraw = d.draw || 1;
                     d.request_type = 'get_regional_transactions_list';
                     // d.search_reference = $('#search_reference_number').val();
                     // d.search_file = $('#search_file_number').val();
@@ -59,13 +80,8 @@
                     // d.search_status = $('#search_status').val();
                 },
                 dataSrc: function(json) {
-                    console.log('Raw response:', json);
                     const payload = parseJsonSafely(json);
-                    console.log('Parsed payload:', payload);
-                    if (payload && payload.data) {
-                        return Array.isArray(payload.data) ? payload.data : [];
-                    }
-                    return [];
+                    return payload && Array.isArray(payload.data) ? payload.data : [];
                 },
                 error: function(xhr, error, thrown) {
                     console.error('DataTable AJAX Error:', error);
@@ -79,23 +95,25 @@
                 }
             },
             columns: [
-                { data: 't_id', name: 't_id' },
-                { data: 'reference_number', name: 'reference_number' },
-                { data: 'jacket_name', name: 'jacket_name' },
-                { data: 'file_number', name: 'file_number' },
-                { data: 'instrument_type', name: 'instrument_type' },
+                { data: 't_id', name: 't_id', defaultContent: 'N/A', render: renderText },
+                { data: 'reference_number', name: 'reference_number', defaultContent: 'N/A', render: renderText },
+                { data: 'jacket_name', name: 'jacket_name', defaultContent: 'N/A', render: renderText },
+                { data: 'file_number', name: 'file_number', defaultContent: 'N/A', render: renderText },
+                { data: 'instrument_type', name: 'instrument_type', defaultContent: 'N/A', render: renderText },
                 { 
                     data: 'instrument_date',
                     name: 'instrument_date',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return formatDate(data);
                     }
                 },
-                { data: 'party1_plaintiff', name: 'party1_plaintiff' },
-                { data: 'party2_defendant', name: 'party2_defendant' },
+                { data: 'party1_plaintiff', name: 'party1_plaintiff', defaultContent: 'N/A', render: renderText },
+                { data: 'party2_defendant', name: 'party2_defendant', defaultContent: 'N/A', render: renderText },
                 { 
                     data: 'status',
                     name: 'status',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return getStatusBadge(data);
                     }
@@ -103,6 +121,7 @@
                 { 
                     data: 'created_date',
                     name: 'created_date',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return formatDate(data);
                     }
@@ -392,7 +411,7 @@
      */
     function validateForm() {
         let isValid = true;
-        const requiredFields = ['jacket_name', 'region', 'reference_number', 'instrument_type'];
+        const requiredFields = ['reg_txn_reference_number', 'reg_txn_instrument_type', 'reg_txn_party1_plaintiff'];
 
         requiredFields.forEach(field => {
             const element = $(`#${field}`);
@@ -405,7 +424,11 @@
         });
 
         if (!isValid) {
-            showNotification('warning', 'Please fill in all required fields');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please fill in all required fields'
+            });
         }
 
         return isValid;
@@ -506,46 +529,339 @@
      */
     function displayTransactionDetails(data) {
         const content = `
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="fw-bold text-muted small">Reference Number</label>
-                    <p class="mb-0">${data.reference_number || 'N/A'}</p>
+            <!-- Header Summary Card -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body bg-light">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-8">
+                            <h5 class="mb-1 text-primary">
+                                <i class="ri-file-text-line me-2"></i>${data.reference_number || 'N/A'}
+                            </h5>
+                            <p class="mb-0 text-muted">
+                                <i class="ri-user-line me-1"></i>${data.jacket_name || 'N/A'}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            ${getStatusBadge(data.status)}
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="fw-bold text-muted small">Jacket Name</label>
-                    <p class="mb-0">${data.jacket_name || 'N/A'}</p>
+            </div>
+
+            <!-- Basic Information -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-header bg-white border-bottom">
+                    <h6 class="mb-0 text-primary">
+                        <i class="ri-information-line me-2"></i>Basic Information
+                    </h6>
                 </div>
-                <div class="col-md-4">
-                    <label class="fw-bold text-muted small">Region</label>
-                    <p class="mb-0">${data.region || 'N/A'}</p>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Region</label>
+                            <p class="fw-semibold mb-0">${data.region || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">File Number</label>
+                            <p class="fw-semibold mb-0">${data.file_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Property Number</label>
+                            <p class="fw-semibold mb-0">${data.property_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Submission Date</label>
+                            <p class="fw-semibold mb-0">${formatDate(data.submission_date)}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="fw-bold text-muted small">File Number</label>
-                    <p class="mb-0">${data.file_number || 'N/A'}</p>
+            </div>
+
+            <!-- Document Details -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-header bg-white border-bottom">
+                    <h6 class="mb-0 text-primary">
+                        <i class="ri-file-list-3-line me-2"></i>Document Details
+                    </h6>
                 </div>
-                <div class="col-md-4">
-                    <label class="fw-bold text-muted small">Instrument Type</label>
-                    <p class="mb-0">${data.instrument_type || 'N/A'}</p>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Mutation Number</label>
+                            <p class="fw-semibold mb-0">${data.mutation_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Deed Number</label>
+                            <p class="fw-semibold mb-0">${data.deed_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Serial Number</label>
+                            <p class="fw-semibold mb-0">${data.serial_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Sheet Number</label>
+                            <p class="fw-semibold mb-0">${data.sheet_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Plan Number</label>
+                            <p class="fw-semibold mb-0">${data.plan_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Plot Number</label>
+                            <p class="fw-semibold mb-0">${data.plot_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">LVB Number</label>
+                            <p class="fw-semibold mb-0">${data.lvb_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">DOC Number</label>
+                            <p class="fw-semibold mb-0">${data.doc_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Instrument Type</label>
+                            <p class="fw-semibold mb-0">${data.instrument_type || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Instrument Date</label>
+                            <p class="fw-semibold mb-0">${formatDate(data.instrument_date)}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="fw-bold text-muted small">Instrument Date</label>
-                    <p class="mb-0">${formatDate(data.instrument_date)}</p>
+            </div>
+
+            <!-- Party Information -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-header bg-white border-bottom">
+                    <h6 class="mb-0 text-primary">
+                        <i class="ri-group-line me-2"></i>Party Information
+                    </h6>
                 </div>
-                <div class="col-md-6">
-                    <label class="fw-bold text-muted small">Party 1 (Plaintiff)</label>
-                    <p class="mb-0">${data.party1_plaintiff || 'N/A'}</p>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="text-primary mb-3">
+                                    <i class="ri-user-star-line me-2"></i>Party 1 (Plaintiff)
+                                </h6>
+                                <div class="mb-2">
+                                    <label class="text-muted small d-block">Name</label>
+                                    <p class="fw-semibold mb-0">${data.party1_plaintiff || 'N/A'}</p>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="text-muted small d-block">Phone</label>
+                                    <p class="mb-0"><i class="ri-phone-line me-1"></i>${data.party1_plaintiff_tel_no || 'N/A'}</p>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="text-muted small d-block">Email</label>
+                                    <p class="mb-0"><i class="ri-mail-line me-1"></i>${data.party1_plaintiff_email || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <label class="text-muted small d-block">Address</label>
+                                    <p class="mb-0"><i class="ri-map-pin-line me-1"></i>${data.party1_plantiff_add || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h6 class="text-primary mb-3">
+                                    <i class="ri-user-follow-line me-2"></i>Party 2 (Defendant)
+                                </h6>
+                                <div class="mb-2">
+                                    <label class="text-muted small d-block">Name</label>
+                                    <p class="fw-semibold mb-0">${data.party2_defendant || 'N/A'}</p>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="text-muted small d-block">Phone</label>
+                                    <p class="mb-0"><i class="ri-phone-line me-1"></i>${data.party2_defendant_tel_no || 'N/A'}</p>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="text-muted small d-block">Email</label>
+                                    <p class="mb-0"><i class="ri-mail-line me-1"></i>${data.party2_defendant_email || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <label class="text-muted small d-block">Address</label>
+                                    <p class="mb-0"><i class="ri-map-pin-line me-1"></i>${data.party2_defendant_add || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="fw-bold text-muted small">Party 2 (Defendant)</label>
-                    <p class="mb-0">${data.party2_defendant || 'N/A'}</p>
+            </div>
+
+            <!-- Financial Details -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-header bg-white border-bottom">
+                    <h6 class="mb-0 text-primary">
+                        <i class="ri-money-dollar-circle-line me-2"></i>Financial Details
+                    </h6>
                 </div>
-                <div class="col-md-12">
-                    <label class="fw-bold text-muted small">Remarks</label>
-                    <p class="mb-0">${data.remarks || 'N/A'}</p>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Consideration</label>
+                            <p class="fw-semibold mb-0 text-success">
+                                ${formatCurrency(data.consideration, data.consideration_currency)}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Premium</label>
+                            <p class="fw-semibold mb-0 text-success">
+                                ${formatCurrency(data.premium, data.premium_currency)}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Rent</label>
+                            <p class="fw-semibold mb-0">${data.rent || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small mb-1">Compensation Status</label>
+                            <p class="fw-semibold mb-0">${data.compensation_status || 'N/A'}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-header bg-white border-bottom">
+                    <h6 class="mb-0 text-primary">
+                        <i class="ri-sticky-note-line me-2"></i>Additional Details
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Term</label>
+                            <p class="fw-semibold mb-0">${data.term || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Commencement Date</label>
+                            <p class="fw-semibold mb-0">${formatDate(data.commencement_date)}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Purpose</label>
+                            <p class="fw-semibold mb-0">${data.purpose || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Entered Date</label>
+                            <p class="fw-semibold mb-0">${formatDate(data.entered_date)}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Consent Date</label>
+                            <p class="fw-semibold mb-0">${formatDate(data.consent_date)}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-muted small mb-1">Suit Number</label>
+                            <p class="fw-semibold mb-0">${data.suit_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small mb-1">Judgement In Favour Of</label>
+                            <p class="fw-semibold mb-0">${data.judgement_in_favour_of || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Floor Level</label>
+                            <p class="fw-semibold mb-0">${data.floor_level || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-muted small mb-1">Apartment Number</label>
+                            <p class="fw-semibold mb-0">${data.apartment_number || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="text-muted small mb-1">Unit Description</label>
+                            <p class="fw-semibold mb-0">${data.unit_description || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small mb-1">HQ File ID</label>
+                            <p class="fw-semibold mb-0">${data.hqfile_id || 'N/A'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small mb-1">GID Unique Across</label>
+                            <p class="fw-semibold mb-0">${data.gid_unique_across || 'N/A'}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remarks -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom">
+                    <h6 class="mb-0 text-primary">
+                        <i class="ri-chat-quote-line me-2"></i>Remarks
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">${data.remarks || 'No remarks provided'}</p>
                 </div>
             </div>
         `;
         $('#viewTransactionContent').html(content);
+    }
+
+    /**
+     * Print transaction details
+     */
+    function printTransactionDetails() {
+        const content = $('#viewTransactionContent').html();
+        const title = 'Transaction Details';
+        
+        const printWindow = window.open('', '', 'width=1200,height=800');
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <title>${title}</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+                    <style>
+                        body { 
+                            padding: 30px; 
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        }
+                        .card {
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+                            border: 1px solid #dee2e6 !important;
+                            margin-bottom: 20px;
+                        }
+                        .card-header {
+                            background-color: #f8f9fa !important;
+                            border-bottom: 2px solid #dee2e6 !important;
+                        }
+                        .text-primary {
+                            color: #0d6efd !important;
+                        }
+                        .fw-semibold {
+                            font-weight: 600 !important;
+                        }
+                        .bg-light {
+                            background-color: #f8f9fa !important;
+                        }
+                        @media print {
+                            .no-print { display: none; }
+                            body { padding: 0; }
+                            .card { break-inside: avoid; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="no-print mb-4 text-center">
+                        <button onclick="window.print()" class="btn btn-primary btn-lg">
+                            <i class="ri-printer-line me-2"></i>Print Document
+                        </button>
+                        <button onclick="window.close()" class="btn btn-secondary btn-lg ms-2">
+                            <i class="ri-close-line me-2"></i>Close
+                        </button>
+                    </div>
+                    <div class="container-fluid">
+                        ${content}
+                    </div>
+                    <div class="text-center mt-4 text-muted small no-print">
+                        <p>Generated on ${new Date().toLocaleString()}</p>
+                    </div>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
     }
 
     /**
@@ -616,7 +932,9 @@
         $('#search_file_number').val('');
         $('#search_jacket_name').val('');
         $('#search_status').val('');
-        transactionsTable.ajax.reload();
+        if (state.transactionsTable) {
+            state.transactionsTable.ajax.reload();
+        }
     }
 
     /**
@@ -651,7 +969,7 @@
             'rejected': '<span class="badge bg-danger">Rejected</span>',
             'under_review': '<span class="badge bg-info">Under Review</span>'
         };
-        return badges[status] || '<span class="badge bg-secondary">' + status + '</span>';
+        return badges[status] || '<span class="badge bg-secondary">' + renderText(status) + '</span>';
     }
 
     /**
@@ -705,6 +1023,15 @@
             month: 'short',
             year: 'numeric'
         });
+    }
+
+    /**
+     * Format currency for display
+     */
+    function formatCurrency(amount, currency) {
+        if (!amount || amount === '0' || amount === 0 || amount === 'null' || amount === '') return 'N/A';
+        const curr = currency || 'GHS';
+        return `${curr} ${parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     }
 
     /**

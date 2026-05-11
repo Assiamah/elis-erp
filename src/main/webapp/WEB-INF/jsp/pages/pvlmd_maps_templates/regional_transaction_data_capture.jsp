@@ -363,18 +363,25 @@
 <!-- View Transaction Modal -->
 <div class="modal fade" id="viewTransactionModal" tabindex="-1" aria-labelledby="viewTransactionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header bg-info text-white">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title" id="viewTransactionModalLabel">
-                    <i class="ri-eye-line me-2"></i>View Transaction Details
+                    <i class="ri-file-text-line me-2"></i>Transaction Details
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div>
+                    <button type="button" class="btn btn-sm btn-light me-2" onclick="printTransactionDetails()" title="Print">
+                        <i class="ri-printer-line"></i> Print
+                    </button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
             </div>
-            <div class="modal-body" id="viewTransactionContent">
+            <div class="modal-body p-4" id="viewTransactionContent">
                 <!-- Content will be loaded dynamically -->
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i>Close
+                </button>
             </div>
         </div>
     </div>

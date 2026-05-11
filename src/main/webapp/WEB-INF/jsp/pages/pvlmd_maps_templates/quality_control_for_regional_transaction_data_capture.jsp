@@ -18,12 +18,19 @@
         <div class="card custom-card">
             <div class="card-header justify-content-between">
                 <div class="card-title">Transactions Pending Approval</div>
+                <button type="button" class="btn btn-success btn-sm" id="btn_batch_approve_selected" disabled>
+                    <i class="ri-checkbox-multiple-line me-1"></i> Approve Selected
+                    <span class="badge bg-light text-success ms-1" id="selected_qc_count">0</span>
+                </button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered datatable" id="qc_transactions_table" width="100%">
+                    <table class="table table-bordered table-sm align-middle datatable" id="qc_transactions_table" width="100%">
                         <thead class="table-light">
                             <tr>
+                                <th style="width: 40px;" class="text-center">
+                                    <input type="checkbox" class="form-check-input" id="select_all_qc_records">
+                                </th>
                                 <th>ID</th>
                                 <th>Reference Number</th>
                                 <th>Jacket Name</th>
@@ -44,6 +51,41 @@
         </div>
     </div>
 </div>
+
+<style>
+    #qc_transactions_table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+
+    #qc_transactions_table th,
+    #qc_transactions_table td {
+        vertical-align: middle;
+    }
+
+    #qc_transactions_table .qc-cell-clip {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #qc_transactions_table .qc-actions {
+        display: inline-flex;
+        gap: 0.25rem;
+        white-space: nowrap;
+    }
+
+    #qc_transactions_table .qc-actions .btn {
+        height: 30px;
+        width: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
 
 <!-- Review Transaction Modal -->
 <div class="modal fade" id="reviewTransactionModal" tabindex="-1" aria-labelledby="reviewTransactionModalLabel" aria-hidden="true">

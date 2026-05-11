@@ -10,7 +10,8 @@
     const state = {
         searchTable: null,
         selectedTransactions: [],
-        loadedTransaction: null
+        loadedTransaction: null,
+        lastDraw: 1
     };
 
     // Helper function to parse JSON safely
@@ -34,6 +35,27 @@
         return null;
     }
 
+    function getFieldValue(selector) {
+        const element = $(selector);
+        return element.length ? element.val() : '';
+    }
+
+    function renderText(data) {
+        if (data === undefined || data === null || data === '' || data === 'null') {
+            return 'N/A';
+        }
+        return $('<div>').text(data).html();
+    }
+
+    function emptyDataTableResponse() {
+        return JSON.stringify({
+            draw: state.lastDraw || 1,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: []
+        });
+    }
+
     /**
      * Initialize DataTable with search configuration
      */
@@ -41,27 +63,38 @@
         // Destroy existing table if it exists
         if (state.searchTable) {
             state.searchTable.destroy();
-            $('#search_results_table').empty();
+            $('#search_results_table tbody').empty();
         }
 
         state.searchTable = $('#search_results_table').DataTable({
             responsive: true,
             processing: true,
             serverSide: true,
-            select: {
-                style: 'multi',
-                selector: 'td:first-child input[type="checkbox"]'
-            },
             ajax: {
                 url: 'Case_Management_Serv',
                 type: 'POST',
+                dataType: 'json',
+                dataFilter: function(response) {
+                    return parseJsonSafely(response) ? response : emptyDataTableResponse();
+                },
                 data: function(d) {
+                    state.lastDraw = d.draw || 1;
+                    const simpleSearch = getFieldValue('#simple_search');
                     d.request_type = 'search_regional_transactions';
-                    d.search_text = $('#simple_search').val();
+                    d.search_text = simpleSearch;
+                    d.search_reference = getFieldValue('#adv_search_reference') || simpleSearch;
+                    d.search_file = getFieldValue('#adv_search_file_number');
+                    d.search_jacket = getFieldValue('#adv_search_jacket_name');
+                    d.search_region = getFieldValue('#adv_search_region');
+                    d.search_document_type = getFieldValue('#adv_search_instrument_type');
+                    d.date_from = getFieldValue('#adv_search_date_from');
+                    d.date_to = getFieldValue('#adv_search_date_to');
+                    d.search_status = getFieldValue('#adv_search_status');
+                    d.qc_status = getFieldValue('#adv_search_qc_status');
                 },
                 dataSrc: function(json) {
                     const payload = parseJsonSafely(json);
-                    return payload && payload.data ? payload.data : [];
+                    return payload && Array.isArray(payload.data) ? payload.data : [];
                 },
                 error: function(xhr, error, thrown) {
                     Swal.fire({
@@ -73,30 +106,25 @@
                 }
             },
             columns: [
-                {
-                    data: null,
-                    orderable: false,
-                    render: function(data, type, row) {
-                        return `<input type="checkbox" class="form-check-input row-checkbox" data-id="${row.t_id}">`;
-                    }
-                },
-                { data: 't_id', name: 't_id' },
-                { data: 'reference_number', name: 'reference_number' },
-                { data: 'jacket_name', name: 'jacket_name' },
-                { data: 'file_number', name: 'file_number' },
-                { data: 'instrument_type', name: 'instrument_type' },
+                { data: 't_id', name: 't_id', defaultContent: 'N/A', render: renderText },
+                { data: 'reference_number', name: 'reference_number', defaultContent: 'N/A', render: renderText },
+                { data: 'jacket_name', name: 'jacket_name', defaultContent: 'N/A', render: renderText },
+                { data: 'file_number', name: 'file_number', defaultContent: 'N/A', render: renderText },
+                { data: 'instrument_type', name: 'instrument_type', defaultContent: 'N/A', render: renderText },
                 { 
                     data: 'instrument_date',
                     name: 'instrument_date',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return formatDate(data);
                     }
                 },
-                { data: 'party1_plaintiff', name: 'party1_plaintiff' },
-                { data: 'party2_defendant', name: 'party2_defendant' },
+                { data: 'party1_plaintiff', name: 'party1_plaintiff', defaultContent: 'N/A', render: renderText },
+                { data: 'party2_defendant', name: 'party2_defendant', defaultContent: 'N/A', render: renderText },
                 { 
                     data: 'consideration',
                     name: 'consideration',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return formatCurrency(data, row.consideration_currency);
                     }
@@ -104,6 +132,7 @@
                 { 
                     data: 'status',
                     name: 'status',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return getStatusBadge(data);
                     }
@@ -111,6 +140,7 @@
                 { 
                     data: 'approved_under_qc',
                     name: 'approved_under_qc',
+                    defaultContent: false,
                     render: function(data, type, row) {
                         return data ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
                     }
@@ -118,6 +148,7 @@
                 { 
                     data: 'created_date',
                     name: 'created_date',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return formatDate(data);
                     }
@@ -130,7 +161,7 @@
                     }
                 }
             ],
-            order: [[1, 'desc']],
+            order: [[0, 'desc']],
             pageLength: 25,
             lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
             language: {
@@ -141,7 +172,6 @@
             drawCallback: function(settings) {
                 updateResultsCount(settings);
                 bindSearchActionButtonEvents();
-                bindCheckboxEvents();
             }
         });
     }
@@ -183,11 +213,21 @@
             printResults();
         });
 
-        // Select all checkbox
-        $('#select_all_records').on('change', function() {
-            const isChecked = $(this).is(':checked');
-            $('.row-checkbox').prop('checked', isChecked);
-            updateSelectedTransactions();
+        $('#btn_advanced_search').on('click', function() {
+            performSearch();
+            loadStatistics();
+        });
+
+        $('#btn_reset_advanced_search').on('click', function() {
+            resetAdvancedSearch();
+        });
+
+        $('#btn_toggle_filters').on('click', function() {
+            toggleFilters();
+        });
+
+        $('#btn_save_search_criteria').on('click', function() {
+            saveSearchCriteria();
         });
 
         // Export search results button
@@ -200,10 +240,14 @@
      * Perform search - Initialize or reload DataTable
      */
     function performSearch() {
-        const searchText = $('#simple_search').val().trim();
+        const simpleSearchElement = $('#simple_search');
+        const advancedSearchElement = $('#advancedSearchForm');
+        const searchText = simpleSearchElement.length ? simpleSearchElement.val().trim() : '';
+        const hasAdvancedCriteria = advancedSearchElement.length && advancedSearchElement.find('input, select').toArray().some(function(input) {
+            return $(input).val();
+        });
         
-        // Validate search input
-        if (!searchText) {
+        if (simpleSearchElement.length && !searchText && !hasAdvancedCriteria) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Search Required',
@@ -222,8 +266,11 @@
             }
         });
 
-        // Initialize or reload DataTable
-        initializeDataTable();
+        if (state.searchTable) {
+            state.searchTable.ajax.reload();
+        } else {
+            initializeDataTable();
+        }
         
         // Close loading indicator after a short delay
         setTimeout(() => {
@@ -282,15 +329,10 @@
      * Update results count badge
      */
     function updateResultsCount(settings) {
-        const totalRecords = settings.json.recordsTotal || 0;
+        const json = settings.json || {};
+        const totalRecords = json.recordsFiltered || json.recordsTotal || 0;
         $('#results_count_badge').text(`${totalRecords} records found`);
         
-        const start = settings._iDisplayStart + 1;
-        const end = Math.min(start + settings._iDisplayLength - 1, totalRecords);
-        
-        $('#showing_from').text(totalRecords > 0 ? start : 0);
-        $('#showing_to').text(end);
-        $('#total_entries').text(totalRecords);
     }
 
     /**
@@ -663,25 +705,6 @@
     }
 
     /**
-     * Bind checkbox events
-     */
-    function bindCheckboxEvents() {
-        $('.row-checkbox').off('change').on('change', function() {
-            updateSelectedTransactions();
-        });
-    }
-
-    /**
-     * Update selected transactions array
-     */
-    function updateSelectedTransactions() {
-        state.selectedTransactions = [];
-        $('.row-checkbox:checked').each(function() {
-            state.selectedTransactions.push($(this).data('id'));
-        });
-    }
-
-    /**
      * Get action buttons HTML
      */
     function getSearchActionButtons(row) {
@@ -725,7 +748,7 @@
             'rejected': '<span class="badge bg-danger">Rejected</span>',
             'under_review': '<span class="badge bg-info">Under Review</span>'
         };
-        return badges[status] || '<span class="badge bg-secondary">' + status + '</span>';
+        return badges[status] || '<span class="badge bg-secondary">' + renderText(status) + '</span>';
     }
 
     /**

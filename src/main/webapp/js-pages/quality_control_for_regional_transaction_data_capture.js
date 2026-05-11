@@ -10,7 +10,9 @@
     const state = {
         qcTable: null,
         currentReviewTransactionId: null,
-        loadedTransaction: null
+        loadedTransaction: null,
+        selectedTransactions: [],
+        lastDraw: 1
     };
 
     // Helper function to parse JSON safely
@@ -34,6 +36,27 @@
         return null;
     }
 
+    function renderText(data) {
+        if (data === undefined || data === null || data === '' || data === 'null') {
+            return 'N/A';
+        }
+        const escapedValue = $('<div>').text(data).html();
+        return `<span class="qc-cell-clip" title="${escapedValue}">${escapedValue}</span>`;
+    }
+
+    function isApproved(row) {
+        return row && (row.approved_under_qc === true || row.approved_under_qc === 'true' || row.status === 'approved');
+    }
+
+    function emptyDataTableResponse() {
+        return JSON.stringify({
+            draw: state.lastDraw || 1,
+            recordsTotal: 0,
+            recordsFiltered: 0,
+            data: []
+        });
+    }
+
     /**
      * Initialize DataTable with QC configuration
      */
@@ -42,10 +65,16 @@
             responsive: true,
             processing: true,
             serverSide: true,
+            autoWidth: false,
             ajax: {
                 url: 'Case_Management_Serv',
                 type: 'POST',
+                dataType: 'json',
+                dataFilter: function(response) {
+                    return parseJsonSafely(response) ? response : emptyDataTableResponse();
+                },
                 data: function(d) {
+                    state.lastDraw = d.draw || 1;
                     d.request_type = 'get_qc_pending_transactions';
                     d.search_reference = $('#qc_search_reference').val();
                     d.search_status = $('#qc_search_status').val();
@@ -54,7 +83,7 @@
                 },
                 dataSrc: function(json) {
                     const payload = parseJsonSafely(json);
-                    return payload && payload.data ? payload.data : [];
+                    return payload && Array.isArray(payload.data) ? payload.data : [];
                 },
                 error: function(xhr, error, thrown) {
                     Swal.fire({
@@ -66,16 +95,29 @@
                 }
             },
             columns: [
-                { data: 't_id', name: 't_id' },
-                { data: 'reference_number', name: 'reference_number' },
-                { data: 'jacket_name', name: 'jacket_name' },
-                { data: 'instrument_type', name: 'instrument_type' },
-                { data: 'party1_plaintiff', name: 'party1_plaintiff' },
-                { data: 'party2_defendant', name: 'party2_defendant' },
-                { data: 'entered_by', name: 'entered_by' },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        if (isApproved(row) || row.status === 'rejected') {
+                            return '';
+                        }
+                        return `<input type="checkbox" class="form-check-input qc-row-checkbox" data-id="${row.t_id}">`;
+                    }
+                },
+                { data: 't_id', name: 't_id', defaultContent: 'N/A', render: renderText },
+                { data: 'reference_number', name: 'reference_number', defaultContent: 'N/A', render: renderText },
+                { data: 'jacket_name', name: 'jacket_name', defaultContent: 'N/A', render: renderText },
+                { data: 'instrument_type', name: 'instrument_type', defaultContent: 'N/A', render: renderText },
+                { data: 'party1_plaintiff', name: 'party1_plaintiff', defaultContent: 'N/A', render: renderText },
+                { data: 'party2_defendant', name: 'party2_defendant', defaultContent: 'N/A', render: renderText },
+                { data: 'entered_by', name: 'entered_by', defaultContent: 'N/A', render: renderText },
                 { 
                     data: 'created_date',
                     name: 'created_date',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return formatDate(data);
                     }
@@ -83,6 +125,7 @@
                 { 
                     data: 'status',
                     name: 'status',
+                    defaultContent: '',
                     render: function(data, type, row) {
                         return getQCStatusBadge(data, row.approved_under_qc);
                     }
@@ -95,7 +138,20 @@
                     }
                 }
             ],
-            order: [[0, 'desc']],
+            order: [[1, 'desc']],
+            columnDefs: [
+                { targets: 0, width: '42px', responsivePriority: 1 },
+                { targets: 1, width: '64px', responsivePriority: 6 },
+                { targets: 2, width: '14%', responsivePriority: 2 },
+                { targets: 3, width: '18%', responsivePriority: 3 },
+                { targets: 4, width: '12%', responsivePriority: 7 },
+                { targets: 5, width: '14%', responsivePriority: 5 },
+                { targets: 6, width: '14%', responsivePriority: 9 },
+                { targets: 7, width: '10%', responsivePriority: 10 },
+                { targets: 8, width: '96px', responsivePriority: 8 },
+                { targets: 9, width: '112px', responsivePriority: 4, className: 'text-center' },
+                { targets: 10, width: '76px', responsivePriority: 1, className: 'text-center' }
+            ],
             pageLength: 25,
             lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
             language: {
@@ -105,6 +161,9 @@
             },
             drawCallback: function(settings) {
                 bindQCActionButtonEvents();
+                bindSelectionEvents();
+                restoreSelectedRows();
+                updateBatchApprovalState();
             }
         });
     }
@@ -127,9 +186,9 @@
         });
 
         // Mark under review
-        $('#btn_mark_under_review').on('click', function() {
-            markTransactionUnderReview();
-        });
+        $('#btn_mark_under_review')
+            .prop('disabled', true)
+            .attr('title', 'Under review status is not available from this screen yet');
 
         // Approve transaction
         $('#btn_approve_transaction').on('click', function() {
@@ -144,6 +203,15 @@
         // Confirm batch approve
         $('#btn_confirm_batch_approve').on('click', function() {
             confirmBatchApproval();
+        });
+
+        $('#btn_batch_approve_selected').on('click', function() {
+            openBatchApprovalModal();
+        });
+
+        $('#select_all_qc_records').on('change', function() {
+            const isChecked = $(this).is(':checked');
+            $('#qc_transactions_table .qc-row-checkbox').prop('checked', isChecked).trigger('change');
         });
 
         // Export button
@@ -169,6 +237,41 @@
         if (state.qcTable) {
             state.qcTable.ajax.reload();
         }
+    }
+
+    function bindSelectionEvents() {
+        $('#qc_transactions_table .qc-row-checkbox').off('change').on('change', function() {
+            const transactionId = String($(this).data('id'));
+            if ($(this).is(':checked')) {
+                if (state.selectedTransactions.indexOf(transactionId) === -1) {
+                    state.selectedTransactions.push(transactionId);
+                }
+            } else {
+                state.selectedTransactions = state.selectedTransactions.filter(function(id) {
+                    return id !== transactionId;
+                });
+            }
+            updateBatchApprovalState();
+        });
+    }
+
+    function restoreSelectedRows() {
+        $('#qc_transactions_table .qc-row-checkbox').each(function() {
+            const transactionId = String($(this).data('id'));
+            $(this).prop('checked', state.selectedTransactions.indexOf(transactionId) !== -1);
+        });
+    }
+
+    function updateBatchApprovalState() {
+        const selectedCount = state.selectedTransactions.length;
+        $('#selected_qc_count').text(selectedCount);
+        $('#btn_batch_approve_selected').prop('disabled', selectedCount === 0);
+
+        const availableRows = $('#qc_transactions_table .qc-row-checkbox');
+        const checkedRows = availableRows.filter(':checked');
+        $('#select_all_qc_records')
+            .prop('checked', availableRows.length > 0 && checkedRows.length === availableRows.length)
+            .prop('indeterminate', checkedRows.length > 0 && checkedRows.length < availableRows.length);
     }
 
     /**
@@ -418,7 +521,7 @@
                     data: {
                         request_type: 'approve_transaction_qc',
                         t_id: transactionId,
-                        approve_note: approveNote,
+                        approval_remarks: approveNote,
                         review_note: reviewNote
                     },
                     cache: false,
@@ -434,6 +537,9 @@
                                 showConfirmButton: false
                             });
                             $('#reviewTransactionModal').modal('hide');
+                            state.selectedTransactions = state.selectedTransactions.filter(function(id) {
+                                return id !== String(transactionId);
+                            });
                             loadTransactions();
                             loadStatistics();
                         } else {
@@ -494,7 +600,7 @@
                     data: {
                         request_type: 'decline_transaction_qc',
                         t_id: transactionId,
-                        decline_note: declineNote,
+                        decline_reason: declineNote,
                         review_note: $('#review_note').val()
                     },
                     cache: false,
@@ -533,13 +639,52 @@
         });
     }
 
+    function openBatchApprovalModal() {
+        const transactionIds = state.selectedTransactions.slice();
+
+        if (transactionIds.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Transactions Selected',
+                text: 'Please select at least one transaction to approve.'
+            });
+            return;
+        }
+
+        const selectedRecords = [];
+        state.qcTable.rows().every(function() {
+            const row = this.data();
+            if (row && transactionIds.indexOf(String(row.t_id)) !== -1) {
+                selectedRecords.push(row);
+            }
+        });
+
+        const listHtml = selectedRecords.length
+            ? `<div class="table-responsive"><table class="table table-sm table-bordered mb-0">
+                    <thead><tr><th>ID</th><th>Reference Number</th><th>Jacket Name</th></tr></thead>
+                    <tbody>${selectedRecords.map(function(row) {
+                        return `<tr><td>${renderText(row.t_id)}</td><td>${renderText(row.reference_number)}</td><td>${renderText(row.jacket_name)}</td></tr>`;
+                    }).join('')}</tbody>
+               </table></div>`
+            : `<div class="alert alert-warning mb-0">${transactionIds.length} selected transaction(s). Some selected rows are on another page.</div>`;
+
+        $('#batch_transactions_list').html(listHtml);
+        $('#batch_approval_note').val('');
+        $('#batchApprovalModal').modal('show');
+    }
+
     /**
      * Confirm batch approval
      */
     function confirmBatchApproval() {
-        const selectedRows = state.qcTable.rows({ selected: true }).data().toArray();
-        const transactionIds = selectedRows.map(row => row.t_id);
+        const transactionIds = state.selectedTransactions.slice();
         const batchNote = $('#batch_approval_note').val();
+
+        if (transactionIds.length === 0) {
+            $('#batchApprovalModal').modal('hide');
+            updateBatchApprovalState();
+            return;
+        }
 
         Swal.fire({
             title: `Approve ${transactionIds.length} Transactions?`,
@@ -561,7 +706,7 @@
                     data: {
                         request_type: 'batch_approve_qc',
                         transaction_ids: JSON.stringify(transactionIds),
-                        batch_note: batchNote
+                        approval_remarks: batchNote
                     },
                     cache: false,
                     success: function(response) {
@@ -576,7 +721,8 @@
                                 showConfirmButton: false
                             });
                             $('#batchApprovalModal').modal('hide');
-                            state.qcTable.rows({ selected: true }).deselect();
+                            state.selectedTransactions = [];
+                            $('#select_all_qc_records').prop('checked', false).prop('indeterminate', false);
                             loadTransactions();
                             loadStatistics();
                         } else {
@@ -630,16 +776,16 @@
      */
     function getQCStatusBadge(status, approvedUnderQc) {
         if (approvedUnderQc === true || approvedUnderQc === 'true') {
-            return '<span class="badge bg-success"><i class="ri-checkbox-circle-line me-1"></i>QC Approved</span>';
+            return '<span class="badge bg-success">Approved</span>';
         }
         
         const badges = {
-            'pending': '<span class="badge bg-warning">Pending Review</span>',
+            'pending': '<span class="badge bg-warning">Pending</span>',
             'under_review': '<span class="badge bg-info">Under Review</span>',
             'approved': '<span class="badge bg-success">Approved</span>',
             'rejected': '<span class="badge bg-danger">Rejected</span>'
         };
-        return badges[status] || '<span class="badge bg-secondary">' + status + '</span>';
+        return badges[status] || '<span class="badge bg-secondary">' + renderText(status) + '</span>';
     }
 
     /**
@@ -647,9 +793,10 @@
      */
     function getQCActionButtons(row) {
         let buttons = `
-            <button type="button" class="btn btn-sm btn-warning btn-qc-review" data-id="${row.t_id}" title="Review">
-                <i class="ri-eye-line"></i> Review
-            </button>
+            <div class="qc-actions">
+                <button type="button" class="btn btn-sm btn-warning btn-qc-review" data-id="${row.t_id}" title="Review">
+                    <i class="ri-eye-line"></i>
+                </button>
         `;
         
         if (!row.approved_under_qc && row.status !== 'rejected') {
@@ -660,7 +807,7 @@
             `;
         }
         
-        return buttons;
+        return buttons + '</div>';
     }
 
     /**
@@ -702,7 +849,7 @@
                     data: {
                         request_type: 'approve_transaction_qc',
                         t_id: transactionId,
-                        approve_note: 'Quick approved from QC list',
+                        approval_remarks: 'Quick approved from QC list',
                         review_note: 'Quick approval'
                     },
                     cache: false,
@@ -716,6 +863,9 @@
                                 text: 'Transaction approved successfully',
                                 timer: 2000,
                                 showConfirmButton: false
+                            });
+                            state.selectedTransactions = state.selectedTransactions.filter(function(id) {
+                                return id !== String(transactionId);
                             });
                             loadTransactions();
                             loadStatistics();

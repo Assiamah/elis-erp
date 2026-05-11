@@ -693,22 +693,60 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String mac_address = (String) session.getAttribute("mac_address");
 				String ip_address = (String) session.getAttribute("ip_address");
 				String regional_code = (String) session.getAttribute("regional_code");
+				
+				// Basic Information
 				String jacket_name = request.getParameter("jacket_name");
 				String region = request.getParameter("region");
-				String district = request.getParameter("district");
-				String locality = request.getParameter("locality");
 				String reference_number = request.getParameter("reference_number");
 				String file_number = request.getParameter("file_number");
-				String document_type = request.getParameter("document_type");
-				String document_subtype = request.getParameter("document_subtype");
-				String execution_date = request.getParameter("execution_date");
-				String registration_date = request.getParameter("registration_date");
-				String party_1_name = request.getParameter("party_1_name");
-				String party_1_capacity = request.getParameter("party_1_capacity");
-				String party_2_name = request.getParameter("party_2_name");
-				String party_2_capacity = request.getParameter("party_2_capacity");
-				String consideration_amount = request.getParameter("consideration_amount");
-				String stamp_duty_paid = request.getParameter("stamp_duty_paid");
+				String property_number = request.getParameter("property_number");
+				String submission_date = request.getParameter("submission_date");
+				
+				// Document Details
+				String mutation_number = request.getParameter("mutation_number");
+				String deed_number = request.getParameter("deed_number");
+				String serial_number = request.getParameter("serial_number");
+				String sheet_number = request.getParameter("sheet_number");
+				String plan_number = request.getParameter("plan_number");
+				String plot_number = request.getParameter("plot_number");
+				String lvb_number = request.getParameter("lvb_number");
+				String instrument_date = request.getParameter("instrument_date");
+				String instrument_type = request.getParameter("instrument_type");
+				String doc_number = request.getParameter("doc_number");
+				
+				// Party 1 Information
+				String party1_plaintiff = request.getParameter("party1_plaintiff");
+				String party1_plaintiff_tel_no = request.getParameter("party1_plaintiff_tel_no");
+				String party1_plaintiff_email = request.getParameter("party1_plaintiff_email");
+				String party1_plantiff_add = request.getParameter("party1_plantiff_add");
+				
+				// Party 2 Information
+				String party2_defendant = request.getParameter("party2_defendant");
+				String party2_defendant_tel_no = request.getParameter("party2_defendant_tel_no");
+				String party2_defendant_email = request.getParameter("party2_defendant_email");
+				String party2_defendant_add = request.getParameter("party2_defendant_add");
+				
+				// Financial Details
+				String consideration = request.getParameter("consideration");
+				String consideration_currency = request.getParameter("consideration_currency");
+				String premium = request.getParameter("premium");
+				String premium_currency = request.getParameter("premium_currency");
+				String rent = request.getParameter("rent");
+				String compensation_status = request.getParameter("compensation_status");
+				
+				// Additional Details
+				String term = request.getParameter("term");
+				String commencement_date = request.getParameter("commencement_date");
+				String purpose = request.getParameter("purpose");
+				String entered_date = request.getParameter("entered_date");
+				String consent_date = request.getParameter("consent_date");
+				String suit_number = request.getParameter("suit_number");
+				String judgement_in_favour_of = request.getParameter("judgement_in_favour_of");
+				String floor_level = request.getParameter("floor_level");
+				String apartment_number = request.getParameter("apartment_number");
+				String unit_description = request.getParameter("unit_description");
+				String hqfile_id = request.getParameter("hqfile_id");
+				String gid_unique_across = request.getParameter("gid_unique_across");
 				String remarks = request.getParameter("remarks");
 				String status = request.getParameter("status");
 		
@@ -718,22 +756,60 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("mac_address", mac_address);
 				obj.put("ip_address", ip_address);
 				obj.put("regional_code", regional_code);
+							
+				// Basic Information
 				obj.put("jacket_name", jacket_name);
 				obj.put("region", region);
-				obj.put("district", district);
-				obj.put("locality", locality);
 				obj.put("reference_number", reference_number);
 				obj.put("file_number", file_number);
-				obj.put("document_type", document_type);
-				obj.put("document_subtype", document_subtype);
-				obj.put("execution_date", execution_date);
-				obj.put("registration_date", registration_date);
-				obj.put("party_1_name", party_1_name);
-				obj.put("party_1_capacity", party_1_capacity);
-				obj.put("party_2_name", party_2_name);
-				obj.put("party_2_capacity", party_2_capacity);
-				obj.put("consideration_amount", consideration_amount);
-				obj.put("stamp_duty_paid", stamp_duty_paid);
+				obj.put("property_number", property_number);
+				obj.put("submission_date", submission_date);
+							
+				// Document Details
+				obj.put("mutation_number", mutation_number);
+				obj.put("deed_number", deed_number);
+				obj.put("serial_number", serial_number);
+				obj.put("sheet_number", sheet_number);
+				obj.put("plan_number", plan_number);
+				obj.put("plot_number", plot_number);
+				obj.put("lvb_number", lvb_number);
+				obj.put("instrument_date", instrument_date);
+				obj.put("instrument_type", instrument_type);
+				obj.put("doc_number", doc_number);
+							
+				// Party 1 Information
+				obj.put("party1_plaintiff", party1_plaintiff);
+				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no);
+				obj.put("party1_plaintiff_email", party1_plaintiff_email);
+				obj.put("party1_plantiff_add", party1_plantiff_add);
+							
+				// Party 2 Information
+				obj.put("party2_defendant", party2_defendant);
+				obj.put("party2_defendant_tel_no", party2_defendant_tel_no);
+				obj.put("party2_defendant_email", party2_defendant_email);
+				obj.put("party2_defendant_add", party2_defendant_add);
+							
+				// Financial Details
+				obj.put("consideration", consideration);
+				obj.put("consideration_currency", consideration_currency);
+				obj.put("premium", premium);
+				obj.put("premium_currency", premium_currency);
+				obj.put("rent", rent);
+				obj.put("compensation_status", compensation_status);
+							
+				// Additional Details
+				obj.put("term", term);
+				obj.put("commencement_date", commencement_date);
+				obj.put("purpose", purpose);
+				obj.put("entered_date", entered_date);
+				obj.put("consent_date", consent_date);
+				obj.put("suit_number", suit_number);
+				obj.put("judgement_in_favour_of", judgement_in_favour_of);
+				obj.put("floor_level", floor_level);
+				obj.put("apartment_number", apartment_number);
+				obj.put("unit_description", unit_description);
+				obj.put("hqfile_id", hqfile_id);
+				obj.put("gid_unique_across", gid_unique_across);
 				obj.put("remarks", remarks);
 				obj.put("status", status != null ? status : "pending");
 
@@ -756,22 +832,60 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String ip_address = (String) session.getAttribute("ip_address");
 				String regional_code = (String) session.getAttribute("regional_code");
 				String t_id = request.getParameter("t_id");
+				
+				// Basic Information
 				String jacket_name = request.getParameter("jacket_name");
 				String region = request.getParameter("region");
-				String district = request.getParameter("district");
-				String locality = request.getParameter("locality");
 				String reference_number = request.getParameter("reference_number");
 				String file_number = request.getParameter("file_number");
-				String document_type = request.getParameter("document_type");
-				String document_subtype = request.getParameter("document_subtype");
-				String execution_date = request.getParameter("execution_date");
-				String registration_date = request.getParameter("registration_date");
-				String party_1_name = request.getParameter("party_1_name");
-				String party_1_capacity = request.getParameter("party_1_capacity");
-				String party_2_name = request.getParameter("party_2_name");
-				String party_2_capacity = request.getParameter("party_2_capacity");
-				String consideration_amount = request.getParameter("consideration_amount");
-				String stamp_duty_paid = request.getParameter("stamp_duty_paid");
+				String property_number = request.getParameter("property_number");
+				String submission_date = request.getParameter("submission_date");
+				
+				// Document Details
+				String mutation_number = request.getParameter("mutation_number");
+				String deed_number = request.getParameter("deed_number");
+				String serial_number = request.getParameter("serial_number");
+				String sheet_number = request.getParameter("sheet_number");
+				String plan_number = request.getParameter("plan_number");
+				String plot_number = request.getParameter("plot_number");
+				String lvb_number = request.getParameter("lvb_number");
+				String instrument_date = request.getParameter("instrument_date");
+				String instrument_type = request.getParameter("instrument_type");
+				String doc_number = request.getParameter("doc_number");
+				
+				// Party 1 Information
+				String party1_plaintiff = request.getParameter("party1_plaintiff");
+				String party1_plaintiff_tel_no = request.getParameter("party1_plaintiff_tel_no");
+				String party1_plaintiff_email = request.getParameter("party1_plaintiff_email");
+				String party1_plantiff_add = request.getParameter("party1_plantiff_add");
+				
+				// Party 2 Information
+				String party2_defendant = request.getParameter("party2_defendant");
+				String party2_defendant_tel_no = request.getParameter("party2_defendant_tel_no");
+				String party2_defendant_email = request.getParameter("party2_defendant_email");
+				String party2_defendant_add = request.getParameter("party2_defendant_add");
+				
+				// Financial Details
+				String consideration = request.getParameter("consideration");
+				String consideration_currency = request.getParameter("consideration_currency");
+				String premium = request.getParameter("premium");
+				String premium_currency = request.getParameter("premium_currency");
+				String rent = request.getParameter("rent");
+				String compensation_status = request.getParameter("compensation_status");
+				
+				// Additional Details
+				String term = request.getParameter("term");
+				String commencement_date = request.getParameter("commencement_date");
+				String purpose = request.getParameter("purpose");
+				String entered_date = request.getParameter("entered_date");
+				String consent_date = request.getParameter("consent_date");
+				String suit_number = request.getParameter("suit_number");
+				String judgement_in_favour_of = request.getParameter("judgement_in_favour_of");
+				String floor_level = request.getParameter("floor_level");
+				String apartment_number = request.getParameter("apartment_number");
+				String unit_description = request.getParameter("unit_description");
+				String hqfile_id = request.getParameter("hqfile_id");
+				String gid_unique_across = request.getParameter("gid_unique_across");
 				String remarks = request.getParameter("remarks");
 				String status = request.getParameter("status");
 		
@@ -782,22 +896,60 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("ip_address", ip_address);
 				obj.put("regional_code", regional_code);
 				obj.put("t_id", t_id);
+							
+				// Basic Information
 				obj.put("jacket_name", jacket_name);
 				obj.put("region", region);
-				obj.put("district", district);
-				obj.put("locality", locality);
 				obj.put("reference_number", reference_number);
 				obj.put("file_number", file_number);
-				obj.put("document_type", document_type);
-				obj.put("document_subtype", document_subtype);
-				obj.put("execution_date", execution_date);
-				obj.put("registration_date", registration_date);
-				obj.put("party_1_name", party_1_name);
-				obj.put("party_1_capacity", party_1_capacity);
-				obj.put("party_2_name", party_2_name);
-				obj.put("party_2_capacity", party_2_capacity);
-				obj.put("consideration_amount", consideration_amount);
-				obj.put("stamp_duty_paid", stamp_duty_paid);
+				obj.put("property_number", property_number);
+				obj.put("submission_date", submission_date);
+							
+				// Document Details
+				obj.put("mutation_number", mutation_number);
+				obj.put("deed_number", deed_number);
+				obj.put("serial_number", serial_number);
+				obj.put("sheet_number", sheet_number);
+				obj.put("plan_number", plan_number);
+				obj.put("plot_number", plot_number);
+				obj.put("lvb_number", lvb_number);
+				obj.put("instrument_date", instrument_date);
+				obj.put("instrument_type", instrument_type);
+				obj.put("doc_number", doc_number);
+							
+				// Party 1 Information
+				obj.put("party1_plaintiff", party1_plaintiff);
+				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no);
+				obj.put("party1_plaintiff_email", party1_plaintiff_email);
+				obj.put("party1_plantiff_add", party1_plantiff_add);
+							
+				// Party 2 Information
+				obj.put("party2_defendant", party2_defendant);
+				obj.put("party2_defendant_tel_no", party2_defendant_tel_no);
+				obj.put("party2_defendant_email", party2_defendant_email);
+				obj.put("party2_defendant_add", party2_defendant_add);
+							
+				// Financial Details
+				obj.put("consideration", consideration);
+				obj.put("consideration_currency", consideration_currency);
+				obj.put("premium", premium);
+				obj.put("premium_currency", premium_currency);
+				obj.put("rent", rent);
+				obj.put("compensation_status", compensation_status);
+							
+				// Additional Details
+				obj.put("term", term);
+				obj.put("commencement_date", commencement_date);
+				obj.put("purpose", purpose);
+				obj.put("entered_date", entered_date);
+				obj.put("consent_date", consent_date);
+				obj.put("suit_number", suit_number);
+				obj.put("judgement_in_favour_of", judgement_in_favour_of);
+				obj.put("floor_level", floor_level);
+				obj.put("apartment_number", apartment_number);
+				obj.put("unit_description", unit_description);
+				obj.put("hqfile_id", hqfile_id);
+				obj.put("gid_unique_across", gid_unique_across);
 				obj.put("remarks", remarks);
 				obj.put("status", status);
 		
@@ -925,7 +1077,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 			// ==================== SEARCH AND EXPORT OPERATIONS ====================
 		
 			if (request_type.equals("search_regional_transactions")) {
-				String search_reference = request.getParameter("search_reference");
+				String search_reference = request.getParameter("search_text");
 				String search_file = request.getParameter("search_file");
 				String search_jacket = request.getParameter("search_jacket");
 				String search_region = request.getParameter("search_region");
@@ -938,7 +1090,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String length = request.getParameter("length");
 		
 				JSONObject obj = new JSONObject();
-				obj.put("search_reference", search_reference != null ? search_reference : "");
+				obj.put("search_text", search_reference != null ? search_reference : "");
 				obj.put("search_file", search_file != null ? search_file : "");
 				obj.put("search_jacket", search_jacket != null ? search_jacket : "");
 				obj.put("search_region", search_region != null ? search_region : "");
