@@ -28,7 +28,7 @@
 
     .stat-card.border-warning { border-left-color: #ffc107; }
     .stat-card.border-info { border-left-color: #17a2b8; }
-    .stat-card.border-primary { border-left-color: #667eea; }
+    .stat-card.border-primary { border-left-color: #2d7d42; }
     .stat-card.border-success { border-left-color: #28a745; }
 
     .nav-tabs .nav-link {
@@ -41,9 +41,9 @@
     }
 
     .nav-tabs .nav-link.active {
-        color: #667eea;
+        color: #2d7d42;
         background-color: white;
-        border-bottom: 3px solid #667eea;
+        border-bottom: 3px solid #2d7d42;
     }
 
     .nav-tabs .nav-link:hover:not(.active) {
@@ -106,7 +106,7 @@
 
     .stats-icon.bg-warning { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
     .stats-icon.bg-info { background-color: rgba(23, 162, 184, 0.1); color: #17a2b8; }
-    .stats-icon.bg-primary { background-color: rgba(102, 126, 234, 0.1); color: #667eea; }
+    .stats-icon.bg-primary { background-color: rgba(102, 234, 115, 0.1); color: #2d7d42; }
     .stats-icon.bg-success { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
 
     .chart-container {
@@ -295,7 +295,7 @@
                                                 <input type="hidden" name="export_type" id="export_type">
                                                 
                                                 <div class="d-grid">
-                                                    <button class="btn btn-outline-dark action-btn" id="btn_export_data">
+                                                    <button class="btn btn-danger action-btn" id="btn_export_data">
                                                         <i class="ri-download-line me-2"></i>Export Data
                                                     </button>
                                                 </div>
@@ -310,11 +310,11 @@
                                 <!-- Stats Row -->
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <div class="card stat-card border-primary h-100">
+                                        <div class="card stat-card border-success h-100">
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="stats-icon bg-primary me-3">
-                                                        <i class="ri-money-dollar-circle-line fs-4"></i>
+                                                        <i class="ri-money-dollar-circle-line fs-4 text-white"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <div class="text-muted small fw-semibold mb-1">Total Amount</div>
@@ -332,7 +332,7 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="stats-icon bg-success me-3">
-                                                        <i class="ri-file-list-line fs-4"></i>
+                                                        <i class="ri-file-list-line fs-4 text-white"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <div class="text-muted small fw-semibold mb-1">Total Payment Count</div>

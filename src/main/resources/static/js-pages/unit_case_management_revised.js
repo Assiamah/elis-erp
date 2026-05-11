@@ -35,17 +35,18 @@ $(document).ready(function() {
 	$(".btnLoadUnitApplications").click(function(event) {
 		
 		var inbox_type = $(this).data('id');
-
-		var inc_1 = $('#inc_1').val();
-		var com_3 = $('#com_3').val();
-		var que_2 = $('#que_2').val();
-		var awa_4 = $('#awa_4').val();
-		var awrq_5 = $('#awa_req_5').val();
-		var ctrq_6 = $('#req_com_6').val();
-		var atr_7 = $('#req_com_7').val();
-		var req_8 = $('#req_inp_8').val();
-		var awa_9 = $('#awa_insp_9').val();
-		var awa_10 = $('#awa_pub_10').val();
+		
+		// Parse values as integers to ensure proper numeric comparison
+		var inc_1 = parseInt($('#inc_1').val()) || 0;
+		var com_3 = parseInt($('#com_3').val()) || 0;
+		var que_2 = parseInt($('#que_2').val()) || 0;
+		var awa_4 = parseInt($('#awa_4').val()) || 0;
+		var awrq_5 = parseInt($('#awa_req_5').val()) || 0;
+		var ctrq_6 = parseInt($('#req_com_6').val()) || 0;
+		var atr_7 = parseInt($('#req_com_7').val()) || 0;
+		var req_8 = parseInt($('#req_inp_8').val()) || 0;
+		var awa_9 = parseInt($('#awa_insp_9').val()) || 0;
+		var awa_10 = parseInt($('#awa_pub_10').val()) || 0;
 		
 
 		datatable.search("").draw();
@@ -105,6 +106,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 3:
@@ -153,6 +155,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 2:
@@ -201,6 +204,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 4:
@@ -247,6 +251,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 		
@@ -296,6 +301,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 6:
@@ -343,6 +349,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 7:
@@ -389,6 +396,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 8:
@@ -435,6 +443,7 @@ $(document).ready(function() {
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 9:
@@ -475,9 +484,11 @@ $(document).ready(function() {
 					}
 
 					$("#incoming_advanced_search").modal('show');
+					return;
 				} else {
 
 					LoadUnitApplications(inbox_type)
+					return;
 				}
 
 			case 10:
