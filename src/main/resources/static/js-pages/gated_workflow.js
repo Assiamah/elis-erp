@@ -23682,6 +23682,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_delete_lrd_certificate_details',
                             cs_id: parseInt(cs_id),
                             cs_case_number: cs_case_number,
+                            target_element: 'certificate'
                         },
                         cache: false,
                         success: function(response) {
@@ -27576,6 +27577,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'select_lrd_encumbrances_section_delete_by_id',
                             es_id: parseInt(es_id),
                             es_case_number: es_case_number,
+                            target_element: 'encumbrances'
                         },
                         cache: false,
                         success: function(response) {
