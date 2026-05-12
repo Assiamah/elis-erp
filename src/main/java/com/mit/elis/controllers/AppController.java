@@ -834,21 +834,37 @@ public class AppController {
 					String apps_rec_year = dash_obj.get("apps_rec_year").toString();
 					String apps_comp_year = dash_obj.get("apps_comp_year").toString();
 					String apps_past_due_dates = dash_obj.get("apps_past_due_dates").toString();
-					int completionRate = 0;
+					// int completionRate = 0;
 
-					Object crObj = dash_obj.get("completion_rate");
+					// Object crObj = dash_obj.get("completion_rate");
 
-					if (crObj != null) {
-						completionRate = Integer.parseInt(crObj.toString().replace("%", ""));
-					}
+					// if (crObj != null) {
+					// 	completionRate = Integer.parseInt(crObj.toString().replace("%", ""));
+					// }
+					String completion_rate = dash_obj.get("completion_rate").toString();
 					String apps_with_user = dash_obj.get("apps_with_user").toString();
+					String avg_turnaround_days = dash_obj.get("avg_turnaround_days").toString();
+					String turnaround_target = dash_obj.get("turnaround_target").toString();
+					String turnaround_performance = dash_obj.get("turnaround_performance").toString();
+					String working_days = dash_obj.get("working_days").toString();
+					String working_days_target = dash_obj.get("working_days_target").toString();
+					String working_days_percentage = dash_obj.get("working_days_percentage").toString();
+					String working_days_status = dash_obj.get("working_days_status").toString();
+
+					request.setAttribute("working_days", working_days);
+					request.setAttribute("working_days_target", working_days_target);
+					request.setAttribute("working_days_percentage", working_days_percentage);
+					request.setAttribute("working_days_status", working_days_status);
 					request.setAttribute("apps_with_user", apps_with_user);
+					request.setAttribute("avg_turnaround_days", avg_turnaround_days);
+					request.setAttribute("turnaround_target", turnaround_target);
+					request.setAttribute("turnaround_performance", turnaround_performance);
 					request.setAttribute("apps_rec_month", apps_rec_month);
 					request.setAttribute("apps_comp_month", apps_comp_month);
 					request.setAttribute("apps_rec_year", apps_rec_year);
 					request.setAttribute("apps_comp_year", apps_comp_year);
 					request.setAttribute("apps_past_due_dates", apps_past_due_dates);
-					request.setAttribute("completion_rate", completionRate);
+					request.setAttribute("completion_rate", completion_rate);
 
 					//		model.addAttribute("content", "../pages/mainpage/main_dashboard.jsp"); return "layouts/app";
 					

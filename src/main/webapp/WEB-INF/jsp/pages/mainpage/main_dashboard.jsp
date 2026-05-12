@@ -12,6 +12,10 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <jsp:useBean id="now" class="java.util.Date" />
 
+<fmt:parseNumber value="${completion_rate}" integerOnly="true" var="completionRate" />
+<fmt:parseNumber value="${avg_turnaround_days}" type="number" var="avgTurnaroundDays" />
+<fmt:parseNumber value="${working_days_percentage}" type="number" var="workingDaysPercentage" />
+
 <style>
     .stat-card {
         transition: all 0.3s ease;
@@ -121,7 +125,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="d-none d-md-block">
+                    <!-- <div class="d-none d-md-block">
                         <div class="d-flex align-items-center">
                             <div class="me-3 text-end">
                                 <div class="text-muted small">Productivity Score</div>
@@ -134,7 +138,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -269,7 +273,7 @@
                         <h5 class="card-title mb-1">Performance Dashboard</h5>
                         <p class="text-muted small mb-0">Real-time metrics for <fmt:formatDate value="${now}" pattern="MMMM yyyy" /></p>
                     </div>
-                    <div class="dropdown">
+                    <!-- <div class="dropdown">
                         <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="dropdown">
                             <i class="ri-more-2-line"></i>
                         </button>
@@ -277,7 +281,7 @@
                             <li><a class="dropdown-item" href="#"><i class="ri-download-line me-2"></i>Export Report</a></li>
                             <li><a class="dropdown-item" href="#"><i class="ri-settings-3-line me-2"></i>Customize View</a></li>
                         </ul>
-                    </div>
+                    </div> -->
                 <!-- </div> -->
             </div>
             <div class="card-body">
@@ -318,7 +322,7 @@
                                     <div class="text-end">
                                         <div class="small opacity-75 mb-1">Target: 85%</div>
                                         <div class="progress" style="width: 80px; height: 6px;">
-                                            <div class="progress-bar bg-white" style="width: ${completionRate > 100 ? 100 : completionRate}%"></div>
+                                            <div class="progress-bar ${completionRate <= 35 ? 'bg-danger' : completionRate <= 70 ? 'bg-warning' : 'bg-success'}" style="width: ${completionRate > 100 ? 100 : completionRate}%"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -330,9 +334,6 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="card bg-gradient-info text-white border-0 overflow-hidden h-100">
                             <div class="card-body p-4 position-relative">
-                                <!-- <div class="position-absolute end-0 top-0 opacity-10">
-                                    <i class="ri-timer-line fs-8"></i>
-                                </div> -->
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center mb-2">
                                         <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle p-2 me-2">
@@ -342,17 +343,32 @@
                                     </div>
                                     <div class="small opacity-75">Year <fmt:formatDate value="${now}" pattern="YYYY" /></div>
                                 </div>
+                                
                                 <div class="d-flex align-items-end justify-content-between">
                                     <div>
-                                        <h2 class="mb-0">-</h2>
+                                        <h2 class="mb-0">
+                                            ${avg_turnaround_days} <span class="fs-5 fw-normal">days</span>
+                                        </h2>
                                         <div class="small mt-2">
-                                            <span class="opacity-75">Calculating...</span>
+                                            <span class="badge 
+                                                ${turnaround_performance == 'Excellent' ? 'bg-success' : 
+                                                turnaround_performance == 'Good' ? 'bg-info' : 
+                                                turnaround_performance == 'Average' ? 'bg-warning' : 'bg-danger'}">
+                                                ${turnaround_performance}
+                                            </span>
                                         </div>
                                     </div>
+                                    
                                     <div class="text-end">
-                                        <div class="small opacity-75 mb-1">Target: 5 days</div>
+                                        <div class="small opacity-75 mb-1">Target: 2 days</div>
                                         <div class="progress" style="width: 80px; height: 6px;">
-                                            <div class="progress-bar bg-white" style="width: 60%"></div>
+                                            <!-- Progress bar logic: Lower is better -->
+                                            <div class="progress-bar ${avgTurnaroundDays <= 2 ? 'bg-success' : avgTurnaroundDays <= 3 ? 'bg-warning' : 'bg-danger'}" 
+                                                role="progressbar"
+                                                style="width: ${avgTurnaroundDays <= 2 ? '100' : 
+                                                                avgTurnaroundDays <= 3 ? '65' : 
+                                                                avgTurnaroundDays <= 4 ? '40' : '20'}%;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -364,9 +380,6 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="card bg-gradient-success text-white border-0 overflow-hidden h-100">
                             <div class="card-body p-4 position-relative">
-                                <!-- <div class="position-absolute end-0 top-0 opacity-10">
-                                    <i class="ri-calendar-line fs-8"></i>
-                                </div> -->
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center mb-2">
                                         <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle p-2 me-2">
@@ -376,17 +389,24 @@
                                     </div>
                                     <div class="small opacity-75">Year <fmt:formatDate value="${now}" pattern="YYYY" /></div>
                                 </div>
+                                
                                 <div class="d-flex align-items-end justify-content-between">
                                     <div>
-                                        <h2 class="mb-0">-</h2>
+                                        <h2 class="mb-0">${working_days}</h2>
                                         <div class="small mt-2">
-                                            <span class="badge bg-white text-success">Regular</span>
+                                            <span class="badge bg-white text-success">${working_days_status}</span>
                                         </div>
                                     </div>
+                                    
                                     <div class="text-end">
                                         <div class="small opacity-75 mb-1">Target: 260 days</div>
-                                        <div class="progress" style="width: 80px; height: 6px;">
-                                            <div class="progress-bar bg-white" style="width: 75%"></div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="progress mt-2" style="width: 50px; height: 6px;">
+                                                <div class="progress-bar ${workingDaysPercentage <= 35 ? 'bg-danger' : workingDaysPercentage <= 70 ? 'bg-warning' : 'bg-success'}" 
+                                                    style="width: ${workingDaysPercentage}%;">
+                                                </div> 
+                                            </div>
+                                            <small class="text-white-50">${workingDaysPercentage}%</small>
                                         </div>
                                     </div>
                                 </div>
