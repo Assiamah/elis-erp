@@ -3685,7 +3685,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     
-     $(document).on('click', '#map-tab-deed', function() {
+    $(document).on('click', '#map-tab-deed', function() {
         // console.log('Map tab clicked');
         window.initializeMap('lc-map__deed');
         
@@ -14591,6 +14591,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $("#dfe_deed_number").val($("#lc_txt_deed_number").val() || $("#dfe_deed_number").val());
         $("#dfe_serial_number").val($("#lc_txt_serial_number").val() || $("#dfe_serial_number").val());
         $("#dfe_publication_date").val($("#lc_txt_publicity_date").val() || $("#dfe_publication_date").val());
+        $("#dfe_date_of_registration").val($("#lc_txt_date_of_registration").val() || $("#dfe_date_of_registration").val());
         window.loadGatedWorkFlowDocuments('deed_further_entry');
     });
 
@@ -16293,6 +16294,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $("#review_plan_details").on('shown.bs.modal', function() {
         window.initializeMap('lc-map_____');
+    })
+
+    $("#deed_check_polygon").on('shown.bs.modal', function() {
+        window.initializeMap('deed-check-polygon-map');
     })
 
     $('#btn_compose_certificate_template_2').on('click', function(e) {

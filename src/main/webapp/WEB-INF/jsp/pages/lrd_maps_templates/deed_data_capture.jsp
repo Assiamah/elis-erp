@@ -306,7 +306,7 @@
                         <div>
                             <span class="badge bg-info-subtle text-info">Step 2</span>
                             <h4 class="mt-2 mb-1">Continue With Data Capture</h4>
-                            <p class="text-muted mb-0">These are the four required deed data capture actions for the currently loaded job.</p>
+                            <p class="text-muted mb-0">These are the five required deed data capture actions for the currently loaded job.</p>
                         </div>
                         <div class="text-end">
                             <div class="small text-muted">Current Job</div>
@@ -315,7 +315,7 @@
                     </div>
 
                     <div class="row g-4">
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-xl col-lg-4 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-primary-subtle text-primary mb-3">
                                     <i class="bi bi-file-earmark-arrow-up"></i>
@@ -328,7 +328,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-xl col-lg-4 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-success-subtle text-success mb-3">
                                     <i class="bi bi-people"></i>
@@ -341,7 +341,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-xl col-lg-4 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-warning-subtle text-warning mb-3">
                                     <i class="bi bi-pencil-square"></i>
@@ -354,7 +354,20 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-xl col-lg-4 col-md-6">
+                            <div class="deed-action-card p-4">
+                                <div class="deed-icon bg-danger-subtle text-danger mb-3">
+                                    <i class="bi bi-pentagon"></i>
+                                </div>
+                                <h5 class="mb-2">Check Polygon</h5>
+                                <p class="text-muted small mb-4">Open the polygon check modal to review the WKT polygon data and view it on the map.</p>
+                                <button type="button" class="btn btn-danger w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#deed_check_polygon" data-action-name="deed_check_polygon">
+                                    <i class="bi bi-map me-1"></i>Open Polygon
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-xl col-lg-4 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-info-subtle text-info mb-3">
                                     <i class="bi bi-list-check"></i>

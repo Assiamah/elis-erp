@@ -481,13 +481,15 @@
         <div class="row g-3 mb-4">
           <div class="col-md-6">
             <button type="button" class="btn btn-primary addeditpartyGeneralBtn w-100" id="lrd_btn_add_grantor" 
-                    data-bs-placement="top" data-bs-title="Add Grantor">
+                    data-bs-toggle="modal" data-bs-target="#addeditpartyGeneral"
+                    data-type_of_party="Grantor" data-bs-placement="top" data-bs-title="Add Grantor">
               <i class="bi bi-person-plus me-2"></i>Add Grantor
             </button>
           </div>
           <div class="col-md-6">
             <button type="button" class="btn btn-success addeditpartyGeneralBtn w-100" id="lrd_btn_add_grantee" 
-                    data-bs-placement="top" data-bs-title="Add Applicant">
+                    data-bs-toggle="modal" data-bs-target="#addeditpartyGeneral"
+                    data-type_of_party="Applicant" data-bs-placement="top" data-bs-title="Add Applicant">
               <i class="bi bi-person-plus me-2"></i>Add Applicant
             </button>
           </div>
@@ -632,6 +634,8 @@
                     <div class="d-flex justify-content-center gap-2">
                       <!-- Edit Button -->
                       <button class="btn btn-outline-primary btn-sm addeditpartyGeneralBtn" 
+                              data-bs-toggle="modal"
+                              data-bs-target="#addeditpartyGeneral"
                               data-bs-placement="top" data-bs-title="Edit Party"
                               data-target-id="${parties_row.ar_client_id}"  
                               data-ar_name="${parties_row.ar_name}"
@@ -654,6 +658,8 @@
                       
                       <!-- Delete Button -->
                       <button class="btn btn-outline-danger btn-sm deletepartyGeneralBtn" 
+                              data-bs-toggle="modal"
+                              data-bs-target="#deletepartyGeneral"
                               data-bs-placement="top" data-bs-title="Delete Party"
                               data-target-id="${parties_row.ar_client_id}"  
                               data-ar_name="${parties_row.ar_name}"

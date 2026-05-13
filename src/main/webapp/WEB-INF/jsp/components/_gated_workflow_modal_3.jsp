@@ -3291,6 +3291,13 @@
                     </label>
                     <input type="date" class="form-control" id="dfe_publication_date" value="${publicity_date}">
                   </div>
+
+                   <div class="mb-3">
+                    <label for="dfe_publication_date" class="form-label fw-semibold">
+                      <i class="bi bi-calendar-event me-2"></i>Registration Date
+                    </label>
+                    <input type="date" class="form-control" id="dfe_date_of_registration" value="${date_of_registration}">
+                  </div>
                 </div>
 
                 <div class="col-lg-6">
@@ -3436,6 +3443,99 @@
           <div class="col-md-6 d-flex flex-column scrollable-col">
             <div class="_gated_workflow_documents"></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade effect-scale modal-blur map-modal" id="deed_check_polygon" tabindex="-1" aria-labelledby="deedCheckPolygonLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-danger text-white">
+        <div class="d-flex align-items-center w-100">
+          <div class="avatar avatar-lg bg-white text-danger rounded-circle me-3">
+            <i class="bi bi-pentagon fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title text-white mb-1" id="deedCheckPolygonLabel">Check Polygon</h5>
+            <p class="mb-0 small opacity-75">
+              <i class="bi bi-info-circle me-1"></i>
+              Review the WKT polygon and view it on the map
+            </p>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="card border mb-4">
+          <div class="card-header bg-light">
+            <h6 class="mb-0 fw-semibold">
+              <i class="bi bi-polygon me-2"></i>WKT Polygon Data
+            </h6>
+          </div>
+          <div class="card-body">
+            <label for="deed_check_wkt_polygon" class="form-label fw-semibold">
+              <i class="bi bi-code-slash me-2"></i>WKT Polygon
+            </label>
+            <div class="input-group">
+              <textarea class="form-control font-monospace" id="deed_check_wkt_polygon" rows="4" placeholder="POLYGON((...))" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
+              <button class="btn btn-outline-secondary" type="button" onclick="copyWktToClipboard('deed_check_wkt_polygon')" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+            <div class="form-text">
+              <i class="bi bi-info-circle me-1"></i>
+              This is the current parcel polygon for the loaded deed application.
+            </div>
+          </div>
+        </div>
+
+        <div class="card border mb-4">
+          <div class="card-header bg-light">
+            <h6 class="mb-0 fw-semibold">
+              <i class="bi bi-tools me-2"></i>Map Tools
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <button type="button" class="btn btn-danger btn-sm" id="lc_btn_visualise_wkt">
+                <i class="bi bi-eye me-1"></i> View WKT
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="deed_btn_polygon_zoom_full">
+                <i class="bi bi-arrows-fullscreen me-1"></i> Fit Polygon
+              </button>
+              <span class="badge bg-light text-dark border ms-auto" id="deedPolygonMapStatus">
+                <i class="bi bi-circle me-1"></i>Ready
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-semibold">
+              <i class="bi bi-globe me-2"></i>Map Preview
+            </h6>
+            <small class="text-muted">
+              <i class="bi bi-arrows-fullscreen me-1"></i>Click and drag to navigate
+            </small>
+          </div>
+          <div class="card-body p-0">
+            <div class="map-container" id="deed-check-polygon-map" style="height: 460px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer bg-light">
+        <div class="d-flex justify-content-between w-100 align-items-center">
+          <small class="text-muted">
+            <i class="bi bi-shield-check me-1"></i>Verify the polygon before proceeding with deed capture
+          </small>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>Close
+          </button>
         </div>
       </div>
     </div>

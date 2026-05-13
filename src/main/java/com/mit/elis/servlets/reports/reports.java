@@ -409,7 +409,7 @@ public class reports {
 
                 report_parameters = obj_r.toString();
                 // //System.out.println("Assiamah");
-                // //System.out.println(report_parameters);
+                System.out.println(report_parameters);
 
                 json_output = excel_report_cl.get_list_of_users(cls_url_config.getWeb_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);

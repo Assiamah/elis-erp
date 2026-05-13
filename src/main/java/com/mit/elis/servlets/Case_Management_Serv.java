@@ -2034,7 +2034,6 @@ String userid =  (String) session.getAttribute("userid");
 				String deed_number = request.getParameter("deed_number");
 				String publication_date = request.getParameter("publication_date");
 				String registry_mapref = request.getParameter("registry_mapref");
-
 				String date_of_issue = request.getParameter("date_of_issue");
 				String registered_number = request.getParameter("registered_number");
 				String certificate_type = request.getParameter("certificate_type");
@@ -2081,7 +2080,6 @@ String userid =  (String) session.getAttribute("userid");
 				obj.put("deed_number", deed_number);
 				obj.put("publication_date", publication_date);
 				obj.put("registry_mapref", registry_mapref);
-
 				obj.put("date_of_issue", date_of_issue);
 				obj.put("registered_number", registered_number);
 				obj.put("certificate_type", certificate_type);
