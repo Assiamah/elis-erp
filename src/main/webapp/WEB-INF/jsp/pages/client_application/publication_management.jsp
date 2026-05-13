@@ -317,7 +317,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0" width="100%" id="publishedDataTable">
+                                    <table class="table table-hover align-middle mb-0" width="100%" id="publishedDateSetDataTable">
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="50">
@@ -797,21 +797,10 @@
 
         $("#unpublishedDataTable").DataTable({
             stateSave: true,
-            // stateDuration: 60 * 60 * 24 * 30,
-            // stateSaveCallback: function(settings, data) {
-            //     localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data));
-            // },
-            // stateLoadCallback: function(settings) {
-            //     return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance));
-            // },
-            // lengthMenu: [10, 25, 50, 100],
-            // pageLength: 10,
-            // responsive: true,
-            // autoWidth: false,
-            // order: [[0, 'desc']],
-            // columnDefs: [
-            //     { targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], orderable: false }
-            // ]
+        });
+
+        $("#publishedDateSetDataTable").DataTable({
+            stateSave: true,
         });
     });
 </script>

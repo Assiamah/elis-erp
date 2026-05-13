@@ -5587,11 +5587,11 @@ Thank you.</textarea>
 <div class="modal fade effect-fade modal-blur" id="update_digital_workflow_milestone" tabindex="-1" 
      aria-labelledby="updateDigitalWorkflowLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
+        <div class="modal-content border-0">
             <!-- Modal Header -->
-            <div class="modal-header">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="updateDigitalWorkflowLabel">
-                    <i class="bi bi-arrow-repeat me-2 text-primary"></i>
+                    <i class="bi bi-arrow-repeat me-2 text-white"></i>
                     Update Digital Workflow Milestone
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" 
@@ -5610,7 +5610,7 @@ Thank you.</textarea>
                         Full Name
                     </label>
                     <input class="form-control bg-light" type="text" 
-                           id="up_fullname" readonly
+                           id="up_fullname" value="${fullname}" readonly
                            placeholder="User full name will appear here">
                 </div>
 

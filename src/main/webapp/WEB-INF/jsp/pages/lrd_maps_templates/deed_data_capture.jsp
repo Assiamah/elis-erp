@@ -12,9 +12,10 @@
     }
 
     .deed-stepper {
+        align-items: center;
         display: grid;
         gap: 1rem;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         margin-bottom: 1.5rem;
     }
 
@@ -30,20 +31,29 @@
     }
 
     .deed-stepper-item.active {
-        border-color: #0d6efd;
-        box-shadow: 0 0.75rem 1.5rem rgba(13, 110, 253, 0.08);
+        background: linear-gradient(135deg, #fd490d 0%, #f97316 100%);
+        border-color: #fd490d;
+        box-shadow: 0 0.9rem 1.75rem rgba(253, 73, 13, 0.2);
+        color: #fff;
     }
 
     .deed-stepper-item.complete {
+        background: linear-gradient(135deg, #198754 0%, #20c997 100%);
         border-color: #198754;
-        box-shadow: 0 0.75rem 1.5rem rgba(25, 135, 84, 0.08);
+        box-shadow: 0 0.9rem 1.75rem rgba(25, 135, 84, 0.18);
+        color: #fff;
+    }
+
+    .deed-stepper-item.active .text-muted,
+    .deed-stepper-item.complete .text-muted {
+        color: rgba(255, 255, 255, 0.82) !important;
     }
 
     .deed-step-badge {
         align-items: center;
         background: #eaf2ff;
         border-radius: 999px;
-        color: #0d6efd;
+        color: #fd490d;
         display: inline-flex;
         font-size: 0.95rem;
         font-weight: 700;
@@ -53,13 +63,27 @@
     }
 
     .deed-stepper-item.complete .deed-step-badge {
-        background: #e7f6ec;
+        background: rgba(255, 255, 255, 0.92);
         color: #198754;
     }
 
     .deed-stepper-item.active .deed-step-badge {
-        background: #0d6efd;
-        color: #fff;
+        background: #fff;
+        color: #fd490d;
+    }
+
+    .deed-stepper-arrow {
+        align-items: center;
+        background: #fff;
+        border: 1px solid #dbe7f3;
+        border-radius: 999px;
+        box-shadow: 0 0.5rem 1rem rgba(15, 23, 42, 0.05);
+        color: #fd490d;
+        display: inline-flex;
+        font-size: 1.35rem;
+        height: 2.75rem;
+        justify-content: center;
+        width: 2.75rem;
     }
 
     .deed-stage-card,
@@ -119,6 +143,11 @@
         .deed-stepper {
             grid-template-columns: 1fr;
         }
+
+        .deed-stepper-arrow {
+            justify-self: center;
+            transform: rotate(90deg);
+        }
     }
 </style>
 
@@ -156,6 +185,9 @@
                         <h5 class="mb-1">Verify Job Number</h5>
                         <p class="text-muted small mb-0">Search the application by job number and create it if it does not exist.</p>
                     </div>
+                </div>
+                <div class="deed-stepper-arrow" aria-hidden="true">
+                    <i class="bi bi-arrow-right"></i>
                 </div>
                 <div class="deed-stepper-item" id="deedStepTwoIndicator">
                     <span class="deed-step-badge">2</span>
@@ -274,7 +306,7 @@
                         <div>
                             <span class="badge bg-info-subtle text-info">Step 2</span>
                             <h4 class="mt-2 mb-1">Continue With Data Capture</h4>
-                            <p class="text-muted mb-0">These are the three required deed data capture actions for the currently loaded job.</p>
+                            <p class="text-muted mb-0">These are the four required deed data capture actions for the currently loaded job.</p>
                         </div>
                         <div class="text-end">
                             <div class="small text-muted">Current Job</div>
@@ -283,7 +315,7 @@
                     </div>
 
                     <div class="row g-4">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-primary-subtle text-primary mb-3">
                                     <i class="bi bi-file-earmark-arrow-up"></i>
@@ -296,7 +328,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-success-subtle text-success mb-3">
                                     <i class="bi bi-people"></i>
@@ -309,15 +341,28 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-3 col-md-6">
                             <div class="deed-action-card p-4">
                                 <div class="deed-icon bg-warning-subtle text-warning mb-3">
                                     <i class="bi bi-pencil-square"></i>
                                 </div>
                                 <h5 class="mb-2">Further Entry Details</h5>
                                 <p class="text-muted small mb-4">Open the Further Entry Details modal to complete the additional deed entry details for the loaded application.</p>
-                                <button type="button" class="btn btn-warning text-dark w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#further_entry" data-action-name="further_entry">
+                                <button type="button" class="btn btn-warning text-dark w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#deed_further_entry" data-action-name="deed_further_entry">
                                     <i class="bi bi-journal-richtext me-1"></i>Open Further Entry
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="deed-action-card p-4">
+                                <div class="deed-icon bg-info-subtle text-info mb-3">
+                                    <i class="bi bi-list-check"></i>
+                                </div>
+                                <h5 class="mb-2">Update Milestones</h5>
+                                <p class="text-muted small mb-4">Open the Update Digital Workflow Milestone modal to move the loaded job to the right workflow stage.</p>
+                                <button type="button" class="btn btn-info text-white w-100 deed-action-launch" data-bs-toggle="modal" data-bs-target="#update_digital_workflow_milestone" data-action-name="update_digital_workflow_milestone">
+                                    <i class="bi bi-arrow-repeat me-1"></i>Open Milestones
                                 </button>
                             </div>
                         </div>
@@ -330,3 +375,4 @@
 
 <jsp:include page="../../components/_gated_workflow_modal.jsp"></jsp:include>
 <jsp:include page="../../components/_gated_workflow_modal_2.jsp"></jsp:include>
+<jsp:include page="../../components/_gated_workflow_modal_3.jsp"></jsp:include>

@@ -3164,3 +3164,280 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade effect-scale modal-blur" id="deed_further_entry" tabindex="-1" aria-labelledby="deedFurtherEntryLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-warning text-dark">
+        <div class="d-flex align-items-center w-100">
+          <div class="avatar avatar-lg bg-white text-warning rounded-circle me-3">
+            <i class="bi bi-pencil-square fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title text-dark mb-1" id="deedFurtherEntryLabel">Deed Further Entry Details</h5>
+            <p class="mb-0 small opacity-75">
+              <i class="bi bi-info-circle me-1"></i>
+              Additional deed information, reference numbers and specifications
+            </p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="row" style="height: 100vh;">
+          <div class="col-md-6 d-flex flex-column scrollable-col">
+            <form id="frmDeedFurtherEntries_only_" novalidate>
+              <div class="row g-4">
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="dfe_job_number" class="form-label fw-semibold">
+                      <i class="bi bi-file-earmark-text me-2"></i>Job Number
+                    </label>
+                    <input type="text" class="form-control bg-light" id="dfe_job_number" value="${job_number}" readonly>
+                  </div>
+
+                  <input type="hidden" id="dfe_client_name" value="${ar_name}">
+                  <input type="hidden" id="dfe_business_process_sub_name" value="${business_process_sub_name}">
+
+                  <div class="mb-3">
+                    <label for="dfe_surveyor_number" class="form-label fw-semibold">
+                      <i class="bi bi-rulers me-2"></i>Surveyors Number
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light"><i class="bi bi-123"></i></span>
+                      <input type="text" class="form-control" id="dfe_surveyor_number" value="${licensed_surveyor_number}" placeholder="Enter surveyor number">
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_regional_number" class="form-label fw-semibold">
+                      <i class="bi bi-geo-alt me-2"></i>Regional Number
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light"><i class="bi bi-pin-map"></i></span>
+                      <input type="text" class="form-control" id="dfe_regional_number" value="${regional_number}" placeholder="Enter regional number">
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_land_size" class="form-label fw-semibold">
+                      <i class="bi bi-aspect-ratio me-2"></i>Land Size
+                    </label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="dfe_land_size" value="${size_of_land}" placeholder="Enter land size" step="0.111">
+                      <span class="input-group-text bg-light">Acre</span>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_nature_of_instrument" class="form-label fw-semibold">
+                      <i class="bi bi-file-earmark me-2"></i>Nature of Instrument
+                    </label>
+                    <input type="text" class="form-control" id="dfe_nature_of_instrument" value="${nature_of_instrument}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_type_of_use" class="form-label fw-semibold">
+                      <i class="bi bi-building me-2"></i>Type of Use
+                    </label>
+                    <input type="text" class="form-control" id="dfe_type_of_use" value="${type_of_use}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_type_of_interest" class="form-label fw-semibold">
+                      <i class="bi bi-briefcase me-2"></i>Type of Interest
+                      <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="dfe_type_of_interest" required>
+                      <option value="">Select Type of Interest</option>
+                      <option value="LEASEHOLD" ${type_of_interest=="LEASEHOLD" ? "selected" : ""}>LEASEHOLD</option>
+                      <option value="FREEHOLD" ${type_of_interest=="FREEHOLD" ? "selected" : ""}>FREEHOLD</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_consideration_currency" class="form-label fw-semibold">
+                      <i class="bi bi-currency-exchange me-2"></i>Consideration Currency
+                      <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="dfe_consideration_currency" required>
+                      <option value="GHS" ${consideration_fee_currency=="GHS" ? "selected":"" }>Ghana Cedis (GHS)</option>
+                      <option value="USD" ${consideration_fee_currency=="USD" ? "selected":"" }>US Dollars (USD)</option>
+                      <option value="GBP" ${consideration_fee_currency=="GBP" ? "selected":"" }>Pound Sterling (GBP)</option>
+                      <option value="EUR" ${consideration_fee_currency=="EUR" ? "selected":"" }>Euro (EUR)</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_date_of_document" class="form-label fw-semibold">
+                      <i class="bi bi-calendar-date me-2"></i>Date of Document
+                      <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" class="form-control" id="dfe_date_of_document" value="${date_of_document}" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_commencement_date" class="form-label fw-semibold">
+                      <i class="bi bi-calendar-check me-2"></i>Commencement Date
+                      <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" class="form-control" id="dfe_commencement_date" value="${commencement_date}" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_publication_date" class="form-label fw-semibold">
+                      <i class="bi bi-calendar-event me-2"></i>Publication Date
+                    </label>
+                    <input type="date" class="form-control" id="dfe_publication_date" value="${publicity_date}">
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="dfe_case_number" class="form-label fw-semibold">
+                      <i class="bi bi-journal-text me-2"></i>Case Number
+                    </label>
+                    <input type="text" class="form-control bg-light" id="dfe_case_number" value="${case_number}" readonly>
+                  </div>
+
+                  <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                      <label for="dfe_locality" class="form-label fw-semibold">
+                        <i class="bi bi-geo me-2"></i>Locality
+                      </label>
+                      <input type="text" class="form-control" id="dfe_locality" value="${locality}" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="dfe_district" class="form-label fw-semibold">
+                        <i class="bi bi-geo me-2"></i>District
+                      </label>
+                      <input type="text" class="form-control" id="dfe_district" value="${district}" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="dfe_region" class="form-label fw-semibold">
+                        <i class="bi bi-geo me-2"></i>Region
+                      </label>
+                      <input type="text" class="form-control" id="dfe_region" value="${region}" required>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_term" class="form-label fw-semibold">
+                      <i class="bi bi-clock-history me-2"></i>Term (Years)
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="dfe_term" value="${term}" placeholder="Enter term in years" required>
+                      <span class="input-group-text bg-light">Years</span>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_renewal_term" class="form-label fw-semibold">
+                      <i class="bi bi-arrow-repeat me-2"></i>Option to Renew?
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="dfe_renewal_term_check" id="dfe_renewal_term_yes" value="yes" ${renewal_term > 0 ? 'checked' : ''}>
+                      <label class="form-check-label" for="dfe_renewal_term_yes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="dfe_renewal_term_check" id="dfe_renewal_term_no" value="no" ${renewal_term < 1 ? 'checked' : ''}>
+                      <label class="form-check-label" for="dfe_renewal_term_no">No</label>
+                    </div>
+                    <div id="dfe_renewal_term_div" class="mt-2 ${renewal_term < 1 ? 'd-none' : ''}">
+                      <label for="dfe_renewal_term" class="form-label fw-semibold">
+                        <i class="bi bi-arrow-repeat me-2"></i>Renewal Term (Years)
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input type="text" class="form-control" id="dfe_renewal_term" value="${renewal_term}" required>
+                    </div>
+                  </div>
+
+                  <input type="hidden" class="form-control" id="dfe_family_name" placeholder="Stool/Family Name">
+                  <input type="hidden" class="form-control" id="dfe_grantor_family">
+
+                  <div class="mb-3">
+                    <label for="dfe_extent" class="form-label fw-semibold">
+                      <i class="bi bi-arrows-angle-expand me-2"></i>Extent (Land Size)
+                      <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="dfe_extent" value="${extent}" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_consideration_fee" class="form-label fw-semibold">
+                      <i class="bi bi-cash-coin me-2"></i>Consideration Fee
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light" id="dfe_currencySymbol">
+                        ${empty fn:trim(consideration_fee_currency) ? 'GHS' : fn:trim(consideration_fee_currency)}
+                      </span>
+                      <input type="number" class="form-control" id="dfe_consideration_fee" value="${consideration_fee}" placeholder="Enter amount" step="0.01" required>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_annual_rent" class="form-label fw-semibold">
+                      <i class="bi bi-cash-stack me-2"></i>Annual Rent
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light">GHS</span>
+                      <input type="number" class="form-control" id="dfe_annual_rent" value="${annual_rent}" placeholder="Enter annual rent" step="0.01" required>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_transaction_number" class="form-label fw-semibold">
+                      <i class="bi bi-receipt me-2"></i>Transaction Number
+                    </label>
+                    <input type="text" class="form-control bg-light" id="dfe_transaction_number" value="${transaction_number}" readonly>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_serial_number" class="form-label fw-semibold">
+                      <i class="bi bi-upc-scan me-2"></i>Serial Number
+                    </label>
+                    <input type="text" class="form-control" id="dfe_serial_number" value="${ls_number}" placeholder="Enter serial number">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_deed_number" class="form-label fw-semibold">
+                      <i class="bi bi-file-earmark-ruled me-2"></i>Deed Number
+                    </label>
+                    <input type="text" class="form-control" id="dfe_deed_number" value="${deed_number}" placeholder="Enter deed number">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_file_number" class="form-label fw-semibold">
+                      <i class="bi bi-folder2-open me-2"></i>File Number
+                    </label>
+                    <input type="text" class="form-control" id="dfe_file_number" value="${file_number}" placeholder="Enter file number">
+                  </div>
+                </div>
+              </div>
+
+              <hr class="my-4">
+              <div id="deed-alert-display-space" class="mb-4"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle me-2"></i>Close
+                </button>
+                <button type="submit" id="btnAddDeedFurtherDetails" class="btn btn-warning text-dark">
+                  <i class="bi bi-check-circle me-2"></i>Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-6 d-flex flex-column scrollable-col">
+            <div class="_gated_workflow_documents"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

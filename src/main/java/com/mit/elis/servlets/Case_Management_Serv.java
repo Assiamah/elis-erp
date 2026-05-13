@@ -2030,6 +2030,9 @@ String userid =  (String) session.getAttribute("userid");
 				String region = request.getParameter("region");
 				String locality = request.getParameter("locality");
 				String file_number = request.getParameter("file_number");
+				String serial_number = request.getParameter("serial_number");
+				String deed_number = request.getParameter("deed_number");
+				String publication_date = request.getParameter("publication_date");
 				String registry_mapref = request.getParameter("registry_mapref");
 
 				String date_of_issue = request.getParameter("date_of_issue");
@@ -2074,6 +2077,9 @@ String userid =  (String) session.getAttribute("userid");
 				obj.put("district", district);
 				obj.put("region", region);
 				obj.put("file_number", file_number);
+				obj.put("serial_number", serial_number);
+				obj.put("deed_number", deed_number);
+				obj.put("publication_date", publication_date);
 				obj.put("registry_mapref", registry_mapref);
 
 				obj.put("date_of_issue", date_of_issue);

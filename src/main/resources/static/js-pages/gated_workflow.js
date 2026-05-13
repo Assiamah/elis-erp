@@ -1471,6 +1471,178 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    $('#frmDeedFurtherEntries_only_').on('submit', function(e) {
+        e.preventDefault();
+
+        const formData = {
+            case_number: $("#dfe_case_number").val(),
+            transaction_number: $("#dfe_transaction_number").val(),
+            commencement_date: $("#dfe_commencement_date").val(),
+            date_of_registration: $("#dfe_date_of_registration").val(),
+            stool_family_name: $("#dfe_family_name").val(),
+            family_of_grantor: $("#dfe_grantor_family").val(),
+            renewal_term: $("input[name='dfe_renewal_term_check']:checked").val() == 'yes' ? $("#dfe_renewal_term").val() : 0,
+            term: $("#dfe_term").val(),
+            date_of_document: $("#dfe_date_of_document").val(),
+            consideration_fee: $("#dfe_consideration_fee").val(),
+            consideration_currency: $("#dfe_consideration_currency").val(),
+            type_of_use: $("#dfe_type_of_use").val(),
+            size_of_land: $("#dfe_land_size").val(),
+            type_of_interest: $("#dfe_type_of_interest").val(),
+            nature_of_instrument: $("#dfe_nature_of_instrument").val(),
+            client_name: $("#dfe_client_name").val(),
+            business_process_sub_name: $("#dfe_business_process_sub_name").val(),
+            job_number: $("#dfe_job_number").val(),
+            annual_rent: $("#dfe_annual_rent").val(),
+            surveyor_number: $("#dfe_surveyor_number").val(),
+            regional_number: $("#dfe_regional_number").val(),
+            land_size: $("#dfe_land_size").val(),
+            district: $("#dfe_district").val(),
+            locality: $("#dfe_locality").val(),
+            region: $("#dfe_region").val(),
+            extent: $("#dfe_extent").val(),
+            file_number: $("#dfe_file_number").val(),
+            serial_number: $("#dfe_serial_number").val(),
+            deed_number: $("#dfe_deed_number").val(),
+            publication_date: $("#dfe_publication_date").val(),
+            registry_mapref: $("#dfe_registry_mapref").val(),
+            date_of_issue: $("#dfe_date_of_issue").val(),
+            registered_number: $("#dfe_registered_number").val(),
+            certificate_type: $("#dfe_certificate_type").val(),
+            modified_by: localStorage.getItem("fullname") || 'System',
+            modified_by_id: localStorage.getItem("userid") || '0'
+        };
+
+        const requiredFields = [
+            'case_number', 'term', 'date_of_document', 'consideration_fee',
+            'type_of_interest', 'locality', 'district', 'region',
+            'extent', 'annual_rent', 'commencement_date'
+        ];
+
+        const missingFields = requiredFields.filter(field => !formData[field] || formData[field].toString().trim() === '');
+        if (missingFields.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-start">
+                        <p>Please fill in the following required fields:</p>
+                        <ul class="list-unstyled ps-3">
+                            ${missingFields.map(field => `<li><i class="bi bi-dot text-danger me-2"></i>${field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</li>`).join('')}
+                        </ul>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Confirm Deed Update',
+            html: `<div class="text-start">
+                    <p class="mb-3">Save the deed further entry details for this job?</p>
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-0">
+                        <div><strong>Job Number:</strong> ${formData.job_number}</div>
+                        <div><strong>Case Number:</strong> ${formData.case_number}</div>
+                        <div><strong>Serial Number:</strong> ${formData.serial_number || '-'}</div>
+                        <div><strong>Deed Number:</strong> ${formData.deed_number || '-'}</div>
+                        <div><strong>File Number:</strong> ${formData.file_number || '-'}</div>
+                        <div><strong>Publication Date:</strong> ${formData.publication_date || '-'}</div>
+                    </div>
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#fd7e14',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-check-circle me-2"></i>Save Deed Details',
+            cancelButtonText: '<i class="bi bi-x-circle me-2"></i>Cancel',
+            reverseButtons: true,
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: 'btn btn-warning text-dark px-4 ms-2',
+                cancelButton: 'btn btn-secondary px-4'
+            }
+        }).then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: 'further_entries_update_case',
+                    ...formData
+                },
+                cache: false,
+                timeout: 30000,
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Saving...',
+                        text: 'Please wait while we save the deed details.',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        didOpen: () => Swal.showLoading()
+                    });
+                },
+                success: function(response) {
+                    Swal.close();
+                    let resultData = response;
+                    try {
+                        resultData = typeof response === 'string' ? JSON.parse(response) : response;
+                    } catch (error) {
+                        resultData = response;
+                    }
+
+                    const success = resultData?.data === 'Success'
+                        || resultData?.success
+                        || (typeof resultData === 'string' && resultData.toLowerCase().includes('success'));
+
+                    if (!success) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Update Failed',
+                            text: resultData?.message || 'Unable to save deed further entry details.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                        return;
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Saved',
+                        text: 'Deed further entry details saved successfully.',
+                        confirmButtonColor: '#198754',
+                        timer: 2500,
+                        timerProgressBar: true
+                    }).then(() => {
+                        const modalElement = document.getElementById('deed_further_entry');
+                        const modal = modalElement ? bootstrap.Modal.getInstance(modalElement) : null;
+                        if (modal) {
+                            modal.hide();
+                        }
+                        $("#deed-alert-display-space").html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle me-2"></i>
+                                <strong>Success!</strong> Deed details saved successfully
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `);
+                    });
+                },
+                error: function() {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error',
+                        text: 'Unable to save deed further entry details. Please try again.',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            });
+        });
+    });
+
     $('#lc_btn_add_coordinate').on('click', function () {
         $(document).off('focusin.modal');
         // 🔥 WAIT FOR BOOTSTRAP TO RELEASE FOCUS
@@ -3567,6 +3739,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#addeditpartyGeneral ._gated_workflow_documents');
         } else if (modalType === 'further_entry') {
             container = document.querySelector('#further_entry ._gated_workflow_documents');
+        } else if (modalType === 'deed_further_entry') {
+            container = document.querySelector('#deed_further_entry ._gated_workflow_documents');
         } else if (modalType === 'enter_transaction_details_for_deed') {
             container = document.querySelector('#enter_transaction_details_for_deed ._gated_workflow_documents');
         } else if (modalType === 'generate_concurrence_certificate') {
@@ -3810,8 +3984,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
                             +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-rot-preview-document'" +
-                                                "data-document-path='" + this.document_file + "'" +
-                                                +"data-document-name='" + this.doc_description + "'>" +
+                                                " data-document-path='" + this.document_file + "'" +
+                                                " data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
                                         "</button></td>"
                             + "</tr>");
@@ -3855,8 +4029,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                         table_docs.append("<tr><td> " + this.doc_description + "</td><td>" +this.document_extention + "</td>"
                             +"<td> <button type='button' class='btn btn-outline-info btn-sm btn-rot-preview-document'" +
-                                                "data-document-path='" + this.document_file + "'" +
-                                                +"data-document-name='" + this.doc_description + "'>" +
+                                                " data-document-path='" + this.document_file + "'" +
+                                                " data-document-name='" + this.doc_description + "'>" +
                                                 "<i class='bi bi-eye'></i>" +
                                         "</button></td>"
                             + "</tr>");
@@ -3880,47 +4054,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let modalType = 'proprietorship'; // default
         
         if (closestAccordion.length) {
-            const accordionId = closestAccordion.attr('id');
-            if (accordionId.includes('memorial')) {
-                modalType = 'memorial';
-            }
-
-            if (accordionId.includes('encumbrance')) {
-                modalType = 'encumbrance';
-            }
-
-            if (accordionId.includes('valuation')) {
-                modalType = 'valuation';
-            }
-
-            if (accordionId.includes('certificate')) {
-                modalType = 'certificate';
-            }
-
-            if (accordionId.includes('transaction')) {
-                modalType = 'transaction';
-            }
-
-            if (accordionId.includes('addeditpartyGeneral')) {
-                modalType = 'addeditpartyGeneral';
-            }
-
-            if (accordionId.includes('lrd_initial_approval')) {
-                modalType = 'lrd_initial_approval';
-            }
-
-            if (accordionId.includes('further_entry')) {
-                modalType = 'further_entry';
-            }
-
-            if (accordionId.includes('enter_transaction_details_for_deed')) {
-                modalType = 'enter_transaction_details_for_deed';
-            }
-
-            if (accordionId.includes('generate_concurrence_certificate')) {
-                modalType = 'generate_concurrence_certificate';
-            }
-
+            modalType = closestAccordion.attr('id').replace('rotDocumentsAccordion_', '');
         }
         
         const previewContentId = `rotPreviewContent_${modalType}`;
@@ -14426,6 +14560,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    $('input[name="dfe_renewal_term_check"]').on('change', function() {
+        if ($(this).val() == 'yes') {
+            $('#dfe_renewal_term_div').removeClass('d-none');
+        } else {
+            $('#dfe_renewal_term_div').addClass('d-none');
+        }
+    });
+
     $('#lrd_initial_approval').on('show.bs.modal', function () {
         window.loadGatedWorkFlowDocuments('lrd_initial_approval');
     });
@@ -14436,6 +14578,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('#further_entry').on('show.bs.modal', function () {
         window.loadGatedWorkFlowDocuments('further_entry');
+    });
+
+    $('#deed_further_entry').on('show.bs.modal', function () {
+        $("#dfe_job_number").val($("#cs_main_job_number").val() || $("#dfe_job_number").val());
+        $("#dfe_case_number").val($("#cs_main_case_number").val() || $("#dfe_case_number").val());
+        $("#dfe_transaction_number").val($("#cs_main_transaction_number").val() || $("#dfe_transaction_number").val());
+        $("#dfe_client_name").val($("#deedLoadedApplicant").text() !== 'Not loaded yet' ? $("#deedLoadedApplicant").text() : $("#dfe_client_name").val());
+        $("#dfe_business_process_sub_name").val($("#cs_main_business_process_sub_name").val() || $("#dfe_business_process_sub_name").val());
+        $("#dfe_locality").val($("#deedLoadedLocality").text() !== 'Not loaded yet' ? $("#deedLoadedLocality").text() : $("#dfe_locality").val());
+        $("#dfe_file_number").val($("#lc_txt_file_number").val() || $("#dfe_file_number").val());
+        $("#dfe_deed_number").val($("#lc_txt_deed_number").val() || $("#dfe_deed_number").val());
+        $("#dfe_serial_number").val($("#lc_txt_serial_number").val() || $("#dfe_serial_number").val());
+        $("#dfe_publication_date").val($("#lc_txt_publicity_date").val() || $("#dfe_publication_date").val());
+        window.loadGatedWorkFlowDocuments('deed_further_entry');
     });
 
     $('#enter_transaction_details_for_deed').on('show.bs.modal', function () {

@@ -29,21 +29,73 @@ $(document).ready(function() {
         }
 
         if (window.hugerte && !hugerte.get(specialPublicationEditorId)) {
+            // var hugeRteInit = hugerte.init({
+            //     selector: editorSelector,
+            //     height: 300,
+            //     menubar: false,
+            //     toolbar: 'undo redo | blocks | bold italic underline | ' +
+            //         'alignleft aligncenter alignright alignjustify | ' +
+            //         'bullist numlist outdent indent | removeformat',
+            //     toolbar_mode: 'floating',
+            //     content_style: [
+            //         'body { font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.6; padding: 16px; }',
+            //         'p { margin: 0 0 10px; }'
+            //     ].join(' '),
+            //     setup: function(editor) {
+            //         editor.on('change keyup setcontent', function() {
+            //             editor.save();
+            //         });
+            //     }
+            // });
+
             var hugeRteInit = hugerte.init({
                 selector: editorSelector,
                 height: 300,
-                menubar: false,
-                toolbar: 'undo redo | blocks | bold italic underline | ' +
+                menubar: true,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons'
+                ],
+                toolbar: 'undo redo | blocks | ' +
+                    'bold italic underline strikethrough | ' +
                     'alignleft aligncenter alignright alignjustify | ' +
-                    'bullist numlist outdent indent | removeformat',
+                    'bullist numlist outdent indent | ' +
+                    'link image media table | ' +
+                    'forecolor backcolor emoticons | ' +
+                    'removeformat | help',
                 toolbar_mode: 'floating',
-                content_style: [
-                    'body { font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.6; padding: 16px; }',
-                    'p { margin: 0 0 10px; }'
-                ].join(' '),
+                content_style: `
+                    body { 
+                        font-family: 'Times New Roman', Times, serif; 
+                        font-size: 14px; 
+                        line-height: 1.6;
+                        padding: 20px;
+                    }
+                    h1 { font-size: 24px; }
+                    h2 { font-size: 20px; }
+                    h3 { font-size: 18px; }
+                `,
+                
+                // Image upload handling (optional)
+                images_upload_url: 'upload.php', // Add your upload endpoint
+                images_upload_handler: function (blobInfo, success, failure) {
+                    // Handle image uploads
+                    setTimeout(function() {
+                        success('data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64());
+                    }, 1000);
+                },
+                
+                // Make it feel more like Word
                 setup: function(editor) {
-                    editor.on('change keyup setcontent', function() {
-                        editor.save();
+                    editor.on('init', function() {
+                        console.log('Editor initialized - ready to use!');
+                    });
+                    
+                    // Add keyboard shortcuts like Word
+                    editor.addShortcut('meta+s', 'Save', function() {
+                        alert('Save content: ' + editor.getContent());
+                        return false;
                     });
                 }
             });
