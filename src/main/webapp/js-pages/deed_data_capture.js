@@ -363,7 +363,7 @@
 
     function syncJobContextToModals(record) {
 
-        console.log('syncJobContextToModals', record);
+        //console.log('syncJobContextToModals', record);
 
         const jobNumber = firstNonEmpty(record.job_number, $('#deed_job_number').val());
         const caseNumber = firstNonEmpty(record.case_number);
@@ -499,6 +499,37 @@
             'success',
             '<strong>Application loaded.</strong> Step two is now ready for Upload Documents, Add/Edit Parties, and Further Entry Details.'
         );
+
+        showAddToBatchButton(record);
+    }
+
+    function showAddToBatchButton(record) {
+
+        const jobNumber = firstNonEmpty(record.job_number, record.jobNumber, $('#deed_job_number').val(), '--');
+        // const caseNumber = firstNonEmpty(record.case_number, record.caseNumber, '--');
+        const applicant = firstNonEmpty(record.ar_name, record.client_name, record.applicant_name, '--');
+        const subService = firstNonEmpty(record.business_process_sub_name, record.sub_service_name, '--');
+        // const locality = firstNonEmpty(record.locality, record.location_name, record.land_location, '--');
+        // const status = firstNonEmpty(record.current_application_status, record.job_status, 'Loaded');
+        const applicationStage = firstNonEmpty(record.application_stage, '--');
+        const applicationStageName = firstNonEmpty(record.application_stage_name, '--');
+        const applicationStageBabyStep = firstNonEmpty(record.application_stage_baby_step, '--');
+        const applicationStageNameBabyStep = firstNonEmpty(record.application_stage_name_baby_step, '--');
+
+        const btnHTML = '<button class="btn me-1 btn-warning btn-wave waves-effect waves-light btn-add-batch" ' +
+                            'id="btnAddToBatchlist-' + jobNumber + '" ' +
+                            'data-job_number="' + jobNumber + '" ' +
+                            'data-ar_name="' + applicant + '" ' +
+                            'data-business_process_sub_name="' + subService + '" ' +
+                            'data-application_stage="' + applicationStage + '" ' +
+                            'data-application_stage_name="' + applicationStageName + '" ' +
+                            'data-application_stage_baby_step="' + applicationStageBabyStep + '" ' +
+                            'data-application_stage_name_baby_step="' + applicationStageNameBabyStep + '" ' +
+                            'data-bs-target="#askForPurposeOfBatching" data-bs-toggle="modal">' +
+                            '<i class="fas fa-plus"></i> Add to Batch' +
+                        '</button>';
+
+        $('#addToBatchBtn').html(btnHTML);
     }
 
     function loadFullCaseDetails(record, config) {

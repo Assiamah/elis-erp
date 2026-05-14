@@ -308,9 +308,12 @@
                             <h4 class="mt-2 mb-1">Continue With Data Capture</h4>
                             <p class="text-muted mb-0">These are the five required deed data capture actions for the currently loaded job.</p>
                         </div>
-                        <div class="text-end">
-                            <div class="small text-muted">Current Job</div>
-                            <div class="fw-semibold" id="deedCurrentJobPill">Not loaded</div>
+                        <div class="text-end d-flex align-items-center gap-2">
+                            <div id="addToBatchBtn" class="me-2"></div>
+                            <div class="border rounded-3 p-2">
+                                <div class="small text-muted">Current Job</div>
+                                <div class="fw-semibold" id="deedCurrentJobPill">Not loaded</div>
+                            </div>
                         </div>
                     </div>
 
