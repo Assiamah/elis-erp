@@ -25525,7 +25525,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 
-    $('#btn_confirm_lrd_parcel_noting').on('click', function(e) {
+    $(document).on('click', '#btn_confirm_lrd_parcel_noting', function(e) {
         e.preventDefault();
         
         // Collect data

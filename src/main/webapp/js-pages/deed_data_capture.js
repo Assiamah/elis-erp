@@ -99,6 +99,15 @@
         $field.val(value == null || value === 'null' ? '' : value);
     }
 
+    function hasWktPolygon(value) {
+        return /\b(MULTI)?POLYGON\s*\(/i.test($.trim(value || ''));
+    }
+
+    function updateDeedPolygonConfirmButton() {
+        const showButton = hasWktPolygon($('#deed_check_wkt_polygon').val());
+        $('#deed_check_polygon [data-deed-polygon-confirm="true"]').toggleClass('d-none', !showButton);
+    }
+
     function setSelectValue(selector, value) {
         const $select = $(selector);
         if (!$select.length || value == null || value === 'null' || value === '') {
@@ -476,6 +485,7 @@
         setFieldValue('#lc_bl_wkt_polygon', parcelWkt);
         setFieldValue('#lc_fr_bl_wkt_polygon', parcelWkt);
         setFieldValue('#deed_check_wkt_polygon', parcelWkt);
+        updateDeedPolygonConfirmButton();
 
         if ($('#job_number_on_tc_e').length && !$('#job_number_on_tc_e').val()) {
             $('#job_number_on_tc_e').val(jobNumber);
@@ -904,6 +914,7 @@
 
     $(function () {
         markStepTwoReady(false);
+        updateDeedPolygonConfirmButton();
 
         $('#deedJobLookupForm').on('submit', function (event) {
             event.preventDefault();
@@ -936,6 +947,10 @@
                 syncJobContextToModals(state.loadedJob);
             }
         });
+
+        $('#deed_check_polygon').on('shown.bs.modal', updateDeedPolygonConfirmButton);
+
+        $('#deed_check_wkt_polygon').on('input change', updateDeedPolygonConfirmButton);
 
         $('.deed-action-launch').on('click', function () {
             if (!state.loadedJob) {
