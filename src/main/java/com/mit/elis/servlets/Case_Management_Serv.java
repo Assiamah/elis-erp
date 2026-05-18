@@ -638,20 +638,12 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 			if (request_type.equals("get_regional_transactions_list")) {
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
-				// String search_reference = request.getParameter("search_reference");
-				// String search_file = request.getParameter("search_file");
-				// String search_jacket = request.getParameter("search_jacket");
-				// String search_status = request.getParameter("search_status");
 				String draw = request.getParameter("draw");
 				String start = request.getParameter("start");
 				String length = request.getParameter("length");
 				String regional_code = (String) session.getAttribute("regional_code");
 		
 				JSONObject obj = new JSONObject();
-				// obj.put("search_reference", search_reference != null ? search_reference : "");
-				// obj.put("search_file", search_file != null ? search_file : "");
-				// obj.put("search_jacket", search_jacket != null ? search_jacket : "");
-				// obj.put("search_status", search_status != null ? search_status : "");
 				obj.put("draw", draw != null ? draw : "1");
 				obj.put("start", start != null ? start : "0");
 				obj.put("length", length != null ? length : "10");
@@ -1103,6 +1095,22 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("length", length != null ? length : "10");
 		
 				web_service_response = casemgt_cl_m.search_regional_transactions(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+			
+			if (request_type.equals("search_regional_transaction_for_update")) {
+				String search_reference = request.getParameter("reference_number");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("search_text", search_reference != null ? search_reference : "");
+		
+				web_service_response = casemgt_cl_m.search_regional_transaction_for_update(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 		
 				if (web_service_response != null) {

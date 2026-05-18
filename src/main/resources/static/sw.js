@@ -1,1 +1,1 @@
-importScripts('js-pages/sw.js');
+importScripts('/js-pages/sw.js');

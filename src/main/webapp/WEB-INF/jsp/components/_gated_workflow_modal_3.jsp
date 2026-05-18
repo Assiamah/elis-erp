@@ -3535,7 +3535,7 @@
           </small>
           <div class="d-flex flex-wrap gap-2 justify-content-end">
             <c:if test="${(division == 'LRD' or division == 'PVLMD') and user_level > 1}">
-              <button type="button" class="btn btn-danger d-none" id="btn_confirm_lrd_parcel_noting" data-deed-polygon-confirm="true">
+              <button type="button" class="btn btn-danger d-none" id="btn_confirm_lrd_parcel_noting_deed_data_capture" data-deed-polygon-confirm="true">
                 <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
               </button>
             </c:if>

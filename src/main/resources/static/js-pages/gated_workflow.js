@@ -29141,4 +29141,275 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    $(document).on('click', '#btn_confirm_lrd_parcel_noting_deed_data_capture', function(e) {
+        e.preventDefault();
+        
+        // Collect data
+        const case_number = $('#cs_main_case_number').val();
+        const job_number = $("#cs_main_job_number").val();
+        const transaction_number = $("#cs_main_transaction_number").val();
+        
+        // Validation
+        if (!job_number) {
+            Swal.fire({
+                title: 'Missing Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                        <p>Job Number is required to confirm registration</p>
+                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Please select a job before confirming the transaction
+                        </div>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fd7e14'
+            }).then(() => {
+                // Focus on job number field
+                $("#cs_main_job_number").focus();
+            });
+            return;
+        }
+        
+        if (!case_number || !transaction_number) {
+            Swal.fire({
+                title: 'Incomplete Information',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                        </div>
+                        <p>Complete case information is required</p>
+                        <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                            <ul class="mb-0 text-start">
+                                ${!case_number ? '<li>Case Number is required</li>' : ''}
+                                ${!transaction_number ? '<li>Transaction Number is required</li>' : ''}
+                            </ul>
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Confirm Parcel Noting?',
+            html: `<div class="text-start">
+                    
+                    <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x me-3"></i>
+                            <div>
+                                <h6 class="text-warning mb-2">Important Action</h6>
+                                <p class="mb-0">You are about to confirm the parcel noting.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-3">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle me-2 mt-1"></i>
+                            <div>
+                                <strong>Transaction Details:</strong>
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>Job Number:</strong> ${job_number}</li>
+                                    <li><strong>Case Number:</strong> ${case_number}</li>
+                                    <li><strong>Transaction Number:</strong> ${transaction_number}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--<div class="alert alert-secondary bg-light border-secondary small mt-3">
+                        <i class="fas fa-check-double me-2"></i>
+                        <strong>Please verify:</strong> All parcel details and transaction information have been reviewed and are correct
+                    </div>-->
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="swalConfirmGeneration">
+                        <label class="form-check-label" for="swalConfirmGeneration">
+                            I confirm that all information is correct
+                        </label>
+                    </div>
+                    <!--<div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="swalAgreeTerms">
+                        <label class="form-check-label" for="swalAgreeTerms">
+                            I understand this action cannot be undone
+                        </label>
+                    </div>-->
+                </div>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check-circle me-2"></i>Yes, Confirm Noting',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            width: 600,
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+               
+                const confirm1 = document.getElementById('swalConfirmGeneration');
+                // const confirm2 = document.getElementById('swalAgreeTerms');
+                
+                if (!confirm1.checked) {
+                    Swal.showValidationMessage('Please check both confirmation boxes to proceed');
+                    return;
+                }
+                
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: "Case_Management_Serv",
+                        type: "POST",
+                        data: {
+                            request_type: "select_confirm_lrd_parcel_noting",
+                            job_number: job_number,
+                            case_number: case_number,
+                            transaction_number: transaction_number
+                        },
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const response = result.value;
+                console.log('Confirmation response:', response);
+                const jsonp = JSON.parse(response);
+                const isSuccess = jsonp.success;
+                
+                if (isSuccess) {
+                    // Show success message
+                    Swal.fire({
+                        title: 'Success!',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Noting Confirmed</h5>
+                                <p class="text-muted">Parcel noting has been successfully confirmed</p>
+                                
+                                <!--<div class="alert alert-success bg-success bg-opacity-10 border-success mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-certificate me-2"></i>
+                                        <div>
+                                            <strong>${response}</strong>
+                                            <div class="small text-muted mt-1">
+                                                Confirmed at ${new Date().toLocaleTimeString()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                
+                                <!--<div class="alert alert-info bg-info bg-opacity-10 border-info mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-sync-alt me-2"></i>
+                                        <div>
+                                            <strong>Page will refresh in 5 seconds...</strong>
+                                            <div class="small text-muted mt-1">
+                                                Please wait while we update the system
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>`,
+                        icon: 'success',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        allowOutsideClick: false
+                    }).then(() => {
+                        //location.reload();
+                    });
+                    
+                    // Auto-refresh after 5 seconds (backup in case timer doesn't work)
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 5000);
+                    
+                } else {
+                    // Show error message
+                    Swal.fire({
+                        title: 'Confirmation Failed',
+                        html: `<div class="text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-times-circle text-danger fa-3x"></i>
+                                </div>
+                                <h5 class="mb-2">Unable to Confirm Noting</h5>
+                                <p class="text-muted">The system encountered an error while processing your request</p>
+                                
+                                <!--<div class="alert alert-danger bg-danger bg-opacity-10 border-danger mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <div>
+                                            <strong>Error Response:</strong>
+                                            <div class="small text-muted mt-1">
+                                                ${response || 'Unknown error occurred'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>Please try again.</strong> If the problem persists, contact system administrator.
+                                </div>
+                            </div>`,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User cancelled - show brief message
+                Swal.fire({
+                    title: 'Cancelled',
+                    html: `<div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-ban text-secondary fa-2x"></i>
+                            </div>
+                            <h5 class="mb-2">Confirmation Cancelled</h5>
+                            <p class="text-muted">Noting confirmation was cancelled</p>
+                            <div class="alert alert-secondary mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No changes were made to the system
+                            </div>
+                        </div>`,
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        }).catch((error) => {
+            // Handle AJAX error
+            Swal.fire({
+                title: 'Server Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-server text-danger fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Connection Error</h5>
+                        <p class="text-danger small">${error}</p>
+                        <div class="alert alert-warning mt-3">
+                            <i class="fas fa-wifi me-2"></i>
+                            <strong>Network Issue:</strong> Please check your internet connection and try again
+                        </div>
+                    </div>`,
+                icon: 'error',
+                confirmButtonText: 'Retry',
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    });
+
 });
