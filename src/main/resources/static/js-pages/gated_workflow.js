@@ -29412,4 +29412,639 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    $('#adjudicationHearingNotificationForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const case_number = $('#adjudication_hearing_case_number').text().trim();
+        const job_number = $('#adjudication_hearing_job_number').text().trim();
+        const applicant_name = $('#adjudication_hearing_applicant_name').text().trim();
+        const app_type = $('#adjudication_hearing_app_type').text().trim();
+        const custom_message = $('#adjudication_hearing_custom_message').val().trim();
+        
+        // Get notification methods
+        const methods = [];
+        if ($('#method_sms').is(':checked')) methods.push('SMS');
+        if ($('#method_email').is(':checked')) methods.push('Email');
+        
+        // Validation
+        const validationErrors = [];
+        
+        if (!case_number || case_number === '') {
+            validationErrors.push('Case number is missing');
+        }
+        if (!job_number || job_number === '') {
+            validationErrors.push('Job number is missing');
+        }
+        if (!applicant_name || applicant_name === '') {
+            validationErrors.push('Applicant name is missing');
+        }
+        if (methods.length === 0) {
+            validationErrors.push('Please select at least one notification method');
+        }
+        if (!custom_message || custom_message === '') {
+            validationErrors.push('Custom message cannot be empty');
+        }
+        
+        if (validationErrors.length > 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-3">Please correct the following:</h5>
+                        <ul class="text-start list-unstyled">
+                            ${validationErrors.map(err => `<li><i class="fas fa-times-circle text-danger me-2"></i>${err}</li>`).join('')}
+                        </ul>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: 'white',
+                backdrop: 'rgba(0,0,0,0.4)',
+                width: 500
+            });
+            return;
+        }
+        
+        // Character count validation
+        if (custom_message.length > 500) {
+            Swal.fire({
+                title: 'Message Too Long',
+                html: `<div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+                        </div>
+                        <h5 class="mb-2">Custom message exceeds 500 characters</h5>
+                        <p class="text-muted">Current length: <span class="fw-bold">${custom_message.length}</span> characters</p>
+                        <p class="text-muted">Maximum allowed: 500 characters</p>
+                    </div>`,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: 'white'
+            });
+            return;
+        }
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Send Schedule Adjudication Hearing Notification?',
+            html: `<div class="text-start">
+                    <div class="mb-3 text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 d-inline-block">
+                            <i class="fas fa-paper-plane text-primary fa-3x"></i>
+                        </div>
+                    </div>
+                    <h5 class="mb-3 text-center fw-bold">Confirm Notification</h5>
+                    
+                    <div class="card border-0 bg-light mb-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-briefcase me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Job Number:</span>
+                                <span class="ms-2 fw-semibold">${job_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-file-invoice me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Case Number:</span>
+                                <span class="ms-2 fw-semibold">${case_number}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-user me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Applicant:</span>
+                                <span class="ms-2 fw-semibold">${applicant_name}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-tag me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Application:</span>
+                                <span class="ms-2">${app_type}</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-bell me-2 text-muted" style="width: 24px;"></i>
+                                <span class="text-muted">Via:</span>
+                                <span class="ms-2">${methods.join(', ')}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
+                        <div class="d-flex">
+                            <i class="fas fa-comment me-2 mt-1"></i>
+                            <div>
+                                <strong>Message Preview:</strong>
+                                <p class="mb-0 small text-muted mt-1">${custom_message.substring(0, 150)}${custom_message.length > 150 ? '...' : ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--<div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3 mb-0">
+                        <i class="fas fa-clock me-2"></i>
+                        <span class="small">This notification will be sent immediately to the applicant and the application will move to <b>Awaiting Inspection</b> in the <b>Unit Case Management</b>.</span>
+                    </div>-->
+                </div>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-paper-plane me-2"></i>Yes, Send Now',
+            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+            confirmButtonColor: '#28a745',
+            // cancelButtonColor: '#6c757d',
+            background: 'white',
+            width: 600,
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-success',
+                // cancelButton: 'btn btn-secondary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Sending Notification',
+                    html: `
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mb-0">Sending schedule adjudication hearing notification...</p>
+                            <p class="text-muted small mt-2">Job: ${job_number}</p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    background: 'white',
+                    backdrop: 'rgba(0,0,0,0.4)'
+                });
+                
+                // Prepare data for AJAX
+                const formData = {
+                    request_type: 'send_schedule_adjudication_hearing_notification',
+                    case_number: case_number,
+                    job_number: job_number,
+                    applicant_name: applicant_name,
+                    application_type: app_type,
+                    notification_message: custom_message,
+                    notification_methods: JSON.stringify(methods),
+                    send_sms: $('#method_sms').is(':checked') ? 1 : 0,
+                    send_email: $('#method_email').is(':checked') ? 1 : 0,
+                    request_id: $('#request_id').val()
+                };
+                
+                // Make AJAX call
+                $.ajax({
+                    type: "POST",
+                    url: "Case_Management_Serv", // Update with your actual endpoint
+                    data: formData,
+                    cache: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.close(); // Close loading Swal
+                        
+                        // Check if successful
+                        if (response && (response.success)) {
+                            
+                            // Show success message
+                            Swal.fire({
+                                title: 'Notification Sent Successfully!',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-success bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                                <i class="fas fa-check-circle text-success fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="mb-2">Schedule Adjudication Hearing Notification Sent</h5>
+                                        <div class="bg-light rounded-3 p-3 mt-3">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="text-muted">Job Number:</span>
+                                                <span class="fw-semibold">${job_number}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="text-muted">Sent Via:</span>
+                                                <span class="fw-semibold">${methods.join(', ')}</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted small mt-3">
+                                            <i class="fas fa-clock me-1"></i>
+                                            ${new Date().toLocaleString()}
+                                        </p>
+                                    </div>`,
+                                icon: 'success',
+                                confirmButtonText: '<i class="fas fa-check me-2"></i>Done',
+                                confirmButtonColor: '#28a745',
+                                background: 'white',
+                                timer: 5000,
+                                timerProgressBar: true,
+                                backdrop: 'rgba(0,0,0,0.4)'
+                            // }).then(() => {
+                            //     // Close the modal
+                            //     const modal = bootstrap.Modal.getInstance(document.getElementById('inspection_of_site'));
+                            //     if (modal) {
+                            //         modal.hide();
+                            //     }
+                                
+                            //     // Reset form for next use
+                            //     resetInspectionForm();
+                                
+                            //     // Trigger any post-submission actions
+                            //     if (typeof refreshInspectionList === 'function') {
+                            //         refreshInspectionList();
+                            //     }
+                                
+                            //     // Show optional success toast
+                            //     Swal.fire({
+                            //         title: 'Completed',
+                            //         text: 'Inspection notification has been scheduled',
+                            //         icon: 'success',
+                            //         timer: 2000,
+                            //         showConfirmButton: false,
+                            //         toast: true,
+                            //         position: 'top-end',
+                            //         background: 'white'
+                            //     });
+                            // });
+                            }).then(() => {
+                                // Redirect after successful archive
+                                window.location.href = "/case_movement_module";
+                            });
+                            
+                        } else {
+                            // Show error message from server
+                            let errorMsg = 'Failed to send notification';
+                            if (response && response.message) {
+                                errorMsg = response.message;
+                            }
+                            
+                            Swal.fire({
+                                title: 'Sending Failed',
+                                html: `<div class="text-center">
+                                        <div class="mb-3">
+                                            <div class="bg-danger bg-opacity-10 rounded-circle p-3 d-inline-block">
+                                                <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                                            </div>
+                                        </div>
+                                        <h5 class="mb-2">Unable to Send Notification</h5>
+                                        <p class="text-danger">${errorMsg}</p>
+                                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mt-3">
+                                            <i class="fas fa-lightbulb me-2"></i>
+                                            Please try again or contact support
+                                        </div>
+                                    </div>`,
+                                icon: 'error',
+                                confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                                confirmButtonColor: '#0d6efd',
+                                showCancelButton: true,
+                                cancelButtonText: '<i class="fas fa-times me-2"></i>Close',
+                                cancelButtonColor: '#6c757d',
+                                background: 'white',
+                                reverseButtons: true
+                            }).then((retryResult) => {
+                                if (retryResult.isConfirmed) {
+                                    $('#adjudicationHearingNotificationForm').submit();
+                                }
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close(); // Close loading Swal
+                        
+                        let errorMessage = 'Failed to connect to server';
+                        let errorDetails = '';
+                        
+                        if (xhr.status === 404) {
+                            errorMessage = 'Service endpoint not found';
+                            errorDetails = 'Please contact system administrator';
+                        } else if (xhr.status === 500) {
+                            errorMessage = 'Server error occurred';
+                            errorDetails = 'Please try again in a few moments';
+                        } else if (xhr.status === 0) {
+                            errorMessage = 'Network connection error';
+                            errorDetails = 'Please check your internet connection';
+                        }
+                        
+                        Swal.fire({
+                            title: 'Server Error',
+                            html: `<div class="text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-exclamation-triangle text-danger fa-3x"></i>
+                                    </div>
+                                    <h5 class="mb-2">${errorMessage}</h5>
+                                    <p class="text-danger small">${xhr.status}: ${error}</p>
+                                    <p class="text-muted mt-2">${errorDetails}</p>
+                                    <div class="alert alert-secondary bg-secondary bg-opacity-10 border-secondary mt-3">
+                                        <i class="fas fa-redo-alt me-2"></i>
+                                        Would you like to try again?
+                                    </div>
+                                </div>`,
+                            icon: 'error',
+                            confirmButtonText: '<i class="fas fa-redo-alt me-2"></i>Try Again',
+                            confirmButtonColor: '#0d6efd',
+                            showCancelButton: true,
+                            cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                            cancelButtonColor: '#6c757d',
+                            background: 'white',
+                            reverseButtons: true
+                        }).then((retryResult) => {
+                            if (retryResult.isConfirmed) {
+                                $('#adjudicationHearingNotificationForm').submit();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    const outcomeUpheld = document.getElementById('outcome_upheld');
+    const outcomeNotUpheld = document.getElementById('outcome_not_upheld');
+    const upheldForm = document.getElementById('form_upheld_container');
+    const notUpheldForm = document.getElementById('form_not_upheld_container');
+    const submitButton = document.getElementById('submitOutcomeDecision');
+    
+    // Function to switch forms
+    function switchForms() {
+        if (outcomeUpheld.checked) {
+            upheldForm.style.display = 'block';
+            notUpheldForm.style.display = 'none';
+        } else if (outcomeNotUpheld.checked) {
+            upheldForm.style.display = 'none';
+            notUpheldForm.style.display = 'block';
+        }
+    }
+    
+    // Add event listeners
+    outcomeUpheld.addEventListener('change', switchForms);
+    outcomeNotUpheld.addEventListener('change', switchForms);
+    
+    // Handle form submission
+    submitButton.addEventListener('click', function() {
+        let activeForm;
+        
+        if (outcomeUpheld.checked) {
+            activeForm = document.getElementById('form_objection_upheld');
+        } else {
+            activeForm = document.getElementById('form_objection_not_upheld');
+        }
+        
+        if (activeForm.checkValidity()) {
+            // Process form data
+            const formData = new FormData(activeForm);
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+            
+            // Add outcome decision and case/job context
+            formObject.outcome_decision = outcomeUpheld.checked ? 'upheld' : 'not_upheld';
+            formObject.case_number = $('#obj_case_number_display').text().trim();
+            formObject.job_number = $('#obj_job_number_display').text().trim();
+            formObject.applicant_name = $('#obj_applicant_name_display').text().trim();
+            
+            console.log('Submitting objection outcome:', formObject);
+            
+            // Show loading indicator
+            Swal.fire({
+                title: 'Processing Decision...',
+                text: 'Please wait while we submit your determination.',
+                icon: 'info',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Send to backend
+            $.ajax({
+                type: 'POST',
+                url: 'Case_Management_Serv',
+                data: {
+                    request_type: 'determine_outcome_of_objection',
+                    case_number: formObject.case_number,
+                    job_number: formObject.job_number,
+                    applicant_name: formObject.applicant_name,
+                    outcome_decision: formObject.outcome_decision,
+                    obj_reasons: formObject.obj_reasons,
+                    obj_remarks: formObject.obj_remarks,
+                    notification_suspension: formObject.notification_suspension || '',
+                    advise_objector: formObject.advise_objector || '',
+                    notification_rejection: formObject.notification_rejection || ''
+                },
+                cache: false,
+                success: function(response) {
+                    const payload = parseJsonSafely(response);
+                    
+                    if (payload && (payload.success || payload.status === 'success')) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Decision Submitted!',
+                            text: 'The objection outcome has been recorded successfully.',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                        
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('determine_outcome_of_objection'));
+                        if (modal) modal.hide();
+                        
+                        // Refresh workflow or reload page if needed
+                        // location.reload();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Submission Failed',
+                            text: (payload && payload.message) ? payload.message : 'Failed to submit the objection outcome. Please try again.'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Objection Outcome Submission Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while submitting the decision. Please check your connection and try again.'
+                    });
+                }
+            });
+        } else {
+            activeForm.reportValidity();
+        }
+    });
+    
+    // Preview decision
+    // document.getElementById('previewOutcome').addEventListener('click', function() {
+    //     const decision = outcomeUpheld.checked ? 'UPHELD' : 'NOT UPHELD';
+    //     const objectorName = outcomeUpheld.checked ? 
+    //         document.getElementById('upheld_objector_name').value : 
+    //         document.getElementById('not_upheld_objector_name').value;
+        
+    //     if (objectorName) {
+    //         alert(`Decision Preview:\n\nObjection ${decision}\nObjector: ${objectorName}\n\nA formal document will be generated with all details provided.`);
+    //     } else {
+    //         alert('Please fill in the objector name before previewing the decision.');
+    //     }
+    // });
+
+    $('#confirm_delink').on('change', function() {
+        $('#confirmDelinkBtn').prop('disabled', !$(this).is(':checked'));
+    });
+
+    $(document).on('click', '#confirmDelinkBtn', function(e) {
+        e.preventDefault();
+
+        const mother_job_number = $('#mother_job_number').val().trim();
+        const baby_job_number = $('#baby_job_number').val().trim();
+        
+        // Get current user info (you need to set these variables or get from session)
+        const fullname = $('#fullname').val() || 'System User'; // Replace with actual way to get user name
+        const userid = $('#userid').val() || '1'; // Replace with actual way to get user ID
+
+        if (!baby_job_number) {
+            Swal.fire({
+                title: 'Baby Job Required',
+                text: 'Baby job number is required.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        if (!mother_job_number) {
+            Swal.fire({
+                title: 'Mother Job Required',
+                text: 'Please enter the mother job number.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                $('#mother_job_number').focus();
+            });
+            return;
+        }
+
+        // Show confirmation dialog
+        Swal.fire({
+            title: 'Delink Jobs?',
+            html: `<div class="text-start">
+                    <p>You are about to delink the mother job from the baby job.</p>
+                    <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mb-0">
+                        <div><strong>Mother Job:</strong> ${mother_job_number}</div>
+                        <div><strong>Baby Job:</strong> ${baby_job_number}</div>
+                    </div>
+                    <div class="mt-3 text-muted small">
+                        <i class="fas fa-info-circle"></i> This action will remove the relationship between these jobs.
+                    </div>
+                </div>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-unlink me-2"></i>Yes, Delink',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return new Promise((resolve, reject) => {
+                    // Prepare the data object matching your PostgreSQL function parameters
+                    const requestData = {
+                        m_job_number: mother_job_number,
+                        c_job_number: baby_job_number,
+                        fullname: fullname,
+                        userid: userid
+                    };
+                    
+                    console.log('Sending request:', requestData); // Debug log
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: 'Case_Management_Serv',
+                        data: {
+                            request_type: 'select_delink_mother_file_transaction_to_child',
+                            //application_details: JSON.stringify(requestData)
+                            m_job_number: mother_job_number,
+                            c_job_number: baby_job_number,
+                        },
+                        cache: false,
+                        dataType: 'text',
+                        success: function(response) {
+                            console.log('Response received:', response); // Debug log
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error:', error, xhr.responseText);
+                            reject(error || 'Server error occurred');
+                        }
+                    });
+                }).catch((error) => {
+                    Swal.showValidationMessage(error);
+                    return false;
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            const response = result.value;
+            
+            // Parse the JSON response from your PostgreSQL function
+            try {
+                const responseObj = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                if (responseObj && responseObj.success === true) {
+                    Swal.fire({
+                        title: 'Delinked Successfully!',
+                        text: responseObj.msg || 'Mother job has been delinked from the baby job.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#198754'
+                    }).then(() => {
+                        // Close modal
+                        const modalElement = document.getElementById('delink_jobs_mother_from_baby');
+                        const modal = bootstrap.Modal.getInstance(modalElement);
+                        if (modal) {
+                            modal.hide();
+                        }
+                        
+                        // Reload the page or refresh the table
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Delink Failed',
+                        text: responseObj?.msg || 'Unable to delink the selected jobs.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } catch (e) {
+                console.error('Parse error:', e);
+                // If response is not JSON, check if it contains error
+                if (response && (response.toLowerCase().includes('error') || response.toLowerCase().includes('failed'))) {
+                    Swal.fire({
+                        title: 'Delink Failed',
+                        text: response || 'Unable to delink the selected jobs.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Delinked Successfully!',
+                        text: response || 'Mother job has been delinked from the baby job.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        const modalElement = document.getElementById('delink_jobs_mother_from_baby');
+                        const modal = bootstrap.Modal.getInstance(modalElement);
+                        if (modal) {
+                            modal.hide();
+                        }
+                        location.reload();
+                    });
+                }
+            }
+        });
+    });
+
 });

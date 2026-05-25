@@ -9163,17 +9163,50 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("send_schedule_adjudication_hearing_notification")) {
+				String case_number = request.getParameter("case_number");		
+				String job_number = request.getParameter("job_number");	
+				String applicant_name = request.getParameter("applicant_name");		
+				String application_type = request.getParameter("application_type");	
+				String notification_message = request.getParameter("notification_message");	
+				String notification_methods = request.getParameter("notification_methods");	
+				Integer send_sms = Integer.parseInt(request.getParameter("send_sms"));	
+				Integer send_email = Integer.parseInt(request.getParameter("send_email"));	
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+				String request_id = request.getParameter("request_id");
+
+				JSONObject obj = new JSONObject();
+				
+				obj.put("case_number", case_number);
+				obj.put("job_number", job_number);
+				obj.put("applicant_name", applicant_name);
+				obj.put("application_type", application_type);
+				obj.put("notification_message", notification_message);
+				obj.put("notification_methods", notification_methods);
+				obj.put("send_sms", send_sms);
+				obj.put("send_email", send_email);
+				obj.put("modified_by", modified_by);
+				obj.put("modified_by_id", modified_by_id);
+				obj.put("request_id", request_id);
+
+				System.out.println("testing cabinet batch: " + obj.toString());
+
+				web_service_response = casemgt_cl.send_schedule_adjudication_hearing_notification(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+
+				return web_service_response;
+			}
+
+
 			if (request_type.equals("select_request_additional_input")) {
 				String job_number = request.getParameter("job_number");
 				String rq_id = request.getParameter("rq_id");
 				String note = request.getParameter("note");
 				String is_general_request = request.getParameter("is_general_request");
-				// String collected_by_id_number = request.getParameter("collected_by_id_number");
-				// String collected_by_phone_number = request.getParameter("collected_by_phone_number");
-
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
-
 
 				JSONObject obj = new JSONObject();
 
@@ -9184,18 +9217,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("modified_by", modified_by);
 				obj.put("is_general_request", is_general_request);
 
-				//System.out.println(obj.toString());
-
 				web_service_response = casemgt_cl.select_request_additional_input(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-
-
-				if (web_service_response != null) {
-					// //System.out.println("out " + web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9206,11 +9230,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m
 						.select_load_published_but_not_worked_on(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9219,11 +9238,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m
 						.select_load_published_but_not_worked_on(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9245,16 +9259,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.update_user_profile(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-
-				//System.out.println(obj.toString());
-
-				// JSONObject jsonobj = new JSONObject(web_service_response);
-				// web_service_response = (String) jsonobj.getString("data");
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9281,16 +9285,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 
-				//System.out.println(obj.toString());
-
-				// JSONObject jsonobj = new JSONObject(web_service_response);
-				// web_service_response = (String) jsonobj.getString("data");
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
-
 				return web_service_response;
 			}
 
@@ -9316,23 +9310,12 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 						.online_link_transaction_to_jobs(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
-				//System.out.println(obj.toString());
-
-				// JSONObject jsonobj = new JSONObject(web_service_response);
-				// web_service_response = (String) jsonobj.getString("data");
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
-
 				return web_service_response;
 			}
 
 			if (request_type.equals("lc_comment_on_job")) {
 				String userid = (String) session.getAttribute("userid");
 				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
-
 
 				String comment = request.getParameter("comment");
 				String job_number = request.getParameter("job_number");
@@ -9348,13 +9331,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.lc_comment_on_job(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9386,12 +9362,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
-
 				return web_service_response;
 			}
 
@@ -9421,13 +9391,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.select_copy_mother_file_transaction_to_child(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9459,13 +9422,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.select_copy_mother_file_transaction_to_child_for_deed(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9541,10 +9497,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("action_type", td_id != null && !td_id.equals("0") ? "update" : "insert");
 				obj.put("created_date", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()));
 				
-				// Log the request data
-				//System.out.println("save_transaction_details_for_deed request: " + obj.toString());
-				
-				// Call web service
 				web_service_response = casemgt_cl.save_transaction_details_for_deed(
 						cls_url_config.getWeb_service_url_ser(), 
 						cls_url_config.getWeb_service_url_ser_api_key(),
@@ -9578,21 +9530,11 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("mc_certificate_number", mc_certificate_number);
 
 				obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
-
 				obj.put("userid", userid);
-
-				//System.out.println(obj.toString());
 
 				web_service_response = casemgt_cl.lc_certificate_search_relation_details_add_update(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9623,13 +9565,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.online_select_transaction_approvals_create(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9660,13 +9595,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.select_transaction_approvals_certificate_create(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9695,13 +9623,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.online_select_transaction_approvals_final_approval(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9730,13 +9651,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl
 						.select_transaction_approvals_by_user(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9746,9 +9660,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = (String) request.getParameter("job_number");
 				String case_number = (String) request.getParameter("case_number");
 				String transaction_number = (String) request.getParameter("transaction_number");
-				// String userid = (String) session.getAttribute("userid");
-				// String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
-
 
 				JSONObject obj = new JSONObject();
 
@@ -9759,13 +9670,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m.select_general_case_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				//System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9778,13 +9682,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m.load_transaction_details_for_deed(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						job_number);
-				////System.out.println(obj.toString());
-
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9793,15 +9690,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				String region_code = (String) session.getAttribute("regional_code");
 
-				System.out.print(region_code);
-
 				web_service_response = casemgt_cl_m.load_get_file_number_format_per_region(
 					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), region_code);
-				if (web_service_response != null) {
-					//System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
+				return web_service_response;
 						
 			}
 
@@ -9813,11 +9705,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m.load_new_application_for_division(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						division, regional_code);
-				if (web_service_response != null) {
-					//System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9840,11 +9727,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m
 						.app_update_job_set_uncompleted(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
 
 				return web_service_response;
 			}
@@ -9855,8 +9738,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String userid = (String) session.getAttribute("userid");
 				String job_number = request.getParameter("job_number");
 
-				// //System.out.println(list_of_application);
-
 				JSONObject obj = new JSONObject();
 				obj.put("send_by_name", fullname);
 				obj.put("send_by_id", userid);
@@ -9866,11 +9747,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m
 						.app_update_copy_name_to_job_table(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
 
 				return web_service_response;
 			}
@@ -9897,11 +9774,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m.select_update_application_as_work_done_cst(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9928,11 +9800,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m.select_update_application_as_work_done_frrv_cst(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9953,18 +9820,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj_d.put("job_number", job_number);
 				obj_d.put("job_purpose", job_purpose);
 
-				// String wkt_polgon_wgs84 =
-				// request.getParameter("wkt_polgon_wgs84");
-
-				// //System.out.println(obj_d.toString());
 				web_service_response = casemgt_cl_m.select_approve_job_note_cst(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9978,23 +9836,11 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = request.getParameter("job_number");
 				JSONObject obj_d = new JSONObject();
 
-				// obj_d.put("created_by", fullname);
-				// obj_d.put("created_by_id", userid);
-				// obj_d.put("division", division);
 				obj_d.put("job_number", job_number);
 
-				// String wkt_polgon_wgs84 =
-				// request.getParameter("wkt_polgon_wgs84");
-
-				// //System.out.println(obj_d.toString());
 				web_service_response = casemgt_cl_m.select_confirm_consolidated_searches_from_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -10010,23 +9856,11 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = request.getParameter("job_number");
 				JSONObject obj_d = new JSONObject();
 
-				// obj_d.put("created_by", fullname);
-				// obj_d.put("created_by_id", userid);
-				// obj_d.put("division", division);
 				obj_d.put("job_number", job_number);
 
-				// String wkt_polgon_wgs84 =
-				// request.getParameter("wkt_polgon_wgs84");
-
-				// //System.out.println(obj_d.toString());
 				web_service_response = casemgt_cl_m.select_verify_ffrv_from_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -10040,23 +9874,12 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = request.getParameter("job_number");
 				JSONObject obj_d = new JSONObject();
 
-				// obj_d.put("created_by", fullname);
-				// obj_d.put("created_by_id", userid);
-				// obj_d.put("division", division);
 				obj_d.put("job_number", job_number);
 
-				// String wkt_polgon_wgs84 =
-				// request.getParameter("wkt_polgon_wgs84");
-
-				// //System.out.println(obj_d.toString());
 				web_service_response = casemgt_cl_m.select_confirm_ffrv_from_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
 
 				return web_service_response;
 			}
@@ -10070,23 +9893,12 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = request.getParameter("job_number");
 				JSONObject obj_d = new JSONObject();
 
-				// obj_d.put("created_by", fullname);
-				// obj_d.put("created_by_id", userid);
-				// obj_d.put("division", division);
 				obj_d.put("job_number", job_number);
 
-				// String wkt_polgon_wgs84 =
-				// request.getParameter("wkt_polgon_wgs84");
-
-				// //System.out.println(obj_d.toString());
 				web_service_response = casemgt_cl_m.select_confirm_frrv_cst_searches_from_division(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						obj_d.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
 
 				return web_service_response;
 			}
@@ -11097,115 +10909,83 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl_m.select_confirm_lrd_parcel_noting(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("select_delink_mother_file_transaction_to_child")) {
+				String m_job_number = request.getParameter("m_job_number");
+				String c_job_number = request.getParameter("c_job_number");
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+
+				JSONObject json_data = new JSONObject();
+
+				json_data.put("m_job_number", m_job_number);
+				json_data.put("c_job_number", c_job_number);
+				json_data.put("fullname", modified_by);
+				json_data.put("userid", modified_by_id);
+
+				web_service_response = casemgt_cl_m.select_delink_mother_file_transaction_to_child(
+								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
 
 				return web_service_response;
 			}
 
 			
 			if (request_type.equals("select_check_if_motherfile_linked")) {
-				// String modified_by = (String) session.getAttribute("fullname");
-				// String modified_by_id = (String) session.getAttribute("userid");
-				// String division = (String) session.getAttribute("division");
 				String job_number = request.getParameter("job_number");
 				String case_number = request.getParameter("case_number");
-				//String transaction_number = request.getParameter("transaction_number");
-
 				JSONObject json_data = new JSONObject();
 
-				// json_data.put("send_by_name", modified_by);
-				// json_data.put("send_by_id", modified_by_id);
 				json_data.put("job_number", job_number);
 				json_data.put("case_number", case_number);
-				// json_data.put("division", division);
-				//json_data.put("transaction_number", transaction_number);
-
-				//System.out.println(json_data.toString());
 
 				web_service_response = casemgt_cl_m.select_check_if_motherfile_linked(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
-
+				
 				return web_service_response;
 			}
 
 			
 			if (request_type.equals("select_linked_motherfile_details")) {
-				// String modified_by = (String) session.getAttribute("fullname");
-				// String modified_by_id = (String) session.getAttribute("userid");
-				// String division = (String) session.getAttribute("division");
 				String job_number = request.getParameter("job_number");
 				String case_number = request.getParameter("case_number");
-				//String transaction_number = request.getParameter("transaction_number");
-
 				JSONObject json_data = new JSONObject();
 
-				// json_data.put("send_by_name", modified_by);
-				// json_data.put("send_by_id", modified_by_id);
 				json_data.put("job_number", job_number);
 				json_data.put("case_number", case_number);
-				// json_data.put("division", division);
-				//json_data.put("transaction_number", transaction_number);
-
-				//System.out.println(json_data.toString());
-
 				web_service_response = casemgt_cl_m.select_linked_motherfile_details(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
+				
 
 				return web_service_response;
 			}
 
 			
 			if (request_type.equals("select_linked_motherfile_transaction_details")) {
-				// String modified_by = (String) session.getAttribute("fullname");
-				// String modified_by_id = (String) session.getAttribute("userid");
-				// String division = (String) session.getAttribute("division");
+				
 				String job_number = request.getParameter("job_number");
 				String case_number = request.getParameter("case_number");
-				//String transaction_number = request.getParameter("transaction_number");
-
+				
 				JSONObject json_data = new JSONObject();
 
-				// json_data.put("send_by_name", modified_by);
-				// json_data.put("send_by_id", modified_by_id);
 				json_data.put("job_number", job_number);
 				json_data.put("case_number", case_number);
-				// json_data.put("division", division);
-				//json_data.put("transaction_number", transaction_number);
-
-				//System.out.println(json_data.toString());
 
 				web_service_response = casemgt_cl_m.select_linked_motherfile_transaction_details(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
 
 			if (request_type.equals("select_add_intended_interest_and_parcel_to_transfer")) {
-				// String modified_by = (String) session.getAttribute("fullname");
-				// String modified_by_id = (String) session.getAttribute("userid");
-				// String division = (String) session.getAttribute("division");
+				
 				String case_number = request.getParameter("case_number");
 				String job_number = request.getParameter("job_number");
 				String intended_land = request.getParameter("intended_land");
@@ -11217,18 +10997,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				json_data.put("job_number", job_number);
 				json_data.put("intended_land", intended_land);
 				json_data.put("intended_interest", intended_interest);
-				//json_data.put("division", division);
-
-				//System.out.println(json_data.toString());
 
 				web_service_response = casemgt_cl_m.select_add_intended_interest_and_parcel_to_transfer(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -11236,28 +11008,17 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 			if (request_type.equals("select_reverse_transaction_approvals")) {
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
-				//String division = (String) session.getAttribute("division");
 				String list_of_application = request.getParameter("list_of_application");
-				//String cabinet_to_send_to = request.getParameter("cabinet_to_send_to");
 
 				JSONObject json_data = new JSONObject();
 
 				json_data.put("send_by_name", modified_by);
 				json_data.put("send_by_id", modified_by_id);
 				json_data.put("list_of_application", list_of_application);
-				//json_data.put("cabinet_name", cabinet_to_send_to);
-				//json_data.put("division", division);
-
-				//System.out.println(json_data.toString());
 
 				web_service_response = casemgt_cl_m.select_reverse_transaction_approvals(
 								cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
