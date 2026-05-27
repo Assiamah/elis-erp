@@ -3424,6 +3424,13 @@
                     </label>
                     <input type="text" class="form-control" id="dfe_file_number" value="${file_number}" placeholder="Enter file number">
                   </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_property_number" class="form-label fw-semibold">
+                      <i class="bi bi-folder2-open me-2"></i>Property Number
+                    </label>
+                    <input type="text" class="form-control" id="dfe_property_number" value="${property_number}" placeholder="Enter property number">
+                  </div>
                 </div>
               </div>
 
