@@ -253,9 +253,6 @@ public class Case_Management_Serv {
 				web_service_response = casemgt_cl_m
 						.load_corporate_frrv_cst_unit_summary(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), summary_type);
-				if (web_service_response != null) {
-					////System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -272,9 +269,6 @@ public class Case_Management_Serv {
 				web_service_response = casemgt_cl_m
 						.load_cst_unit_chart_summary(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				if (web_service_response != null) {
-					////System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -291,9 +285,6 @@ public class Case_Management_Serv {
 				web_service_response = casemgt_cl_m
 						.load_corporate_frrv_cst_unit_chart_summary(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				if (web_service_response != null) {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -304,9 +295,6 @@ public class Case_Management_Serv {
 				web_service_response = casemgt_cl_m
 						.load_applicant_details_by_job_number(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), userid);
-				if (web_service_response != null) {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -320,14 +308,6 @@ public class Case_Management_Serv {
 				obj.put("message", message);
 				obj.put("send_by_name", (String) session.getAttribute("fullname"));
 				obj.put("send_by_id", (String) session.getAttribute("userid"));
-
-				web_service_response = casemgt_cl_m
-						.compliance_create_notice_reply(cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-
-				if (web_service_response != null) {
-
-				}
 
 				return web_service_response;
 			}
@@ -635,489 +615,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
-			if (request_type.equals("get_regional_transactions_list")) {
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				String draw = request.getParameter("draw");
-				String start = request.getParameter("start");
-				String length = request.getParameter("length");
-				String regional_code = (String) session.getAttribute("regional_code");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("draw", draw != null ? draw : "1");
-				obj.put("start", start != null ? start : "0");
-				obj.put("length", length != null ? length : "10");
-				obj.put("regional_code", regional_code);
-
-				System.out.println(obj.toString());
-		
-				web_service_response = casemgt_cl_m.get_regional_transactions_list(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-
-				if (!isJsonResponse(web_service_response)) {
-					web_service_response = emptyDataTableResponse(draw);
-				}
-		
-				return web_service_response;
-			}
-		
-			if (request_type.equals("get_regional_transaction_by_id")) {
-				String t_id = request.getParameter("t_id");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("t_id", t_id);
-
-				System.out.println(obj.toString());
-		
-				web_service_response = casemgt_cl_m.get_regional_transaction_by_id(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			if (request_type.equals("create_regional_transaction")) {
-				String modified_by = (String) session.getAttribute("fullname");
-				String modified_by_id = (String) session.getAttribute("userid");
-				String mac_address = (String) session.getAttribute("mac_address");
-				String ip_address = (String) session.getAttribute("ip_address");
-				String regional_code = (String) session.getAttribute("regional_code");
-				
-				// Basic Information
-				String jacket_name = request.getParameter("jacket_name");
-				String region = request.getParameter("region");
-				String reference_number = request.getParameter("reference_number");
-				String file_number = request.getParameter("file_number");
-				String property_number = request.getParameter("property_number");
-				String submission_date = request.getParameter("submission_date");
-				
-				// Document Details
-				String mutation_number = request.getParameter("mutation_number");
-				String deed_number = request.getParameter("deed_number");
-				String serial_number = request.getParameter("serial_number");
-				String sheet_number = request.getParameter("sheet_number");
-				String plan_number = request.getParameter("plan_number");
-				String plot_number = request.getParameter("plot_number");
-				String lvb_number = request.getParameter("lvb_number");
-				String instrument_date = request.getParameter("instrument_date");
-				String instrument_type = request.getParameter("instrument_type");
-				String doc_number = request.getParameter("doc_number");
-				
-				// Party 1 Information
-				String party1_plaintiff = request.getParameter("party1_plaintiff");
-				String party1_plaintiff_tel_no = request.getParameter("party1_plaintiff_tel_no");
-				String party1_plaintiff_email = request.getParameter("party1_plaintiff_email");
-				String party1_plantiff_add = request.getParameter("party1_plantiff_add");
-				
-				// Party 2 Information
-				String party2_defendant = request.getParameter("party2_defendant");
-				String party2_defendant_tel_no = request.getParameter("party2_defendant_tel_no");
-				String party2_defendant_email = request.getParameter("party2_defendant_email");
-				String party2_defendant_add = request.getParameter("party2_defendant_add");
-				
-				// Financial Details
-				String consideration = request.getParameter("consideration");
-				String consideration_currency = request.getParameter("consideration_currency");
-				String premium = request.getParameter("premium");
-				String premium_currency = request.getParameter("premium_currency");
-				String rent = request.getParameter("rent");
-				String compensation_status = request.getParameter("compensation_status");
-				
-				// Additional Details
-				String term = request.getParameter("term");
-				String commencement_date = request.getParameter("commencement_date");
-				String purpose = request.getParameter("purpose");
-				String entered_date = request.getParameter("entered_date");
-				String consent_date = request.getParameter("consent_date");
-				String suit_number = request.getParameter("suit_number");
-				String judgement_in_favour_of = request.getParameter("judgement_in_favour_of");
-				String floor_level = request.getParameter("floor_level");
-				String apartment_number = request.getParameter("apartment_number");
-				String unit_description = request.getParameter("unit_description");
-				String hqfile_id = request.getParameter("hqfile_id");
-				String gid_unique_across = request.getParameter("gid_unique_across");
-				String remarks = request.getParameter("remarks");
-				String status = request.getParameter("status");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("modified_by", modified_by);
-				obj.put("modified_by_id", modified_by_id);
-				obj.put("mac_address", mac_address);
-				obj.put("ip_address", ip_address);
-				obj.put("regional_code", regional_code);
-							
-				// Basic Information
-				obj.put("jacket_name", jacket_name);
-				obj.put("region", region);
-				obj.put("reference_number", reference_number);
-				obj.put("file_number", file_number);
-				obj.put("property_number", property_number);
-				obj.put("submission_date", submission_date);
-							
-				// Document Details
-				obj.put("mutation_number", mutation_number);
-				obj.put("deed_number", deed_number);
-				obj.put("serial_number", serial_number);
-				obj.put("sheet_number", sheet_number);
-				obj.put("plan_number", plan_number);
-				obj.put("plot_number", plot_number);
-				obj.put("lvb_number", lvb_number);
-				obj.put("instrument_date", instrument_date);
-				obj.put("instrument_type", instrument_type);
-				obj.put("doc_number", doc_number);
-							
-				// Party 1 Information
-				obj.put("party1_plaintiff", party1_plaintiff);
-				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no);
-				obj.put("party1_plaintiff_email", party1_plaintiff_email);
-				obj.put("party1_plantiff_add", party1_plantiff_add);
-							
-				// Party 2 Information
-				obj.put("party2_defendant", party2_defendant);
-				obj.put("party2_defendant_tel_no", party2_defendant_tel_no);
-				obj.put("party2_defendant_email", party2_defendant_email);
-				obj.put("party2_defendant_add", party2_defendant_add);
-							
-				// Financial Details
-				obj.put("consideration", consideration);
-				obj.put("consideration_currency", consideration_currency);
-				obj.put("premium", premium);
-				obj.put("premium_currency", premium_currency);
-				obj.put("rent", rent);
-				obj.put("compensation_status", compensation_status);
-							
-				// Additional Details
-				obj.put("term", term);
-				obj.put("commencement_date", commencement_date);
-				obj.put("purpose", purpose);
-				obj.put("entered_date", entered_date);
-				obj.put("consent_date", consent_date);
-				obj.put("suit_number", suit_number);
-				obj.put("judgement_in_favour_of", judgement_in_favour_of);
-				obj.put("floor_level", floor_level);
-				obj.put("apartment_number", apartment_number);
-				obj.put("unit_description", unit_description);
-				obj.put("hqfile_id", hqfile_id);
-				obj.put("gid_unique_across", gid_unique_across);
-				obj.put("remarks", remarks);
-				obj.put("status", status != null ? status : "pending");
-
-				System.out.println(obj.toString());
-		
-				web_service_response = casemgt_cl_m.create_regional_transaction(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			if (request_type.equals("update_regional_transaction")) {
-				String modified_by = (String) session.getAttribute("fullname");
-				String modified_by_id = (String) session.getAttribute("userid");
-				String mac_address = (String) session.getAttribute("mac_address");
-				String ip_address = (String) session.getAttribute("ip_address");
-				String regional_code = (String) session.getAttribute("regional_code");
-				String t_id = request.getParameter("t_id");
-				
-				// Basic Information
-				String jacket_name = request.getParameter("jacket_name");
-				String region = request.getParameter("region");
-				String reference_number = request.getParameter("reference_number");
-				String file_number = request.getParameter("file_number");
-				String property_number = request.getParameter("property_number");
-				String submission_date = request.getParameter("submission_date");
-				
-				// Document Details
-				String mutation_number = request.getParameter("mutation_number");
-				String deed_number = request.getParameter("deed_number");
-				String serial_number = request.getParameter("serial_number");
-				String sheet_number = request.getParameter("sheet_number");
-				String plan_number = request.getParameter("plan_number");
-				String plot_number = request.getParameter("plot_number");
-				String lvb_number = request.getParameter("lvb_number");
-				String instrument_date = request.getParameter("instrument_date");
-				String instrument_type = request.getParameter("instrument_type");
-				String doc_number = request.getParameter("doc_number");
-				
-				// Party 1 Information
-				String party1_plaintiff = request.getParameter("party1_plaintiff");
-				String party1_plaintiff_tel_no = request.getParameter("party1_plaintiff_tel_no");
-				String party1_plaintiff_email = request.getParameter("party1_plaintiff_email");
-				String party1_plantiff_add = request.getParameter("party1_plantiff_add");
-				
-				// Party 2 Information
-				String party2_defendant = request.getParameter("party2_defendant");
-				String party2_defendant_tel_no = request.getParameter("party2_defendant_tel_no");
-				String party2_defendant_email = request.getParameter("party2_defendant_email");
-				String party2_defendant_add = request.getParameter("party2_defendant_add");
-				
-				// Financial Details
-				String consideration = request.getParameter("consideration");
-				String consideration_currency = request.getParameter("consideration_currency");
-				String premium = request.getParameter("premium");
-				String premium_currency = request.getParameter("premium_currency");
-				String rent = request.getParameter("rent");
-				String compensation_status = request.getParameter("compensation_status");
-				
-				// Additional Details
-				String term = request.getParameter("term");
-				String commencement_date = request.getParameter("commencement_date");
-				String purpose = request.getParameter("purpose");
-				String entered_date = request.getParameter("entered_date");
-				String consent_date = request.getParameter("consent_date");
-				String suit_number = request.getParameter("suit_number");
-				String judgement_in_favour_of = request.getParameter("judgement_in_favour_of");
-				String floor_level = request.getParameter("floor_level");
-				String apartment_number = request.getParameter("apartment_number");
-				String unit_description = request.getParameter("unit_description");
-				String hqfile_id = request.getParameter("hqfile_id");
-				String gid_unique_across = request.getParameter("gid_unique_across");
-				String remarks = request.getParameter("remarks");
-				String status = request.getParameter("status");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("modified_by", modified_by);
-				obj.put("modified_by_id", modified_by_id);
-				obj.put("mac_address", mac_address);
-				obj.put("ip_address", ip_address);
-				obj.put("regional_code", regional_code);
-				obj.put("t_id", t_id);
-							
-				// Basic Information
-				obj.put("jacket_name", jacket_name);
-				obj.put("region", region);
-				obj.put("reference_number", reference_number);
-				obj.put("file_number", file_number);
-				obj.put("property_number", property_number);
-				obj.put("submission_date", submission_date);
-							
-				// Document Details
-				obj.put("mutation_number", mutation_number);
-				obj.put("deed_number", deed_number);
-				obj.put("serial_number", serial_number);
-				obj.put("sheet_number", sheet_number);
-				obj.put("plan_number", plan_number);
-				obj.put("plot_number", plot_number);
-				obj.put("lvb_number", lvb_number);
-				obj.put("instrument_date", instrument_date);
-				obj.put("instrument_type", instrument_type);
-				obj.put("doc_number", doc_number);
-							
-				// Party 1 Information
-				obj.put("party1_plaintiff", party1_plaintiff);
-				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no);
-				obj.put("party1_plaintiff_email", party1_plaintiff_email);
-				obj.put("party1_plantiff_add", party1_plantiff_add);
-							
-				// Party 2 Information
-				obj.put("party2_defendant", party2_defendant);
-				obj.put("party2_defendant_tel_no", party2_defendant_tel_no);
-				obj.put("party2_defendant_email", party2_defendant_email);
-				obj.put("party2_defendant_add", party2_defendant_add);
-							
-				// Financial Details
-				obj.put("consideration", consideration);
-				obj.put("consideration_currency", consideration_currency);
-				obj.put("premium", premium);
-				obj.put("premium_currency", premium_currency);
-				obj.put("rent", rent);
-				obj.put("compensation_status", compensation_status);
-							
-				// Additional Details
-				obj.put("term", term);
-				obj.put("commencement_date", commencement_date);
-				obj.put("purpose", purpose);
-				obj.put("entered_date", entered_date);
-				obj.put("consent_date", consent_date);
-				obj.put("suit_number", suit_number);
-				obj.put("judgement_in_favour_of", judgement_in_favour_of);
-				obj.put("floor_level", floor_level);
-				obj.put("apartment_number", apartment_number);
-				obj.put("unit_description", unit_description);
-				obj.put("hqfile_id", hqfile_id);
-				obj.put("gid_unique_across", gid_unique_across);
-				obj.put("remarks", remarks);
-				obj.put("status", status);
-		
-				web_service_response = casemgt_cl_m.update_regional_transaction(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			if (request_type.equals("delete_regional_transaction")) {
-				String t_id = request.getParameter("t_id");
-				String modified_by = (String) session.getAttribute("fullname");
-				String modified_by_id = (String) session.getAttribute("userid");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("t_id", t_id);
-				obj.put("modified_by", modified_by);
-				obj.put("modified_by_id", modified_by_id);
-		
-				web_service_response = casemgt_cl_m.delete_regional_transaction(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			// ==================== QUALITY CONTROL OPERATIONS ====================
-		
-			if (request_type.equals("get_qc_pending_transactions")) {
-				String draw = request.getParameter("draw");
-				String start = request.getParameter("start");
-				String length = request.getParameter("length");
-				String regional_code = (String) session.getAttribute("regional_code");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("draw", draw != null ? draw : "1");
-				obj.put("start", start != null ? start : "0");
-				obj.put("length", length != null ? length : "10");
-				obj.put("regional_code", regional_code);
-		
-				web_service_response = casemgt_cl_m.get_qc_pending_transactions(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-		
-			if (request_type.equals("approve_transaction_qc")) {
-				String t_id = request.getParameter("t_id");
-				String approved_by = (String) session.getAttribute("userid");
-				String approved_by_name = (String) session.getAttribute("fullname");
-				String approval_remarks = request.getParameter("approval_remarks");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("t_id", t_id);
-				obj.put("approved_by", approved_by);
-				obj.put("approved_by_name", approved_by_name);
-				obj.put("approval_remarks", approval_remarks);
-		
-				web_service_response = casemgt_cl_m.approve_transaction_qc(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			if (request_type.equals("decline_transaction_qc")) {
-				String t_id = request.getParameter("t_id");
-				String declined_by = (String) session.getAttribute("userid");
-				String declined_by_name = (String) session.getAttribute("fullname");
-				String decline_reason = request.getParameter("decline_reason");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("t_id", t_id);
-				obj.put("declined_by", declined_by);
-				obj.put("declined_by_name", declined_by_name);
-				obj.put("decline_reason", decline_reason);
-		
-				web_service_response = casemgt_cl_m.decline_transaction_qc(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			if (request_type.equals("batch_approve_qc")) {
-				String transaction_ids = request.getParameter("transaction_ids");
-				String approved_by = (String) session.getAttribute("userid");
-				String approved_by_name = (String) session.getAttribute("fullname");
-				String approval_remarks = request.getParameter("approval_remarks");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("transaction_ids", transaction_ids);
-				obj.put("approved_by", approved_by);
-				obj.put("approved_by_name", approved_by_name);
-				obj.put("approval_remarks", approval_remarks);
-		
-				web_service_response = casemgt_cl_m.batch_approve_qc(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-		
-			// ==================== SEARCH AND EXPORT OPERATIONS ====================
-		
-			if (request_type.equals("search_regional_transactions")) {
-				String search_reference = request.getParameter("search_text");
-				String search_file = request.getParameter("search_file");
-				String search_jacket = request.getParameter("search_jacket");
-				String search_region = request.getParameter("search_region");
-				String search_district = request.getParameter("search_district");
-				String search_document_type = request.getParameter("search_document_type");
-				String date_from = request.getParameter("date_from");
-				String date_to = request.getParameter("date_to");
-				String draw = request.getParameter("draw");
-				String start = request.getParameter("start");
-				String length = request.getParameter("length");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("search_text", search_reference != null ? search_reference : "");
-				obj.put("search_file", search_file != null ? search_file : "");
-				obj.put("search_jacket", search_jacket != null ? search_jacket : "");
-				obj.put("search_region", search_region != null ? search_region : "");
-				obj.put("search_district", search_district != null ? search_district : "");
-				obj.put("search_document_type", search_document_type != null ? search_document_type : "");
-				obj.put("date_from", date_from != null ? date_from : "");
-				obj.put("date_to", date_to != null ? date_to : "");
-				obj.put("draw", draw != null ? draw : "1");
-				obj.put("start", start != null ? start : "0");
-				obj.put("length", length != null ? length : "10");
-		
-				web_service_response = casemgt_cl_m.search_regional_transactions(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
-			}
-			
-			if (request_type.equals("search_regional_transaction_for_update")) {
-				String search_reference = request.getParameter("reference_number");
-		
-				JSONObject obj = new JSONObject();
-				obj.put("search_text", search_reference != null ? search_reference : "");
-		
-				web_service_response = casemgt_cl_m.search_regional_transaction_for_update(cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-		
-				if (web_service_response != null) {
-						
-				}
-		
-				return web_service_response;
+			String regionalTransactionResponse = handleRegionalTransactionRequests(request_type, session, request, response);
+			if (regionalTransactionResponse != null) {
+				return regionalTransactionResponse;
 			}
 
 			if (request_type.equals("lc_regional_stamp_duty_bill_log")) {
@@ -8781,13 +8281,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.insert_update_on_lc_inspection_reports(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-					// //System.out.println("somthing");
-				} else {
-					//System.out.println(web_service_response);
-					// //System.out.println("somthing else");
-				}
+				
 
 				return web_service_response;
 			}
@@ -8846,12 +8340,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.update_stamp_duty_records_embossment(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						json_data.toString());
-				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
-
+				
 				return web_service_response;
 			}
 
@@ -8912,23 +8401,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
-			/*
-			 * if
-			 * (request_type.equals("load_application_details_for_enquiries")) {
-			 * String job_number = request.getParameter("job_number");
-			 * //System.out.println(job_number); web_service_response =
-			 * casemgt_cl.load_application_details_for_enquiries(cls_url_config.
-			 * getWeb_service_url_ser(),job_number);
-			 * 
-			 * JSONObject jsonobj = new JSONObject(web_service_response);
-			 * web_service_response = (String) jsonobj.getString("data");
-			 * 
-			 * if (web_service_response != null) { //
-			 * //System.out.println(web_service_response); } else {
-			 * //System.out.println(web_service_response); } PrintWriter out =
-			 * response.getWriter(); return web_service_response; }
-			 */
-
 			if (request_type.equals("select_send_email")) {
 
 				String send_to = request.getParameter("send_to");
@@ -8951,62 +8423,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 							+ jsonobj.getJSONObject(i).getString("registry_map") + "</li>" + "<li> Lodgement Number: "
 							+ jsonobj.getJSONObject(i).getString("client_number") + "</li>" + " </ul></p><br>";
 				}
-
-				// //System.out.println("Body: " + message_body);
-
-				/*
-				 * JSONObject obj = new JSONObject();
-				 * 
-				 * obj.put("subject", subject); obj.put("message_body",
-				 * message_body); obj.put("send_to", send_to);
-				 * 
-				 * //System.out.println(obj.toString()); web_service_response =
-				 * casemgt_cl_m.select_send_email(cls_url_config.getWeb_service_url_ser(),
-				 * cls_url_config.getWeb_service_url_ser_api_key(),obj.
-				 * toString());
-				 */
-
-				// //HttpSession session = request.getSession();
-
-				/*
-				 * 
-				 * //System.out.println("SimpleEmail Start");
-				 * 
-				 * String smtpHostServer = "mail.orangable.com";
-				 * 
-				 * Properties props = System.getProperties();
-				 * 
-				 * props.put("mail.smtp.host", smtpHostServer);
-				 * 
-				 * Session session1 = Session.getInstance(props, null);
-				 * 
-				 * web_service_response = EmailUtil.sendEmail(session1, send_to,
-				 * subject, message_body);
-				 * 
-				 * if (web_service_response != null) {
-				 * //System.out.println(web_service_response); } else {
-				 * //System.out.println(web_service_response); } PrintWriter out =
-				 * response.getWriter(); return web_service_response;
-				 */
 			}
-
-			/*
-			 * if (request_type.equals(
-			 * "load_application_cabinet_details_by_job_number")) { String
-			 * job_number = request.getParameter("job_number");
-			 * //System.out.println("test job: " + job_number);
-			 * web_service_response =
-			 * casemgt_cl.load_application_cabinet_details_by_job_number(
-			 * job_number);
-			 * 
-			 * // JSONObject jsonobj = new // JSONObject(web_service_response);
-			 * // web_service_response = (String) // jsonobj.getString("data");
-			 * 
-			 * if (web_service_response != null) { //System.out.println("out " +
-			 * web_service_response); } else {
-			 * //System.out.println(web_service_response); } PrintWriter out =
-			 * response.getWriter(); out.println(jsonobj.toString()); }
-			 */
 
 			if (request_type.equals("load_application_collection_details_by_job_number")) {
 				String job_number = request.getParameter("job_number");
@@ -9014,18 +8431,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				web_service_response = casemgt_cl.load_application_collection_details_by_job_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						job_number);
-
-				// JSONObject jsonobj = new
-				// JSONObject(web_service_response);
-				// web_service_response = (String)
-				// jsonobj.getString("data");
-
-				if (web_service_response != null) {
-					// //System.out.println("out " + web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
-
 				return web_service_response;
 			}
 			if (request_type.equals("load_save_collection_details_by_job_number")) {
@@ -9049,23 +8454,9 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("job_number", job_number);
 				obj.put("modified_by_id", modified_by_id);
 				obj.put("collection_issued_by_id", modified_by_id);
-
-				 //System.out.println(obj.toString());
-
 				web_service_response = casemgt_cl.load_save_collection_details_by_job_number(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
-
-				// JSONObject jsonobj = new
-				// JSONObject(web_service_response);
-				// web_service_response = (String)
-				// jsonobj.getString("data");
-
-				if (web_service_response != null) {
-					// //System.out.println("out " + web_service_response);
-				} else {
-					//System.out.println(web_service_response);
-				}
 
 				return web_service_response;
 			}
@@ -9193,6 +8584,44 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				System.out.println("testing cabinet batch: " + obj.toString());
 
 				web_service_response = casemgt_cl.send_schedule_adjudication_hearing_notification(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("determine_outcome_of_objection")) {
+				String case_number = request.getParameter("case_number");		
+				String job_number = request.getParameter("job_number");	
+				String applicant_name = request.getParameter("applicant_name");		
+				String outcome_decision = request.getParameter("outcome_decision");	
+				String obj_reasons = request.getParameter("obj_reasons");	
+				String obj_remarks = request.getParameter("obj_remarks");	
+				String notification_suspension = request.getParameter("notification_suspension");	
+				String advise_objector = request.getParameter("advise_objector");	
+				String notification_rejection = request.getParameter("notification_rejection");
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+				String request_id = request.getParameter("request_id");
+
+				JSONObject obj = new JSONObject();
+				
+				obj.put("case_number", case_number);
+				obj.put("job_number", job_number);
+				obj.put("applicant_name", applicant_name);
+				obj.put("outcome_decision", outcome_decision);
+				obj.put("obj_reasons", obj_reasons);
+				obj.put("obj_remarks", obj_remarks);
+				obj.put("notification_suspension", notification_suspension);
+				obj.put("advise_objector", advise_objector);
+				obj.put("notification_rejection", notification_rejection);
+				obj.put("modified_by", modified_by);
+				obj.put("modified_by_id", modified_by_id);
+				obj.put("request_id", request_id);
+
+				System.out.println("testing cabinet batch: " + obj.toString());
+
+				web_service_response = casemgt_cl.determine_outcome_of_objection(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 
@@ -10433,26 +9862,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 					String ws_case_number = ref_number;
 					JSONObject jsonobject = new JSONObject(web_service_response);
-					// String ws_case_number =
-					// jsonobject.getString("case_number");
-
-					// String ws_bill_details_db=
-					// case_mgt_cl.online_lc_job_number_payment_bill_by_bill_number(ws_bill_number);
-					// String ws_bill_details_db=
-					// case_mgt_cl.check_payment_status_of_bill_generate_bill(ws_bill_number);
-
-					//String pdf_dest = cls_url_config.getCase_upload_location();
-					//String files_pdf_jackets_p = pdf_dest + ws_case_number + "/" + ref_number + "_" + "rn_b"+ pdfFileName;
-
-					// File files_pdf_jackets = new File(pdf_dest + ws_case_number);
-
-					// if (!files_pdf_jackets.exists()) {
-					// 	if (files_pdf_jackets.mkdirs()) {
-					// 		//System.out.println("Multiple directories are created!");
-					// 	} else {
-					// 		//System.out.println("Failed to create multiple directories!");
-					// 	}
-					// }
+					
 					
 					byte[] buffer = null;
 
@@ -10463,18 +9873,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 							web_service_response, 
 							session.getAttribute("fullname").toString());
 
-
-
-				// 	JSONObject pdf_upload_obj = new JSONObject();
-				// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
-			
-				// pdf_upload_obj.put("jobNumber", job_number);
-				// pdf_upload_obj.put("caseNumber",case_number);
-				// pdf_upload_obj.put("fileData",base64Encoded);
-						
- 				// String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
- 				// cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
-////System.out.println(buffer);
 					if (buffer != null) {
 						// Set response content type to PDF
 						response.setContentType("application/pdf");
@@ -11712,7 +11110,499 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 		return jsonArr.toString();
 	}
 
+	
 
+	private String handleRegionalTransactionRequests(String request_type, HttpSession session,
+			HttpServletRequest request,  HttpServletResponse response) throws Exception {
+		String web_service_response = null;
+
+		if (request_type.equals("get_regional_transactions_list")) {
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				String draw = request.getParameter("draw");
+				String start = request.getParameter("start");
+				String length = request.getParameter("length");
+				String regional_code = (String) session.getAttribute("regional_code");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("draw", draw != null ? draw : "1");
+				obj.put("start", start != null ? start : "0");
+				obj.put("length", length != null ? length : "10");
+				obj.put("regional_code", regional_code);
+
+				System.out.println(obj.toString());
+		
+				web_service_response = casemgt_cl_m.get_regional_transactions_list(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+
+				if (!isJsonResponse(web_service_response)) {
+					web_service_response = emptyDataTableResponse(draw);
+				}
+		
+				return web_service_response;
+			}
+		
+			if (request_type.equals("get_regional_transaction_by_id")) {
+				String t_id = request.getParameter("t_id");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("t_id", t_id);
+
+				System.out.println(obj.toString());
+		
+				web_service_response = casemgt_cl_m.get_regional_transaction_by_id(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			if (request_type.equals("create_regional_transaction")) {
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+				String mac_address = (String) session.getAttribute("mac_address");
+				String ip_address = (String) session.getAttribute("ip_address");
+				String regional_code = (String) session.getAttribute("regional_code");
+				
+				// Basic Information
+				String jacket_name = request.getParameter("jacket_name");
+				String region = request.getParameter("region");
+				String reference_number = request.getParameter("reference_number");
+				String file_number = request.getParameter("file_number");
+				String property_number = request.getParameter("property_number");
+				String submission_date = request.getParameter("submission_date");
+				
+				// Document Details
+				String mutation_number = request.getParameter("mutation_number");
+				String deed_number = request.getParameter("deed_number");
+				String serial_number = request.getParameter("serial_number");
+				String sheet_number = request.getParameter("sheet_number");
+				String plan_number = request.getParameter("plan_number");
+				String plot_number = request.getParameter("plot_number");
+				String lvb_number = request.getParameter("lvb_number");
+				String instrument_date = request.getParameter("instrument_date");
+				String instrument_type = request.getParameter("instrument_type");
+				String doc_number = request.getParameter("doc_number");
+				
+				// Party 1 Information
+				String party1_plaintiff = request.getParameter("party1_plaintiff");
+				String party1_plaintiff_tel_no = request.getParameter("party1_plaintiff_tel_no");
+				String party1_plaintiff_email = request.getParameter("party1_plaintiff_email");
+				String party1_plantiff_add = request.getParameter("party1_plantiff_add");
+				
+				// Party 2 Information
+				String party2_defendant = request.getParameter("party2_defendant");
+				String party2_defendant_tel_no = request.getParameter("party2_defendant_tel_no");
+				String party2_defendant_email = request.getParameter("party2_defendant_email");
+				String party2_defendant_add = request.getParameter("party2_defendant_add");
+				
+				// Financial Details
+				String consideration = request.getParameter("consideration");
+				String consideration_currency = request.getParameter("consideration_currency");
+				String premium = request.getParameter("premium");
+				String premium_currency = request.getParameter("premium_currency");
+				String rent = request.getParameter("rent");
+				String compensation_status = request.getParameter("compensation_status");
+				
+				// Additional Details
+				String term = request.getParameter("term");
+				String commencement_date = request.getParameter("commencement_date");
+				String purpose = request.getParameter("purpose");
+				String entered_date = request.getParameter("entered_date");
+				String consent_date = request.getParameter("consent_date");
+				String suit_number = request.getParameter("suit_number");
+				String judgement_in_favour_of = request.getParameter("judgement_in_favour_of");
+				String floor_level = request.getParameter("floor_level");
+				String apartment_number = request.getParameter("apartment_number");
+				String unit_description = request.getParameter("unit_description");
+				String hqfile_id = request.getParameter("hqfile_id");
+				String gid_unique_across = request.getParameter("gid_unique_across");
+				String remarks = request.getParameter("remarks");
+				String status = request.getParameter("status");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("modified_by", modified_by);
+				obj.put("modified_by_id", modified_by_id);
+				obj.put("mac_address", mac_address);
+				obj.put("ip_address", ip_address);
+				obj.put("regional_code", regional_code);
+							
+				// Basic Information
+				obj.put("jacket_name", jacket_name);
+				obj.put("region", region);
+				obj.put("reference_number", reference_number);
+				obj.put("file_number", file_number);
+				obj.put("property_number", property_number);
+				obj.put("submission_date", submission_date);
+							
+				// Document Details
+				obj.put("mutation_number", mutation_number);
+				obj.put("deed_number", deed_number);
+				obj.put("serial_number", serial_number);
+				obj.put("sheet_number", sheet_number);
+				obj.put("plan_number", plan_number);
+				obj.put("plot_number", plot_number);
+				obj.put("lvb_number", lvb_number);
+				obj.put("instrument_date", instrument_date);
+				obj.put("instrument_type", instrument_type);
+				obj.put("doc_number", doc_number);
+							
+				// Party 1 Information
+				obj.put("party1_plaintiff", party1_plaintiff);
+				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no);
+				obj.put("party1_plaintiff_email", party1_plaintiff_email);
+				obj.put("party1_plantiff_add", party1_plantiff_add);
+							
+				// Party 2 Information
+				obj.put("party2_defendant", party2_defendant);
+				obj.put("party2_defendant_tel_no", party2_defendant_tel_no);
+				obj.put("party2_defendant_email", party2_defendant_email);
+				obj.put("party2_defendant_add", party2_defendant_add);
+							
+				// Financial Details
+				obj.put("consideration", consideration);
+				obj.put("consideration_currency", consideration_currency);
+				obj.put("premium", premium);
+				obj.put("premium_currency", premium_currency);
+				obj.put("rent", rent);
+				obj.put("compensation_status", compensation_status);
+							
+				// Additional Details
+				obj.put("term", term);
+				obj.put("commencement_date", commencement_date);
+				obj.put("purpose", purpose);
+				obj.put("entered_date", entered_date);
+				obj.put("consent_date", consent_date);
+				obj.put("suit_number", suit_number);
+				obj.put("judgement_in_favour_of", judgement_in_favour_of);
+				obj.put("floor_level", floor_level);
+				obj.put("apartment_number", apartment_number);
+				obj.put("unit_description", unit_description);
+				obj.put("hqfile_id", hqfile_id);
+				obj.put("gid_unique_across", gid_unique_across);
+				obj.put("remarks", remarks);
+				obj.put("status", status != null ? status : "pending");
+
+				System.out.println(obj.toString());
+		
+				web_service_response = casemgt_cl_m.create_regional_transaction(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			if (request_type.equals("update_regional_transaction")) {
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+				String mac_address = (String) session.getAttribute("mac_address");
+				String ip_address = (String) session.getAttribute("ip_address");
+				String regional_code = (String) session.getAttribute("regional_code");
+				String t_id = request.getParameter("t_id");
+				
+				// Basic Information
+				String jacket_name = request.getParameter("jacket_name");
+				String region = request.getParameter("region");
+				String reference_number = request.getParameter("reference_number");
+				String file_number = request.getParameter("file_number");
+				String property_number = request.getParameter("property_number");
+				String submission_date = request.getParameter("submission_date");
+				
+				// Document Details
+				String mutation_number = request.getParameter("mutation_number");
+				String deed_number = request.getParameter("deed_number");
+				String serial_number = request.getParameter("serial_number");
+				String sheet_number = request.getParameter("sheet_number");
+				String plan_number = request.getParameter("plan_number");
+				String plot_number = request.getParameter("plot_number");
+				String lvb_number = request.getParameter("lvb_number");
+				String instrument_date = request.getParameter("instrument_date");
+				String instrument_type = request.getParameter("instrument_type");
+				String doc_number = request.getParameter("doc_number");
+				
+				// Party 1 Information
+				String party1_plaintiff = request.getParameter("party1_plaintiff");
+				String party1_plaintiff_tel_no = request.getParameter("party1_plaintiff_tel_no");
+				String party1_plaintiff_email = request.getParameter("party1_plaintiff_email");
+				String party1_plantiff_add = request.getParameter("party1_plantiff_add");
+				
+				// Party 2 Information
+				String party2_defendant = request.getParameter("party2_defendant");
+				String party2_defendant_tel_no = request.getParameter("party2_defendant_tel_no");
+				String party2_defendant_email = request.getParameter("party2_defendant_email");
+				String party2_defendant_add = request.getParameter("party2_defendant_add");
+				
+				// Financial Details
+				String consideration = request.getParameter("consideration");
+				String consideration_currency = request.getParameter("consideration_currency");
+				String premium = request.getParameter("premium");
+				String premium_currency = request.getParameter("premium_currency");
+				String rent = request.getParameter("rent");
+				String compensation_status = request.getParameter("compensation_status");
+				
+				// Additional Details
+				String term = request.getParameter("term");
+				String commencement_date = request.getParameter("commencement_date");
+				String purpose = request.getParameter("purpose");
+				String entered_date = request.getParameter("entered_date");
+				String consent_date = request.getParameter("consent_date");
+				String suit_number = request.getParameter("suit_number");
+				String judgement_in_favour_of = request.getParameter("judgement_in_favour_of");
+				String floor_level = request.getParameter("floor_level");
+				String apartment_number = request.getParameter("apartment_number");
+				String unit_description = request.getParameter("unit_description");
+				String hqfile_id = request.getParameter("hqfile_id");
+				String gid_unique_across = request.getParameter("gid_unique_across");
+				String remarks = request.getParameter("remarks");
+				String status = request.getParameter("status");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("modified_by", modified_by);
+				obj.put("modified_by_id", modified_by_id);
+				obj.put("mac_address", mac_address);
+				obj.put("ip_address", ip_address);
+				obj.put("regional_code", regional_code);
+				obj.put("t_id", t_id);
+							
+				// Basic Information
+				obj.put("jacket_name", jacket_name);
+				obj.put("region", region);
+				obj.put("reference_number", reference_number);
+				obj.put("file_number", file_number);
+				obj.put("property_number", property_number);
+				obj.put("submission_date", submission_date);
+							
+				// Document Details
+				obj.put("mutation_number", mutation_number);
+				obj.put("deed_number", deed_number);
+				obj.put("serial_number", serial_number);
+				obj.put("sheet_number", sheet_number);
+				obj.put("plan_number", plan_number);
+				obj.put("plot_number", plot_number);
+				obj.put("lvb_number", lvb_number);
+				obj.put("instrument_date", instrument_date);
+				obj.put("instrument_type", instrument_type);
+				obj.put("doc_number", doc_number);
+							
+				// Party 1 Information
+				obj.put("party1_plaintiff", party1_plaintiff);
+				obj.put("party1_plaintiff_tel_no", party1_plaintiff_tel_no);
+				obj.put("party1_plaintiff_email", party1_plaintiff_email);
+				obj.put("party1_plantiff_add", party1_plantiff_add);
+							
+				// Party 2 Information
+				obj.put("party2_defendant", party2_defendant);
+				obj.put("party2_defendant_tel_no", party2_defendant_tel_no);
+				obj.put("party2_defendant_email", party2_defendant_email);
+				obj.put("party2_defendant_add", party2_defendant_add);
+							
+				// Financial Details
+				obj.put("consideration", consideration);
+				obj.put("consideration_currency", consideration_currency);
+				obj.put("premium", premium);
+				obj.put("premium_currency", premium_currency);
+				obj.put("rent", rent);
+				obj.put("compensation_status", compensation_status);
+							
+				// Additional Details
+				obj.put("term", term);
+				obj.put("commencement_date", commencement_date);
+				obj.put("purpose", purpose);
+				obj.put("entered_date", entered_date);
+				obj.put("consent_date", consent_date);
+				obj.put("suit_number", suit_number);
+				obj.put("judgement_in_favour_of", judgement_in_favour_of);
+				obj.put("floor_level", floor_level);
+				obj.put("apartment_number", apartment_number);
+				obj.put("unit_description", unit_description);
+				obj.put("hqfile_id", hqfile_id);
+				obj.put("gid_unique_across", gid_unique_across);
+				obj.put("remarks", remarks);
+				obj.put("status", status);
+		
+				web_service_response = casemgt_cl_m.update_regional_transaction(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			if (request_type.equals("delete_regional_transaction")) {
+				String t_id = request.getParameter("t_id");
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("t_id", t_id);
+				obj.put("modified_by", modified_by);
+				obj.put("modified_by_id", modified_by_id);
+		
+				web_service_response = casemgt_cl_m.delete_regional_transaction(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			// ==================== QUALITY CONTROL OPERATIONS ====================
+		
+			if (request_type.equals("get_qc_pending_transactions")) {
+				String draw = request.getParameter("draw");
+				String start = request.getParameter("start");
+				String length = request.getParameter("length");
+				String regional_code = (String) session.getAttribute("regional_code");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("draw", draw != null ? draw : "1");
+				obj.put("start", start != null ? start : "0");
+				obj.put("length", length != null ? length : "10");
+				obj.put("regional_code", regional_code);
+		
+				web_service_response = casemgt_cl_m.get_qc_pending_transactions(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+		
+			if (request_type.equals("approve_transaction_qc")) {
+				String t_id = request.getParameter("t_id");
+				String approved_by = (String) session.getAttribute("userid");
+				String approved_by_name = (String) session.getAttribute("fullname");
+				String approval_remarks = request.getParameter("approval_remarks");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("t_id", t_id);
+				obj.put("approved_by", approved_by);
+				obj.put("approved_by_name", approved_by_name);
+				obj.put("approval_remarks", approval_remarks);
+		
+				web_service_response = casemgt_cl_m.approve_transaction_qc(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			if (request_type.equals("decline_transaction_qc")) {
+				String t_id = request.getParameter("t_id");
+				String declined_by = (String) session.getAttribute("userid");
+				String declined_by_name = (String) session.getAttribute("fullname");
+				String decline_reason = request.getParameter("decline_reason");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("t_id", t_id);
+				obj.put("declined_by", declined_by);
+				obj.put("declined_by_name", declined_by_name);
+				obj.put("decline_reason", decline_reason);
+		
+				web_service_response = casemgt_cl_m.decline_transaction_qc(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			if (request_type.equals("batch_approve_qc")) {
+				String transaction_ids = request.getParameter("transaction_ids");
+				String approved_by = (String) session.getAttribute("userid");
+				String approved_by_name = (String) session.getAttribute("fullname");
+				String approval_remarks = request.getParameter("approval_remarks");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("transaction_ids", transaction_ids);
+				obj.put("approved_by", approved_by);
+				obj.put("approved_by_name", approved_by_name);
+				obj.put("approval_remarks", approval_remarks);
+		
+				web_service_response = casemgt_cl_m.batch_approve_qc(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+		
+			// ==================== SEARCH AND EXPORT OPERATIONS ====================
+		
+			if (request_type.equals("search_regional_transactions")) {
+				String search_reference = request.getParameter("search_text");
+				String search_file = request.getParameter("search_file");
+				String search_jacket = request.getParameter("search_jacket");
+				String search_region = request.getParameter("search_region");
+				String search_district = request.getParameter("search_district");
+				String search_document_type = request.getParameter("search_document_type");
+				String date_from = request.getParameter("date_from");
+				String date_to = request.getParameter("date_to");
+				String draw = request.getParameter("draw");
+				String start = request.getParameter("start");
+				String length = request.getParameter("length");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("search_text", search_reference != null ? search_reference : "");
+				obj.put("search_file", search_file != null ? search_file : "");
+				obj.put("search_jacket", search_jacket != null ? search_jacket : "");
+				obj.put("search_region", search_region != null ? search_region : "");
+				obj.put("search_district", search_district != null ? search_district : "");
+				obj.put("search_document_type", search_document_type != null ? search_document_type : "");
+				obj.put("date_from", date_from != null ? date_from : "");
+				obj.put("date_to", date_to != null ? date_to : "");
+				obj.put("draw", draw != null ? draw : "1");
+				obj.put("start", start != null ? start : "0");
+				obj.put("length", length != null ? length : "10");
+		
+				web_service_response = casemgt_cl_m.search_regional_transactions(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+			
+			if (request_type.equals("search_regional_transaction_for_update")) {
+				String search_reference = request.getParameter("reference_number");
+		
+				JSONObject obj = new JSONObject();
+				obj.put("search_text", search_reference != null ? search_reference : "");
+		
+				web_service_response = casemgt_cl_m.search_regional_transaction_for_update(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+		
+				if (web_service_response != null) {
+						
+				}
+		
+				return web_service_response;
+			}
+
+		return null;
+	}
 
 	@RequestMapping("/acknowledgement_regional_number_bulk")
 	@PostMapping
@@ -11792,26 +11682,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 					String ws_case_number = ref_number;
 					JSONObject jsonobject = new JSONObject(web_service_response);
-					// String ws_case_number =
-					// jsonobject.getString("case_number");
-
-					// String ws_bill_details_db=
-					// case_mgt_cl.online_lc_job_number_payment_bill_by_bill_number(ws_bill_number);
-					// String ws_bill_details_db=
-					// case_mgt_cl.check_payment_status_of_bill_generate_bill(ws_bill_number);
-
-					//String pdf_dest = cls_url_config.getCase_upload_location();
-					//String files_pdf_jackets_p = pdf_dest + ws_case_number + "/" + ref_number + "_" + "rn_b"+ pdfFileName;
-
-					// File files_pdf_jackets = new File(pdf_dest + ws_case_number);
-
-					// if (!files_pdf_jackets.exists()) {
-					// 	if (files_pdf_jackets.mkdirs()) {
-					// 		//System.out.println("Multiple directories are created!");
-					// 	} else {
-					// 		//System.out.println("Failed to create multiple directories!");
-					// 	}
-					// }
+					
 					
 					byte[] buffer = null;
 
@@ -11823,17 +11694,6 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 							session.getAttribute("fullname").toString());
 
 
-
-				// 	JSONObject pdf_upload_obj = new JSONObject();
-				// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
-			
-				// pdf_upload_obj.put("jobNumber", job_number);
-				// pdf_upload_obj.put("caseNumber",case_number);
-				// pdf_upload_obj.put("fileData",base64Encoded);
-						
- 				// String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
- 				// cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
-////System.out.println(buffer);
 					if (buffer != null) {
 						// Set response content type to PDF
 						response.setContentType("application/pdf");

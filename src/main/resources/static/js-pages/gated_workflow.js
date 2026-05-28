@@ -2993,6 +2993,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const modifiedDate = $(this).data('modified_date') || 'Not modified';
         const noteStatus = $(this).data('note_status') || 'active';
         const noteDivision = $(this).data('division');
+        const noteJobNumber = $(this).data('job_number');
         
         // Populate the viewNotesModal with data
         $('#viewNotesModal #vi_note_id').val(noteId);
@@ -3001,6 +3002,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#viewNotesModal #vi_created_date').text(createdDate);
         $('#viewNotesModal #vi_modified_by').text(modifiedBy);
         $('#viewNotesModal #vi_modified_date').text(modifiedDate);
+        $('#viewNotesModal #vi_job_number').text(noteJobNumber);
         
         // Update status badge
         updateNoteStatusBadge(noteStatus);

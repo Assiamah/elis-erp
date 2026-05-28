@@ -1716,6 +1716,11 @@ public class GenerateCaseReports {
 							transaction_number, job_number, 
 							files_pdf_jackets_p);
 
+				}	else if (business_process_sub_name.equals("APPLICATION FOR DEED REGISTRATION MORTGAGE ON STOOL OR STATE LANDS")) {
+					buffer = case_reports_cl.create_deeds_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+							transaction_number, job_number, "",
+							files_pdf_jackets_p);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

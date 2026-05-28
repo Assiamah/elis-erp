@@ -2147,6 +2147,15 @@
                                         <div id="vi_note_description" class="note-content"></div>
                                     </div>
                                 </div>
+                                <div class="form-group mt-2">
+                                    <label for="vi_job_number" class="form-label fw-medium">
+                                        <i class="fas fa-hashtag me-1"></i>
+                                        Job Number
+                                    </label>
+                                    <div class="border rounded p-3">
+                                        <div id="vi_job_number" class="note-content"></div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <!-- Metadata Section -->

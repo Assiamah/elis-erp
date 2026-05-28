@@ -3444,6 +3444,13 @@
                     </h6>
                     <p class="mb-0" id="minuteDescription"></p>
                 </div>
+
+                <div class="border-start border-3 border-primary ps-3 py-2 mb-4">
+                    <h6 class="text-muted mb-2">
+                        <i class="fas fa-hashtag me-1"></i>Job Number
+                    </h6>
+                    <p class="mb-0" id="minuteJobNumber"></p>
+                </div>
                 
                 <!-- Minute Participants -->
                 <div class="row">
