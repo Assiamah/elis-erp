@@ -84,7 +84,7 @@ public class two_factor_verification extends HttpServlet {
 			web_service_response = vas_cl.select_user_for_two_factor_verification(
 					cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(), userName, password);
-					//System.out.println(web_service_response);
+					System.out.println(web_service_response);
 			JSONObject obj_test = new JSONObject(web_service_response);
 			String arr_login_response = obj_test.get("data").toString();
 			String success_obj = obj_test.get("success").toString();

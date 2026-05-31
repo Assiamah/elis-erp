@@ -4669,6 +4669,10 @@ Thank you.</textarea>
                     <button type="button" class="btn btn-success px-5" id="btn_generate_smd_barcode_new_address_code">
                         <i class="fas fa-qrcode me-2"></i>Generate Barcode
                     </button>
+
+                     <!-- <button type="button" class="btn btn-success px-5" id="btn_generate_smd_barcode_new_address_code">
+                        <i class="fas fa-qrcode me-2"></i>Generate Barcode
+                    </button> -->
                 </div>
             </div>
         </div>
