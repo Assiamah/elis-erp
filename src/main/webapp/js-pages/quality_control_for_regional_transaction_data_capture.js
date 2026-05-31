@@ -228,6 +228,29 @@
                 loadStatistics();
             }
         });
+
+        // Update Records Modal - Search button
+        $('#btn_search_update_record').on('click', function() {
+            searchTransactionForUpdate();
+        });
+
+        // Update Records Modal - Save button
+        $('#btn_save_updated_record').on('click', function() {
+            saveUpdatedTransaction();
+        });
+
+        // Update Records Modal - Enter key on search fields
+        $('#updateRecordsModal input').on('keypress', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                searchTransactionForUpdate();
+            }
+        });
+
+        // Clear form when modal is closed
+        $('#updateRecordsModal').on('hidden.bs.modal', function() {
+            clearUpdateForm();
+        });
     }
 
     /**
@@ -910,6 +933,213 @@
     function formatCurrency(amount, currency) {
         if (!amount || amount === '0' || amount === 0 || amount === 'null') return 'N/A';
         return `${currency || 'GHS'} ${parseFloat(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    }
+
+    /**
+     * Search for transaction to update
+     */
+    function searchTransactionForUpdate() {
+        const referenceNumber = $('#update_search_reference').val();
+
+        // Validate at least one search field is filled
+        if (!referenceNumber) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Search Required',
+                text: 'Please enter at least one search criteria'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'Case_Management_Serv',
+            data: {
+                request_type: 'search_regional_transaction_for_update',
+                reference_number: referenceNumber
+            },
+            cache: false,
+            success: function(response) {
+                const payload = parseJsonSafely(response);
+                const record = extractRecord(payload);
+
+                if (record) {
+                    populateUpdateForm(record);
+                    $('#update_record_form_section').show();
+                    $('#update_no_results').hide();
+                    $('#btn_save_updated_record').show();
+                } else {
+                    $('#update_record_form_section').hide();
+                    $('#update_no_results').show();
+                    $('#btn_save_updated_record').hide();
+                }
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error searching for transaction'
+                });
+                console.error('Search Error:', xhr);
+            }
+        });
+    }
+
+    /**
+     * Populate update form with transaction data
+     */
+    function populateUpdateForm(record) {
+        console.log(record);
+        // Store transaction ID
+        $('#update_t_id').val(record.t_id || '');
+
+        // Basic Information (Readonly)
+        $('#update_region').val(record.region || '');
+        $('#update_reference_number').val(record.reference_number || '');
+        $('#update_file_number').val(record.file_number || '');
+        $('#update_property_number').val(record.property_number || '');
+        $('#update_jacket_name').val(record.jacket_name || '');
+        $('#update_submission_date').val(record.submission_date || '');
+
+        // Document Details
+        $('#update_mutation_number').val(record.mutation_number || '');
+        $('#update_deed_number').val(record.deed_number || ''); // Editable
+        $('#update_serial_number').val(record.serial_number || ''); // Editable
+        $('#update_sheet_number').val(record.sheet_number || '');
+        $('#update_plan_number').val(record.plan_number || '');
+        $('#update_plot_number').val(record.plot_number || '');
+        $('#update_lvb_number').val(record.lvb_number || '');
+        $('#update_instrument_date').val(record.instrument_date || '');
+        $('#update_instrument_type').val(record.instrument_type || '');
+        $('#update_doc_number').val(record.doc_number || '');
+
+        // Party 1 Information (Readonly)
+        $('#update_party1_plaintiff').val(record.party1_plaintiff || '');
+        $('#update_party1_plaintiff_tel_no').val(record.party1_plaintiff_tel_no || '');
+        $('#update_party1_plaintiff_email').val(record.party1_plaintiff_email || '');
+        $('#update_party1_plantiff_add').val(record.party1_plantiff_add || '');
+
+        // Party 2 Information (Readonly)
+        $('#update_party2_defendant').val(record.party2_defendant || '');
+        $('#update_party2_defendant_tel_no').val(record.party2_defendant_tel_no || '');
+        $('#update_party2_defendant_email').val(record.party2_defendant_email || '');
+        $('#update_party2_defendant_add').val(record.party2_defendant_add || '');
+
+        // Financial Details (Readonly)
+        $('#update_consideration').val(formatCurrency(record.consideration, record.consideration_currency));
+        $('#update_consideration_currency').val(record.consideration_currency || 'GHS');
+        $('#update_premium').val(formatCurrency(record.premium, record.premium_currency));
+        $('#update_premium_currency').val(record.premium_currency || 'GHS');
+        $('#update_rent').val(record.rent || '');
+        $('#update_compensation_status').val(record.compensation_status || '');
+
+        // Additional Details (Readonly)
+        $('#update_term').val(record.term || '');
+        $('#update_commencement_date').val(record.commencement_date || '');
+        $('#update_purpose').val(record.purpose || '');
+        $('#update_entered_date').val(record.entered_date || '');
+        $('#update_consent_date').val(record.consent_date || '');
+        $('#update_suit_number').val(record.suit_number || '');
+        $('#update_judgement_in_favour_of').val(record.judgement_in_favour_of || '');
+        $('#update_floor_level').val(record.floor_level || '');
+        $('#update_apartment_number').val(record.apartment_number || '');
+        $('#update_remarks').val(record.remarks || '');
+    }
+
+    /**
+     * Save updated transaction
+     */
+    function saveUpdatedTransaction() {
+        const transactionId = $('#update_t_id').val();
+        const deedNumber = $('#update_deed_number').val().trim();
+        const serialNumber = $('#update_serial_number').val().trim();
+
+        // Validate required fields
+        if (!deedNumber && !serialNumber) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Deed Number and Serial Number are required'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Confirm Update?',
+            text: 'You are about to update the Deed Number and Serial Number. Continue?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="ri-save-line me-1"></i>Yes, Update',
+            cancelButtonText: '<i class="ri-close-line me-1"></i>Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'Case_Management_Serv',
+                    data: {
+                        request_type: 'update_regional_transaction',
+                        t_id: transactionId,
+                        deed_number: deedNumber,
+                        serial_number: serialNumber
+                    },
+                    cache: false,
+                    success: function(response) {
+                        const payload = parseJsonSafely(response);
+                        
+                        if (payload && (payload.success || payload.status === 'success')) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Updated!',
+                                text: 'Transaction updated successfully',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                            
+                            // Close modal and refresh table
+                            $('#updateRecordsModal').modal('hide');
+                            loadTransactions();
+                            loadStatistics();
+                            
+                            // Clear form
+                            clearUpdateForm();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: (payload && payload.message) ? payload.message : 'Failed to update transaction'
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error updating transaction'
+                        });
+                        console.error('Update Error:', xhr);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Clear update form
+     */
+    function clearUpdateForm() {
+        $('#update_search_reference').val('');
+        $('#update_search_jacket').val('');
+        $('#update_search_file_number').val('');
+        $('#update_search_deed_number').val('');
+        $('#update_search_serial_number').val('');
+        $('#update_record_form_section').hide();
+        $('#update_no_results').hide();
+        $('#btn_save_updated_record').hide();
+        
+        // Clear all form fields
+        $('#update_record_form_section input').val('');
     }
 
     /**

@@ -17,11 +17,18 @@
         <!-- Transactions Table -->
         <div class="card custom-card">
             <div class="card-header justify-content-between">
-                <div class="card-title">Transactions Pending Approval</div>
-                <button type="button" class="btn btn-success btn-sm" id="btn_batch_approve_selected" disabled>
-                    <i class="ri-checkbox-multiple-line me-1"></i> Approve Selected
-                    <span class="badge bg-light text-success ms-1" id="selected_qc_count">0</span>
-                </button>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="card-title mb-0">Transactions Pending Approval</div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateRecordsModal">
+                        <i class="ri-edit-line me-1"></i> Update Records
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" id="btn_batch_approve_selected" disabled>
+                        <i class="ri-checkbox-multiple-line me-1"></i> Approve Selected
+                        <span class="badge bg-light text-success ms-1" id="selected_qc_count">0</span>
+                    </button>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -247,6 +254,279 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success" id="btn_confirm_batch_approve">
                     <i class="ri-checkbox-circle-line me-1"></i> Confirm Batch Approval
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Records Modal -->
+<div class="modal fade" id="updateRecordsModal" tabindex="-1" aria-labelledby="updateRecordsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="updateRecordsModalLabel">
+                    <i class="ri-edit-line me-2"></i>Update Transaction Records
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search Section -->
+                <div class="card mb-3 border-success">
+                    <div class="card-header bg-primary-subtle">
+                        <h6 class="mb-0"><i class="ri-search-line me-2"></i>Search for Transaction</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="update_search_reference" class="form-label">Search Transactions</label>
+                                <input type="text" class="form-control" id="update_search_reference" placeholder="Enter a keyword">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary w-100" id="btn_search_update_record">
+                                    <i class="ri-search-line me-1"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction Details Form (Readonly except deed and serial) -->
+                <div id="update_record_form_section" style="display: none;">
+                    <input type="hidden" id="update_t_id">
+                    
+                    <!-- Basic Information -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="ri-information-line me-2"></i>Basic Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="update_region" class="form-label">Region</label>
+                                    <input type="text" class="form-control bg-light" id="update_region" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_reference_number" class="form-label">Reference Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_reference_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_file_number" class="form-label">File Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_file_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_property_number" class="form-label">Property Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_property_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_jacket_name" class="form-label">Jacket Name</label>
+                                    <input type="text" class="form-control bg-light" id="update_jacket_name" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_submission_date" class="form-label">Submission Date</label>
+                                    <input type="text" class="form-control bg-light" id="update_submission_date" readonly style="cursor: not-allowed;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Details -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="ri-file-text-line me-2"></i>Document Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="update_mutation_number" class="form-label">Mutation Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_mutation_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_deed_number" class="form-label">Deed Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control border-primary" id="update_deed_number" placeholder="Enter deed number" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_serial_number" class="form-label">Serial Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control border-primary" id="update_serial_number" placeholder="Enter serial number" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_sheet_number" class="form-label">Sheet Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_sheet_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_plan_number" class="form-label">Plan Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_plan_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_plot_number" class="form-label">Plot Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_plot_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_lvb_number" class="form-label">LVB Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_lvb_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_instrument_date" class="form-label">Instrument Date</label>
+                                    <input type="text" class="form-control bg-light" id="update_instrument_date" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_instrument_type" class="form-label">Instrument Type</label>
+                                    <input type="text" class="form-control bg-light" id="update_instrument_type" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_doc_number" class="form-label">Document Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_doc_number" readonly style="cursor: not-allowed;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parties Information -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="ri-user-line me-2"></i>Parties Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="mb-3 text-primary">Party 1 (Plaintiff/Grantor)</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="update_party1_plaintiff" class="form-label">Name</label>
+                                    <input type="text" class="form-control bg-light" id="update_party1_plaintiff" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="update_party1_plaintiff_tel_no" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_party1_plaintiff_tel_no" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="update_party1_plaintiff_email" class="form-label">Email</label>
+                                    <input type="text" class="form-control bg-light" id="update_party1_plaintiff_email" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="update_party1_plantiff_add" class="form-label">Address</label>
+                                    <textarea class="form-control bg-light" id="update_party1_plantiff_add" rows="2" readonly style="cursor: not-allowed;"></textarea>
+                                </div>
+                            </div>
+
+                            <h6 class="mb-3 text-primary">Party 2 (Defendant/Grantee)</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="update_party2_defendant" class="form-label">Name</label>
+                                    <input type="text" class="form-control bg-light" id="update_party2_defendant" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="update_party2_defendant_tel_no" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_party2_defendant_tel_no" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="update_party2_defendant_email" class="form-label">Email</label>
+                                    <input type="text" class="form-control bg-light" id="update_party2_defendant_email" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="update_party2_defendant_add" class="form-label">Address</label>
+                                    <textarea class="form-control bg-light" id="update_party2_defendant_add" rows="2" readonly style="cursor: not-allowed;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Details -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="ri-money-dollar-circle-line me-2"></i>Financial Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="update_consideration" class="form-label">Consideration Amount</label>
+                                    <input type="text" class="form-control bg-light" id="update_consideration" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_consideration_currency" class="form-label">Currency</label>
+                                    <input type="text" class="form-control bg-light" id="update_consideration_currency" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_premium" class="form-label">Premium Amount</label>
+                                    <input type="text" class="form-control bg-light" id="update_premium" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_premium_currency" class="form-label">Premium Currency</label>
+                                    <input type="text" class="form-control bg-light" id="update_premium_currency" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_rent" class="form-label">Rent</label>
+                                    <input type="text" class="form-control bg-light" id="update_rent" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_compensation_status" class="form-label">Compensation Status</label>
+                                    <input type="text" class="form-control bg-light" id="update_compensation_status" readonly style="cursor: not-allowed;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Details -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="ri-settings-3-line me-2"></i>Additional Details</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="update_term" class="form-label">Term</label>
+                                    <input type="text" class="form-control bg-light" id="update_term" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_commencement_date" class="form-label">Commencement Date</label>
+                                    <input type="text" class="form-control bg-light" id="update_commencement_date" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_purpose" class="form-label">Purpose</label>
+                                    <input type="text" class="form-control bg-light" id="update_purpose" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_entered_date" class="form-label">Entered Date</label>
+                                    <input type="text" class="form-control bg-light" id="update_entered_date" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_consent_date" class="form-label">Consent Date</label>
+                                    <input type="text" class="form-control bg-light" id="update_consent_date" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_suit_number" class="form-label">Suit Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_suit_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_judgement_in_favour_of" class="form-label">Judgement In Favour Of</label>
+                                    <input type="text" class="form-control bg-light" id="update_judgement_in_favour_of" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_floor_level" class="form-label">Floor Level</label>
+                                    <input type="text" class="form-control bg-light" id="update_floor_level" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="update_apartment_number" class="form-label">Apartment Number</label>
+                                    <input type="text" class="form-control bg-light" id="update_apartment_number" readonly style="cursor: not-allowed;">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="update_remarks" class="form-label">Remarks</label>
+                                    <textarea class="form-control bg-light" id="update_remarks" rows="3" readonly style="cursor: not-allowed;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results Message -->
+                <div id="update_no_results" class="alert alert-warning" style="display: none;">
+                    <i class="ri-error-warning-line me-2"></i>No transaction found matching your search criteria.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ri-close-line me-1"></i> Close
+                </button>
+                <button type="button" class="btn btn-primary" id="btn_save_updated_record" style="display: none;">
+                    <i class="ri-save-line me-1"></i> Save Changes
                 </button>
             </div>
         </div>

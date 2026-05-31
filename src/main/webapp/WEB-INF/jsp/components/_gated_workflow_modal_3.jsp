@@ -525,7 +525,7 @@
                                     <c:forEach items="${application_munites}" var="application_munites_row">
                                         <tr>
                                             <td class="fs-15">${application_munites_row.am_description}</td>
-                                            <td class="fs-12">${application_munites_row.ar_name}</td>
+                                            <td class="fs-12">${application_munites_row.am_from_officer}</td>
                                             <td class="fs-12">${application_munites_row.am_to_officer}</td>
                                             <td class="fs-12">${application_munites_row.am_activity_date}</td>
                                             <td>
@@ -3424,6 +3424,13 @@
                     </label>
                     <input type="text" class="form-control" id="dfe_file_number" value="${file_number}" placeholder="Enter file number">
                   </div>
+
+                  <div class="mb-3">
+                    <label for="dfe_property_number" class="form-label fw-semibold">
+                      <i class="bi bi-folder2-open me-2"></i>Property Number
+                    </label>
+                    <input type="text" class="form-control" id="dfe_property_number" value="${property_number}" placeholder="Enter property number">
+                  </div>
                 </div>
               </div>
 
@@ -3535,7 +3542,7 @@
           </small>
           <div class="d-flex flex-wrap gap-2 justify-content-end">
             <c:if test="${(division == 'LRD' or division == 'PVLMD') and user_level > 1}">
-              <button type="button" class="btn btn-danger d-none" id="btn_confirm_lrd_parcel_noting" data-deed-polygon-confirm="true">
+              <button type="button" class="btn btn-danger d-none" id="btn_confirm_lrd_parcel_noting_deed_data_capture" data-deed-polygon-confirm="true">
                 <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
               </button>
             </c:if>
@@ -3547,4 +3554,707 @@
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="modal fade modal-blur" id="schedule_adjudication_hearing" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-3 me-3">
+                        <i class="fas fa-clipboard-check text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="inspectionOfSiteModalLabel">
+                            Schedule Adjudication Hearing
+                        </h5>
+                        <!-- <p class="text-white-50 small mb-0">
+                             Notify applicant for land/property inspection
+                        </p> -->
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Case/Application Summary Card -->
+                <div class="card border-0 bg-light bg-gradient mb-4">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="fw-bold mb-0 text-dark">
+                                <i class="fas fa-briefcase me-2 text-primary"></i>Application Details
+                            </h6>
+                            <span class="badge bg-warning px-3 py-2">
+                                <i class="fas fa-clock me-1"></i> Pending Inspection
+                            </span>
+                        </div>
+                        
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-file-invoice text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Case Number</small>
+                                        <span class="fw-semibold small" id="adjudication_hearing_case_number">${case_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-info bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-briefcase text-info"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Job Number</small>
+                                        <span class="fw-semibold small" id="adjudication_hearing_job_number">${job_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-success bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-user text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Applicant Name</small>
+                                        <span class="fw-semibold small" id="adjudication_hearing_applicant_name">${ar_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-warning bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-tag text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Application Type</small>
+                                        <span class="fw-semibold small" id="adjudication_hearing_app_type">${business_process_sub_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Notification Form -->
+                <form id="adjudicationHearingNotificationForm" method="post" class="needs-validation" novalidate>
+                    
+                    <!-- Notification Message Section -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-white border-0 pt-3 pb-0">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-info bg-opacity-10 p-2 rounded-circle me-2">
+                                    <i class="fas fa-envelope text-info"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0">Notification Message</h6>
+                                <!-- <span class="badge bg-light text-dark ms-2 px-3 py-2">
+                                    <i class="fas fa-edit me-1"></i> Customize
+                                </span> -->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-bell me-1"></i> Notification Method
+                                    </label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="method_sms" checked>
+                                            <label class="form-check-label" for="method_sms">
+                                                <i class="fas fa-sms text-primary me-1"></i> SMS
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="method_email" checked>
+                                            <label class="form-check-label" for="method_email">
+                                                <i class="fas fa-envelope text-primary me-1"></i> Email
+                                            </label>
+                                        </div>
+                                        <!-- <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="method_letter">
+                                            <label class="form-check-label" for="method_letter">
+                                                <i class="fas fa-file-alt text-primary me-1"></i> Letter
+                                            </label>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <!-- <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-exclamation-triangle me-1"></i> Priority Level
+                                    </label>
+                                    <select class="form-select" id="inspection_priority">
+                                        <option value="normal" selected>Normal</option>
+                                        <option value="urgent">Urgent</option>
+                                        <option value="high">High Priority</option>
+                                    </select> -->
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-comment-dots me-1"></i> Custom Message
+                                    </label>
+                                    <textarea class="form-control bg-light" id="adjudication_hearing_custom_message" rows="7" 
+                                              placeholder="Compose your message here..."></textarea>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <div class="form-text text-muted">
+                                            <i class="fas fa-info-circle me-1"></i> 
+                                            Maximum 500 characters
+                                        </div>
+                                        <span class="text-muted small" id="message_char_count">250/500</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <!-- <div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-0">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-clock fa-fw"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <strong>Reminder:</strong> The applicant will be notified immediately via the selected channels. 
+                                                A follow-up reminder will be sent 24 hours before the scheduled inspection.
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+                    <div class="form-check mb-0">
+                        <!-- <input class="form-check-input" type="checkbox" id="send_copy">
+                        <label class="form-check-label small text-muted" for="send_copy">
+                            Send a copy to my email
+                        </label> -->
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <!-- <button type="button" class="btn btn-outline-primary px-4" id="previewNotification">
+                            <i class="fas fa-eye me-2"></i>Preview
+                        </button> -->
+                        <button type="submit" form="adjudicationHearingNotificationForm" class="btn btn-success px-5" id="sendAdjudicationHearingNotification">
+                            <i class="fas fa-paper-plane me-2"></i>Send Notification
+                            <span class="badge bg-white text-success ms-2 py-1 px-2">Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur" id="determine_outcome_of_objection" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered ">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-3 me-3">
+                        <i class="fas fa-gavel text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="determineOutcomeModalLabel">
+                            Determine Outcome of Objection
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                            Review and decide on the objection case
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Case/Application Summary Card -->
+                <div class="card border-0 bg-light bg-gradient mb-4">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="fw-bold mb-0 text-dark">
+                                <i class="fas fa-briefcase me-2 text-primary"></i>Objection Details
+                            </h6>
+                            <span class="badge bg-warning px-3 py-2">
+                                <i class="fas fa-clock me-1"></i> Pending Determination
+                            </span>
+                        </div>
+                        
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-file-invoice text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Case Number</small>
+                                        <span class="fw-semibold small" id="obj_case_number_display">${case_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-info bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-briefcase text-info"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Job Number</small>
+                                        <span class="fw-semibold small" id="obj_job_number_display">${job_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-success bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-user text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Applicant Name</small>
+                                        <span class="fw-semibold small" id="obj_applicant_name_display">${ar_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Outcome Selection Card -->
+                <div class="card shadow-sm mb-4">
+                    <!-- <div class="card-header bg-white border-0 pt-3 pb-0">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-info bg-opacity-10 p-2 rounded-circle me-2">
+                                <i class="fas fa-balance-scale text-info"></i>
+                            </div>
+                            <h6 class="fw-bold mb-0">Decision Outcome</h6>
+                            <span class="badge bg-light text-dark ms-2 px-3 py-2">
+                                <i class="fas fa-gavel me-1"></i> Select Ruling
+                            </span>
+                        </div>
+                    </div> -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-muted small text-uppercase mb-3">
+                                    <!-- <i class="fas fa-legal me-1"></i> -->
+                                     Choose Determination
+                                </label>
+                                <div class="d-flex gap-3 flex-wrap">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="objection_outcome" id="outcome_upheld" value="upheld" checked>
+                                        <label class="form-check-label fw-semibold" for="outcome_upheld">
+                                            <!-- <span class="badge bg-success bg-opacity-10 text-primary px-3 py-2">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                            </span> --> Objection Upheld
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="objection_outcome" id="outcome_not_upheld" value="not_upheld">
+                                        <label class="form-check-label fw-semibold" for="outcome_not_upheld">
+                                            <!-- <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2">
+                                                <i class="fas fa-times-circle me-1"></i>
+                                            </span> -->  Objection Not Upheld
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Forms Container -->
+                <div id="dynamic_form_container">
+                    <!-- Objection Upheld Form (Initially Visible) -->
+                    <div id="form_upheld_container" class="card shadow-sm mb-4">
+                        <div class="card-header bg-white border-0 pt-3 pb-0">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success bg-opacity-10 p-2 rounded-circle me-2">
+                                    <i class="fas fa-trophy text-success"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0 text-primary">Objection Upheld Details</h6>
+                                <span class="badge bg-success text-white ms-2 px-3 py-2">Approved</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="form_objection_upheld">
+                                <input id="action_on_form_upheld" type="hidden" value="upheld">
+                                <input id="obj_id_upheld" name="obj_id" type="hidden" value="${userid}">
+                                
+                                <div class="row g-3">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group mb-3">
+                                            <label for="upheld_reasons" class="form-label fw-semibold">
+                                                <i class="fas fa-exclamation-triangle me-1 text-primary"></i>Reasons for Upheld <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_reasons" id="upheld_reasons" class="form-control" rows="3" required placeholder="Provide detailed reasons for upholding the objection"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="upheld_remarks" class="form-label fw-semibold">
+                                                <i class="fas fa-comment me-1 text-primary"></i>Notify Applicant of Suspension <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_remarks" id="notification_suspension" class="form-control" rows="3" required placeholder="Provide detailed reasons for suspending the application"></textarea>
+                                        </div>
+                                        <!-- <div class="form-group mb-3">
+                                            <label for="upheld_status" class="form-label fw-semibold">
+                                                <i class="fas fa-toggle-on me-1 text-primary"></i>Status
+                                            </label>
+                                            <select name="obj_status" id="upheld_status" class="form-select" required>
+                                                <option value="true">Active</option>
+                                                <option value="false">Inactive</option>
+                                            </select>
+                                        </div> -->
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group mb-3">
+                                            <label for="upheld_remarks" class="form-label fw-semibold">
+                                                <i class="fas fa-comment me-1 text-primary"></i>Remarks <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_remarks" id="upheld_remarks" class="form-control" rows="3" required placeholder="Additional remarks or recommendations"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="upheld_reasons" class="form-label fw-semibold">
+                                                <i class="fas fa-exclamation-triangle me-1 text-primary"></i>Advise Objector to Submit Document <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_reasons" id="advise_objector" class="form-control" rows="3" required placeholder="Provide detailed advise for the objector to submit the required document"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="alert alert-success bg-success bg-opacity-10 border-success">
+                                            <div class="d-flex text-primary">
+                                                <div class="flex-shrink-0">
+                                                    <i class="fas fa-info-circle fa-fw"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    <strong>Note:</strong> Upholding this objection means the objector's claims are valid. The application will be rejected, and appropriate actions will be taken.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Objection Not Upheld Form (Initially Hidden) -->
+                    <div id="form_not_upheld_container" class="card shadow-sm mb-4" style="display: none;">
+                        <div class="card-header bg-white border-0 pt-3 pb-0">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-danger bg-opacity-10 p-2 rounded-circle me-2">
+                                    <i class="fas fa-ban text-danger"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0 text-danger">Objection Not Upheld Details</h6>
+                                <span class="badge bg-danger text-white ms-2 px-3 py-2">Rejected</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="form_objection_not_upheld">
+                                <input id="action_on_form_not_upheld" type="hidden" value="not_upheld">
+                                <input id="obj_id_not_upheld" name="obj_id" type="hidden" value="${userid}">
+                                
+                                <div class="row g-3">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group mb-3">
+                                            <label for="not_upheld_reasons" class="form-label fw-semibold">
+                                                <i class="fas fa-exclamation-triangle me-1 text-danger"></i>Reasons for Not Upheld <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_reasons" id="not_upheld_reasons" class="form-control" rows="3" required placeholder="Provide detailed reasons for not upholding the objection"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="not_upheld_remarks" class="form-label fw-semibold">
+                                                <i class="fas fa-exclamation-circle me-1 text-danger"></i>Notify Objector of Rejection <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_remarks" id="notification_rejection" class="form-control" rows="3" required placeholder="Provide detailed reasons for rejecting the objection"></textarea>
+                                        </div>
+                                        <!-- <div class="form-group mb-3">
+                                            <label for="not_upheld_status" class="form-label fw-semibold">
+                                                <i class="fas fa-toggle-on me-1 text-danger"></i>Status
+                                            </label>
+                                            <select name="obj_status" id="not_upheld_status" class="form-select" required>
+                                                <option value="true">Active</option>
+                                                <option value="false">Inactive</option>
+                                            </select>
+                                        </div> -->
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group mb-3">
+                                            <label for="not_upheld_remarks" class="form-label fw-semibold">
+                                                <i class="fas fa-comment me-1 text-danger"></i>Remarks <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_remarks" id="not_upheld_remarks" class="form-control" rows="3" required placeholder="Additional remarks or recommendations"></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="not_upheld_remarks" class="form-label fw-semibold">
+                                                <i class="fas fa-comment me-1 text-danger"></i>Notify Applicant <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea name="obj_remarks" id="notification_rejection" class="form-control" rows="3" required placeholder="Provide detailed reasons for rejecting the objection"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="alert alert-warning bg-warning bg-opacity-10 border-warning">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <i class="fas fa-info-circle fa-fw"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-2">
+                                                    <strong>Note:</strong> Not upholding this objection means the objector's claims are invalid. The application will proceed, and appropriate notifications will be sent.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-end w-100 gap-2">
+                    <!-- <div class="form-check mb-0">
+                        <input class="form-check-input" type="checkbox" id="notify_parties">
+                        <label class="form-check-label small text-muted" for="notify_parties">
+                            <i class="fas fa-bell me-1"></i> Notify all parties of outcome
+                        </label>
+                    </div> -->
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <!-- <button type="button" class="btn btn-primary px-4" id="previewOutcome">
+                            <i class="fas fa-eye me-2"></i>Preview Decision
+                        </button> -->
+                        <button type="submit" class="btn btn-success px-5" id="submitOutcomeDecision">
+                            <i class="fas fa-check-circle me-2"></i>Submit Decision
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur" id="delink_jobs_mother_from_baby" tabindex="-1" aria-labelledby="delinkMotherBabyModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-danger text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-3 me-3">
+                        <i class="fas fa-unlink text-danger fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="delinkMotherBabyModalLabel">
+                            Delink Mother from Baby
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                            Disassociate relationship between jobs
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Warning Alert -->
+                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mb-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle fa-fw fs-4"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                            <strong class="text-danger">Warning!</strong>
+                            <p class="mb-0 small">Delinking will remove the relationship between mother and baby job. This action can be undone by relinking them later.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Form -->
+                <form id="delinkJobsForm" method="post" class="needs-validation" novalidate>
+                    
+                    <!-- Baby Job Details Card -->
+                    <div class="card shadow-sm mb-4 border-0">
+                        <div class="card-header bg-white border-0 pt-3 pb-0">
+                            <div class="d-flex align-items-center">
+                                <h6 class="fw-bold mb-0">Baby Job Details</h6>
+                                <span class="badge bg-warning text-dark ms-2 px-3 py-2">Child Application</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="baby_job_number" class="form-label fw-semibold">
+                                        <i class="fas fa-briefcase me-1 text-warning"></i>Job Number
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-hashtag text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control bg-light" id="baby_job_number" 
+                                               name="baby_job_number" value="${job_number}" placeholder="Enter baby job number" 
+                                               required readonly autocomplete="off" style="cursor: not-allowed;">
+                                    </div>
+                                    <!-- <div class="form-text text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the job number of the baby/child application
+                                    </div> -->
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-info-circle me-1 text-warning"></i>Current Mother Information
+                                    </label>
+                                    <div class="bg-light p-3 rounded-3">
+                                        <!-- <div class="d-flex justify-content-between align-items-center mb-2"> -->
+                                            <!-- <span class="small text-muted">Linked Mother Job:</span> -->
+
+                                            <div class="table-responsive">
+                                              <table class="table table-sm table-hover w-100" width="100%">
+                                                  <thead>
+                                                      <tr>
+                                                          <th>Job Number</th>
+                                                          <th>Case Number</th>
+                                                          <th>Type of Relationship</th>
+                                                          <th>Date</th>
+                                                          <th>Action</th>
+                                                      </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                      <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
+                                                          <tr>
+                                                          
+                                                              <td>${mother_to_child_link_row.job_number}</td>
+                                                              <td>${mother_to_child_link_row.mc_case_number}</td>
+                                                              <td>${mother_to_child_link_row.mc_type_of_relationship}</td>
+                                                              <td>${mother_to_child_link_row.created_date}</td>
+                                                              <td>
+                                                                  <c:choose>
+                                                                      <c:when test="${not empty business_process_sub_name and fn:containsIgnoreCase(business_process_sub_name, 'deed')}">
+                                                                          <button type="button"  
+                                                                              data-job_number="${mother_to_child_link_row.mc_job_number}" 
+                                                                              data-case_number="${mother_to_child_link_row.mc_case_number}" 
+                                                                              data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
+                                                                              class="btn btn-sm btn-warning btn-view-mother-Child-details-deed"
+                                                                          >
+                                                                              <i class="fas fa-eye"></i>
+                                                                          </button> 
+                                                                      </c:when>
+
+                                                                      <c:otherwise>
+                                                                          <button type="button"  
+                                                                              data-job_number="${mother_to_child_link_row.mc_job_number}" 
+                                                                              data-case_number="${mother_to_child_link_row.mc_case_number}" 
+                                                                              data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
+                                                                              class="btn btn-sm btn-warning btn-view-mother-Child-details"
+                                                                          >
+                                                                              <i class="fas fa-eye"></i>
+                                                                          </button> 
+                                                                      </c:otherwise>
+                                                                  </c:choose>
+                                                              </td>
+                                                          </tr>
+                                                      </c:forEach>
+                                                  </tbody>
+                                              </table>
+                                          </div>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mother Job Details Card -->
+                    <div class="card shadow-sm mb-4 border-0">
+                        <div class="card-header bg-white border-0 pt-3 pb-0">
+                            <div class="d-flex align-items-center">
+                                <h6 class="fw-bold mb-0">Mother Job Details</h6>
+                                <span class="badge bg-primary text-white ms-2 px-3 py-2">Parent Application</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="mother_job_number" class="form-label fw-semibold">
+                                        <i class="fas fa-briefcase me-1 text-primary"></i>Job Number
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-hashtag text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="mother_job_number" 
+                                               name="mother_job_number" placeholder="Enter mother job number" 
+                                               required autocomplete="off">
+                                    </div>
+                                    <div class="form-text text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Enter the job number of the mother/parent application
+                                    </div>
+                                </div>
+                                
+                                <!-- <div class="col-12">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-children me-1 text-primary"></i>Associated Baby Jobs
+                                    </label>
+                                    <div class="bg-light p-3 rounded-3" style="max-height: 150px; overflow-y: auto;">
+                                        <div class="text-muted text-center" id="associated_babies_list">
+                                            <i class="fas fa-spinner fa-spin me-2"></i>Enter mother job to view associated babies
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirmation Section -->
+                    <!-- <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="confirm_delink" required>
+                                <label class="form-check-label fw-semibold" for="confirm_delink">
+                                    I confirm that I want to delink this mother from baby job
+                                </label>
+                            </div>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-end w-100 gap-2">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger px-5" id="confirmDelinkBtn" >
+                        <i class="fas fa-unlink me-2"></i>Delink Jobs
+                        <span class="badge bg-white text-danger ms-2 py-1 px-2">Confirm</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1277,6 +1277,7 @@
                                                                 data-modified_by="${application_notes_row.created_by}"
                                                                 data-modified_date="${application_notes_row.created_date}"
                                                                 data-division="${application_notes_row.division}"
+                                                                data-job_number="${application_notes_row.job_number}"
                                                                 ${application_notes_row.an_status == false ? "disabled" : ""}>
                                                             <i class="fas fa-eye me-1"></i>
                                                         </button>
@@ -1439,7 +1440,7 @@
                                         <tbody>
                                             <c:forEach items="${case_query}" var="case_query_row">
                                                 <tr>
-                                                    <td>${case_query_row.reasons}</td>
+                                                    <td>${case_query_row.query_general_reason}</td>
                                                     <td>${case_query_row.created_date}</td>
                                                     <td>
                                                         <span class="badge ${case_query_row.status == 1 ? 'bg-danger text-white' : 'bg-success text-white'}">

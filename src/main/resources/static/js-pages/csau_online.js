@@ -5264,9 +5264,9 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 
 					// Process each bill
 					result.data.forEach(function(bill) {
-						console.log('Payment status:', bill.payment_confirmation_status);
+						console.log('Payment status:', bill.payment_confiration_status);
 						
-						if (bill.payment_confirmation_status === 0) {
+						if (bill.payment_confiration_status === 0) {
 							hasUnpaidBills = true;
 							unpaidBillsCount++;
 						} else {
@@ -5358,9 +5358,9 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 				`;
 				
 				bills.forEach(bill => {
-					const statusClass = bill.payment_confirmation_status === 0 ? 'danger' : 'success';
-					const statusText = bill.payment_confirmation_status === 0 ? 'Unpaid' : 'Paid';
-					const statusIcon = bill.payment_confirmation_status === 0 ? 'fa-times-circle' : 'fa-check-circle';
+					const statusClass = bill.payment_confiration_status === 0 ? 'danger' : 'success';
+					const statusText = bill.payment_confiration_status === 0 ? 'Unpaid' : 'Paid';
+					const statusIcon = bill.payment_confiration_status === 0 ? 'fa-times-circle' : 'fa-check-circle';
 					
 					billDetailsHtml += `
 						<tr>
