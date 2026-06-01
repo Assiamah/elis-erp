@@ -2810,25 +2810,27 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			p10_a.setAlignment(Element.ALIGN_LEFT);
 			document.add(p10_a);
 
+			Paragraph p2 = new Paragraph("Assessed Value: " + bd_assessed_value_amount,
+					new Font(FontFamily.TIMES_ROMAN, 10));
+			p2.setAlignment(Element.ALIGN_LEFT);
+			document.add(p2);
+
 
 			Paragraph p1 = new Paragraph("Stamp Duty Amount: " + bd_stamp_duty_amount,
 					new Font(FontFamily.TIMES_ROMAN, 10));
 			p1.setAlignment(Element.ALIGN_LEFT);
 			document.add(p1);
 
-			// Paragraph p12 = new Paragraph("Duplicate Copies: " + "54.00",
-			// 		new Font(FontFamily.TIMES_ROMAN, 10));
-			// p1.setAlignment(Element.ALIGN_LEFT);
-			// document.add(p12);
+			Paragraph p12 = new Paragraph("Additional Copies: " + "54.00",
+					new Font(FontFamily.TIMES_ROMAN, 10));
+			p12.setAlignment(Element.ALIGN_LEFT);
+			document.add(p12);
 
-			p1 = new Paragraph("Amount In Words: " + AmountInWords.convertToCurrency(bd_stamp_duty_amount),
+			double updatedAmount = Double.parseDouble(bd_stamp_duty_amount) + Double.parseDouble("54");
+
+			p1 = new Paragraph("Total Amount In Words: " + AmountInWords.convertToCurrency(String.valueOf(updatedAmount)),
 					new Font(FontFamily.TIMES_ROMAN, 10));
 			document.add(p1);
-
-			Paragraph p2 = new Paragraph("Assessed Value: " + bd_assessed_value_amount,
-					new Font(FontFamily.TIMES_ROMAN, 10));
-			p2.setAlignment(Element.ALIGN_LEFT);
-			document.add(p2);
 
 			// Paragraph p3 = new Paragraph("Comments: " + bd_assessed_comment, new Font(FontFamily.TIMES_ROMAN, 10));
 			// p3.setAlignment(Element.ALIGN_LEFT);

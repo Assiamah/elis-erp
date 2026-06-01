@@ -14230,6 +14230,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var nature_of_instrument_on_tc = $("#nature_of_instrument_on_tc_e").val();
         var job_number_on_tc = $("#job_number_on_tc_e").val();
         var case_number_on_tc = $("#case_number_on_tc_e").val();
+
+        var licensed_no = $("#licensed_surveyor_no_on_tcland_size_on_tc_e").val();
         
         // Validate required fields
         if (!applicant_name_on_tc) {
@@ -14371,7 +14373,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         case_number: case_number_on_tc,
                         nature_of_instrument: nature_of_instrument_on_tc,
                         office_region_id: office_region_id,
-                        office_region_name: office_region_name
+                        office_region_name: office_region_name,
+                        licensed_no: licensed_no
                     },
                     cache: false,
                     timeout: 30000, // 30 second timeout
@@ -19913,6 +19916,14 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#form_assessment').on('submit', function(e) {
         e.preventDefault();
         
+        // Check if exempt case is selected
+        const isExempt = $('#exempt_yes').is(':checked');
+        
+        // If exempt, set assessed_value to 0
+        if (isExempt) {
+            $('#assessed_value').val('0');
+        }
+        
         // Get form values
         const case_number = $("#cs_main_transaction_number").val();
         const job_number = $("#cs_main_job_number").val();
@@ -19924,12 +19935,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validation
         const validationErrors = [];
         
-        if (!assessed_value || parseFloat(assessed_value) <= 0) {
+        // For exempt cases, assessed value should be 0 and validation is skipped
+        if (!isExempt && (!assessed_value || parseFloat(assessed_value) <= 0)) {
             validationErrors.push('Valid Assessed Value is required');
         }
-        if (!stamp_duty || parseFloat(stamp_duty) <= 0) {
+        
+        // For exempt cases, stamp duty can be 0
+        if (!isExempt && (!stamp_duty || parseFloat(stamp_duty) <= 0)) {
             validationErrors.push('Valid Stamp Duty Payable is required');
         }
+        
         if (!assessed_comment) {
             validationErrors.push('Assessment Comments are required');
         }
@@ -20303,8 +20318,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Handle exempt case radio button changes
+    $(document).on('change', 'input[name="is_exempt"]', function() {
+        const isExempt = $('#exempt_yes').is(':checked');
+        
+        if (isExempt) {
+            // Hide assessment values section
+            $('#assessment_values').hide();
+            // Clear the values
+            $('#adopted_value').val('');
+            $('#assessed_value').val('0');
+            $('#stamp_duty').val('0');
+        } else {
+            // Show assessment values section
+            $('#assessment_values').show();
+        }
+    });
+
+    // Initialize exempt state when modal is shown
+    $('#enter_assessed_value_and_duty_payable').on('shown.bs.modal', function() {
+        const isExempt = $('#exempt_yes').is(':checked');
+        
+        if (isExempt) {
+            $('#assessment_values').hide();
+        } else {
+            $('#assessment_values').show();
+        }
+    });
+
     $('#submit_print_stamp_bill').on('click', function(e) {
         e.preventDefault();
+        
+        // Check if exempt case is selected
+        const isExempt = $('#exempt_yes').is(':checked');
+        
+        // If exempt, set assessed_value to 0
+        if (isExempt) {
+            $('#assessed_value').val('0');
+        }
         
         // Get form values
         const job_number = $("#cs_main_job_number").val();
@@ -20325,10 +20376,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!job_number) validationErrors.push('Job Number is missing');
         if (!case_number) validationErrors.push('Case Number is missing');
         if (!ar_name) validationErrors.push('Applicant Name is required');
-        if (!stamp_duty_amount || parseFloat(stamp_duty_amount) <= 0) {
+        
+        // For exempt cases, stamp duty can be 0
+        if (!isExempt && (!stamp_duty_amount || parseFloat(stamp_duty_amount) <= 0)) {
             validationErrors.push('Valid Stamp Duty amount is required');
         }
-        if (!assessed_value_amount || parseFloat(assessed_value_amount) <= 0) {
+        
+        // For exempt cases, assessed value should be 0 and validation is skipped
+        if (!isExempt && (!assessed_value_amount || parseFloat(assessed_value_amount) <= 0)) {
             validationErrors.push('Valid Assessed Value is required');
         }
         

@@ -286,6 +286,14 @@
                                 <option>FREEHOLD</option>
                             </select>
                         </div>
+                        <!-- <div class="col-md-6">
+                            <label for="land_size_on_tc_e" class="form-label">
+                                <i class="bi bi-hash me-1"></i>Licensed Surveyor No.
+                            </label>
+                            <input class="form-control" id="land_size_on_tc_e"
+                                name="licensed_surveyor_no_on_tcland_size_on_tc" type="text"
+                                aria-describedby="nameHelp" placeholder="Enter Licensed Surveyor no." required>
+                        </div> -->
                     </div>
                 </div>
 
@@ -422,7 +430,7 @@
 
                 <div class="form-group mb-3">
                     <div class="row g-3">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="land_size_on_tc_e" class="form-label">
                                 <i class="bi bi-rulers me-1"></i>Land Size (Acre(s))
                             </label>
@@ -430,7 +438,7 @@
                                 name="land_size_on_tcland_size_on_tc_e" type="text"
                                 aria-describedby="nameHelp" placeholder="Enter land Size" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="type_of_use_on_tc_e" class="form-label">
                                 <i class="bi bi-tags me-1"></i>Type of Use
                             </label>
@@ -439,7 +447,7 @@
                                 <option value="-1"> -- Select --</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="type_of_interest_on_tc_e" class="form-label">
                                 <i class="bi bi-briefcase me-1"></i>Type of Interest
                             </label>
@@ -448,6 +456,14 @@
                                 <option>LEASEHOLD</option>
                                 <option>FREEHOLD</option>
                             </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="land_size_on_tc_e" class="form-label">
+                                <i class="bi bi-hash me-1"></i>Licensed Surveyor No.
+                            </label>
+                            <input class="form-control" id="land_size_on_tc_e"
+                                name="licensed_surveyor_no_on_tcland_size_on_tc_e" type="text"
+                                aria-describedby="nameHelp" placeholder="Enter Licensed Surveyor no." required>
                         </div>
                     </div>
                 </div>
@@ -4231,9 +4247,9 @@
                         <form id="form_assessment" method="post" class="needs-validation" novalidate>
                             
                             <!-- Consideration & Currency Row -->
-                            <div class="bg-gradient-secondary bg-opacity-10 rounded-3 p-4 mb-4">
-                                <div class="row g-4">
-                                    <div class="col-md-6">
+                            <div class="bg-gradient-secondary bg-opacity-10 rounded-3 mb-4">
+                                <div class="row">
+                                    <div class="col-md-4">
                                         <label class="form-label fw-semibold text-muted small text-uppercase">
                                             <i class="fas fa-hand-holding-usd me-1"></i> Consideration Fee
                                         </label>
@@ -4249,7 +4265,23 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold text-muted small text-uppercase">
+                                            <i class="fas fa-hand-holding-usd me-1"></i> Annual Rent
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white fw-bold">
+                                                ${consideration_fee_currency}
+                                            </span>
+                                            <input type="number" class="form-control bg-white" 
+                                                   value="${annual_rent}" step="0.01" 
+                                                   placeholder="0.00" readonly>
+                                            <span class="input-group-text bg-light border-start-0 text-muted">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="form-label fw-semibold text-muted small text-uppercase">
                                             <i class="fas fa-exchange-alt me-1"></i> Currency Rate
                                         </label>
@@ -4272,8 +4304,34 @@
                                 </div>
                             </div>
 
+                            <!-- Exempt case -->
+                           <div class="row g-4 mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold text-muted small text-uppercase">
+                                        <i class="fas fa-question-circle me-1"></i> Is it an exempt case?
+                                    </label>
+                                    <div class="d-flex gap-3 mt-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="is_exempt" id="exempt_yes" value="yes" required>
+                                            <label class="form-check-label" for="exempt_yes">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="is_exempt" id="exempt_no" value="no" required>
+                                            <label class="form-check-label" for="exempt_no">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i> Select Yes if exempt, otherwise No.
+                                    </div> -->
+                                </div>
+                            </div>
+
                             <!-- Assessment Values -->
-                            <div class="row g-4 mb-4">
+                            <div class="row g-4 mb-4" id="assessment_values">
                                 <div class="col-md-4">
                                     <label class="form-label fw-semibold text-muted small text-uppercase">
                                         <i class="fas fa-check-circle me-1"></i> Adopted Value (Per Acre)
@@ -4350,7 +4408,7 @@
                                     <div class="d-flex gap-2">
                                         <button type="button" name="submit_print_stamp_bill" id="submit_print_stamp_bill" 
                                                 class="btn btn-warning flex-grow-1 py-3 fw-semibold">
-                                            <i class="fas fa-print me-2"></i> Print Bill
+                                            <i class="fas fa-print me-2"></i> Generate Bill
                                         </button>
                                         <!-- <button type="button" class="btn btn-outline-secondary px-4" 
                                                 data-bs-dismiss="modal" aria-label="Close">

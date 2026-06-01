@@ -6059,6 +6059,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String job_number = request.getParameter("job_number");
 				String case_number = request.getParameter("case_number");
 
+				String licensed_no = request.getParameter("licensed_no");
+
 				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
 
 				String userid = (String) session.getAttribute("userid");
@@ -6089,6 +6091,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				property_data_json.put("job_number", job_number);
 				property_data_json.put("case_number", case_number);
+
+				property_data_json.put("licensed_no", licensed_no);
 
 				property_data_json.put("fullname", fullname);
 				property_data_json.put("userid", userid);

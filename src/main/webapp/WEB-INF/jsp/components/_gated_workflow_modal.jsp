@@ -918,8 +918,9 @@
             <select name="party_ar_type_of_party_gen" id="party_ar_type_of_party_gen" 
                     class="form-select" required>
               <option value="">Select Party Type</option>
-              <option value="Applicant">Applicant</option>
+              <!-- <option value="Applicant">Applicant</option> -->
               <option value="Grantor">Grantor</option>
+              <option value="Grantee">Grantee</option>
               <option value="Assignor">Assignor</option>
               <option value="Assignee">Assignee</option>
               <option value="Mortgagor">Mortgagor</option>
@@ -927,6 +928,12 @@
               <option value="Lessee">Lessee</option>
               <option value="Lessor">Lessor</option>
               <option value="Depositor">Depositor</option>
+              <option value="Donor">Donor</option>
+              <option value="Donee">Donee</option>
+              <option value="Appointer">Appointer</option>
+              <option value="Appointee">Appointee</option>
+              <option value="Sub Lessee">Sub Lessee</option>
+              <option value="Sub Lessor">Sub Lessor</option>
             </select>
             <div class="form-text">
               <i class="bi bi-info-circle me-1"></i>Select the role this party plays in the transaction
