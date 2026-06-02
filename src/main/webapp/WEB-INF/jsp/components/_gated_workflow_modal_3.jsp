@@ -3370,7 +3370,12 @@
                       <i class="bi bi-arrows-angle-expand me-2"></i>Extent (Land Size)
                       <span class="text-danger">*</span>
                     </label>
-                    <input type="text" class="form-control" id="dfe_extent" value="${extent}" required>
+                    <div class="input-group">
+                      <button class="btn btn-secondary" id="convert_acres_to_extent_deed">
+                        <i class="bi bi-arrow-repeat me-2"></i>Load Extent
+                      </button>
+                      <input type="text" class="form-control bg-light" id="dfe_extent" value="${extent}" required readonly>
+                    </div>
                   </div>
 
                   <div class="mb-3">

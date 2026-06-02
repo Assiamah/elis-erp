@@ -1154,6 +1154,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    $('#convert_acres_to_extent').on('click', function() {
+        const acres = parseFloat($('#fe_land_size').val()) || 0;
+        const extent = acres * 0.404686;
+
+        $('#fe_extent').val(
+            acres.toFixed(3) + ' Acre(s) or ' + extent.toFixed(3) + ' Hectare(s)'
+        );
+    });
+
     $('#frmFurtherEntries_only_').on('submit', function(e) {
         e.preventDefault();
         
@@ -1469,6 +1478,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+    });
+
+    $('#convert_acres_to_extent_deed').on('click', function(e) {
+        e.preventDefault();
+        const acres = parseFloat($('#dfe_land_size').val()) || 0;
+        const extent = acres * 0.404686;
+
+        $('#dfe_extent').val(
+            acres.toFixed(3) + ' Acre(s) or ' + extent.toFixed(3) + ' Hectare(s)'
+        );
     });
 
     $('#frmDeedFurtherEntries_only_').on('submit', function(e) {
@@ -23251,9 +23270,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Create description cell
                         var descCell = $('<td>').text(item.bse_description || 'N/A');
+
+                        //create milestone cell
+                        var milestoneCell = $('<td>').text(item.milestone_description || 'N/A');
                         
                         // Append row to table
-                        $('<tr>').append(descCell, radioCell).appendTo(table);
+                        $('<tr>').append(descCell, milestoneCell, radioCell).appendTo(table);
                     });
                     
                     // Update full name field if available

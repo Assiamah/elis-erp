@@ -461,7 +461,7 @@
                             <label for="land_size_on_tc_e" class="form-label">
                                 <i class="bi bi-hash me-1"></i>Licensed Surveyor No.
                             </label>
-                            <input class="form-control" id="land_size_on_tc_e"
+                            <input class="form-control" id="licensed_surveyor_no_on_tcland_size_on_tc_e"
                                 name="licensed_surveyor_no_on_tcland_size_on_tc_e" type="text"
                                 aria-describedby="nameHelp" placeholder="Enter Licensed Surveyor no." required>
                         </div>
@@ -5648,7 +5648,7 @@ Thank you.</textarea>
 <!-- Update Digital Workflow Milestone Modal - Bootstrap 5 -->
 <div class="modal fade effect-fade modal-blur" id="update_digital_workflow_milestone" tabindex="-1" 
      aria-labelledby="updateDigitalWorkflowLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-md">
         <div class="modal-content border-0">
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
@@ -5692,6 +5692,7 @@ Thank you.</textarea>
                                 <thead class="bg-light">
                                     <tr>
                                         <th class="px-3 py-3">Description</th>
+                                        <th class="px-3 py-3">Milestone</th>
                                         <th class="px-3 py-3 text-center" width="120">Option</th>
                                     </tr>
                                 </thead>
