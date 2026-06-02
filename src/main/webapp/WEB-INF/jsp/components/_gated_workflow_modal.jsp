@@ -4340,7 +4340,7 @@
                                   </label>
                                   <div class="input-group">
                                       <span class="input-group-text">
-                                          <i class="fas fa-dollar-sign"></i>
+                                          <i class="fas fa-money-bill-wave"></i>
                                       </span>
                                       <input type="text" name="ps_price_paid" id="ps_price_paid" 
                                             class="form-control" required 

@@ -438,6 +438,18 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center">
+                                    <!-- <div class="avatar-sm bg-info bg-opacity-10 rounded-circle me-2">
+                                        <i class="bi bi-person text-info"></i>
+                                    </div> -->
+                                    <div>
+                                        <small class="text-muted d-block">Type of Transfer</small>
+                                        <strong class="text-dark">${intended_parcel}</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

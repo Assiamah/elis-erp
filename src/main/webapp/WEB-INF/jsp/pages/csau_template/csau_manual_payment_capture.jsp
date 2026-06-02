@@ -280,7 +280,7 @@
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light border-end-0">
-                                            <i class="fas fa-dollar-sign text-muted"></i>
+                                            <i class="fas fa-money-bill-wave text-muted"></i>
                                         </span>
                                         <input type="text" class="form-control border-start-0 bg-light fw-bold text-danger" 
                                                id="mre_amount_due" readonly>
@@ -307,7 +307,7 @@
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light border-end-0">
-                                            <i class="fas fa-dollar-sign text-muted"></i>
+                                            <i class="fas fa-money-bill-wave text-muted"></i>
                                         </span>
                                         <input type="text" class="form-control border-start-0" 
                                                id="mre_amount_paid" 

@@ -4356,7 +4356,7 @@
                                 <div class="col-md-4">
                                     <label for="tb_bill_amount" class="form-label fw-medium">Bill Amount <span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
                                         <input type="text" class="form-control" id="tb_bill_amount" name="tb_bill_amount" placeholder="0.00" required>
                                         <div class="invalid-feedback">
                                             Please enter bill amount.
@@ -4515,7 +4515,7 @@
                                 <div class="col-md-6">
                                     <label for="mbm_bill_amount" class="form-label fw-medium">Bill Amount <span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
                                         <input type="text" class="form-control" id="mbm_bill_amount" name="mbm_bill_amount" placeholder="0.00" required>
                                         <div class="invalid-feedback">
                                             Please enter a valid bill amount.

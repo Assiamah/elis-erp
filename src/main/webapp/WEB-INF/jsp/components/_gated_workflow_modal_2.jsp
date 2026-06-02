@@ -3470,7 +3470,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="avatar-sm bg-light-warning rounded-circle d-flex align-items-center justify-content-center me-3">
-                                <i class="fas fa-dollar-sign text-warning"></i>
+                                <i class="fas fa-money-bill-wave text-warning"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <label class="form-label fw-medium mb-1">Current Amount</label>
@@ -6350,7 +6350,7 @@ Thank you.</textarea>
                                   </label>
                                   <div class="input-group">
                                       <span class="input-group-text">
-                                          <i class="fas fa-dollar-sign"></i>
+                                          <i class="fas fa-money-bill-wave"></i>
                                       </span>
                                       <input type="text" name="tr_price_paid" id="tr_price_paid" 
                                             class="form-control" required 
