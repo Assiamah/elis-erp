@@ -976,30 +976,30 @@ $(document)
 							.addEventListener(
 									'click',
 									function(e) {
-										var table = $('#coordinatelis_Table')
-												.tableToJSON();
+										// var table = $('#coordinatelis_Table')
+										// 		.tableToJSON();
 										// s console.log(table);
 										// alert(JSON.stringify(table));
-										var list_of_application_new = JSON
-												.stringify(table);
-										console.log(list_of_application_new);
+										// var list_of_application_new = JSON
+										// 		.stringify(table);
+										// console.log(list_of_application_new);
 
-										var json_p = JSON
-												.parse(list_of_application_new);
+										// var json_p = JSON
+										// 		.parse(list_of_application_new);
 
-										console.log(json_p);
-										polygon = '';
+										// console.log(json_p);
+										// polygon = '';
 
-										point_coordinate_list = '';
+										// point_coordinate_list = '';
 
-										var jsonArr = [];
+										// var jsonArr = [];
 
-										var counter = 0;
-										var first_x_coordinate = '';
-										var first_y_coordinate = '';
-										$(json_p)
-												.each(
-														function() {
+										// var counter = 0;
+										// var first_x_coordinate = '';
+										// var first_y_coordinate = '';
+										// $(json_p)
+										// 		.each(
+										// 				function() {
 
 															/*
 															 * if (counter=0){
@@ -1007,40 +1007,40 @@ $(document)
 															 * first_y_coordinate=this.y_coordinate; }
 															 */
 
-															item = {}
-															item["coordinate_name"] = this.name;
-															item["x_coordinate"] = this.x_coordinate;
-															item["y_coordinate"] = this.y_coordinate;
+										// 					item = {}
+										// 					item["coordinate_name"] = this.name;
+										// 					item["x_coordinate"] = this.x_coordinate;
+										// 					item["y_coordinate"] = this.y_coordinate;
 
-															jsonArr.push(item);
-															polygon += this.y_coordinate
-																	+ " "
-																	+ this.x_coordinate
-																	+ ", ";
+										// 					jsonArr.push(item);
+										// 					polygon += this.y_coordinate
+										// 							+ " "
+										// 							+ this.x_coordinate
+										// 							+ ", ";
 
-															counter++;
+										// 					counter++;
 
-														});
+										// 				});
 
-										polygon_real = "POLYGON((" + polygon
-												+ "))";
-										var first_coordinate = '';
+										// polygon_real = "POLYGON((" + polygon
+										// 		+ "))";
+										// var first_coordinate = '';
 										// first_coordinate = ", "+
 										// first_y_coordinate + " "+
 										// first_x_coordinate + "))";
-										first_coordinate = ", "
-												+ json_p[0].y_coordinate + " "
-												+ json_p[0].x_coordinate + "))";
+										// first_coordinate = ", "
+										// 		+ json_p[0].y_coordinate + " "
+										// 		+ json_p[0].x_coordinate + "))";
 
-										console.log('first_coordinate');
-										console.log(first_coordinate);
-										// /grid.store.getAt(0).data.name
-										var polygon_tttt = polygon_real
-												.replace(', ))',
-														first_coordinate);
+										// console.log('first_coordinate');
+										// console.log(first_coordinate);
+										// // /grid.store.getAt(0).data.name
+										// var polygon_tttt = polygon_real
+										// 		.replace(', ))',
+										// 				first_coordinate);
 
-										var json_to_be_formatted = list_of_application_new
-										// json_to_be_formatted =
+										// var json_to_be_formatted = list_of_application_new
+										// // json_to_be_formatted =
 										// json_to_be_formatted.replace('[[',
 										// '[{');
 										// json_to_be_formatted =
@@ -1049,16 +1049,41 @@ $(document)
 										// json_to_be_formatted =
 										// json_to_be_formatted.replace('],[',
 										// '},{');
-										console.log(json_to_be_formatted);
+										// console.log(json_to_be_formatted);
 
-										point_coordinate_list = json_to_be_formatted;
+										// point_coordinate_list = json_to_be_formatted;
 
-										console.log(polygon_tttt);
+										// console.log(polygon_tttt);
 
 										// wktplygonsearch
 
+										let jsonArr = [];
+											let polygonPoints = [];
+
+											$('#coordinatelis_Table tbody tr').each(function () {
+												let name = $(this).find('td:eq(0)').text().trim();
+												let x = $(this).find('td:eq(1)').text().trim();
+												let y = $(this).find('td:eq(2)').text().trim();
+
+												jsonArr.push({
+													coordinate_name: name,
+													x_coordinate: x,
+													y_coordinate: y
+												});
+
+												polygonPoints.push(`${y} ${x}`);
+											});
+
+											// Close polygon by repeating first point
+											polygonPoints.push(polygonPoints[0]);
+
+											let polygonWKT = `POLYGON((${polygonPoints.join(', ')}))`;
+
+											console.log(jsonArr);
+											console.log(polygonWKT);
+
 										$('#pvlmd_bl_wkt_polygon').val(
-												polygon_tttt);
+												polygonWKT);
 										// var wktplygonsearch =
 										// $('#lc_fr_bl_wkt_polygon').val();
 										// Ext.ComponentQuery.query('textareafield[name=wktplygonsearch_pvlmd]')[0].setValue(polygon_tttt);
@@ -1228,10 +1253,13 @@ $(document)
 
 									});
 
+
 					document.getElementById('pvlmd_btn_show_location')
 							.addEventListener(
 									'click',
 									function(e) {
+
+										console.log('berhbehr');
 
 										/*
 										 * var radioValue = $(

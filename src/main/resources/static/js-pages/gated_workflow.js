@@ -29840,6 +29840,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const upheldForm = document.getElementById('form_upheld_container');
     const notUpheldForm = document.getElementById('form_not_upheld_container');
     const submitButton = document.getElementById('submitOutcomeDecision');
+
+    // const outcomeUpheld = $('#outcome_upheld');
+    // const outcomeNotUpheld = $('#outcome_not_upheld');
+    // const upheldForm = $('#form_upheld_container');
+    // const notUpheldForm = $('#form_not_upheld_container');
+    // const submitButton = $('#submitOutcomeDecision');
     
     // Function to switch forms
     function switchForms() {
