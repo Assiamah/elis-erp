@@ -9,149 +9,145 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="pvlmdparcelinformation" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD
-					Parcel Info</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD
+					Parcel Info</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 
 				<input id="pvlmd_gid" name="pvlmd_gid" type="hidden" value="">
 
 
-				<div class="container">
+				<div class="container-fluid">
 					<div class="row">
 						<div class="col">
 
 
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_reference_number"
 											readonly>
 										</div>
-										
+
 										<div class="col">
-											<label for="pvlmd_file_number">NT Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">NT Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_nt_number"
 											readonly>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">File Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_file_number"
 											>
 										</div>
 									</div>
 								</div>
-								
-							
-							<!-- 	<div class="form-group">
-									<div class="form-row">
+
+
+							<!-- 	<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">CRO Reference</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">CRO Reference</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_cro_reference"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">Property Number (GARRO)</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">Property Number (GARRO)</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_property_number"
 											>
 										</div>
 									</div>
 								</div> -->
-							
-							
-						
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Sheet Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Sheet Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_sheet_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="bl_ar_name">Locality</label> <input
-												class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_ar_name">Locality</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
 												id="pvlmd_locality"
 											>
 										</div>
 									</div>
 								</div>
-							
 
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Remarks</label> <input
-									class="form-control " type="text" placeholder=""
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_remarks"
 								>
 							</div>
-							
-							
-							<div class="form-row">
+
+
+							<div class="row g-3">
 										<div class="col">
-											<label for="bl_business_process_sub_name">Last Update By</label> <input
-												class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Last Update By</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
 												id="pvlmd_modified_by" readonly
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="bl_job_number">Date Last Updated</label> <input
-														class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_job_number">Date Last Updated</label> <input
+														class="form-control form-control-sm" type="text" placeholder=""
 														id="pvlmd_modified_date" readonly
 													>
 										</div>
-										
-										
-										
+
+
+
 									</div>
 
 
-						
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col to_hide_on_level_1">
-											
+
 										<button type="button" class="btn btn-danger to_hide_on_level_1"  id="pvlmd_tr_btn_delete_parcel">
-										<span class="glyphicon glyphicon-remove"></span>Delete
+										<i class="bi bi-x-circle me-1"></i>Delete
 									</button>
-														
-									
+
+
 										</div>
-				
+
 										<div class="col">
-											<button class="btn btn-primary btn-block" id="btn_save_pvlmd_parcel_details">
+											<button class="btn btn-primary w-100" id="btn_save_pvlmd_parcel_details">
 												<span class="text" >Save</span>
 										</button>
 										</div>
@@ -168,28 +164,28 @@
 								<button type="button"
 									class="btn btn-blue  btn-lg btn-md btn-sm "
 								>
-									<span class="fa fa-plus-circle"></span>
+									<i class="bi bi-plus-circle"></i>
 								</button>
-							
+
 								<button type="button" class="btn btn-primary btn-sm"
-									data-toggle="modal" data-target="#addpvlmdtransactionlong"
+									data-bs-toggle="modal" data-bs-target="#addpvlmdtransactionlong"
 								>Add New Transaction</button>
-								
-								
+
+
 								<button type="button" class="btn btn-success btn-sm"
-									data-toggle="modal" data-target="#addpvlmdtransactionshort"
+									data-bs-toggle="modal" data-bs-target="#addpvlmdtransactionshort"
 								>Add New Short Transaction</button>
 
 							</div>
 
 
-							<div class="form-group">
-								<div class="table w-auto small">
-									<table class="table table-bordered"
+							<div class="mb-3">
+								<div class="table-responsive small">
+									<table class="table table-hover align-middle"
 										id="pvlmd_transaction_dataTable" width="100%" cellspacing="0"
 									>
 
-										<thead>
+										<thead class="table-light">
 											<tr>
 
 												<th>Name</th>
@@ -209,7 +205,7 @@
                   <th>Applicant Name</th>
                   <th>Status</th>
                   <th>Case Details</th>
-                      
+
                        <th>Add To List</th>
                 </tr>
               </tfoot> -->
@@ -219,14 +215,14 @@
 							</div>
 
 
-							<div class="form-group">
-								<div class="table w-auto small">
-									<table class="table table-bordered"
+							<div class="mb-3">
+								<div class="table-responsive small">
+									<table class="table table-hover align-middle"
 										id="lrd_scanned_documents_dataTable" width="100%"
 										cellspacing="0"
 									>
 
-										<thead>
+										<thead class="table-light">
 											<tr>
 
 												<th>Document Name</th>
@@ -245,7 +241,7 @@
                   <th>Applicant Name</th>
                   <th>Status</th>
                   <th>Case Details</th>
-                      
+
                        <th>Add To List</th>
                 </tr>
               </tfoot> -->
@@ -269,10 +265,10 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 				<input type="hidden" id="lrd_ps_fid" name="lrd_ps_fid">
 			</div>
@@ -284,116 +280,112 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="pvlmdparcelinformationfirsttimesave" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD
-					Parcel Info</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD
+					Parcel Info</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 
-							
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number_fts">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_reference_number_fts"
 											readonly>
 										</div>
-										
+
 									</div>
 								</div>
-								<div class="form-group">
-									<div class="form-row">
-										
+								<div class="mb-3">
+									<div class="row g-3">
+
 										<div class="col">
-											<label for="pvlmd_file_number">NT Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">NT Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_nt_number_fts"
 											readonly>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">File Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_file_number_fts"
 											>
 										</div>
 									</div>
 								</div>
-								
-							
-						
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Sheet Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Sheet Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_sheet_number_fts"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="bl_ar_name">Locality</label> <input
-												class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_ar_name">Locality</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
 												id="pvlmd_locality_fts"
 											>
 										</div>
 									</div>
 								</div>
-							
 
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Remarks</label> <input
-									class="form-control " type="text" placeholder=""
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_remarks_fts"
 								>
 							</div>
-							
-							
-							<div class="form-group">
-								<label for="bl_parcelwkt">Parcel WKT</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_parcelwkt">Parcel WKT</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_parcel_wkt_to_plot_fts"
 								>
 							</div>
 
 
-						
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											
-									
-									
+
+
+
 										</div>
-				
+
 										<div class="col">
-											<button class="btn btn-primary btn-block" id="btn_save_pvlmd_parcel_details_fts">
+											<button class="btn btn-primary w-100" id="btn_save_pvlmd_parcel_details_fts">
 												<span class="text" >Save</span>
 										</button>
 										</div>
 									</div>
 								</div>
 
-				
+
 
 
 
@@ -404,12 +396,12 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
-				
+
 			</div>
 
 		</div>
@@ -424,440 +416,436 @@
 <!-- Add LRD Transaction -->
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="addpvlmdtransactionlong" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD Transaction Informations</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD Transaction Informations</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 
-				
+
 				<input id="pvlmd_gid" name="pvlmd_tr_gid" type="hidden" value="">
 			<input id="pvlmd_tr_t_id" name="pvlmd_tr_t_id" type="hidden" value="0">
 
 
-				<div class="container">
+				<div class="container-fluid">
 					<div class="row">
 						<div class="col">
 
 
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_reference_number"
 											readonly>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">File Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_file_number"
 											>
 										</div>
 									</div>
 								</div>
-								
-		
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_property_number"
 											>
 										</div>
-				
-				
+
+
 										<div class="col">
-											<label for="pvlmd_file_number">NT Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">NT Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_nt_number"
 											>
 										</div>
-										
+
 									</div>
 								</div>
-							
-							
-						
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Mutation Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Mutation Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_mutation_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Deed Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Deed Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_deed_number"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Serial Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Serial Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_serial_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Sheet Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Sheet Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_sheet_number"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Plan Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Plan Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_plan_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Plot Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Plot Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_plot_number"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">LVD Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">LVD Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_lvb_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Document Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Document Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_doc_number"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_tel_no"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plantiff_add"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_email"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_tel_no"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_email"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Address</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Address</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_add"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-									<div class="form-group">
-									<div class="form-row">
+
+
+									<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Instrument Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Instrument Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_instrument_date"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Instrument Type</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Instrument Type</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_instrument_type"
 											>
 										</div>
 									</div>
 								</div>
-	
+
 						</div>
 						<div class="col">
-									
-								
-								
-							
-							<div class="form-group">
-									<div class="form-row">
+
+
+
+
+							<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Term</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Term</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_term"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Commencement Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Commencement Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_commencement_date"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Purpose</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Purpose</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_purpose"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Consent Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consent Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_consent_date"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Consideration</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Consideration</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_consideration"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Consideration Currency</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consideration Currency</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_consideration_currency"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Premium</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Premium</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_premium"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Premium Currency</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Premium Currency</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_premium_currency"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Compensation Status</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Compensation Status</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_compensation_status"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Suit Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Suit Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_suit_number"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Floor Level</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Floor Level</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_floor_level"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Apartment Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Apartment Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_apartment_number"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Rent</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Rent</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_rent"
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="pvlmd_tr_submission_date">Submission Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_tr_submission_date">Submission Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_submission_date"
 											>
 										</div>
-				
-										
+
+
 									</div>
 								</div>
-								
-								
-								
-								
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Unit Description</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Unit Description</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_unit_description"
 								>
 							</div>
 
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Judgement in Favour of</label> <input
-									class="form-control " type="text" placeholder=""
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Judgement in Favour of</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_judgement_in_favour_of"
 								>
 							</div>
-							
-							
-						<div class="form-group">
-								<label for="bl_business_process_sub_name">Remarks</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+						<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_remarks"
 								>
 							</div>
-							
-							
-							
-						
-						<div class="form-row">
+
+
+
+
+						<div class="row g-3">
 										<div class="col">
-											<label for="bl_business_process_sub_name">Last Update By</label> <input
-												class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Last Update By</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
 												id="pvlmd_tr_modified_by" readonly
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="bl_job_number">Date Last Updated</label> <input
-														class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_job_number">Date Last Updated</label> <input
+														class="form-control form-control-sm" type="text" placeholder=""
 														id="pvlmd_tr_modified_date" readonly
 													>
 										</div>
-										
-										
-										
+
+
+
 									</div>
 
-					
+
 
 
 						</div>
@@ -865,8 +853,8 @@
 
 				</div>
 
-				
-				
+
+
 
 			</div>
 
@@ -875,19 +863,19 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
 	            <button type="button" class="btn btn-success"  id="pvlmd_tr_btn_save_transaction_long">
-					<span class="glyphicon glyphicon-remove"></span>Save
+					<i class="bi bi-x-circle me-1"></i>Save
 				</button>
-				
+
 				<button type="button" class="btn btn-danger to_hide_on_level_1"  id="pvlmd_tr_btn_delete_transaction_long">
-					<span class="glyphicon glyphicon-remove"></span>Delete
+					<i class="bi bi-x-circle me-1"></i>Delete
 				</button>
 
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 
 
@@ -899,442 +887,438 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="addpvlmdtransactionlong_t" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD Transaction Informations</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD Transaction Informations</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 
-				
+
 				<input id="pvlmd_gid_t" name="pvlmd_tr_gid_t" type="hidden" value="0">
 			<input id="pvlmd_tr_t_id_t" name="pvlmd_tr_t_id_t" type="hidden" value="0">
 
 
-				<div class="container">
+				<div class="container-fluid">
 					<div class="row">
 						<div class="col">
 
 
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_reference_number_t"
 											readonly>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">File Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_file_number_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_property_number_t"
 											>
 										</div>
-				
-				
+
+
 										<div class="col">
-											<label for="pvlmd_file_number">NT Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">NT Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_nt_number_t"
 											>
 										</div>
-										
+
 									</div>
 								</div>
-							
-							
-						
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Mutation Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Mutation Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_mutation_number_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Deed Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Deed Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_deed_number_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Serial Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Serial Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_serial_number_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Sheet Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Sheet Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_sheet_number_t"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Plan Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Plan Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_plan_number_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Plot Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Plot Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_plot_number_t"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">LVD Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">LVD Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_lvb_number_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Document Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Document Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_doc_number_t"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_tel_no_t"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plantiff_add_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_email_t"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_tel_no_t"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_email_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Address</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Address</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_add_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-									<div class="form-group">
-									<div class="form-row">
+
+
+									<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Instrument Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Instrument Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_instrument_date_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Instrument Type</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Instrument Type</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_instrument_type_t"
 											>
 										</div>
 									</div>
 								</div>
-	
+
 						</div>
 						<div class="col">
-									
-								
-								
-							
-							<div class="form-group">
-									<div class="form-row">
+
+
+
+
+							<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Term</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Term</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_term_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Commencement Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Commencement Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_commencement_date_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Purpose</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Purpose</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_purpose_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Consent Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consent Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_consent_date_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Consideration</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Consideration</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_consideration_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Consideration Currency</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consideration Currency</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_consideration_currency_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Premium</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Premium</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_premium_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Premium Currency</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Premium Currency</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_premium_currency_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Compensation Status</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Compensation Status</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_compensation_status_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Suit Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Suit Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_suit_number_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Floor Level</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Floor Level</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_floor_level_t"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Apartment Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Apartment Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_apartment_number_t"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Rent</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Rent</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_rent_t"
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="pvlmd_tr_submission_date">Submission Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_tr_submission_date">Submission Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_submission_date_t"
 											>
 										</div>
-				
-										
+
+
 									</div>
 								</div>
-								
-								
-								
-								
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Unit Description</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Unit Description</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_unit_description_t"
 								>
 							</div>
 
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Judgement in Favour of</label> <input
-									class="form-control " type="text" placeholder=""
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Judgement in Favour of</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_judgement_in_favour_of_t"
 								>
 							</div>
-							
-							
-						<div class="form-group">
-								<label for="bl_business_process_sub_name">Remarks</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+						<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_remarks_t"
 								>
 							</div>
-							
-							
-							
-						
-							
-						<div class="form-row">
+
+
+
+
+
+						<div class="row g-3">
 										<div class="col">
-											<label for="bl_business_process_sub_name">Last Update By</label> <input
-												class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Last Update By</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
 												id="pvlmd_tr_modified_by_t" readonly
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="bl_job_number">Date Last Updated</label> <input
-														class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_job_number">Date Last Updated</label> <input
+														class="form-control form-control-sm" type="text" placeholder=""
 														id="pvlmd_tr_modified_date_t" readonly
 													>
 										</div>
-										
-										
-										
+
+
+
 									</div>
 
-					
+
 
 
 						</div>
@@ -1342,8 +1326,8 @@
 
 				</div>
 
-				
-				
+
+
 
 			</div>
 
@@ -1352,19 +1336,19 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
-<!-- 
+			<div class="modal-footer bg-white border-top">
+<!--
 	<button type="button" class="btn btn-success"  id="pvlmd_tr_btn_save_transaction_long_t">
-					<span class="glyphicon glyphicon-remove"></span>Save
+					<i class="bi bi-x-circle me-1"></i>Save
 				</button>
-				
+
 				<button type="button" class="btn btn-danger to_hide_on_level_1"  id="pvlmd_tr_btn_delete_transaction_long_t">
-					<span class="glyphicon glyphicon-remove"></span>Delete
+					<i class="bi bi-x-circle me-1"></i>Delete
 				</button>
  -->
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 
 
@@ -1378,442 +1362,438 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="addpvlmdtransactionlong_e" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD Transaction Informations Edit</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD Transaction Informations Edit</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 
-				
+
 				<input id="pvlmd_tr_gid_e" name="pvlmd_tr_gid_e" type="hidden" value="0">
 		    	<input id="pvlmd_tr_t_id_e" name="pvlmd_tr_t_id_e" type="hidden" value="0">
 
 
-				<div class="container">
+				<div class="container-fluid">
 					<div class="row">
 						<div class="col">
 
 
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_reference_number_e"
 											readonly>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">File Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_file_number_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_property_number_e"
 											>
 										</div>
-				
-				
+
+
 										<div class="col">
-											<label for="pvlmd_file_number">NT Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">NT Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_nt_number_e"
 											>
 										</div>
-										
+
 									</div>
 								</div>
-							
-							
-						
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Mutation Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Mutation Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_mutation_number_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Deed Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Deed Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_deed_number_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Serial Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Serial Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_serial_number_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Sheet Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Sheet Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_sheet_number_e"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Plan Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Plan Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_plan_number_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Plot Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Plot Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_plot_number_e"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">LVD Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">LVD Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_lvb_number_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Document Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Document Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_doc_number_e"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_tel_no_e"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plantiff_add_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party1_plaintiff_email_e"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_tel_no_e"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_email_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Address</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Address</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_party2_defendant_add_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-									<div class="form-group">
-									<div class="form-row">
+
+
+									<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Instrument Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Instrument Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_instrument_date_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Instrument Type</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Instrument Type</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_instrument_type_e"
 											>
 										</div>
 									</div>
 								</div>
-	
+
 						</div>
 						<div class="col">
-									
-								
-								
-							
-							<div class="form-group">
-									<div class="form-row">
+
+
+
+
+							<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Term</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Term</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_term_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Commencement Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Commencement Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_commencement_date_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Purpose</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Purpose</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_purpose_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Consent Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consent Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_consent_date_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								
-								<div class="form-group">
-									<div class="form-row">
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Consideration</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Consideration</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_consideration_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Consideration Currency</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consideration Currency</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_consideration_currency_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Premium</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Premium</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_premium_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Premium Currency</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Premium Currency</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_premium_currency_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Compensation Status</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Compensation Status</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_compensation_status_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Suit Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Suit Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_suit_number_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Floor Level</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Floor Level</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_floor_level_e"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Apartment Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Apartment Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_apartment_number_e"
 											>
 										</div>
 									</div>
 								</div>
-								
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Rent</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Rent</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_rent_e"
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="pvlmd_tr_submission_date">Submission Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_tr_submission_date">Submission Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_submission_date_e"
 											>
 										</div>
-				
-										
+
+
 									</div>
 								</div>
-								
-								
-								
-								
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Unit Description</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Unit Description</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_unit_description_e"
 								>
 							</div>
 
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Judgement in Favour of</label> <input
-									class="form-control " type="text" placeholder=""
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Judgement in Favour of</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_judgement_in_favour_of_e"
 								>
 							</div>
-							
-							
-						<div class="form-group">
-								<label for="bl_business_process_sub_name">Remarks</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+						<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_remarks_e"
 								>
 							</div>
-							
-							
-							
-							
-						<div class="form-row">
+
+
+
+
+						<div class="row g-3">
 										<div class="col">
-											<label for="bl_business_process_sub_name">Last Update By</label> <input
-												class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Last Update By</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
 												id="pvlmd_tr_modified_by_e" readonly
 											>
 										</div>
-										
+
 										<div class="col">
-											<label for="bl_job_number">Date Last Updated</label> <input
-														class="form-control " type="text" placeholder=""
+											<label class="form-label small fw-semibold" for="bl_job_number">Date Last Updated</label> <input
+														class="form-control form-control-sm" type="text" placeholder=""
 														id="pvlmd_tr_modified_date_e" readonly
 													>
 										</div>
-										
-										
-										
-									</div>
-						
 
-					
+
+
+									</div>
+
+
+
 
 
 						</div>
@@ -1821,8 +1801,8 @@
 
 				</div>
 
-				
-				
+
+
 
 			</div>
 
@@ -1831,22 +1811,22 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
-<!-- 
-		
+			<div class="modal-footer bg-white border-top">
+<!--
+
 	-->
-			
- 
+
+
 				 <button type="button" class="btn btn-success"  id="pvlmd_tr_btn_save_transaction_long_e">
-					<span class="glyphicon glyphicon-remove"></span>Save
-				</button>
-				
-				<button type="button" class="btn btn-danger to_hide_on_level_1"  id="pvlmd_tr_btn_delete_transaction_long_e">
-					<span class="glyphicon glyphicon-remove"></span>Delete
+					<i class="bi bi-x-circle me-1"></i>Save
 				</button>
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-danger to_hide_on_level_1"  id="pvlmd_tr_btn_delete_transaction_long_e">
+					<i class="bi bi-x-circle me-1"></i>Delete
+				</button>
+
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 
 
@@ -1861,213 +1841,209 @@
 <!-- Add LRD Transaction -->
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="addpvlmdtransactionshort" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD Transaction Informations (Short)</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD Transaction Informations (Short)</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 
-				
+
 				<input id="pvlmd_tr_st_gid" name="pvlmd_tr_st_gid" type="hidden" value="">
 
             	<input id="pvlmd_tr_st_t_id" name="pvlmd_tr_st_t_id" type="hidden" value="0">
-				
-				<div class="container">
-					
-					
-												
-							
-								<div class="form-group">
-									<div class="form-row">
+
+				<div class="container-fluid">
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_reference_number"
 											readonly>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">File Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_file_number"
 											>
 										</div>
 									</div>
 								</div>
-								
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_property_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">Submission Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">Submission Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_st_submission_date"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-							
-							<div class="form-group">
-									<div class="form-row">
+
+
+
+							<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Instrument Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Instrument Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_st_instrument_date"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_file_number">Instrument Type</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">Instrument Type</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_instrument_type"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-						
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 									<div class="col">
-											<label for="pvlmd_plot_number">Plot Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Plot Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_plot_number"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Document Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Document Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_document_number"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party1/Plaintiff</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_party1_plaintiff"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_party1_plaintiff_tel_no"
 											>
 										</div>
 									</div>
 								</div>
-							
-							
-								
-							
-							
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Party2/Defendant</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_party2_defendant"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_party2_defendant_tel_no"
 											>
 										</div>
 									</div>
 								</div>
-							
-							<div class="form-group">
-									<div class="form-row">
+
+							<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Term</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Term</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_term"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="pvlmd_plot_number">Commencement Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Commencement Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_st_commencement_date"
 											>
 										</div>
 									</div>
 								</div>
-							
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Purpose</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Purpose</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_tr_st_purpose"
 											>
 										</div>
-				
+
 										 <div class="col">
-											<label for="pvlmd_plot_number">Consent Date</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consent Date</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_st_consent_date"
 											>
-										</div> 
+										</div>
 									</div>
 								</div>
-								
-											
-							
-						<div class="form-group">
-								<label for="bl_business_process_sub_name">Remarks</label> <input
-									class="form-control " type="text" placeholder=""
+
+
+
+						<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_tr_st_remarks"
 								>
 							</div>
-							
-				
+
+
 
 				</div>
 
-				
-				
+
+
 
 			</div>
 
@@ -2076,15 +2052,15 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-		<button type="button" class="btn btn-success" data-dismiss="modal" id="btn_save_pvlmd_transaction_short">
-					<span class="glyphicon glyphicon-remove"></span>Save
+		<button type="button" class="btn btn-success" data-bs-dismiss="modal" id="btn_save_pvlmd_transaction_short">
+					<i class="bi bi-x-circle me-1"></i>Save
 				</button>
 
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 
 
@@ -2097,72 +2073,68 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="pvlmdnumbergenerationtemplatesaveupdate" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-				<h4 class="modal-title custom_align" id="Heading">PVLMD Number Generation Form</h4>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD Number Generation Form</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
  			<input type="hidden" id="pvlmd_id_ngf" name="pvlmd_id_ngf" value="0">
-							
-								<div class="form-group">
-									<div class="form-row">
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number_fts">Reference Number</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_reference_number_ngf"
 											>
 										</div>
-										
+
 									</div>
 								</div>
-								<div class="form-group">
-									<div class="form-row">
-										
+								<div class="mb-3">
+									<div class="row g-3">
+
 										<div class="col">
-											<label for="pvlmd_file_number">Applicant Name</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">Applicant Name</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_applicant_name_ngf"
 											>
 										</div>
-				
-										
+
+
 									</div>
 								</div>
-								
-							
-						
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number">Locality</label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Locality</label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_locality_ngf"
 											>
 										</div>
-				
+
 										<div class="col">
-											<label for="bl_ar_name">Number Format</label> 
-											<select class="form-control selectpicker " id="pvlmd_number_format_ngf" name="pvlmd_number_format_ngf" required>
+											<label class="form-label small fw-semibold" for="bl_ar_name">Number Format</label>
+											<select class="form-select form-select-sm " id="pvlmd_number_format_ngf" name="pvlmd_number_format_ngf" required>
 		                                       <option value="">Select Number Format</option>
 		                                       <option value="NT">NT</option>
-		                                       <option value="PNGA">PNGA</option> 
+		                                       <option value="PNGA">PNGA</option>
 		                                       <option value="GCL">GCL</option>
 		                                       <option value="GSL">GSL</option>
 		                                       <option value="LS">LS</option>
@@ -2170,35 +2142,35 @@
 										</div>
 									</div>
 								</div>
-							
 
-							<div class="form-group">
-								<label for="bl_business_process_sub_name">Generated Number</label> <input
-									class="form-control " type="text" placeholder=""
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Generated Number</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
 									id="pvlmd_old_ref_number_ngf"
 								readonly>
 							</div>
-							
-							
-						
-						
-								<div class="form-group">
-									<div class="form-row">
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											
-									
-									
+
+
+
 										</div>
-				
+
 										<div class="col">
-											<button class="btn btn-primary btn-block" id="btn_generate_pvlmd_transaction_no_fts">
+											<button class="btn btn-primary w-100" id="btn_generate_pvlmd_transaction_no_fts">
 												<span class="text" >Generate</span>
 										</button>
 										</div>
 									</div>
 								</div>
 
-				
+
 
 
 
@@ -2209,12 +2181,12 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
-				
+
 			</div>
 
 		</div>
@@ -2222,101 +2194,97 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="plvmd_initiate_delete_request" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog" style="max-width: 700px">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered" style="max-width: 700px">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Initiate Amendment Request</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Initiate Amendment Request</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 						<input type="hidden" id="pvlmd_id_idr" name="pvlmd_id_idr" value="0">
 						<input type="hidden" id="pvlmd_deleteion_type" name="pvlmd_deleteion_type" value="">
 
 								 <input type="hidden" id="initiate_type" name="initiate_type" value="0">
-								<div class="form-group">
-									<div class="form-row">
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number_fts">Reference Number <span class="text-danger">*</span></label> <input
-												class="form-control " type="text"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number <span class="text-danger">*</span></label> <input
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_reference_number_idr"
 												readonly
 											>
 										</div>
-										
+
 									</div>
 
-									<div class="form-row mt-2 d-none">
+									<div class="row g-3 mt-2 d-none">
 
 										<div class="col">
-											<label for="pvlmd_reference_number_fts">Send To <span class="text-danger">*</span></label> 
-											
-											<select class="form-control" type="text" id="pvlmd_send_request_to_idr">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Send To <span class="text-danger">*</span></label>
+
+											<select class="form-select form-select-sm" id="pvlmd_send_request_to_idr">
 												<option disabled selected value="">-- select --</option>
 												<option value="19">REGIONAL LAND OFFICER</option>
 												<option value="9">REGIONAL HEAD</option>
 											</select>
 										</div>
-										
+
 									</div>
 								</div>
 
-								<div class="form-group ">
-									<div class="form-row">
-										
+								<div class="mb-3 ">
+									<div class="row g-3">
+
 										<div class="col">
-											<label for="pvlmd_reference_number_fts">Layer <span class="text-danger">*</span></label> 
-											
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Layer <span class="text-danger">*</span></label>
+
 											<input
-												class="form-control " type="text"
+												class="form-control form-control-sm" type="text"
 												placeholder="" id="pvlmd_layer_type_idr"
 												readonly
 											>
 										</div>
-				
-										
+
+
 									</div>
-								</div>	
-								<div class="form-group">
-									<div class="form-row">
-										
+								</div>
+								<div class="mb-3">
+									<div class="row g-3">
+
 										<div class="col">
-											<label for="pvlmd_file_number">Request Note <span class="text-danger">*</span></label> 
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">Request Note <span class="text-danger">*</span></label>
 											<textarea
-												class="form-control " type="text" rows="6"
+												class="form-control form-control-sm" type="text" rows="6"
 												placeholder="" id="pvlmd_delete_note_idr"
 											></textarea>
 										</div>
-				
-										
+
+
 									</div>
-								</div>		
+								</div>
 
 
-								<div class="form-group">
-									<div class="form-row">
+								<div class="mb-3">
+									<div class="row g-3">
 										<div class="col">
-											<label for="pvlmd_reference_number_fts">Attachment <span class="text-danger">*</span></label> <input
-												class="form-control " type="file"
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Attachment <span class="text-danger">*</span></label> <input
+												class="form-control form-control-sm" type="file"
 												placeholder="" id="pvlmd_attachment_location_idr"
-												onchange="PreviewImage();" 
+												onchange="PreviewImage();"
 											>
 										</div>
-										
+
 									</div>
 								</div>
 
@@ -2325,10 +2293,10 @@
 										<iframe id="viewer" frameborder="0" scrolling="no" width="100%" height="400"></iframe>
 									 </div>
 								</div>
-					
- 								
 
-								
+
+
+
 			</div>
 
 			<!--Body End -->
@@ -2336,15 +2304,15 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
-				<button class="btn btn-danger" id="btn_verify_otp_for_initiate_delete"
+				<button class="btn btn-danger" id="btn_verify_otp_for_initiate_delete">
 					<span class="text" >Confirm Request</span>
 				</button>
-				<button class="btn btn-success d-none" id="confrim_verify_otp_for_initiate_delete"
+				<button class="btn btn-success d-none" id="confrim_verify_otp_for_initiate_delete">
 					<span class="text" >Send Request</span>
 				</button>
 			</div>
@@ -2354,33 +2322,29 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="plvmd_cancel_delete_request" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Cancel Amendment Request</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Cancel Amendment Request</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
  								<input type="hidden" id="pvlmd_id_cdr" name="pvlmd_id_cdr" value="0">
 								 <input type="hidden" id="initiate_type_cdr" name="initiate_type_cdr" value="0">
 								 <input type="hidden" id="pvlmd_reference_number_cdr" name="pvlmd_reference_number_cdr" value="0">
 								 <input type="hidden" id="layer_type_cdr" name="layer_type_cdr" value="0">
-								
+
 								 <h6>Are you sure to cancel the request? </h6>
 			</div>
 
@@ -2389,10 +2353,10 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 				<button class="btn btn-danger" id="btn_cancel_pvlmd_delete_request">
 					<span class="text" >Confirm</span>
@@ -2404,27 +2368,23 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="plvmd_review_delete_request" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Review Amendment Request</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Review Amendment Request</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<input type="hidden" id="pvlmd_id_cda" name="pvlmd_id_cda" value="0">
 				<input type="hidden" id="initiate_type_cda" name="initiate_type_cda" value="0">
@@ -2461,96 +2421,96 @@
 							</div>
 						</div>
 					</div>
-					
+
 				</div> -->
 
 				<div class="card card-body">
 				<div class="row">
 					<div class="col-lg-6">
-						<div class="form-group">
-							<div class="form-row">
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Reference Number</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_reference_number_cda"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="form-row">
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Layer</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Layer</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_layer_type_cda"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
 
-						<div class="form-row mt-2 d-none">
+						<div class="row g-3 mt-2 d-none">
 
 							<div class="col">
-								<label for="pvlmd_reference_number_fts">Send To <span class="text-danger">*</span></label> 
-								
-								<select class="form-control" type="text" id="pvlmd_send_request_to_cda">
+								<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Send To <span class="text-danger">*</span></label>
+
+								<select class="form-select form-select-sm" id="pvlmd_send_request_to_cda">
 									<option value="">-- select --</option>
 									<option selected value="19">REGIONAL LAND OFFICER</option>
 									<option value="9">REGIONAL HEAD</option>
 								</select>
 							</div>
-							
+
 						</div>
 
-						<div class="form-group">
-							<div class="form-row">
-								
+						<div class="mb-3">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Request Note</label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Request Note</label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_delete_note_cda"
 										readonly
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
-						</div>	
-						<div class="form-group">
-							<div class="form-row">
+						</div>
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Requested By</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Requested By</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_delete_requested_by_cda"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
 
-						<button class="btn btn-warning mt-1 mb-1" data-toggle="modal" data-target="#load_requested_application_details">
+						<button class="btn btn-warning mt-1 mb-1" data-bs-toggle="modal" data-bs-target="#load_requested_application_details">
 							Load More Details
 						</button>
 
-						<div class="form-group mt-5">
-							<div class="form-row">
-								
+						<div class="mb-3 mt-5">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Review Note <span class="text-danger">*</span></label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Review Note <span class="text-danger">*</span></label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_review_note_cda"
-										
+
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
 						</div>
 					</div>
@@ -2559,13 +2519,13 @@
 							<div class="card">
 							  <div class="card-header" id="headingOne">
 								<h5 class="mb-0">
-								  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne-l" aria-expanded="true" aria-controls="collapseOne">
+								  <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapseOne-l" aria-expanded="true" aria-controls="collapseOne">
 									Load PDF
 								  </button>
 								</h5>
 							  </div>
-						  
-							  <div id="collapseOne-l" class="collapse" aria-labelledby="headingOne" data-parent="#accordion_l">
+
+							  <div id="collapseOne-l" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion_l">
 								<div class="card-body">
 									<iframe src=""  id="elisdovumentpreviewblobfile_cda" width="100%" height="600"></iframe>
 								</div>
@@ -2574,18 +2534,18 @@
 							<div class="card">
 							  <div class="card-header" id="headingTwo">
 								<h5 class="mb-0">
-								  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo-l" aria-expanded="false" aria-controls="collapseTwo">
+								  <button class="btn btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo-l" aria-expanded="false" aria-controls="collapseTwo">
 									Load Map
 								  </button>
 								</h5>
 							  </div>
-							  <div id="collapseTwo-l" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion_l">
+							  <div id="collapseTwo-l" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion_l">
 								<div class="card-body">
 
 									<button class="btn btn-danger btn-sm">View</button>
 
 									<div></div>
-									
+
 								</div>
 							  </div>
 							</div>
@@ -2593,7 +2553,7 @@
 					</div>
 				</div>
 				</div>
-								
+
 			</div>
 
 			<!--Body End -->
@@ -2601,12 +2561,12 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<!-- <button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<!-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button> -->
-				<button class="btn btn-warning" data-toggle="modal" data-target="#decline_request">
+				<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#decline_request">
 					<span class="text" >Decline Review</span>
 				</button>
 				<button class="btn btn-danger" id="btn_review_pvlmd_delete_request">
@@ -2622,31 +2582,27 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="verify_otp_for_initiate_delete" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Verify OTP</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Verify OTP</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<p class="fxt-description">Please enter the OTP (one time password) to verify your account. A Code has been sent to <span id="phone_number">${user_phone}</span></p>
 				<form  name="verifydeleteform" method="post" action="Login"  autocomplete="off" id="verifydeleteform">
-					<label for="reset" class="fxt-label">Enter OTP Code Here</label>
+					<label class="form-label small fw-semibold" for="reset" class="fxt-label">Enter OTP Code Here</label>
 					<div class="container_dotp">
 
 						<div class="otp-input mb-5">
@@ -2659,57 +2615,53 @@
 						  </div>
 						  <input type="hidden" name="otp">
 					</div>
-				</form>		
+				</form>
 			</div>
 
 		</div>
 	</div>
 </div>
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="decline_request" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Are you sure to decline request?</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Are you sure to decline request?</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				<div class="form-group">
-					<div class="form-row">
+			<div class="modal-body p-4">
+				<div class="mb-3">
+					<div class="row g-3">
 						<div class="col">
-							<label for="pvlmd_reference_number_fts">Reference Number</label> <input
-								class="form-control " type="text"
+							<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number</label> <input
+								class="form-control form-control-sm" type="text"
 								placeholder="" id="pvlmd_reference_number_decline"
 								readonly
 							>
 						</div>
-						
+
 					</div>
 				</div>
-				<div class="form-group">
-					<div class="form-row">
+				<div class="mb-3">
+					<div class="row g-3">
 						<div class="col">
-							<label for="pvlmd_reference_number_fts">Decline Note: <span class="text-danger">*</span></label> 
-							<textarea class="form-control" id="plvmd_decline_note"  rows="5"></textarea>
+							<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Decline Note: <span class="text-danger">*</span></label>
+							<textarea class="form-control form-control-sm" id="plvmd_decline_note"  rows="5"></textarea>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
 
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 				<button class="btn btn-danger" id="btn_decline_pvlmd_delete_request">
 					<span class="text" >Confirm</span>
@@ -2720,27 +2672,23 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="plvmd_confirm_approve_delete_request" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Confirm Amendment Request</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Confirm Amendment Request</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<input type="hidden" id="pvlmd_id_aadr" name="pvlmd_id_cda" value="0">
 				<input type="hidden" id="initiate_type_aadr" name="initiate_type_aadr" value="0">
@@ -2748,99 +2696,99 @@
 
 				<div class="row">
 					<div class="col-lg-6">
-						<div class="form-group">
-							<div class="form-row">
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Reference Number</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_reference_number_aadr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="form-row">
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Layer</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Layer</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_layer_type_aadr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="form-row">
-								
+						<div class="mb-3">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Request Note</label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Request Note</label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_delete_note_aadr"
 										readonly
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
-						</div>	
-						<div class="form-group">
-							<div class="form-row">
+						</div>
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Reviewed By</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reviewed By</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_reviewed_by_aadr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						
-						<div class="form-group">
-							<div class="form-row">
-								
+
+						<div class="mb-3">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Review Note</label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Review Note</label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_review_note_aadr"
 										readonly
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
-						</div>	
-						<div class="form-group">
-							<div class="form-row">
+						</div>
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Approved By</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Approved By</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_deleted_approved_by_aadr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="form-row">
-								
+						<div class="mb-3">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Approve/Decline Note <span class="text-danger">*</span></label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Approve/Decline Note <span class="text-danger">*</span></label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_deleted_approve_note_aadr"
 										readonly
-										
+
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
 						</div>
 					</div>
@@ -2849,13 +2797,13 @@
 							<div class="card">
 							  <div class="card-header" id="headingOne">
 								<h5 class="mb-0">
-								  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne-c" aria-expanded="true" aria-controls="collapseOne">
+								  <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapseOne-c" aria-expanded="true" aria-controls="collapseOne">
 									Load PDF
 								  </button>
 								</h5>
 							  </div>
-						  
-							  <div id="collapseOne-c" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_c">
+
+							  <div id="collapseOne-c" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion_c">
 								<div class="card-body">
 									<iframe src=""  id="elisdovumentpreviewblobfile_aadr" width="100%" height="600"></iframe>
 								</div>
@@ -2864,12 +2812,12 @@
 							<div class="card">
 							  <div class="card-header" id="headingTwo">
 								<h5 class="mb-0">
-								  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo-c" aria-expanded="false" aria-controls="collapseTwo">
+								  <button class="btn btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo-c" aria-expanded="false" aria-controls="collapseTwo">
 									Load Map
 								  </button>
 								</h5>
 							  </div>
-							  <div id="collapseTwo-c" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion_c">
+							  <div id="collapseTwo-c" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion_c">
 								<div class="card-body">
 									<button class="btn btn-danger btn-sm">View</button>
 
@@ -2881,7 +2829,7 @@
 						  </div>
 					</div>
 				</div>
-								
+
 			</div>
 
 			<!--Body End -->
@@ -2889,12 +2837,12 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<!-- <button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<!-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button> -->
-				<button class="btn btn-warning" data-toggle="modal" data-target="#decline_request">
+				<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#decline_request">
 					<span class="text" >Cancel Request</span>
 				</button>
 				<button class="btn btn-danger" id="btn_confirm_approve_pvlmd_delete_request">
@@ -2911,31 +2859,27 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="verify_otp_for_initiate_delete" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Verify OTP</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Verify OTP</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<p class="fxt-description">Please enter the OTP (one time password) to verify your account. A Code has been sent to <span id="phone_number">${user_phone}</span></p>
 				<form  name="verifydeleteform" method="post" action="Login"  autocomplete="off" id="verifydeleteform">
-					<label for="reset" class="fxt-label">Enter OTP Code Here</label>
+					<label class="form-label small fw-semibold" for="reset" class="fxt-label">Enter OTP Code Here</label>
 					<div class="container_dotp">
 
 						<div class="otp-input mb-5">
@@ -2948,38 +2892,34 @@
 						  </div>
 						  <input type="hidden" name="otp">
 					</div>
-				</form>		
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="verify_otp_for_review_delete" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Verify OTP</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Verify OTP</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<p class="fxt-description">Please enter the OTP (one time password) to verify your account. A Code has been sent to <span id="phone_number_a">${user_phone}</span></p>
 				<form  name="verifydeleteform" method="post" action="Login"  autocomplete="off" id="verifydeleteform">
-					<label for="reset" class="fxt-label">Enter OTP Code Here</label>
+					<label class="form-label small fw-semibold" for="reset" class="fxt-label">Enter OTP Code Here</label>
 					<div class="container_dotp">
 						<div class="otp-input mb-5">
 							<input type="number" step="1" id="ac_1" name="ac_1" min="0" max="9" autocomplete="no" pattern="\d*">
@@ -2991,7 +2931,7 @@
 						  </div>
 						  <!-- <input type="hidden" name="otp"> -->
 					</div>
-				</form>		
+				</form>
 			</div>
 
 		</div>
@@ -2999,31 +2939,27 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="verify_otp_for_confirm_delete" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Verify OTP</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Verify OTP</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<p class="fxt-description">Please enter the OTP (one time password) to verify your account. A Code has been sent to <span id="phone_number_c">${user_phone}</span></p>
 				<form  name="verifydeleteform" method="post" action="Login"  autocomplete="off" id="verifydeleteform">
-					<label for="reset" class="fxt-label">Enter OTP Code Here</label>
+					<label class="form-label small fw-semibold" for="reset" class="fxt-label">Enter OTP Code Here</label>
 					<div class="container_dotp">
 
 						<div class="otp-input mb-5">
@@ -3036,34 +2972,30 @@
 						  </div>
 						  <input type="hidden" name="otp">
 					</div>
-				</form>		
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="plvmd_approve_delete_request" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Approve Amendment Request</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Approve Amendment Request</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<input type="hidden" id="pvlmd_id_radr" name="pvlmd_id_radr" value="0">
 				<input type="hidden" id="initiate_type_radr" name="initiate_type_radr" value="0">
@@ -3100,109 +3032,109 @@
 							</div>
 						</div>
 					</div>
-					
+
 				</div> -->
 
 				<div class="card card-body">
 				<div class="row">
 					<div class="col-lg-6">
-						<div class="form-group">
-							<div class="form-row">
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Reference Number</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reference Number</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_reference_number_radr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="form-row">
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Layer</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Layer</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="layer_type_radr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="form-row">
-								
+						<div class="mb-3">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Request Note</label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Request Note</label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_delete_note_radr"
 										readonly
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
-						</div>	
-						<div class="form-group">
-							<div class="form-row">
+						</div>
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Requested By</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Requested By</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_deleted_requested_by_radr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
 
-						<div class="form-group">
-							<div class="form-row">
-								
+						<div class="mb-3">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Review Note</label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Review Note</label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_review_note_radr"
 										readonly
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
-						</div>	
-						<div class="form-group">
-							<div class="form-row">
+						</div>
+						<div class="mb-3">
+							<div class="row g-3">
 								<div class="col">
-									<label for="pvlmd_reference_number_fts">Reviewed By</label> <input
-										class="form-control " type="text"
+									<label class="form-label small fw-semibold" for="pvlmd_reference_number_fts">Reviewed By</label> <input
+										class="form-control form-control-sm" type="text"
 										placeholder="" id="pvlmd_reviewed_by_radr"
 										readonly
 									>
 								</div>
-								
+
 							</div>
 						</div>
 
-						<button class="btn btn-warning mt-1 mb-1" data-toggle="modal" data-target="#load_requested_application_details">
+						<button class="btn btn-warning mt-1 mb-1" data-bs-toggle="modal" data-bs-target="#load_requested_application_details">
 							Load More Details
 						</button>
 
-						<div class="form-group mt-5">
-							<div class="form-row">
-								
+						<div class="mb-3 mt-5">
+							<div class="row g-3">
+
 								<div class="col">
-									<label for="pvlmd_file_number">Approve Note <span class="text-danger">*</span></label> 
+									<label class="form-label small fw-semibold" for="pvlmd_file_number">Approve Note <span class="text-danger">*</span></label>
 									<textarea
-										class="form-control " type="text" rows="5"
+										class="form-control form-control-sm" type="text" rows="5"
 										placeholder="" id="pvlmd_approve_note_radr"
-										
+
 									></textarea>
 								</div>
-		
-								
+
+
 							</div>
 						</div>
 					</div>
@@ -3211,13 +3143,13 @@
 							<div class="card">
 							  <div class="card-header" id="headingOne">
 								<h5 class="mb-0">
-								  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne-a" aria-expanded="true" aria-controls="collapseOne">
+								  <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapseOne-a" aria-expanded="true" aria-controls="collapseOne">
 									Load PDF
 								  </button>
 								</h5>
 							  </div>
-						  
-							  <div id="collapseOne-a" class="collapse" aria-labelledby="headingOne" data-parent="#accordion_a">
+
+							  <div id="collapseOne-a" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion_a">
 								<div class="card-body">
 									<iframe src=""  id="elisdovumentpreviewblobfile_radr" width="100%" height="600"></iframe>
 								</div>
@@ -3226,12 +3158,12 @@
 							<div class="card">
 							  <div class="card-header" id="headingTwo">
 								<h5 class="mb-0">
-								  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo-a" aria-expanded="false" aria-controls="collapseTwo">
+								  <button class="btn btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo-a" aria-expanded="false" aria-controls="collapseTwo">
 									Load Map
 								  </button>
 								</h5>
 							  </div>
-							  <div id="collapseTwo-a" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion_a">
+							  <div id="collapseTwo-a" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion_a">
 								<div class="card-body">
 
 									<button class="btn btn-danger btn-sm">View</button>
@@ -3245,7 +3177,7 @@
 					</div>
 				</div>
 				</div>
-								
+
 			</div>
 
 			<!--Body End -->
@@ -3253,12 +3185,12 @@
 
 
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<!-- <button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<!-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button> -->
-				<button class="btn btn-warning" data-toggle="modal" data-target="#decline_request">
+				<button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#decline_request">
 					<span class="text" >Decline</span>
 				</button>
 				<button class="btn btn-danger" id="btn_approve_pvlmd_delete_request">
@@ -3274,31 +3206,27 @@
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="verify_otp_for_approve_delete" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Verify OTP</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Verify OTP</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 
 
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<p class="fxt-description">Please enter the OTP (one time password) to verify your account. A Code has been sent to <span id="phone_number_b">${user_phone}</span></p>
 				<form  name="verifydeleteform" method="post" action="Login"  autocomplete="off" id="verifydeleteform">
-					<label for="reset" class="fxt-label">Enter OTP Code Here</label>
+					<label class="form-label small fw-semibold" for="reset" class="fxt-label">Enter OTP Code Here</label>
 					<div class="container_dotp">
 
 						<div class="otp-input mb-5">
@@ -3311,41 +3239,37 @@
 						  </div>
 						  <!-- <input type="hidden" name="otp"> -->
 					</div>
-				</form>		
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
 	id="load_requested_application_details" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
 
 			<!--Header -->
-			<div class="modal-header">
-				<h4 class="modal-title custom_align" id="Heading">Application Details</h4>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">x</span>
-				</button>
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">Application Details</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<!--  Body Start -->
-			<div class="modal-body">
+			<div class="modal-body p-4">
 
 				<div class="text-small" id="accordion_d">
 					<div id="delete_application_details"></div>
 				</div>
 			</div>
 			<!-- Footer -->
-			<div class="modal-footer ">
+			<div class="modal-footer bg-white border-top">
 
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
 				</button>
 			</div>
 
@@ -3388,16 +3312,16 @@
 <!-- <script>
 	// script.js
 const inputs = document.getElementById("inputs_dotp");
- 
+
  inputs.addEventListener("input_dotp", function (e) {
 	 const target = e.target;
 	 const val = target.value;
-  
+
 	 if (isNaN(val)) {
 		 target.value = "";
 		 return;
 	 }
-  
+
 	 if (val != "") {
 		 const next = target.nextElementSibling;
 		 if (next) {
@@ -3405,11 +3329,11 @@ const inputs = document.getElementById("inputs_dotp");
 		 }
 	 }
  });
-  
+
  inputs.addEventListener("keyup", function (e) {
 	 const target = e.target;
 	 const key = e.key.toLowerCase();
-  
+
 	 if (key == "backspace" || key == "delete") {
 		 target.value = "";
 		 const prev = target.previousElementSibling;
@@ -3514,7 +3438,7 @@ const inputs = document.getElementById("inputs_dotp");
       }
     });
   }
-  
+
   function updateInput() {
     let inputValue = Array.from(inputs).reduce(function (otp, input) {
       otp += (input.value.length) ? input.value : ' ';
@@ -3524,4 +3448,3 @@ const inputs = document.getElementById("inputs_dotp");
   }
 })();
 </script>
-
