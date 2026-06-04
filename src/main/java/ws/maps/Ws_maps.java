@@ -853,16 +853,17 @@ public class Ws_maps {
 
 	}
 
-	public String select_pvlmd_transactions_details_all_by_refernce_number_main(String web_service_url,
+	public String select_pvlmd_transactions_details_all_by_refernce_number_v5(String web_service_url,
 			String web_service_api_key,
 			String job_number)
 
 	{
 		String output = "Data Not Received";
+		System.out.println(job_number);
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(web_service_url
-					+ "maps_service/select_pvlmd_transactions_details_all_by_refernce_number_main");
+					+ "maps_service/select_pvlmd_transactions_details_all_by_refernce_number_v5");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")

@@ -1371,11 +1371,17 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			if (request_type.equals("pvlmd_transaction_select_by_reference_number_main")) {
 
 				String reference_number = request.getParameter("reference_number");
-				// ////System.out.println(parcel_id);
+				String gid_fk = request.getParameter("gid_fk");
+				
+				 // Build JSON string from parameters
+    JSONObject jsonData = new JSONObject();
+    jsonData.put("reference_number", reference_number);
+    jsonData.put("gid_fk", gid_fk);
+
 				web_service_response = cls_maps
-						.select_pvlmd_transactions_details_all_by_refernce_number_main(
+						.select_pvlmd_transactions_details_all_by_refernce_number_v5(
 								cls_url_config.getWeb_service_url_ser(),
-								cls_url_config.getWeb_service_url_ser_api_key(), reference_number);
+								cls_url_config.getWeb_service_url_ser_api_key(), jsonData.toString());
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
 				} else {

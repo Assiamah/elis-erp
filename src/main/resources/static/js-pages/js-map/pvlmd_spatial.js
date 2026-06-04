@@ -575,6 +575,13 @@ console.log('PVLMD Maps working');
 																		.log(serviceresponse.features)
 																// var props =
 																// feature.properties;
+// // Show modal using jQuery
+// $('#pvlmdparcelinformation').modal('show');
+// Get the modal element
+var myModal = new bootstrap.Modal(document.getElementById('pvlmdparcelinformation'));
+
+// Show the modal
+myModal.show();
 
 																$('#pvlmdparcelinformation #pvlmd_modified_by').val((serviceresponse.features[0].properties.plotted_by) == null ? (serviceresponse.features[0].properties.modified_by) : (serviceresponse.features[0].properties.plotted_by));
 
@@ -722,9 +729,13 @@ console.log('PVLMD Maps working');
 																		console
 																				.log(parcel_uuid);
 
-																		$(
-																				"#pvlmdparcelinformation")
-																				.modal();
+																		// $(
+																		// 		"#pvlmdparcelinformation")
+																		// 		.modal();
+																				// Get the modal element
+var myModal = new bootstrap.Modal(document.getElementById('pvlmdparcelinformation'));
+// Show the modal
+myModal.show();
 
 																		$(
 																				'#pvlmdparcelinformation #pvlmd_gid')
