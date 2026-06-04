@@ -1,273 +1,275 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
 <%@ page import="ws.casemgt.Ws_client_application" %>
 <%@ page import="ws.users.Ws_users" %>
 <%@ page import="org.codehaus.jettison.json.*" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.GsonBuilder" %>
-
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
+<div class="main-content app-content">
+    <div class="container-fluid page-container">
 
-
-
-   <style>
-        /* Custom enhancements */
-        body {
-            background-color: #f4f7fc;
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-        }
-        .card {
-            border-radius: 1rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: none;
-        }
-        .card:hover {
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
-        }
-        .card-header {
-            background: rgba(0, 123, 255, 0.03);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            font-weight: 600;
-            letter-spacing: -0.2px;
-            border-radius: 1rem 1rem 0 0 !important;
-            padding: 1rem 1.25rem;
-        }
-        .breadcrumb {
-            background: transparent;
-            padding: 0.75rem 0;
-        }
-        .btn-primary {
-            background: #2c7da0;
-            border-color: #2c7da0;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .btn-primary:hover {
-            background: #1f5e7e;
-            border-color: #1a526f;
-            transform: translateY(-1px);
-        }
-        .btn-outline-primary {
-            border-radius: 0.5rem;
-        }
-        #smd-map {
-            height: 500px;
-            width: 100%;
-            border-radius: 1rem;
-            background: #e9ecef;
-            z-index: 1;
-            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05), 0 0.25rem 0.5rem rgba(0,0,0,0.1);
-        }
-        .table-responsive-custom {
-            border-radius: 0.75rem;
-            overflow-x: auto;
-        }
-        .table th {
-            background-color: #eef2f7;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
-        }
-        .badge-coord {
-            background-color: #e9ecef;
-            color: #1e466e;
-        }
-        .form-control, .form-select {
-            border-radius: 0.5rem;
-            border: 1px solid #ced4da;
-            transition: 0.2s;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #2c7da0;
-            box-shadow: 0 0 0 0.2rem rgba(44,125,160,0.2);
-        }
-        .btn-group-sm-custom {
-            gap: 0.5rem;
-        }
-        footer.small {
-            font-size: 0.75rem;
-        }
-        .radio-group-inline .form-check {
-            margin-right: 1.5rem;
-        }
-        @media (max-width: 768px) {
-            .btn-group.mr-2, .btn-group {
-                flex-wrap: wrap;
-                margin-bottom: 0.5rem;
-            }
-            .col-lg-3, .col-lg-9 {
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container-fluid py-3">
-    <!-- Enhanced Breadcrumbs with modern look -->
-    <nav aria-label="breadcrumb" class="mb-3">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#" class="text-decoration-none"><i class="fas fa-draw-polygon me-1"></i>SMD Plottings</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Interactive Maps</li>
-        </ol>
-    </nav>
-
-    <div class="row g-4">
-        <!-- LEFT SIDEBAR: Tools & Data (Col-lg-3) -->
-        <div class="col-lg-3">
-            <div class="card mb-4">
-                <div class="card-header bg-white">
-                    <i class="fas fa-map-marked-alt me-2 text-primary"></i> Map Plotting Tools
+        <!-- Start::page-header -->
+        <div class="page-header-breadcrumb mb-4">
+            <div class="d-flex align-center justify-content-between flex-wrap">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-1">SMD Map Plottings</h1>
+                    <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Manage and plot SMD parcels and scanned map overlays</p>
                 </div>
-                <div class="card-body">
-                    <!-- Action buttons group -->
-                    <div class="d-flex flex-wrap gap-2 mb-4">
-                        <button type="button" class="btn btn-primary" id="smd_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" title="Draw a Line / Add Point">
-                            <i class="fas fa-plus-circle"></i> Add Coord
-                        </button>
-                        <button type="button" class="btn btn-primary" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" title="Upload CSV">
-                            <i class="fas fa-upload"></i> CSV
-                        </button>
-                        <button type="button" class="btn btn-primary" id="smd_btn_visualise_coordinate" title="Visualise Coordinate">
-                            <i class="fas fa-eye"></i> Visualise
-                        </button>
-                    </div>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">ELIS</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">SMD Map Plotting</a></li>
+                    <li class="breadcrumb-item active text-success" aria-current="page">Maps</li>
+                </ol>
+            </div>
+        </div>
+        <!-- End::page-header -->
 
-                    <!-- Coordinates List Table (Dynamic) -->
-                    <label class="fw-semibold mb-2"><i class="fas fa-list me-1"></i>Coordinate List</label>
-                    <div class="table-responsive small mb-3" style="max-height: 220px; overflow-y: auto;">
-                        <table class="table table-sm table-bordered table-hover" id="coordinatelis_Table">
-                            <thead class="table-light">
-                                <tr><th>Name</th><th>Easting (X)</th><th>Northing (Y)</th><th style="width: 50px">Action</th></tr>
-                            </thead>
-                            <tbody id="coordinateTableBody">
-                                <!-- dynamic rows -->
-                                <tr><td colspan="4" class="text-muted text-center">No coordinates added</td></tr>
-                            </tbody>
-                        </table>
+        <div class="row">
+            <!-- Left Sidebar Controls -->
+            <div class="col-lg-4 col-xl-3">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-gradient-primary text-white border-0 py-3">
+                        <h5 class="mb-0 fw-semibold">
+                            <i class="fas fa-sliders-h me-2"></i>Control Panel
+                        </h5>
                     </div>
-
-                    <!-- WKT Polygon Section -->
-                    <div class="mb-3">
-                        <label for="smd_bl_wkt_polygon" class="form-label fw-semibold"><i class="fas fa-shield-alt"></i> WKT Polygon</label>
-                        <textarea class="form-control" rows="2" id="smd_bl_wkt_polygon" placeholder="POLYGON((...))"></textarea>
-                        <div class="d-flex gap-2 mt-2">
-                            <button type="button" class="btn btn-sm btn-outline-primary" id="smd_btn_visualise_wkt"><i class="fas fa-map"></i> Visualise Polygon</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="smd_btn_save_wkt"><i class="fas fa-save"></i> Save Parcels</button>
+                    <div class="card-body">
+                        <!-- Action Buttons -->
+                        <div class="btn-group w-100 mb-4">
+                            <button type="button" class="btn btn-primary btn-sm" id="smd_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Add Coordinate">
+                                <i class="fas fa-plus-circle me-1"></i> Add
+                            </button>
+                            <button type="button" class="btn btn-info btn-sm" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" data-bs-tooltip="tooltip" title="Upload CSV">
+                                <i class="fas fa-upload me-1"></i> CSV
+                            </button>
+                            <button type="button" class="btn btn-warning btn-sm" id="smd_btn_visualise_coordinate" data-bs-tooltip="tooltip" title="Visualise Coordinate">
+                                <i class="fas fa-eye me-1"></i> Visualise
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm" id="smd_btn_save_wkt" data-bs-tooltip="tooltip" title="Save Parcels">
+                                <i class="fas fa-save me-1"></i> Save
+                            </button>
                         </div>
-                    </div>
 
-                    <!-- Zoom to Coordinate -->
-                    <div class="mb-3">
-                        <label class="fw-semibold mb-1">Zoom to Location</label>
-                        <div class="row g-2">
-                            <div class="col-5"><input type="text" class="form-control form-control-sm" id="smd_x_coordinate_mak" placeholder="Eastings"></div>
-                            <div class="col-5"><input type="text" class="form-control form-control-sm" id="smd_y_coordinate_mak" placeholder="Northings"></div>
-                            <div class="col-2"><button class="btn btn-sm btn-primary w-100" id="smd_btn_show_location"><i class="fas fa-map-marker-alt"></i></button></div>
+                        <!-- Coordinate List Table -->
+                        <div class="mb-4">
+                            <h6 class="fw-semibold mb-3 text-primary">
+                                <i class="fas fa-list-ol me-2"></i>Coordinate List
+                            </h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm" id="coordinatelis_Table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>X</th>
+                                            <th>Y</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic content will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <button class="btn btn-sm btn-secondary w-100 mt-2" id="smd_btn_load_for_scanned_maps_by_point"><i class="fas fa-check-circle"></i> Search Scanned Map</button>
-                    </div>
 
-                    <!-- Search by Reference -->
-                    <div class="mb-3">
-                        <label class="fw-semibold">Ref Number Search</label>
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" id="smd_search_by_text" placeholder="Certificate / Ref Number">
-                            <button class="btn btn-primary" type="button" id="smd_btn_search_by_reference_number"><i class="fas fa-search"></i> Go</button>
+                        <!-- WKT Polygon Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-semibold mb-2 text-primary">
+                                <i class="fas fa-draw-polygon me-2"></i>WKT Polygon
+                            </h6>
+                            <textarea class="form-control form-control-sm mb-2" rows="3" id="smd_bl_wkt_polygon" placeholder="POLYGON((...))"></textarea>
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100" id="smd_btn_visualise_wkt" data-bs-tooltip="tooltip" title="Visualise Polygon">
+                                <i class="fas fa-map me-1"></i> Visualise Polygon
+                            </button>
                         </div>
-                    </div>
 
-                    <!-- Scanned Maps Dropdown + actions -->
-                    <div class="mb-3">
-                        <label class="fw-semibold">Scanned Images</label>
-                        <select class="form-select form-select-sm mb-2" id="geoserverscannedimages_list">
-                            <option value="-1">No Scanned Image</option>
-                        </select>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-sm btn-outline-secondary" id="smd_btn_search_for_scanned_maps"><i class="fas fa-search"></i> Search</button>
-                            <button class="btn btn-sm btn-primary" id="smd_btn_load_for_scanned_maps"><i class="fas fa-check-circle"></i> Load</button>
+                        <!-- Quick Coordinate Search -->
+                        <div class="card border-success mb-4">
+                            <div class="card-header bg-success bg-opacity-10 border-success py-2">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="fas fa-search-location me-2"></i>Quick Coordinate Search
+                                </h6>
+                            </div>
+                            <div class="card-body p-3">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" id="smd_x_coordinate_mak" placeholder="X Coordinate">
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" class="form-control form-control-sm" id="smd_y_coordinate_mak" placeholder="Y Coordinate">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-primary btn-sm w-100" id="smd_btn_show_location" data-bs-tooltip="tooltip" title="Show Location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-8">
+                                        <input type="text" class="form-control form-control-sm" id="smd_search_by_text" name="smd_search_by_text" placeholder="Search by Ref Number" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-info btn-sm w-100" id="smd_btn_search_by_reference_number" data-bs-tooltip="tooltip" title="Search Reference Number">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-success btn-sm w-100" id="smd_btn_load_for_scanned_maps_by_point" data-bs-tooltip="tooltip" title="Search Scanned Map">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- More than one overlay table -->
-                    <div class="mt-3">
-                        <h6 class="fw-semibold"><i class="fas fa-layer-group"></i> Overlays</h6>
-                        <div class="table-responsive small" style="max-height: 180px;">
-                            <table class="table table-sm table-bordered" id="smd_more_than_one_parcel_Table">
-                                <thead class="table-light"><tr><th>Ref Number</th><th>Locality</th><th>Plotted By</th><th>Details</th></tr></thead>
-                                <tbody><tr><td colspan="4" class="text-muted text-center">No overlays</td></tr></tbody>
-                            </table>
+                        <!-- Scanned Maps Section -->
+                        <div class="card border-warning mb-4">
+                            <div class="card-header bg-warning bg-opacity-10 border-warning py-2">
+                                <h6 class="mb-0 fw-semibold">
+                                    <i class="fas fa-layer-group me-2"></i>Scanned Maps
+                                </h6>
+                            </div>
+                            <div class="card-body p-3">
+                                <div class="mb-3">
+                                    <select class="form-select form-select-sm" id="geoserverscannedimages_list">
+                                        <option value="-1">No Scanned Image</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-warning btn-sm flex-fill" id="smd_btn_search_for_scanned_maps" data-bs-tooltip="tooltip" title="Search for related sheets">
+                                        <i class="fas fa-search me-1"></i> Search
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm flex-fill" id="smd_btn_load_for_scanned_maps" data-bs-tooltip="tooltip" title="Show Selected Sheet">
+                                        <i class="fas fa-check-circle me-1"></i> Load
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Multiple Parcels Table -->
+                        <div class="mt-4">
+                            <h6 class="fw-semibold mb-3 text-primary">
+                                <i class="fas fa-copy me-2"></i>Multiple Parcel Overlays
+                            </h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm" id="smd_more_than_one_parcel_Table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Ref Number</th>
+                                            <th>Locality</th>
+                                            <th>Plotted By</th>
+                                            <th class="text-center">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic content will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- RIGHT SIDEBAR: Map & Controls (Col-lg-9) -->
-        <div class="col-lg-9">
-            <div class="card mb-4">
-                <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center">
-                    <span><i class="fas fa-globe-americas me-2 text-primary"></i>Interactive Map Canvas</span>
-                    <span class="badge bg-light text-dark">Spatial Data Platform</span>
-                </div>
-                <div class="card-body">
-                    <!-- Map interaction modes + action row -->
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-                        <div class="d-flex gap-4 radio-group-inline">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="interaction_type" id="draw" value="draw" checked>
-                                <label class="form-check-label" for="draw"><i class="fas fa-pencil-ruler"></i> Draw</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="interaction_type" id="modify" value="modify">
-                                <label class="form-check-label" for="modify"><i class="fas fa-edit"></i> Modify</label>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <button class="btn btn-sm btn-outline-secondary" id="smd_btnprintmap"><i class="fas fa-print"></i> Print Map</button>
-                            <button class="btn btn-sm btn-outline-primary" id="smd_btn_visualise_search"><i class="fas fa-search-location"></i> Visualise Search</button>
-                            <button class="btn btn-sm btn-outline-info" id="smd_btngeneratesearchreport"><i class="fas fa-file-alt"></i> Search Report</button>
-                        </div>
+            <!-- Main Map Area -->
+            <div class="col-lg-8 col-xl-9">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-gradient-success text-white border-0 py-3">
+                        <h5 class="mb-0 fw-semibold">
+                            <i class="fas fa-map me-2"></i>Interactive Map Viewer
+                        </h5>
                     </div>
+                    <div class="card-body">
+                        <!-- Map Toolbar -->
+                        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="interaction_type" id="draw" value="draw" checked>
+                                <label class="btn btn-outline-primary btn-sm" for="draw">
+                                    <i class="fas fa-pencil-alt me-1"></i> Draw
+                                </label>
+                                <input type="radio" class="btn-check" name="interaction_type" id="modify" value="modify">
+                                <label class="btn btn-outline-warning btn-sm" for="modify">
+                                    <i class="fas fa-edit me-1"></i> Modify
+                                </label>
+                            </div>
 
-                    <!-- Scale & Zoom controls -->
-                    <div class="row g-2 mb-3 align-items-end">
-                        <div class="col-md-4 col-sm-6">
-                            <label class="form-label small">Scale Value</label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" id="smd_scale_value_e" placeholder="Custom scale">
-                                <select class="form-select" id="smd_scale_value" style="max-width: 100px;">
-                                    <option value="500">500</option><option value="1107">1107</option><option value="1250">1250</option>
-                                    <option value="2500">2500</option><option value="2140">2140</option><option value="2670">2670</option>
-                                    <option value="5000">5000</option><option value="10000">10000</option><option value="20000">20000</option>
+                            <!-- Scale Controls -->
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-semibold text-muted">Scale:</span>
+                                <input type="text" class="form-control form-control-sm" id="smd_scale_value_e" name="smd_scale_value_e" placeholder="Custom" style="width: 90px;">
+                                <select class="form-select form-select-sm" style="width: 120px;" id="smd_scale_value">
+                                    <option value="500">1:500</option>
+                                    <option value="1107">1:1,107</option>
+                                    <option value="1250">1:1,250</option>
+                                    <option value="2500">1:2,500</option>
+                                    <option value="2140">1:2,140</option>
+                                    <option value="2670">1:2,670</option>
+                                    <option value="2215">1:2,215</option>
+                                    <option value="2825">1:2,825</option>
+                                    <option value="5000">1:5,000</option>
+                                    <option value="10000">1:10,000</option>
+                                    <option value="15000">1:15,000</option>
+                                    <option value="20000">1:20,000</option>
                                 </select>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="smd_lockmapscale" checked>
+                                    <label class="form-check-label small" for="smd_lockmapscale">Lock</label>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm" id="smd_btn_scale_zoom" data-bs-tooltip="tooltip" title="Zoom to Scale">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex gap-2 ms-auto">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="smd_btnprintmap" data-bs-tooltip="tooltip" title="Print Map">
+                                    <i class="fas fa-print me-1"></i> Print
+                                </button>
+                                <button type="button" class="btn btn-outline-info btn-sm" id="smd_btn_visualise_search" data-bs-tooltip="tooltip" title="Visualise Search">
+                                    <i class="fas fa-search me-1"></i> Search
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="smd_btngeneratesearchreport" data-bs-tooltip="tooltip" title="Print Search Report">
+                                    <i class="fas fa-file-alt me-1"></i> Report
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" id="smd_lockmapscale" checked>
-                                <label class="form-check-label small" for="smd_lockmapscale">Lock map scale</label>
-                            </div>
-                            <button class="btn btn-sm btn-primary w-100 mt-1" id="smd_btn_scale_zoom"><i class="fas fa-search-plus"></i> Zoom to Scale</button>
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-md-end mt-2 mt-md-0">
-                            <small class="text-muted"><i class="fas fa-info-circle"></i> Use draw/modify tools on map</small>
+
+                        <!-- Map Container -->
+                        <div class="border rounded" style="height: 600px;">
+                            <div id="smd-map" class="h-100 w-100"></div>
                         </div>
                     </div>
-
-                    <!-- The Map Container -->
-                    <div id="smd-map" style="height: 480px;"></div>
-                    <div class="card-footer bg-transparent border-0 text-muted small text-center pt-3">Plottings &copy; SMD - Real-time coordinate mapping</div>
+                    <div class="card-footer bg-transparent border-0 pt-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                <i class="fas fa-info-circle me-1"></i> SMD plotting interface
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fas fa-sync-alt me-1"></i> Last updated: Just now
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Bootstrap 5 JS Dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-tooltip="tooltip"]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
 
+<script src="${pageContext.request.contextPath}/js-pages/gated_workflow.js"></script>
 
- 
+<script src="${pageContext.request.contextPath}/js-pages/js-map/smdmaps.js"></script>

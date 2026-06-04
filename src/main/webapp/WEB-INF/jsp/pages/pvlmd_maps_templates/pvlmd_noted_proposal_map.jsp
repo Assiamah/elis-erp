@@ -278,3 +278,5 @@
 </script>
 
 <script src="${pageContext.request.contextPath}/js-pages/gated_workflow.js"></script>
+
+<script src="${pageContext.request.contextPath}/js-pages/js-map/pvlmdmaps.js"></script>

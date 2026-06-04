@@ -123,7 +123,7 @@ ${page_name == "case_processing" ? "<script src='js-pages/js-map/lrdmaps.js'></s
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lrdfpmaps.js'></script>" : ""}
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrsmaps.js'></script>" : ""}
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/smdfrtpmaps.js'></script>" : ""}
-${page_name == "case_processing" ? "<script src='js-pages/js-map/pvlmd_spatial.js'></script>" : ""}
+<!-- ${page_name == "case_processing" ? "<script src='js-pages/js-map/pvlmd_spatial.js'></script>" : ""} -->
 ${page_name == "case_processing" ? "<script src='js-pages/js-map/lcfrfamaps.js'></script>" : ""}
 ${(page_name == "case_processing" || page_name == "application_review_details_advanced" || page_name == "deed_data_capture") ? "<script src='js-pages/js-map/lcmaps.js'></script>" : ""}
 
