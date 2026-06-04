@@ -107,7 +107,7 @@
         <!-- Welcome Header -->
 <div class="row mb-4">
     <div class="col-12">
-        <div class="card custom-card border-0 shadow-sm">
+        <div class="card custom-card border-0 h-100 shadow-sm">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
@@ -151,7 +151,7 @@
         <div class="row">
             <!-- Current Applications -->
             <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 shadow-sm hover-lift">
+                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
                     <a href="${pageContext.request.contextPath}/case_movement_module" class="text-decoration-none">
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center justify-content-between">
@@ -177,7 +177,7 @@
 
             <!-- Overdue Applications -->
             <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 shadow-sm hover-lift">
+                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
                     <a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center justify-content-between">
@@ -193,12 +193,12 @@
                                     <i class="ri-alert-line fs-24 text-danger"></i>
                                 </div>
                             </div>
-                            <c:if test="${apps_past_due_dates > 0}">
+                            <!-- <c:if test="${apps_past_due_dates > 0}">
                                 <div class="alert alert-danger light mt-3 py-2 small mb-0">
                                     <i class="ri-information-line me-1"></i>
                                     ${apps_past_due_dates} applications need immediate review
                                 </div>
-                            </c:if>
+                            </c:if> -->
                         </div>
                     </a>
                 </div>
@@ -206,7 +206,7 @@
 
             <!-- Applications Received -->
             <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 shadow-sm hover-lift">
+                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
                     <a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsReceivedMonthModal">
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center justify-content-between">
@@ -235,7 +235,7 @@
 
             <!-- Completed Applications -->
             <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 shadow-sm hover-lift">
+                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
                     <a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsCompletedMonthModal">
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center justify-content-between">
