@@ -41,9 +41,9 @@
                             <button type="button" class="btn btn-warning btn-sm" id="lrd_btn_visualise_coordinate" data-bs-tooltip="tooltip" title="Visualise Polygon">
                                 <i class="fas fa-eye me-1"></i> Visualise
                             </button>
-                            <button type="button" class="btn btn-success btn-sm" id="lrd_btn_save_wkt" data-bs-tooltip="tooltip" title="Plot Parcel">
+                            <!-- <button type="button" class="btn btn-success btn-sm" id="lrd_btn_save_wkt" data-bs-tooltip="tooltip" title="Plot Parcel">
                                 <i class="fas fa-save me-1"></i> Save
-                            </button>
+                            </button> -->
                         </div>
 
                         <!-- Coordinate List Table -->
