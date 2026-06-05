@@ -21149,8 +21149,8 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "GenerateCaseReports",
         // target:'_blank',
             data: {
-                request_type: 'request_to_generate_smd_barcode_with_address_code',
-               // request_type: 'request_to_generate_smd_barcode',
+               // request_type: 'request_to_generate_smd_barcode_with_address_code',
+                request_type: 'request_to_generate_smd_barcode',
                 wkt_polygon:wkt_polygon,
                 job_number:job_number,
                 case_number:case_number
