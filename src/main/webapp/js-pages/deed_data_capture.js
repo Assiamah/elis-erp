@@ -108,6 +108,57 @@
         $('#deed_check_polygon [data-deed-polygon-confirm="true"]').toggleClass('d-none', !showButton);
     }
 
+    function openDeedNotingRequestModal() {
+        const context = window.currentDeedCaptureContext || {};
+        const jobNumber = firstNonEmpty(context.job_number, $('#cs_main_job_number').val(), $('#deed_job_number').val());
+
+        if (!jobNumber) {
+            setLookupStatus('warning', 'Load a job first before sending a noting request.');
+            return;
+        }
+
+        const purpose = 'Noting of Parcels';
+        const $purpose = $('#req_job_purpose');
+
+        $('#deed_check_polygon').modal('hide');
+        $('#askForPurposeOfSendingRequest').modal('show');
+        $('#askForPurposeOfSendingRequest').data('deed-noting-request', true);
+        $('#askForPurposeOfSendingRequest').data('deed-noting-purpose-html', $purpose.html());
+        $('#askForPurposeOfSendingRequest').data('deed-noting-purpose-value', $purpose.val());
+
+        $('#req_job_number').val(jobNumber);
+        $('#req_ar_name').val(firstNonEmpty(context.ar_name, $('#cs_main_ar_name').val()));
+        $('#req_business_process_sub_name').val(firstNonEmpty(context.business_process_sub_name, $('#cs_main_business_process_sub_name').val()));
+        $('#req_locality').val(firstNonEmpty(context.locality, $('#deedLoadedLocality').text()));
+        $('#req_remarks').val('');
+
+        $purpose
+            .empty()
+            .append(new Option(purpose, purpose))
+            .val(purpose)
+            .prop('disabled', true)
+            .trigger('change');
+
+        $('#btnaddreqtolistFinal').removeClass('d-none');
+    }
+
+    function resetDeedNotingRequestModal() {
+        const $modal = $('#askForPurposeOfSendingRequest');
+
+        if (!$modal.data('deed-noting-request')) {
+            return;
+        }
+
+        $modal.removeData('deed-noting-request');
+        $('#req_job_purpose')
+            .prop('disabled', false)
+            .html($modal.data('deed-noting-purpose-html') || '<option value="">-- select Purpose --</option>')
+            .val($modal.data('deed-noting-purpose-value') || '');
+        $modal.removeData('deed-noting-purpose-html');
+        $modal.removeData('deed-noting-purpose-value');
+        $('#req_remarks').val('');
+    }
+
     function setSelectValue(selector, value) {
         const $select = $(selector);
         if (!$select.length || value == null || value === 'null' || value === '') {
@@ -951,6 +1002,10 @@
         $('#deed_check_polygon').on('shown.bs.modal', updateDeedPolygonConfirmButton);
 
         $('#deed_check_wkt_polygon').on('input change', updateDeedPolygonConfirmButton);
+
+        $('#btn_send_deed_noting_request').on('click', openDeedNotingRequestModal);
+
+        $('#askForPurposeOfSendingRequest').on('hidden.bs.modal', resetDeedNotingRequestModal);
 
         $('.deed-action-launch').on('click', function () {
             if (!state.loadedJob) {

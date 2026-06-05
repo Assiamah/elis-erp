@@ -3558,6 +3558,9 @@
             <i class="bi bi-shield-check me-1"></i>Verify the polygon before proceeding with deed capture
           </small>
           <div class="d-flex flex-wrap gap-2 justify-content-end">
+            <button type="button" class="btn btn-primary" id="btn_send_deed_noting_request">
+              <i class="ri-send-plane-line me-1"></i>Send Request
+            </button>
             <c:if test="${(division == 'LRD' or division == 'PVLMD') and user_level > 1}">
               <button type="button" class="btn btn-danger d-none" id="btn_confirm_lrd_parcel_noting_deed_data_capture" data-deed-polygon-confirm="true">
                 <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
