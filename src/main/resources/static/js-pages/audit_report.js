@@ -85,6 +85,115 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
     let upperCaseVariable;
 
 
+    function showAuditValidationMessage(message) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation',
+                text: message,
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        if (typeof toastr !== 'undefined') {
+            toastr["error"](message, "Validation");
+        }
+    }
+
+    function parseAuditDate(dateValue) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+            return null;
+        }
+
+        const parts = dateValue.split('-');
+        const year = Number(parts[0]);
+        const month = Number(parts[1]);
+        const day = Number(parts[2]);
+        const parsedDate = new Date(year, month - 1, day);
+
+        if (parsedDate.getFullYear() !== year || parsedDate.getMonth() !== month - 1 || parsedDate.getDate() !== day) {
+            return null;
+        }
+
+        parsedDate.setHours(0, 0, 0, 0);
+        return parsedDate;
+    }
+
+    function setAuditDateInvalid(selector, invalid) {
+        const $field = $(selector);
+        const $altField = $field.next('.flatpickr-input');
+
+        $field.toggleClass('is-invalid', invalid);
+        $altField.toggleClass('is-invalid', invalid);
+    }
+
+    function validateAuditFilters(options) {
+        options = options || {};
+
+        startDate = ($('#start_date').val() || $('#datefrom').val() || '').trim();
+        endDate = ($('#end_date').val() || $('#dateto').val() || '').trim();
+
+        setAuditDateInvalid('#datefrom', false);
+        setAuditDateInvalid('#dateto', false);
+
+        if (options.requireRegion && $('#sel_change_region_compliance').val() === '-1') {
+            showAuditValidationMessage("Please select Office Region.");
+            $('#sel_change_region_compliance').focus();
+            return false;
+        }
+
+        if (!startDate && !endDate) {
+            setAuditDateInvalid('#datefrom', true);
+            setAuditDateInvalid('#dateto', true);
+            showAuditValidationMessage("Please select Date From and Date To before choosing Office Region.");
+            $('#datefrom').focus();
+            return false;
+        }
+
+        if (!startDate) {
+            setAuditDateInvalid('#datefrom', true);
+            showAuditValidationMessage("Please select Date From.");
+            $('#datefrom').focus();
+            return false;
+        }
+
+        if (!endDate) {
+            setAuditDateInvalid('#dateto', true);
+            showAuditValidationMessage("Please select Date To.");
+            $('#dateto').focus();
+            return false;
+        }
+
+        const parsedStartDate = parseAuditDate(startDate);
+        const parsedEndDate = parseAuditDate(endDate);
+
+        if (!parsedStartDate) {
+            setAuditDateInvalid('#datefrom', true);
+            showAuditValidationMessage("Please enter a valid Date From.");
+            $('#datefrom').focus();
+            return false;
+        }
+
+        if (!parsedEndDate) {
+            setAuditDateInvalid('#dateto', true);
+            showAuditValidationMessage("Please enter a valid Date To.");
+            $('#dateto').focus();
+            return false;
+        }
+
+        if (parsedEndDate < parsedStartDate) {
+            setAuditDateInvalid('#datefrom', true);
+            setAuditDateInvalid('#dateto', true);
+            showAuditValidationMessage("Date To cannot be earlier than Date From.");
+            $('#dateto').focus();
+            return false;
+        }
+
+        return true;
+    }
+
+
     flatpickr("#datefrom", {
         dateFormat: "Y-m-d", // Internal value format (YYYY-MM-DD)
         altInput: true, // Enables an alternative input field for display
@@ -93,6 +202,9 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
         onClose: function(selectedDates, dateStr, instance) {
             console.log("Selected date:", dateStr); // Logs in YYYY-MM-DD format
             $('#start_date').val(dateStr);
+            if ($('#end_date').val()) {
+                validateAuditFilters();
+            }
     
         }
     });
@@ -108,6 +220,9 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
         onClose: function(selectedDates, dateStr, instance) {
             console.log("Selected date:", dateStr); // Logs in YYYY-MM-DD format
             $('#end_date').val(dateStr);
+            if ($('#start_date').val()) {
+                validateAuditFilters();
+            }
 
         $('#sel_change_region_compliance').val('-1');
 
@@ -258,6 +373,10 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
    
         console.log(code);
 
+        if (!validateAuditFilters({ requireRegion: true })) {
+            $('#sel_change_region_compliance').val('-1');
+            return;
+        }
 
 
         $.ajax({
@@ -313,6 +432,10 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
 
     $('#totalrevenue').on('click', function(e) {
         e.preventDefault();
+
+        if (!validateAuditFilters({ requireRegion: true })) {
+            return;
+        }
   
      $("#sub_service_modal").modal("show");  
   
@@ -441,6 +564,9 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
     $(document).on('click','#view_bill_items',function(e){
         e.preventDefault();
 
+        if (!validateAuditFilters({ requireRegion: true })) {
+            return;
+        }
 
 
 
@@ -771,6 +897,10 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
     $(document).on('click','#view_regional_bill_items',function(e){
         e.preventDefault();
 
+        if (!validateAuditFilters({ requireRegion: true })) {
+            return;
+        }
+
         var item_name=$(this).data('id');
        
         var sub_service_name=$(this).data('service_name');
@@ -927,6 +1057,10 @@ $('#bill_items_regional_modal').on('hidden.bs.modal', function () {
 
     $('#totalTransactions').on('click', function(e) {
         e.preventDefault();
+
+        if (!validateAuditFilters({ requireRegion: true })) {
+            return;
+        }
   
      $("#transactions_modal").modal("show");  
   

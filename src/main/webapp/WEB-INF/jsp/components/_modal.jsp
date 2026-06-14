@@ -3835,6 +3835,7 @@
                         <option value="Site Plan">Site Plan</option>
                         <option value="Hatched Site Plan">Hatched Site Plan</option>
                         <option value="Receipts">Receipts</option>
+                        <option value="Correspondence">Correspondence</option>
                         <option value="Others">Other Documents</option>
                     </select>
                     <div class="form-text">

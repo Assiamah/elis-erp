@@ -75,27 +75,31 @@ public class report_audit {
 
 			String web_service_response = null;
 
-			if (request_type.equals("audit_report_count_on_payments")) {
+				if (request_type.equals("audit_report_count_on_payments")) {
 
                // String regional_code = (String) session.getAttribute("regional_code");
-                  String regional_code ="11";
+                  // String regional_code ="11";
       
+                String posted_regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
                 String end_date = request.getParameter("end_date");
 
+                System.out.println("[audit_report_count_on_payments] POST received: request_type="
+                        + request_type + ", regional_code=" + posted_regional_code + ", start_date="
+                        + start_date + ", end_date=" + end_date);
 
-                obj.put( "regional_code" , regional_code );
+                obj.put( "regional_code" , posted_regional_code );
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
-              //  //System.out.println(obj.toString());
+                System.out.println("[audit_report_count_on_payments] Payload sent to web service: " + obj.toString());
 
                 web_service_response = cls_audit_report
                         .audit_report_count_on_payments(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;

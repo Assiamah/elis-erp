@@ -122,13 +122,32 @@ const dateToPicker = flatpickr("#dateto", {
 
 
         function getServiceTypeButtons(title_) {
+  const exportColumns = function (index, data, node) {
+    const $header = $(node);
+    const headerText = $header.text().trim().toLowerCase();
+
+    if (!$header.is(":visible")) {
+      return false;
+    }
+
+    if ($header.find('input[type="checkbox"]').length > 0) {
+      return false;
+    }
+
+    if (!headerText || headerText === "action") {
+      return false;
+    }
+
+    return true;
+  };
+
   return [
     {
       extend: 'copy',
       title: title_,
       documentTitle: title_,
       exportOptions: {
-        columns: [0, 1],
+        columns: exportColumns,
         format: {
           body: data => $('<div>').html(data).text()
         }
@@ -140,7 +159,7 @@ const dateToPicker = flatpickr("#dateto", {
       documentTitle: title_,
       filename: title_.replace(/\s+/g, '_'),
       exportOptions: {
-        columns: [0, 1],
+        columns: exportColumns,
         format: {
           body: data => $('<div>').html(data).text()
         }
@@ -152,7 +171,7 @@ const dateToPicker = flatpickr("#dateto", {
       documentTitle: title_,
       filename: title_.replace(/\s+/g, '_'),
       exportOptions: {
-        columns: [0, 1],
+        columns: exportColumns,
         format: {
           body: data => $('<div>').html(data).text()
         }
@@ -164,7 +183,7 @@ const dateToPicker = flatpickr("#dateto", {
       documentTitle: title_,
       filename: title_.replace(/\s+/g, '_'),
       exportOptions: {
-        columns: [0, 1],
+        columns: exportColumns,
         format: {
           body: data => $('<div>').html(data).text()
         }
@@ -176,7 +195,7 @@ const dateToPicker = flatpickr("#dateto", {
       title: '',
       documentTitle: '',
       exportOptions: {
-        columns: [0, 1],
+        columns: exportColumns,
         format: {
           body: data => $('<div>').html(data).text()
         }
@@ -1141,6 +1160,7 @@ function updateOfficerCard(officersData, unitName) {
                     ${typeof period === "undefined" ? "" : `data-period="${period}"`}
                     data-url="${url}"
                     ${typeof by === "undefined" ? "" : `data-by="${by}"`}
+                    data-division="${division}"
                     data-type="${item.staff}'s"
                     data-title="${title}" 
                     data-date="${date}"
@@ -1273,6 +1293,7 @@ function initializeApplicationsDataTable(tableId, columns, data, title_) {
     let by = item.data("by");
     let key = item.data("key");
     let value = item.data("value");
+    let division = item.data("division");
 
 
 
@@ -1322,6 +1343,9 @@ function initializeApplicationsDataTable(tableId, columns, data, title_) {
     
     let requestData = {};
     requestData[key] = value;
+    if (division) {
+        requestData.division = division;
+    }
     
     // Get staff data if available
     let staff = null;
@@ -1372,10 +1396,8 @@ function initializeApplicationsDataTable(tableId, columns, data, title_) {
 
 							<!-- Cabinet -->
 							<li>
-								<a class="dropdown-item"
+								<a class="dropdown-item js-open-cabinet-modal"
 								href="javascript:void(0);"
-								data-bs-toggle="modal"
-								data-bs-target="#cabinetModal"
 								data-target-id="${escapeHtml(app.job_number || '')}">
 									<i class="ri-hard-drive-2-line me-2"></i>
 									Track
@@ -1750,7 +1772,7 @@ window.viewApplicationDetails = function(job_number, transaction_number, case_nu
       $(this).find(".generate-applications-chart").trigger("reset");
     }
 
-    if ($(this).find("table").length > 0) {
+    if (this.id !== "cabinetModal" && $(this).find("table").length > 0) {
       $(this).find("table").DataTable().clear().draw();
       $(this).find("table").DataTable().destroy();
     }
@@ -2257,50 +2279,48 @@ function generateChart(modalBody, title, type, tableData) {
       function () {
 
         submitAjax("ComplianceReport", "report_dashboard_all", {}, function (data) {
-          let totalRec = data.total_apps_rec[0].total;
-          let totalRecComp = data.total_comp_divisional_year[0].total;
+          let totalRec = getSummaryTotal(data.total_apps_rec);
+          let totalRecComp = getSummaryTotal(data.total_comp_divisional_year);
           //  let totalpercentage = totalRec*totalRecComp/100
 
-          let totalpercentage = ((totalRecComp / totalRec) * 100).toFixed(2) + '%';
+          let totalpercentage = totalRec > 0 ? ((totalRecComp / totalRec) * 100).toFixed(2) + '%' : '0%';
           // console.log(totalpercentage);
 
-
-
           $("#app-received-today").html(
-            new Intl.NumberFormat().format(data.apps_rec_day[0].total)
+            new Intl.NumberFormat().format(getSummaryTotal(data.apps_rec_day))
           );
           $("#app-received-month").html(
-            new Intl.NumberFormat().format(data.apps_rec_month[0].total)
+            new Intl.NumberFormat().format(getSummaryTotal(data.apps_rec_month))
           );
           $("#app-completed-today").html(
-            new Intl.NumberFormat().format(data.apps_comp_day[0].total)
+            new Intl.NumberFormat().format(getSummaryTotal(data.apps_comp_day))
           );
           $("#app-completed-month").html(
-            new Intl.NumberFormat().format(data.apps_comp_month[0].total)
+            new Intl.NumberFormat().format(getSummaryTotal(data.apps_comp_month))
           );
 
           // applications received for the year
-          showDivisionSummaryUpdatedQ("#app-received-year", data.apps_rec_divisional, 'info');
+          showDivisionSummaryUpdatedQ("#app-received-year", normalizeDivisionData(data.apps_rec_divisional), 'info');
 
           // applications completed for the year
-          showDivisionSummaryUpdatedQ("#app-completed-year", data.apps_comp_divisional, 'success');
+          showDivisionSummaryUpdatedQ("#app-completed-year", normalizeDivisionData(data.apps_comp_divisional), 'success');
 
           // applications received and completed for the year
           showDivisionSummaryUpdatedQ(
             "#app-received-completed-year",
-            data.apps_comp_divisional_year,
+            normalizeDivisionData(data.apps_comp_divisional_year),
             'default'
           );
 
           // applications past due for the year
           showDivisionSummary(
             "#app-past-due-year",
-            data.apps_past_due_dates_divisional,
+            normalizeDivisionData(data.apps_past_due_dates_divisional),
             'danger'
           );
 
           // applications with divisions
-          showDivisionSummary("#app-with-divisions", data.apps_at_division, 'warning');
+          showDivisionSummary("#app-with-divisions", normalizeDivisionData(data.apps_at_division), 'warning');
 
 
           document.getElementById('pec_id').innerHTML = totalpercentage;
@@ -2351,12 +2371,30 @@ function generateChart(modalBody, title, type, tableData) {
 
 
 
+  function getSummaryTotal(data) {
+    return Array.isArray(data) && data.length > 0 && data[0].total ? Number(data[0].total) : 0;
+  }
+
+  function normalizeDivisionData(data) {
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data.map(function(item) {
+      return {
+        ...item,
+        total: Number(item.total) || 0
+      };
+    });
+  }
+
   function showDivisionSummary(id, data, color) {
     // console.log(data[0]); // Logging the first data item
+    data = normalizeDivisionData(data);
 
     let total = data.reduce(function (sum, current) {
 
-      return (sum += current.total);
+      return (sum += Number(current.total) || 0);
     }, 0);
     //console.log(total);
 
@@ -2372,6 +2410,11 @@ function generateChart(modalBody, title, type, tableData) {
     let nextLevelModal = contentBody.data("next-level-modal");
 
     let periodToAdd = typeof period === "undefined" ? "" : `_${period}`;
+    if (data.length === 0 || total === 0) {
+      contentBody.html("");
+      return;
+    }
+
     let dataHtml = data.reduce(function (sum, current) {
       let percent = ((current.total / total) * 100).toFixed(2);
 
@@ -2399,7 +2442,9 @@ function generateChart(modalBody, title, type, tableData) {
   }
 
 
-function showDivisionSummaryUpdatedQ(id, data, color) {
+  function showDivisionSummaryUpdatedQ(id, data, color) {
+    data = normalizeDivisionData(data);
+
     // Define all 4 divisions
     const allDivisions = ['LRD', 'LVD', 'PVLMD', 'SMD'];
     
@@ -5375,7 +5420,62 @@ function insertTemplate(template) {
 
 $('#cabinetModal')
   .off('show.bs.modal')
-  .on('show.bs.modal', handleCabinetModalShow);
+  .on('show.bs.modal', handleCabinetModalShow)
+  .off('hidden.bs.modal.keep-parent-stack')
+  .on('hidden.bs.modal.keep-parent-stack', function() {
+      $('#cabinetModal').removeData('target-id');
+
+      if ($('#applicationsModal, #officerModal').filter(':visible').length > 0) {
+          $('body').addClass('modal-open');
+      }
+  });
+
+$(document).off('click', '.js-open-cabinet-modal').on('click', '.js-open-cabinet-modal', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const $trigger = $(this);
+    const jobNumber = $trigger.data('target-id');
+    const cabinetModalEl = document.getElementById('cabinetModal');
+
+    if (!jobNumber || !cabinetModalEl) {
+        console.error('No job number provided for cabinet modal');
+        return;
+    }
+
+    $('#cabinetModal').data('target-id', jobNumber);
+
+    if (window.bootstrap && bootstrap.Modal) {
+        const cabinetModal = bootstrap.Modal.getOrCreateInstance(cabinetModalEl, {
+            backdrop: false,
+            keyboard: true
+        });
+        cabinetModal.show($trigger[0]);
+        return;
+    }
+
+    $('#cabinetModal').modal({
+        backdrop: false,
+        keyboard: true,
+        show: true
+    });
+});
+
+$(document).off('click', '#cabinetModal [data-dismiss="modal"]').on('click', '#cabinetModal [data-dismiss="modal"]', function(e) {
+    e.preventDefault();
+
+    const cabinetModalEl = document.getElementById('cabinetModal');
+
+    if (window.bootstrap && bootstrap.Modal) {
+        const cabinetModal = bootstrap.Modal.getInstance(cabinetModalEl);
+        if (cabinetModal) {
+            cabinetModal.hide();
+            return;
+        }
+    }
+
+    $('#cabinetModal').modal('hide');
+});
 
 
         function clearTableRows($table) {
@@ -5407,7 +5507,7 @@ $('#cabinetModal')
 	}
 
     function handleCabinetModalShow(event) {
-        const jobNumber = $(event.relatedTarget).data('target-id');
+        const jobNumber = $(event.relatedTarget).data('target-id') || $('#cabinetModal').data('target-id');
         
         if (!jobNumber) {
             console.error('No job number provided for cabinet modal');
@@ -5557,8 +5657,3 @@ function formatDate(date) {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
-
-
-
-
-

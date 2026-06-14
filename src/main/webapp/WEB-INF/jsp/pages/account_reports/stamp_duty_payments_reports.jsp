@@ -118,7 +118,7 @@
             <div class="d-flex align-center justify-content-between flex-wrap">
                 <div class="d-flex align-center gap-2">
                     <div>
-                        <h1 class="page-title fw-medium fs-20 mb-1"><i class="fas fa-stamp me-2 text-primary"></i>Stamp Duty Payments</h1>
+                        <h1 class="page-title fw-medium fs-20 mb-1"><i class="ri-stamp-line me-2 text-primary"></i>Stamp Duty Payments</h1>
                         <p class="text-muted fs-14 mb-0">Track and manage stamp duty payment transactions</p>
                     </div>
                 </div>
@@ -166,6 +166,25 @@
                                         <input type="date" class="form-control form-control-sm" name="date_to" id="date_to" value="${date_to}">
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Region</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="ri-map-pin-line"></i>
+                                        </span>
+                                        <select id="region_id" name="region_id" class="form-select form-control-sm" required>
+                                            <option value="-1">-- select --</option>
+                                            <c:forEach items="${officeregionlist}" var="officeregion">
+                                                <option value="${fn:replace(officeregion.ord_region_code, '.0', '')}"
+                                                        data-name="${officeregion.ord_region_name}"
+                                                        ${fn:replace(region_id, '.0', '') == fn:replace(officeregion.ord_region_code, '.0', '') ? 'selected' : ''}>
+                                                    ${officeregion.ord_region_name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="d-grid mt-4">
@@ -187,7 +206,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="stats-icon bg-primary me-3">
-                                        <i class="ri-money-dollar-circle-line text-white fs-4"></i>
+                                        <i class="ri-money-dollar-circle-line fs-4"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="text-muted small fw-semibold mb-1">Total Amount</div>
@@ -205,7 +224,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="stats-icon bg-success me-3">
-                                        <i class="ri-file-list-line text-white fs-4"></i>
+                                        <i class="ri-file-list-line fs-4"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="text-muted small fw-semibold mb-1">Total Payment Count</div>

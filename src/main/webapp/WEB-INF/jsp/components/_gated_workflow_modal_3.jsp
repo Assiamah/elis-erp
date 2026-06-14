@@ -4278,3 +4278,140 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade modal-blur effect-scale" id="confirm_notation_of_objection" tabindex="-1" aria-labelledby="lrd_initial_approvalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white">
+                <div class="d-flex align-items-center w-100">
+                    <h5 class="modal-title text-white" id="lrd_initial_approvalLabel">
+                        <i class="fas fa-user-tie me-2"></i>
+                        Confirmation Notation of Objection
+                    </h5>
+                    <div class="ms-auto">
+                        <c:if test="${(division == 'LRD' or division == 'PVLMD') and user_level > 1}">
+                            <button type="button" class="btn btn-danger" id="btn_confirm_notation_of_objection">
+                                <i class="ri-checkbox-circle-line me-1"></i>Confirm Noting
+                            </button>
+                        </c:if>
+                    </div>
+                    
+                </div>
+                <button type="button" class="btn btn-light btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"><i class="ri-close-line me-1"></i></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="row g-4" style="height: 100vh;">
+                    
+                    <!-- Left Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        <div class="card border">
+                            <div class="card-header bg-light py-2">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-sticky-note me-2"></i>
+                                    Records Information
+                                </h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm mb-0" id="lrd_notes_dataTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Records Info.</th>
+                                                <th>Entered By</th>
+                                                <th>Entered Date</th>
+                                                <th>Division</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${application_notes}" var="application_notes_row">
+                                            <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
+                                                ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-comment text-muted me-2"></i>
+                                                        <span class="text-truncate" style="max-width: 200px;">
+                                                            ${application_notes_row.an_description}
+                                                        </span>
+                                                        ${application_notes_row.an_status == false ? 
+                                                            '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-user-circle text-muted me-2"></i>
+                                                        <span>${application_notes_row.created_by}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                                        <span>${application_notes_row.created_date}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-opacity-10 text-dark">
+                                                        ${application_notes_row.division}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn ${application_notes_row.an_status == false ? 'btn-outline-dark' : 'btn-outline-primary'} btn-sm open-view-notes" 
+                                                            data-target-id="${application_notes_row.an_id}"
+                                                            data-an_description="${application_notes_row.an_description}"
+                                                            data-created_by="${application_notes_row.created_by}"
+                                                            data-created_date="${application_notes_row.created_date}"
+                                                            data-modified_by="${application_notes_row.created_by}"
+                                                            data-modified_date="${application_notes_row.created_date}"
+                                                            data-division="${application_notes_row.division}"
+                                                            data-job_number="${application_notes_row.job_number}"
+                                                            data-case_number="${application_notes_row.case_number}"
+                                                            ${application_notes_row.an_status == false ? "disabled" : ""}>
+                                                        <i class="fas fa-eye me-1"></i>
+                                                        View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="_gated_workflow_view_notes">
+                            <div class="card border">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-sticky-note me-2"></i>
+                                        Note Details
+                                    </h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <!-- Note details will be dynamically inserted here -->
+                                    <div id="noteDetailsContainer" class="p-3">
+                                        <div class="text-center text-muted py-5">
+                                            <i class="fas fa-sticky-note fa-3x mb-3"></i>
+                                            <p class="mb-0">Select a note to view details</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="col-lg-6 d-flex flex-column scrollable-col">
+                        
+                        <div class="_gated_workflow_documents"></div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

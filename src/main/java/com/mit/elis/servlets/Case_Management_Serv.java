@@ -10287,7 +10287,32 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
-			
+			if (request_type.equals("select_confirm_notation_of_objection")) {
+				String modified_by = (String) session.getAttribute("fullname");
+				String modified_by_id = (String) session.getAttribute("userid");
+				String division = (String) session.getAttribute("division");
+				String job_number = request.getParameter("job_number");
+				String case_number = request.getParameter("case_number");
+				String transaction_number = request.getParameter("transaction_number");
+
+				JSONObject json_data = new JSONObject();
+
+				json_data.put("send_by_name", modified_by);
+				json_data.put("send_by_id", modified_by_id);
+				json_data.put("job_number", job_number);
+				json_data.put("case_number", case_number);
+				json_data.put("division", division);
+				json_data.put("transaction_number", transaction_number);
+
+				//System.out.println(json_data.toString());
+
+				web_service_response = casemgt_cl_m.select_confirm_notation_of_objection(
+								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), json_data.toString());
+				
+
+				return web_service_response;
+			}
 
 			if (request_type.equals("select_confirm_lrd_parcel_noting")) {
 				String modified_by = (String) session.getAttribute("fullname");

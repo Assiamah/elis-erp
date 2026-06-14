@@ -28,7 +28,7 @@
 
     .stat-card.border-warning { border-left-color: #ffc107; }
     .stat-card.border-info { border-left-color: #17a2b8; }
-    .stat-card.border-primary { border-left-color: #2d7d42; }
+    .stat-card.border-primary { border-left-color: #667eea; }
     .stat-card.border-success { border-left-color: #28a745; }
 
     .nav-tabs .nav-link {
@@ -41,9 +41,9 @@
     }
 
     .nav-tabs .nav-link.active {
-        color: #2d7d42;
+        color: #667eea;
         background-color: white;
-        border-bottom: 3px solid #2d7d42;
+        border-bottom: 3px solid #667eea;
     }
 
     .nav-tabs .nav-link:hover:not(.active) {
@@ -95,6 +95,17 @@
         vertical-align: middle;
     }
 
+    #tbl_transactions_result_wrapper .dt-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    #tbl_transactions_result_wrapper .dataTables_filter {
+        margin-bottom: 0.75rem;
+    }
+
     .stats-icon {
         width: 50px;
         height: 50px;
@@ -106,7 +117,7 @@
 
     .stats-icon.bg-warning { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
     .stats-icon.bg-info { background-color: rgba(23, 162, 184, 0.1); color: #17a2b8; }
-    .stats-icon.bg-primary { background-color: rgba(102, 234, 115, 0.1); color: #2d7d42; }
+    .stats-icon.bg-primary { background-color: rgba(102, 126, 234, 0.1); color: #667eea; }
     .stats-icon.bg-success { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
 
     .chart-container {
@@ -185,7 +196,7 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#bill-item-report" type="button" role="tab">
+                        <button class="nav-link ${(active == 'bill_item') ? 'active' : ''}" data-bs-toggle="tab" data-bs-target="#bill-item-report" type="button" role="tab">
                             <i class="ri-file-list-line me-2"></i>Report Per Bill Item
                         </button>
                     </li>
@@ -239,9 +250,9 @@
                                                         <select id="region_id" name="region_id" class="form-select form-control-sm" required>
                                                             <option value="-1">-- select --</option>
                                                             <c:forEach items="${officeregionlist}" var="officeregion">
-                                                                <option value="${officeregion.ord_region_code}"
+                                                                <option value="${fn:replace(officeregion.ord_region_code, '.0', '')}"
                                                                         data-name="${officeregion.ord_region_name}"
-                                                                        ${region_id == officeregion.ord_region_code ? 'selected' : ''}>
+                                                                        ${fn:replace(region_id, '.0', '') == fn:replace(officeregion.ord_region_code, '.0', '') ? 'selected' : ''}>
                                                                     ${officeregion.ord_region_name}
                                                                 </option>
                                                             </c:forEach>
@@ -282,7 +293,7 @@
                                             
                                             <hr class="my-4">
                                             
-                                            <div class="export-section">
+                                            <!-- <div class="export-section">
                                                 <label class="form-label">Export Type</label>
                                                 <div class="d-grid gap-2 mb-3">
                                                     <button type="button" class="btn btn-outline-dark" data-bs-toggle="export_type" data-title="PDF">
@@ -295,11 +306,11 @@
                                                 <input type="hidden" name="export_type" id="export_type">
                                                 
                                                 <div class="d-grid">
-                                                    <button class="btn btn-danger action-btn" id="btn_export_data">
+                                                    <button class="btn btn-outline-dark action-btn" id="btn_export_data">
                                                         <i class="ri-download-line me-2"></i>Export Data
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </form>
                                     </div>
                                 </div>
@@ -310,11 +321,11 @@
                                 <!-- Stats Row -->
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <div class="card stat-card border-success h-100">
+                                        <div class="card stat-card border-primary h-100">
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="stats-icon bg-primary me-3">
-                                                        <i class="ri-money-dollar-circle-line fs-4 text-white"></i>
+                                                        <i class="ri-money-dollar-circle-line fs-4"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <div class="text-muted small fw-semibold mb-1">Total Amount</div>
@@ -332,7 +343,7 @@
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center">
                                                     <div class="stats-icon bg-success me-3">
-                                                        <i class="ri-file-list-line fs-4 text-white"></i>
+                                                        <i class="ri-file-list-line fs-4"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <div class="text-muted small fw-semibold mb-1">Total Payment Count</div>
@@ -413,9 +424,9 @@
                                                         <select id="t_region_id" name="t_region_id" class="form-select form-control-sm" required>
                                                             <option value="-1">-- select --</option>
                                                             <c:forEach items="${officeregionlist}" var="officeregion">
-                                                                <option value="${officeregion.ord_region_code}"
+                                                                <option value="${fn:replace(officeregion.ord_region_code, '.0', '')}"
                                                                         data-name="${officeregion.ord_region_name}"
-                                                                        ${region_id == officeregion.ord_region_code ? 'selected' : ''}>
+                                                                        ${fn:replace(region_id, '.0', '') == fn:replace(officeregion.ord_region_code, '.0', '') ? 'selected' : ''}>
                                                                     ${officeregion.ord_region_name}
                                                                 </option>
                                                             </c:forEach>
@@ -501,7 +512,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-hover data-table" id="tbl_transactions_result">
+                                            <table class="table table-hover data-table nowrap w-100" id="tbl_transactions_result" width="100%" cellspacing="0">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Bill Number</th>
@@ -541,7 +552,7 @@
                     </div>
                     
                     <!-- Tab 3: Report Per Bill Item -->
-                    <div class="tab-pane fade" id="bill-item-report" role="tabpanel">
+                    <div class="tab-pane fade ${(active == 'bill_item') ? 'show active' : ''}" id="bill-item-report" role="tabpanel">
                         <div class="container-fluid">
                             <!-- Filter Row -->
                             <div class="row mb-4">
@@ -571,7 +582,7 @@
                                                 <option selected value="-1">-- select --</option>
                                                 <option value="0">Nationwide</option>
                                                 <c:forEach items="${officeregionlist}" var="officeregion">
-                                                    <option value="${officeregion.ord_region_code}" data-name="${officeregion.ord_region_name}">
+                                                    <option value="${fn:replace(officeregion.ord_region_code, '.0', '')}" data-name="${officeregion.ord_region_name}">
                                                         ${officeregion.ord_region_name}
                                                     </option>
                                                 </c:forEach>
@@ -1031,6 +1042,63 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize select elements (if using selectpicker)
     if ($('.selectpicker').length) {
         $('.selectpicker').selectpicker();
+    }
+
+    function getRevenueTransactionsExportMessage() {
+        var dateFrom = $('#t_date_from').val() || 'Not selected';
+        var dateTo = $('#t_date_to').val() || 'Not selected';
+
+        return 'This report is generated using the Enterprise Land Information System\n'
+            + 'Selected Date Range: ' + dateFrom + ' to ' + dateTo;
+    }
+
+    if ($.fn.DataTable && !$.fn.DataTable.isDataTable('#tbl_transactions_result')) {
+        $('#tbl_transactions_result').DataTable({
+            dom: 'Bfrtip',
+            responsive: true,
+            scrollX: true,
+            pageLength: 25,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+            order: [[3, 'desc']],
+            buttons: [
+                'pageLength',
+                {
+                    extend: 'copy',
+                    text: '<i class="ri-file-copy-line me-1"></i>Copy',
+                    title: 'Revenue Transactions List',
+                    messageTop: getRevenueTransactionsExportMessage
+                },
+                {
+                    extend: 'csv',
+                    text: '<i class="ri-file-excel-line me-1"></i>CSV',
+                    title: 'Revenue Transactions List',
+                    filename: 'Revenue_Transactions_List',
+                    messageTop: getRevenueTransactionsExportMessage
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="ri-file-excel-2-line me-1"></i>Excel',
+                    title: 'Revenue Transactions List',
+                    filename: 'Revenue_Transactions_List',
+                    messageTop: getRevenueTransactionsExportMessage
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="ri-file-pdf-line me-1"></i>PDF',
+                    title: 'Revenue Transactions List',
+                    filename: 'Revenue_Transactions_List',
+                    messageTop: getRevenueTransactionsExportMessage,
+                    orientation: 'landscape',
+                    pageSize: 'A4'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="ri-printer-line me-1"></i>Print',
+                    title: 'Revenue Transactions List',
+                    messageTop: getRevenueTransactionsExportMessage
+                }
+            ]
+        });
     }
 });
 </script>

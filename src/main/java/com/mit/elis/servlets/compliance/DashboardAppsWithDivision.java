@@ -95,14 +95,17 @@ public class DashboardAppsWithDivision {
 					//System.out.println(web_service_response);
 				}
 			}
-
-			if (requestType.equals("apps_with_division_applications")) {
+		if (requestType.equals("apps_with_division_applications")) {
 				String staff = request.getParameter("staff");
+				String division = request.getParameter("division") != null
+						? request.getParameter("division")
+						: (String) session.getAttribute("division");
 
-				// //System.out.println(staff);
+				// System.out.println(staff);
 
 				JSONObject obj = new JSONObject();
 				obj.put("staff_id", staff);
+				obj.put("division", division);
 				obj.put("region_id", region_id);
 				String input_details = obj.toString();
 
@@ -110,9 +113,9 @@ public class DashboardAppsWithDivision {
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
+					// System.out.println(web_service_response);
 				} else {
-					//System.out.println(web_service_response);
+					System.out.println(web_service_response);
 				}
 			}
 

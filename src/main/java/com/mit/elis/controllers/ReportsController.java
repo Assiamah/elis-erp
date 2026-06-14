@@ -55,7 +55,7 @@ public class ReportsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// //System.out.println(("If Not success");
+			// System.out.println(("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -113,7 +113,7 @@ public class ReportsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// //System.out.println(("If Not success");
+			// System.out.println(("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -171,7 +171,7 @@ public class ReportsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// //System.out.println(("If Not success");
+			// System.out.println(("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -233,9 +233,15 @@ public class ReportsController {
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				LocalDateTime now = LocalDateTime.now();
 				JSONObject obj = new JSONObject();
+				String office_region_list = (String) session.getAttribute("office_region_list");
+				Gson googleJson_officeregions = new Gson();
+				ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(
+						office_region_list,
+						ArrayList.class);
+				request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
 
 				if (request.getParameter("transactions_form") != null) {
-					// //System.out.println("good");
+					// System.out.println("good");
 					request.setAttribute("active", "trans");
 					String date_from = (String) request.getParameter("t_date_from") != null
 							? request.getParameter("t_date_from")
@@ -255,13 +261,13 @@ public class ReportsController {
 						}
 					}
 
-					// //System.out.println("division: " + division_list);
+					// System.out.println("division: " + division_list);
 					obj.put("date_from", date_from);
 					obj.put("date_to", date_to);
 					obj.put("division",
 							division_list != "" ? division_list : (String) session.getAttribute("division"));
 					obj.put("region_id", region_id.replace(".0", ""));
-					//System.out.println(obj.toString());
+					System.out.println(obj.toString());
 					web_service_response_menu = casemgt_web_service
 							.account_report_on_bill_by_dates(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
@@ -271,7 +277,7 @@ public class ReportsController {
 					String total_count = summary.get("total_count").toString();
 					String total_amount = summary.get("total_amount").toString();
 					String data = (String) result_obj.get("data").toString();
-					// //System.out.println("testing : " +
+					// System.out.println("testing : " +
 					// total_count.toString());
 					Gson googleJson = new Gson();
 					ArrayList<?> javaArrayListFromGSON = googleJson.fromJson(data, ArrayList.class);
@@ -308,7 +314,7 @@ public class ReportsController {
 						}
 					}
 
-					// //System.out.println("division: " + division_list);
+					// System.out.println("division: " + division_list);
 					obj.put("date_from", date_from);
 					obj.put("date_to", date_to);
 					obj.put("limit", limit);
@@ -316,7 +322,7 @@ public class ReportsController {
 					obj.put("division",
 							division_list != "" ? division_list : (String) session.getAttribute("division"));
 					obj.put("region_id", region_id.replace(".0", ""));
-					//System.out.println(obj.toString());
+					System.out.println(obj.toString());
 					web_service_response_menu = casemgt_web_service
 							.account_report_on_bill_by_dates_graph(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
@@ -327,7 +333,7 @@ public class ReportsController {
 					String total_count = summary.get("total_count").toString();
 					String total_amount = summary.get("total_amount").toString();
 					String data = (String) result_obj.get("data").toString();
-					// //System.out.println("testing : " +
+					// System.out.println("testing : " +
 					// total_count.toString());
 					Gson googleJson = new Gson();
 					ArrayList<?> javaArrayListFromGSON = googleJson.fromJson(data, ArrayList.class);
@@ -345,19 +351,12 @@ public class ReportsController {
 
 
 					request.setAttribute("applicationlist", javaArrayListFromGSON);
-
-					String office_region_list = (String) session.getAttribute("office_region_list");
-					Gson googleJson_officeregions = new Gson();
-					ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(
-							office_region_list,
-							ArrayList.class);
-					request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
 				}
 
 				request.setAttribute("page_name", "account-reports");
 
 			} catch (Exception e) {
-				//System.out.println("error : " + e);
+				System.out.println("error : " + e);
 				e.printStackTrace();
 			}
 
@@ -365,12 +364,11 @@ public class ReportsController {
 
 		} else {
 			request.setAttribute("login", "sessionout");
-			//System.out.println("If Not success");
+			System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
 	}
-
 
 	@RequestMapping("/stamp_duty_payments_reports")
 	@GetMapping
@@ -403,6 +401,11 @@ public class ReportsController {
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				LocalDateTime now = LocalDateTime.now();
 				JSONObject obj = new JSONObject();
+				String office_region_list = (String) session.getAttribute("office_region_list");
+				Gson googleJson_officeregions = new Gson();
+				ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(office_region_list,
+						ArrayList.class);
+				request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
 				String date_from = (String) request.getParameter("date_from") != null
 						? request.getParameter("date_from")
 						: dtf.format(now);
@@ -411,6 +414,7 @@ public class ReportsController {
 				String region_id = (String) (request.getParameter("region_id") != null
 						? request.getParameter("region_id")
 						: (String) session.getAttribute("regional_code"));
+				region_id = region_id.replace(".0", "");
 				// String type = (String) (request.getParameter("type") != null
 				// ? request.getParameter("type") : "values");
 
@@ -418,12 +422,12 @@ public class ReportsController {
 				obj.put("date_to", date_to);
 				obj.put("region_id", region_id);
 				// obj.put("type", type);
-				// //System.out.println("testing : " + (String) obj.toString());
+				// System.out.println("testing : " + (String) obj.toString());
 
 				web_service_response_menu = casemgt_web_service
 						.account_report_on_bill_by_dates_gra(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
-				// //System.out.println("testing : " + web_service_response_menu);
+				// System.out.println("testing : " + web_service_response_menu);
 
 				JSONObject result_obj = new JSONObject(web_service_response_menu);
 				JSONObject summary = (JSONObject) result_obj.get("summary");
@@ -445,7 +449,7 @@ public class ReportsController {
 
 				request.setAttribute("applicationlist", javaArrayListFromGSON);
 			} catch (Exception e) {
-				//System.out.println("error : " + e);
+				System.out.println("error : " + e);
 				e.printStackTrace();
 			}
 
@@ -453,7 +457,7 @@ public class ReportsController {
 
 		} else {
 			request.setAttribute("login", "sessionout");
-			//System.out.println("If Not success");
+			System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -487,7 +491,7 @@ public class ReportsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// //System.out.println(("If Not success");
+			// System.out.println(("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -501,7 +505,7 @@ public class ReportsController {
 					ArrayList.class);
 			request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
 
-			// //System.out.println(Ws_url_config.web_main_services);
+			// System.out.println(Ws_url_config.web_main_services);
 			ArrayList javaArrayListFromGSON_sub_service = googleJson
 					.fromJson((String) session.getAttribute("web_main_services"), ArrayList.class);
 			request.setAttribute("page_name", "reports");
@@ -546,7 +550,7 @@ public class ReportsController {
 	// 		request.setAttribute("login", "sessionout");
 	// 		request.setAttribute("page_name", "audit_reports");
 			
-	// 		// //System.out.println(("If Not success");
+	// 		// System.out.println(("If Not success");
 	// 		 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 	// 	}
@@ -560,7 +564,7 @@ public class ReportsController {
 	// 				ArrayList.class);
 	// 		request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
 
-	// 		// //System.out.println(Ws_url_config.web_main_services);
+	// 		// System.out.println(Ws_url_config.web_main_services);
 	// 		ArrayList javaArrayListFromGSON_sub_service = googleJson
 	// 				.fromJson((String) session.getAttribute("web_main_services"), ArrayList.class);
 	// 		request.setAttribute("page_name", "audit_reports");
@@ -600,7 +604,7 @@ public class ReportsController {
 		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 			// Session is expired
 			request.setAttribute("login", "sessionout");
-			// //System.out.println(("If Not success");
+			// System.out.println(("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
@@ -608,7 +612,7 @@ public class ReportsController {
 		Gson googleJson = new Gson();
 		try {
 
-			// //System.out.println(Ws_url_config.web_main_services);
+			// System.out.println(Ws_url_config.web_main_services);
 			ArrayList javaArrayListFromGSON_sub_service = googleJson
 					.fromJson((String) session.getAttribute("web_main_services"), ArrayList.class);
 			request.setAttribute("page_name", "reports_stamping");
@@ -654,7 +658,7 @@ public class ReportsController {
 				LocalDateTime now = LocalDateTime.now();
 				JSONObject obj = new JSONObject();
 
-				// //System.out.println("good");
+				// System.out.println("good");
 				request.setAttribute("active", "trans");
 				String date_from = (String) request.getParameter("t_date_from") != null
 						? request.getParameter("t_date_from")
@@ -671,7 +675,7 @@ public class ReportsController {
 				 * (String item : division) { division_list += item; } }
 				 */
 
-				// //System.out.println("division: " + division_list);
+				// System.out.println("division: " + division_list);
 				obj.put("date_from", date_from);
 				obj.put("date_to", date_to);
 				/*
@@ -679,7 +683,7 @@ public class ReportsController {
 				 * (String) session.getAttribute("division"));
 				 */
 				obj.put("region_id", region_id);
-				// //System.out.println(obj.toString());
+				// System.out.println(obj.toString());
 				web_service_response_menu = casemgt_web_service
 						.account_report_on_ground_rent_bill_by_dates(cls_url_config.getWeb_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
@@ -690,7 +694,7 @@ public class ReportsController {
 				String total_count = summary.get("total_count").toString();
 				String total_amount = summary.get("total_amount").toString();
 				String data = (String) result_obj.get("data").toString();
-				// //System.out.println("testing : " +
+				// System.out.println("testing : " +
 				// total_count.toString());
 				Gson googleJson = new Gson();
 				ArrayList<?> javaArrayListFromGSON = googleJson.fromJson(data, ArrayList.class);
@@ -709,7 +713,7 @@ public class ReportsController {
 				request.setAttribute("page_name", "account-reports-grand-rent");
 
 			} catch (Exception e) {
-				//System.out.println("error : " + e);
+				System.out.println("error : " + e);
 				e.printStackTrace();
 			}
 
@@ -717,7 +721,7 @@ public class ReportsController {
 
 		} else {
 			request.setAttribute("login", "sessionout");
-			//System.out.println("If Not success");
+			System.out.println("If Not success");
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
