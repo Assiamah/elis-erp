@@ -267,7 +267,6 @@ public class Ws_maps {
 
 	public String select_search_scan_maps_polygons_by_wkt(String web_service_url, String web_service_api_key,
 			String wkt_polygon)
-
 	{
 		String output = "Data Not Received";
 		try {

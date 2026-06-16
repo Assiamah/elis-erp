@@ -215,6 +215,61 @@
         background-color: rgba(13, 202, 240, 0.1) !important;
     }
 
+    .objected-application-alert {
+        border: 1px solid rgba(220, 53, 69, 0.18);
+        border-left: 5px solid #dc3545;
+        border-radius: 0.85rem;
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.10), rgba(255, 255, 255, 0.96));
+        box-shadow: 0 0.75rem 1.5rem rgba(220, 53, 69, 0.08);
+    }
+
+    .objected-application-alert .objected-icon {
+        width: 44px;
+        height: 44px;
+        background: #dc3545;
+        color: #fff;
+        box-shadow: 0 0.5rem 1rem rgba(220, 53, 69, 0.22);
+    }
+
+    .objected-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        border-radius: 999px;
+        padding: 0.45rem 0.8rem;
+        background: rgba(220, 53, 69, 0.12);
+        color: #b02a37;
+        border: 1px solid rgba(220, 53, 69, 0.18);
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .process-action-buttons {
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    .process-action-buttons .btn {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .swal-objected-popup {
+        border-top: 6px solid #dc3545;
+    }
+
+    .swal-objected-title {
+        color: #b02a37;
+    }
+
+    .swal-objected-confirm {
+        background-color: #dc3545 !important;
+        box-shadow: 0 0.5rem 1rem rgba(220, 53, 69, 0.22) !important;
+    }
+
     .contact-info {
         font-size: 0.875rem;
     }
@@ -455,6 +510,35 @@
                 </div>
             </div>
         </div>
+
+        <c:if test="${case_objection.size() > 0}">
+            <div class="objected-application-alert mb-4 p-3">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    <div class="d-flex align-items-center">
+                        <div class="objected-icon rounded-circle d-inline-flex align-items-center justify-content-center me-3">
+                            <i class="bi bi-exclamation-octagon fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="objected-status-pill mb-1">
+                                <i class="bi bi-shield-exclamation"></i>
+                                Application Objected
+                            </div>
+                            <div class="text-danger fw-semibold">
+                                ${case_objection.size()} objection${case_objection.size() > 1 ? 's' : ''} recorded against this application.
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-danger d-inline-flex align-items-center gap-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseObjections"
+                            aria-controls="collapseObjections">
+                        <i class="bi bi-eye"></i>
+                        View Objections
+                    </button>
+                </div>
+            </div>
+        </c:if>
 
         <input class="form-control" type="hidden" id="cs_main_case_number" name="cs_main_case_number" value="${case_number}">
 		<input class="form-control" type="hidden" id="cs_main_job_number" name="cs_main_job_number" value="${job_number}">
@@ -727,7 +811,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="action-buttons">
+                            <div class="action-buttons d-flex align-items-center gap-2 justify-content-end">
                                 <button class="btn btn-danger label-btn  ${rq_id == null ? 'd-none' : ''} ${review_type == 'SpecificWorkRequest' ? 'd-none' : ''}"
                                     data-job_number="${job_number}" 
                                     data-ar_name="${ar_name}"
@@ -839,6 +923,7 @@
                                                             data-bs-username="${babyStep.username}" 
                                                             data-bs-date="${babyStep.date}" 
                                                             data-bs-time="${babyStep.time}"
+                                                            ${case_objection.size() > 0 ? 'disabled' : ''}
                                                             ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
                                                         <i class="bi bi-eye"></i> Details
                                                     </button>
@@ -850,45 +935,69 @@
                                     <!-- Step Details -->
                                     <div class="step-details ps-5 ms-2">
                                         
-                                        
                                         <!-- Action Buttons -->
                                         <div class="row mt-4">
                                             <div class="col-7">
-                                                <!-- Approve Button -->
-                                                <div class="btn-group">
-                                                    <button class="btn btn-sm btn-success"
-                                                        onclick="reviewStep('${babyStep.bse_id}','${job_number}')"
-                                                        ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
-                                                        <i class="bi bi-check-circle"></i>
-                                                        Approve
-                                                    </button>
-                                                
-                                                    <!-- Send Request Button -->
-                                                    <button class="btn btn-sm btn-primary btn_send_request"
-                                                        data-job_number="${job_number}" 
-                                                        data-ar_name="${ar_name}" 
-                                                        data-business_process_sub_name="${business_process_sub_name}" 
-                                                        data-locality="${locality}" 
-                                                        data-bs-desc="${babyStep.bse_description}"
-                                                        id="btnAddRequest"
-                                                        ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
-                                                        <i class="bi bi-send"></i>
-                                                        Send Request
-                                                    </button>
-                                                
-                                                    <!-- Query Button -->
-                                                    <button class="btn btn-sm btn-warning"
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#newQueryModal"
-                                                            data-job_number="${job_number}" 
-                                                            data-ar_name="${ar_name}" 
-                                                            data-business_process_sub_name="${business_process_sub_name}" 
-                                                            data-locality="${locality}"
-                                                            ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
-                                                        <i class="bi bi-question-circle"></i>
-                                                        Query
-                                                    </button>
-                                                </div>
+                                                <c:choose>
+                                                    <c:when test="${case_objection.size() > 0}">
+                                                        <!-- Approve Button -->
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-sm btn-success" disabled>
+                                                                <i class="bi bi-check-circle"></i>
+                                                                Approve
+                                                            </button>
+
+                                                            <!-- Send Request Button -->
+                                                            <button class="btn btn-sm btn-primary btn_send_request" disabled>
+                                                                <i class="bi bi-send"></i>
+                                                                Send Request
+                                                            </button>
+
+                                                            <!-- Query Button -->
+                                                            <button class="btn btn-sm btn-warning" disabled>
+                                                                <i class="bi bi-question-circle"></i>
+                                                                Query
+                                                            </button>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <!-- Approve Button -->
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-sm btn-success"
+                                                                onclick="reviewStep('${babyStep.bse_id}','${job_number}')"
+                                                                ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
+                                                                <i class="bi bi-check-circle"></i>
+                                                                Approve
+                                                            </button>
+
+                                                            <!-- Send Request Button -->
+                                                            <button class="btn btn-sm btn-primary btn_send_request"
+                                                                data-job_number="${job_number}"
+                                                                data-ar_name="${ar_name}"
+                                                                data-business_process_sub_name="${business_process_sub_name}"
+                                                                data-locality="${locality}"
+                                                                data-bs-desc="${babyStep.bse_description}"
+                                                                id="btnAddRequest"
+                                                                ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
+                                                                <i class="bi bi-send"></i>
+                                                                Send Request
+                                                            </button>
+
+                                                            <!-- Query Button -->
+                                                            <button class="btn btn-sm btn-warning"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#newQueryModal"
+                                                                    data-job_number="${job_number}"
+                                                                    data-ar_name="${ar_name}"
+                                                                    data-business_process_sub_name="${business_process_sub_name}"
+                                                                    data-locality="${locality}"
+                                                                    ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
+                                                                <i class="bi bi-question-circle"></i>
+                                                                Query
+                                                            </button>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
 
                                             <!-- Approval Information -->
@@ -1615,6 +1724,9 @@
                                     data-bs-target="#collapseObjections">
                                 <i class="bi bi-exclamation-circle me-2"></i>
                                 Objections
+                                <c:if test="${case_objection.size() > 0}">
+                                    <span class="badge bg-danger ms-2">${case_objection.size()}</span>
+                                </c:if>
                             </button>
                         </h2>
                         <div id="collapseObjections" class="accordion-collapse collapse" 
@@ -1657,9 +1769,9 @@
                                                             data-status="${case_objection_row.status}" 
                                                             
 
-                                                            class="btn btn-danger btn-icon-split "  
+                                                            class="btn btn-danger btn-sm"
                                                             title="edit objection" >
-                                                                <span class="icon text-white-50"> <i class="fas fa-pencil-alt"></i></span><span class="text">Edit</span>
+                                                                <i class="fas fa-eye"></i>
                                                             </button> 
                                                     </td>
                                                 </tr>
@@ -1877,6 +1989,33 @@
     </div>
 </div>
 
+<c:if test="${case_objection.size() > 0}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Application Objected',
+                text: 'There ${case_objection.size() == 1 ? "is" : "are"} ${case_objection.size()} objection${case_objection.size() > 1 ? "s" : ""} recorded against this application.',
+                icon: 'error',
+                confirmButtonText: 'View Details',
+                confirmButtonColor: '#dc3545',
+                customClass: {
+                    popup: 'swal-objected-popup',
+                    title: 'swal-objected-title',
+                    confirmButton: 'swal-objected-confirm'
+                }
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    var objectionsCollapse = document.getElementById('collapseObjections');
+
+                    if (objectionsCollapse && typeof bootstrap !== 'undefined') {
+                        bootstrap.Collapse.getOrCreateInstance(objectionsCollapse).show();
+                    }
+                }
+            });
+        });
+    </script>
+</c:if>
+
 <script>
     // Define EPSG:2136 projection
     //   proj4.defs('EPSG:2136', '+proj=utm +zone=36 +south +ellps=clrk80 +units=m +no_defs');
@@ -2041,8 +2180,11 @@
         });
     }
 
+    
+
     // Initialize the map when the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function() {
+
         // Placeholder coordinates (longitude, latitude) for the parcel
         // In a real implementation, these should be dynamically fetched based on GLPIN or other parcel data
         var parcel_lrd_dataSource = new ol.source.TileWMS({
