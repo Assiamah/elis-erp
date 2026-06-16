@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div>
-                        <button onclick="javascript:history.go(-1)" 
+                        <button type="button" onclick="window.history.back()" 
                                 class="btn btn-outline-primary d-flex align-items-center gap-2">
                             <i class="bi bi-arrow-left"></i>
                             <span>Back to List</span>
@@ -536,4 +536,3 @@
         </div>
     </div>
 </div>
-

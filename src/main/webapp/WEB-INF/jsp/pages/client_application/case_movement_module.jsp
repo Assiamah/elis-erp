@@ -194,7 +194,7 @@
                                     <c:forEach items="${applicationlist}" var="appfiles" varStatus="loop">
                                     <fmt:parseDate value="${appfiles.job_datesend}" pattern="yyyy-MM-dd" var="jobSentDate" />
                                     <c:set var="daysDiff" value="${(now.time - jobSentDate.time) / (1000 * 60 * 60 * 24)}" />
-                                    <tr class="${appfiles.objections > 0 ? 'table-secondary' : ''}" 
+                                    <tr class="${appfiles.objections > 0 ? 'table-danger' : ''}" 
                                         ${appfiles.objections > 0 ? "data-bs-toggle='tooltip' data-bs-placement='left' title='Application has pending Objections'" : ""}>
                                         
                                         <!-- Checkbox -->

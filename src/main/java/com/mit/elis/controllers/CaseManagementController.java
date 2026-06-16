@@ -11173,6 +11173,7 @@ request.setAttribute("rq_id",rq_id);
 			// String job_number = "SMDGAPPA132305820190";
 
 			String search_text = request.getParameter("search_text");
+			String job_number = request.getParameter("job_number");
 
 			// //System.out.println(search_text);
 
@@ -11333,6 +11334,8 @@ request.setAttribute("rq_id",rq_id);
 
 				request.setAttribute("created_date", main_detailse_obj.get("created_date").toString());
 				request.setAttribute("modified_date", main_detailse_obj.get("modified_date").toString());
+
+				request.setAttribute("app_job_number", job_number);
 
 				//System.out.println((String) session.getAttribute("web_main_services"));
 				ArrayList javaArrayListFromGSON_sub_service = googleJson

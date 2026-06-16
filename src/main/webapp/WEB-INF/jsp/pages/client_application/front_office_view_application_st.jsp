@@ -46,7 +46,7 @@
 					<h4 class='float-left'>
 						<i class="fas fa-stamp"></i>${case_number} - ${ar_name}
 					</h4>
-					<button type="button" onclick="javascript:history.go(-1)"
+					<button type="button" onclick="window.history.back()"
 							class="btn btn-primary btn-icon-split float-right">
 							<span class="icon text-white-50"> <i
 								class="fas fa-angle-double-left"></i></span><span class="text">Back</span>
@@ -804,4 +804,3 @@
 
 
 <jsp:include page="../includes/_footer.jsp"></jsp:include>
-
