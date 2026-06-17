@@ -5,710 +5,519 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.naming.*" %>
 
+<style>
+    .frrv-shell {
+        position: relative;
+    }
 
-    <style>
-        .card-header {
-            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-            padding: 1rem 1.5rem;
-        }
-        
-        .card-header h5 {
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-        
-        .stat-card {
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #f0f2f5;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .stat-card.active {
-            border-left: 5px solid #0d6efd;
-            background-color: #f8f9fa;
-        }
-        
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .progress-thin {
-            height: 6px;
-            border-radius: 3px;
-        }
-        
-        .completion-badge {
-            font-size: 0.75rem;
-            padding: 0.35rem 0.75rem;
-        }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        
-        .status-indicator.completed {
-            background-color: #28a745;
-        }
-        
-        .status-indicator.pending {
-            background-color: #ffc107;
-        }
-        
-        .status-indicator.not-started {
-            background-color: #dc3545;
-        }
-        
-        .breadcrumb {
-            background: transparent;
-            padding: 0.75rem 0;
-        }
-        
-        .breadcrumb-item a {
-            text-decoration: none;
-            color: #0d6efd;
-            font-weight: 500;
-        }
-        
-        .breadcrumb-item a:hover {
-            color: #0a58ca;
-            text-decoration: underline;
-        }
-        
-        .division-card {
-            border-left: 4px solid #0d6efd;
-            transition: all 0.3s ease;
-        }
-        
-        .division-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .division-card .progress {
-            height: 8px;
-        }
-    </style>
+    .frrv-shell::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at top left, rgba(4, 120, 87, 0.12), transparent 28%),
+            radial-gradient(circle at top right, rgba(4, 120, 87, 0.08), transparent 22%),
+            linear-gradient(180deg, #f8fbf9 0%, #eef6f2 100%);
+        z-index: -1;
+    }
 
-    <div class="main-content app-content">
-        <div class="container-fluid page-container">
-            
-            <!-- Breadcrumbs -->
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="dashboard.jsp"><i class="fas fa-home me-1"></i>Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <i class="fas fa-clipboard-check me-1"></i>FRRV Monitoring
-                    </li>
-                </ol>
-            </nav>
+    .frrv-hero-card {
+        border: 0;
+        overflow: hidden;
+        border-radius: 1rem;
+        background:
+            radial-gradient(circle at top right, rgba(255, 255, 255, 0.10), transparent 22%),
+            linear-gradient(135deg, #047857 0%, #065f46 55%, #064e3b 100%);
+        box-shadow: 0 18px 40px rgba(17, 24, 39, 0.16);
+    }
 
-            <!-- Statistics Cards -->
-            <div class="row g-4 mb-4" id="statsContainer">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card stat-card h-100" data-filter="all">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-muted">Total FRRV Jobs</div>
-                                    <h3 class="fw-bold mt-2" id="totalJobs">${total_jobs}</h3>
-                                    <span class="badge bg-secondary">All Jobs</span>
-                                </div>
-                                <div class="stat-icon bg-primary bg-opacity-10">
-                                    <i class="fas fa-tasks fa-2x text-primary"></i>
-                                </div>
-                            </div>
+    .frrv-hero-card .card-body {
+        position: relative;
+    }
+
+    .frrv-hero-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 0.84rem;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(10px);
+    }
+
+    .frrv-stat-card {
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        border-left-width: 4px;
+    }
+
+    .frrv-stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(17, 24, 39, 0.09);
+    }
+
+    .frrv-stat-card.active {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(17, 24, 39, 0.11);
+        border-color: rgba(4, 120, 87, 0.28);
+    }
+
+    .frrv-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .frrv-avatar.neutral {
+        background: rgba(17, 24, 39, 0.06);
+        color: #047857;
+    }
+
+    .frrv-avatar.success {
+        background: rgba(16, 185, 129, 0.12);
+        color: #047857;
+    }
+
+    .frrv-avatar.warning {
+        background: rgba(245, 158, 11, 0.12);
+        color: #b45309;
+    }
+
+    .frrv-avatar.danger {
+        background: rgba(239, 68, 68, 0.12);
+        color: #b91c1c;
+    }
+
+    .frrv-section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 0.9rem;
+    }
+
+    .frrv-summary-card,
+    .frrv-table-card,
+    .frrv-side-card {
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        border-radius: 1rem;
+        box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .frrv-table-card .card-header {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        color: #fff;
+        border-bottom: 0;
+    }
+
+    .frrv-table {
+        width: 100% !important;
+        margin-bottom: 0;
+    }
+
+    .frrv-table thead th {
+        background: #f8f9fa;
+        color: #374151;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .frrv-table tbody tr:hover {
+        background: rgba(17, 24, 39, 0.04);
+    }
+
+    .frrv-progress {
+        height: 10px;
+        border-radius: 999px;
+        background: #ece8e1;
+        overflow: hidden;
+    }
+
+    .frrv-job-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        background: rgba(17, 24, 39, 0.06);
+        color: #047857;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+    }
+
+    .frrv-status-dot {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border-radius: 50%;
+        margin-right: 0.4rem;
+    }
+
+    .frrv-status-dot.completed { background: #047857; }
+    .frrv-status-dot.pending { background: #f59e0b; }
+    .frrv-status-dot.not-started { background: #ef4444; }
+
+    .frrv-action-btn {
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        border: 1px solid rgba(17, 24, 39, 0.12);
+    }
+
+    .frrv-action-btn.details {
+        background: rgba(17, 24, 39, 0.06);
+        color: #047857;
+    }
+
+    .frrv-action-btn.progress {
+        background: rgba(16, 185, 129, 0.10);
+        color: #047857;
+    }
+
+    .frrv-info-card {
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        border-radius: 1rem;
+        box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .frrv-info-card .card-header {
+        background: linear-gradient(135deg, #111827 0%, #374151 100%);
+        color: #fff;
+        border-bottom: 0;
+    }
+
+    .frrv-info-card .card-header .btn-outline-light {
+        border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .frrv-metric {
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        border-radius: 0.9rem;
+        background: #fff;
+        box-shadow: 0 8px 18px rgba(17, 24, 39, 0.04);
+    }
+
+    .frrv-empty-card {
+        border: 1px dashed rgba(17, 24, 39, 0.14);
+        border-radius: 0.9rem;
+        background: rgba(248, 249, 250, 0.7);
+    }
+
+    @media (max-width: 767.98px) {
+        .frrv-hero-card h1 {
+            font-size: 1.35rem;
+        }
+    }
+</style>
+
+<div class="main-content app-content frrv-shell">
+    <div class="container-fluid page-container">
+        <div class="page-header-breadcrumb mb-3">
+            <div class="d-flex align-center justify-content-between flex-wrap gap-2">
+                <div>
+                    <h1 class="page-title fw-medium fs-18 mb-0">FRRV Monitoring :: <span class="text-success">Workflow</span></h1>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">FRRV Monitoring</li>
+                    </ol>
+                </div>
+                <div class="d-flex gap-2 align-items-center">
+                    <span class="badge rounded-pill text-bg-success" id="recordCount">
+                        <i class="fas fa-file-alt me-1"></i>Total: 0
+                    </span>
+                    <button class="btn btn-success btn-sm" type="button" onclick="loadData()">
+                        <i class="fas fa-arrows-rotate me-1"></i>Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card frrv-hero-card mb-4">
+            <div class="card-body p-4 p-xl-5">
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3">
+                    <div class="flex-grow-1">
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="frrv-hero-chip"><i class="fas fa-layer-group"></i> Workflow summary</span>
+                            <span class="frrv-hero-chip"><i class="fas fa-chart-line"></i> Live status cards</span>
+                            <span class="frrv-hero-chip"><i class="fas fa-table"></i> Job table below</span>
                         </div>
+                        <h1 class="fw-semibold text-white mb-2">Monitor FRRV progress across SMD, PVLMD, and LRD</h1>
+                        <p class="mb-0 text-white-75" style="max-width: 760px;">
+                            Same UI pattern as Unit Case Management, with neutral surfaces, warm accents, and no blue-heavy styling.
+                        </p>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="frrv-hero-chip"><i class="fas fa-list-check"></i><span id="totalJobs">${total_jobs}</span> jobs</span>
+                        <span class="frrv-hero-chip"><i class="fas fa-circle-check"></i><span id="fullyCompleted">0</span> completed</span>
+                        <span class="frrv-hero-chip"><i class="fas fa-hourglass-half"></i><span id="partiallyCompleted">0</span> partial</span>
                     </div>
                 </div>
-                
-                <div class="col-xl-3 col-md-6">
-                    <div class="card stat-card h-100" data-filter="Fully Completed">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-muted">Fully Completed</div>
-                                    <h3 class="fw-bold mt-2 text-success" id="fullyCompleted">0</h3>
-                                    <span class="badge bg-success">3/3 Divisions</span>
-                                </div>
-                                <div class="stat-icon bg-success bg-opacity-10">
-                                    <i class="fas fa-check-circle fa-2x text-success"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-xl-3 col-md-6">
-                    <div class="card stat-card h-100" data-filter="Partially Completed">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-muted">Partially Completed</div>
-                                    <h3 class="fw-bold mt-2 text-warning" id="partiallyCompleted">0</h3>
-                                    <span class="badge bg-warning text-dark">1-2/3 Divisions</span>
-                                </div>
-                                <div class="stat-icon bg-warning bg-opacity-10">
-                                    <i class="fas fa-clock fa-2x text-warning"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-xl-3 col-md-6">
-                    <div class="card stat-card h-100" data-filter="Not Started">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-muted">Not Started</div>
-                                    <h3 class="fw-bold mt-2 text-danger" id="notStarted">0</h3>
-                                    <span class="badge bg-danger">0/3 Divisions</span>
-                                </div>
-                                <div class="stat-icon bg-danger bg-opacity-10">
-                                    <i class="fas fa-hourglass-start fa-2x text-danger"></i>
-                                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="totalJobsValue" value="${total_jobs}">
+
+        <div class="row g-4 mb-4" id="statsContainer">
+            <div class="col-lg-3 col-md-6">
+                <div class="card custom-card stat-card dashboard-main-card neutral frrv-stat-card" data-filter="all">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <span class="frrv-avatar neutral">
+                                <i class="fas fa-list-check fs-4"></i>
+                            </span>
+                            <div>
+                                <span class="d-block text-muted">Total FRRV Jobs</span>
+                                <h5 class="fw-semibold mb-1" id="totalJobsValueDisplay">${total_jobs}</h5>
+                                <span class="badge text-bg-light border">All jobs</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Division Summary Cards -->
-            <div class="row g-4 mb-4" id="divisionSummaryContainer">
-                <div class="col-12">
-                    <h6 class="text-muted mb-3"><i class="fas fa-layer-group me-2"></i>Division Summary</h6>
-                </div>
-                <div class="col-md-4" id="smdCard">
-                    <div class="card division-card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="fw-bold mb-0">SMD</h6>
-                                <span class="badge bg-info">Division</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="small text-muted">Completed</span>
-                                <span class="small fw-bold" id="smdCompleted">0</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="small text-muted">Pending</span>
-                                <span class="small fw-bold" id="smdPending">0</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="smdProgress"></div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-1">
-                                <span class="small text-muted">Total: <span id="smdTotal">0</span></span>
-                                <span class="small fw-bold text-success" id="smdPercentage">0%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" id="pvlmdCard">
-                    <div class="card division-card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="fw-bold mb-0">PVLMD</h6>
-                                <span class="badge bg-info">Division</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="small text-muted">Completed</span>
-                                <span class="small fw-bold" id="pvlmdCompleted">0</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="small text-muted">Pending</span>
-                                <span class="small fw-bold" id="pvlmdPending">0</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="pvlmdProgress"></div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-1">
-                                <span class="small text-muted">Total: <span id="pvlmdTotal">0</span></span>
-                                <span class="small fw-bold text-success" id="pvlmdPercentage">0%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" id="lrdCard">
-                    <div class="card division-card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="fw-bold mb-0">LRD</h6>
-                                <span class="badge bg-info">Division</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="small text-muted">Completed</span>
-                                <span class="small fw-bold" id="lrdCompleted">0</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="small text-muted">Pending</span>
-                                <span class="small fw-bold" id="lrdPending">0</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="lrdProgress"></div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-1">
-                                <span class="small text-muted">Total: <span id="lrdTotal">0</span></span>
-                                <span class="small fw-bold text-success" id="lrdPercentage">0%</span>
+            <div class="col-lg-3 col-md-6">
+                <div class="card custom-card stat-card dashboard-main-card success frrv-stat-card" data-filter="Fully Completed">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <span class="frrv-avatar success">
+                                <i class="fas fa-circle-check fs-4"></i>
+                            </span>
+                            <div>
+                                <span class="d-block text-muted">Fully Completed</span>
+                                <h5 class="fw-semibold mb-1 text-success" id="fullyCompleted">0</h5>
+                                <span class="badge text-bg-success">3 of 3 divisions</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Table Section -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-header text-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-list me-2"></i>FRRV Job Status
-                                </h5>
-                                <div>
-                                    <span class="badge bg-light text-dark me-2" id="recordCount">
-                                        <i class="fas fa-file me-1"></i>Total: 0
-                                    </span>
-                                    <button class="btn btn-light btn-sm" onclick="loadData()">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </button>
-                                </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card custom-card stat-card dashboard-main-card warning frrv-stat-card" data-filter="Partially Completed">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <span class="frrv-avatar warning">
+                                <i class="fas fa-hourglass-half fs-4"></i>
+                            </span>
+                            <div>
+                                <span class="d-block text-muted">Partially Completed</span>
+                                <h5 class="fw-semibold mb-1" style="color:#065f46;" id="partiallyCompleted">0</h5>
+                                <span class="badge text-bg-warning text-dark">1-2 of 3 divisions</span>
                             </div>
                         </div>
-                        
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover display" id="frrvTable" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Job Number</th>
-                                            <th>SMD</th>
-                                            <th>PVLMD</th>
-                                            <th>LRD</th>
-                                            <th>Progress</th>
-                                            <th>Status</th>
-                                            <th>Last Updated</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="frrvTableBody">
-                                        <!-- Data will be populated here -->
-                                    </tbody>
-                                </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card custom-card stat-card dashboard-main-card danger frrv-stat-card" data-filter="Not Started">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start gap-3">
+                            <span class="frrv-avatar danger">
+                                <i class="fas fa-hourglass-start fs-4"></i>
+                            </span>
+                            <div>
+                                <span class="d-block text-muted">Not Started</span>
+                                <h5 class="fw-semibold mb-1 text-danger" id="notStarted">0</h5>
+                                <span class="badge text-bg-danger">0 of 3 divisions</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-   
-    <script>
-        let frrvData = [];
-        let dataTable = null;
-        let currentFilter = 'all';
-
-        // Load data from server
-        function loadData() {
-            // Show loading state
-            $('#totalJobs').text('...');
-            $('#fullyCompleted').text('...');
-            $('#partiallyCompleted').text('...');
-            $('#notStarted').text('...');
-            
-            $.ajax({
-                type: "POST",
-                url: "FRRVMonitoringServ",
-                data: {
-                    action: 'get_frrv_summary'
-                },
-                dataType: 'json',
-                success: function(response) {
-                    // Update summary stats
-                    if (response.summary) {
-                        updateStats(response.summary);
-                    }
-                    
-                    // Update division summary
-                    if (response.division_summary) {
-                        updateDivisionSummary(response.division_summary);
-                    }
-                    
-                    // Load job details separately
-                    loadJobDetails();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error loading data:', error);
-                    // Set default values on error
-                    $('#totalJobs').text('0');
-                    $('#fullyCompleted').text('0');
-                    $('#partiallyCompleted').text('0');
-                    $('#notStarted').text('0');
-                    loadSampleData();
-                }
-            });
-        }
-
-        // Load job details from separate function
-        function loadJobDetails() {
-            $.ajax({
-                type: "POST",
-                url: "FRRVMonitoringServ",
-                data: {
-                    action: 'get_frrv_jobs'
-                },
-                dataType: 'json',
-                success: function(response) {
-                    frrvData = response;
-                    renderTable(response);
-                },
-                error: function() {
-                    loadSampleData();
-                }
-            });
-        }
-
-        // Sample data for testing
-        function loadSampleData() {
-            // Sample summary data
-            const summaryData = {
-                total_jobs: 10,
-                fully_completed: 5,
-                partially_completed: 3,
-                not_started: 2
-            };
-            updateStats(summaryData);
-            
-            // Sample division data
-            const divisionData = [
-                { division: 'SMD', total_jobs: 10, completed_jobs: 7, pending_jobs: 3, completion_percentage: 70 },
-                { division: 'PVLMD', total_jobs: 10, completed_jobs: 6, pending_jobs: 4, completion_percentage: 60 },
-                { division: 'LRD', total_jobs: 10, completed_jobs: 8, pending_jobs: 2, completion_percentage: 80 }
-            ];
-            updateDivisionSummary(divisionData);
-            
-            // Sample job data
-            frrvData = [
-                {
-                    job_number: 'LRDGAR137795962022',
-                    smd_completed: true,
-                    pvlmd_completed: true,
-                    lrd_completed: true,
-                    completion_status: 'Fully Completed',
-                    completion_percentage: 100,
-                    last_updated: '2026-01-20 14:30:00'
-                },
-                {
-                    job_number: 'LRDGAR6942182020',
-                    smd_completed: true,
-                    pvlmd_completed: false,
-                    lrd_completed: false,
-                    completion_status: 'Partially Completed',
-                    completion_percentage: 33,
-                    last_updated: '2026-01-18 10:15:00'
-                },
-                {
-                    job_number: 'LRDGAR75042882021',
-                    smd_completed: false,
-                    pvlmd_completed: false,
-                    lrd_completed: false,
-                    completion_status: 'Not Started',
-                    completion_percentage: 0,
-                    last_updated: '2026-01-15 09:00:00'
-                }
-            ];
-            renderTable(frrvData);
-        }
-
-        // Update statistics cards
-        function updateStats(summary) {
-            $('#totalJobs').text(summary.total_jobs || 0);
-            $('#fullyCompleted').text(summary.fully_completed || 0);
-            $('#partiallyCompleted').text(summary.partially_completed || 0);
-            $('#notStarted').text(summary.not_started || 0);
-            $('#recordCount').text('Total: ' + (summary.total_jobs || 0));
-        }
-
-        // Update division summary
-        function updateDivisionSummary(divisions) {
-            if (!divisions || divisions.length === 0) {
-                return;
-            }
-            
-            divisions.forEach(function(div) {
-                const divisionName = div.division.toLowerCase();
-                const total = div.total_jobs || 0;
-                const completed = div.completed_jobs || 0;
-                const pending = div.pending_jobs || 0;
-                const percentage = div.completion_percentage || 0;
-                
-                // Update card values
-                $(`#${divisionName}Total`).text(total);
-                $(`#${divisionName}Completed`).text(completed);
-                $(`#${divisionName}Pending`).text(pending);
-                $(`#${divisionName}Percentage`).text(percentage + '%');
-                $(`#${divisionName}Progress`).css('width', percentage + '%');
-                
-                // Update progress bar color based on percentage
-                const progressBar = $(`#${divisionName}Progress`);
-                if (percentage >= 80) {
-                    progressBar.removeClass('bg-warning bg-danger').addClass('bg-success');
-                } else if (percentage >= 50) {
-                    progressBar.removeClass('bg-success bg-danger').addClass('bg-warning');
-                } else {
-                    progressBar.removeClass('bg-success bg-warning').addClass('bg-danger');
-                }
-            });
-        }
-
-        // Render table with data
-        function renderTable(data) {
-            const tbody = $('#frrvTableBody');
-            tbody.empty();
-
-            // Apply filter
-            let filteredData = data;
-            if (currentFilter !== 'all') {
-                filteredData = data.filter(d => d.completion_status === currentFilter);
-            }
-
-            if (!filteredData || filteredData.length === 0) {
-                tbody.html(`
-                    <tr>
-                        <td colspan="8" class="text-center py-4 text-muted">
-                            <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
-                            No FRRV jobs found
-                        </td>
-                    </tr>
-                `);
-                // Initialize DataTable with empty data
-                if (dataTable) {
-                    dataTable.destroy();
-                    dataTable = null;
-                }
-                return;
-            }
-
-            filteredData.forEach(function(item) {
-                const statusColor = item.completion_status === 'Fully Completed' ? 'success' :
-                                   item.completion_status === 'Partially Completed' ? 'warning' : 'danger';
-                
-                const statusIcon = item.completion_status === 'Fully Completed' ? 'fa-check-circle' :
-                                  item.completion_status === 'Partially Completed' ? 'fa-clock' : 'fa-hourglass-start';
-
-                const row = `
-                    <tr>
-                        <td>
-                            <span class="badge bg-secondary">${item.job_number}</span>
-                        </td>
-                        <td class="text-center">
-                            <span class="status-indicator ${item.smd_completed ? 'completed' : 'pending'}"></span>
-                            ${item.smd_completed ? 
-                                '<span class="badge bg-success"><i class="fas fa-check"></i></span>' : 
-                                '<span class="badge bg-warning"><i class="fas fa-times"></i></span>'}
-                        </td>
-                        <td class="text-center">
-                            <span class="status-indicator ${item.pvlmd_completed ? 'completed' : 'pending'}"></span>
-                            ${item.pvlmd_completed ? 
-                                '<span class="badge bg-success"><i class="fas fa-check"></i></span>' : 
-                                '<span class="badge bg-warning"><i class="fas fa-times"></i></span>'}
-                        </td>
-                        <td class="text-center">
-                            <span class="status-indicator ${item.lrd_completed ? 'completed' : 'pending'}"></span>
-                            ${item.lrd_completed ? 
-                                '<span class="badge bg-success"><i class="fas fa-check"></i></span>' : 
-                                '<span class="badge bg-warning"><i class="fas fa-times"></i></span>'}
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="progress flex-grow-1 me-2 progress-thin" style="width: 100px;">
-                                    <div class="progress-bar bg-${statusColor}" 
-                                         role="progressbar" 
-                                         style="width: ${item.completion_percentage}%;" 
-                                         aria-valuenow="${item.completion_percentage}" 
-                                         aria-valuemin="0" 
-                                         aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <span class="small fw-bold">${item.completion_percentage}%</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge bg-${statusColor} completion-badge">
-                                <i class="fas ${statusIcon} me-1"></i>
-                                ${item.completion_status}
-                            </span>
-                        </td>
-                        <td>
-                            <small class="text-muted">${item.last_updated || 'N/A'}</small>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-info view-details" 
-                                    data-job="${item.job_number}"
-                                    title="View Details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-primary view-progress" 
-                                    data-job="${item.job_number}"
-                                    title="View Progress">
-                                <i class="fas fa-chart-line"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                tbody.append(row);
-            });
-
-            // Initialize DataTable
-            if (dataTable) {
-                dataTable.destroy();
-            }
-            
-            dataTable = $('#frrvTable').DataTable({
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                responsive: true,
-                order: [[5, 'asc']],
-                columnDefs: [
-                    { orderable: false, targets: [1, 2, 3, 4, 7] }
-                ],
-                language: {
-                    search: "<i class='fas fa-search me-1'></i>Search:",
-                    searchPlaceholder: "Search jobs...",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ jobs",
-                    infoEmpty: "No jobs available",
-                    infoFiltered: "(filtered from _MAX_ total jobs)",
-                    zeroRecords: "No matching jobs found"
-                }
-            });
-        }
-
-        // Filter data by status
-        function filterData(status) {
-            currentFilter = status;
-            
-            // Update active state on cards
-            $('.stat-card').removeClass('active');
-            if (status === 'all') {
-                $('.stat-card[data-filter="all"]').addClass('active');
-            } else {
-                $(`.stat-card[data-filter="${status}"]`).addClass('active');
-            }
-            
-            renderTable(frrvData);
-        }
-
-        // View job details
-        function viewJobDetails(jobNumber) {
-            if (!frrvData || frrvData.length === 0) {
-                return;
-            }
-            
-            const job = frrvData.find(d => d.job_number === jobNumber);
-            if (!job) return;
-            
-            const modalHTML = `
-                <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header bg-primary text-white">
-                                <h5 class="modal-title">
-                                    <i class="fas fa-info-circle me-2"></i>FRRV Details - ${job.job_number}
-                                </h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <h6 class="text-muted">SMD</h6>
-                                                <span class="badge bg-${job.smd_completed ? 'success' : 'warning'} fs-6">
-                                                    ${job.smd_completed ? 'Completed' : 'Pending'}
-                                                </span>
+        <div class="row g-4 mb-4">
+            <div class="col-xl-9">
+                <div class="card frrv-summary-card">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="card-title mb-0">Division Summary</div>
+                        <span class="badge text-bg-light border">Click a summary card to filter the table</span>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row g-3" id="divisionSummaryContainer">
+                            <div class="col-md-4" id="smdCard">
+                                <div class="card frrv-metric h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <span class="d-block text-muted small">Division</span>
+                                                <h6 class="fw-bold mb-0">SMD</h6>
                                             </div>
+                                            <span class="badge text-bg-light border">SMD</span>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <h6 class="text-muted">PVLMD</h6>
-                                                <span class="badge bg-${job.pvlmd_completed ? 'success' : 'warning'} fs-6">
-                                                    ${job.pvlmd_completed ? 'Completed' : 'Pending'}
-                                                </span>
-                                            </div>
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="small text-muted">Completed</span>
+                                            <span class="small fw-bold" id="smdCompleted">0</span>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <h6 class="text-muted">LRD</h6>
-                                                <span class="badge bg-${job.lrd_completed ? 'success' : 'warning'} fs-6">
-                                                    ${job.lrd_completed ? 'Completed' : 'Pending'}
-                                                </span>
-                                            </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="small text-muted">Pending</span>
+                                            <span class="small fw-bold" id="smdPending">0</span>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                          
+                                        <div class="progress frrv-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="smdProgress"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <span class="small text-muted">Total: <span id="smdTotal">0</span></span>
+                                            <span class="small fw-bold text-success" id="smdPercentage">0%</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-3 text-center">
-                                    <small class="text-muted">Last Updated: ${job.last_updated || 'N/A'}</small>
+                            </div>
+
+                            <div class="col-md-4" id="pvlmdCard">
+                                <div class="card frrv-metric h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <span class="d-block text-muted small">Division</span>
+                                                <h6 class="fw-bold mb-0">PVLMD</h6>
+                                            </div>
+                                            <span class="badge text-bg-light border">PVLMD</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="small text-muted">Completed</span>
+                                            <span class="small fw-bold" id="pvlmdCompleted">0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="small text-muted">Pending</span>
+                                            <span class="small fw-bold" id="pvlmdPending">0</span>
+                                        </div>
+                                        <div class="progress frrv-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="pvlmdProgress"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <span class="small text-muted">Total: <span id="pvlmdTotal">0</span></span>
+                                            <span class="small fw-bold text-success" id="pvlmdPercentage">0%</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                            <div class="col-md-4" id="lrdCard">
+                                <div class="card frrv-metric h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <span class="d-block text-muted small">Division</span>
+                                                <h6 class="fw-bold mb-0">LRD</h6>
+                                            </div>
+                                            <span class="badge text-bg-light border">LRD</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="small text-muted">Completed</span>
+                                            <span class="small fw-bold" id="lrdCompleted">0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="small text-muted">Pending</span>
+                                            <span class="small fw-bold" id="lrdPending">0</span>
+                                        </div>
+                                        <div class="progress frrv-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="lrdProgress"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <span class="small text-muted">Total: <span id="lrdTotal">0</span></span>
+                                            <span class="small fw-bold text-success" id="lrdPercentage">0%</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            `;
-            
-            $('#jobDetailsModal').remove();
-            $('body').append(modalHTML);
-            const modal = new bootstrap.Modal(document.getElementById('jobDetailsModal'));
-            modal.show();
-        }
+            </div>
 
-        // Event handlers
-        $(document).ready(function() {
-            loadData();
+            <div class="col-xl-3">
+                <div class="card frrv-info-card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title mb-0">Quick Guide</div>
+                        <span class="badge text-bg-light border">Monitor</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-secondary border mb-0 p-3">
+                            <div class="d-flex align-items-start">
+                                <div class="me-2">
+                                    <i class="fas fa-circle-info fa-lg"></i>
+                                </div>
+                                <div class="text-dark">
+                                    <div class="fw-medium mb-2">FRRV Monitoring Dashboard</div>
+                                    <div class="fs-12 mb-1">
+                                        Use the status cards to filter jobs by completion state.
+                                    </div>
+                                    <div class="fs-12 mb-1">
+                                        Division summary cards show how SMD, PVLMD, and LRD are tracking.
+                                    </div>
+                                    <div class="fs-12">
+                                        Table actions open details or the progress view for each job.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            $('.stat-card').on('click', function() {
-                const filter = $(this).data('filter');
-                filterData(filter);
-            });
+                        <div class="mt-3 d-grid gap-2">
+                            <button class="btn btn-success showOfficerList" type="button" onclick="loadData()">
+                                <i class="fas fa-arrows-rotate me-1"></i> Reload FRRV Data
+                            </button>
+                            <button class="btn btn-outline-secondary" type="button" onclick="filterData('all')">
+                                <i class="fas fa-layer-group me-1"></i> Show All Jobs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            $(document).on('click', '.view-details', function() {
-                const jobNumber = $(this).data('job');
-                viewJobDetails(jobNumber);
-            });
-
-            $(document).on('click', '.view-progress', function() {
-                const jobNumber = $(this).data('job');
-                window.location.href = 'frrv_progress.jsp?job=' + jobNumber;
-            });
-        });
-    </script>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card frrv-table-card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="card-title mb-0">FRRV Job Status</div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge text-bg-light border" id="recordCount">
+                                <i class="fas fa-file me-1"></i>Total: 0
+                            </span>
+                            <button class="btn btn-sm btn-outline-light" type="button" onclick="loadData()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="table-responsive">
+                            <table class="table table-striped align-middle frrv-table display" id="frrvTable" width="100%">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Job Number</th>
+                                        <th>SMD</th>
+                                        <th>PVLMD</th>
+                                        <th>LRD</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                        <th>Last Updated</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="frrvTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
