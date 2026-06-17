@@ -177,3 +177,6 @@ ${page_name == "help_desk" ? "<script src='js-pages/help_desk.js'></script>" : "
 
 ${page_name == "page_appdata_transfer_template" ? "<script src='js-pages/_apps_update.js'></script>" : ""}
 ${page_name == "page_appdata_transfer_template" ? "<script src='js-pages/users_to_batch.js'></script>" : ""}
+
+${page_name == "settings_basic" ? "<script src='js-pages/settings_basic.js'></script>" : ""}
+${page_name == "settings_units" ? "<script src='js-pages/settings_units.js'></script>" : ""}

@@ -46,11 +46,7 @@ $(document).ready(function() {
 			    	let result = JSON.parse(jobdetails);
 					$("#editUnitModal").modal("hide");
 			        if(result !==null){
-						$.notify({
-		                    message: '<i class="fas fa-check  fa-3x fa-fw"></i><span class="text-bold"> Success </span>',
-		                }, {
-		                    type: 'success'
-		                });
+						Swal.fire({ icon: 'success', title: 'Success', text: 'Unit saved successfully.' });
 			        	//load new data
 					    table.clear();
 						    if(!result){
@@ -69,7 +65,7 @@ $(document).ready(function() {
 			                		+ '" data-un_name="' + this.unit_name 
 			                		+ '" data-un_divisions="' +this.unit_division
 			                		+ '" data-un_status="' + this.status 
-			                		+ '" data-target="#editUnitModal" data-toggle="modal" >'
+			                		+ '" data-bs-target="#editUnitModal" data-bs-toggle="modal" >'
 			                		+ ' <span class="icon text-white-50"> <i class="fas fa-edit"></i></span><span class="text">Edit</span>'
 			                		+ ' </button>'
 			            		]).draw(false);
@@ -77,19 +73,11 @@ $(document).ready(function() {
 							 
 			        }else{
 			        	
-			        	$.notify({
-		                    message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Somthing went wrong 1 </span>',
-		                }, {
-		                    type: 'danger'
-		                });
+			        	Swal.fire({ icon: 'error', title: 'Error', text: 'Something went wrong. Please try again.' });
 			        }
 
 				} catch(e){
-					$.notify({
-		                    message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">'+ e.message +'Somthing went wrong 2 </span>',
-		                }, {
-		                    type: 'danger'
-		                });
+					Swal.fire({ icon: 'error', title: 'Error', text: e.message || 'Something went wrong. Please try again.' });
 				}
             }
         });			
@@ -141,7 +129,7 @@ $(document).ready(function() {
 			                		+ '" data-un_name="' + this.unit_name 
 			                		+ '" data-un_divisions="' +this.unit_division
 			                		+ '" data-un_status="' + this.status 
-			                		+ '" data-target="#editUnitModal" data-toggle="modal" >'
+			                		+ '" data-bs-target="#editUnitModal" data-bs-toggle="modal" >'
 			                		+ ' <span class="icon text-white-50"> <i class="fas fa-edit"></i></span><span class="text">Edit</span>'
 			                		+ ' </button>'
 			            		] ).draw( false );

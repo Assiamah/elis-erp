@@ -38,11 +38,7 @@ $(document).ready(function() {
 	   
 	   console.log('how are your search' + region_id);
 	   if(region_id == 0){
-		   $.notify({
-			   message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold"> Pls select Region.</span>',
-		   }, {
-			   type: 'danger'
-		   });
+		   Swal.fire({ icon: 'warning', title: 'Required', text: 'Please select a Region.' });
 		   return false;
 	   }else{
 		   $.ajax({
@@ -83,20 +79,12 @@ $(document).ready(function() {
 							   ] ).draw( false );
 						   });*/
 						   
-						   $.notify({
-							   message: '<i class="fas fa-check  fa-3x fa-fw"></i><span class="text-bold"> Success </span>',
-						   }, {
-							   type: 'success'
-						   });
-						   
-						  
+						   Swal.fire({ icon: 'success', title: 'Success', text: 'District saved successfully.' });
+
+
 					   }else{
-						   
-						   $.notify({
-							   message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Job number not Found </span>',
-						   }, {
-							   type: 'danger'
-						   });
+
+						   Swal.fire({ icon: 'error', title: 'Error', text: 'Something went wrong. Please try again.' });
 						   
 					   }
 					   
@@ -140,11 +128,7 @@ $(document).ready(function() {
 				   $("#editLocalityModal").modal("hide");
 			   
 				   if(result !==null){
-					   $.notify({
-						   message: '<i class="fas fa-check  fa-3x fa-fw"></i><span class="text-bold"> Success </span>',
-					   }, {
-						   type: 'success'
-					   });
+					   Swal.fire({ icon: 'success', title: 'Success', text: 'Locality saved successfully.' });
 					   //load new data
 					   table.clear();
 						   
@@ -157,7 +141,7 @@ $(document).ready(function() {
 								   '<button  class="btn btn-info btn-icon-split" ' 
 								   + '" data-loc_id="' + this.id
 								   + '" data-loc_name=' + this.location_name  
-								   + ' data-target="#editLocalityModal" data-toggle="modal" >'
+								   + ' data-bs-target="#editLocalityModal" data-bs-toggle="modal" >'
 								   + ' <span class="icon text-white-50"> <i class="fas fa-edit"></i></span><span class="text">Edit</span>'
 								   + ' </button>'
 							   ] ).draw( false );
@@ -166,20 +150,12 @@ $(document).ready(function() {
 							
 				   }else{
 					   
-					   $.notify({
-						   message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Somthing went wrong </span>',
-					   }, {
-						   type: 'danger'
-					   });
+					   Swal.fire({ icon: 'error', title: 'Error', text: 'Something went wrong. Please try again.' });
 					   
 				   }
 
 			   } catch(e){
-				   $.notify({
-						   message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Somthing went wrong </span>',
-					   }, {
-						   type: 'danger'
-					   });
+				   Swal.fire({ icon: 'error', title: 'Error', text: 'Something went wrong. Please try again.' });
 			   }
 			   
 				   
@@ -232,7 +208,7 @@ $(document).ready(function() {
 						   '<button  class="btn btn-info btn-icon-split" ' 
 						   + '" data-dis_id=' + this.id
 						   + ' data-dis_name=' + this.district_name  
-						   + ' data-target=" #editDistrictModal" data-toggle="modal" >'
+						   + ' data-bs-target="#editDistrictModal" data-bs-toggle="modal" >'
 						   + ' <span class="icon text-white-50"> <i class="fas fa-edit"></i></span><span class="text">Edit</span>'
 						   + ' </button>'
 					   ] ).draw( false );
@@ -242,11 +218,7 @@ $(document).ready(function() {
 
 						tableDis.clear();
 
-						$.notify({
-						   message: '<i class="fa fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">No data found.</span>',
-					   }, {
-						   type: 'danger'
-					   });
+						Swal.fire({ icon: 'warning', title: 'No Data', text: 'No data found.' });
 
 				  }
 							   
@@ -307,7 +279,7 @@ $('#district_region_office').change(function() {
 								   '<button  class="btn btn-info btn-icon-split" ' 
 								   + '" data-loc_id="' + this.id
 								   + '" data-loc_name=' + this.location_name  
-								   + ' data-target="#editLocalityModal" data-toggle="modal" >'
+								   + ' data-bs-target="#editLocalityModal" data-bs-toggle="modal" >'
 								   + ' <span class="icon text-white-50"> <i class="fas fa-edit"></i></span><span class="text">Edit</span>'
 								   + ' </button>'
 							   ] ).draw( false );
