@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
 <%@ page import="com.google.gson.Gson"%>
-<%@ page import="com.google.gson.GsonBuilder"%>
+<%@ page import="com.google.gson.GsonBuilder"%> 
 
 <%@ page import="org.codehaus.jettison.json.JSONArray"%>
 <%@ page import="org.codehaus.jettison.json.JSONException"%>

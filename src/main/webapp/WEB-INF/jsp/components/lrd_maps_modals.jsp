@@ -21,6 +21,12 @@
     .btn-primary-custom:hover { background-color: #2a5561; }
     .table th { background: #f3f4f6; font-weight: 600; color: #374151; }
     .table-hover tbody tr:hover { background-color: #f9fafb; }
+    /* #addlrdtransaction .modal-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    }
+    #addlrdtransaction .text-white-75 {
+        color: rgba(255, 255, 255, 0.75);
+    } */
 </style>
 
 <!-- 1. Main LRD Parcel Information Modal -->
@@ -162,141 +168,140 @@
 </div>
 
 <!-- 2. Add LRD Transaction Modal -->
-<div class="modal fade" id="addlrdtransaction" tabindex="-1">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add / Edit LRD Transaction</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade modal-blur" id="addlrdtransaction" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <div class="modal-header bg-primary text-white align-items-center">
+                <div>
+                    <h5 class="modal-title text-white mb-0">LRD Transaction Information</h5>
+                    <small class="text-white-75">Add, review, and update transaction details</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- Hidden Fields -->
+            <div class="modal-body p-4">
                 <input type="hidden" id="lrd_td_gid">
                 <input type="hidden" id="lrd_td_fid_id_fk">
                 <input type="hidden" id="lrd_td_plotted_by_reg">
                 <input type="hidden" id="lrd_td_checked_by">
                 <input type="hidden" id="lrd_td_plott_date_reg">
 
-                <div class="row g-3">
-                    <!-- Column 1 -->
-                    <div class="col-lg-4">
-                        <div class="mb-3">
-                            <label class="form-label">Nature of Instrument</label>
-                            <input type="text" class="form-control" id="lrd_td_nature_of_instument">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date of Registration</label>
-                            <input type="text" class="form-control" id="lrd_td_date_of_registration">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Volume</label>
-                            <input type="text" class="form-control" id="lrd_td_volume">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Folio</label>
-                            <input type="text" class="form-control" id="lrd_td_folio">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date of Issue Certificate No</label>
-                            <input type="text" class="form-control" id="lrd_td_date_of_issued_cert_no">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Type of Certificate</label>
-                            <input type="text" class="form-control" id="lrd_td_type_of_certificate">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Registered No</label>
-                            <input type="text" class="form-control" id="lrd_td_registered_number">
-                        </div>
-                    </div>
-
-                    <!-- Column 2 -->
-                    <div class="col-lg-4">
-                        <div class="mb-3">
-                            <label class="form-label">CC Number</label>
-                            <input type="text" class="form-control" id="lrd_td_cc_number">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Certificate Number</label>
-                            <input type="text" class="form-control" id="lrd_td_certicate_number">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Applicant Name</label>
-                            <input type="text" class="form-control" id="lrd_td_applicant_name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Grantor Name</label>
-                            <input type="text" class="form-control" id="lrd_td_grantor_name">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Job Number</label>
-                            <input type="text" class="form-control" id="lrd_td_job_number">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Type of Instrument</label>
-                            <input type="text" class="form-control" id="lrd_td_type_instrument">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date of Instrument</label>
-                            <input type="text" class="form-control" id="lrd_td_date_of_instument">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Consideration</label>
-                            <input type="text" class="form-control" id="lrd_td_consideration">
-                        </div>
-                    </div>
-
-                    <!-- Column 3 -->
-                    <div class="col-lg-4">
-                        <div class="mb-3">
-                            <label class="form-label">Purpose</label>
-                            <input type="text" class="form-control" id="lrd_td_purpose">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date Commencement</label>
-                            <input type="text" class="form-control" id="lrd_td_date_commencement">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Term</label>
-                            <input type="text" class="form-control" id="lrd_td_term">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Remarks</label>
-                            <input type="text" class="form-control" id="lrd_td_remarks">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Type of Registration</label>
-                            <input type="text" class="form-control" id="lrd_td_type_of_registration">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Land Size</label>
-                            <input type="text" class="form-control" id="lrd_td_land_size">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Reference Number</label>
-                            <input type="text" class="form-control" id="lrd_td_reference_number" readonly>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Last Update By</label>
-                                <input type="text" class="form-control" id="lrd_td_modified_by" readonly>
+                <div class="container-fluid px-0">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold" for="lrd_td_nature_of_instument">Nature of Instrument</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_nature_of_instument">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_date_of_registration">Date of Registration</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_of_registration">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_date_of_instument">Date of Instrument</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_of_instument">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_volume">Volume</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_volume">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_folio">Folio</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_folio">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_date_of_issued_cert_no">Date of Issue Certificate No</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_of_issued_cert_no">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_type_of_certificate">Type of Certificate</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_type_of_certificate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_registered_number">Registered No</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_registered_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_cc_number">CC Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_cc_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_certicate_number">Certificate Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_certicate_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_applicant_name">Applicant Name</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_applicant_name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_grantor_name">Grantor Name</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_grantor_name">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Date Last Updated</label>
-                                <input type="text" class="form-control" id="lrd_td_modified_date" readonly>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_job_number">Job Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_job_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_type_instrument">Type of Instrument</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_type_instrument">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_consideration">Consideration</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_consideration">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_purpose">Purpose</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_purpose">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_date_commencement">Date Commencement</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_commencement">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_term">Term</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_term">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold" for="lrd_td_remarks">Remarks</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_remarks">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_type_of_registration">Type of Registration</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_type_of_registration">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_land_size">Land Size</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_land_size">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold" for="lrd_td_reference_number">Reference Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_reference_number" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_modified_by">Last Update By</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_modified_by" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold" for="lrd_td_modified_date">Date Last Updated</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_modified_date" readonly>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="text-center mt-4">
-                    <button type="button" class="btn btn-primary-custom btn-lg px-5" id="btn_save_lrd_transaction">
-                        Save Data
-                    </button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="modal-footer bg-white border-top">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+                <!-- <button type="button" class="btn btn-primary-custom btn-lg px-5" id="btn_save_lrd_transaction">
+                    Save Data
+                </button> -->
             </div>
         </div>
     </div>
@@ -345,4 +350,3 @@
         </div>
     </div>
 </div>
-
