@@ -2497,147 +2497,141 @@
 	</div>
 	<!-- /.modal-dialog -->
 </div>
-
-<div class="modal fade" id="final_registration_approval_dialog"
-	tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true"
->
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<!-- <button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true"
-				>
-					<span class="glyphicon glyphicon-remove" aria-hidden="true">X</span>
-				</button> -->
-				<h4 class="modal-title custom_align" id="Heading">Approve Transaction for this case</h4>
-			</div>
-			<div class="modal-body">
-
-			
-				<form id="frmVerification" autocomplete="off">
-					<input type="hidden" id="ta_txt_ta_id" name="ta_txt_ta_id" value="0">
-					<input type="hidden" id="ta_txt_type_of_transaction" name="ta_txt_type_of_transaction">
-					<input type="hidden" id="ta_txt_business_process_sub_name" name="ta_txt_business_process_sub_name">
-					
-					<div class="form-row">
-
-						<div class="col">	
-							<div class="form-group">
-								<label for="bl_job_number">Job #</label> <input
-									class="form-control " type="text" placeholder="Enter Phone Number"
-									id="ta_txt_job_number" readonly
-								>
-							</div>
-						</div>
-
-						<div class="col">	
-							<div class="form-group">
-								<label for="bl_job_number">Case #</label> <input
-									class="form-control " type="text" placeholder="Enter Phone Number"
-									id="ta_txt_case_number" readonly
-								>
-							</div>
-						</div>
-						
-					</div>
-					
-					<!-- <div class="form-row"> -->
-					 <div class="form-group">
-							<label for="bl_ar_name">Message</label>
-							<textarea rows="2" columns="2" class="form-control" placeholder=""
-								id="ta_txt_transaction_details" readonly
-							></textarea>
-						 </div> 
-					<!-- </div> -->
-				
-							
-							
-								<div class="form-row">
-
-
-									<div class="col">
-										<div class="form-group col">
-											<input type="text" class="form-control text-center"
-												id="veri_code1" maxlength="1" required
-												autocomplete="off" data-index="3"
-											>
-										</div>
-									</div>
-									-
-									<div class="col">
-										<div class="form-group col">
-											<input type="text" class="form-control text-center"
-												id="veri_code2" maxlength="1"  required
-												autocomplete="off" data-index="4"
-											>
-										</div>
-									</div>
-									-
-									<div class="col">
-										<div class="form-group col">
-											<input type="text" class="form-control text-center"
-												id="veri_code3" maxlength="1"  required
-												autocomplete="off" data-index="5"
-											>
-										</div>
-									</div>
-									-
-									<div class="col">
-										<div class="form-group col">
-											<input type="text" class="form-control text-center"
-												id="veri_code4" maxlength="1" required
-												autocomplete="off" data-index="6"
-											>
-										</div>
-									</div>
-									-
-									<div class="col">
-										<div class="form-group col">
-											<input type="text" class="form-control text-center"
-												id="veri_code5" maxlength="1" required
-												autocomplete="off" data-index="7"
-											>
-										</div>
-									</div>
-									-
-									<div class="col">
-										<div class="form-group col">
-											<input type="text" class="form-control text-center"
-												id="veri_code6" maxlength="1" required
-												autocomplete="off" data-index="8"
-											>
-										</div>
-									</div>
-
-								</div>
-
-								
-								
-								<!-- <br/> <br/> -->
-								<div class="clearfix"></div>
-							</form>
-
-							<div class="alert alert-danger">
-								<span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to Approve this transaction?
-							</div>
-
-							
-
-			</div>
-			<div class="modal-footer ">
-				<button type="button" class="btn btn-success"
-					id="btn_final_registration_approval_dialog"
-				>
-					<span class="glyphicon glyphicon-ok-sign"></span>Approve
-				</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<span class="glyphicon glyphicon-remove"></span>Close
-				</button>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+<div class="modal fade" id="final_registration_approval_dialog" 
+     tabindex="-1" aria-labelledby="finalRegistrationApprovalLabel" 
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="finalRegistrationApprovalLabel">
+                    <i class="fas fa-check-circle me-2"></i>Approve Transaction for this case
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="frmVerification" autocomplete="off">
+                    <input type="hidden" id="ta_txt_ta_id" name="ta_txt_ta_id" value="0">
+                    <input type="hidden" id="ta_txt_type_of_transaction" name="ta_txt_type_of_transaction">
+                    <input type="hidden" id="ta_txt_business_process_sub_name" name="ta_txt_business_process_sub_name">
+                    
+                    <!-- Job and Case Number Row -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input class="form-control" type="text" 
+                                       id="ta_txt_job_number" readonly
+                                       placeholder="Job Number">
+                                <label for="ta_txt_job_number">
+                                    <i class="fas fa-hashtag me-1"></i>Job Number
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input class="form-control" type="text" 
+                                       id="ta_txt_case_number" readonly
+                                       placeholder="Case Number">
+                                <label for="ta_txt_case_number">
+                                    <i class="fas fa-folder-open me-1"></i>Case Number
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transaction Details -->
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <textarea class="form-control" rows="3" 
+                                      id="ta_txt_transaction_details" readonly
+                                      placeholder="Transaction Details" 
+                                      style="height: 100px;"></textarea>
+                            <label for="ta_txt_transaction_details">
+                                <i class="fas fa-file-alt me-1"></i>Transaction Details
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Verification Code Input -->
+                    <div class="card bg-light mb-3">
+                        <div class="card-header bg-secondary text-white">
+                            <i class="fas fa-shield-alt me-1"></i>Verification Code
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2 justify-content-center">
+                                <div class="col-1">
+                                    <input type="text" class="form-control text-center verification-input" 
+                                           id="veri_code1" maxlength="1" required
+                                           autocomplete="off" data-index="1">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <span class="text-muted fw-bold">-</span>
+                                </div>
+                                <div class="col-1">
+                                    <input type="text" class="form-control text-center verification-input" 
+                                           id="veri_code2" maxlength="1" required
+                                           autocomplete="off" data-index="2">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <span class="text-muted fw-bold">-</span>
+                                </div>
+                                <div class="col-1">
+                                    <input type="text" class="form-control text-center verification-input" 
+                                           id="veri_code3" maxlength="1" required
+                                           autocomplete="off" data-index="3">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <span class="text-muted fw-bold">-</span>
+                                </div>
+                                <div class="col-1">
+                                    <input type="text" class="form-control text-center verification-input" 
+                                           id="veri_code4" maxlength="1" required
+                                           autocomplete="off" data-index="4">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <span class="text-muted fw-bold">-</span>
+                                </div>
+                                <div class="col-1">
+                                    <input type="text" class="form-control text-center verification-input" 
+                                           id="veri_code5" maxlength="1" required
+                                           autocomplete="off" data-index="5">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <span class="text-muted fw-bold">-</span>
+                                </div>
+                                <div class="col-1">
+                                    <input type="text" class="form-control text-center verification-input" 
+                                           id="veri_code6" maxlength="1" required
+                                           autocomplete="off" data-index="6">
+                                </div>
+                            </div>
+                            <div class="text-center mt-2">
+                                <small class="text-muted">Enter the 6-digit verification code</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Confirmation Alert -->
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                        <div>
+                            <strong>Warning!</strong> Are you sure you want to approve this transaction? 
+                            This action cannot be undone.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btn_final_registration_approval_dialog">
+                    <i class="fas fa-check me-1"></i>Approve
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 

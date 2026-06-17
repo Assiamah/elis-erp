@@ -259,6 +259,7 @@
                                                 data-userid="${user.userid}"
                                                 data-username="${user.username}"
                                                 data-fullname="${user.fullname}"
+                                                data-usertype="DivisionalUser"
                                                 data-division="${user.division}">
                                                 <i class="fas fa-user-shield"></i>
                                             </button>

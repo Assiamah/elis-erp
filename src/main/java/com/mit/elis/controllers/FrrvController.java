@@ -63,33 +63,49 @@ public class FrrvController {
 					String web_service_response_menu = null;
 
 					web_service_response_menu = casemgt_web_service
-							.load_application_details_to_unit_frrv_cordinator(cls_url_config.getWeb_service_url_ser(),
+							.get_frrv_completion_stats(cls_url_config.getWeb_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									(String) session.getAttribute("unit_id"));
 					JSONObject menu_obj;
 
 					menu_obj = new JSONObject(web_service_response_menu);
-					String incoming = menu_obj.get("incoming").toString();
-					String completed = menu_obj.get("completed").toString();
-					String queried = menu_obj.get("queried").toString();
-					String awaiting_payments = menu_obj.get("awaiting_payments").toString();
+	                String summary = menu_obj.get("summary").toString();
+					String division_summary_details = menu_obj.get("division_summary").toString();
 
-					String smd_remaining = menu_obj.get("smd_remaining").toString();
-					String lrd_remaining = menu_obj.get("lrd_remaining").toString();
-					String pvlmd_remaining = menu_obj.get("pvlmd_remaining").toString();
+
+					JSONObject summary_obj = new JSONObject(summary);
+					String total_jobs = summary_obj.get("total_jobs").toString();
+					String fully_completed = summary_obj.get("fully_completed").toString();
+					String partially_completed = summary_obj.get("partially_completed").toString();
+					String not_started = summary_obj.get("not_started").toString();
+
+					Gson googleJson_officeregions = new Gson();
+			ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(division_summary_details,
+					ArrayList.class);
+			request.setAttribute("division_summary_details_list", javaArrayListFromGSON_officeregions);
+      
+					// String incoming = menu_obj.get("incoming").toString();
+					// String completed = menu_obj.get("completed").toString();
+					// String queried = menu_obj.get("queried").toString();
+					// String awaiting_payments = menu_obj.get("awaiting_payments").toString();
+
+					// String smd_remaining = menu_obj.get("smd_remaining").toString();
+					// String lrd_remaining = menu_obj.get("lrd_remaining").toString();
+					// String pvlmd_remaining = menu_obj.get("pvlmd_remaining").toString();
 
 					request.setAttribute("page_name", "first_registration_record_verification");
 
-					request.setAttribute("incoming", incoming);
-					request.setAttribute("completed", completed);
-					request.setAttribute("queried", queried);
-					request.setAttribute("awaiting_payment", awaiting_payments);
+					// request.setAttribute("incoming", incoming);
+					// request.setAttribute("completed", completed);
+					// request.setAttribute("queried", queried);
+					// request.setAttribute("awaiting_payment", awaiting_payments);
 
-					request.setAttribute("smd_remaining", smd_remaining);
-					request.setAttribute("lrd_remaining", lrd_remaining);
-					request.setAttribute("pvlmd_remaining", pvlmd_remaining);
+					// request.setAttribute("smd_remaining", smd_remaining);
+					// request.setAttribute("lrd_remaining", lrd_remaining);
+					// request.setAttribute("pvlmd_remaining", pvlmd_remaining);
 
-							model.addAttribute("content", "../pages/frrv/frrv_coordinator_module.jsp"); return "layouts/app";
+							//model.addAttribute("content", "../pages/frrv/frrv_coordinator_module.jsp"); return "layouts/app";
+							model.addAttribute("content", "../pages/general_workflow/general_workflow_monitor_frrv.jsp"); return "layouts/app";
 
 				} else {
 
@@ -171,7 +187,8 @@ public class FrrvController {
 					request.setAttribute("completed", completed);
 					request.setAttribute("queried", queried);
 					request.setAttribute("awaiting_payment", awaiting_payments);
-							model.addAttribute("content", "../pages/frrv/frrv_divisional_supervisor_module.jsp"); return "layouts/app";
+							//model.addAttribute("content", "../pages/frrv/frrv_divisional_supervisor_module.jsp"); return "layouts/app";
+model.addAttribute("content", "../pages/functionality_deprecated_page.jsp"); return "layouts/app";
 
 				} else {
 
@@ -251,7 +268,8 @@ public class FrrvController {
 					request.setAttribute("page_name", "first_registration_record_verification");
 
 					request.setAttribute("applicationlist", javaArrayListFromGSON);
-							model.addAttribute("content", "../pages/frrv/frrv_staff_module.jsp"); return "layouts/app";
+							//model.addAttribute("content", "../pages/frrv/frrv_staff_module.jsp"); return "layouts/app";
+model.addAttribute("content", "../pages/functionality_deprecated_page.jsp"); return "layouts/app";
 
 				} else {
 

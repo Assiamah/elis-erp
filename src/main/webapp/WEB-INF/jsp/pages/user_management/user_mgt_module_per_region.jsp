@@ -258,6 +258,7 @@
                                                 data-userid="${user.userid}"
                                                 data-username="${user.username}"
                                                 data-fullname="${user.fullname}"
+                                                data-usertype="RegionalUser"
                                                 data-division="${user.division}">
                                                 <i class="fas fa-user-shield"></i>
                                             </button>

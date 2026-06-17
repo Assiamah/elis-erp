@@ -373,6 +373,32 @@ public class Ws_users {
 		return output;
 	}
 	
+		public String user_profile_for_user_regional_head(String web_service_url, String web_service_api_key, String data_input)
+
+	{
+		String output = null;
+		// boolean st =false;
+		try {
+			try {
+				Client client = Client.create();
+				WebResource webResource = client.resource(
+						web_service_url + "user_management_service/user_profile_for_user_regional_head");
+				ClientResponse response_ws = webResource.type("application/json")
+						.header("x-api-key", web_service_api_key).post(ClientResponse.class,
+								data_input);
+				if (response_ws.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : " + response_ws.getStatus());
+				}
+				output = response_ws.getEntity(String.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+	
 
 	public String select_lc_milestone_per_user(String web_service_url, String web_service_api_key, String data_input)
 

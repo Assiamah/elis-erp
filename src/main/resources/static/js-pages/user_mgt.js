@@ -475,10 +475,22 @@ $("#ur_department").on('input', function() {
 					$(event.relatedTarget).data(
 							'username'));
 
+			var usertype = $(event.relatedTarget).data('usertype');
 			// var dt =
 			// $('#tbl_user_profile_list_dataTable').DataTable();
 			var up_userid = $(event.relatedTarget)
 					.data('userid');
+        var request_type_v = 'get_user_profile_for_user_regional_head';
+		if (usertype=== 'NationalUser') {
+			request_type_v='get_user_profile_per_user';
+		   }
+		   if (usertype=== 'DivisionalUser') {
+			request_type_v='get_user_profile_for_user_regional_head';
+		   }
+		if (usertype=== 'RegionalUser') {
+			request_type_v='get_user_profile_for_user_regional_head';
+		   }
+																
 
 			// var table_cl =
 			// $('#tbl_user_profile_list_dataTable');
@@ -488,7 +500,7 @@ $("#ur_department").on('input', function() {
 				type : "POST",
 				url : "user_mgt_serv",
 				data : {
-					request_type : 'get_user_profile_per_user',
+					request_type : request_type_v,
 					userid : up_userid
 				},
 				cache : false,

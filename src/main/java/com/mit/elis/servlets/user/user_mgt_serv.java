@@ -326,6 +326,31 @@ public class user_mgt_serv extends HttpServlet {
 				}
 			}
 
+				if (request_type.equals("get_user_profile_for_user_regional_head")) {
+				String userid = request.getParameter("userid");
+				// String user_profile = request.getParameter("user_profile");
+				obj.put("userid", userid);
+				// obj.put("user_profile", user_profile);
+
+				jsonArr.put(obj);
+				String input = jsonArr.toString();
+				// //System.out.println(input);
+				// //System.out.println(user_profile);
+				web_service_response = cls_users.user_profile_for_user_regional_head(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), userid);
+				if (web_service_response != null) {
+					obj_r.put("success", true);
+					obj_r.put("msg", "User Saved!");
+					// //System.out.println(obj_r.toString());
+					// //System.out.println(web_service_response.toString());
+				} else {
+					obj_r.put("success", false);
+					obj_r.put("msg", "Error Delete User.';");
+				}
+			}
+
+			
+
 				
 			if (request_type.equals("select_lc_milestone_per_user")) {
 				String userid = request.getParameter("userid");

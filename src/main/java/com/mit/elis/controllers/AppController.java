@@ -689,6 +689,13 @@ public class AppController {
 					String organisation_details = sou_obj.get("orgset").toString();
 					String all_users_for_batching = sou_obj.get("users").toString();
 
+					String region_polygon_jddon = sou_obj.get("region_polygon").toString();
+                    JSONObject region_polygon_obj = new JSONObject(region_polygon_jddon);
+					String regions_polygon = region_polygon_obj.get("regions_polygon").toString();
+
+						session.setAttribute("regions_polygon", regions_polygon);
+
+
 					session.setAttribute("web_list_of_users", all_users_for_batching);
 					session.setAttribute("web_main_services", all_main_service);
 					session.setAttribute("web_sub_services", all_sub_service);

@@ -6,6 +6,29 @@ console.log('PVLMD Maps working');
 					var lrd_point_coordinate_list;
 
 					var lrd_click_type = 'MapClick';
+					
+					
+					var pvlmd_regional_boundary_dataSource = new ol.source.TileWMS(
+							{
+								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+								params : {
+									'LAYERS' : 'csau_geospatial:gh_lvd_region',
+									'TILED' : true
+								},
+								// params: {'LAYERS':
+								// 'rating:spatial_unit_assembly', 'cql_filter':
+								// "assembly_code='AMA'" , 'TILED': true },,
+								serverType : 'geoserver',
+								transition : 0
+							})
+
+					var pvlmd_regional_boundary_dataLayer = new ol.layer.Tile({
+						title : 'Regional Boundary',
+						source : pvlmd_regional_boundary_dataSource
+
+					})
+					
+					
 					var pvlmd_parcel_lrd_dataSource = new ol.source.TileWMS(
 							{
 								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
@@ -268,6 +291,24 @@ console.log('PVLMD Maps working');
 							})
 						})
 					});
+					
+					// Get the WKT polygon from Java model attribute
+//var regions_polygon = '${regions_polygon}';
+// let username = "${regions_polygon}";
+  var regions_polygon = $('#regions_polygon').val();
+
+  
+
+					pvlmd_lc_regional_boundary_layer = new ol.layer.Vector({
+						title : 'Regional Layer',
+						source : undefined,
+						style : new ol.style.Style({
+							stroke : new ol.style.Stroke({
+								color : 'red',
+								width : 3
+							})
+						})
+					});
 
 					var pvlmd_markers = new ol.layer.Vector({
 						// title: 'Markers',
@@ -473,6 +514,8 @@ console.log('PVLMD Maps working');
 					// map.addLayer(new_de);
 					pvlmd_map.addLayer(pvlmd_googleLayerHybrid);
 					pvlmd_map.addLayer(pvlmd_StaticImage);
+					pvlmd_map.addLayer(pvlmd_regional_boundary_dataLayer);
+					
 					pvlmd_map.addLayer(pvlmd_registration_district_dataLayer);
 
 					pvlmd_map.addLayer(pvlmd_grid_lrd_dataLayer);
@@ -493,8 +536,12 @@ console.log('PVLMD Maps working');
 					pvlmd_map
 							.addLayer(pvlmd_smd_cadastral_search_result_searchLayer);
 					pvlmd_map.addLayer(pvlmd_lrd_search_result_searchLayer);
+					pvlmd_map.addLayer(pvlmd_lc_regional_boundary_layer);
+					
 					pvlmd_map.addLayer(pvlmd_lc_searchLayer);
 					pvlmd_map.addLayer(pvlmd_markers);
+
+					loadAndZoomToRegionPolygon(regions_polygon);
 					pvlmd_map
 							.on(
 									'click',
@@ -2796,5 +2843,46 @@ console
         var resolution = scale / (mpu * 39.37 * dpi);
         return resolution;
     }
+
+	function loadAndZoomToRegionPolygon(wktPolygon) {
+		//console.log('Plygon newww')
+		//console.log(wktPolygon)
+    if (wktPolygon && wktPolygon !== '' && wktPolygon !== 'null') {
+        try {
+            // Read the WKT polygon
+            var features = new ol.format.WKT().readFeatures(wktPolygon);
+            
+            if (features && features.length > 0) {
+                // Set source for the regional boundary layer
+                pvlmd_lc_regional_boundary_layer.setSource(new ol.source.Vector({
+                    features: features
+                }));
+                
+                // Zoom to the polygon extent
+                var extent = pvlmd_lc_regional_boundary_layer.getSource().getExtent();
+                       
+                    pvlmd_map.getView().fit(extent, {
+                        size: pvlmd_map.getSize(),
+                        maxZoom: 10
+                    });
+
+                // Check if extent is valid (not infinity)
+                // if (isFinite(extent[0]) && isFinite(extent[1]) && 
+                //     isFinite(extent[2]) && isFinite(extent[3])) {
+                    
+                //     pvlmd_map.getView().fit(extent, {
+                //         size: pvlmd_map.getSize(),
+                //         maxZoom: 10,
+                //         padding: [50, 50, 50, 50]  // Add some padding around the boundary
+                //     });
+                    
+                //     console.log('Zoomed to region polygon successfully');
+                // }
+            }
+        } catch(e) {
+            console.error('Error parsing WKT polygon:', e);
+        }
+    }
+}
 
 				});

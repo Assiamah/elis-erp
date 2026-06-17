@@ -27,7 +27,7 @@
             </div>
         </div>
         <!-- End::page-header -->
-
+<input type="hidden" id="regions_polygon" value="${regions_polygon}">
         <div class="row">
             <!-- Left Sidebar Controls -->
             <div class="col-lg-4 col-xl-3">

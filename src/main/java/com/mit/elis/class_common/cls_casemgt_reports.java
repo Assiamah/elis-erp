@@ -217,6 +217,7 @@ public class cls_casemgt_reports {
 			// Add underlined part
 			if (!parts[i].trim().isEmpty()) {
 				Chunk underlinedChunk = new Chunk(parts[i], font);
+				//WE
 				underlinedChunk.setUnderline(BaseColor.RED, 1f, 0f, -2f, 0f, PdfContentByte.LINE_CAP_BUTT);
 				phrase.add(underlinedChunk);
 			}
@@ -258,8 +259,8 @@ public class cls_casemgt_reports {
 			Font chunkFont = sourceChunk.getFont() == null ? fallbackFont : sourceChunk.getFont();
 			appendArNameStyledText(styledParagraph, sourceChunk.getContent(), chunkFont, arName);
 		}
-
-		styledParagraph.add(new Chunk(new LineSeparator(1f, 100f, BaseColor.RED, Element.ALIGN_LEFT, -2f)));
+// This will Add the underline to the space at the end of the botton of the certificate
+		//styledParagraph.add(new Chunk(new LineSeparator(1f, 100f, BaseColor.RED, Element.ALIGN_LEFT, -2f)));
 
 		return styledParagraph;
 	}
@@ -18002,7 +18003,8 @@ JSONObject request_json = new JSONObject();
 
 	}
 
-	public byte[] create_land_certificate_typed(String web_service_url, String web_service_api_key,
+
+	public byte[] create_land_certificate_typed_underlined(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number,
 			String job_number, String output_file)
 			throws IOException, SQLException, JSONException, ParseException {
@@ -18300,6 +18302,523 @@ remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body><
 	//document.add(element);
   }
 
+
+
+      
+			LocalDateTime currentTime = LocalDateTime.now();
+			//System.out.println("Current DateTime: " + date_of_issue);
+
+			
+			
+			
+			
+
+			if ( date_of_issue != null && date_of_issue != "null" ) {
+
+				// Parse the string to OffsetDateTime
+				//OffsetDateTime offsetDateTime = OffsetDateTime.parse(date_of_issue);
+				OffsetDateTime dateTime = OffsetDateTime.parse(date_of_issue);
+				//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				//LocalDateTime dateTime = offsetDateTime.toLocalDateTime();
+				//System.out.println("Date of Issue as LocalDateTime: " + dateTime);
+				LocalDate date1 = dateTime.toLocalDate();
+				//System.out.println("Date : " + date1);
+
+				Month month = dateTime.getMonth();
+				int day = dateTime.getDayOfMonth();
+				int year = dateTime.getYear();
+
+				// //System.out.println("Month : " + month);
+				// //System.out.println("Day : " + day);
+				// //System.out.println("Seconds : " + seconds);
+
+				document.add(new Phrase(Chunk.NEWLINE));
+				// document.add(new Phrase(Chunk.NEWLINE));
+
+				String cert_text2 = "";
+				cert_text2 += "IN WITNESS WHEREOF I have hereunto signed my name and affixed the seal of the";
+				cert_text2 += " Lands Commission this " + specialNamesMonthDay_short[day] + " day of "
+						+ convertToTitleCaseIteratingChars(month.toString()) + ", " + year + ".";
+
+				Paragraph p_3 = new Paragraph(cert_text2, new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
+				p_3.setAlignment(Element.ALIGN_JUSTIFIED);
+				p_3.setLeading(20);
+				document.add(p_3);
+
+			} else {
+
+
+			}
+
+
+
+
+
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
+
+			if ( certificete_approval_status != null && certificete_approval_status != "null" && certificete_approval_status.equals("1") ) {
+
+				File file1 = new File(software_file_location + certificate_approved_by + ".jpg");
+				if (file1.exists() && !file1.isDirectory()) {
+					Image image_sig = Image
+							.getInstance(software_file_location + certificate_approved_by + ".jpg");
+					// imgPDF2.ScaleToFit(100.0F, 70.0F)
+					image_sig.scaleToFit(100.0F, 100.0F);
+					image_sig.setAlignment(Element.ALIGN_CENTER);
+
+					document.add(image_sig);
+
+				} else {
+
+					Paragraph y_tna = new Paragraph("Certificate Not Approved",
+							new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
+					y_tna.setAlignment(Element.ALIGN_CENTER);
+					//document.add(y_tna);
+				}
+
+			} else {
+
+				Paragraph y_tna = new Paragraph("Certificate Not Approved",
+						new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
+				y_tna.setAlignment(Element.ALIGN_CENTER);
+				//document.add(y_tna);
+			}
+
+
+
+			Paragraph p_4 = new Paragraph(".......................................",
+					new Font(FontFamily.TIMES_ROMAN, 12));
+			p_4.setAlignment(Element.ALIGN_CENTER);
+			document.add(p_4);
+
+			// document.add(new Phrase(Chunk.NEWLINE));
+
+			Paragraph p_5 = new Paragraph("FOR: CHIEF REGISTRAR OF LANDS ", new Font(FontFamily.TIMES_ROMAN, 12));
+			p_5.setAlignment(Element.ALIGN_CENTER);
+			document.add(p_5);
+
+			
+
+
+			document.newPage();
+
+			Paragraph p_6 = new Paragraph("MEMORIALS", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
+			p_6.setAlignment(Element.ALIGN_CENTER);
+			document.add(p_6);
+
+			// Inserting Table in PDF
+			PdfPTable myTable_memorials = new PdfPTable(6);
+			myTable_memorials.setWidthPercentage(100);
+			// Left aLign
+			myTable_memorials.setTotalWidth((float) 300.0);
+			;
+			myTable_memorials.setHorizontalAlignment(0);
+			myTable_memorials.setSpacingAfter(10);
+			myTable_memorials.setTotalWidth(new float[] { 25, 50, 50, 50, 160, 30 });
+
+			PdfPCell EmptyCell_memorials = new PdfPCell(new Paragraph("", font10pt));
+			EmptyCell_memorials.setBorderWidth(0);
+			// CellOneHdr_proprietors.setRowspan(2);
+
+			PdfPCell CellOneHdr_memorials = new PdfPCell(new Paragraph("Entry No", font10pt));
+			// CellOneHdr_proprietors.setRowspan(1);
+			myTable_memorials.addCell(CellOneHdr_memorials);
+
+			PdfPCell CellTwoHdr_memorials = new PdfPCell(new Paragraph("Date of Instrument", font10pt));
+			// CellTwoHdr_proprietors.setRowspan(1);
+			myTable_memorials.addCell(CellTwoHdr_memorials);
+
+			PdfPCell CellTreeHdr_memorials = new PdfPCell(new Paragraph("Date of Registration", font10pt));
+			// CellTreeHdr_proprietors.setRowspan(1);
+			myTable_memorials.addCell(CellTreeHdr_memorials);
+
+			PdfPCell CellNineHdr_memorials = new PdfPCell(new Paragraph("Registered No.", font10pt));
+			// cell_interest.setColspan(5);
+			myTable_memorials.addCell(CellNineHdr_memorials);
+
+			PdfPCell CellTenHdr_memorials = new PdfPCell(new Paragraph("Memorials", font10pt));
+			// CellNineHdr_proprietors.setRowspan(1);
+			// CellTenHdr_memorials.setColspan(2);
+			myTable_memorials.addCell(CellTenHdr_memorials);
+
+			PdfPCell CellFiveHdr_memorials = new PdfPCell(new Paragraph("Cancellation", font10pt));
+			// CellTenHdr_proprietors.setRowspan(1);
+			myTable_memorials.addCell(CellFiveHdr_memorials);
+
+			
+
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY");
+
+			// String dateString = format.format( new Date() );
+			// Date date = format.parse ( "2009-12-31" );
+
+			DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+			Integer NumberCount_memo = 1;
+			// String json_data_land_certificate = "";
+			if (json_lrd_memorials_section != "null" && json_lrd_memorials_section != null) {
+				JSONArray jArr_memorials = new JSONArray(json_lrd_memorials_section);
+				for (int i = 0; i < jArr_memorials.length(); i++) {
+					JSONObject obj_memorials = jArr_memorials.getJSONObject(i);
+					myTable_memorials.addCell(new PdfPCell(new Phrase((String) obj_memorials.getString("m_entry_number"), font10pt)));
+					// //System.out.println("Seconds : " + seconds);
+
+					LocalDateTime localDateTime1 = LocalDateTime.parse((String) obj_memorials.getString("m_date_of_instrument"));
+					String m_date_of_instrument = localDateTime1.format(formatter1);
+					myTable_memorials.addCell(new PdfPCell(new Phrase(m_date_of_instrument, font10pt)));
+
+					
+					LocalDateTime localDateTime2 = LocalDateTime.parse((String) obj_memorials.getString("m_date_of_registration"));
+					String m_date_of_registration = localDateTime2.format(formatter1);
+					myTable_memorials.addCell(new PdfPCell(new Phrase(m_date_of_registration, font10pt)));
+
+
+					myTable_memorials.addCell(
+							new PdfPCell(new Phrase((String) obj_memorials.getString("m_registered_no"), font10pt)));
+					myTable_memorials.addCell(
+							new PdfPCell(new Phrase((String) obj_memorials.getString("m_memorials"), font10pt)));
+
+					// myTable_memorials.addCell(new PdfPCell(new
+					// Phrase((String)obj_memorials.getString("m_back"),font10pt)));
+					// myTable_memorials.addCell(new PdfPCell(new
+					// Phrase((String)obj_memorials.getString("m_forward"),font10pt)));
+					// myTable_memorials.addCell(new PdfPCell(new
+					// Phrase((String)obj_memorials.getString("m_remarks"),font10pt)));
+					myTable_memorials.addCell(new PdfPCell(new Phrase("", font10pt)));
+					NumberCount_memo += 1;
+				}
+			}
+
+			/*
+			 * myTable_memorials.addCell(new PdfPCell(new
+			 * Phrase("1 ",font10pt))); myTable_memorials.addCell(new
+			 * PdfPCell(new Phrase("3/7/26/1",font10pt)));
+			 * myTable_memorials.addCell(new PdfPCell(new
+			 * Phrase("Michael Yow Manu ",font10pt)));
+			 * myTable_memorials.addCell(new PdfPCell(new
+			 * Phrase("28/10/1974 ",font10pt))); myTable_memorials.addCell(new
+			 * PdfPCell(new
+			 * Phrase("Assignment of Lease for 99 years from 01/11/1974"
+			 * ,font10pt))); myTable_memorials.addCell(new PdfPCell(new
+			 * Phrase("23/07/1997 ",font10pt))); myTable_memorials.addCell(new
+			 * PdfPCell(new
+			 * Phrase("Government of the Republic of Ghana (1) Michael Yaw Manu (2)"
+			 * ,font10pt))); myTable_memorials.addCell(new PdfPCell(new
+			 * Phrase("C39.00/Year",font10pt))); myTable_memorials.addCell(new
+			 * PdfPCell(new Phrase("",font10pt)));
+			 */
+
+			myTable_memorials.setSpacingBefore(5.0f); // Space Before table
+														// starts, like
+														// margin-top in CSS
+			myTable_memorials.setSpacingAfter(5.0f); // Space After table
+														// starts, like
+														// margin-Bottom in CSS
+
+			document.add(myTable_memorials);
+
+			document.close();
+			//file.close();
+		return out.toByteArray();
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+
+		finally {
+
+			// release resources, if any
+			// outputStream.close();
+			// response_ws.close();
+			// client.close();
+
+		}
+	return out.toByteArray();
+
+	}
+
+	public byte[] create_land_certificate_typed(String web_service_url, String web_service_api_key,
+			String software_file_location, String case_number,
+			String job_number, String output_file)
+			throws IOException, SQLException, JSONException, ParseException {
+		/*
+		 * Font bold = new Font(Font.FontFamily.HELVETICA, 8f, Font.BOLD); Font
+		 * normal = new Font(Font.FontFamily.HELVETICA, 8f, Font.NORMAL);
+		 */
+
+		/// cls_case_management.select_lrd_recodes_for_certificate_by_case_number(case_number);
+
+		JSONObject request_json = new JSONObject();
+
+		request_json.put("transaction_number", case_number);
+		request_json.put("job_number", job_number);
+
+		String case_records = cls_case_management
+				.select_lrd_recodes_for_certificate_by_case_number(web_service_url,
+						web_service_api_key,
+						request_json.toString());
+
+		JSONObject case_obj;
+		case_obj = new JSONObject(case_records);
+
+		String parcel_details = case_obj.get("parcel_details").toString();
+		String transaction_details = case_obj.get("transaction_details").toString();
+		String job_detail = case_obj.get("job_detail").toString();
+		String json_lrd_memorials_section = (String) case_obj.getString("lrd_memorials_section");
+
+		String certificete_approval_status = case_obj.get("certificete_approval_status").toString();
+		String certificate_approved_by = (String) case_obj.getString("certificate_approved_by");
+		String certificate_approved_date = case_obj.isNull("certificate_approved_date") ? "" : case_obj.optString("certificate_approved_date");
+
+		JSONObject parcel_details_obj;
+		parcel_details_obj = new JSONObject(parcel_details);
+		String glpin = (String) parcel_details_obj.get("glpin").toString();
+		String licensed_surveyor_number = (String) parcel_details_obj.get("licensed_no").toString();
+		String regional_number = (String) parcel_details_obj.get("regional_number").toString();
+		String locality = (String) parcel_details_obj.get("locality").toString();
+		String district = (String) parcel_details_obj.get("district").toString();
+		String region = (String) parcel_details_obj.get("region").toString();
+		String size_of_land = (String) parcel_details_obj.get("land_size").toString();
+		String extent = (String) parcel_details_obj.get("extent").toString();
+		String registry_mapref = (String) parcel_details_obj.get("registry_mapref").toString();
+		String plan_no = (String) parcel_details_obj.get("plan_no").toString();
+		String cc_no = (String) parcel_details_obj.get("cc_no").toString();
+		String ltr_plan_no = (String) parcel_details_obj.get("ltr_plan_no").toString();
+		String locality_class = (String) parcel_details_obj.get("locality_class").toString();
+		String registration_district_number = (String) parcel_details_obj.get("registration_district_number")
+				.toString();
+		String registration_section_number = (String) parcel_details_obj.get("registration_section_number").toString();
+		String registration_block_number = (String) parcel_details_obj.get("registration_block_number").toString();
+
+		JSONObject transaction_details_obj;
+		transaction_details_obj = new JSONObject(transaction_details);
+		String ar_name = (String) transaction_details_obj.get("ar_name").toString();
+		String new_case_number = (String) transaction_details_obj.get("case_number").toString();
+		String date_of_document = (String) transaction_details_obj.get("date_of_document").toString();
+		String nature_of_instrument = (String) transaction_details_obj.get("nature_of_instrument").toString();
+		String certificate_number = (String) transaction_details_obj.get("certificate_number").toString();
+
+		String type_of_interest = (String) transaction_details_obj.get("type_of_interest").toString();
+		String type_of_use = (String) transaction_details_obj.get("type_of_use").toString();
+		String volume_number = (String) transaction_details_obj.get("volume_number").toString();
+		String folio_number = (String) transaction_details_obj.get("folio_number").toString();
+		String term = (String) transaction_details_obj.get("term").toString();
+		String commencement_date = (String) transaction_details_obj.get("commencement_date").toString();
+
+		String renewal_term = (String) transaction_details_obj.get("renewal_term").toString();
+		String consideration_fee = (String) transaction_details_obj.get("consideration_fee").toString();
+		String stamp_duty_payable = (String) transaction_details_obj.get("stamp_duty_payable").toString();
+		String assessed_value = (String) transaction_details_obj.get("assessed_value").toString();
+		String parcel_description = (String) transaction_details_obj.get("parcel_description").toString();
+		String plot_number = (String) transaction_details_obj.get("plot_number").toString();
+		// String parcel_description = (String)
+		// transaction_details_obj.get("plot_number").toString();
+		String publicity_date = (String) transaction_details_obj.get("publicity_date").toString();
+
+		String family_of_grantor = (String) transaction_details_obj.get("family_of_grantor").toString();
+
+		String rent_review_period = (String) transaction_details_obj.get("rent_review_period").toString();
+		String annual_rent = (String) transaction_details_obj.get("annual_rent").toString();
+
+		String rent_period_covered = (String) transaction_details_obj.get("rent_period_covered").toString();
+		String rent_review_date = (String) transaction_details_obj.get("rent_review_date").toString();
+		String date_of_first_payment = (String) transaction_details_obj.get("date_of_first_payment").toString();
+		String outstanding_rent = (String) transaction_details_obj.get("outstanding_rent").toString();
+		String remark_or_comment = (String) transaction_details_obj.get("remark_or_comment").toString();
+		String date_of_registration = (String) transaction_details_obj.get("date_of_registration").toString();
+		String case_status = (String) transaction_details_obj.get("case_status").toString();
+		String grantors_name = (String) transaction_details_obj.getString("grantors_name");
+
+		String stool_family_name = (String) transaction_details_obj.get("stool_family_name").toString();
+		// String is_part_of_gelis_area",
+		// transaction_details_obj.get("is_part_of_gelis_area").toString();
+		String stamp_duty_description = (String) transaction_details_obj.get("stamp_duty_description").toString();
+		String certificate_type = (String) transaction_details_obj.get("certificate_type").toString();
+		String case_file_number = (String) transaction_details_obj.get("case_file_number").toString();
+		// String phone_number",
+		// job_detail_obj.get("phone_number").toString();
+		String case_process_stage = (String) transaction_details_obj.get("case_process_stage").toString();
+		String date_of_issue = (String) transaction_details_obj.get("date_of_issue").toString();
+		
+		JSONObject job_detail_obj;
+		job_detail_obj = new JSONObject(job_detail);
+		// String job_number = (String) job_number);
+		String application_stage = (String) job_detail_obj.get("application_stage").toString();
+
+		//System.out.println(job_detail_obj.get("application_stage").toString());
+		String business_process_id = (String) job_detail_obj.get("business_process_id").toString();
+		String business_process_name = (String) job_detail_obj.get("business_process_name").toString();
+		String business_process_sub_id = (String) job_detail_obj.get("business_process_sub_id").toString();
+		String business_process_sub_name = (String) job_detail_obj.get("business_process_sub_name").toString();
+
+		String embossed = (String) job_detail_obj.get("embossed").toString();
+		String remark_or_comment_bob = (String)  job_detail_obj.get("remark_or_comment").toString();
+
+		//String type_of_certicate_final = type_of_certificate == "Land Certificate" ? "LAND CERTIFICATE" : type_of_certificate;
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		// file.;
+		try {
+
+			Document document = new Document(PageSize.A4, 60, 60, 25, 25);
+			PdfWriter writer = PdfWriter.getInstance(document, out);
+			document.open();// PDF document opened........
+			PdfContentByte cb = writer.getDirectContent();
+
+			/*
+			 * Barcode128 code128 = new Barcode128();
+			 * code128.setCode("123456789");
+			 * code128.setCodeType(Barcode128.CODE128); Image code128Image =
+			 * code128.createImageWithBarcode(cb, null, null);
+			 * code128Image.scaleAbsolute(100,100);
+			 * code128Image.setAbsolutePosition(20,770);
+			 * code128Image.scalePercent(100); document.add(code128Image);
+			 */
+
+			BarcodeQRCode barcodeQRCode = new BarcodeQRCode(certificate_number, 1000, 1000, null);
+			Image codeQrImage = barcodeQRCode.getImage();
+			codeQrImage.scaleAbsolute(80, 80);
+			//codeQrImage.setAbsolutePosition(420, 690);
+			//codeQrImage.setAbsolutePosition(420, 690);
+			codeQrImage.setAbsolutePosition(50, 670);
+			document.add(codeQrImage);
+
+			Image image = Image.getInstance(software_file_location + "CoatofArm.jpg");
+			// imgPDF2.ScaleToFit(100.0F, 70.0F)
+			image.scaleToFit(100.0F, 100.0F);
+			image.setAbsolutePosition(240, 710);
+			document.add(image);
+
+			Image image1 = Image.getInstance(software_file_location + "NewLogo.jpg");
+			// imgPDF2.ScaleToFit(100.0F, 70.0F)
+			image1.scaleToFit(90.0F, 90.0F);
+			//image1.setAbsolutePosition(50, 670);
+			image1.setAbsolutePosition(450, 680);
+			document.add(image1);
+
+			Font font = new Font(FontFamily.TIMES_ROMAN);
+			Font font14pt = new Font(FontFamily.TIMES_ROMAN, 14);
+			Font font10pt = new Font(FontFamily.TIMES_ROMAN, 10);
+
+			document.add(new Phrase(Chunk.NEWLINE));
+
+			BaseFont bfaddress = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+			PdfContentByte cbaddress = writer.getDirectContent();
+			cbaddress.beginText();
+			cbaddress.setFontAndSize(bfaddress, 11);
+
+			cbaddress.setTextMatrix(60, 780);
+			cbaddress.showText("Cert. No: " + certificate_number);
+
+			cbaddress.setTextMatrix(60, 765);
+			cbaddress.showText("Volume: " + volume_number);
+
+			cbaddress.setTextMatrix(60, 750);
+			cbaddress.showText("Folio: " + folio_number);
+
+			// cbaddress.setTextMatrix(400, 780);
+			// cbaddress.showText("LANDS COMMISSION");
+
+			cbaddress.endText();
+
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+			document.add(new Phrase(Chunk.NEWLINE));
+
+			document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
+			// document.add(new Phrase(Chunk.NEWLINE));
+
+			// Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
+			// Font.BOLD);
+			Paragraph p_1 = new Paragraph("REPUBLIC OF GHANA", new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD));
+			p_1.setAlignment(Element.ALIGN_CENTER);
+			document.add(p_1);
+
+			certificate_type = (certificate_type == null) ? "" : certificate_type;
+
+			Paragraph y_1 = new Paragraph(certificate_type.toUpperCase(), new Font(FontFamily.TIMES_ROMAN, 16, Font.BOLD));
+			y_1.setAlignment(Element.ALIGN_CENTER);
+			document.add(y_1);
+
+			// document.add(new Phrase(Chunk.NEWLINE));
+
+			Font small_bold = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+			Font small = new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+
+			document.add(new Phrase(Chunk.NEWLINE));
+
+
+            // Create a StyleSheet and set line spacing
+           // StyleSheet styles = new StyleSheet();
+          //  styles.loadTagStyle("body", "leading", "40"); // Set line spacing (leading) to 20
+
+
+			// HTMLWorker htmlWorker = new HTMLWorker(document);
+			// htmlWorker.parse(new StringReader(remark_or_comment_bob));
+
+  			// Define your CSS for Times New Roman and justified text
+ 			 String css = "body { font-family: Times New Roman; text-align: justify; }";
+
+  			// Use XMLWorkerHelper to parse HTML and apply CSS
+  			//XMLWorkerHelper.getInstance().parseXHtml(writer, document, new StringReader(htmlContent), new StringReader(css));
+
+			Font timesNewRoman = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL);
+			Font timesNewRoman_bold = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.BOLD);
+
+			String htmlContent = "<html><body><p>THIS IS TO CERTIFY THAT Sam of Accra in the Greater Accra Region of the Republic of Ghana is registered as tenant or lessee for the unexpired residue of a lease for a term of 99 years from the  twenty seventh day of September, 2023 subject to the reservations, restrictions, encumbrances, liens and interests as are notified by memorial underwritten or endorsed hereon, of and in ALL THAT piece or Parcel of land in extent 0.230 more or less being GLPIN No. GA329393-1148882, SECTION 024 BLOCK 123, situate at AJANGORTEY in the Greater Accra Region of the Republic of Ghana aforesaid which said piece or parcel of land is more particularly delineated on Registry Map No. 79ui in the Lands Commission, Cantonment Accra, and being the piece or parcel of land shown and edged with pink color on Survey Plan No. 7899 annexed to this Certificate except and reserved all minerals, oils, precious stones and timber whatsoever upon or under the said piece or parcel of land..</p></body></html>";
+
+// Replace a value in the string
+remark_or_comment_bob= remark_or_comment_bob.replace("<ol><li>", "<html><body><p>");
+remark_or_comment_bob= remark_or_comment_bob.replace("</li></ol>", "</p></body></html>");
+
+
+  // Create a StyleSheet
+  StyleSheet styles = new StyleSheet();
+  styles.loadTagStyle("body", "font-family", "Times-Roman");
+  styles.loadTagStyle("body", "font-size", "12pt");
+  styles.loadTagStyle("p", "alignment", "justify");
+  styles.loadTagStyle("b", "font-weight", "bold");
+
+ // Parse the HTML content using HTMLWorker
+HTMLWorker htmlWorker = new HTMLWorker(document);
+htmlWorker.setStyleSheet(styles);
+
+// Parse and add content to the document
+java.util.List<Element> elements = htmlWorker.parseToList(new StringReader(remark_or_comment_bob), styles);
+
+for (Element element : elements) {
+    if (element instanceof Paragraph) {
+        Paragraph paragraph = (Paragraph) element;
+        paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+        paragraph.setLeading(25f);
+        paragraph.setSpacingAfter(10f);
+        document.add(styleArNameInParagraph(paragraph, ar_name, timesNewRoman));
+    } else if (element instanceof Phrase) {
+        Phrase originalPhrase = (Phrase) element;
+        Paragraph newParagraph = new Paragraph();
+        newParagraph.setAlignment(Element.ALIGN_JUSTIFIED);
+        newParagraph.setLeading(25f);
+        newParagraph.setSpacingAfter(10f);
+        appendArNameStyledText(newParagraph, originalPhrase.getContent(), timesNewRoman, ar_name);
+       newParagraph.add(new Chunk(new LineSeparator(1f, 100f, BaseColor.RED, Element.ALIGN_LEFT, -2f)));
+        document.add(newParagraph);
+    } else if (element instanceof Chunk) {
+        Chunk originalChunk = (Chunk) element;
+        Phrase phrase = new Phrase();
+        //appendArNameStyledText(phrase, originalChunk.getContent(), timesNewRoman, ar_name);
+        document.add(phrase);
+    } else {
+        document.add(element);
+    }
+}
 
 
       

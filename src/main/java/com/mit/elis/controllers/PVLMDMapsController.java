@@ -192,7 +192,9 @@ public class PVLMDMapsController {
 			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
 
 		}
+		String regions_polygon = (String) session.getAttribute("regions_polygon");
 		request.setAttribute("page_name", "case_processing");
+		request.setAttribute("regions_polygon", regions_polygon);
 				model.addAttribute("content", "../pages/pvlmd_maps_templates/pvlmd_noted_proposal_map.jsp"); return "layouts/app";
 
 	}
