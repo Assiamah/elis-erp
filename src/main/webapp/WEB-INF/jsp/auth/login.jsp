@@ -439,7 +439,7 @@
         <div class="col-lg-6 p-0 d-none d-lg-flex flex-column position-relative">
             <!-- Background Image with Overlay -->
             <div class="position-absolute top-0 start-0 w-100 h-100">
-                <img src="${pageContext.request.contextPath}/assets/images/login/login-bg.jpg" 
+                <img src="${pageContext.request.contextPath}/assets/images/login/login-bg.jpeg" 
                      alt="Enterprise Land Information System Dashboard" 
                      class="w-100 h-100 object-fit-cover">
                 <!-- Dark Overlay on Top of Image -->
