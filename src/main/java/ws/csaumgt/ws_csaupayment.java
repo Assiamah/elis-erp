@@ -1,5 +1,7 @@
 package ws.csaumgt;
 
+import java.io.InputStream;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -31,6 +33,22 @@ public class ws_csaupayment {
 
 	}
 
+	public InputStream generate_egcr_get_pdf(String web_service_url, String web_service_api_key, String json_data) {
+		InputStream bytes = null;
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(web_service_url + "lc_official_receipt_service/generate_egcr_pdf_only");
+			ClientResponse response = webResource.accept("application/json").type("application/json")
+					.header("x-api-Key", web_service_api_key).post(ClientResponse.class,json_data);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			bytes = response.getEntityInputStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bytes;
+	}
 
 	public String get_verify_receipt_and_update(String web_service_url, String web_service_api_key, String json_data)
 

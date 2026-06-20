@@ -1752,9 +1752,12 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 
-			//System.out.println("Requested egcr: " + json_request);
+			System.out.println("Requested egcr: " + json_request);
+			System.out.println("webResource egcr: " + webResource);
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.header("X-Api-Key", egcr_apikey).get(ClientResponse.class);
+
+			System.out.println("Response egcr: " + response);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());

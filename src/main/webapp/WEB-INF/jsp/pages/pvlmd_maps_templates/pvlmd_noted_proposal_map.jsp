@@ -97,10 +97,10 @@
                             <div class="card-body p-3">
                                 <div class="row g-2 mb-2">
                                     <div class="col-5">
-                                        <input type="text" class="form-control form-control-sm" id="pvlmd_x_coordinate_mak" placeholder="X Coordinate">
+                                        <input type="text" class="form-control form-control-sm" id="pvlmd_x_coordinate_mak" placeholder="Y Coordinate">
                                     </div>
                                     <div class="col-5">
-                                        <input type="text" class="form-control form-control-sm" id="pvlmd_y_coordinate_mak" placeholder="Y Coordinate">
+                                        <input type="text" class="form-control form-control-sm" id="pvlmd_y_coordinate_mak" placeholder="X Coordinate">
                                     </div>
                                     <div class="col-2">
                                         <button type="button" class="btn btn-primary btn-sm w-100" id="pvlmd_btn_show_location" data-bs-tooltip="tooltip" title="Show Location">

@@ -86,12 +86,20 @@ public class payment_serv_egcr {
 				/*
 				 * JSONObject obj_d = new JSONObject(); obj_d.put("ref_number",
 				 * ref_number); obj_d.put("receipt_number", ref_number);
+				 * 
 				 */
+
+				JSONObject obj = new JSONObject();
+				obj.put("ref_number", ref_number);
+				String input_details = obj.toString();
 
 				if (receipt_number.length() > 4) {
 				
-					InputStream pdf_blob = billgeneration_cl.generate_egcr_get_pdf(cls_url_config.getEgcr_url(),
-							cls_url_config.getEgcr_apikey(), receipt_number);
+					// InputStream pdf_blob = billgeneration_cl.generate_egcr_get_pdf(cls_url_config.getEgcr_url(),
+					// 		cls_url_config.getEgcr_apikey(), receipt_number);
+
+					InputStream pdf_blob = csaupayment_cl.generate_egcr_get_pdf(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
 
 				
 

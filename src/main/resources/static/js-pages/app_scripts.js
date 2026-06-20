@@ -4700,6 +4700,84 @@ if (!$('#toastContainer').length) {
     `);
 }
 
+$("#publicFileUploadModal").on("hidden.bs.modal", function (e) {
+    const $modal = $(this);
+    const selectEl = $modal.find('#file_type_pu')[0];
+
+    if (selectEl) {
+        const wrapper = selectEl.closest('.choices');
+
+        if (wrapper && wrapper.parentNode) {
+            wrapper.parentNode.insertBefore(selectEl, wrapper);
+            wrapper.remove();
+        }
+
+        selectEl.selectedIndex = 0;
+        selectEl.value = '';
+        selectEl.removeAttribute('data-choice');
+        selectEl.removeAttribute('aria-activedescendant');
+        selectEl.removeAttribute('tabindex');
+        selectEl.classList.remove('choices__input');
+
+        if (window.Choices) {
+            new window.Choices(selectEl);
+        }
+
+        $(selectEl).trigger('change');
+    }
+
+    $modal.find('#public_file_upload_case_number').val('');
+    $modal.find('#uploadProgress').addClass('d-none');
+    $modal.find('#uploadProgressBar').css('width', '0%');
+    $modal.find('#uploadStatus').text('Uploading document...');
+    $modal.find('#btn_upload_public_case_file').prop('disabled', true);
+    $modal.find('#uploadSpinner').addClass('d-none');
+
+    const $container = $modal.find('#fileContainer');
+    $container.empty().append(`
+        <div class="file-upload-card mb-3">
+            <div class="card border">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar avatar-md bg-light rounded-circle me-3">
+                            <i class="bi bi-file-earmark-arrow-up text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-semibold">Select Document</h6>
+                            <p class="text-muted small mb-2">Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 10MB)</p>
+                            <div class="input-group">
+                                <input type="file"
+                                       class="form-control file-input"
+                                       name="samplePublicFile"
+                                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                       data-max-size="10">
+                                <button class="btn btn-outline-secondary preview-btn" type="button" disabled>
+                                    <i class="bi bi-eye"></i> Preview
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger remove-file-btn ms-2 mt-5 d-none">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+
+                    <div class="file-info mt-2 d-none">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <span class="file-name"></span>
+                                (<span class="file-size"></span>)
+                            </small>
+                            <span class="badge bg-success file-status">
+                                <i class="bi bi-check-circle me-1"></i>Ready
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+});
+
 $(document).ready(function () {
     // Configuration for both modals
     const modalConfig = {
@@ -5078,7 +5156,28 @@ $(document).ready(function () {
         const state = modalState[modalType];
 
         // Reset document type
-        $(config.documentTypeId).val('');
+        const documentTypeEl = $(config.documentTypeId)[0];
+        if (documentTypeEl) {
+            const wrapper = documentTypeEl.closest('.choices');
+
+            if (wrapper && wrapper.parentNode) {
+                wrapper.parentNode.insertBefore(documentTypeEl, wrapper);
+                wrapper.remove();
+            }
+
+            documentTypeEl.selectedIndex = 0;
+            documentTypeEl.value = '';
+            documentTypeEl.removeAttribute('data-choice');
+            documentTypeEl.removeAttribute('aria-activedescendant');
+            documentTypeEl.removeAttribute('tabindex');
+            documentTypeEl.classList.remove('choices__input');
+
+            if (window.Choices) {
+                new window.Choices(documentTypeEl);
+            }
+
+            $(documentTypeEl).trigger('change');
+        }
 
         // Remove ALL file cards except the first one
         const container = $(config.containerId);

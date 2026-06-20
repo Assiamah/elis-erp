@@ -86,10 +86,10 @@
                             <div class="card-body p-3">
                                 <div class="row g-2 mb-2">
                                     <div class="col-5">
-                                        <input type="text" class="form-control form-control-sm" id="lrd_x_coordinate" placeholder="X Coordinate">
+                                        <input type="text" class="form-control form-control-sm" id="lrd_x_coordinate" placeholder="Y Coordinate">
                                     </div>
                                     <div class="col-5">
-                                        <input type="text" class="form-control form-control-sm" id="lrd_y_coordinate" placeholder="Y Coordinate">
+                                        <input type="text" class="form-control form-control-sm" id="lrd_y_coordinate" placeholder="X Coordinate">
                                     </div>
                                     <div class="col-2">
                                         <button class="btn btn-primary btn-sm w-100" id="lrd_btn_show_location" title="Show Location">
