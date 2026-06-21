@@ -49,6 +49,7 @@ public class Case_Management_Serv {
 	private Ws_url_config cls_url_config;
 
 	Ws_client_application casemgt_cl = new Ws_client_application();
+	
 
 	CSAU_billgeneration billgeneration_cl = new CSAU_billgeneration();
 	cls_casemgt casemgt_cl_m = new cls_casemgt();
@@ -4397,6 +4398,29 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String input = obj.toString();
 				// //System.out.println(polygon);
 				web_service_response = casemgt_cl.select_check_for_first_in_time_verification(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						input);
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+
+			if (request_type.equals("get_frrv_jobs_status_json")) {
+				
+				JSONObject obj = new JSONObject();
+
+				obj.put("wkt_polygon", "polygon");
+				
+				
+
+				String input = obj.toString();
+				// //System.out.println(polygon);
+				web_service_response = casemgt_cl.get_frrv_jobs_status_json(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input);
 				if (web_service_response != null) {

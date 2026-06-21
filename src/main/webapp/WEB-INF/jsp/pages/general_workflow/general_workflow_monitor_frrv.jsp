@@ -4,6 +4,7 @@
 <%@ page import="org.codehaus.jettison.json.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.naming.*" %>
+<%@ page import="java.util.*" %>
 
 <style>
     .frrv-shell {
@@ -263,14 +264,12 @@
                     </div>
                     <div class="d-flex flex-wrap gap-2">
                         <span class="frrv-hero-chip"><i class="fas fa-list-check"></i><span id="totalJobs">${total_jobs}</span> jobs</span>
-                        <span class="frrv-hero-chip"><i class="fas fa-circle-check"></i><span id="fullyCompleted">0</span> completed</span>
-                        <span class="frrv-hero-chip"><i class="fas fa-hourglass-half"></i><span id="partiallyCompleted">0</span> partial</span>
+                        <span class="frrv-hero-chip"><i class="fas fa-circle-check"></i><span id="fullyCompleted">${fully_completed}</span> completed</span>
+                        <span class="frrv-hero-chip"><i class="fas fa-hourglass-half"></i><span id="partiallyCompleted">${partially_completed}</span> partial</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <input type="hidden" id="totalJobsValue" value="${total_jobs}">
 
         <div class="row g-4 mb-4" id="statsContainer">
             <div class="col-lg-3 col-md-6">
@@ -299,7 +298,7 @@
                             </span>
                             <div>
                                 <span class="d-block text-muted">Fully Completed</span>
-                                <h5 class="fw-semibold mb-1 text-success" id="fullyCompleted">0</h5>
+                                <h5 class="fw-semibold mb-1 text-success" id="fullyCompletedDisplay">${fully_completed}</h5>
                                 <span class="badge text-bg-success">3 of 3 divisions</span>
                             </div>
                         </div>
@@ -316,7 +315,7 @@
                             </span>
                             <div>
                                 <span class="d-block text-muted">Partially Completed</span>
-                                <h5 class="fw-semibold mb-1" style="color:#065f46;" id="partiallyCompleted">0</h5>
+                                <h5 class="fw-semibold mb-1" style="color:#065f46;" id="partiallyCompletedDisplay">${partially_completed}</h5>
                                 <span class="badge text-bg-warning text-dark">1-2 of 3 divisions</span>
                             </div>
                         </div>
@@ -333,7 +332,7 @@
                             </span>
                             <div>
                                 <span class="d-block text-muted">Not Started</span>
-                                <h5 class="fw-semibold mb-1 text-danger" id="notStarted">0</h5>
+                                <h5 class="fw-semibold mb-1 text-danger" id="notStartedDisplay">${not_started}</h5>
                                 <span class="badge text-bg-danger">0 of 3 divisions</span>
                             </div>
                         </div>
@@ -351,92 +350,41 @@
                     </div>
                     <div class="card-body p-3">
                         <div class="row g-3" id="divisionSummaryContainer">
-                            <div class="col-md-4" id="smdCard">
-                                <div class="card frrv-metric h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <span class="d-block text-muted small">Division</span>
-                                                <h6 class="fw-bold mb-0">SMD</h6>
+                            <c:forEach var="division" items="${division_summary_details_list}">
+                                <div class="col-md-4">
+                                    <div class="card frrv-metric h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <span class="d-block text-muted small">Division</span>
+                                                    <h6 class="fw-bold mb-0">${division.division}</h6>
+                                                </div>
+                                                <span class="badge text-bg-light border">${division.division}</span>
                                             </div>
-                                            <span class="badge text-bg-light border">SMD</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="small text-muted">Completed</span>
-                                            <span class="small fw-bold" id="smdCompleted">0</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span class="small text-muted">Pending</span>
-                                            <span class="small fw-bold" id="smdPending">0</span>
-                                        </div>
-                                        <div class="progress frrv-progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="smdProgress"></div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mt-2">
-                                            <span class="small text-muted">Total: <span id="smdTotal">0</span></span>
-                                            <span class="small fw-bold text-success" id="smdPercentage">0%</span>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="small text-muted">Completed</span>
+                                                <span class="small fw-bold">${division.completed_jobs}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="small text-muted">Pending</span>
+                                                <span class="small fw-bold">${division.pending_jobs}</span>
+                                            </div>
+                                            <div class="progress frrv-progress">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                    
+                                                     aria-valuenow="${division.completion_percentage}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-2">
+                                                <span class="small text-muted">Total: ${division.total_jobs}</span>
+                                                <span class="small fw-bold text-success">${division.completion_percentage}%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="col-md-4" id="pvlmdCard">
-                                <div class="card frrv-metric h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <span class="d-block text-muted small">Division</span>
-                                                <h6 class="fw-bold mb-0">PVLMD</h6>
-                                            </div>
-                                            <span class="badge text-bg-light border">PVLMD</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="small text-muted">Completed</span>
-                                            <span class="small fw-bold" id="pvlmdCompleted">0</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span class="small text-muted">Pending</span>
-                                            <span class="small fw-bold" id="pvlmdPending">0</span>
-                                        </div>
-                                        <div class="progress frrv-progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="pvlmdProgress"></div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mt-2">
-                                            <span class="small text-muted">Total: <span id="pvlmdTotal">0</span></span>
-                                            <span class="small fw-bold text-success" id="pvlmdPercentage">0%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4" id="lrdCard">
-                                <div class="card frrv-metric h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <div>
-                                                <span class="d-block text-muted small">Division</span>
-                                                <h6 class="fw-bold mb-0">LRD</h6>
-                                            </div>
-                                            <span class="badge text-bg-light border">LRD</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="small text-muted">Completed</span>
-                                            <span class="small fw-bold" id="lrdCompleted">0</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span class="small text-muted">Pending</span>
-                                            <span class="small fw-bold" id="lrdPending">0</span>
-                                        </div>
-                                        <div class="progress frrv-progress">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="lrdProgress"></div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mt-2">
-                                            <span class="small text-muted">Total: <span id="lrdTotal">0</span></span>
-                                            <span class="small fw-bold text-success" id="lrdPercentage">0%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
@@ -470,11 +418,15 @@
                         </div>
 
                         <div class="mt-3 d-grid gap-2">
-                            <button class="btn btn-success showOfficerList" type="button" onclick="loadData()">
+                            <button class="btn btn-success" type="button" onclick="loadData()">
                                 <i class="fas fa-arrows-rotate me-1"></i> Reload FRRV Data
                             </button>
                             <button class="btn btn-outline-secondary" type="button" onclick="filterData('all')">
                                 <i class="fas fa-layer-group me-1"></i> Show All Jobs
+                            </button>
+
+                         <button class="btn btn-outline-secondary" type="button" id="btn_load_details_applications">
+                                <i class="fas fa-layer-group me-1"></i> Show Details
                             </button>
                         </div>
                     </div>
@@ -488,7 +440,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <div class="card-title mb-0">FRRV Job Status</div>
                         <div class="d-flex align-items-center gap-2">
-                            <span class="badge text-bg-light border" id="recordCount">
+                            <span class="badge text-bg-light border" id="recordCountTable">
                                 <i class="fas fa-file me-1"></i>Total: 0
                             </span>
                             <button class="btn btn-sm btn-outline-light" type="button" onclick="loadData()">
@@ -512,6 +464,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="frrvTableBody">
+                                    <!-- Data will be populated via AJAX -->
                                 </tbody>
                             </table>
                         </div>
@@ -521,3 +474,344 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable for surveyor_dataTable
+        if ($.fn.DataTable.isDataTable('#surveyor_dataTable')) {
+            $('#surveyor_dataTable').DataTable().destroy();
+        }
+        $('#surveyor_dataTable').DataTable({
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [11] }
+            ]
+        });
+
+        // Initialize DataTable for frrvTable
+        initializeFRRVDataTable();
+
+        // Search button click handler
+        $('#btn_load_details_applications').on('click', function() {
+            const btn = $(this);
+            const request_type = 'get_frrv_jobs_status_json';
+            
+            btn.prop('disabled', true);
+            btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            
+            $.ajax({
+                type: "POST",
+                url: "Case_Management_Serv",
+                data: {
+                    request_type: request_type,
+                    division: localStorage.getItem('division') || ''
+                },
+                cache: false,
+                success: function(response) {
+                      console.log("Response:", response);
+
+  
+      //  const jsonData = JSON.parse(response);
+
+      
+                    
+                    
+                    try {
+                        const jsonData = JSON.parse(response);
+                          console.log("Parsed Data:", jsonData);
+                        
+                        if (!Array.isArray(jsonData)) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Invalid data format received',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                        
+                        // Clear existing table data
+                        const table = $('#frrvTable').DataTable();
+                        table.clear().draw();
+                        
+                        if (jsonData.length === 0) {
+                            $('#frrvTableBody').html(`
+                                <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">
+                                        <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                        No FRRV jobs found
+                                    </td>
+                                </tr>
+                            `);
+                            // Reinitialize DataTable
+                            initializeFRRVDataTable();
+                            return;
+                        }
+                        
+                        // Process each job and add to table
+                  //   const table1 = $('#frrvTable').DataTable();
+
+table.clear();
+
+jsonData.forEach(function(item) {
+
+    const statusColor =
+
+        item.completion_status === 'Fully Completed' ? 'success' :
+
+        item.completion_status === 'Partially Completed' ? 'warning' :
+
+        'danger';
+
+    table.row.add([
+
+        item.job_number,
+
+        item.smd_completed
+
+            ? '<span class="badge bg-success">Completed</span>'
+
+            : '<span class="badge bg-warning text-dark">Pending</span>',
+
+        item.pvlmd_completed
+
+            ? '<span class="badge bg-success">Completed</span>'
+
+            : '<span class="badge bg-warning text-dark">Pending</span>',
+
+        item.lrd_completed
+
+            ? '<span class="badge bg-success">Completed</span>'
+
+            : '<span class="badge bg-warning text-dark">Pending</span>',
+
+        `
+
+        <div class="progress">
+
+            <div class="progress-bar bg-${statusColor}"
+
+                 style="width:${item.completion_percentage}%">
+
+                 ${item.completion_percentage}%
+
+            </div>
+
+        </div>
+
+        `,
+
+        `<span class="badge bg-${statusColor}">
+
+            ${item.completion_status}
+
+        </span>`,
+
+        item.last_updated,
+
+        `
+
+        <button class="btn btn-sm btn-primary view-details"
+
+                data-job="${item.job_number}">
+
+            View
+
+        </button>
+
+        `
+
+    ]);
+
+});
+
+table.draw();
+                        
+                        // Update record count
+                        const recordCount = jsonData.length;
+                        $('#recordCount').html(`<i class="fas fa-file-alt me-1"></i>Total: ${recordCount}`);
+                        $('#recordCountTable').html(`<i class="fas fa-file me-1"></i>Total: ${recordCount}`);
+                        
+                        // Redraw DataTable to ensure proper rendering
+                        table.draw();
+                        
+                        Swal.fire({
+                            title: 'Success',
+                            text: `Loaded ${recordCount} FRRV job(s) successfully`,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                    } catch (e) {
+                        console.error("Error parsing response:", e);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while processing the data',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    Swal.fire({
+                        title: 'Request Failed',
+                        text: 'An error occurred while loading FRRV data. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                complete: function() {
+                    btn.prop('disabled', false);
+                    btn.html('<i class="fas fa-sync-alt me-1"></i> Load FRRV Data');
+                }
+            });
+        });
+
+        // View details button click (event delegation)
+        $(document).on('click', '.view-details', function() {
+            const jobNumber = $(this).data('job');
+            viewJobDetails(jobNumber);
+        });
+        
+        // View progress button click (event delegation)
+        $(document).on('click', '.view-progress', function() {
+            const jobNumber = $(this).data('job');
+            window.location.href = 'frrv_progress.jsp?job=' + jobNumber;
+        });
+    });
+
+    // Helper function to initialize FRRV DataTable
+    function initializeFRRVDataTable() {
+        if ($.fn.DataTable.isDataTable('#frrvTable')) {
+            $('#frrvTable').DataTable().destroy();
+        }
+        
+        return $('#frrvTable').DataTable({
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            responsive: true,
+            ordering: true,
+            order: [[5, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: [1, 2, 3, 4, 7] }
+            ],
+            language: {
+                search: "<i class='fas fa-search me-1'></i>Search:",
+                searchPlaceholder: "Search jobs...",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ jobs",
+                infoEmpty: "No jobs available",
+                infoFiltered: "(filtered from _MAX_ total jobs)",
+                zeroRecords: "No matching jobs found"
+            },
+            // Ensure the table is properly initialized with empty data
+            data: [],
+            columns: [
+                { title: "Job Number" },
+                { title: "SMD" },
+                { title: "PVLMD" },
+                { title: "LRD" },
+                { title: "Progress" },
+                { title: "Status" },
+                { title: "Last Updated" },
+                { title: "Action" }
+            ]
+        });
+    }
+
+    // Function to view job details
+    function viewJobDetails(jobNumber) {
+        $.ajax({
+            type: "POST",
+            url: "Case_Management_Serv",
+            data: {
+                request_type: 'get_frrv_job_details',
+                job_number: jobNumber
+            },
+            dataType: 'json',
+            success: function(response) {
+                showJobDetailsModal(response);
+            },
+            error: function() {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Could not load job details',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+
+    // Function to show job details modal
+    function showJobDetailsModal(job) {
+        const modalHTML = `
+            <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: linear-gradient(135deg, #047857 0%, #065f46 100%); color: #fff;">
+                            <h5 class="modal-title text-white">
+                                <i class="fas fa-info-circle me-2"></i>FRRV Details - ${job.job_number}
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">SMD</h6>
+                                            <span class="badge text-bg-${job.smd_completed ? 'success' : 'warning'} fs-6">
+                                                ${job.smd_status || 'Not Started'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">PVLMD</h6>
+                                            <span class="badge text-bg-${job.pvlmd_completed ? 'success' : 'warning'} fs-6">
+                                                ${job.pvlmd_status || 'Not Started'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">LRD</h6>
+                                            <span class="badge text-bg-${job.lrd_completed ? 'success' : 'warning'} fs-6">
+                                                ${job.lrd_status || 'Not Started'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-center">
+                                <small class="text-muted">Last Updated: ${job.last_updated || 'N/A'}</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        $('#jobDetailsModal').remove();
+        $('body').append(modalHTML);
+        const modal = new bootstrap.Modal(document.getElementById('jobDetailsModal'));
+        modal.show();
+    }
+</script>

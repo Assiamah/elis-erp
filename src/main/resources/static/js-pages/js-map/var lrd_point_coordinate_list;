@@ -1,9 +1,4 @@
-$(document)
-		.ready(
-				function() {
-console.log('PVLMD Maps working');
-
-					var lrd_point_coordinate_list;
+var lrd_point_coordinate_list;
 
 					var lrd_click_type = 'MapClick';
 					
@@ -45,7 +40,6 @@ console.log('PVLMD Maps working');
 
 					var pvlmd_lrd_parcels_dataLayer = new ol.layer.Tile({
 						title : 'LRD Parcels Layer',
-						visible : false,
 						source : pvlmd_parcel_lrd_dataSource
 
 					})
@@ -66,7 +60,6 @@ console.log('PVLMD Maps working');
 
 					var pvlmd_parcels_smd_dataLayer = new ol.layer.Tile({
 						title : 'SMD Parcels Layer',
-						visible : false,
 						source : pvlmd_parcels_smd_dataSource
 
 					})
@@ -87,7 +80,6 @@ console.log('PVLMD Maps working');
 
 					var pvlmd_cadastral_smd_dataLayer = new ol.layer.Tile({
 						title : 'SMD Cadastral Layer',
-						visible : false,
 						source : pvlmd_cadastral_smd_dataSource
 
 					})
@@ -195,31 +187,6 @@ console.log('PVLMD Maps working');
 								title : 'Registration District',
 								visible : false,
 								source : pvlmd_registration_district_dataSource
-
-							})
-
-
-
-
-							var pvlmd_volta_region_old_data_dataSource = new ol.source.TileWMS(
-							{
-								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-								params : {
-									'LAYERS' : 'csau_geospatial:volta_pvlmd_old_parcel_records',
-									'TILED' : true
-								},
-								// params: {'LAYERS':
-								// 'rating:spatial_unit_assembly', 'cql_filter':
-								// "assembly_code='AMA'" , 'TILED': true },,
-								serverType : 'geoserver',
-								transition : 0
-							})
-
-					var pvlmd_volta_region_old_data_dataLayer = new ol.layer.Tile(
-							{
-								title : 'Volta Old Data',
-								visible : false,
-								source : pvlmd_volta_region_old_data_dataSource
 
 							})
 
@@ -555,8 +522,6 @@ console.log('PVLMD Maps working');
 					pvlmd_map.addLayer(pvlmd_cadastral_smd_dataLayer);
 					pvlmd_map.addLayer(pvlmd_pvlmd_current_dataLayer);
 					pvlmd_map.addLayer(pvlmd_cro_parcels_dataLayer);
-					pvlmd_map.addLayer(pvlmd_volta_region_old_data_dataLayer);
-					
 					pvlmd_map.addLayer(pvlmd_garro_parcels_dataLayer);
 					pvlmd_map.addLayer(pvlmd_garro_search_result_searchLayer);
 					pvlmd_map.addLayer(pvlmd_cro_search_result_searchLayer);
@@ -578,7 +543,7 @@ console.log('PVLMD Maps working');
 
     if (lrd_click_type === 'MapClick') {
         var coordinate = evt.coordinate;
-       // console.log(coordinate);
+        console.log(coordinate);
         
         var url = pvlmd_pvlmd_current_dataSource.getGetFeatureInfoUrl(
             evt.coordinate,
@@ -592,10 +557,10 @@ console.log('PVLMD Maps working');
         );
 
         var thislayer = pvlmd_pvlmd_current_dataLayer.getSource().getParams().LAYERS;
-       // console.log(thislayer);
+        console.log(thislayer);
 
         if (url) {
-           // console.log(url);
+            console.log(url);
             var parser = new ol.format.GeoJSON();
 
             $.ajax({
@@ -603,17 +568,17 @@ console.log('PVLMD Maps working');
                 url: url,
                 cache: false,
                 success: function(serviceresponse) {
-                    // console.log('service response');
-                    // console.log(serviceresponse);
-                    // console.log('FEATURES');
+                    console.log('service response');
+                    console.log(serviceresponse);
+                    console.log('FEATURES');
 
                     var feature = serviceresponse.features;
-                   // console.log(serviceresponse.features);
+                    console.log(serviceresponse.features);
 
                   
    
-                    // console.log('feature count');
-                    // console.log(feature.length);
+                    console.log('feature count');
+                    console.log(feature.length);
 
                     var table = $('#pvlmd_more_than_one_parcel_Table');
                     table.find("tbody tr").remove();
@@ -622,30 +587,29 @@ console.log('PVLMD Maps working');
                         feature.forEach(function(feat) {
                             var props = feat.properties;
                             var parcel_uuid = (feat.id || '').split('.')[1] || '';
-                           // console.log(parcel_uuid);
+                            console.log(parcel_uuid);
 
-                          table.append(
-								"<tr><td>" + props.reference_number + 
-								"</td><td>" + props.nt_number + 
-								"</td><td>" + props.locality +
-								"</td>" +
-								'<td><p data-placement="top" data-toggle="tooltip" title="Details of Client">' +
-								'<button class="btn btn-success btn-circle btn-sm" data-bs-title="Delete" data-bs-toggle="modal" data-bs-target="#pvlmdparcelinformation" ' +
-								'data-parcel_uuid="' + parcel_uuid + '" ' +
-								'data-nt_number="' + props.nt_number + '" ' +
-								'data-cro_reference="' + props.cro_reference + '" ' +
-								'data-property_number="' + props.property_number + '" ' +
-								'data-reference_number="' + props.reference_number + '" ' +
-								'data-file_number="' + props.file_number + '" ' +
-								'data-locality="' + props.locality + '" ' +
-								'data-plot_number="' + props.plot_number + '" ' +
-								'data-sheet_number="' + props.sheet_number + '" ' +
-								'data-modified_by="' + props.modified_by + '" ' +
-								'data-modified_date="' + props.modified_date + '" ' +
-								'data-remarks="' + props.remarks + '" id="deletede">' +
-								'<span class="fas fa-check"></span></button></p> </td>' +
-								"</tr>"
-							);
+                            table.append(
+                                "<tr><td>" + props.reference_number + 
+                                "</td><td>" + props.nt_number + 
+                                "</td><td>" + props.locality +
+                                "</td>" +
+                                '<td><p data-placement="top" data-toggle="tooltip" title="Details of Client">' +
+                                '<button class="btn btn-success btn-circle btn-sm" data-title="Delete" data-toggle="modal" data-target="#pvlmdparcelinformation" ' +
+                                'data-parcel_uuid="' + parcel_uuid + '" ' +
+                                'data-nt_number="' + props.nt_number + '" ' +
+                                'data-cro_reference="' + props.cro_reference + '" ' +
+                                'data-property_number="' + props.property_number + '" ' +
+                                'data-reference_number="' + props.reference_number + '" ' +
+                                'data-file_number="' + props.file_number + '" ' +
+                                'data-locality="' + props.locality + '" ' +
+                                'data-plot_number="' + props.plot_number + '" ' +
+                                'data-modified_by="' + props.modified_by + '" ' +
+                                'data-modified_date="' + props.modified_date + '" ' +
+                                'data-remarks="' + props.remarks + '" id="deletede">' +
+                                '<span class="fas fa-check"></span></button></p> </td>' +
+                                "</tr>"
+                            );
                         });
                     } else if (feature.length === 1) {
                          var myModal = new bootstrap.Modal(document.getElementById('pvlmdparcelinformation'));
@@ -654,7 +618,7 @@ console.log('PVLMD Maps working');
                     var feature = serviceresponse.features;
     
 					if (!feature || feature.length === 0) {
-						//console.warn('No features found');
+						console.warn('No features found');
 						return;
 					}
 
@@ -685,7 +649,7 @@ console.log('PVLMD Maps working');
 					    // Load transactions
    
 	
-						loadTransactions(props.reference_number, (firstFeature.id || '').split('.')[1] || '');
+						//loadTransactions(props.reference_number, (firstFeature.id || '').split('.')[1] || '');
                     }
                 },
                 failure: function(errormsg) {
@@ -711,58 +675,26 @@ function loadTransactions(referenceNumber, parcelUuid) {
         },
         cache: false,
         success: function(serviceresponse) {
-// Process transactions and add to table
+      // Check if serviceresponse exists and is not empty
 if (serviceresponse && serviceresponse !== '' && serviceresponse !== 'null' && serviceresponse !== 'undefined') {
     try {
         var json_p = JSON.parse(serviceresponse);
         console.log(json_p);
 
-		$('#pvlmd_bl_wkt_polygon').val(json_p.wkt);
-		pvlmd_lc_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(json_p.wkt)}));
-		//pvlmd_lc_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.GeoJSON()).readFeatures(json_p.parcels)}));
-
-		view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
-		pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
-
-
+        // Check if json_p exists and has data property
         if (json_p && json_p.data) {
-            if (Array.isArray(json_p.data) && json_p.data.length > 0) {
-                json_p.data.forEach(function(item) {
-                    table.append(
-							`<tr>
-								<td>${item.party2_defendant || '-'}</td>
-								<td>${item.party1_plaintiff || '-'}</td>
-								<td>${item.reference_number || '-'}</td>
-								<td>${item.instrument_type || '-'}</td>
-								<td class="text-center">
-									<button class="btn btn-sm btn-info" 
-										data-bs-toggle="modal" 
-										data-bs-target="#addpvlmdtransactionlong" 
-										data-t_id="${item.t_id || ''}">
-										<i class="fas fa-eye"></i>
-									</button>
-								</td>
-							</tr>`
-						);
-                });
-            } else {
-                table.append(
-                    `<tr>
-                        <td colspan="5" class="text-center text-muted py-3">
-                            <i class="fas fa-inbox me-2"></i>No transactions found
-                        </td>
-                    </tr>`
-                );
-            }
-        } else {
-            console.warn('Response missing data property:', json_p);
-            table.append(
+           // Fill table
+             table.append(
                 `<tr>
                     <td colspan="5" class="text-center text-muted py-3">
-                        <i class="fas fa-inbox me-2"></i>No transactions available
+                        <i class="fas fa-inbox me-2"></i>More transactions available
                     </td>
                 </tr>`
             );
+        } else {
+            // json_p exists but has no data property
+            console.warn('Response missing data property:', json_p);
+            
         }
     } catch (e) {
         console.error('JSON Parse Error:', e);
@@ -776,6 +708,7 @@ if (serviceresponse && serviceresponse !== '' && serviceresponse !== 'null' && s
         );
     }
 } else {
+    // serviceresponse is null, empty, or invalid
     console.warn('Empty or invalid response received');
     table.append(
         `<tr>
@@ -785,308 +718,9 @@ if (serviceresponse && serviceresponse !== '' && serviceresponse !== 'null' && s
         </tr>`
     );
 }
-		}
-    });
-}
-
-$('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
-    // Get the button that triggered the modal
-    var button = $(event.relatedTarget);
-    
-	console.log("button")
-	console.log(button)
-    // Get data from button attributes
-    var parcel_uuid = button.data('parcel_uuid');
-    var nt_number = button.data('nt_number');
-    var cro_reference = button.data('cro_reference');
-    var property_number = button.data('property_number');
-    var reference_number = button.data('reference_number');
-
-    var file_number = button.data('file_number');
-	var sheet_number = button.data('sheet_number');
-    var locality = button.data('locality');
-    var plot_number = button.data('plot_number');
-    var modified_by = button.data('modified_by');
-    var modified_date = button.data('modified_date');
-    var remarks = button.data('remarks');
-    
-   // console.log('Loading parcel info for:', reference_number);
-
-	// Helper function to set text content safely
-					function setText(id, value) {
-						var element = document.getElementById(id);
-						if (element) {
-							element.textContent = value || '-';
-						}
-					}
-
-					// Populate the info cards with non-editable values
-					
-					setText('pvlmd_gid', parcel_uuid);
-					setText('pvlmd_reference_number', reference_number);
-					setText('pvlmd_nt_number', nt_number);
-					setText('pvlmd_file_number', file_number);
-					setText('pvlmd_sheet_number', sheet_number);
-					setText('pvlmd_locality', locality);
-					setText('pvlmd_plot_number', plot_number);
-					setText('pvlmd_remarks', remarks);
-					setText('pvlmd_modified_by',modified_by || modified_by || '');
-					setText('pvlmd_modified_date', modified_date || modified_date || '');
-
-				
-					    // Load transactions
-   
-	
-						loadTransactions(reference_number, parcel_uuid);
-    
-   
-});
-
-// Using modal show event instead of onclick
-$('#addpvlmdtransactionlong').on('show.bs.modal', function(event) {
-    var button = $(event.relatedTarget);
-    var t_id = button.data('t_id');
-    
-   // console.log('Modal showing, t_id:', t_id);
-
-	    // Close the parcel information modal if it's open
-    var parcelModalElement = document.getElementById('pvlmdparcelinformation');
-    if (parcelModalElement) {
-        var parcelModal = bootstrap.Modal.getInstance(parcelModalElement);
-        if (parcelModal) {
-            parcelModal.hide();
-           //'Closed pvlmdparcelinformation modal');
-        }
-    }
-    
-    if (t_id) {
-       // loadTransactionData(t_id);
-	    $.ajax({
-        type: "POST",
-        url: 'Maps',
-        data: {
-            request_type: 'select_pvlmd_transactions_details_by_t_id',
-            t_id: t_id
-        },
-        cache: false,
-        success: function(serviceresponse) {
-            var json_p = safeParseJSON(serviceresponse, { data: [] });
-           //'Transaction details:', json_p);
-            
-            if (json_p && json_p.data && json_p.data.length > 0) {
-                var data = json_p.data[0];
-                populateTransactionModal(data);
-            } else {
-                showErrorInModal('No transaction data found');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error loading transaction details:', error);
-            showErrorInModal('Error loading transaction details. Please try again.');
         }
     });
-    } else {
-        console.warn('No t_id found on button');
-        // Show empty state
-        var modalBody = document.querySelector('#addpvlmdtransactionlong .modal-body');
-        if (modalBody) {
-            modalBody.innerHTML = `
-                <div class="text-center py-4 text-muted">
-                    <i class="fas fa-inbox fa-3x mb-3"></i>
-                    <p>No transaction data available</p>
-                </div>
-            `;
-        }
-    }
-});
-
-// Function to load transaction data
-function loadTransactionData(t_id) {
-   // console.log('Loading transaction data for ID:', t_id);
-    
-    if (!t_id) {
-       // console.warn('No transaction ID provided');
-        return;
-    }
-    
-    // Show loading state in modal
-    var loadingHtml = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-2 text-muted">Loading transaction details...</p>
-        </div>
-    `;
-    
-    // Clear all fields and show loading
-    var modalBody = document.querySelector('#addpvlmdtransactionlong .modal-body');
-    if (modalBody) {
-        modalBody.innerHTML = loadingHtml;
-    }
-    
-   
 }
-
-// Function to populate the modal with data
-function populateTransactionModal(data) {
-    // Helper function to set text content
-    function setText(id, value) {
-        var element = document.getElementById(id);
-        if (element) {
-            element.textContent = value || '-';
-        }
-    }
-    
-    // Check if modal body exists and restore structure if needed
-    var modalBody = document.querySelector('#addpvlmdtransactionlong .modal-body');
-    if (modalBody) {
-        // If the modal body was replaced with loading HTML, restore the structure
-        // This assumes your modal has the structure we designed
-        var originalStructure = `
-            <input id="pvlmd_gid" name="pvlmd_tr_gid" type="hidden">
-            <input id="pvlmd_tr_t_id" name="pvlmd_tr_t_id" type="hidden" value="0">
-            <div class="row g-3">
-                <!-- Left Column -->
-                <div class="col-md-6">
-                    <!-- Reference & File -->
-                    <div class="row g-2 mb-2">
-                        <div class="col-6">
-                            <label class="text-muted small fw-bold">Reference No.</label>
-                            <p class="fw-semibold mb-0" id="pvlmd_tr_reference_number">-</p>
-                        </div>
-                        <div class="col-6">
-                            <label class="text-muted small fw-bold">File No.</label>
-                            <p class="fw-semibold mb-0" id="pvlmd_tr_file_number">-</p>
-                        </div>
-                    </div>
-                    <!-- Rest of your fields... -->
-                </div>
-                <!-- Right Column -->
-                <div class="col-md-6">
-                    <!-- All right column fields -->
-                </div>
-            </div>
-        `;
-        // Only restore if the body was replaced (contains loading text)
-        if (modalBody.innerHTML.includes('Loading transaction details')) {
-            // Restore original structure (you should have this stored)
-            // For now, we'll just populate existing fields
-        }
-    }
-    
-    // Map data to fields - set all fields
-    var fieldMap = {
-        'pvlmd_tr_reference_number': data.reference_number,
-        'pvlmd_tr_file_number': data.file_number,
-        'pvlmd_tr_property_number': data.property_number,
-        'pvlmd_tr_nt_number': data.nt_number,
-        'pvlmd_tr_mutation_number': data.mutation_number,
-        'pvlmd_tr_deed_number': data.deed_number,
-        'pvlmd_tr_serial_number': data.serial_number,
-        'pvlmd_tr_sheet_number': data.sheet_number,
-        'pvlmd_tr_plan_number': data.plan_number,
-        'pvlmd_tr_plot_number': data.plot_number,
-        'pvlmd_tr_lvb_number': data.lvb_number,
-        'pvlmd_tr_doc_number': data.doc_number,
-        'pvlmd_tr_party1_plaintiff': data.party1_plaintiff,
-        'pvlmd_tr_party1_plaintiff_tel_no': data.party1_plaintiff_tel_no,
-        'pvlmd_tr_party1_plantiff_add': data.party1_plantiff_add,
-        'pvlmd_tr_party1_plaintiff_email': data.party1_plaintiff_email,
-        'pvlmd_tr_party2_defendant': data.party2_defendant,
-        'pvlmd_tr_party2_defendant_tel_no': data.party2_defendant_tel_no,
-        'pvlmd_tr_party2_defendant_email': data.party2_defendant_email,
-        'pvlmd_tr_party2_defendant_add': data.party2_defendant_add,
-        'pvlmd_tr_instrument_date': data.instrument_date,
-        'pvlmd_tr_instrument_type': data.instrument_type,
-        'pvlmd_tr_term': data.term,
-        'pvlmd_tr_commencement_date': data.commencement_date,
-        'pvlmd_tr_purpose': data.purpose,
-        'pvlmd_tr_consent_date': data.consent_date,
-        'pvlmd_tr_consideration': data.consideration,
-        'pvlmd_tr_consideration_currency': data.consideration_currency,
-        'pvlmd_tr_premium': data.premium,
-        'pvlmd_tr_premium_currency': data.premium_currency,
-        'pvlmd_tr_compensation_status': data.compensation_status,
-        'pvlmd_tr_suit_number': data.suit_number,
-        'pvlmd_tr_floor_level': data.floor_level,
-        'pvlmd_tr_apartment_number': data.apartment_number,
-        'pvlmd_tr_rent': data.rent,
-        'pvlmd_tr_submission_date': data.submission_date,
-        'pvlmd_tr_unit_description': data.unit_description,
-        'pvlmd_tr_judgement_in_favour_of': data.judgement_in_favour_of,
-        'pvlmd_tr_remarks': data.remarks,
-        'pvlmd_tr_modified_by': data.modified_by || data.entered_by || '-',
-        'pvlmd_tr_modified_date': data.modified_date || data.checked_by_date || '-'
-    };
-
-    // Set all fields
-    for (var id in fieldMap) {
-        if (fieldMap.hasOwnProperty(id)) {
-            setText(id, fieldMap[id]);
-        }
-    }
-
-    // Set hidden fields
-    if (data.gid_id_fk) {
-        var gidElement = document.getElementById('pvlmd_gid');
-        if (gidElement) gidElement.value = data.gid_id_fk;
-    }
-    if (data.t_id) {
-        var tIdElement = document.getElementById('pvlmd_tr_t_id');
-        if (tIdElement) tIdElement.value = data.t_id;
-    }
-    
-    // Remove any loading state
-    var modalBody2 = document.querySelector('#addpvlmdtransactionlong .modal-body');
-    if (modalBody2 && modalBody2.innerHTML.includes('Loading transaction details')) {
-        // The fields are already populated above
-        // We just need to ensure the structure is visible
-       //'Data loaded successfully');
-    }
-}
-
-// Helper function to show error in modal
-function showErrorInModal(message) {
-    var modalBody = document.querySelector('#addpvlmdtransactionlong .modal-body');
-    if (modalBody) {
-        modalBody.innerHTML = `
-            <div class="text-center py-4">
-                <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                <p class="text-danger fw-bold">${message}</p>
-                <button class="btn btn-outline-secondary btn-sm mt-2" onclick="location.reload()">
-                    <i class="fas fa-sync-alt me-1"></i>Refresh
-                </button>
-            </div>
-        `;
-    }
-}
-
-// Safe JSON parse helper
-function safeParseJSON(response, fallback) {
-    if (!response || response === '' || response === 'null' || response === 'undefined') {
-        return fallback || null;
-    }
-    try {
-        return JSON.parse(response);
-    } catch (e) {
-        console.error('JSON Parse Error:', e);
-        console.error('Raw response:', response);
-        return fallback || null;
-    }
-}
-
-// Reset modal when closed (optional)
-document.addEventListener('DOMContentLoaded', function() {
-    var modalElement = document.getElementById('addpvlmdtransactionlong');
-    if (modalElement) {
-        modalElement.addEventListener('hidden.bs.modal', function() {
-            // Reset any state if needed
-          //  console.log('Modal closed');
-        });
-    }
-});
-
 
 
 					// pvlmd_btn_search_for_scanned_maps
@@ -1108,7 +742,1182 @@ document.addEventListener('DOMContentLoaded', function() {
 					var click_map_zoom_value = true;
 					
 
-				
+					$('#pvlmdparcelinformation')
+							.on(
+									'show.bs.modal',
+									function(e) {
+
+									
+										var table_bp = $('#coordinatelis_Table');
+										table_bp.find("tbody tr").remove();
+									
+										var parcel_uuid = $(e.relatedTarget)
+												.data('parcel_uuid');
+										var reference_number = $(
+												e.relatedTarget).data(
+												'reference_number');
+
+										/*
+										 * remarks, sheet_number, file_number,
+										 * property_number, reference_number,
+										 * locality, plot_number, cro_reference,
+										 * nt_number, parcel_uuid
+										 */
+
+										$('#pvlmdparcelinformation #pvlmd_gid')
+												.val(parcel_uuid);
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_reference_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'reference_number'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_nt_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'nt_number'));
+										$(
+												'#pvlmdparcelinformation #pvlmd_file_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'file_number'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_cro_reference')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'cro_reference'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_property_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'property_number'));
+										$(
+												'#pvlmdparcelinformation #pvlmd_locality')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'locality'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_sheet_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'sheet_number'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_plot_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'plot_number'));
+										$(
+												'#pvlmdparcelinformation #pvlmd_remarks')
+												.val(
+														$(e.relatedTarget)
+																.data('remarks'));
+																
+												// 				$(
+												// '#pvlmdparcelinformation #pvlmd_modified_by')
+												// .val(
+												// 		$(e.relatedTarget)
+												// 				.data(
+												// 						'modified_by'));
+										// $(
+										// 		'#pvlmdparcelinformation #pvlmd_modified_date')
+										// 		.val(
+										// 				$(e.relatedTarget)
+										// 						.data('modified_date'));
+
+										var table = $('#pvlmd_transaction_dataTable');
+										table.find("tbody tr").remove();
+										$
+												.ajax({
+													type : "POST",
+													url : 'Maps',
+													data : {
+														request_type : 'pvlmd_transaction_select_by_reference_number_main',
+														reference_number : reference_number,
+														gid_fk : parcel_uuid
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt=""
+														// width="24"
+														// height="24">');
+													},
+													success : function(
+															serviceresponse) {
+
+														var json_p = JSON
+																.parse(serviceresponse);
+														console.log(json_p)
+
+														$(json_p.data)
+																.each(
+																		function() {
+
+																			table
+																					.append("<tr><td>"
+																							+ this.party2_defendant
+																							+ "</td><td>"
+																							+ this.party1_plaintiff
+																							+ "</td><td>"
+																							+ this.reference_number
+																							+ "</td><td>"
+																							+ this.instrument_type
+																							+ "</td>"
+
+																							+ '<td><p data-placement="top" data-toggle="tooltip" title="Details"><button class="btn btn-info btn-icon-split" data-dismiss="modal" data-toggle="modal" href="#addpvlmdtransactionlong" data-target-id="'
+																							+ this.t_id
+																							+ '"><span class="icon text-white-50"> <i class="fas fa-info-circle"></i></span><span class="text">Details</span></button></p></td>'
+
+																							+ "</tr>");
+																		});
+
+													}
+												});
+
+										var table_docs = $('#lrd_scanned_documents_dataTable');
+										table_docs.find("tbody tr").remove();
+										$
+												.ajax({
+													type : "POST",
+													url : 'LoadLRDJackets',
+													data : {
+														request_type : 'load_lrd_jacket_certificate',
+														certificate_number : reference_number
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt=""
+														// width="24"
+														// height="24">');
+													},
+													success : function(
+															serviceresponse) {
+
+														var json_p = JSON
+																.parse(serviceresponse);
+														console.log(json_p)
+
+														$(json_p)
+																.each(
+																		function() {
+
+																			/*
+																			 * table_docs
+																			 * .append("<tr><td>" +
+																			 * this.document_name + "</td><td>" +
+																			 * this.document_extention + "</td><td>" +
+																			 * this.document_file + "</td>" + '<td><p data-placement="top" data-toggle="tooltip" title="Open"><a
+																			 * href="teamServlet?document_path=' +
+																			 * this.document_file + '"
+																			 * target="_blank">link</a></p></td>' + "</tr>");
+																			 */
+
+																			table_docs
+																					.append("<tr>"
+
+																							+ '<td> <a class="link-post" href="'
+																							+ this.document_file
+																							+ '">'
+																							+ this.document_name
+																							+ '</a></td>'
+
+																							+ "<td>"
+																							+ this.document_extention
+																							+ "</td>"
+
+																							// +
+																							// '<td><p
+																							// data-placement="top"
+																							// data-toggle="tooltip"
+																							// title="Open"><a
+																							// href="teamServlet?document_path='+
+																							// this.document_file
+																							// +'"
+																							// target="_blank">link</a></p></td>'
+
+																							+ "</tr>");
+
+																		});
+
+													}
+												});
+									});
+
+					$("#addpvlmdtransactionlong")
+							.on(
+									"show.bs.modal",
+									function(e) {
+										var t_id = $(e.relatedTarget).data(
+												'target-id');
+
+										console.log('t_id');
+										console.log(t_id);
+
+										// showSuggestions(job_number);
+
+										/*
+										 * $.get( "/controller/" + id, function(
+										 * data ) {
+										 * $(".modal-body").html(data.html); });
+										 */
+										// $('#edit
+										// #job_numnber').val(job_number);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_gid')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_t_id')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_reference_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_file_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_property_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_nt_number')
+												.val([]);
+
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_mutation_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_deed_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_serial_number')
+												.val([]);
+
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_sheet_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_plan_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_plot_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_lvb_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_doc_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party1_plaintiff')
+												.val([]);
+
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party1_plaintiff_tel_no')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party1_plantiff_add')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party1_plaintiff_email')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant')
+												.val([]);
+
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant_tel_no')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant_email')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant_add')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_instrument_date')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_instrument_type')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_term')
+												.val([]);
+
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_commencement_date')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_purpose')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_consent_date')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_consideration')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_consideration_currency')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_premium')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_premium_currency')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_compensation_status')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_suit_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_floor_level')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_apartment_number')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_rent')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_submission_date')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_unit_description')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_judgement_in_favour_of')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_remarks')
+												.val([]);
+												
+												
+												
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_modified_id')
+												.val([]);
+										$(
+												'#addpvlmdtransactionlong #pvlmd_tr_modified_date')
+												.val([]);
+
+										var today = new Date();
+										var dd = String(today.getDate())
+												.padStart(2, '0');
+										var mm = String(today.getMonth() + 1)
+												.padStart(2, '0'); // January
+										// is 0!
+										var yyyy = today.getFullYear();
+
+										today = mm + '/' + dd + '/' + yyyy;
+
+										if (t_id) {
+											console
+													.log('addpvlmdtransactionlong loading '
+															+ 'valid ')
+
+											/*
+											 * $( '#addlrdtransaction
+											 * #lrd_td_fid_id_fk')
+											 * .val($('#lrd_ps_fid').val());
+											 * $('#addlrdtransaction
+											 * #lrd_td_gid') .val(gid); $(
+											 * '#addlrdtransaction
+											 * #lrd_td_plotted_by_reg') .val(
+											 * localStorage
+											 * .getItem('fullname')); $(
+											 * '#addlrdtransaction
+											 * #lrd_td_checked_by') .val(
+											 * localStorage
+											 * .getItem('fullname')); $(
+											 * '#addlrdtransaction
+											 * #lrd_td_plott_date_reg')
+											 * .val(today); //
+											 * $('#addlrdtransaction //
+											 * #lrd_td_job_numnber').val(job_number); $(
+											 * '#addlrdtransaction
+											 * #lrd_td_reference_number') .val( $(
+											 * '#lrd_ps_reference_number')
+											 * .val());
+											 */
+											$
+													.ajax({
+														type : "POST",
+														url : 'Maps',
+														data : {
+															request_type : 'select_pvlmd_transactions_details_by_t_id',
+															t_id : t_id
+														},
+														cache : false,
+														beforeSend : function() {
+															// $('#district').html('<img
+															// src="img/loading.gif"
+															// alt="" width="24"
+															// height="24">');
+														},
+														success : function(
+																serviceresponse) {
+
+															var json_p = JSON
+																	.parse(serviceresponse);
+															console.log(json_p)
+
+															$(json_p.data)
+																	.each(
+																			function() {
+
+																				$(
+																						"#pvlmd_tr_gid")
+																						.val(
+																								$(
+																										"#pvlmd_gid")
+																										.val());
+
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_t_id')
+																						.val(
+																								this.t_id);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_reference_number')
+																						.val(
+																								this.reference_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_file_number')
+																						.val(
+																								this.file_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_property_number')
+																						.val(
+																								this.property_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_nt_number')
+																						.val(
+																								this.nt_number);
+
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_mutation_number')
+																						.val(
+																								this.mutation_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_deed_number')
+																						.val(
+																								this.deed_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_serial_number')
+																						.val(
+																								this.serial_number);
+
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_sheet_number')
+																						.val(
+																								this.sheet_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_plan_number')
+																						.val(
+																								this.plan_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_plot_number')
+																						.val(
+																								this.plot_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_lvb_number')
+																						.val(
+																								this.lvb_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_doc_number')
+																						.val(
+																								this.doc_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party1_plaintiff')
+																						.val(
+																								this.party1_plaintiff);
+
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party1_plaintiff_tel_no')
+																						.val(
+																								this.party1_plaintiff_tel_no);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party1_plantiff_add')
+																						.val(
+																								this.party1_plantiff_add);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party1_plaintiff_email')
+																						.val(
+																								this.party1_plaintiff_email);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant')
+																						.val(
+																								this.party2_defendant);
+
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant_tel_no')
+																						.val(
+																								this.party2_defendant_tel_no);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant_email')
+																						.val(
+																								this.party2_defendant_email);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_party2_defendant_add')
+																						.val(
+																								this.party2_defendant_add);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_instrument_date')
+																						.val(
+																								this.instrument_date);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_instrument_type')
+																						.val(
+																								this.instrument_type);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_term')
+																						.val(
+																								this.term);
+
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_commencement_date')
+																						.val(
+																								this.commencement_date);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_purpose')
+																						.val(
+																								this.purpose);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_consent_date')
+																						.val(
+																								this.consent_date);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_consideration')
+																						.val(
+																								this.consideration);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_consideration_currency')
+																						.val(
+																								this.consideration_currency);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_premium')
+																						.val(
+																								this.premium);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_premium_currency')
+																						.val(
+																								this.premium_currency);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_compensation_status')
+																						.val(
+																								this.compensation_status);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_suit_number')
+																						.val(
+																								this.suit_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_floor_level')
+																						.val(
+																								this.floor_level);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_apartment_number')
+																						.val(
+																								this.apartment_number);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_rent')
+																						.val(
+																								this.rent);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_submission_date')
+																						.val(
+																								this.submission_date);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_unit_description')
+																						.val(
+																								this.unit_description);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_judgement_in_favour_of')
+																						.val(
+																								this.judgement_in_favour_of);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_remarks')
+																						.val(
+																								this.remarks);
+																								
+																								$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_modified_by')
+																						.val(
+																								this.modified_by);
+																				$(
+																						'#addpvlmdtransactionlong #pvlmd_tr_modified_date')
+																						.val(
+																								this.modified_date);
+
+																			});
+
+														}
+													});
+
+										} else {
+
+											$("#pvlmd_tr_t_id").val('0');
+
+											$("#pvlmd_tr_gid").val(
+													$("#pvlmd_gid").val());
+
+											$("#pvlmd_tr_reference_number")
+													.val(
+															$(
+																	"#pvlmd_reference_number")
+																	.val());
+											$("#pvlmd_tr_nt_number")
+													.val(
+															$(
+																	"#pvlmd_nt_number")
+																	.val());
+											$("#pvlmd_tr_file_number").val(
+													$("#pvlmd_file_number")
+															.val());
+											$("#pvlmd_tr_cro_reference").val(
+													$("#pvlmd_cro_reference")
+															.val());
+
+											$("#pvlmd_tr_property_number").val(
+													$("#pvlmd_property_number")
+															.val());
+
+										}
+
+									});
+
+					$('#addpvlmdtransactionshort').on(
+							'show.bs.modal',
+							function(e) {
+
+								var button = $(event.relatedTarget) // Button
+								// that
+								// triggered
+								// the
+								// modal
+
+								$("#pvlmd_tr_st_gid")
+										.val($("#pvlmd_gid").val());
+
+								$("#pvlmd_tr_st_reference_number").val(
+										$("#pvlmd_reference_number").val());
+								$("#pvlmd_tr_st_nt_number").val(
+										$("#pvlmd_nt_number").val());
+								$("#pvlmd_tr_st_file_number").val(
+										$("#pvlmd_file_number").val());
+								$("#pvlmd_tr_st_cro_reference").val(
+										$("#pvlmd_cro_reference").val());
+
+								$("#pvlmd_tr_st_property_number").val(
+										$("#pvlmd_property_number").val());
+							});
+
+					$('#pvlmdparcelinformation')
+							.on(
+									'show.bs.modal',
+									function(e) {
+
+										var parcel_uuid = $(e.relatedTarget)
+												.data('parcel_uuid');
+										var reference_number = $(
+												e.relatedTarget).data(
+												'reference_number');
+
+										/*
+										 * remarks, sheet_number, file_number,
+										 * property_number, reference_number,
+										 * locality, plot_number, cro_reference,
+										 * nt_number, parcel_uuid
+										 */
+
+										$('#pvlmdparcelinformation #pvlmd_gid')
+												.val(parcel_uuid);
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_reference_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'reference_number'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_nt_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'nt_number'));
+										$(
+												'#pvlmdparcelinformation #pvlmd_file_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'file_number'));
+
+										/*
+										 * $( '#pvlmdparcelinformation
+										 * #pvlmd_cro_reference') .val(
+										 * $(e.relatedTarget) .data(
+										 * 'cro_reference'));
+										 *//*
+											 * $( '#pvlmdparcelinformation
+											 * #pvlmd_property_number') .val(
+											 * $(e.relatedTarget) .data(
+											 * 'property_number'));
+											 */
+										$(
+												'#pvlmdparcelinformation #pvlmd_locality')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'locality'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_sheet_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'sheet_number'));
+
+										$(
+												'#pvlmdparcelinformation #pvlmd_plot_number')
+												.val(
+														$(e.relatedTarget)
+																.data(
+																		'plot_number'));
+										$(
+												'#pvlmdparcelinformation #pvlmd_remarks')
+												.val(
+														$(e.relatedTarget)
+																.data('remarks'));
+
+										var table_docs = $('#lrd_scanned_documents_dataTable');
+										table_docs.find("tbody tr").remove();
+										$
+												.ajax({
+													type : "POST",
+													url : 'LoadLRDJackets',
+													data : {
+														request_type : 'load_lrd_jacket_certificate',
+														certificate_number : reference_number
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt=""
+														// width="24"
+														// height="24">');
+													},
+													success : function(
+															serviceresponse) {
+
+														var json_p = JSON
+																.parse(serviceresponse);
+														console.log(json_p)
+
+														$(json_p)
+																.each(
+																		function() {
+
+																			/*
+																			 * table_docs
+																			 * .append("<tr><td>" +
+																			 * this.document_name + "</td><td>" +
+																			 * this.document_extention + "</td><td>" +
+																			 * this.document_file + "</td>" + '<td><p data-placement="top" data-toggle="tooltip" title="Open"><a
+																			 * href="teamServlet?document_path=' +
+																			 * this.document_file + '"
+																			 * target="_blank">link</a></p></td>' + "</tr>");
+																			 */
+
+																			table_docs
+																					.append("<tr>"
+
+																							+ '<td> <a class="link-post" href="'
+																							+ this.document_file
+																							+ '">'
+																							+ this.document_name
+																							+ '</a></td>'
+
+																							+ "<td>"
+																							+ this.document_extention
+																							+ "</td>"
+
+																							// +
+																							// '<td><p
+																							// data-placement="top"
+																							// data-toggle="tooltip"
+																							// title="Open"><a
+																							// href="teamServlet?document_path='+
+																							// this.document_file
+																							// +'"
+																							// target="_blank">link</a></p></td>'
+
+																							+ "</tr>");
+
+																		});
+
+													}
+												});
+
+									});
+									
+									
+					$('#pvlmd_tr_btn_delete_parcel')
+							.on(
+									'click',
+									function(e) {
+
+										var confirmText = "Are you sure you want to delete the selected plotting? Note that this cannot be undone";
+										if (confirm(confirmText)) {
+											var pvlmd_gid = $('#pvlmd_gid')
+													.val();
+											$
+													.ajax({
+														type : "POST",
+														url : "Maps",
+														// target : '_blank',
+														data : {
+															request_type : 'select_delete_pvlmd_parcles_to_be_corrected',
+															parcel_id : pvlmd_gid
+														},
+														cache : false,
+														success : function(
+																jobdetails) {
+															console
+																	.log(jobdetails)
+															alert(jobdetails);
+
+														}
+													});
+
+										}
+
+									});
+
+
+					$('#btn_save_pvlmd_transaction_short')
+							.on(
+									'click',
+									function(e) {
+
+										console.log('Assiamah');
+
+										var pvlmd_gid = document
+												.getElementById("pvlmd_gid").value;
+
+										var pvlmd_tr_st_t_id = document
+												.getElementById("pvlmd_tr_st_t_id").value;
+
+										var reference_number = document
+												.getElementById("pvlmd_tr_st_reference_number").value;
+										var file_number = document
+												.getElementById("pvlmd_tr_st_file_number").value;
+										var property_number = document
+												.getElementById("pvlmd_tr_st_property_number").value;
+										var submission_date = document
+												.getElementById("pvlmd_tr_st_submission_date").value;
+										var plot_number = document
+												.getElementById("pvlmd_tr_st_plot_number").value;
+										var doc_number = document
+												.getElementById("pvlmd_tr_st_document_number").value;
+
+										var party1_plaintiff = document
+												.getElementById("pvlmd_tr_st_party1_plaintiff").value;
+										var party1_plaintiff_tel_no = document
+												.getElementById("pvlmd_tr_st_party1_plaintiff_tel_no").value;
+
+										var party2_defendant = document
+												.getElementById("pvlmd_tr_st_party2_defendant").value;
+										var party2_defendant_tel_no = document
+												.getElementById("pvlmd_tr_st_party2_defendant_tel_no").value;
+										var term = document
+												.getElementById("pvlmd_tr_st_term").value;
+
+										var commencement_date = document
+												.getElementById("pvlmd_tr_st_commencement_date").value;
+
+										var purpose = document
+												.getElementById("pvlmd_tr_st_purpose").value;
+
+										var consent_date = document
+												.getElementById("pvlmd_tr_st_consent_date").value;
+
+										var instrument_date = document
+												.getElementById("pvlmd_tr_st_instrument_date").value;
+										var instrument_type = document
+												.getElementById("pvlmd_tr_st_instrument_type").value;
+
+										var remarks = document
+												.getElementById("pvlmd_tr_remarks").value;
+
+										console.log(reference_number)
+
+										$
+												.ajax({
+													type : "POST",
+													url : "Maps",
+													// target : '_blank',
+													data : {
+														request_type : 'save_pvlmd_transaction_short',
+														reference_number : reference_number,
+														file_number : file_number,
+														property_number : property_number,
+														submission_date : submission_date,
+														plot_number : plot_number,
+														instrument_date : instrument_date,
+														instrument_type : instrument_type,
+														doc_number : doc_number,
+														party1_plaintiff : party1_plaintiff,
+														party1_plaintiff_tel_no : party1_plaintiff_tel_no,
+
+														party2_defendant : party2_defendant,
+														party2_defendant_tel_no : party2_defendant_tel_no,
+
+														term : term,
+														commencement_date : commencement_date,
+														purpose : purpose,
+														remarks : remarks,
+														gid_id_fk : pvlmd_gid,
+														consent_date : consent_date,
+														t_id : pvlmd_tr_st_t_id
+
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt="" width="24"
+														// height="24">');
+
+													},
+													success : function(
+															jobdetails) {
+														console.log(jobdetails)
+														alert(jobdetails);
+
+														/*
+														 * var json_p = JSON
+														 * .parse(jobdetails); $(
+														 * "#pvlmdparcelinformation")
+														 * .modal(); $(
+														 * '#pvlmdparcelinformation
+														 * #pvlmd_gid')
+														 * .val(json_p.gid); $(
+														 * '#pvlmdparcelinformation
+														 * #pvlmd_reference_number')
+														 * .val(
+														 * json_p.reference_number); $(
+														 * '#pvlmdparcelinformation
+														 * #pvlmd_nt_number')
+														 * .val(
+														 * json_p.nt_number);
+														 */
+
+													}
+												});
+
+									});
+
+					$('#pvlmd_tr_btn_save_transaction_long')
+							.on(
+									'click',
+									function(e) {
+
+										var pvlmd_gid = document
+												.getElementById("pvlmd_gid").value;
+
+										var pvlmd_tr_t_id = document
+												.getElementById("pvlmd_tr_t_id").value;
+
+										var reference_number = document
+												.getElementById("pvlmd_tr_reference_number").value;
+										var file_number = document
+												.getElementById("pvlmd_tr_file_number").value;
+										var property_number = document
+												.getElementById("pvlmd_tr_property_number").value;
+										var submission_date = document
+												.getElementById("pvlmd_tr_submission_date").value;
+										var mutation_number = document
+												.getElementById("pvlmd_tr_mutation_number").value;
+										var deed_number = document
+												.getElementById("pvlmd_tr_deed_number").value;
+										var serial_number = document
+												.getElementById("pvlmd_tr_serial_number").value;
+										var sheet_number = document
+												.getElementById("pvlmd_tr_sheet_number").value;
+										var plan_number = document
+												.getElementById("pvlmd_tr_plan_number").value;
+										var plot_number = document
+												.getElementById("pvlmd_tr_plot_number").value;
+										var lvb_number = document
+												.getElementById("pvlmd_tr_lvb_number").value;
+										var instrument_date = document
+												.getElementById("pvlmd_tr_instrument_date").value;
+										var instrument_type = document
+												.getElementById("pvlmd_tr_instrument_type").value;
+										var doc_number = document
+												.getElementById("pvlmd_tr_doc_number").value;
+										var party1_plaintiff = document
+												.getElementById("pvlmd_tr_party1_plaintiff").value;
+										var party1_plaintiff_tel_no = document
+												.getElementById("pvlmd_tr_party1_plaintiff_tel_no").value;
+										var party1_plaintiff_email = document
+												.getElementById("pvlmd_tr_party1_plaintiff_email").value;
+										var party2_defendant = document
+												.getElementById("pvlmd_tr_party2_defendant").value;
+										var party2_defendant_tel_no = document
+												.getElementById("pvlmd_tr_party2_defendant_tel_no").value;
+										var party2_defendant_email = document
+												.getElementById("pvlmd_tr_party2_defendant_email").value;
+										var term = document
+												.getElementById("pvlmd_tr_term").value;
+										var commencement_date = document
+												.getElementById("pvlmd_tr_commencement_date").value;
+										var purpose = document
+												.getElementById("pvlmd_tr_purpose").value;
+
+										var consideration = document
+												.getElementById("pvlmd_tr_consideration").value;
+										var consideration_currency = document
+												.getElementById("pvlmd_tr_consideration_currency").value;
+										var premium = document
+												.getElementById("pvlmd_tr_premium").value;
+										var premium_currency = document
+												.getElementById("pvlmd_tr_premium_currency").value;
+										var compensation_status = document
+												.getElementById("pvlmd_tr_compensation_status").value;
+
+										var remarks = document
+												.getElementById("pvlmd_tr_remarks").value;
+										var suit_number = document
+												.getElementById("pvlmd_tr_suit_number").value;
+										var party1_plantiff_add = document
+												.getElementById("pvlmd_tr_party1_plantiff_add").value;
+										var party2_defendant_add = document
+												.getElementById("pvlmd_tr_party2_defendant_add").value;
+										var judgement_in_favour_of = document
+												.getElementById("pvlmd_tr_judgement_in_favour_of").value;
+										var floor_level = document
+												.getElementById("pvlmd_tr_floor_level").value;
+										var apartment_number = document
+												.getElementById("pvlmd_tr_apartment_number").value;
+										var rent = document
+												.getElementById("pvlmd_tr_rent").value;
+
+										var unit_description = document
+												.getElementById("pvlmd_tr_unit_description").value;
+										var consent_date = document
+												.getElementById("pvlmd_tr_consent_date").value;
+										var plot_number = document
+												.getElementById("pvlmd_tr_plot_number").value;
+
+										console.log(pvlmd_tr_t_id)
+
+										$
+												.ajax({
+													type : "POST",
+													url : "Maps",
+													// target : '_blank',
+													data : {
+														request_type : 'save_pvlmd_transaction',
+														reference_number : reference_number,
+														file_number : file_number,
+														property_number : property_number,
+														submission_date : submission_date,
+														mutation_number : mutation_number,
+														deed_number : deed_number,
+														serial_number : serial_number,
+														sheet_number : sheet_number,
+														plan_number : plan_number,
+														plot_number : plot_number,
+														lvb_number : lvb_number,
+														instrument_date : instrument_date,
+														instrument_type : instrument_type,
+														doc_number : doc_number,
+														party1_plaintiff : party1_plaintiff,
+														party1_plaintiff_tel_no : party1_plaintiff_tel_no,
+														party1_plaintiff_email : party1_plaintiff_email,
+														party2_defendant : party2_defendant,
+														party2_defendant_tel_no : party2_defendant_tel_no,
+														party2_defendant_email : party2_defendant_email,
+														term : term,
+														commencement_date : commencement_date,
+														purpose : purpose,
+
+														consideration : consideration,
+														consideration_currency : consideration_currency,
+														premium : premium,
+														premium_currency : premium_currency,
+														compensation_status : compensation_status,
+
+														remarks : remarks,
+														suit_number : suit_number,
+														party1_plantiff_add : party1_plantiff_add,
+														party2_defendant_add : party2_defendant_add,
+														judgement_in_favour_of : judgement_in_favour_of,
+														floor_level : floor_level,
+														apartment_number : apartment_number,
+														rent : rent,
+														gid_id_fk : pvlmd_gid,
+														unit_description : unit_description,
+														consent_date : consent_date,
+														t_id : pvlmd_tr_t_id
+
+													},
+													cache : false,
+													beforeSend : function() {
+														// $('#district').html('<img
+														// src="img/loading.gif"
+														// alt="" width="24"
+														// height="24">');
+
+													},
+													success : function(
+															jobdetails) {
+														console.log(jobdetails)
+														alert(jobdetails);
+
+														$(
+																'#addpvlmdtransactionlong')
+																.modal('hide');
+														/*
+														 * var json_p = JSON
+														 * .parse(jobdetails); $(
+														 * "#pvlmdparcelinformation")
+														 * .modal(); $(
+														 * '#pvlmdparcelinformation
+														 * #pvlmd_gid')
+														 * .val(json_p.gid); $(
+														 * '#pvlmdparcelinformation
+														 * #pvlmd_reference_number')
+														 * .val(
+														 * json_p.reference_number); $(
+														 * '#pvlmdparcelinformation
+														 * #pvlmd_nt_number')
+														 * .val(
+														 * json_p.nt_number);
+														 */
+
+													}
+												});
+
+									});
 
 					$('#pvlmd_btn_download_geojson')
 							.on(
@@ -1387,8 +2196,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         let polygonWKT = "POLYGON((" + polygonPoints.join(', ') + "))";
-       // console.log(jsonArr);
-       // console.log(polygonWKT);
+        console.log(jsonArr);
+        console.log(polygonWKT);
 
         $('#pvlmd_bl_wkt_polygon').val(polygonWKT);
 
@@ -1413,7 +2222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 3. pvlmd_btn_visualise_wkt - Converted from addEventListener
     $('#pvlmd_btn_visualise_wkt').on('click', function(e) {
         var wktplygonsearch = $("#pvlmd_bl_wkt_polygon").val();
-       // console.log(wktplygonsearch);
+        console.log(wktplygonsearch);
 
         pvlmd_lc_searchLayer.setSource(new ol.source.Vector({
             features: (new ol.format.WKT()).readFeatures(wktplygonsearch)
@@ -1447,7 +2256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             cache: false,
             success: function(jobdetails) {
-               // console.log(jobdetails);
+                console.log(jobdetails);
                 var json_p = JSON.parse(jobdetails);
 
                 $('#pvlmdparcelinformationfirsttimesave #pvlmd_gid_fts').val(json_p.gid);
@@ -1460,7 +2269,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 5. pvlmd_btn_show_location - Converted from addEventListener
     $('#pvlmd_btn_show_location').on('click', function(e) {
-      //  console.log('berhbehr');
+        console.log('berhbehr');
         pvlmd_markers.getSource().clear();
         
         var x_coordinate_mak = $('#pvlmd_x_coordinate_mak').val();
@@ -1480,7 +2289,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 6. pvlmd_btn_search_by_reference_number - Converted from addEventListener
     $('#pvlmd_btn_search_by_reference_number').on('click', function(e) {
         var search_text = $('#pvlmd_search_by_text').val();
-       // console.log(search_text);
+        console.log(search_text);
 
         $.ajax({
             type: "POST",
@@ -1492,7 +2301,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cache: false,
             success: function(jobdetails) {
                 var json_p = JSON.parse(jobdetails);
-               // console.log(json_p);
+                console.log(json_p);
 
                 if (json_p !== undefined || json_p !== null) {
                     if (pvlmd_lc_searchLayer.getSource() != null) {
@@ -1555,13 +2364,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 9. pvlmd_btn_load_for_scanned_maps_by_point - Converted from addEventListener
     $('#pvlmd_btn_load_for_scanned_maps_by_point').on('click', function() {
-      //  console.log('kkkkk');
+        console.log('kkkkk');
         var x_coordinate_mak = $('#pvlmd_x_coordinate_mak').val();
         var y_coordinate_mak = $('#pvlmd_y_coordinate_mak').val();
 
         var polygon = x_coordinate_mak + " " + y_coordinate_mak;
         var polygon_real = "POINT(" + polygon + ")";
-      //  console.log(polygon_real);
+        console.log(polygon_real);
 
         $.ajax({
             type: "POST",
@@ -1573,8 +2382,8 @@ document.addEventListener('DOMContentLoaded', function() {
             cache: false,
             success: function(jobdetails) {
                 var json_p = JSON.parse(jobdetails);
-             //   console.log('how come');
-              //  console.log(json_p);
+                console.log('how come');
+                console.log(json_p);
 
                 var options = $("#geoserverscannedimages_list");
                 options.empty();
@@ -1590,9 +2399,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 10. pvlmd_btn_search_for_scanned_maps - Converted from addEventListener
     $('#pvlmd_btn_search_for_scanned_maps').on('click', function(e) {
-      //  console.log('kkkkk');
+        console.log('kkkkk');
         var wkt_polygon = $.trim($("#pvlmd_bl_wkt_polygon").val());
-       // console.log(wkt_polygon);
+        console.log(wkt_polygon);
 
         $.ajax({
             type: "POST",
@@ -1604,8 +2413,8 @@ document.addEventListener('DOMContentLoaded', function() {
             cache: false,
             success: function(jobdetails) {
                 var json_p = JSON.parse(jobdetails);
-              //  console.log('how come');
-             //   console.log(json_p);
+                console.log('how come');
+                console.log(json_p);
 
                 var options = $("#geoserverscannedimages_list");
                 options.empty();
@@ -1622,11 +2431,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 11. pvlmd_btn_load_for_scanned_maps - Converted from addEventListener
     $('#pvlmd_btn_load_for_scanned_maps').on('click', function(e) {
         var geoserverscannedimage = $.trim($("#geoserverscannedimages_list").val());
-     //   console.log(geoserverscannedimage);
+        console.log(geoserverscannedimage);
 
         var value_image_scan = geoserverscannedimage;
         var only_layer = value_image_scan.split(":", 3);
-      //  console.log(only_layer);
+        console.log(only_layer);
         
         var value_image_scan1 = only_layer[1];
         var layer_name = 'csau_geospatial' + ':' + value_image_scan1;
@@ -1640,15 +2449,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         pvlmd_StaticImage.setSource(image_source);
         var new_extent = only_layer[2];
-     //   console.log('new_extent');
-     //   console.log(new_extent);
+        console.log('new_extent');
+        console.log(new_extent);
         
         pvlmd_map.getView().fit(new_extent, pvlmd_map.getSize());
     });
 
     // 12. pvlmd_btnprintmap - Converted from addEventListener
     $('#pvlmd_btnprintmap').on('click', function(e) {
-       // console.log("click_type");
+        console.log("click_type");
         var wktplygonsearch = $('#pvlmd_bl_wkt_polygon').val();
         
         var canvas = document.getElementById("pvlmd-map").getElementsByClassName("ol-unselectable")[0];
@@ -1767,5 +2576,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 }
-
-				});

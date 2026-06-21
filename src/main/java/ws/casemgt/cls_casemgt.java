@@ -3604,6 +3604,8 @@ public class cls_casemgt {
 		}
 		return output;
 	}
+
+
 public String get_frrv_completion_stats(String web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
@@ -3626,6 +3628,7 @@ public String get_frrv_completion_stats(String web_service_url, String web_servi
 		}
 		return output;
 	}
+
 
 	
 	public String load_application_details_to_unit_tpp_cordinator(String web_service_url, String web_service_api_key,

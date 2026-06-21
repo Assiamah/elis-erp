@@ -67,7 +67,7 @@ public class FrrvController {
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									(String) session.getAttribute("unit_id"));
 					JSONObject menu_obj;
-
+System.out.println(web_service_response_menu);
 					menu_obj = new JSONObject(web_service_response_menu);
 	                String summary = menu_obj.get("summary").toString();
 					String division_summary_details = menu_obj.get("division_summary").toString();
