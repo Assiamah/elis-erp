@@ -5156,28 +5156,28 @@ $(document).ready(function () {
         const state = modalState[modalType];
 
         // Reset document type
-        const documentTypeEl = $(config.documentTypeId)[0];
-        if (documentTypeEl) {
-            const wrapper = documentTypeEl.closest('.choices');
+        // const documentTypeEl = $(config.documentTypeId)[0];
+        // if (documentTypeEl) {
+        //     const wrapper = documentTypeEl.closest('.choices');
 
-            if (wrapper && wrapper.parentNode) {
-                wrapper.parentNode.insertBefore(documentTypeEl, wrapper);
-                wrapper.remove();
-            }
+        //     if (wrapper && wrapper.parentNode) {
+        //         wrapper.parentNode.insertBefore(documentTypeEl, wrapper);
+        //         wrapper.remove();
+        //     }
 
-            documentTypeEl.selectedIndex = 0;
-            documentTypeEl.value = '';
-            documentTypeEl.removeAttribute('data-choice');
-            documentTypeEl.removeAttribute('aria-activedescendant');
-            documentTypeEl.removeAttribute('tabindex');
-            documentTypeEl.classList.remove('choices__input');
+        //     documentTypeEl.selectedIndex = 0;
+        //     documentTypeEl.value = '';
+        //     documentTypeEl.removeAttribute('data-choice');
+        //     documentTypeEl.removeAttribute('aria-activedescendant');
+        //     documentTypeEl.removeAttribute('tabindex');
+        //     documentTypeEl.classList.remove('choices__input');
 
-            if (window.Choices) {
-                new window.Choices(documentTypeEl);
-            }
+        //     if (window.Choices) {
+        //         new window.Choices(documentTypeEl);
+        //     }
 
-            $(documentTypeEl).trigger('change');
-        }
+        //     $(documentTypeEl).trigger('change');
+        // }
 
         // Remove ALL file cards except the first one
         const container = $(config.containerId);
