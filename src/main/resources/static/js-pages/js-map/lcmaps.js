@@ -189,7 +189,27 @@ var lrd_certificate_region_dataLayer = new ol.layer.Tile({
 })
 
 
+var pvlmd_volta_region_old_data_dataSource = new ol.source.TileWMS(
+		{
+			url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+			params : {
+				'LAYERS' : 'csau_geospatial:volta_pvlmd_old_parcel_records',
+				'TILED' : true
+			},
+			// params: {'LAYERS':
+			// 'rating:spatial_unit_assembly', 'cql_filter':
+			// "assembly_code='AMA'" , 'TILED': true },,
+			serverType : 'geoserver',
+			transition : 0
+		})
 
+var pvlmd_volta_region_old_data_dataLayer = new ol.layer.Tile(
+		{
+			title : 'Volta Old Data',
+			visible : false,
+			source : pvlmd_volta_region_old_data_dataSource
+
+		})
 
 var undergoing_registration_status_dataSource = new ol.source.TileWMS({
 	url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
@@ -548,6 +568,8 @@ map.addLayer(registration_district_dataLayer);
 map.addLayer(grid_lrd_dataLayer);
 
 // map.addLayer(beacon_lrd_dataLayer);
+
+map.addLayer(pvlmd_volta_region_old_data_dataLayer);
 
 map.addLayer(lrd_parcels_dataLayer);
 map.addLayer(parcels_smd_dataLayer);
