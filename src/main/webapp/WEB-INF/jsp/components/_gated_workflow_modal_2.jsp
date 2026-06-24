@@ -3665,81 +3665,185 @@
             </div>
           </div>
 
-          <!-- Map Tools Section -->
-          <div class="card border mb-4">
-            <div class="card-header bg-light">
-              <h6 class="mb-0 fw-semibold">
-                <i class="bi bi-tools me-2"></i>Map Tools
-              </h6>
-            </div>
-            <div class="card-body">
-              <div class="d-flex flex-wrap gap-2 mb-3">
-                <!-- Visualization Tools -->
-                <button type="button" class="btn btn-primary btn-sm" 
-                        id="lc_btn_visualise_wkt"
-                        data-bs-toggle="tooltip" data-bs-placement="top" 
-                        title="Visualize Polygon">
-                  <i class="bi bi-eye me-1"></i> View WKT
-                </button>
+          <div class="row">
+            <div class="col-md-6">
+                <!-- Map Tools Section -->
+                <div class="card border mb-4 h-100">
+                    <div class="card-header bg-light">
+                    <h6 class="mb-0 fw-semibold">
+                        <i class="bi bi-tools me-2"></i>Map Tools
+                    </h6>
+                    </div>
+                    <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <!-- Visualization Tools -->
+                        <button type="button" class="btn btn-primary btn-sm" 
+                                id="lc_btn_visualise_wkt"
+                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                title="Visualize Polygon">
+                        <i class="bi bi-eye me-1"></i> View WKT
+                        </button>
 
-                <!-- <button type="button" class="btn btn-info btn-sm" 
-                        id="lc_btn_visualise_search"
-                        data-bs-toggle="tooltip" data-bs-placement="top" 
-                        title="Plot Parcels">
-                  <i class="bi bi-layers me-1"></i> Plot Parcels
-                </button>
+                        <!-- <button type="button" class="btn btn-info btn-sm" 
+                                id="lc_btn_visualise_search"
+                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                title="Plot Parcels">
+                        <i class="bi bi-layers me-1"></i> Plot Parcels
+                        </button>
 
-                <button type="button" class="btn btn-warning btn-sm" 
-                        id="lc_btnprintmap"
-                        data-bs-toggle="tooltip" data-bs-placement="top" 
-                        title="Print Map">
-                  <i class="bi bi-printer me-1"></i> Print
-                </button> -->
+                        <button type="button" class="btn btn-warning btn-sm" 
+                                id="lc_btnprintmap"
+                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                title="Print Map">
+                        <i class="bi bi-printer me-1"></i> Print
+                        </button> -->
 
-                <!-- Scale Controls -->
-                <div class="d-flex align-items-center ms-auto">
-                  <label class="form-label me-2 mb-0 fw-medium">
-                    <i class="bi bi-zoom-in me-1"></i>Scale:
-                  </label>
-                  <div class="input-group input-group-sm" style="width: 200px;">
-                    <input type="text" class="form-control" id="lc_scale_value_e" 
-                           placeholder="Custom scale">
-                    <select class="form-select" data-trigger id="lc_scale_value" style="width: 100px;">
-                      <option value="500">500</option>
-                      <option value="1107">1107</option>
-                      <option value="1250">1250</option>
-                      <option value="2500" selected>2500</option>
-                      <option value="2140">2140</option>
-                      <option value="2670">2670</option>
-                      <option value="2215">2215</option>
-                      <option value="2825">2825</option>
-                      <option value="5000">5000</option>
-                      <option value="10000">10000</option>
-                      <option value="15000">15000</option>
-                      <option value="20000">20000</option>
-                    </select>
-                  </div>
+                        <!-- Scale Controls -->
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fw-semibold text-muted">Scale:</span>
+                            <input type="hidden" class="form-control lc_scale_value_e" id="lc_scale_value_e" 
+                                    placeholder="Custom scale">
+                            <select class="form-select form-select-sm lc_scale_value" style="width: 120px;" id="lc_scale_value">
+                                <option value="500">1:500</option>
+                                <option value="1107">1:1,107</option>
+                                <option value="1250">1:1,250</option>
+                                <option value="2500">1:2,500</option>
+                                <option value="5000">1:5,000</option>
+                                <option value="10000">1:10,000</option>
+                                <option value="15000">1:15,000</option>
+                                <option value="20000">1:20,000</option>
+                            </select>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="lc_lockmapscale" checked>
+                                <label class="form-check-label small" for="lc_lockmapscale">Lock</label>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm lc_btn_scale_zoom" id="lc_btn_scale_zoom" title="Zoom to Scale">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+
+                        <!-- Scale Controls -->
+                        <!-- <div class="d-flex align-items-center ms-auto">
+                            <label class="form-label me-2 mb-0 fw-medium">
+                                <i class="bi bi-zoom-in me-1"></i>Scale:
+                            </label>
+                            <div class="input-group input-group-sm" style="width: 200px;">
+                                <input type="text" class="form-control lc_scale_value_e" id="lc_scale_value_e" 
+                                    placeholder="Custom scale">
+                                <select class="form-select lc_scale_value" data-trigger id="lc_scale_value" style="width: 100px;">
+                                <option value="500">500</option>
+                                <option value="1107">1107</option>
+                                <option value="1250">1250</option>
+                                <option value="2500" selected>2500</option>
+                                <option value="2140">2140</option>
+                                <option value="2670">2670</option>
+                                <option value="2215">2215</option>
+                                <option value="2825">2825</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="15000">15000</option>
+                                <option value="20000">20000</option>
+                                </select>
+                            </div>
+                        </div> -->
+
+                        <!-- Scale Lock -->
+                        <!-- <div class="d-flex align-items-center ms-2">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" 
+                                id="lc_lockmapscale" checked>
+                            <label class="form-check-label small" for="lc_lockmapscale">
+                            Lock Scale
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm ms-2 lc_btn_scale_zoom" 
+                                id="lc_btn_scale_zoom"
+                                data-bs-toggle="tooltip" data-bs-placement="top" 
+                                title="Zoom to Scale">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        </div> -->
+                    </div>
+                    </div>
                 </div>
-
-                <!-- Scale Lock -->
-                <div class="d-flex align-items-center ms-2">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" 
-                           id="lc_lockmapscale" checked>
-                    <label class="form-check-label small" for="lc_lockmapscale">
-                      Lock Scale
-                    </label>
-                  </div>
-                  <button type="button" class="btn btn-outline-secondary btn-sm ms-2" 
-                          id="lc_btn_scale_zoom"
-                          data-bs-toggle="tooltip" data-bs-placement="top" 
-                          title="Zoom to Scale">
-                    <i class="bi bi-search"></i>
-                  </button>
-                </div>
-              </div>
             </div>
+            <div class="col-md-6">
+                <!-- Scanned Maps Section -->
+                <div class="card mb-4 h-100">
+                    <div class="card-header bg-opacity-10 py-2">
+                        <h6 class="mb-0 fw-semibold">
+                            <i class="fas fa-layer-group me-2"></i>Scanned Maps
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <select class="form-select form-select-sm" id="geoserverscannedimages_list">
+                                <option value="-1">Select Scanned Image</option>
+                            </select>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button"  class="btn btn-warning btn-sm flex-fill" id="lc_btn_search_for_scanned_maps">
+                                <i class="fas fa-search me-1"></i> Search
+                            </button>
+                            <button type="button"  class="btn btn-success btn-sm flex-fill" id="lc_btn_load_for_scanned_maps">
+                                <i class="fas fa-check-circle me-1"></i> Load
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
           </div>
+
+          
+
+        <!-- Advanced Search -->
+        <!-- <div class="card border-info">
+            <div class="card-header bg-info bg-opacity-10 border-info py-2">
+                <h6 class="mb-0 fw-semibold">
+                    <i class="fas fa-search-plus me-2"></i>Advanced Search
+                </h6>
+            </div>
+            <div class="card-body p-3">
+                <div class="mb-3">
+                    <input class="form-control form-control-sm" type="text" 
+                            id="scannned_map_to_search_for" 
+                            placeholder="Enter Map name"
+                            list="listofscannnedmaptosearchfor">
+                    <datalist id="listofscannnedmaptosearchfor"></datalist>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-info btn-sm flex-fill" id="lrd_btn_search_for_scanned_maps_all">
+                        <i class="fas fa-search me-1"></i> Find
+                    </button>
+                    <button class="btn btn-primary btn-sm flex-fill" id="lrd_btn_load_for_scanned_maps_all">
+                        <i class="fas fa-layer-group me-1"></i> Load All
+                    </button>
+                </div>
+            </div>
+        </div> -->
+
+            <!-- Multiple Parcels Table -->
+        <div class="card card-body mt-4">
+            <h6 class="fw-semibold mb-3 text-primary">
+                <i class="fas fa-copy me-2"></i>Multiple Parcel Overlays
+            </h6>
+            <div class="table-responsive">
+                <table class="table table-hover table-sm" id="lrd_more_than_one_parcel_Table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reference Number</th>
+                            <th>Locality</th>
+                            <th>Remarks</th>
+                            <th class="text-center">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
           <!-- Map Container -->
           <div class="card border mb-4">

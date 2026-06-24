@@ -4101,6 +4101,17 @@ $('#lc_scale_value').change(
 			click_map_zoom_value = false;
 
 		});
+
+		$('.lc_scale_value').change(
+		function() {
+			// alert($(this).val());
+			$('.lc_scale_value_e').val($(this).val());
+			var view = map.getView();
+			view.setResolution(ol.proj.getPointResolution(view.getProjection(),
+					getResolutionFromScale($(this).val()), view.getCenter()));
+			click_map_zoom_value = false;
+
+		});
 // 
 
 var click_map_zoom_value = true;
@@ -4110,6 +4121,14 @@ var click_map_zoom_value = true;
 			$("#lc_btn_scale_zoom").click(function(event) {
 			var scale_value = $('#lc_scale_value_e').val();
 			var view = lc_map.getView();
+			view.setResolution(ol.proj.getPointResolution(view.getProjection(),
+					getResolutionFromScale(scale_value), view.getCenter()));
+			click_map_zoom_value = false;
+		});
+
+		$(".lc_btn_scale_zoom").click(function(event) {
+			var scale_value = $('.lc_scale_value_e').val();
+			var view = map.getView();
 			view.setResolution(ol.proj.getPointResolution(view.getProjection(),
 					getResolutionFromScale(scale_value), view.getCenter()));
 			click_map_zoom_value = false;

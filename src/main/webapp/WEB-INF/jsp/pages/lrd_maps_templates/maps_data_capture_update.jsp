@@ -32,7 +32,7 @@
                     <div class="card-body">
                         <!-- Action Buttons -->
                         <div class="btn-group w-100 mb-4">
-                            <button type="button" class="btn btn-primary btn-sm" id="lrd_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Add Coordinate">
+                            <button type="button" class="btn btn-primary btn-sm" id="lc_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Add Coordinate">
                                 <i class="fas fa-plus-circle me-1"></i> Add
                             </button>
                             <button type="button" class="btn btn-info btn-sm" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" data-bs-tooltip="tooltip" title="Upload CSV">
