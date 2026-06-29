@@ -1320,6 +1320,22 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 			}
 
+			if (request_type.equals("select_search_pvlmd_parcles_by_reference_number")) {
+
+				String vr_search_text = request.getParameter("vr_search_text");
+
+				// //System.out.println(vr_search_text);
+				web_service_response = cls_maps.select_search_pvlmd_parcles_by_reference_number(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						vr_search_text);
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+			}
+
 			if (request_type.equals("select_search_smd_parcles_by_other_number")) {
 
 				String vr_search_text = request.getParameter("vr_search_text");
@@ -1367,6 +1383,27 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 			}
 
 			
+			if (request_type.equals("pvlmd_link_transaction_and_parcel")) {
+
+				String transaction_reference = request.getParameter("transaction_reference");
+				String parcel_reference = request.getParameter("parcel_reference");
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("transaction_reference", transaction_reference);
+				obj.put("parcel_reference", parcel_reference);
+				// //System.out.println(parcel_id);
+				web_service_response = cls_maps
+						.select_pvlmd_link_transaction_and_parcel(
+								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+			}
 
 			if (request_type.equals("get_rent_transaction_id_by_parcel_uuid")) {
 

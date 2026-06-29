@@ -826,6 +826,32 @@ public class Ws_maps {
 
 	}
 
+	public String select_pvlmd_link_transaction_and_parcel(String web_service_url,
+			String web_service_api_key, String job_number)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(web_service_url
+					+ "maps_service/select_pvlmd_link_transaction_and_parcel");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, job_number);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
 	
 	public String get_rent_transaction_id_by_parcel_uuid(String web_service_url,
 			String web_service_api_key, String job_number)
@@ -916,6 +942,32 @@ public class Ws_maps {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
 					web_service_url + "maps_service/select_search_pvlmd_parcles_by_other_number");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, job_number);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+	public String select_search_pvlmd_parcles_by_reference_number(String web_service_url, String web_service_api_key,
+			String job_number)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "maps_service/select_search_pvlmd_parcles_by_reference_number");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")

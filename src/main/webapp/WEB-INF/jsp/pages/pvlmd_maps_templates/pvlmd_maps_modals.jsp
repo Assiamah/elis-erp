@@ -486,7 +486,7 @@
 
             <!-- Body -->
             <div class="modal-body p-4">
-                <input id="pvlmd_gid" name="pvlmd_tr_gid" type="hidden">
+                <input id="pvlmd_tr_gid" name="pvlmd_tr_gid" type="hidden">
                 <input id="pvlmd_tr_t_id" name="pvlmd_tr_t_id" type="hidden" value="0">
 
                 <!-- 2-Column Grid Layout -->
