@@ -124,6 +124,39 @@ public class Maps {
 
 			}
 
+			if (request_type.equals("save_hatched_plan_data")) {
+				String polygons_json = request.getParameter("polygons_json");
+				String job_number = request.getParameter("job_number");
+		
+				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
+
+				String userid = (String) session.getAttribute("userid");
+
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("job_number", job_number);
+				obj.put("created_by_name", fullname); 
+				obj.put("mac_address", mac_address);
+				obj.put("ip_address", ip_address);
+				obj.put("created_by_id", userid);
+				obj.put("hatched_polygons", polygons_json);
+
+				String input_details = obj.toString();
+				System.out.println(input_details);
+				// String wkt_polgon_wgs84 =
+
+				web_service_response = cls_maps.select_save_hatched_plan_data(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						input_details);
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+			}
+
 			if (request_type.equals("pvlmd_polygon_for_save_with_info")) {
 				String wkt_polgon = request.getParameter("wkt_polgon");
 				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");

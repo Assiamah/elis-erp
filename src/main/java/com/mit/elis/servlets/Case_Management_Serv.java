@@ -4446,7 +4446,8 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 			if (request_type.equals("select_consolidated_internal_search_report_attribute")) {
 				String polygon = request.getParameter("vr_polygon");
-				// //System.out.println(polygon);
+				System.out.println("polygon");
+				System.out.println(polygon);
 				web_service_response = casemgt_cl.select_consolidated_internal_search_report_attribute(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						polygon);

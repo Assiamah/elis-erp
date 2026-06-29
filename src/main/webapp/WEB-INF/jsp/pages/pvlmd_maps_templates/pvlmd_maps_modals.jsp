@@ -759,6 +759,478 @@
 
 
 
+<div class="modal fade effect-scale modal-blur" tabindex="-1"
+	id="addpvlmdtransactionlong_t" role="dialog"
+	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
+>
+	<div class="modal-dialog modal-dialog-centered modal-xl">
+		<div class="modal-content border-0 shadow-lg overflow-hidden">
+
+			<!--Header -->
+			<div class="modal-header bg-primary text-white align-items-center">
+				<h5 class="modal-title text-white mb-0" id="Heading">PVLMD Transaction Informations</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+
+
+			<!--  Body Start -->
+			<div class="modal-body p-4">
+
+
+
+				<input id="pvlmd_gid_t" name="pvlmd_tr_gid_t" type="hidden" value="0">
+			<input id="pvlmd_tr_t_id_t" name="pvlmd_tr_t_id_t" type="hidden" value="0">
+
+
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col">
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_reference_number_t"
+											readonly>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">File Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_file_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Reference Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_property_number_t"
+											>
+										</div>
+
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_file_number">NT Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_nt_number_t"
+											>
+										</div>
+
+									</div>
+								</div>
+
+
+
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Mutation Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_mutation_number_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Deed Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_deed_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Serial Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_serial_number_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Sheet Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_sheet_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Plan Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_plan_number_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Plot Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_plot_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">LVD Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_lvb_number_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Document Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_doc_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party1_plaintiff_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff Tel No</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party1_plaintiff_tel_no_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party1/Plaintiff Address</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party1_plantiff_add_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party1/Plaintiff E-mail</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party1_plaintiff_email_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party2_defendant_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Tel No</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party2_defendant_tel_no_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Party2/Defendant E-mail</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party2_defendant_email_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Party2/Defendant Address</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_party2_defendant_add_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+									<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Instrument Date</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_instrument_date_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Instrument Type</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_instrument_type_t"
+											>
+										</div>
+									</div>
+								</div>
+
+						</div>
+						<div class="col">
+
+
+
+
+							<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Term</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_term_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Commencement Date</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_commencement_date_t"
+											>
+										</div>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Purpose</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_purpose_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consent Date</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_consent_date_t"
+											>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Consideration</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_consideration_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Consideration Currency</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_consideration_currency_t"
+											>
+										</div>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Premium</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_premium_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Premium Currency</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_premium_currency_t"
+											>
+										</div>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Compensation Status</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_compensation_status_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Suit Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_suit_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Floor Level</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_floor_level_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_plot_number">Apartment Number</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_apartment_number_t"
+											>
+										</div>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_reference_number">Rent</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="" id="pvlmd_tr_rent_t"
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="pvlmd_tr_submission_date">Submission Date</label> <input
+												class="form-control form-control-sm" type="text"
+												placeholder="Date format (eg. DD-MM-YYYY)" id="pvlmd_tr_submission_date_t"
+											>
+										</div>
+
+
+									</div>
+								</div>
+
+
+
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Unit Description</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
+									id="pvlmd_tr_unit_description_t"
+								>
+							</div>
+
+							<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Judgement in Favour of</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
+									id="pvlmd_tr_judgement_in_favour_of_t"
+								>
+							</div>
+
+
+						<div class="mb-3">
+								<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Remarks</label> <input
+									class="form-control form-control-sm" type="text" placeholder=""
+									id="pvlmd_tr_remarks_t"
+								>
+							</div>
+
+
+
+
+
+						<div class="row g-3">
+										<div class="col">
+											<label class="form-label small fw-semibold" for="bl_business_process_sub_name">Last Update By</label> <input
+												class="form-control form-control-sm" type="text" placeholder=""
+												id="pvlmd_tr_modified_by_t" readonly
+											>
+										</div>
+
+										<div class="col">
+											<label class="form-label small fw-semibold" for="bl_job_number">Date Last Updated</label> <input
+														class="form-control form-control-sm" type="text" placeholder=""
+														id="pvlmd_tr_modified_date_t" readonly
+													>
+										</div>
+
+
+
+									</div>
+
+
+
+
+						</div>
+					</div>
+
+				</div>
+
+
+
+
+			</div>
+
+			<!--Body End -->
+
+
+
+			<!-- Footer -->
+			<div class="modal-footer bg-white border-top">
+<!--
+	<button type="button" class="btn btn-success"  id="pvlmd_tr_btn_save_transaction_long_t">
+					<i class="bi bi-x-circle me-1"></i>Save
+				</button>
+
+				<button type="button" class="btn btn-danger to_hide_on_level_1"  id="pvlmd_tr_btn_delete_transaction_long_t">
+					<i class="bi bi-x-circle me-1"></i>Delete
+				</button>
+ -->
+
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+					<i class="bi bi-x-circle me-1"></i>Close
+				</button>
+
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
 
 
 <div class="modal fade effect-scale modal-blur" tabindex="-1"
