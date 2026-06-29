@@ -227,6 +227,55 @@ public class MapsController {
 
 	}
 
+	@RequestMapping("/link_transaction_and_parcel_data")
+	@GetMapping
+	public String link_transaction_and_parcel_data(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// Check if user allowed for page
+		// HttpSession session = request.getSession();
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+		}
+
+		// Log User out if the user tries to access right not assigned
+		// if (!isFound) {
+		// 	request.setAttribute("login", "Please this is not alllowed");
+		// 	//
+		// 	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		// }
+
+		// if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+		// 	// Session is expired
+		// 	request.setAttribute("login", "sessionout");
+		// 	//System.out.println("If Not success");
+		// 	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		// }
+
+		String get_gender_list = user_web_service.get_list_of_gender(
+						cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key());
+				// web_service_response = get_gender_list;
+				// menu_obj_data = new JSONObject(get_gender_list);
+				// String all_menus_data = menu_obj_data.get("data").toString();
+				// //System.out.println(all_menus_data);
+				Gson googleJson = new Gson();
+				ArrayList javaArrayListFromGSON = googleJson.fromJson(get_gender_list, ArrayList.class);
+
+				request.setAttribute("genderlist", javaArrayListFromGSON);
+
+		request.setAttribute("page_name", "link_transaction_and_parcel_data");
+		model.addAttribute("content", "../pages/pvlmd_maps_templates/link_transaction_and_parcel_data.jsp"); return "layouts/app";
+
+	}
+
 	@RequestMapping("/lrd_transaction_search")
 	@PostMapping
 	public String lrd_transaction_search(HttpSession session, Model model, HttpServletRequest request,

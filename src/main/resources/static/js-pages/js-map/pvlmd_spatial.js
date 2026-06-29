@@ -1718,6 +1718,88 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.save('map.pdf');
     });
 
+
+	 // 13. pvlmd_btn_search_by_reference_number - Converted from addEventListener
+    $('#pvlmd_parcel_btn_search_by_reference_number').on('click', function(e) {
+        var search_text = $('#pvlmd_search_by_text').val();
+       // console.log(search_text);
+
+	   if (!search_text || search_text.trim() === '') {
+			swal.fire({
+				title: "Error",
+				text: "Please enter a property number to search.",
+				icon: "error",
+				button: "OK",
+			});
+
+			return;
+		}
+
+        $.ajax({
+            type: "POST",
+            url: "Maps",
+            data: {
+                request_type: 'select_search_pvlmd_parcles_by_reference_number',
+                vr_search_text: search_text
+            },
+            cache: false,
+            success: function(jobdetails) {
+
+                var json_p = JSON.parse(jobdetails);
+                console.log(json_p);
+
+                if (json_p !== undefined || json_p !== null) {
+                    if (pvlmd_lc_searchLayer.getSource() != null) {
+                        pvlmd_lc_searchLayer.getSource().clear();
+                    }
+
+					if(!json_p.wkt || json_p.wkt === 'null' || json_p.wkt === '') {
+
+						swal.fire({
+							title: "No Polygon Found",
+							text: "No polygon data found for the provided property number.",
+							icon: "warning",
+							button: "OK",
+						});
+
+						return;
+					}
+
+                    if (json_p.parcels !== undefined && json_p.parcels.features !== null) {
+                        pvlmd_lc_searchLayer.setSource(new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(json_p.parcels)
+                        }));
+                    }
+
+                    view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
+                    pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(), {
+                        size: pvlmd_map.getSize(),
+                        maxZoom: 16
+                    });
+
+					$("#link_parcel_summary_property").text(json_p.parcels.features[0].properties.property_number || '-');
+					$("#link_parcel_summary_reference").text(json_p.parcels.features[0].properties.reference_number || '-');
+					$("#link_parcel_summary_locality").text(json_p.parcels.features[0].properties.locality || '-');
+					$("#link_parcel_summary_plotted_by").text(json_p.parcels.features[0].properties.plotted_by || '-');
+					$("#link_parcel_summary_date_plotted").text(json_p.parcels.features[0].properties.date_plotted || '-');
+
+					$("#pvlmd_bl_wkt_polygon").text(json_p.wkt|| '-');
+					$("#linked_parcel_reference").text(search_text);
+					$("#link_parcel_reference").val(search_text);
+
+					const link_txn_selected_id = $('#link_txn_selected_id').val();
+					const link_parcel_selected_id = $('#link_parcel_reference').val();
+					if (link_txn_selected_id && link_parcel_selected_id) {
+						$('#pvlmd_btn_link_transaction_and_parcel').prop('disabled', false);
+					} else {
+						$('#pvlmd_btn_link_transaction_and_parcel').prop('disabled', true);
+					}
+					
+                }
+            }
+        });
+    });
+
     // Helper function
     function getResolutionFromScale(scale) {
         var units = pvlmd_map.getView().getProjection().getUnits();
