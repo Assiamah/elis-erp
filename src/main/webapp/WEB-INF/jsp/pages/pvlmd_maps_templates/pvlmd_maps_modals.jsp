@@ -21,7 +21,7 @@
             </div>
 
             <div class="modal-body p-4">
-                <input id="pvlmd_gid" name="pvlmd_gid" type="" value="">
+                <input id="pvlmd_gid" name="pvlmd_gid" type="hidden" value="">
 
                 <div class="container-fluid">
                     <!-- Top Section: Reference, NT, File Number -->
