@@ -1880,9 +1880,9 @@ window.initiateDeleteParcel = function(parcelId) {
         //     container: 'swal-container-custom' // Add custom class
         // }
     }).then((result) => {
-		if (!result.isConfirmed) {
-            $('#pvlmdparcelinformation').modal('show');
-        }
+		// if (!result.isConfirmed) {
+        //     $('#pvlmdparcelinformation').modal('show');
+        // }
 
         if (result.isConfirmed) {
             var remarks_notes = $("#txt_general_remarks_notes").val();
