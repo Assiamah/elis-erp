@@ -1850,4 +1850,86 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 
+window.initiateDeleteParcel = function(parcelId) {
+
+    var selectedJobsList = [];
+	var pvlmd_reference_number = $('#pvlmd_reference_number').text();
+
+	// Close the underlying modal
+    $('#pvlmdparcelinformation').modal('hide');
+
+    Swal.fire({
+        title: 'Add Job to Request List?',
+        text: 'This will add selected jobs to request to list.',
+        icon: 'question',
+		//target: document.body,
+		//backdrop: true,
+        html: `
+            <!-- <p>This will add selected jobs to request to list.</p> -->
+            <div class="form-group text-start mt-2">
+                <label for="txt_general_remarks_notes">Remarks: <span class="text-danger">*</span></label>
+                <textarea class="form-control mt-1" id="txt_general_remarks_notes" rows="3"></textarea>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Add',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#d33',
+		// customClass: {
+        //     container: 'swal-container-custom' // Add custom class
+        // }
+    }).then((result) => {
+		if (!result.isConfirmed) {
+            $('#pvlmdparcelinformation').modal('show');
+        }
+
+        if (result.isConfirmed) {
+            var remarks_notes = $("#txt_general_remarks_notes").val();
+            if (!remarks_notes) {
+                Swal.fire({
+                    title: 'Remarks is required!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                });
+                return;
+            }
+
+            const exists = selectedJobsList.some(job => job.job_number === parcelId);
+        
+            if (exists) {
+                Swal.fire({
+                    title: 'Duplicate Job',
+                    text: `Job ${parcelId} is already in the list.`,
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+
+                return;
+            }
+
+            // Add job to list
+            selectedJobsList.push({
+                jobNumberPlain: parcelId,
+                jobNumberHtml: parcelId,
+                applicantNameHtml: pvlmd_reference_number,
+                applicationType: 'TEMPORAL APPLICATION',
+                batchingPurpose: 'Request for parcel deletion',
+                remarksNotes: remarks_notes,
+                // created_on: jobData.created_on,
+                // job_status: jobData.job_status
+            });
+
+            // Update localStorage
+            localStorage.setItem('requestlistdata', JSON.stringify(selectedJobsList));
+            
+            // Update the table
+            addJobToRequestlist();
+
+            prepareRequestlistModal();
+        }
+    });
+
+};
+
 				});
