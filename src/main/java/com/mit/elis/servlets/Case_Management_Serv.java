@@ -3131,7 +3131,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put( "unit_id" , unit_id );
 				obj.put( "division" , division_name );
 
-                //System.out.println(obj.toString());
+                System.out.println(obj.toString());
 
 				web_service_response = users_sl.select_user_account_all_by_unit_per_region(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
