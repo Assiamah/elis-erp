@@ -25499,3 +25499,11 @@ input.form-control.otp-input {
 #lc_concurrence_certificate_summary_details .ql-editor {
     overflow-y: auto;
 }
+
+.swal-container-custom {
+    z-index: 9999 !important;
+}
+
+.swal-container-custom .swal2-popup {
+    z-index: 10000 !important;
+}
