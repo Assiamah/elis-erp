@@ -176,6 +176,27 @@ console.log('PVLMD Maps working');
 
 					})
 
+						var pvlmd_grid_lrd_dataSource_new = new ol.source.TileWMS(
+							{
+								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+								params : {
+									'LAYERS' : 'csau_geospatial:ghana_grid_index',
+									'TILED' : true
+								},
+								// params: {'LAYERS':
+								// 'rating:spatial_unit_assembly', 'cql_filter':
+								// "assembly_code='AMA'" , 'TILED': true },,
+								serverType : 'geoserver',
+								transition : 0
+							})
+
+					var pvlmd_grid_lrd_dataLayer_new = new ol.layer.Tile({
+						title : 'Grid Country',
+						visible : false,
+						source : pvlmd_grid_lrd_dataSource_new
+
+					})
+
 					var pvlmd_registration_district_dataSource = new ol.source.TileWMS(
 							{
 								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
@@ -547,6 +568,9 @@ console.log('PVLMD Maps working');
 					pvlmd_map.addLayer(pvlmd_registration_district_dataLayer);
 
 					pvlmd_map.addLayer(pvlmd_grid_lrd_dataLayer);
+					pvlmd_map.addLayer(pvlmd_grid_lrd_dataLayer_new);
+
+					
 
 					// map.addLayer(beacon_lrd_dataLayer);
 
@@ -1363,37 +1387,195 @@ document.addEventListener('DOMContentLoaded', function() {
 					
 					
     // 1. pvlmd_btn_visualise_coordinate - Converted from addEventListener
-    $('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
-        let jsonArr = [];
-        let polygonPoints = [];
+    // $('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
+    //     let jsonArr = [];
+    //     let polygonPoints = [];
 
-        $('#coordinatelis_Table tbody tr').each(function() {
-            let name = $(this).find('td:eq(0)').text().trim();
-            let x = $(this).find('td:eq(1)').text().trim();
-            let y = $(this).find('td:eq(2)').text().trim();
+    //     $('#coordinatelis_Table tbody tr').each(function() {
+    //         let name = $(this).find('td:eq(0)').text().trim();
+    //         let x = $(this).find('td:eq(1)').text().trim();
+    //         let y = $(this).find('td:eq(2)').text().trim();
 
-            jsonArr.push({
-                coordinate_name: name,
-                x_coordinate: x,
-                y_coordinate: y
-            });
+    //         jsonArr.push({
+    //             coordinate_name: name,
+    //             x_coordinate: x,
+    //             y_coordinate: y
+    //         });
 
-            polygonPoints.push(y + " " + x);
-        });
+    //         polygonPoints.push(y + " " + x);
+    //     });
 
-        // Close polygon by repeating first point
-        if (polygonPoints.length > 0) {
-            polygonPoints.push(polygonPoints[0]);
+    //     // Close polygon by repeating first point
+    //     if (polygonPoints.length > 0) {
+    //         polygonPoints.push(polygonPoints[0]);
+    //     }
+
+    //     let polygonWKT = "POLYGON((" + polygonPoints.join(', ') + "))";
+    //    // console.log(jsonArr);
+    //    // console.log(polygonWKT);
+
+    //     $('#pvlmd_bl_wkt_polygon').val(polygonWKT);
+
+    //     pvlmd_lc_searchLayer.setSource(new ol.source.Vector({
+    //         features: (new ol.format.WKT()).readFeatures(polygonWKT)
+    //     }));
+        
+    //     view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
+    //     pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(), {
+    //         size: pvlmd_map.getSize(),
+    //         maxZoom: 16
+    //     });
+    // });
+
+// 	$('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
+//     let polygonGroups = {};
+
+//     // Group coordinates by polygon
+//     $('#coordinatelis_Table tbody tr').each(function() {
+//         let name = $(this).find('td:eq(0)').text().trim();
+//         let x = parseFloat($(this).find('td:eq(1)').text().trim());
+//         let y = parseFloat($(this).find('td:eq(2)').text().trim());
+
+//         // Extract polygon identifier from name (e.g., "P1-1" -> "P1")
+//         let polygonId = name.split('-')[0] || 'polygon1';
+        
+//         if (!polygonGroups[polygonId]) {
+//             polygonGroups[polygonId] = [];
+//         }
+//         polygonGroups[polygonId].push(y + " " + x);
+//     });
+
+//     // Build polygons
+//     let polygons = [];
+//     Object.keys(polygonGroups).forEach(key => {
+//         let points = polygonGroups[key];
+//         if (points.length > 0) {
+//             points.push(points[0]); // Close polygon
+//             polygons.push(points);
+//         }
+//     });
+
+//     // Generate WKT
+//     let wkt;
+//     if (polygons.length === 1) {
+//         wkt = "POLYGON((" + polygons[0].join(', ') + "))";
+//     } else {
+//         let polygonWKTs = polygons.map(poly => 
+//             "((" + poly.join(', ') + "))"
+//         );
+//         wkt = "MULTIPOLYGON(" + polygonWKTs.join(', ') + ")";
+//     }
+
+//     $('#pvlmd_bl_wkt_polygon').val(wkt);
+    
+//     // Update map...
+//     pvlmd_lc_searchLayer.setSource(new ol.source.Vector({
+//         features: (new ol.format.WKT()).readFeatures(wkt)
+//     }));
+    
+//     view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
+//     pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(), {
+//         size: pvlmd_map.getSize(),
+//         maxZoom: 16
+//     });
+// });
+$('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
+    let polygonGroups = {};
+
+    // Group coordinates by polygon
+    $('#coordinatelis_Table tbody tr').each(function() {
+        let name = $(this).find('td:eq(0)').text().trim();
+        let x = parseFloat($(this).find('td:eq(1)').text().trim());
+        let y = parseFloat($(this).find('td:eq(2)').text().trim());
+
+        let parts = name.split('-');
+        let polygonId = parts[0] || 'polygon1';
+        let ringType = parts[1] || 'outer';
+        
+        if (!polygonGroups[polygonId]) {
+            polygonGroups[polygonId] = { outer: [], inner: [] };
         }
+        
+        if (ringType === 'inner') {
+            polygonGroups[polygonId].inner.push({x: x, y: y});
+        } else {
+            polygonGroups[polygonId].outer.push({x: x, y: y});
+        }
+    });
 
-        let polygonWKT = "POLYGON((" + polygonPoints.join(', ') + "))";
-       // console.log(jsonArr);
-       // console.log(polygonWKT);
+    // Function to calculate polygon area (positive = CCW, negative = CW)
+    function calculateArea(points) {
+        let area = 0;
+        for (let i = 0; i < points.length - 1; i++) {
+            area += (points[i].x * points[i+1].y - points[i+1].x * points[i].y);
+        }
+        // Close the polygon for area calculation
+        let last = points.length - 1;
+        area += (points[last].x * points[0].y - points[0].x * points[last].y);
+        return area / 2;
+    }
 
-        $('#pvlmd_bl_wkt_polygon').val(polygonWKT);
+    // Function to reverse ring order
+    function reverseRing(points) {
+        return points.slice().reverse();
+    }
 
+    // Build polygons with correct orientation
+    let polygons = [];
+    Object.keys(polygonGroups).forEach(key => {
+        let group = polygonGroups[key];
+        
+        // Ensure outer ring is counter-clockwise
+        let outerArea = calculateArea(group.outer);
+        if (outerArea < 0) {
+            // Reverse to make it CCW
+            group.outer = reverseRing(group.outer);
+        }
+        
+        // Ensure inner rings are clockwise
+        if (group.inner.length > 0) {
+            let innerArea = calculateArea(group.inner);
+            if (innerArea > 0) {
+                // Reverse to make it CW
+                group.inner = reverseRing(group.inner);
+            }
+        }
+        
+        // Close rings
+        if (group.outer.length > 0) {
+            group.outer.push(group.outer[0]);
+        }
+        if (group.inner.length > 0) {
+            group.inner.push(group.inner[0]);
+        }
+        
+        // Build polygon WKT
+        let outerWKT = group.outer.map(p => p.y + " " + p.x).join(', ');
+        let polygonWKT = "((" + outerWKT;
+        
+        if (group.inner.length > 0) {
+            let innerWKT = group.inner.map(p => p.y + " " + p.x).join(', ');
+            polygonWKT += ", " + innerWKT;
+        }
+        
+        polygonWKT += "))";
+        polygons.push(polygonWKT);
+    });
+
+    // Generate final WKT
+    let wkt;
+    if (polygons.length === 1) {
+        wkt = "POLYGON" + polygons[0];
+    } else {
+        wkt = "MULTIPOLYGON(" + polygons.join(', ') + ")";
+    }
+
+    $('#pvlmd_bl_wkt_polygon').val(wkt);
+    
+    // Update map
+    try {
         pvlmd_lc_searchLayer.setSource(new ol.source.Vector({
-            features: (new ol.format.WKT()).readFeatures(polygonWKT)
+            features: (new ol.format.WKT()).readFeatures(wkt)
         }));
         
         view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
@@ -1401,7 +1583,11 @@ document.addEventListener('DOMContentLoaded', function() {
             size: pvlmd_map.getSize(),
             maxZoom: 16
         });
-    });
+    } catch (error) {
+        console.log('Map update error:', error);
+        alert('Error rendering polygon: ' + error.message);
+    }
+});
 
     // 2. pvlmd_btn_save_wkt - Converted from addEventListener
     $('#pvlmd_btn_save_wkt').on('click', function() {
