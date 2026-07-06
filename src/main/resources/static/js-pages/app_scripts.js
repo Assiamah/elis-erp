@@ -1677,6 +1677,9 @@ $('input[name="request_type_radio"]').on('change', function () {
         case 'Individual':
             $('#individual-requesting-section').show().addClass('active-section');
             break;
+        case 'Cross-Unit':
+            $('#cross-unit-requesting-section').show().addClass('active-section');
+            break;
         case 'Cabinet':
             $('#cabinet-requesting-section').show().addClass('active-section');
             break;
@@ -1704,6 +1707,9 @@ $('input[name="file_type_radio"]').on('change', function () {
             break;
         case 'Individual':
             $('#individual-file-section').show().addClass('active-section');
+            break;
+        case 'Cross-Unit':
+            $('#cross-unit-file-section').show().addClass('active-section');
             break;
         case 'Cabinet':
             $('#cabinet-file-section').show().addClass('active-section');
@@ -2628,6 +2634,287 @@ $('#req_unit_division_to_send_to').on('change', function () {
     });
 });
 
+$('#cross_req_unit_division_to_send_to').on('change', function () {
+    const selected_division = $(this).val();
+    const $select = $("#cross_req_unit_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $unitCount = $("#cross-req_unit-count");
+    const $unitIcon = $("#cross-req_unit-icon");
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading units...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $unitIcon.removeClass('ri-building-2-line').addClass('ri-loader-4-line animate-spin');
+    $(".process-btn").hide();
+
+    if (!selected_division || selected_division === "") {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_units',
+        },
+        cache: false,
+        success: function (jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                const $select = $("#cross_req_unit_to_send_to");
+                let unitCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a unit',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add units to select
+                $(json_p.data).each(function () {
+                    if (this.unit_division && this.unit_division.includes(selected_division)) {
+                        const option = $('<option>', {
+                            value: this.unit_id || this.unit_name,
+                            text: this.unit_name || '',
+                            'data-division': this.unit_division || ''
+                        });
+
+                        $select.append(option);
+                        unitCount++;
+                    }
+                });
+
+                // Update UI based on results
+                if (unitCount > 0) {
+                    $select.prop('disabled', false);
+                    $unitCount.text(`(${unitCount} units)`).removeClass('text-danger').addClass('text-success');
+
+                    // Show success feedback
+                    showUnitNotification(`${unitCount} units loaded successfully`, 'success');
+
+                    // Enable when a unit is selected
+                    $select.on('change', function () {
+                        if ($(this).val()) {
+                            $(".process-btn").show();
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(".process-btn").hide();
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No units available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $unitCount.text('(No units)').removeClass('text-success').addClass('text-danger');
+                    showUnitNotification('No units found for this division', 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading units:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading units',
+                    disabled: true,
+                    selected: true
+                }));
+                $unitCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUnitNotification('Failed to load units. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $("#cross_req_unit_to_send_to").empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading units',
+                disabled: true,
+                selected: true
+            }));
+            $unitCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUnitNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
+$('#cross_req_unit_to_send_to').on('change', function () {
+    const selected_division = $("#cross_req_unit_division_to_send_to").val();
+    const selected_unit_name = $("#cross_req_unit_to_send_to option:selected").text();
+    const selected_unit_id = $("#cross_req_unit_to_send_to").val();
+    const $select = $("#cross_req_unit_user_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $userCount = $("#cross-req_user-count");
+    const $userIcon = $("#cross-req_user-icon");
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading users...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $userIcon.removeClass('ri-user-line').addClass('ri-loader-4-line animate-spin');
+
+    if (!selected_division) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+        return;
+    }
+
+    if (!selected_unit_name) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+        return;
+    }
+
+    const regional_code_general = $("#regional_code_general").text();
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_users_rpt',
+            division_name: selected_division,
+            region_code: regional_code_general,
+            unit_id: selected_unit_name
+        },
+        cache: false,
+        success: function (jobdetails) {
+            console.log("data response:", jobdetails);
+            try {
+                const json_p = JSON.parse(jobdetails);
+                let userCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a user',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add users to select
+                $(json_p.data).each(function () {
+                    //if (selected_unit_id && regional_code_general == this.regional_code) {
+                        const option = $('<option>', {
+                            value: this.userid,
+                            text: this.fullname || '',
+                            'data-unit': selected_unit_name || '',
+                            'data-regional': this.regional_code || ''
+                        });
+
+                        $select.append(option);
+                        userCount++;
+                   // }
+                });
+
+                // Update UI based on results
+                if (userCount > 0) {
+                    $select.prop('disabled', false);
+                    $userCount.text(`(${userCount} users)`).removeClass('text-danger').addClass('text-success');
+
+                    // Show success feedback
+                    showUserNotification(`${userCount} users loaded successfully`, 'success');
+
+                    // Add change event handler
+                    $select.off('change.userChange').on('change.userChange', function () {
+                        const userId = $(this).val();
+                        const userName = $(this).find('option:selected').text();
+
+                        if (userId) {
+                            // Store selected user data
+                            $(this).data('selected-user-id', userId);
+                            $(this).data('selected-user-name', userName);
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No users available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $userCount.text('(No users)').removeClass('text-success').addClass('text-danger');
+                    showUserNotification(`No users found in ${selected_division}`, 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading users:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading users',
+                    disabled: true,
+                    selected: true
+                }));
+                $userCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUserNotification('Failed to load users. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $select.empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading users',
+                disabled: true,
+                selected: true
+            }));
+            $userCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUserNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
 $('#file_unit_division_to_send_to').on('change', function () {
     const selected_division = $(this).val();
     const $select = $("#file_unit_to_send_to");
@@ -2753,6 +3040,287 @@ $('#file_unit_division_to_send_to').on('change', function () {
             $container.addClass('datalist-error');
             $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
             showUnitNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
+$('#cross_file_unit_division_to_send_to').on('change', function () {
+    const selected_division = $(this).val();
+    const $select = $("#cross_file_unit_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $unitCount = $("#cross-file_unit-count");
+    const $unitIcon = $("#cross-file_unit-icon");
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading units...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $unitIcon.removeClass('ri-building-2-line').addClass('ri-loader-4-line animate-spin');
+    $(".process-btn").hide();
+
+    if (!selected_division || selected_division === "") {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_units',
+        },
+        cache: false,
+        success: function (jobdetails) {
+            try {
+                const json_p = JSON.parse(jobdetails);
+                const $select = $("#cross_file_unit_to_send_to");
+                let unitCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-building-2-line');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a unit',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add units to select
+                $(json_p.data).each(function () {
+                    if (this.unit_division && this.unit_division.includes(selected_division)) {
+                        const option = $('<option>', {
+                            value: this.unit_id || this.unit_name,
+                            text: this.unit_name || '',
+                            'data-division': this.unit_division || ''
+                        });
+
+                        $select.append(option);
+                        unitCount++;
+                    }
+                });
+
+                // Update UI based on results
+                if (unitCount > 0) {
+                    $select.prop('disabled', false);
+                    $unitCount.text(`(${unitCount} units)`).removeClass('text-danger').addClass('text-success');
+
+                    // Show success feedback
+                    showUnitNotification(`${unitCount} units loaded successfully`, 'success');
+
+                    // Enable when a unit is selected
+                    $select.on('change', function () {
+                        if ($(this).val()) {
+                            $(".process-btn").show();
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(".process-btn").hide();
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No units available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $unitCount.text('(No units)').removeClass('text-success').addClass('text-danger');
+                    showUnitNotification('No units found for this division', 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading units:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading units',
+                    disabled: true,
+                    selected: true
+                }));
+                $unitCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUnitNotification('Failed to load units. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $("#cross_file_unit_to_send_to").empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading units',
+                disabled: true,
+                selected: true
+            }));
+            $unitCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $unitIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUnitNotification('Network error. Please check your connection.', 'danger');
+        }
+    });
+});
+
+$('#cross_file_unit_to_send_to').on('change', function () {
+    const selected_division = $("#cross_file_unit_division_to_send_to").val();
+    const selected_unit_name = $("#cross_file_unit_to_send_to option:selected").text();
+    const selected_unit_id = $("#cross_file_unit_to_send_to").val();
+    const $select = $("#cross_file_unit_user_to_send_to");
+    const $container = $select.closest('.datalist-container');
+    const $userCount = $("#cross-file_user-count");
+    const $userIcon = $("#cross-file_user-icon");
+
+    // Reset and show loading state
+    $select.prop('disabled', true).empty();
+    $select.append($('<option>', {
+        value: '',
+        text: 'Loading users...',
+        disabled: true,
+        selected: true
+    }));
+    $container.addClass('datalist-loading');
+    $userIcon.removeClass('ri-user-line').addClass('ri-loader-4-line animate-spin');
+
+    if (!selected_division) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+        return;
+    }
+
+    if (!selected_unit_name) {
+        $select.empty().append($('<option>', {
+            value: '',
+            text: 'Please select a division first',
+            disabled: true,
+            selected: true
+        }));
+        $container.removeClass('datalist-loading');
+        $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+        return;
+    }
+
+    const regional_code_general = $("#regional_code_general").text();
+
+    $.ajax({
+        type: "POST",
+        url: "Case_Management_Serv",
+        data: {
+            request_type: 'get_lc_list_of_users_rpt',
+            division_name: selected_division,
+            region_code: regional_code_general,
+            unit_id: selected_unit_name
+        },
+        cache: false,
+        success: function (jobdetails) {
+            console.log("data response:", jobdetails);
+            try {
+                const json_p = JSON.parse(jobdetails);
+                let userCount = 0;
+
+                // Remove loading state
+                $container.removeClass('datalist-loading');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-user-line');
+
+                // Clear and add default option
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Select a user',
+                    disabled: true,
+                    selected: true
+                }));
+
+                // Add users to select
+                $(json_p.data).each(function () {
+                    //if (selected_unit_id && regional_code_general == this.regional_code) {
+                        const option = $('<option>', {
+                            value: this.userid,
+                            text: this.fullname || '',
+                            'data-unit': selected_unit_name || '',
+                            'data-regional': this.regional_code || ''
+                        });
+
+                        $select.append(option);
+                        userCount++;
+                   // }
+                });
+
+                // Update UI based on results
+                if (userCount > 0) {
+                    $select.prop('disabled', false);
+                    $userCount.text(`(${userCount} users)`).removeClass('text-danger').addClass('text-success');
+
+                    // Show success feedback
+                    showUserNotification(`${userCount} users loaded successfully`, 'success');
+
+                    // Add change event handler
+                    $select.off('change.userChange').on('change.userChange', function () {
+                        const userId = $(this).val();
+                        const userName = $(this).find('option:selected').text();
+
+                        if (userId) {
+                            // Store selected user data
+                            $(this).data('selected-user-id', userId);
+                            $(this).data('selected-user-name', userName);
+                            $(this).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $(this).removeClass('is-valid');
+                        }
+                    });
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: 'No users available for this division',
+                        disabled: true,
+                        selected: true
+                    }));
+                    $userCount.text('(No users)').removeClass('text-success').addClass('text-danger');
+                    showUserNotification(`No users found in ${selected_division}`, 'warning');
+                }
+
+            } catch (error) {
+                console.error('Error loading users:', error);
+                $select.empty().append($('<option>', {
+                    value: '',
+                    text: 'Error loading users',
+                    disabled: true,
+                    selected: true
+                }));
+                $userCount.text('(Error)').addClass('text-danger');
+                $container.addClass('datalist-error');
+                $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-error-warning-line text-danger');
+                showUserNotification('Failed to load users. Please try again.', 'danger');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX error:', error);
+            $select.empty().append($('<option>', {
+                value: '',
+                text: 'Network error loading users',
+                disabled: true,
+                selected: true
+            }));
+            $userCount.text('(Error)').addClass('text-danger');
+            $container.addClass('datalist-error');
+            $userIcon.removeClass('ri-loader-4-line animate-spin').addClass('ri-wifi-off-line text-danger');
+            showUserNotification('Network error. Please check your connection.', 'danger');
         }
     });
 });
@@ -3817,6 +4385,25 @@ function getReqRecipientInfo(batchType) {
             if (userId) recipient.id = userId;
             if (userName) recipient.name = userName;
         }
+    } else if (batchType === 'Cross-Unit') {
+        const $userSelect = $("#cross_req_unit_user_to_send_to");
+        const selectedOption = $userSelect.find('option:selected');
+
+        // Get the selected value
+        const selectedValue = $userSelect.val();
+
+        if (selectedValue) {
+            // Get data attributes from the selected option
+            recipient.id = selectedOption.data('id') || selectedValue;
+            recipient.name = selectedOption.text() || selectedValue;
+
+            // Try to get from data attributes if available
+            const userId = selectedOption.data('user-id') || selectedOption.data('id');
+            const userName = selectedOption.data('name') || selectedOption.text();
+
+            if (userId) recipient.id = userId;
+            if (userName) recipient.name = userName;
+        }
     }
 
     return recipient;
@@ -3848,6 +4435,25 @@ function getFileRecipientInfo(batchType) {
         }
     } else if (batchType === 'Individual') {
         const $userSelect = $("#file_user_to_send_to");
+        const selectedOption = $userSelect.find('option:selected');
+
+        // Get the selected value
+        const selectedValue = $userSelect.val();
+
+        if (selectedValue) {
+            // Get data attributes from the selected option
+            recipient.id = selectedOption.data('id') || selectedValue;
+            recipient.name = selectedOption.text() || selectedValue;
+
+            // Try to get from data attributes if available
+            const userId = selectedOption.data('user-id') || selectedOption.data('id');
+            const userName = selectedOption.data('name') || selectedOption.text();
+
+            if (userId) recipient.id = userId;
+            if (userName) recipient.name = userName;
+        }
+    }  else if (batchType === 'Cross-Unit') {
+        const $userSelect = $("#cross_file_unit_user_to_send_to");
         const selectedOption = $userSelect.find('option:selected');
 
         // Get the selected value

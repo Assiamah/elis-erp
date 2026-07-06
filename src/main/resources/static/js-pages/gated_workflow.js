@@ -17468,18 +17468,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const case_number = $("#cs_main_case_number").val();
         
         // Get content from HugeRTE/TinyMCE editor
-        let search_report = '';
-        const editor = hugerte.activeEditor; // Get currently active editor
+        // let search_report = '';
+        // const editor = hugerte.activeEditor; // Get currently active editor
         
-        if (editor) {
-            search_report = editor.getContent(); // Gets HTML content
+        // if (editor) {
+        //     search_report = editor.getContent(); // Gets HTML content
+        // } else {
+        //     // Fallback to textarea if editor not found
+        //     search_report = $("#lc_search_report_summary_details_rt").val() || '';
+        // }
+        
+        // // Clean up empty content
+        // if (!search_report || search_report.trim() === '' || search_report === '<p></p>' || search_report === '<p><br></p>') {
+        //     search_report = '';
+        // }
+
+        let search_report = '';
+        const quillEditor = document.querySelector('#lc_search_report_summary_details .ql-editor');
+        if (quillEditor) {
+            search_report = quillEditor.innerHTML;
         } else {
-            // Fallback to textarea if editor not found
-            search_report = $("#lc_search_report_summary_details_rt").val() || '';
+            // Fallback to textarea if Quill not found
+            search_report = $("#lc_search_report_summary_details").val() || '';
         }
         
-        // Clean up empty content
-        if (!search_report || search_report.trim() === '' || search_report === '<p></p>' || search_report === '<p><br></p>') {
+        // Clean up Quill's empty paragraph
+        if (search_report === '<p><br></p>') {
             search_report = '';
         }
         

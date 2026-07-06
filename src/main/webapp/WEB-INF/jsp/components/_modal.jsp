@@ -5655,7 +5655,7 @@
             <div class="card mb-4 shadow-sm border">
                <div class="card-body">
                   <div class="row align-items-center mb-3">
-                     <div class="col-md-4">
+                     <div class="col-md-6">
                         <label class="form-label fw-semibold mb-2">
                            <i class="ri-share-forward-line me-1"></i>Request To:
                         </label>
@@ -5668,6 +5668,11 @@
                            <input type="radio" class="btn-check" name="request_type_radio" id="request_type_individual" autocomplete="off" value="Individual">
                            <label class="btn btn-outline-primary" for="request_type_individual">
                               <i class="ri-user-line me-1"></i>Individual
+                           </label>
+
+                           <input type="radio" class="btn-check" name="request_type_radio" id="request_type_cross_unit" autocomplete="off" value="Cross-Unit">
+                           <label class="btn btn-outline-primary" for="request_type_cross_unit">
+                              <i class="ri-swap-line me-1"></i>Cross-Unit
                            </label>
                            
                            <c:if test="${unit_name == 'CSAU' || unit_name == 'CORPORATE CSAU UNIT'}">
@@ -5770,6 +5775,49 @@
                                 <i class="ri-information-line me-1"></i>
                                 Select a user from the dropdown list
                             </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Cross-Unit Batching Section -->
+                  <div class="batch-section bg-primary-transparent border rounded p-3 mb-3" id="cross-unit-requesting-section" style="display: none;">
+                     <h6 class="fw-semibold mb-3 text-primary">
+                        <i class="ri-swap-fill me-2"></i>Batching to a Different Unit/Division
+                     </h6>
+                     <div class="row g-3">
+                        <div class="col-md-4">
+                           <label for="cross_req_unit_division_to_send_to" class="form-label fw-medium">
+                              Division <span class="text-danger">*</span>
+                           </label>
+                           <select id="cross_req_unit_division_to_send_to" class="form-select">
+                              <option value="" selected disabled>Select Division</option>
+                              <option value="LVD">LVD</option>
+                              <option value="LRD">LRD</option>
+                              <option value="PVLMD">PVLMD</option>
+                              <option value="SMD">SMD</option>
+                              <option value="RLO">RLO</option>
+                              <option value="CORPORATE">CORPORATE</option>
+                           </select>
+                        </div>
+                        <div class="col-md-4">
+                           <label for="cross_req_unit_to_send_to" class="form-label fw-medium">
+                              Unit <span class="text-danger">*</span>
+                              <small class="text-muted ms-1" id="cross-req_unit-count">(0 units)</small>
+                           </label>
+                           <select class="form-select" id="cross_req_unit_to_send_to" disabled>
+                              <option value="" selected disabled>Select a unit</option>
+                           </select>
+                           <div class="form-text"><i class="ri-information-line me-1"></i>Select a unit from the chosen division</div>
+                        </div>
+                        <div class="col-md-4">
+                           <label for="cross_req_unit_user_to_send_to" class="form-label fw-medium">
+                              Officer <span class="text-danger">*</span>
+                              <small class="text-muted ms-1" id="cross-req_user-count">(0 users)</small>
+                           </label>
+                           <select class="form-select" id="cross_req_unit_user_to_send_to" disabled>
+                              <option value="" selected disabled>Select a user</option>
+                           </select>
+                           <div class="form-text"><i class="ri-information-line me-1"></i>Select a user from the chosen unit</div>
                         </div>
                      </div>
                   </div>
