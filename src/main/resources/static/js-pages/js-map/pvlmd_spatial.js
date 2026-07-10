@@ -2143,6 +2143,10 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 		html: `
 			<p class="mb-3">This request will submit the selected polygon for review.</p>
 			<div class="form-group text-start">
+				<label for="pvlmd_delete_reference_number" class="form-label">Reference Number <span class="text-danger">*</span></label>
+				<input type="text" id="pvlmd_delete_reference_number" class="form-control" placeholder="Enter reference number">
+			</div>
+			<div class="form-group text-start">
 				<label for="pvlmd_delete_locality" class="form-label">Locality <span class="text-danger">*</span></label>
 				<input type="text" id="pvlmd_delete_locality" class="form-control" placeholder="Enter locality">
 			</div>
@@ -2154,6 +2158,13 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 		cancelButtonColor: '#6c757d',
 		focusConfirm: false,
 		preConfirm: function() {
+			var referenceNumber = $.trim($('#pvlmd_delete_reference_number').val());
+
+			if (!referenceNumber) {
+				Swal.showValidationMessage('Reference Number is required');
+				return false;
+			}
+
 			var locality = $.trim($('#pvlmd_delete_locality').val());
 
 			if (!locality) {
@@ -2162,6 +2173,7 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 			}
 
 			return {
+				referenceNumber: referenceNumber,
 				locality: locality
 			};
 		}
@@ -2185,7 +2197,8 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 			data: {
 				request_type: 'select_add_lc_temp_parcels',
 				wkt_polygon: pvlmd_bl_wkt_polygon,
-				locality: result.value.locality
+				locality: result.value.locality,
+				reference_number: result.value.referenceNumber
 			},
 			cache: false,
 			success: function(response) {
@@ -2287,7 +2300,7 @@ window.initiateReqDeleteParcel = function(parcelId, referenceNumber) {
                 jobNumberHtml: parcelId,
                 applicantNameHtml: referenceNumber,
                 applicationType: 'TEMPORAL APPLICATION',
-                batchingPurpose: 'Request for parcel deletion',
+                batchingPurpose: 'Request to add existing parcel',
                 remarksNotes: remarks_notes,
                 // created_on: jobData.created_on,
                 // job_status: jobData.job_status

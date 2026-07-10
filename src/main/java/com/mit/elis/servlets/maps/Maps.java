@@ -1414,11 +1414,13 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String mac_address = (String) session.getAttribute("mac_address");
 				String ip_address = (String) session.getAttribute("ip_address");
 				String userid = (String) session.getAttribute("userid");
+				String reference_number = request.getParameter("reference_number");
 
 				JSONObject obj = new JSONObject();
 
 				obj.put("wkt_polygon", wkt_polygon);
 				obj.put("locality", locality);
+				obj.put("reference_number", reference_number);
 				obj.put("fullname", fullname);
 				obj.put("mac_address", mac_address);
 				obj.put("ip_address", ip_address);
