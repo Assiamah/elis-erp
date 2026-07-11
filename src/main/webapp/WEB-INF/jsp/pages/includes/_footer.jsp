@@ -7694,13 +7694,13 @@ ${(page_name == "application_review_details_advanced")  ? "<script src='js_inclu
 <jsp:include page="../professional_templates/_professionals_modals.jsp"></jsp:include> 
 <jsp:include page='${(page_name == "page_enquiry_desk") || (page_name == "page_enquiry_backoffice") ||(page_name == "page_enquiry_desk_stamping") || (page_name == "csau_backoffice") || (page_name == "page_enquiry_teller") ? "../includes/_enquiry_modals.jsp" : ""}'></jsp:include>
 <jsp:include page="../pvlmd_maps_templates/pvlmd_maps_modals.jsp"></jsp:include>
+<jsp:include page="../lvd_compensation_maps/lvd_compensation_maps_modals.jsp"></jsp:include>
 <jsp:include page="../csau_template/_csau_online_modals.jsp"></jsp:include>
 <jsp:include page="../includes/_profile_modal.jsp"></jsp:include>
 <jsp:include page="../transitional_templates/_transitional_modals.jsp"></jsp:include>
 <jsp:include page="../smd_maps_templates/smd_maps_modals.jsp"></jsp:include>
 <jsp:include page='${(page_name == "compliance_cst") ||(page_name == "compliance")|| (page_name=="unit_case_management") || (page_name=="compliance_no_login") || (page_name=="compliance_query_and_response") || (page_name=="regional_compliance_query_and_response") || (page_name=="compliance_notice_report") ? "../includes/_compliance_modals.jsp" : ""}'></jsp:include>	
 <jsp:include page='${(page_name == "compliance_cst") ||(page_name == "compliance")|| (page_name=="unit_case_management")|| (page_name=="certificate_signing_module") ? "../includes/_compliance_modals.jsp" : ""}'></jsp:include>
-<jsp:include page='${(page_name == "director_compliance") ? "../includes/_director_compliance_modals.jsp" : ""}'></jsp:include>	
 <jsp:include page='${(page_name == "director_compliance")  ? "../includes/_director_compliance_modals.jsp" : ""}'></jsp:include>	
 <jsp:include page='${(page_name == "executive_dashboard")  ? "../includes/_executive_dashboard_modals.jsp" : ""}'></jsp:include>	
 <jsp:include page='${(page_name == "focal_compliance_person") ? "../includes/_focal_compliance_modals.jsp" : ""}'></jsp:include>	

@@ -1,14 +1,11 @@
-$(document)
-		.ready(
+$(document).ready(
 				function() {
 
 					console.log('Compensation working');
 
 
 					var lvdc_point_coordinate_list;
-
 					var lvdc_click_type = 'MapClick';
-
 					var lvdc_parcel_lrd_dataSource = new ol.source.TileWMS(
 							{
 								url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
@@ -217,14 +214,7 @@ $(document)
 					var smd_firstProjection = '+proj=tmerc +lat_0=4.666666666666667 +lon_0=-1 +k=0.99975 +x_0=274319.7391633579 +y_0=0 +a=6378300 +b=6356751.689189189 +towgs84=-199,32,322,0,0,0,0 +to_meter=0.3047997101815088 +no_defs';
 					var smd_secondProjection = '+proj=longlat +datum=WGS84 +no_defs';
 
-					// console.log(firstProjection);
-					// console.log(secondProjection);
-					// proj4(firstProjection,secondProjection,[2,5]);
-					// console.log(proj4(secondProjection,firstProjection,[2,5]));
-					// ol.proj.proj4.register(proj4);
-					// ol.proj.registerProj4(proj4);
-					// register(proj4);
-
+				
 					var lvdc_proj27700 = ol.proj.get('EPSG:2136');
 					// proj27700.setExtent([0, 0, 2011055.53818079,
 					// 2360318.82691170]);
@@ -250,6 +240,7 @@ $(document)
 								4000000, 8000000 ],
 						zoom : 12
 					})
+
 
 					var lvdc_map = new ol.Map({
 						target : 'lvdc-map',
@@ -468,51 +459,51 @@ $(document)
 
 																		var parcel_uuid = words[1];
 																		console
+																				.log('parcel_uuid');
+																				console
 																				.log(parcel_uuid);
 
-																		$(
-																				"#compparcelinformation")
-																				.modal();
+											// Show modal using Bootstrap 5
+												// var modal = new bootstrap.Modal(document.getElementById('compparcelinformation'));
+												// modal.show();
 
-																		$(
-																				'#compparcelinformation #comp_gid_p')
-																				.val(
-																						parcel_uuid);
+											 var modalElement = document.getElementById('compparcelinformation');
+        
+        // Check if modal element exists
+        if (!modalElement) {
+            console.error('Modal element #compparcelinformation not found');
+            return;
+        }
+        
+        // Set values BEFORE showing modal
+        if (parcel_uuid) {
+            $('#compparcelinformation #comp_gid_p').val(parcel_uuid);
+        }
+        
 
-																		$(
-																				'#compparcelinformation #cc_claim_no')
-																				.val(
-																						props.cc_claim_no);
-
-																		$(
-																				'#compparcelinformation #cc_claimant')
-																				.val(
-																						props.cc_claimant);
-
-																		$(
-																				'#compparcelinformation #cc_file_no')
-																				.val(
-																						props.cc_file_no);
-
-																		$(
-																				'#compparcelinformation #cc_plan_no')
-																				.val(
-																						props.cc_plan_no);
-
-																		$(
-																				'#compparcelinformation #cc_locality')
-																				.val(
-																						props.cc_locality);
-
-																		$(
-																				'#compparcelinformation #cc_land_size')
-																				.val(
-																						props.cc_land_size);
-
-
-																			$('#compparcelinformation #cc_land_size').val(props.cc_remarks);
-		
-
+		console
+																				.log('props');
+																				console
+																				.log(props);
+        if (props) {
+            $('#compparcelinformation #cc_claim_no').val(props.cc_claim_no || '');
+            $('#compparcelinformation #cc_claimant').val(props.cc_claimant || '');
+            $('#compparcelinformation #cc_file_no').val(props.cc_file_no || '');
+            $('#compparcelinformation #cc_plan_no').val(props.cc_plan_no || '');
+            $('#compparcelinformation #cc_locality').val(props.cc_locality || '');
+            $('#compparcelinformation #cc_land_size').val(props.cc_land_size || '');
+            $('#compparcelinformation #cc_remarks').val(props.cc_remarks || '');
+        }
+       
+        // Initialize and show modal
+        var myModal = new bootstrap.Modal(modalElement, {
+            backdrop: true,
+            keyboard: true,
+            focus: true
+        });
+        myModal.show();
+    
+  
 																			
 
 																		$
@@ -520,7 +511,7 @@ $(document)
 																					type : "POST",
 																					url : "Maps",
 																					data : {
-																						request_type : 'search_smd_parcel_wkt',
+																						request_type : 'search_compensation_claims_wkt',
 																						parcel_id : parcel_uuid,
 																					},
 																					cache : false,
@@ -544,12 +535,12 @@ $(document)
 																											features : (new ol.format.WKT())
 																													.readFeatures(json_p.data.polygon_wkt)
 																										}));
-																						lvdc_lc_searchLayer
-																								.setSource(new ol.source.Vector(
-																										{
-																											features : (new ol.format.GeoJSON())
-																													.readFeatures(json_p.parcels)
-																										}));
+																						// lvdc_lc_searchLayer
+																						// 		.setSource(new ol.source.Vector(
+																						// 				{
+																						// 					features : (new ol.format.GeoJSON())
+																						// 							.readFeatures(json_p.parcels)
+																						// 				}));
 
 																						view
 																								.fit(lvdc_lc_searchLayer
@@ -562,7 +553,7 @@ $(document)
 																												.getSource()
 																												.getExtent(),
 																										{
-																											size : map
+																											size : lvdc_map
 																													.getSize(),
 																											maxZoom : 16
 																										})
@@ -570,80 +561,7 @@ $(document)
 																					}
 																				});
 
-																		var table_docs = $('#comp_scanned_documents_dataTable');
-																		table_docs
-																				.find(
-																						"tbody tr")
-																				.remove();
-																		$
-																				.ajax({
-																					type : "POST",
-																					url : 'LoadLRDJackets',
-																					data : {
-																						request_type : 'load_smd_jacket_certificate',
-																						certificate_number : props.reference_number
-																					},
-																					cache : false,
-																					beforeSend : function() {
-																						// $('#district').html('<img
-																						// src="img/loading.gif"
-																						// alt=""
-																						// width="24"
-																						// height="24">');
-																					},
-																					success : function(
-																							serviceresponse) {
-
-																						var json_p = JSON
-																								.parse(serviceresponse);
-																						console
-																								.log(json_p)
-
-																						$(
-																								json_p)
-																								.each(
-																										function() {
-
-																											/*
-																											 * table_docs
-																											 * .append("<tr><td>" +
-																											 * this.document_name + "</td><td>" +
-																											 * this.document_extention + "</td><td>" +
-																											 * this.document_file + "</td>" + '<td><p data-placement="top" data-toggle="tooltip" title="Open"><a
-																											 * href="teamServlet?document_path=' +
-																											 * this.document_file + '"
-																											 * target="_blank">link</a></p></td>' + "</tr>");
-																											 */
-
-																											table_docs
-																													.append("<tr>"
-
-																															+ '<td> <a class="link-post" href="'
-																															+ this.document_file
-																															+ '">'
-																															+ this.document_name
-																															+ '</a></td>'
-
-																															+ "<td>"
-																															+ this.document_extention
-																															+ "</td>"
-
-																															// +
-																															// '<td><p
-																															// data-placement="top"
-																															// data-toggle="tooltip"
-																															// title="Open"><a
-																															// href="teamServlet?document_path='+
-																															// this.document_file
-																															// +'"
-																															// target="_blank">link</a></p></td>'
-
-																															+ "</tr>");
-
-																										});
-
-																					}
-																				});
+																	
 
 																		// console.log('SPATIAL
 																		// ID'
@@ -943,95 +861,115 @@ $(document)
 
 					
 
-					document
-							.getElementById('comp_btn_visualise_coordinate')
-							.addEventListener(
-									'click',
-									function() {
+					
+							$('#comp_btn_visualise_coordinate').on('click', function(e) {
 
-										var table = $('#coordinatelis_Table')
-												.tableToJSON();
-										// s console.log(table);
-										// alert(JSON.stringify(table));
-										var list_of_application_new = JSON
-												.stringify(table);
-										console.log(list_of_application_new);
+										// var table = $('#coordinatelis_Table')
+										// 		.tableToJSON();
+										// // s console.log(table);
+										// // alert(JSON.stringify(table));
+										// var list_of_application_new = JSON
+										// 		.stringify(table);
+										// console.log(list_of_application_new);
 
-										var json_p = JSON
-												.parse(list_of_application_new);
+										// var json_p = JSON
+										// 		.parse(list_of_application_new);
 
-										console.log(json_p);
-										polygon = '';
+										// console.log(json_p);
+										// polygon = '';
 
-										point_coordinate_list = '';
+										// point_coordinate_list = '';
 
-										var jsonArr = [];
+										// var jsonArr = [];
 
-										var counter = 0;
-										var first_x_coordinate = '';
-										var first_y_coordinate = '';
-										$(json_p)
-												.each(
-														function() {
+										// var counter = 0;
+										// var first_x_coordinate = '';
+										// var first_y_coordinate = '';
+										// $(json_p)
+										// 		.each(
+										// 				function() {
 
-															/*
-															 * if (counter=0){
-															 * first_x_coordinate=this.x_coordinate ;
-															 * first_y_coordinate=this.y_coordinate; }
-															 */
+										// 					/*
+										// 					 * if (counter=0){
+										// 					 * first_x_coordinate=this.x_coordinate ;
+										// 					 * first_y_coordinate=this.y_coordinate; }
+										// 					 */
 
-															item = {}
-															item["coordinate_name"] = this.name;
-															item["x_coordinate"] = this.x_coordinate;
-															item["y_coordinate"] = this.y_coordinate;
+										// 					item = {}
+										// 					item["coordinate_name"] = this.name;
+										// 					item["x_coordinate"] = this.x_coordinate;
+										// 					item["y_coordinate"] = this.y_coordinate;
 
-															jsonArr.push(item);
-															polygon += this.y_coordinate
-																	+ " "
-																	+ this.x_coordinate
-																	+ ", ";
+										// 					jsonArr.push(item);
+										// 					polygon += this.y_coordinate
+										// 							+ " "
+										// 							+ this.x_coordinate
+										// 							+ ", ";
 
-															counter++;
+										// 					counter++;
 
-														});
+										// 				});
 
-										polygon_real = "POLYGON((" + polygon
-												+ "))";
-										var first_coordinate = '';
-										// first_coordinate = ", "+
-										// first_y_coordinate + " "+
-										// first_x_coordinate + "))";
-										first_coordinate = ", "
-												+ json_p[0].y_coordinate + " "
-												+ json_p[0].x_coordinate + "))";
+										// polygon_real = "POLYGON((" + polygon
+										// 		+ "))";
+										// var first_coordinate = '';
+										// // first_coordinate = ", "+
+										// // first_y_coordinate + " "+
+										// // first_x_coordinate + "))";
+										// first_coordinate = ", "
+										// 		+ json_p[0].y_coordinate + " "
+										// 		+ json_p[0].x_coordinate + "))";
 
-										console.log('first_coordinate');
-										console.log(first_coordinate);
-										// /grid.store.getAt(0).data.name
-										var polygon_tttt = polygon_real
-												.replace(', ))',
-														first_coordinate);
+										// console.log('first_coordinate');
+										// console.log(first_coordinate);
+										// // /grid.store.getAt(0).data.name
+										// var polygon_tttt = polygon_real
+										// 		.replace(', ))',
+										// 				first_coordinate);
 
-										var json_to_be_formatted = list_of_application_new
-										// json_to_be_formatted =
-										// json_to_be_formatted.replace('[[',
-										// '[{');
-										// json_to_be_formatted =
-										// json_to_be_formatted.replace(']]',
-										// '}]');
-										// json_to_be_formatted =
-										// json_to_be_formatted.replace('],[',
-										// '},{');
-										console.log(json_to_be_formatted);
+										// var json_to_be_formatted = list_of_application_new
+										// // json_to_be_formatted =
+										// // json_to_be_formatted.replace('[[',
+										// // '[{');
+										// // json_to_be_formatted =
+										// // json_to_be_formatted.replace(']]',
+										// // '}]');
+										// // json_to_be_formatted =
+										// // json_to_be_formatted.replace('],[',
+										// // '},{');
+										// console.log(json_to_be_formatted);
 
-										point_coordinate_list = json_to_be_formatted;
+										// point_coordinate_list = json_to_be_formatted;
 
-										console.log(polygon_tttt);
+										// console.log(polygon_tttt);
 
 										// wktplygonsearch
+	let jsonArr = [];
+											let polygonPoints = [];
 
+											$('#coordinatelis_Table tbody tr').each(function () {
+												let name = $(this).find('td:eq(0)').text().trim();
+												let x = $(this).find('td:eq(1)').text().trim();
+												let y = $(this).find('td:eq(2)').text().trim();
+
+												jsonArr.push({
+													coordinate_name: name,
+													x_coordinate: x,
+													y_coordinate: y
+												});
+
+												polygonPoints.push(`${y} ${x}`);
+											});
+
+											// Close polygon by repeating first point
+											polygonPoints.push(polygonPoints[0]);
+
+											let polygonWKT = `POLYGON((${polygonPoints.join(', ')}))`;
+
+											console.log(jsonArr);
+											console.log(polygonWKT);
 										$('#comp_bl_wkt_polygon').val(
-												polygon_tttt);
+												polygonWKT);
 										// var wktplygonsearch =
 										// $('#lc_fr_bl_wkt_polygon').val();
 										// Ext.ComponentQuery.query('textareafield[name=wktplygonsearch_smd]')[0].setValue(polygon_tttt);
@@ -1071,11 +1009,8 @@ $(document)
 
 									});
 
-					document
-							.getElementById('comp_btn_visualise_search')
-							.addEventListener(
-									'click',
-									function() {
+				
+										$('#comp_btn_visualise_search').on('click', function(e) {
 
 										var wktplygonsearch = $(
 												'#lc_bl_wkt_polygon').val();
@@ -1285,11 +1220,10 @@ $(document)
 												});
 									});
 
-					document
-							.getElementById('comp_btn_save_wkt')
-							.addEventListener(
-									'click',
-									function() {
+					
+
+										$('#comp_btn_save_wkt').on('click', function(e) {
+
 										// wktplygonsearch
 										// v
 										console.log(wktplygonsearch)
@@ -1347,11 +1281,10 @@ $(document)
 									});
 
 		
-					document
-							.getElementById('comp_btn_visualise_wkt')
-							.addEventListener(
-									'click',
-									function() {
+				
+
+						$('#comp_btn_visualise_wkt').on('click', function(e) {
+
 										// wktplygonsearch
 										// v
 										// console.log(wktplygonsearch)
@@ -1361,23 +1294,23 @@ $(document)
 										var wktplygonsearch = document
 												.getElementById("comp_bl_wkt_polygon").value;
 										console.log(wktplygonsearch)
-										comp_lc_searchLayer
+										lvdc_lc_searchLayer
 												.setSource(new ol.source.Vector(
 														{
 															features : (new ol.format.WKT())
 																	.readFeatures(wktplygonsearch)
 														}));
-										comp_lc_searchLayer
-												.setSource(new ol.source.Vector(
-														{
-															features : (new ol.format.GeoJSON())
-																	.readFeatures(json_p.parcels)
-														}));
+										// lvdc_lc_searchLayer
+										// 		.setSource(new ol.source.Vector(
+										// 				{
+										// 					features : (new ol.format.GeoJSON())
+										// 							.readFeatures(json_p.parcels)
+										// 				}));
 
-										view.fit(comp_lc_searchLayer.getSource()
+										view.fit(lvdc_lc_searchLayer.getSource()
 												.getExtent());
 												lvdc_map.getView().fit(
-												comp_lc_searchLayer.getSource()
+												lvdc_lc_searchLayer.getSource()
 														.getExtent(), {
 													size : lvdc_map.getSize(),
 													maxZoom : 16
@@ -1385,12 +1318,10 @@ $(document)
 
 									});
 
-					document
-							.getElementById(
-									'comp_btn_search_by_reference_number')
-							.addEventListener(
-									'click',
-									function() {
+			
+
+					$('#comp_btn_search_by_reference_number').on('click', function(e) {
+
 
 										var search_text = $(
 												'#comp_search_by_text').val();
@@ -1506,44 +1437,46 @@ $(document)
 									'show.bs.modal',
 									function(e) {
 
-										var parcel_uuid = $(e.relatedTarget)
-												.data('parcel_uuid');
-										var reference_number = $(e.relatedTarget).data('reference_number');
-										$('#compparcelinformation #cc_id').val(parcel_uuid);
+										// var parcel_uuid = $(e.relatedTarget)
+										// 		.data('parcel_uuid');
+										// var reference_number = $(e.relatedTarget).data('reference_number');
+										// $('#compparcelinformation #cc_id').val(parcel_uuid);
 
-										$('#compparcelinformation #cc_claim_no').val($(e.relatedTarget).data('cc_claim_no'));
-										$('#compparcelinformation #cc_claimant').val($(e.relatedTarget).data('cc_claimant'));
+										// $('#compparcelinformation #cc_claim_no').val($(e.relatedTarget).data('cc_claim_no'));
+										// $('#compparcelinformation #cc_claimant').val($(e.relatedTarget).data('cc_claimant'));
 
-										$(
-												'#compparcelinformation #cc_file_no')
-												.val(
-														$(e.relatedTarget)
-																.data(
-																		'cc_file_no'));
+										// $(
+										// 		'#compparcelinformation #cc_file_no')
+										// 		.val(
+										// 				$(e.relatedTarget)
+										// 						.data(
+										// 								'cc_file_no'));
 
-										$(
-												'#compparcelinformation #cc_plan_no')
-												.val(
-														$(e.relatedTarget)
-																.data(
-																		'cc_plan_no'));
+										// $(
+										// 		'#compparcelinformation #cc_plan_no')
+										// 		.val(
+										// 				$(e.relatedTarget)
+										// 						.data(
+										// 								'cc_plan_no'));
 
-										$(
-												'#compparcelinformation #cc_locality')
-												.val(
-														$(e.relatedTarget)
-																.data(
-																		'cc_locality'));
+										// $(
+										// 		'#compparcelinformation #cc_locality')
+										// 		.val(
+										// 				$(e.relatedTarget)
+										// 						.data(
+										// 								'cc_locality'));
 
-										$('#compparcelinformation #cc_land_size')
-												.val(
-														$(e.relatedTarget)
-																.data('cc_land_size'));
+										// $('#compparcelinformation #cc_land_size')
+										// 		.val(
+										// 				$(e.relatedTarget)
+										// 						.data('cc_land_size'));
 
 
-										$('#compparcelinformation #cc_remarks').val(
-												$(e.relatedTarget)
-														.data('cc_remarks'));
+										// $('#compparcelinformation #cc_remarks').val(
+										// 		$(e.relatedTarget)
+										// 				.data('cc_remarks'));
+
+
 
 										
 										// $
@@ -1604,11 +1537,9 @@ $(document)
 									});
 
 				
-					document
-							.getElementById('comp_btnprintmap')
-							.addEventListener(
-									'click',
-									function() {
+				
+						$('#comp_btnprintmap').on('click', function(e) {
+
 										console.log("click_type");
 
 										var wktplygonsearch = $(
@@ -1667,4 +1598,4 @@ $(document)
 						return resolution;
 					}
 
-				});
+});

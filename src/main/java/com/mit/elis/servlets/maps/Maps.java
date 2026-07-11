@@ -507,6 +507,22 @@ public class Maps {
 
 			}
 
+			if (request_type.equals("search_compensation_claims_wkt")) {
+				String parcel_id = request.getParameter("parcel_id");
+				// String wkt_polgon_wgs84 =
+				// request.getParameter("wkt_polgon_wgs84");
+				// //System.out.println(parcel_id);
+				web_service_response = cls_maps
+						.select_search_compensation_claims_by_parcel_id(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), parcel_id);
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+			}
+
 			if (request_type.equals("search_pvlmd_parcel_wkt")) {
 				String parcel_id = request.getParameter("parcel_id");
 				// String wkt_polgon_wgs84 =
