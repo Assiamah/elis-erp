@@ -1168,6 +1168,31 @@
                     <i class="fas fa-info-circle me-2"></i>
                     <span id="selectedCount">0</span> role(s) selected
                 </div>
+
+                <div class="card border-0 shadow-sm mt-3">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="fas fa-clipboard-list me-2"></i>Assignment Details
+                        </h6>
+                        <small class="text-muted">Provide the nature and reason for this role assignment</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="up_assignment_nature" class="form-label fw-semibold">Nature of Assignment</label>
+                                <select class="form-select" id="up_assignment_nature" name="up_assignment_nature">
+                                    <option value="">Select assignment nature</option>
+                                    <option value="permanent">Permanent</option>
+                                    <option value="temporal">Temporal</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="up_assignment_reason" class="form-label fw-semibold">Reason for Assignment</label>
+                                <textarea class="form-control" id="up_assignment_reason" name="up_assignment_reason" rows="4" placeholder="Enter the reason for this assignment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

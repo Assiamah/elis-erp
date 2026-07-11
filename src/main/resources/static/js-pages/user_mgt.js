@@ -458,6 +458,8 @@ $("#ur_department").on('input', function() {
 });
 
 	$('#assignReassignUserProfile').on('show.bs.modal',function(event) {
+			$("#up_assignment_nature").val('');
+			$("#up_assignment_reason").val('');
 			var button = $(event.relatedTarget) // Button
 			// that
 			// triggered
@@ -857,11 +859,13 @@ $("#ur_department").on('input', function() {
 					 * oTable.row(pos).data(); console.log(row); } );
 					 */
 
-					$('#btn_save_user_profile_details').click(function() {
+					$('#btn_save_user_profile_details').off('click').on('click', function() {
 						// Collect selected profiles
 						var array = [];
 						var userid = $("#up_userid").val();
 						var fullname = $("#up_fullname").val();
+						var assignmentNature = $("#up_assignment_nature").val();
+						var assignmentReason = $("#up_assignment_reason").val().trim();
 						
 						// $('#tbl_user_profile_list_dataTable tr').has('td :checkbox:checked').each(function() {
 						// 	var arrayItem = {};
@@ -912,6 +916,37 @@ $("#ur_department").on('input', function() {
 							});
 							return;
 						}
+
+						if (!assignmentNature) {
+							Swal.fire({
+								title: 'Nature Required',
+								text: 'Please select the nature of assignment.',
+								icon: 'warning',
+								confirmButtonText: 'OK',
+								confirmButtonColor: '#3085d6'
+							}).then(() => {
+								$('#up_assignment_nature').trigger('focus');
+							});
+							return;
+						}
+
+						if (!assignmentReason) {
+							Swal.fire({
+								title: 'Reason Required',
+								text: 'Please enter the reason for assignment.',
+								icon: 'warning',
+								confirmButtonText: 'OK',
+								confirmButtonColor: '#3085d6'
+							}).then(() => {
+								$('#up_assignment_reason').trigger('focus');
+							});
+							return;
+						}
+
+						array.forEach(function(item) {
+							item.assignment_nature = assignmentNature;
+							item.assignment_reason = assignmentReason;
+						});
 						
 						// Create confirmation message
 						// console.log(array);
@@ -931,6 +966,8 @@ $("#ur_department").on('input', function() {
 									<p><strong>User:</strong> ${fullname}</p>
 									<p><strong>Roles to assign:</strong> ${roleList}</p>
 									<p><strong>Total roles:</strong> ${roleCount}</p>
+									<p><strong>Nature:</strong> ${assignmentNature}</p>
+									<p><strong>Reason:</strong> ${assignmentReason}</p>
 									<p class="text-muted small mt-2">This action will update the user's access permissions.</p>
 								</div>
 							`,
@@ -953,7 +990,9 @@ $("#ur_department").on('input', function() {
 										data: {
 											request_type: 'update_user_profile',
 											profile_list: profile_list1,
-											userid: userid
+											userid: userid,
+											assignment_nature: assignmentNature,
+											assignment_reason: assignmentReason
 										},
 										cache: false,
 										success: function(jobdetails) {
@@ -1115,19 +1154,28 @@ $("#ur_department").on('input', function() {
 							});
 
 							// Validate milestones selected
-							if (selectedMilestones.length === 0) {
-								await Swal.fire({
-									icon: 'warning',
-									title: 'No Milestones Selected',
-									text: 'Please select at least one milestone to assign',
-									confirmButtonColor: '#3085d6'
-								});
-								return;
-							}
+							// if (selectedMilestones.length === 0) {
+							// 	await Swal.fire({
+							// 		icon: 'warning',
+							// 		title: 'No Milestones Selected',
+							// 		text: 'Please select at least one milestone to assign',
+							// 		confirmButtonColor: '#3085d6'
+							// 	});
+							// 	return;
+							// }
 
 							// console.log('Selected Milestones:', selectedMilestones);
-							
-							const profile_list1 = JSON.stringify(selectedMilestones);
+
+							const assignmentModalElement = document.getElementById('assignMilestoneUserProfile');
+							const assignmentModalInstance = (window.bootstrap && bootstrap.Modal && assignmentModalElement)
+								? bootstrap.Modal.getOrCreateInstance(assignmentModalElement)
+								: null;
+
+							if (assignmentModalInstance) {
+								assignmentModalInstance.hide();
+							} else {
+								$('#assignMilestoneUserProfile').modal('hide');
+							}
 
 							// ==================== CONFIRMATION DIALOG ====================
 							const confirmResult = await Swal.fire({
@@ -1153,6 +1201,18 @@ $("#ur_department").on('input', function() {
 											<i class="fa fa-exclamation-triangle me-1"></i>
 											This action will update the user's milestone assignments.
 										</p>
+										<div class="mt-3">
+											<label for="swal_assignment_nature" class="form-label fw-semibold">Nature of Assignment</label>
+											<select id="swal_assignment_nature" class="swal2-select form-control" style="display:flex; width:100%; margin:0;">
+												<option value="">Select assignment nature</option>
+												<option value="permanent">Permanent</option>
+												<option value="temporal">Temporal</option>
+											</select>
+										</div>
+										<div class="mt-3">
+											<label for="swal_assignment_reason" class="form-label fw-semibold">Reason for Assignment</label>
+											<textarea id="swal_assignment_reason" class="swal2-textarea form-control" placeholder="Enter the reason for this assignment" style="display:flex; width:100%; margin:0; min-height:120px;"></textarea>
+										</div>
 									</div>
 								`,
 								icon: 'question',
@@ -1161,12 +1221,49 @@ $("#ur_department").on('input', function() {
 								cancelButtonColor: '#6c757d',
 								confirmButtonText: '<i class="fa fa-check-circle me-2"></i>Yes, assign',
 								cancelButtonText: '<i class="fa fa-times me-2"></i>Cancel',
-								reverseButtons: true
+								reverseButtons: true,
+								focusConfirm: false,
+								didOpen: () => {
+									const reasonField = document.getElementById('swal_assignment_reason');
+									if (reasonField) {
+										setTimeout(() => reasonField.focus(), 50);
+									}
+								},
+								preConfirm: () => {
+									const assignmentNature = $('#swal_assignment_nature').val();
+									const assignmentReason = $('#swal_assignment_reason').val().trim();
+
+									if (!assignmentNature) {
+										Swal.showValidationMessage('Please select the nature of assignment');
+										return false;
+									}
+
+									if (!assignmentReason) {
+										Swal.showValidationMessage('Please enter the reason for assignment');
+										return false;
+									}
+
+									return {
+										assignment_nature: assignmentNature,
+										assignment_reason: assignmentReason
+									};
+								}
 							});
 
 							if (!confirmResult.isConfirmed) {
+								if (assignmentModalInstance) {
+									assignmentModalInstance.show();
+								} else {
+									$('#assignMilestoneUserProfile').modal('show');
+								}
 								return;
 							}
+
+							const { assignment_nature, assignment_reason } = confirmResult.value;
+							selectedMilestones.forEach((milestone) => {
+								milestone.assignment_nature = assignment_nature;
+								milestone.assignment_reason = assignment_reason;
+							});
 
 							// ==================== SHOW LOADING ====================
 							Swal.fire({
@@ -1184,8 +1281,10 @@ $("#ur_department").on('input', function() {
 								url: "user_mgt_serv",
 								data: {
 									request_type: 'update_user_milestone',
-									profile_list: profile_list1,
+									profile_list: JSON.stringify(selectedMilestones),
 									userid: userid,
+									assignment_nature: assignment_nature,
+									assignment_reason: assignment_reason
 								},
 								cache: false
 							});
@@ -1203,6 +1302,7 @@ $("#ur_department").on('input', function() {
 										<i class="fa fa-check-circle fa-3x text-success mb-3"></i>
 										<p>${selectedMilestones.length} milestone(s) assigned successfully</p>
 										<p class="small text-muted">${main_service_name} → ${sub_service_name}</p>
+										<p class="small text-muted text-capitalize">Nature: ${assignment_nature}</p>
 									</div>
 								`,
 								timer: 3000,
@@ -1219,6 +1319,15 @@ $("#ur_department").on('input', function() {
 							console.error('Error assigning milestones:', error);
 							
 							Swal.close();
+
+							if (window.bootstrap && bootstrap.Modal) {
+								const assignmentModalElement = document.getElementById('assignMilestoneUserProfile');
+								if (assignmentModalElement) {
+									bootstrap.Modal.getOrCreateInstance(assignmentModalElement).show();
+								}
+							} else {
+								$('#assignMilestoneUserProfile').modal('show');
+							}
 							
 							await Swal.fire({
 								icon: 'error',

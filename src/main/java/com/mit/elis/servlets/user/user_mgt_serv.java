@@ -243,6 +243,8 @@ public class user_mgt_serv extends HttpServlet {
 			if (request_type.equals("update_user_profile")) {
 				String profile_list = request.getParameter("profile_list");
 				String userid = request.getParameter("userid");
+				String assignment_nature = request.getParameter("assignment_nature");
+				String assignment_reason = request.getParameter("assignment_reason");
 
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
@@ -251,6 +253,8 @@ public class user_mgt_serv extends HttpServlet {
 				obj.put("profile_list", profile_list);
 				obj.put("modified_by", modified_by);
 				obj.put("modified_by_id", modified_by_id);
+				obj.put("assignment_nature", assignment_nature);
+				obj.put("assignment_reason", assignment_reason);
 
 				jsonArr.put(obj);
 				String input = obj.toString();
@@ -273,6 +277,8 @@ public class user_mgt_serv extends HttpServlet {
 			if (request_type.equals("update_user_milestone")) {
 				String profile_list = request.getParameter("profile_list");
 				String userid = request.getParameter("userid");
+				String assignment_nature = request.getParameter("assignment_nature");
+				String assignment_reason = request.getParameter("assignment_reason");
 				// String main_service_id = request.getParameter("main_service_id");
 				// String sub_service_id = request.getParameter("sub_service_id");
 
@@ -283,6 +289,8 @@ public class user_mgt_serv extends HttpServlet {
 				obj.put("profile_list", profile_list);
 				obj.put("modified_by", modified_by);
 				obj.put("modified_by_id", modified_by_id);
+				obj.put("assignment_nature", assignment_nature);
+				obj.put("assignment_reason", assignment_reason);
 				// obj.put("main_service_id", main_service_id);
 				// obj.put("sub_service_id", sub_service_id);
 
