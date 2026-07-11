@@ -281,6 +281,9 @@ public class user_mgt_serv extends HttpServlet {
 				String assignment_reason = request.getParameter("assignment_reason");
 				// String main_service_id = request.getParameter("main_service_id");
 				// String sub_service_id = request.getParameter("sub_service_id");
+				String main_service_id = request.getParameter("main_service_id");
+				String sub_service_id = request.getParameter("sub_service_id");
+					
 
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
@@ -291,6 +294,8 @@ public class user_mgt_serv extends HttpServlet {
 				obj.put("modified_by_id", modified_by_id);
 				obj.put("assignment_nature", assignment_nature);
 				obj.put("assignment_reason", assignment_reason);
+				obj.put("main_service_id", main_service_id);
+				obj.put("sub_service_id", sub_service_id);
 				// obj.put("main_service_id", main_service_id);
 				// obj.put("sub_service_id", sub_service_id);
 

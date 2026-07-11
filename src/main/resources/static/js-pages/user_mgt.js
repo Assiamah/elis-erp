@@ -1284,7 +1284,9 @@ $("#ur_department").on('input', function() {
 									profile_list: JSON.stringify(selectedMilestones),
 									userid: userid,
 									assignment_nature: assignment_nature,
-									assignment_reason: assignment_reason
+									assignment_reason: assignment_reason,
+									main_service_id, 
+									sub_service_id
 								},
 								cache: false
 							});
