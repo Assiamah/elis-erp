@@ -3,6 +3,7 @@ $(document)
 				function() {
 console.log('PVLMD Maps working');
 
+
 					var lrd_point_coordinate_list;
 
 					var lrd_click_type = 'MapClick';
