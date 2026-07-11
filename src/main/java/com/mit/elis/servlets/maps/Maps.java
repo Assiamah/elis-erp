@@ -1421,6 +1421,39 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 
 			}
 
+			
+			if (request_type.equals("select_add_lc_temp_parcels")) {
+
+				String wkt_polygon = request.getParameter("wkt_polygon");
+				String locality = request.getParameter("locality");
+				String fullname = (String) session.getAttribute("fullname");
+				String mac_address = (String) session.getAttribute("mac_address");
+				String ip_address = (String) session.getAttribute("ip_address");
+				String userid = (String) session.getAttribute("userid");
+				String reference_number = request.getParameter("reference_number");
+
+				JSONObject obj = new JSONObject();
+
+				obj.put("wkt_polygon", wkt_polygon);
+				obj.put("locality", locality);
+				obj.put("reference_number", reference_number);
+				obj.put("fullname", fullname);
+				obj.put("mac_address", mac_address);
+				obj.put("ip_address", ip_address);
+				obj.put("userid", userid);
+				// //System.out.println(parcel_id);
+				web_service_response = cls_maps
+						.select_add_lc_temp_parcels(
+								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+			}
+
 			if (request_type.equals("get_rent_transaction_id_by_parcel_uuid")) {
 
 				String parcel_uuid = request.getParameter("parcel_uuid");

@@ -1464,7 +1464,7 @@
                            <label for="cross_unit_division_to_send_to" class="form-label fw-medium">
                               Division <span class="text-danger">*</span>
                            </label>
-                           <select id="cross_unit_division_to_send_to" class="form-select">
+                           <select id="cross_unit_division_to_send_to" data-trigger class="form-select">
                               <option value="" selected disabled>Select Division</option>
                               <option value="LVD">LVD</option>
                               <option value="LRD">LRD</option>
@@ -5789,7 +5789,7 @@
                            <label for="cross_req_unit_division_to_send_to" class="form-label fw-medium">
                               Division <span class="text-danger">*</span>
                            </label>
-                           <select id="cross_req_unit_division_to_send_to" class="form-select">
+                           <select id="cross_req_unit_division_to_send_to" data-trigger class="form-select">
                               <option value="" selected disabled>Select Division</option>
                               <option value="LVD">LVD</option>
                               <option value="LRD">LRD</option>

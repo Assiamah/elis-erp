@@ -206,6 +206,22 @@ $(document).ready(function() {
         return $('#' + specialPublicationEditorId).val().trim();
     }
 
+    function getSpecialPublicationListPayload() {
+        return JSON.stringify([{
+            "client_number": $("#sp_job_number").val().trim(),
+            "case_number": $("#sp_case_number").val().trim(),
+            "business_process_sub_name": '',
+            "glpin": '',
+            "ar_name": $("#sp_ar_name").val().trim(),
+            "location": $("#sp_locality").val().trim(),
+            "grantor": $("#sp_grantor_name").val().trim(),
+            "extent": $("#sp_extent").val().trim(),
+            "interest": $("#sp_type_of_interest").val().trim(),
+            "registry_map": $("#sp_registry_mapref").val().trim(),
+            "description": ''
+        }]);
+    }
+
     window.getSpecialPublicationContent = getSpecialPublicationContent;
 
     initSpecialPublicationEditor();
@@ -1096,6 +1112,7 @@ $(document).ready(function() {
 
 function processSpecialPublication(send_to_address, agencyName) {
     let publication_list = window.getSpecialPublicationContent ? window.getSpecialPublicationContent() : $("#lc_search_report_summary_details_pp").val().trim();
+    let specialPublicationList = getSpecialPublicationListPayload();
     let caseNumber = $('#sp_case_number').val();
     
     if (!publication_list) {
@@ -1160,27 +1177,38 @@ function processSpecialPublication(send_to_address, agencyName) {
     
     $.ajax({
         type: "POST",
-        url: "GenerateCaseReports",
-        target: '_blank',
+        url: "Case_Management_Serv",
         data: {
-            request_type: 'request_to_generate_special_publication_on_case',
-            publication_list: publication_list,
-            case_number: caseNumber,
+            request_type: 'select_set_cases_published',
+            publication_list: specialPublicationList,
             to_email_address: send_to_address
         },
         cache: false,
-        xhrFields: {
-            responseType: 'blob'
-        },
-        success: function(data) {
-            Swal.close();
-            
-            // Create blob and object URL
-            var blob = new Blob([data], { type: "application/pdf" });
-            var objectUrl = URL.createObjectURL(blob);
-            
-            // Show success modal with enhanced options
-            Swal.fire({
+        timeout: 30000,
+        success: function() {
+            $.ajax({
+                type: "POST",
+                url: "GenerateCaseReports",
+                target: '_blank',
+                data: {
+                    request_type: 'request_to_generate_special_publication_on_case',
+                    publication_list: publication_list,
+                    case_number: caseNumber,
+                    to_email_address: send_to_address
+                },
+                cache: false,
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(data) {
+                    Swal.close();
+                    
+                    // Create blob and object URL
+                    var blob = new Blob([data], { type: "application/pdf" });
+                    var objectUrl = URL.createObjectURL(blob);
+                    
+                    // Show success modal with enhanced options
+                    Swal.fire({
                 title: 'Document Generated Successfully!',
                 html: `
                     <div style="text-align: center;">
@@ -1236,57 +1264,93 @@ function processSpecialPublication(send_to_address, agencyName) {
                     // Open PDF in new tab automatically
                    // window.open(objectUrl, '_blank');
                 }
-            }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Reset form for another publication
-                    $("#sp_ar_name").val('');
-                    $("#sp_grantor_name").val('');
-                    $("#sp_case_number").val('');
-                    $("#sp_locality").val('');
-                    $("#sp_job_number").val('');
-                    $("#sp_type_of_interest").val('');
-                    $("#sp_extent").val('');
-                    $("#sp_registry_mapref").val('');
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.cancel) {
+                            // Reset form for another publication
+                            $("#sp_ar_name").val('');
+                            $("#sp_grantor_name").val('');
+                            $("#sp_case_number").val('');
+                            $("#sp_locality").val('');
+                            $("#sp_job_number").val('');
+                            $("#sp_type_of_interest").val('');
+                            $("#sp_extent").val('');
+                            $("#sp_registry_mapref").val('');
+                            
+                            // Show the modal again
+                            $("#btnSaveSP").click();
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.close();
                     
-                    // Show the modal again
-                    $("#btnSaveSP").click();
+                    // Parse error response if available
+                    let errorMessage = 'Unknown error occurred';
+                    let errorDetails = '';
+                    
+                    if (xhr.responseJSON) {
+                        errorMessage = xhr.responseJSON.message || errorMessage;
+                        errorDetails = xhr.responseJSON.details || '';
+                    } else if (xhr.responseText) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            errorMessage = response.message || errorMessage;
+                            errorDetails = response.details || '';
+                        } catch(e) {
+                            errorMessage = xhr.responseText.substring(0, 100) + '...';
+                        }
+                    }
+                    
+                    Swal.fire({
+                        title: 'Error Generating Document',
+                        html: `
+                            <div style="text-align: center;">
+                                <i class="fas fa-exclamation-circle text-danger" style="font-size: 64px; margin-bottom: 20px;"></i>
+                                
+                                <div class="card border-0 bg-light mb-4">
+                                    <div class="card-body">
+                                        <h5 class="text-danger mb-3">Failed to Generate Document</h5>
+                                        <p class="text-danger mb-3">${errorMessage}</p>
+                                        
+                                        <div class="alert alert-danger text-start">
+                                            <strong>Error Details:</strong><br>
+                                            <small>${errorDetails || 'No additional details available'}</small><br>
+                                            <small class="mt-2 d-block">Status: ${status} (${xhr.status})</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button class="btn btn-primary" onclick="$('#btnSaveSP').click()">
+                                        <i class="fas fa-redo me-2"></i>Try Again
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="Swal.close()">
+                                        <i class="fas fa-times me-2"></i>Close
+                                    </button>
+                                </div>
+                            </div>
+                        `,
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        allowOutsideClick: false
+                    });
                 }
             });
         },
         error: function(xhr, status, error) {
             Swal.close();
-            
-            // Parse error response if available
-            let errorMessage = 'Unknown error occurred';
-            let errorDetails = '';
-            
-            if (xhr.responseJSON) {
-                errorMessage = xhr.responseJSON.message || errorMessage;
-                errorDetails = xhr.responseJSON.details || '';
-            } else if (xhr.responseText) {
-                try {
-                    var response = JSON.parse(xhr.responseText);
-                    errorMessage = response.message || errorMessage;
-                    errorDetails = response.details || '';
-                } catch(e) {
-                    errorMessage = xhr.responseText.substring(0, 100) + '...';
-                }
-            }
-            
             Swal.fire({
-                title: 'Error Generating Document',
+                title: 'Error Processing Publication',
                 html: `
                     <div style="text-align: center;">
                         <i class="fas fa-exclamation-circle text-danger" style="font-size: 64px; margin-bottom: 20px;"></i>
                         
                         <div class="card border-0 bg-light mb-4">
                             <div class="card-body">
-                                <h5 class="text-danger mb-3">Failed to Generate Document</h5>
-                                <p class="text-danger mb-3">${errorMessage}</p>
+                                <h5 class="text-danger mb-3">Failed to Mark Case for Publication</h5>
+                                <p class="text-danger mb-3">${error || 'Unable to process special publication.'}</p>
                                 
                                 <div class="alert alert-danger text-start">
-                                    <strong>Error Details:</strong><br>
-                                    <small>${errorDetails || 'No additional details available'}</small><br>
                                     <small class="mt-2 d-block">Status: ${status} (${xhr.status})</small>
                                 </div>
                             </div>

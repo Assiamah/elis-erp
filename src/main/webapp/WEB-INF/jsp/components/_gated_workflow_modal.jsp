@@ -934,6 +934,8 @@
               <option value="Appointee">Appointee</option>
               <option value="Sub Lessee">Sub Lessee</option>
               <option value="Sub Lessor">Sub Lessor</option>
+              <option value="Declarant">Declarant</option>
+              <option value="Adminstrator/Executive/Beneficiary">Adminstrator/Executive/Beneficiary</option>
             </select>
             <div class="form-text">
               <i class="bi bi-info-circle me-1"></i>Select the role this party plays in the transaction

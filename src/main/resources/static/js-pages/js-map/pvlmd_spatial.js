@@ -1572,6 +1572,10 @@ $('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
     }
 
     $('#pvlmd_bl_wkt_polygon').val(wkt);
+
+	if(wkt) {
+		$('#pvlmd_btn_request_delete_wkt').removeClass('d-none')
+	}
     
     // Update map
     try {
@@ -2119,4 +2123,200 @@ window.initiateDeleteParcel = function(parcelId) {
 
 };
 
+$('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
+	e.preventDefault();
+
+	var pvlmd_bl_wkt_polygon = $.trim($('#pvlmd_bl_wkt_polygon').val());
+
+	if (!pvlmd_bl_wkt_polygon) {
+		Swal.fire({
+			title: 'No Polygon Found',
+			text: 'Please draw or load a polygon before submitting the request.',
+			icon: 'warning',
+			confirmButtonText: 'OK'
+		});
+		return;
+	}
+
+	Swal.fire({
+		title: 'Request Parcel Deletion?',
+		icon: 'warning',
+		html: `
+			<p class="mb-3">This request will submit the selected polygon for review.</p>
+			<div class="form-group text-start">
+				<label for="pvlmd_delete_reference_number" class="form-label">Reference Number <span class="text-danger">*</span></label>
+				<input type="text" id="pvlmd_delete_reference_number" class="form-control" placeholder="Enter reference number">
+			</div>
+			<div class="form-group text-start">
+				<label for="pvlmd_delete_locality" class="form-label">Locality <span class="text-danger">*</span></label>
+				<input type="text" id="pvlmd_delete_locality" class="form-control" placeholder="Enter locality">
+			</div>
+		`,
+		showCancelButton: true,
+		confirmButtonText: 'Yes, Submit',
+		cancelButtonText: 'Cancel',
+		confirmButtonColor: '#d33',
+		cancelButtonColor: '#6c757d',
+		focusConfirm: false,
+		preConfirm: function() {
+			var referenceNumber = $.trim($('#pvlmd_delete_reference_number').val());
+
+			if (!referenceNumber) {
+				Swal.showValidationMessage('Reference Number is required');
+				return false;
+			}
+
+			var locality = $.trim($('#pvlmd_delete_locality').val());
+
+			if (!locality) {
+				Swal.showValidationMessage('Locality is required');
+				return false;
+			}
+
+			return {
+				referenceNumber: referenceNumber,
+				locality: locality
+			};
+		}
+	}).then(function(result) {
+		if (!result.isConfirmed) {
+			return;
+		}
+
+		Swal.fire({
+			title: 'Submitting Request',
+			text: 'Please wait while we save the parcel request.',
+			allowOutsideClick: false,
+			didOpen: function() {
+				Swal.showLoading();
+			}
+		});
+
+		$.ajax({
+			type: 'POST',
+			url: 'Maps',
+			data: {
+				request_type: 'select_add_lc_temp_parcels',
+				wkt_polygon: pvlmd_bl_wkt_polygon,
+				locality: result.value.locality,
+				reference_number: result.value.referenceNumber
+			},
+			cache: false,
+			success: function(response) {
+				if (!response) {
+					Swal.fire({
+						title: 'Request Failed',
+						text: 'Unable to submit the parcel deletion request.',
+						icon: 'error',
+						confirmButtonText: 'OK'
+					});
+					return;
+				}
+
+				var json_p = JSON.parse(response);
+
+				if (json_p && json_p.success === true) {
+					initiateReqDeleteParcel(json_p.reference_number, json_p.glpin)
+				}
+
+				// Swal.fire({
+				// 	title: 'Request Submitted',
+				// 	text: response || 'The parcel deletion request has been submitted successfully.',
+				// 	icon: 'success',
+				// 	confirmButtonText: 'OK'
+				// });
+			},
+			error: function(xhr, status, error) {
+				Swal.fire({
+					title: 'Request Failed',
+					text: xhr.responseText || error || 'Unable to submit the parcel deletion request.',
+					icon: 'error',
+					confirmButtonText: 'OK'
 				});
+			}
+		});
+	});
+});
+
+window.initiateReqDeleteParcel = function(parcelId, referenceNumber) {
+
+    var selectedJobsList = [];
+
+	// Close the underlying modal
+    $('#pvlmdparcelinformation').modal('hide');
+
+    Swal.fire({
+        title: 'Add Job to Request List?',
+        text: 'This will add selected jobs to request to list.',
+        icon: 'question',
+		//target: document.body,
+		//backdrop: true,
+        html: `
+            <!-- <p>This will add selected jobs to request to list.</p> -->
+            <div class="form-group text-start mt-2">
+                <label for="txt_general_remarks_notes">Remarks: <span class="text-danger">*</span></label>
+                <textarea class="form-control mt-1" id="txt_general_remarks_notes" rows="3"></textarea>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Add',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#d33',
+		// customClass: {
+        //     container: 'swal-container-custom' // Add custom class
+        // }
+    }).then((result) => {
+		// if (!result.isConfirmed) {
+        //     $('#pvlmdparcelinformation').modal('show');
+        // }
+
+        if (result.isConfirmed) {
+            var remarks_notes = $("#txt_general_remarks_notes").val();
+            if (!remarks_notes) {
+                Swal.fire({
+                    title: 'Remarks is required!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                });
+                return;
+            }
+
+            const exists = selectedJobsList.some(job => job.job_number === parcelId);
+        
+            if (exists) {
+                Swal.fire({
+                    title: 'Duplicate Job',
+                    text: `Job ${parcelId} is already in the list.`,
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+
+                return;
+            }
+
+            // Add job to list
+            selectedJobsList.push({
+                jobNumberPlain: parcelId,
+                jobNumberHtml: parcelId,
+                applicantNameHtml: referenceNumber,
+                applicationType: 'TEMPORAL APPLICATION',
+                batchingPurpose: 'Request to add existing parcel',
+                remarksNotes: remarks_notes,
+                // created_on: jobData.created_on,
+                // job_status: jobData.job_status
+            });
+
+            // Update localStorage
+            localStorage.setItem('requestlistdata', JSON.stringify(selectedJobsList));
+            
+            // Update the table
+            addJobToRequestlist();
+
+            prepareRequestlistModal();
+        }
+    });
+
+};
+
+});

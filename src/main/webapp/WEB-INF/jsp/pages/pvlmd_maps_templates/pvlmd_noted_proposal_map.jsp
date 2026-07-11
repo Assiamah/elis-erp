@@ -84,6 +84,9 @@
                             <button type="button" class="btn btn-outline-primary btn-sm w-100" id="pvlmd_btn_visualise_wkt" data-bs-toggle="tooltip" title="Visualise Polygon">
                                 <i class="fas fa-map me-1"></i> Visualise Polygon
                             </button>
+                            <button type="button" class="btn btn-danger btn-sm w-100 mt-2 d-none" id="pvlmd_btn_request_delete_wkt" data-bs-toggle="tooltip" title="Request For Deletion">
+                                <i class="fas fa-trash me-1"></i> Request For Deletion
+                            </button>
                         </div>
 
                         <!-- Quick Coordinate Search -->
