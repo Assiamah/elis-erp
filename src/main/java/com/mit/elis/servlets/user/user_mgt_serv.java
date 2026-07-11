@@ -279,8 +279,6 @@ public class user_mgt_serv extends HttpServlet {
 				String userid = request.getParameter("userid");
 				String assignment_nature = request.getParameter("assignment_nature");
 				String assignment_reason = request.getParameter("assignment_reason");
-				// String main_service_id = request.getParameter("main_service_id");
-				// String sub_service_id = request.getParameter("sub_service_id");
 				String main_service_id = request.getParameter("main_service_id");
 				String sub_service_id = request.getParameter("sub_service_id");
 					
@@ -296,8 +294,6 @@ public class user_mgt_serv extends HttpServlet {
 				obj.put("assignment_reason", assignment_reason);
 				obj.put("main_service_id", main_service_id);
 				obj.put("sub_service_id", sub_service_id);
-				// obj.put("main_service_id", main_service_id);
-				// obj.put("sub_service_id", sub_service_id);
 
 				jsonArr.put(obj);
 				String input = obj.toString();

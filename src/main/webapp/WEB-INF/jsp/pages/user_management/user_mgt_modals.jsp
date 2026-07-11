@@ -1178,7 +1178,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="up_assignment_nature" class="form-label fw-semibold">Nature of Assignment</label>
                                 <select class="form-select" id="up_assignment_nature" name="up_assignment_nature">
                                     <option value="">Select assignment nature</option>

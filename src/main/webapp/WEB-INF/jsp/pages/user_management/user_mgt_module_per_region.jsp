@@ -204,7 +204,7 @@
 
                                   <td><span class="small text-dark">${user.region}</span></td>
                                   <td><span class="badge bg-light text-dark">${user.division}</span></td>
-                                  <td><span class="small text-dark">${fn:length(user.unit_name) >20 ? fn:substring(user.unit_name, 0, 20) : user.unit_name}</span></td>
+                                  <td><span class="small text-dark">${fn:length(user.department) >20 ? fn:substring(user.department, 0, 20) : user.department}</span></td>
                                   <td>
                                     <span class="badge ${user.isdisabled ? 'bg-danger' : 'bg-success'}">${user.isdisabled ? 'Disabled' : 'Active'}</span><br>
                                     <c:if test="${passwordvaliditydays <= 7 and passwordvaliditydays > 0}">
