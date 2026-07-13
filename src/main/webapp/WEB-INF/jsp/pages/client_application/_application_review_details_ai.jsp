@@ -511,7 +511,7 @@
             </div>
         </div>
 
-        <c:if test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION'}">
+        <c:if test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
             <div class="objected-application-alert mb-4 p-3">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="d-flex align-items-center">
@@ -923,7 +923,7 @@
                                                             data-bs-username="${babyStep.username}" 
                                                             data-bs-date="${babyStep.date}" 
                                                             data-bs-time="${babyStep.time}"
-                                                            ${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' ? 'disabled' : ''}
+                                                            ${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION'  && job_purpose != 'Update Objection Status' ? 'disabled' : ''}
                                                             ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
                                                         <i class="bi bi-eye"></i> Details
                                                     </button>
@@ -939,7 +939,7 @@
                                         <div class="row mt-4">
                                             <div class="col-7">
                                                 <c:choose>
-                                                    <c:when test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION'}">
+                                                    <c:when test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
                                                         <!-- Approve Button -->
                                                         <div class="btn-group">
                                                             <button class="btn btn-sm btn-success" disabled>
@@ -1989,7 +1989,7 @@
     </div>
 </div>
 
-<c:if test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION'}">
+<c:if test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({

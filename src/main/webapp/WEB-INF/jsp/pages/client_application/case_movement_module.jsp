@@ -194,7 +194,7 @@
                                     <c:forEach items="${applicationlist}" var="appfiles" varStatus="loop">
                                     <fmt:parseDate value="${appfiles.job_datesend}" pattern="yyyy-MM-dd" var="jobSentDate" />
                                     <c:set var="daysDiff" value="${(now.time - jobSentDate.time) / (1000 * 60 * 60 * 24)}" />
-                                    <tr class="${appfiles.objections > 0 ? 'table-danger' : ''}" 
+                                    <tr class="${appfiles.objections > 0 && appfiles.job_purpose != 'Update Objection Status' ? 'table-danger' : ''}" 
                                         ${appfiles.objections > 0 ? "data-bs-toggle='tooltip' data-bs-placement='left' title='Application has pending Objections'" : ""}>
                                         
                                         <!-- Checkbox -->
@@ -298,6 +298,7 @@
                                                     <input type="hidden" name="review_type" value="${appfiles.request_category}">
                                                     <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
                                                     <input type="hidden" name="review_instruction" value="${appfiles.request_comments}">
+                                                    <input type="hidden" name="job_purpose" value="${appfiles.job_purpose}">
                                                     <button type="submit" class="btn btn-sm btn-warning" data-bs-custom-class="tooltip-primary" title="Work" data-bs-toggle="tooltip">
                                                         <i class="ri-folder-open-line"></i>
                                                     </button>

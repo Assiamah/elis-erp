@@ -845,7 +845,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="newObjectionModal" tabindex="-1" aria-labelledby="newObjectionModalLabel" aria-hidden="true">
+<div class="modal fade modal-blur" id="newObjectionModal" tabindex="-1" aria-labelledby="newObjectionModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       <div class="modal-header bg-primary text-white border-0">
@@ -906,7 +906,7 @@
                 </label>
                 <textarea name="obj_remarks" id="obj_remarks" class="form-control" rows="3" required></textarea>
               </div>
-              <div class="form-group mb-3">
+              <!-- <div class="form-group mb-3">
                 <label for="obj_status" class="form-label fw-semibold">
                   <i class="fas fa-toggle-on me-1"></i>Status
                 </label>
@@ -914,7 +914,7 @@
                   <option value="true">Active</option>
                   <option value="false">Inactive</option>
                 </select>
-              </div>
+              </div> -->
             </div>
           </div>
         </form>
@@ -923,9 +923,9 @@
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
           <i class="fas fa-times me-1"></i>Close
         </button>
-        <button type="button" id="btn_update_objection_section" class="btn btn-primary">
+        <!-- <button type="button" id="btn_update_objection_section" class="btn btn-primary">
           <i class="fas fa-save me-1"></i>Save Changes
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

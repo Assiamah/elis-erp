@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        modal.find('#newObjectionModalLabel').html(`<i class="fas fa-gavel me-2"></i>Edit Objection Section`);
+        modal.find('#newObjectionModalLabel').html(`<i class="fas fa-gavel me-2"></i>Objection Section`);
         modal.find('#obj_id').val(button.data('target-id') || '');
         modal.find('#obj_objector_name').val(button.data('objector_name') || button.data('objector-name') || '');
         modal.find('#obj_objector_address').val(button.data('objector_address') || button.data('objector-address') || '');
@@ -28996,24 +28996,36 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#btn_update_objection_section').on('click', function(e) {
         e.preventDefault();
 
-        const form = document.getElementById('form_add_objection');
-        if (form && !form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
+        // const form = document.getElementById('form_add_objection');
+        // if (form && !form.checkValidity()) {
+        //     form.reportValidity();
+        //     return;
+        // }
 
         const btn = $(this);
         const originalText = btn.html();
-        const action_on_form = $('#action_on_form').val() || 'add';
-        const obj_id = $('#obj_id').val();
-        const obj_case_number = $('#obj_case_number').val();
-        const obj_job_number = $('#obj_job_number').val();
-        const obj_objector_name = $('#obj_objector_name').val();
-        const obj_objector_address = $('#obj_objector_address').val();
-        const obj_object_contact = $('#obj_object_contact').val();
-        const obj_reasons = $('#obj_reasons').val();
-        const obj_remarks = $('#obj_remarks').val();
-        const obj_status = $('#obj_status').val();
+        // const action_on_form = $('#action_on_form').val() || 'add';
+        // const obj_id = $('#obj_id').val();
+        // const obj_case_number = $('#obj_case_number').val();
+        const obj_job_number = $('#update_objection_job_number').val();
+        // const obj_objector_name = $('#obj_objector_name').val();
+        // const obj_objector_address = $('#obj_objector_address').val();
+        // const obj_object_contact = $('#obj_object_contact').val();
+        // const obj_reasons = $('#obj_reasons').val();
+        const obj_remarks = $('#update_objection_remarks').val();
+        const obj_status = $('#update_objection_status').val();
+
+        const main_job_number = $('#cs_main_job_number').val();
+
+        if(!obj_remarks) {
+            Swal.fire({
+                title: 'Required Fields',
+                text: 'Remarks are required',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
 
         btn.prop('disabled', true);
         btn.html('<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Saving...');
@@ -29024,14 +29036,15 @@ document.addEventListener('DOMContentLoaded', function() {
             url: 'Case_Management_Serv',
             data: {
                 request_type: 'select_lc_case_objection_add_and_update',
-                action_on_form: action_on_form,
-                obj_id: obj_id,
-                obj_case_number: obj_case_number,
+                // action_on_form: action_on_form,
+                // obj_id: obj_id,
+                // obj_case_number: obj_case_number,
                 obj_job_number: obj_job_number,
-                obj_objector_name: obj_objector_name,
-                obj_objector_address: obj_objector_address,
-                obj_object_contact: obj_object_contact,
-                obj_reasons: obj_reasons,
+                main_job_number: main_job_number,
+                // obj_objector_name: obj_objector_name,
+                // obj_objector_address: obj_objector_address,
+                // obj_object_contact: obj_object_contact,
+                // obj_reasons: obj_reasons,
                 obj_remarks: obj_remarks,
                 obj_status: obj_status
             },
@@ -29065,7 +29078,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
 
                 if (isSuccess) {
-                    $('#newObjectionModal').modal('hide');
+                    $('#edit_objection_modal').modal('hide');
 
                     Swal.fire({
                         icon: 'success',
@@ -30421,6 +30434,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 confirmButtonColor: '#dc3545'
             });
         });
+    });
+
+    $(document).on('click', '#editOjectionModal', function(e) {
+        e.preventDefault();
+
+        const objectionId = $(this).data('target-id');
+        const objectionJobNumber = $(this).data('job_number');
+        const objectionCaseNumber = $(this).data('case_number');
+        const objectionObjectorName = $(this).data('objector_name');
+        // const objectionObjectorAddress = $(this).data('objector_address');
+        // const objectionObjectContact = $(this).data('object_contact');
+        // const objectionReasons = $(this).data('reasons');
+        // const objectionRemarks = $(this).data('remarks');
+        // const objectionStatus = $(this).data('status');
+
+        $('#update_objection_id').val(objectionId);
+        $('#update_objection_job_number').val(objectionJobNumber);
+        $('#update_objection_case_number').val(objectionCaseNumber);
+        $('#update_objection_objector_name').val(objectionObjectorName);
+        // $('#update_objection_objector_address').val(objectionObjectorAddress);
+        // $('#update_objection_object_contact').val(objectionObjectContact);
+        // $('#update_objection_reasons').val(objectionReasons);
+        // $('#update_objection_remarks').val(objectionRemarks);
+        // $('#update_objection_status').val(objectionStatus);
+
+        $('#obj_case_number_text').text(objectionCaseNumber);
+        $('#obj_job_number_text').text(objectionJobNumber);
+        $('#obj_objector_name_text').text(objectionObjectorName);
+
+        $('#edit_objection_modal').modal('show');
     });
 
 });

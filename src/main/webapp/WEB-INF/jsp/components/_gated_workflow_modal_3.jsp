@@ -4415,3 +4415,275 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade modal-blur" id="update_objection_status" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered ">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-3 me-3">
+                        <i class="fas fa-gavel text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="determineOutcomeModalLabel">
+                           Objection Details
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                            Review and decide on the objection case
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Case/Application Summary Card -->
+                <div class="card border-0 bg-light bg-gradient mb-4">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="fw-bold mb-0 text-dark">
+                                <i class="fas fa-briefcase me-2 text-primary"></i>Application Details
+                            </h6>
+                        </div>
+                        
+                        <div class="row g-3 mt-2">
+
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-file-invoice text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Case Number</small>
+                                        <span class="fw-semibold small">${case_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-info bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-briefcase text-info"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Job Number</small>
+                                        <span class="fw-semibold small">${job_number}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-success bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-user text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Applicant Name</small>
+                                        <span class="fw-semibold small">${ar_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Forms Container -->
+                <!-- Objection Upheld Form (Initially Visible) -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Objector </th>
+                                        <th>Address</th>
+                                        <th>Contact</th>
+                                        <th>Reasons </th>
+                                        <th>Remarks </th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                      <c:forEach items="${case_objection}" var="case_objection_row">
+                                        <tr>
+                                            <td>${case_objection_row.objector_name}</td>
+                                            <td>${case_objection_row.objector_address}</td>
+                                            <td>${case_objection_row.objector_contact}</td>
+                                            <td>${case_objection_row.reasons}</td>
+                                            <td>${case_objection_row.remarks}</td>
+                                            
+                                            <td>
+                                                    <button type="button" 
+                                                    
+                                                    id="editOjectionModal"  
+                                                    data-target-id="${case_objection_row.id}"
+                                                    data-objector_name= "${case_objection_row.objector_name}" 
+                                                    data-objector_address="${case_objection_row.objector_address}" 
+                                                    data-objector_contact="${case_objection_row.objector_contact}" 
+                                                    data-reasons= "${case_objection_row.reasons}" 
+                                                    data-remarks="${case_objection_row.remarks}" 
+                                                    data-status="${case_objection_row.status}" 
+                                                    data-job_number="${case_objection_row.job_number}"
+                                                    data-case_number="${case_objection_row.case_number}"
+                                                    class="btn btn-danger btn-sm"
+                                                    >
+                                                        <i class="fas fa-eye"></i>
+                                                    </button> 
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-end w-100 gap-2">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur" id="edit_objection_modal" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content border-0 shadow-lg">
+            
+            <!-- Modal Header - Gradient Background -->
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white bg-opacity-20 py-2 px-3 me-3">
+                        <i class="fas fa-edit text-primary fa-2x"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white fw-bold" id="determineOutcomeModalLabel">
+                           Update Objection Status
+                        </h5>
+                        <p class="text-white-50 small mb-0">
+                            Review and decide on the objection case
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                
+                <!-- Case/Application Summary Card -->
+                <div class="card border-0 bg-light bg-gradient mb-4">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="fw-bold mb-0 text-dark">
+                                <i class="fas fa-briefcase me-2 text-primary"></i>Objection Details
+                            </h6>
+                        </div>
+                        
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-file-invoice text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Case Number</small>
+                                        <span class="fw-semibold small" id="obj_case_number_text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-info bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-briefcase text-info"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Job Number</small>
+                                        <span class="fw-semibold small" id="obj_job_number_text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-success bg-opacity-10 rounded p-2 me-2">
+                                        <i class="fas fa-user text-success"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block">Applicant Name</small>
+                                        <span class="fw-semibold small" id="obj_objector_name_text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dynamic Forms Container -->
+                <!-- Objection Upheld Form (Initially Visible) -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <form id="">
+                           <input hidden id="update_objection_id" name="update_objection_id">
+                           <input hidden id="update_objection_job_number" name="update_objection_job_number">
+                            <div class="row g-3">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="form-group mb-3">
+                                        <label for="upheld_remarks" class="form-label fw-semibold">
+                                            Status <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-control" id="update_objection_status" required>
+                                            <option value="active" selected>Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="upheld_remarks" class="form-label fw-semibold">
+                                            Remarks <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea name="obj_remarks" id="update_objection_remarks" class="form-control" rows="3" required placeholder="Additional remarks or recommendations"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-success bg-success bg-opacity-10 border-success">
+                                        <div class="d-flex text-primary">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-info-circle fa-fw"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <strong>Note:</strong> This objection status will be reviewed by the system administrator.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light border-0 px-4 py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-end w-100 gap-2">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success px-5" id="btn_update_objection_section">
+                            <i class="fas fa-check-circle me-2"></i>Submit Decision
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,8 @@ $(document).ready(function() {
     const $batchlistValue = $("#enq_batchlist");
     const $cabinetModal = $('#cabinetModal');
     const $filelistModal = $('#filelistModal');
+    const $exportResultsButton = $('#btnExportResults');
+    const $printResultsButton = $('#btnPrintResults');
     
     // Constants
     const MIN_SEARCH_LENGTH = 8;
@@ -17,6 +19,8 @@ $(document).ready(function() {
 
     // ==================== MAIN SEARCH FUNCTIONALITY ====================
     $enquiryForm.on('submit', handleEnquirySearch);
+    $exportResultsButton.on('click', handleExportResults);
+    $printResultsButton.on('click', handlePrintResults);
 
     function handleEnquirySearch(e) {
         e.preventDefault();
@@ -241,6 +245,126 @@ $(document).ready(function() {
             'error'
         );
         $enquiryAlert.removeClass('d-none');
+    }
+
+    function handleExportResults() {
+        const exportData = getSearchResultsExportData();
+
+        if (!exportData) {
+            showNotification('No search results available to export.', 'error');
+            return;
+        }
+
+        const csvContent = [
+            exportData.headers.join(','),
+            ...exportData.rows.map(row => row.map(formatCsvValue).join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const downloadUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+
+        link.href = downloadUrl;
+        link.download = `enquiry-search-results-${timestamp}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(downloadUrl);
+    }
+
+    function handlePrintResults() {
+        const exportData = getSearchResultsExportData();
+
+        if (!exportData) {
+            showNotification('No search results available to print.', 'error');
+            return;
+        }
+
+        const printWindow = window.open('', '_blank');
+
+        if (!printWindow) {
+            showNotification('Unable to open print window. Please allow pop-ups and try again.', 'error');
+            return;
+        }
+
+        const printedAt = new Date().toLocaleString();
+        const tableRows = exportData.rows.map(row => `
+            <tr>${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>
+        `).join('');
+
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Search Applications Results</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 24px; color: #212529; }
+                    h2 { margin-bottom: 8px; }
+                    p { margin-top: 0; color: #6c757d; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+                    th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; font-size: 12px; }
+                    th { background: #f1f3f5; }
+                    @media print {
+                        body { margin: 0; }
+                    }
+                </style>
+            </head>
+            <body>
+                <h2>Search Applications Results</h2>
+                <p>Printed on ${escapeHtml(printedAt)}</p>
+                <table>
+                    <thead>
+                        <tr>${exportData.headers.map(header => `<th>${escapeHtml(header)}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+            </body>
+            </html>
+        `);
+
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+    }
+
+    function getSearchResultsExportData() {
+        const visibleRows = $resultsTable.find('tbody tr').filter(function() {
+            return $(this).find('td').length > 0 && $(this).is(':visible');
+        });
+
+        if (!visibleRows.length || !$resultsSection.is(':visible')) {
+            return null;
+        }
+
+        const headers = [];
+        $resultsTable.find('thead th').each(function(index) {
+            if (index !== 6) {
+                headers.push($(this).text().trim().replace(/\s+/g, ' '));
+            }
+        });
+
+        const rows = [];
+        visibleRows.each(function() {
+            const rowData = [];
+            $(this).find('td').each(function(index) {
+                if (index !== 6) {
+                    rowData.push($(this).text().trim().replace(/\s+/g, ' '));
+                }
+            });
+
+            if (rowData.length) {
+                rows.push(rowData);
+            }
+        });
+
+        return rows.length ? { headers, rows } : null;
+    }
+
+    function formatCsvValue(value) {
+        const normalizedValue = String(value ?? '').replace(/"/g, '""');
+        return `"${normalizedValue}"`;
     }
 
     // ==================== CABINET MODAL FUNCTIONALITY ====================
