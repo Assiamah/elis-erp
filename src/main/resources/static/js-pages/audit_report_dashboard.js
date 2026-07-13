@@ -146,15 +146,29 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
     "New Plotting Created": "Plot Parcel",
     "User Update": "Upate User",
     "New User Added": "Add User",
-    "Parcel Deleted": "Delete Parcel"
+    "Parcel Deleted": "Delete Parcel",
+    "Menu Assignment": "Menu-Template Assignment"
   };
 
   const logType = activityMap[activityName] || activityName;
+  const isMenuTemplateAssignment = logType === 'Menu-Template Assignment';
+  const isMilestoneAssignment = logType === 'Milestone Assignment';
+  const supportsAssignmentGrouping = isMenuTemplateAssignment || isMilestoneAssignment;
+
+  console.log(logType);
   const title = `ACTIVITY SUMMARY OF ${activityName} - BETWEEN ${newDateStart} AND ${newDateEnd}`.toUpperCase();
   document.getElementById('audit_title').innerHTML = title;
 
   // Show modal
   $('#activityLogsModal').modal('show');
+  $('#assignmentActivityControls').toggle(supportsAssignmentGrouping);
+  $('#assignmentActivityControlsTitle').text(
+    isMilestoneAssignment ? 'Filter and Group Milestone Assignments' : 'Filter and Group Menu Assignments'
+  );
+  resetMenuActivityControls();
+  $('#menuActivityRegionFilter, #menuActivityDivisionFilter, #menuActivityDepartmentFilter, #menuActivityDesignationFilter, #menuActivityGroupBy')
+    .off('.menuActivity');
+  $('#clearMenuActivityFilters').off('.menuActivity');
 
   // Reset table
   $('#activityLogsTable').DataTable().clear().destroy();
@@ -171,7 +185,7 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
     },
     cache: false,
     success: function (response) {
-      console.log(response)
+    //   console.log(response)
         try {
         const json_result = typeof response === "string" ? JSON.parse(response) : response;
         // console.log("✅ Parsed Response:", json_result);
@@ -210,8 +224,12 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
           ];
         });
 
+        if (supportsAssignmentGrouping) {
+          populateMenuActivityFilters(json_result.data);
+        }
+
         // Initialize DataTable
-        $('#activityLogsTable').DataTable({
+        const activityTable = $('#activityLogsTable').DataTable({
           data: dataSet,
           columns: [
             { title: "User" },
@@ -271,8 +289,54 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
             //   text: 'Show / Hide Columns'
             // },
             'pageLength'
-          ]
+          ],
+          order: [[5, 'desc']],
+          drawCallback: function () {
+            if (!supportsAssignmentGrouping) return;
+
+            const groupColumnValue = $('#menuActivityGroupBy').val();
+            if (groupColumnValue === '') return;
+
+            const api = this.api();
+            const groupColumn = Number(groupColumnValue);
+            const allFilteredRows = api.rows({ search: 'applied' }).data().toArray();
+            const groupTotals = new Map();
+
+            allFilteredRows.forEach(row => {
+              const groupName = row[groupColumn] || 'Not specified';
+              const current = groupTotals.get(groupName) || { users: 0, assignments: 0 };
+              current.users += 1;
+              current.assignments += Number(row[5]) || 0;
+              groupTotals.set(groupName, current);
+            });
+
+            const currentPageRows = api.rows({ page: 'current' }).nodes();
+            const currentPageGroups = api.column(groupColumn, { page: 'current' }).data();
+            const groupLabel = $('#menuActivityGroupBy option:selected').text();
+            let previousGroup = null;
+
+            currentPageGroups.each(function (groupName, index) {
+              const displayName = groupName || 'Not specified';
+              if (displayName === previousGroup) return;
+
+              const totals = groupTotals.get(displayName) || { users: 0, assignments: 0 };
+              $(currentPageRows).eq(index).before(`
+                <tr class="table-primary menu-activity-group-row">
+                  <td colspan="7" class="fw-bold text-primary py-2">
+                    <i class="fas fa-layer-group me-2"></i>
+                    ${escapeMenuActivityValue(groupLabel)}: ${escapeMenuActivityValue(displayName)}
+                    <span class="badge bg-primary ms-2">${totals.users} user${totals.users === 1 ? '' : 's'}</span>
+                    <span class="badge bg-dark ms-1">${totals.assignments.toLocaleString()} assignment${totals.assignments === 1 ? '' : 's'}</span>
+                  </td>
+                </tr>`);
+              previousGroup = displayName;
+            });
+          }
         }).draw();
+
+        if (supportsAssignmentGrouping) {
+          bindMenuActivityControls(activityTable);
+        }
 
       } catch (err) {
         console.error("Failed to parse response:", err);
@@ -285,6 +349,68 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
     }
   });
 });
+
+function resetMenuActivityControls() {
+  $('#menuActivityRegionFilter, #menuActivityDivisionFilter, #menuActivityDepartmentFilter, #menuActivityDesignationFilter, #menuActivityGroupBy')
+    .val('');
+}
+
+function populateMenuActivityFilters(rows) {
+  const filters = [
+    { selector: '#menuActivityRegionFilter', field: 'region', label: 'All regions' },
+    { selector: '#menuActivityDivisionFilter', field: 'division', label: 'All divisions' },
+    { selector: '#menuActivityDepartmentFilter', field: 'department', label: 'All departments' },
+    { selector: '#menuActivityDesignationFilter', field: 'designation', label: 'All designations' }
+  ];
+
+  filters.forEach(filter => {
+    const select = $(filter.selector);
+    select.empty().append(new Option(filter.label, ''));
+    const values = [...new Set(rows
+      .map(row => row[filter.field] || 'Not specified')
+      .filter(Boolean))]
+      .sort((a, b) => String(a).localeCompare(String(b)));
+
+    values.forEach(value => select.append(new Option(value, value)));
+  });
+}
+
+function bindMenuActivityControls(table) {
+  const filterColumns = {
+    menuActivityDivisionFilter: 1,
+    menuActivityDesignationFilter: 2,
+    menuActivityDepartmentFilter: 3,
+    menuActivityRegionFilter: 4
+  };
+
+  Object.entries(filterColumns).forEach(([elementId, columnIndex]) => {
+    $(`#${elementId}`).off('change.menuActivity').on('change.menuActivity', function () {
+      const value = this.value;
+      const escapedValue = value ? $.fn.dataTable.util.escapeRegex(value) : '';
+      table.column(columnIndex).search(value ? `^${escapedValue}$` : '', true, false).draw();
+    });
+  });
+
+  $('#menuActivityGroupBy').off('change.menuActivity').on('change.menuActivity', function () {
+    const groupColumn = this.value;
+    table.order(groupColumn === '' ? [[5, 'desc']] : [[Number(groupColumn), 'asc'], [0, 'asc']]).draw();
+  });
+
+  $('#clearMenuActivityFilters').off('click.menuActivity').on('click.menuActivity', function () {
+    resetMenuActivityControls();
+    table.columns([1, 2, 3, 4]).search('');
+    table.search('').order([[5, 'desc']]).draw();
+  });
+}
+
+function escapeMenuActivityValue(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 
 
@@ -426,6 +552,7 @@ function safeJsonParse(str) {
     try {
         // Only parse if str is a non-empty string and looks like JSON
         if (!str || str === "N/A") return null;
+        if (typeof str !== "string") return str;
         return JSON.parse(str);
     } catch (err) {
         console.warn("Invalid JSON:", str);
@@ -507,6 +634,12 @@ $(document).off('click', '.view-activity-details').on('click', '.view-activity-d
                     } 
                     else if(logtype === 'Delete Parcel'){
                       deleteTransactionDetails(originalDataObj, changesObj, logDate);
+                    }
+                    else if(logtype === 'Menu-Template Assignment'){
+                      menuTemplateAssignmentDetails(originalDataObj, changesObj, logDate, title, record);
+                    }
+                    else if(logtype === 'Milestone Assignment'){
+                      milestoneAssignmentDetails(originalDataObj, changesObj, logDate, title, record);
                     }
                     else {
                         displayActivityDetails(originalDataObj, changesObj, logDate);
@@ -760,6 +893,794 @@ function deleteTransactionDetails(originalData, changesData, logDate) {
     $('#transactionDeleteModal').modal('show');
 
 }
+
+let currentMenuTemplateAssignmentExportData = null;
+
+function menuTemplateAssignmentDetails(originalData, changesData, logDate, title, record) {
+    const allRequestedItems = normalizeMenuTemplateAssignments(changesData);
+    const profileNamesByKey = new Map(
+        allRequestedItems
+            .filter(item => item.profile_name || item.profileName)
+            .map(item => [menuTemplateProfileKey(item), item.profile_name ?? item.profileName])
+    );
+    const originalItems = normalizeMenuTemplateAssignments(originalData)
+        .filter(item => isMenuTemplateSelected(item))
+        .map(item => enrichMenuTemplateProfileName(item, profileNamesByKey));
+    const requestedItems = allRequestedItems
+        .filter(item => isMenuTemplateSelected(item));
+
+    const originalKeys = new Set(originalItems.map(menuTemplateProfileKey));
+    const requestedKeys = new Set(requestedItems.map(menuTemplateProfileKey));
+    const addedItems = requestedItems.filter(item => !originalKeys.has(menuTemplateProfileKey(item)));
+    const removedItems = originalItems.filter(item => !requestedKeys.has(menuTemplateProfileKey(item)));
+    const firstRequestedItem = requestedItems[0] || {};
+    const assignedTo = record?.user_assign_to_name || record?.assigned_to_name ||
+        firstRequestedItem.user_assign_to_name || firstRequestedItem.user_name || 'Not available';
+    const performedBy = record?.user_name || record?.created_by_name || 'Not available';
+    const remarks = record?.reason_remarks || record?.remarks ||
+        firstRequestedItem.assignment_reason || 'No remarks provided.';
+    const assignmentNature = record?.nature_of_assignment || record?.assignment_nature ||
+        firstRequestedItem.nature_of_assignment || firstRequestedItem.assignment_nature || 'Not specified';
+    const formattedLogDate = formatMenuTemplateLogDate(logDate);
+    const formattedNature = formatMenuTemplateAssignmentNature(assignmentNature);
+
+    currentMenuTemplateAssignmentExportData = {
+        title,
+        assignedTo,
+        performedBy,
+        logDate: formattedLogDate,
+        remarks,
+        assignmentNature: formattedNature,
+        requestedItems: requestedItems.map(item => ({
+            ...item,
+            exportStatus: originalKeys.has(menuTemplateProfileKey(item)) ? 'Already assigned' : 'New assignment'
+        })),
+        removedItems,
+        addedCount: addedItems.length
+    };
+
+    $('#menuTemplateAssignmentTitle').text(title);
+    $('#menuTemplateAssignedTo').text(assignedTo);
+    $('#menuTemplatePerformedBy').text(performedBy);
+    $('#menuTemplateAssignmentRemarks').text(remarks);
+    $('#menuTemplateAssignmentNature').text(formattedNature);
+    $('#menuTemplateAssignmentLogDate').text(formattedLogDate);
+    $('#menuTemplateRequestedCount').text(requestedItems.length.toLocaleString());
+    $('#menuTemplateAddedCount').text(addedItems.length.toLocaleString());
+    $('#menuTemplateRemovedCount').text(removedItems.length.toLocaleString());
+    $('#menuTemplateAssignedTabCount').text(requestedItems.length.toLocaleString());
+    $('#menuTemplateRemovedTabCount').text(removedItems.length.toLocaleString());
+
+    $('#menuTemplateRequestedProfiles').html(
+        buildMenuTemplateAssignmentTable(requestedItems, item =>
+            originalKeys.has(menuTemplateProfileKey(item)) ? 'Existing' : 'New')
+    );
+    $('#menuTemplateOriginalProfiles').html(buildMenuTemplateAssignmentTable(originalItems));
+    $('#menuTemplateRemovedProfiles').html(buildMenuTemplateAssignmentTable(removedItems, () => 'Removed'));
+
+    document.getElementById('menuTemplateAssignedTab')?.click();
+    $('#menuTemplateAssignmentDetailsModal').modal('show');
+}
+
+function normalizeMenuTemplateAssignments(data) {
+    if (!data) return [];
+
+    let value = data;
+    if (typeof value === 'string') {
+        try {
+            value = JSON.parse(value);
+        } catch (error) {
+            console.warn('Unable to parse menu-template assignment data:', error);
+            return [];
+        }
+    }
+
+    if (value && !Array.isArray(value) && value.data !== undefined) {
+        value = value.data;
+        if (typeof value === 'string') {
+            try {
+                value = JSON.parse(value);
+            } catch (error) {
+                return [];
+            }
+        }
+    }
+
+    if (Array.isArray(value)) return value.filter(item => item && typeof item === 'object');
+    return value && typeof value === 'object' ? [value] : [];
+}
+
+function isMenuTemplateSelected(item) {
+    return item.option_check === undefined || item.option_check === true || item.option_check === 1 ||
+        String(item.option_check).toLowerCase() === 'true';
+}
+
+function menuTemplateProfileKey(item) {
+    return String(item.profile_auto ?? item.profile_id ?? item.profile_name ?? item.profileName ?? '')
+        .trim()
+        .toLowerCase();
+}
+
+function menuTemplateProfileName(item) {
+    return item.profile_name ?? item.profileName ?? item.profile ?? item.name ?? item.profile_auto ?? 'Unnamed profile';
+}
+
+function enrichMenuTemplateProfileName(item, profileNamesByKey) {
+    if (item.profile_name || item.profileName) return item;
+
+    const profileName = profileNamesByKey.get(menuTemplateProfileKey(item));
+    return profileName ? { ...item, profile_name: profileName } : item;
+}
+
+function escapeMenuTemplateValue(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function formatMenuTemplateLogDate(logDate) {
+    if (!logDate) return 'Not available';
+    const date = new Date(logDate);
+    return Number.isNaN(date.getTime()) ? String(logDate) : date.toLocaleString();
+}
+
+function formatMenuTemplateAssignmentNature(value) {
+    if (!value || value === 'Not specified') return 'Not specified';
+    const text = String(value).replace(/_/g, ' ').trim();
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
+let currentMilestoneAssignmentExportData = null;
+
+function milestoneAssignmentDetails(originalData, changesData, logDate, title, record) {
+    const allRequestedItems = normalizeMilestoneAssignments(changesData);
+    const milestoneDetailsByKey = new Map(
+        allRequestedItems.map(item => [milestoneAssignmentKey(item), item])
+    );
+    const originalItems = normalizeMilestoneAssignments(originalData)
+        .filter(item => isMilestoneAssignmentSelected(item))
+        .map(item => enrichMilestoneAssignment(item, milestoneDetailsByKey));
+    const requestedItems = allRequestedItems.filter(item => isMilestoneAssignmentSelected(item));
+
+    const originalKeys = new Set(originalItems.map(milestoneAssignmentKey));
+    const requestedKeys = new Set(requestedItems.map(milestoneAssignmentKey));
+    const addedItems = requestedItems.filter(item => !originalKeys.has(milestoneAssignmentKey(item)));
+    const removedItems = originalItems.filter(item => !requestedKeys.has(milestoneAssignmentKey(item)));
+    const firstRequestedItem = requestedItems[0] || {};
+    const assignedTo = record?.user_assign_to_name || record?.assigned_to_name ||
+        firstRequestedItem.user_assign_to_name || firstRequestedItem.user_name || 'Not available';
+    const performedBy = record?.user_name || record?.created_by_name || 'Not available';
+    const remarks = record?.reason_remarks || record?.remarks ||
+        firstRequestedItem.assignment_reason || 'No remarks provided.';
+    const assignmentNature = record?.nature_of_assignment || record?.assignment_nature ||
+        firstRequestedItem.nature_of_assignment || firstRequestedItem.assignment_nature || 'Not specified';
+    const formattedLogDate = formatMenuTemplateLogDate(logDate);
+    const formattedNature = formatMenuTemplateAssignmentNature(assignmentNature);
+
+    currentMilestoneAssignmentExportData = {
+        title,
+        assignedTo,
+        performedBy,
+        logDate: formattedLogDate,
+        remarks,
+        assignmentNature: formattedNature,
+        requestedItems: requestedItems.map(item => ({
+            ...item,
+            exportStatus: originalKeys.has(milestoneAssignmentKey(item)) ? 'Already assigned' : 'New assignment'
+        })),
+        originalItems,
+        removedItems,
+        addedCount: addedItems.length
+    };
+
+    $('#milestoneAssignmentTitle').text(title);
+    $('#milestoneAssignmentAssignedTo').text(assignedTo);
+    $('#milestoneAssignmentPerformedBy').text(performedBy);
+    $('#milestoneAssignmentLogDate').text(formattedLogDate);
+    $('#milestoneAssignmentRemarks').text(remarks);
+    $('#milestoneAssignmentNature').text(formattedNature);
+    $('#milestoneAssignmentRequestedCount').text(requestedItems.length.toLocaleString());
+    $('#milestoneAssignmentAddedCount').text(addedItems.length.toLocaleString());
+    $('#milestoneAssignmentRemovedCount').text(removedItems.length.toLocaleString());
+    $('#milestoneRequestedTabCount').text(requestedItems.length.toLocaleString());
+    $('#milestonePreviousTabCount').text(originalItems.length.toLocaleString());
+    $('#milestoneRemovedTabCount').text(removedItems.length.toLocaleString());
+
+    $('#milestoneAssignmentRequestedItems').html(
+        buildMilestoneAssignmentTable(requestedItems, item =>
+            originalKeys.has(milestoneAssignmentKey(item)) ? 'Existing' : 'New')
+    );
+    $('#milestoneAssignmentOriginalItems').html(buildMilestoneAssignmentTable(originalItems));
+    $('#milestoneAssignmentRemovedItems').html(
+        buildMilestoneAssignmentTable(removedItems, () => 'Removed')
+    );
+
+    document.getElementById('milestoneRequestedTab')?.click();
+    $('#milestoneAssignmentDetailsModal').modal('show');
+}
+
+function normalizeMilestoneAssignments(data) {
+    if (!data) return [];
+    let value = data;
+
+    if (typeof value === 'string') {
+        try {
+            value = JSON.parse(value);
+        } catch (error) {
+            console.warn('Unable to parse milestone assignment data:', error);
+            return [];
+        }
+    }
+
+    if (value && !Array.isArray(value) && value.data !== undefined) {
+        value = value.data;
+        if (typeof value === 'string') {
+            try {
+                value = JSON.parse(value);
+            } catch (error) {
+                return [];
+            }
+        }
+    }
+
+    if (Array.isArray(value)) return value.filter(item => item && typeof item === 'object');
+    return value && typeof value === 'object' ? [value] : [];
+}
+
+function isMilestoneAssignmentSelected(item) {
+    return item.option_check === undefined || item.option_check === true || item.option_check === 1 ||
+        String(item.option_check).toLowerCase() === 'true';
+}
+
+function milestoneAssignmentKey(item) {
+    return String(item.ms_id ?? item.milestone_id ?? item.milestone_description ?? '')
+        .trim()
+        .toLowerCase();
+}
+
+function enrichMilestoneAssignment(item, milestoneDetailsByKey) {
+    const details = milestoneDetailsByKey.get(milestoneAssignmentKey(item));
+    return details ? { ...details, ...item } : item;
+}
+
+function buildMilestoneAssignmentTable(items, statusResolver) {
+    if (!items.length) {
+        return '<div class="text-center text-muted p-4"><i class="fas fa-info-circle me-2"></i>No milestones to display.</div>';
+    }
+
+    const rows = items
+        .slice()
+        .sort((a, b) => String(a.milestone_description || '').localeCompare(String(b.milestone_description || '')))
+        .map((item, index) => {
+            const milestone = escapeMenuTemplateValue(item.milestone_description || 'Milestone name unavailable');
+            const mainService = escapeMenuTemplateValue(item.main_service_name || 'Not specified');
+            const subService = escapeMenuTemplateValue(item.sub_service_name || 'Not specified');
+            const status = statusResolver ? statusResolver(item) : '';
+            let statusBadge = '';
+
+            if (status === 'New') {
+                statusBadge = '<span class="badge bg-success">New assignment</span>';
+            } else if (status === 'Removed') {
+                statusBadge = '<span class="badge bg-danger">Removed</span>';
+            } else if (status === 'Existing') {
+                statusBadge = '<span class="badge bg-secondary">Already assigned</span>';
+            }
+
+            return `
+                <tr>
+                    <td class="text-muted text-center">${index + 1}</td>
+                    <td><div class="fw-bold text-dark">${milestone}</div></td>
+                    <td>${mainService}</td>
+                    <td>${subService}</td>
+                    ${statusResolver ? `<td>${statusBadge}</td>` : ''}
+                </tr>`;
+        }).join('');
+
+    return `
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width: 60px;">#</th>
+                    <th>Milestone</th>
+                    <th>Main Service</th>
+                    <th>Sub-Service</th>
+                    ${statusResolver ? '<th>Status</th>' : ''}
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+}
+
+function milestoneExportFilename(extension) {
+    const recipient = currentMilestoneAssignmentExportData?.assignedTo || 'recipient';
+    const safeRecipient = recipient.replace(/[^a-z0-9]+/gi, '_').replace(/^_|_$/g, '');
+    return `Milestone_Assignment_${safeRecipient || 'recipient'}.${extension}`;
+}
+
+function milestoneExportRows(items, includeStatus) {
+    return items.map((item, index) => {
+        const row = [
+            index + 1,
+            item.milestone_description || 'Milestone name unavailable',
+            item.main_service_name || 'Not specified',
+            item.sub_service_name || 'Not specified'
+        ];
+        if (includeStatus) row.push(item.exportStatus || 'Removed');
+        return row;
+    });
+}
+
+$(document).off('click', '#exportMilestoneAssignmentPdf').on('click', '#exportMilestoneAssignmentPdf', function () {
+    const data = currentMilestoneAssignmentExportData;
+    if (!data) return;
+    if (!window.pdfMake) {
+        alert('PDF export is currently unavailable. Please refresh the page and try again.');
+        return;
+    }
+
+    const content = [
+        { text: data.title, style: 'title' },
+        {
+            columns: [
+                { text: [{ text: 'Assigned to\n', style: 'label' }, data.assignedTo] },
+                { text: [{ text: 'Performed by\n', style: 'label' }, data.performedBy] },
+                { text: [{ text: 'Request date\n', style: 'label' }, data.logDate] }
+            ],
+            columnGap: 20,
+            margin: [0, 0, 0, 14]
+        },
+        {
+            table: {
+                widths: ['*', 150],
+                body: [
+                    [
+                        { text: [{ text: 'Remarks / reason\n', style: 'label' }, data.remarks] },
+                        { text: [{ text: 'Nature\n', style: 'label' }, data.assignmentNature] }
+                    ]
+                ]
+            },
+            layout: 'lightHorizontalLines',
+            margin: [0, 0, 0, 14]
+        },
+        {
+            columns: [
+                { text: `Assigned milestones: ${data.requestedItems.length}`, style: 'summary' },
+                { text: `New assignments: ${data.addedCount}`, style: 'summarySuccess' },
+                { text: `Removed assignments: ${data.removedItems.length}`, style: 'summaryDanger' }
+            ],
+            margin: [0, 0, 0, 14]
+        },
+        { text: 'Requested Milestone Assignments', style: 'section' },
+        {
+            table: {
+                headerRows: 1,
+                widths: [24, '25%', '25%', '*', 90],
+                body: [
+                    ['#', 'Milestone', 'Main Service', 'Sub-Service', 'Status'],
+                    ...milestoneExportRows(data.requestedItems, true)
+                ]
+            },
+            layout: 'lightHorizontalLines'
+        }
+    ];
+
+    if (data.originalItems.length) {
+        content.push(
+            { text: 'Previous Assignments', style: 'section', margin: [0, 18, 0, 6] },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: [24, '30%', '30%', '*'],
+                    body: [['#', 'Milestone', 'Main Service', 'Sub-Service'], ...milestoneExportRows(data.originalItems, false)]
+                },
+                layout: 'lightHorizontalLines'
+            }
+        );
+    }
+
+    if (data.removedItems.length) {
+        content.push(
+            { text: 'Removed Assignments', style: 'sectionDanger', margin: [0, 18, 0, 6] },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: [24, '30%', '30%', '*'],
+                    body: [['#', 'Milestone', 'Main Service', 'Sub-Service'], ...milestoneExportRows(data.removedItems, false)]
+                },
+                layout: 'lightHorizontalLines'
+            }
+        );
+    }
+
+    window.pdfMake.createPdf({
+        pageSize: 'A4',
+        pageOrientation: 'landscape',
+        pageMargins: [30, 30, 30, 30],
+        content,
+        defaultStyle: { fontSize: 8, color: '#212529' },
+        styles: {
+            title: { fontSize: 16, bold: true, color: '#0d6efd', margin: [0, 0, 0, 16] },
+            label: { fontSize: 8, bold: true, color: '#6c757d' },
+            summary: { bold: true, color: '#0d6efd' },
+            summarySuccess: { bold: true, color: '#198754' },
+            summaryDanger: { bold: true, color: '#dc3545' },
+            section: { fontSize: 11, bold: true, color: '#0d6efd', margin: [0, 14, 0, 6] },
+            sectionDanger: { fontSize: 11, bold: true, color: '#dc3545' }
+        }
+    }).download(milestoneExportFilename('pdf'));
+});
+
+$(document).off('click', '#exportMilestoneAssignmentImage').on('click', '#exportMilestoneAssignmentImage', function () {
+    const data = currentMilestoneAssignmentExportData;
+    if (!data) return;
+
+    const width = 1600;
+    const padding = 70;
+    const totalItems = data.requestedItems.length + data.originalItems.length + data.removedItems.length;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = Math.max(1100, 720 + (totalItems * 155));
+    const ctx = canvas.getContext('2d');
+    let y = 0;
+
+    ctx.fillStyle = '#f5f7fb';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#0d6efd';
+    ctx.fillRect(0, 0, canvas.width, 125);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 32px Arial, sans-serif';
+    ctx.fillText(data.title, padding, 75);
+    y = 165;
+
+    const drawWrappedText = (text, x, startY, maxWidth, lineHeight) => {
+        const words = String(text || '').split(/\s+/);
+        let line = '';
+        let currentY = startY;
+        words.forEach(word => {
+            const testLine = line ? `${line} ${word}` : word;
+            if (ctx.measureText(testLine).width > maxWidth && line) {
+                ctx.fillText(line, x, currentY);
+                line = word;
+                currentY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        });
+        if (line) ctx.fillText(line, x, currentY);
+        return currentY + lineHeight;
+    };
+
+    const drawLabelValue = (label, value, x, top, maxWidth) => {
+        ctx.fillStyle = '#6c757d';
+        ctx.font = 'bold 18px Arial, sans-serif';
+        ctx.fillText(label.toUpperCase(), x, top);
+        ctx.fillStyle = '#212529';
+        ctx.font = 'bold 23px Arial, sans-serif';
+        return drawWrappedText(value || 'Not available', x, top + 34, maxWidth, 30);
+    };
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(padding, y, width - (padding * 2), 130);
+    drawLabelValue('Milestones assigned to', data.assignedTo, padding + 25, y + 35, 430);
+    drawLabelValue('Action performed by', data.performedBy, 610, y + 35, 400);
+    drawLabelValue('Request date', data.logDate, 1120, y + 35, 350);
+    y += 160;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(padding, y, width - (padding * 2), 135);
+    drawLabelValue('Remarks / reason', data.remarks, padding + 25, y + 35, 950);
+    drawLabelValue('Nature of assignment', data.assignmentNature, 1120, y + 35, 350);
+    y += 165;
+
+    ctx.fillStyle = '#0d6efd';
+    ctx.font = 'bold 22px Arial, sans-serif';
+    ctx.fillText(`Assigned: ${data.requestedItems.length}`, padding, y);
+    ctx.fillStyle = '#198754';
+    ctx.fillText(`New: ${data.addedCount}`, 350, y);
+    ctx.fillStyle = '#dc3545';
+    ctx.fillText(`Removed: ${data.removedItems.length}`, 570, y);
+    y += 60;
+
+    const drawMilestoneSection = (heading, items, headingColor, showStatus) => {
+        if (!items.length) return;
+        ctx.fillStyle = headingColor;
+        ctx.font = 'bold 27px Arial, sans-serif';
+        ctx.fillText(heading, padding, y);
+        y += 35;
+
+        items.forEach((item, index) => {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(padding, y, width - (padding * 2), 130);
+            ctx.fillStyle = '#212529';
+            ctx.font = 'bold 21px Arial, sans-serif';
+            drawWrappedText(`${index + 1}. ${item.milestone_description || 'Milestone name unavailable'}`, padding + 20, y + 30, 650, 27);
+            ctx.fillStyle = '#495057';
+            ctx.font = '17px Arial, sans-serif';
+            drawWrappedText(`Main service: ${item.main_service_name || 'Not specified'}`, 770, y + 30, 350, 23);
+            drawWrappedText(`Sub-service: ${item.sub_service_name || 'Not specified'}`, 1130, y + 30, 370, 23);
+            if (showStatus) {
+                ctx.fillStyle = item.exportStatus === 'New assignment' ? '#198754' : '#6c757d';
+                ctx.font = 'bold 17px Arial, sans-serif';
+                ctx.fillText(item.exportStatus || '', padding + 20, y + 105);
+            }
+            y += 145;
+        });
+        y += 25;
+    };
+
+    drawMilestoneSection('Requested Milestone Assignments', data.requestedItems, '#0d6efd', true);
+    drawMilestoneSection('Previous Assignments', data.originalItems, '#495057', false);
+    drawMilestoneSection('Removed Assignments', data.removedItems, '#dc3545', false);
+
+    canvas.toBlob(blob => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = milestoneExportFilename('png');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }, 'image/png');
+});
+
+function buildMenuTemplateAssignmentTable(items, statusResolver) {
+    if (!items.length) {
+        return '<div class="text-center text-muted p-4"><i class="fas fa-info-circle me-2"></i>No profiles to display.</div>';
+    }
+
+    const rows = items
+        .slice()
+        .sort((a, b) => String(menuTemplateProfileName(a)).localeCompare(String(menuTemplateProfileName(b))))
+        .map((item, index) => {
+            const profileName = escapeMenuTemplateValue(menuTemplateProfileName(item));
+            const profileReference = escapeMenuTemplateValue(item.profile_auto ?? item.profile_id ?? 'Not available');
+            const moduleName = escapeMenuTemplateValue(item.module_name ?? item.moduleName ?? 'No module specified');
+            const status = statusResolver ? statusResolver(item) : '';
+            let statusBadge = '';
+
+            if (status === 'New') {
+                statusBadge = '<span class="badge bg-success">New assignment</span>';
+            } else if (status === 'Removed') {
+                statusBadge = '<span class="badge bg-danger">Removed</span>';
+            } else if (status === 'Existing') {
+                statusBadge = '<span class="badge bg-secondary">Already assigned</span>';
+            }
+
+            return `
+                <tr>
+                    <td class="text-muted text-center">${index + 1}</td>
+                    <td>
+                        <div class="fw-bold text-dark">${profileName}</div>
+                    </td>
+                    ${statusResolver ? `<td>${statusBadge}</td>` : ''}
+                </tr>`;
+        }).join('');
+
+    return `
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width: 60px;">#</th>
+                    <th>Template / Profile Name</th>
+                    ${statusResolver ? '<th>Status</th>' : ''}
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+}
+
+function menuTemplateExportFilename(extension) {
+    const recipient = currentMenuTemplateAssignmentExportData?.assignedTo || 'recipient';
+    const safeRecipient = recipient.replace(/[^a-z0-9]+/gi, '_').replace(/^_|_$/g, '');
+    return `Menu_Template_Assignment_${safeRecipient || 'recipient'}.${extension}`;
+}
+
+function menuTemplateExportRows(items, includeStatus) {
+    return items.map((item, index) => {
+        const row = [index + 1, menuTemplateProfileName(item)];
+        if (includeStatus) row.push(item.exportStatus || 'Removed');
+        return row;
+    });
+}
+
+$(document).off('click', '#exportMenuTemplateAssignmentPdf').on('click', '#exportMenuTemplateAssignmentPdf', function () {
+    const data = currentMenuTemplateAssignmentExportData;
+    if (!data) return;
+    if (!window.pdfMake) {
+        alert('PDF export is currently unavailable. Please refresh the page and try again.');
+        return;
+    }
+
+    const content = [
+        { text: data.title, style: 'title' },
+        {
+            columns: [
+                { text: [{ text: 'Assigned to\n', style: 'label' }, data.assignedTo] },
+                { text: [{ text: 'Performed by\n', style: 'label' }, data.performedBy] },
+                { text: [{ text: 'Request date\n', style: 'label' }, data.logDate] }
+            ],
+            columnGap: 20,
+            margin: [0, 0, 0, 14]
+        },
+        {
+            table: {
+                widths: ['*', 150],
+                body: [[
+                    { text: [{ text: 'Remarks / reason\n', style: 'label' }, data.remarks] },
+                    { text: [{ text: 'Nature\n', style: 'label' }, data.assignmentNature] }
+                ]]
+            },
+            layout: 'lightHorizontalLines',
+            margin: [0, 0, 0, 14]
+        },
+        {
+            columns: [
+                { text: `Assigned templates / menus: ${data.requestedItems.length}`, style: 'summary' },
+                { text: `New assignments: ${data.addedCount}`, style: 'summarySuccess' },
+                { text: `Removed assignments: ${data.removedItems.length}`, style: 'summaryDanger' }
+            ],
+            margin: [0, 0, 0, 14]
+        },
+        { text: 'All Assigned Templates / Menus', style: 'section' },
+        {
+            table: {
+                headerRows: 1,
+                widths: [24, '*', 90],
+                body: [
+                    ['#', 'Template / Profile Name', 'Status'],
+                    ...menuTemplateExportRows(data.requestedItems, true)
+                ]
+            },
+            layout: 'lightHorizontalLines'
+        }
+    ];
+
+    if (data.removedItems.length) {
+        content.push(
+            { text: 'Removed Assignments', style: 'sectionDanger', margin: [0, 18, 0, 6] },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: [24, '*'],
+                    body: [['#', 'Template / Profile Name'], ...menuTemplateExportRows(data.removedItems, false)]
+                },
+                layout: 'lightHorizontalLines'
+            }
+        );
+    }
+
+    window.pdfMake.createPdf({
+        pageSize: 'A4',
+        pageOrientation: 'landscape',
+        pageMargins: [30, 30, 30, 30],
+        content,
+        defaultStyle: { fontSize: 9, color: '#212529' },
+        styles: {
+            title: { fontSize: 16, bold: true, color: '#0d6efd', margin: [0, 0, 0, 16] },
+            label: { fontSize: 8, bold: true, color: '#6c757d' },
+            summary: { bold: true, color: '#0d6efd' },
+            summarySuccess: { bold: true, color: '#198754' },
+            summaryDanger: { bold: true, color: '#dc3545' },
+            section: { fontSize: 11, bold: true, color: '#0d6efd', margin: [0, 14, 0, 6] },
+            sectionDanger: { fontSize: 11, bold: true, color: '#dc3545' }
+        }
+    }).download(menuTemplateExportFilename('pdf'));
+});
+
+$(document).off('click', '#exportMenuTemplateAssignmentImage').on('click', '#exportMenuTemplateAssignmentImage', function () {
+    const data = currentMenuTemplateAssignmentExportData;
+    if (!data) return;
+
+    const width = 1500;
+    const padding = 70;
+    const totalItems = data.requestedItems.length + data.removedItems.length;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = Math.max(1050, 700 + (totalItems * 125));
+    const ctx = canvas.getContext('2d');
+    let y = 0;
+
+    const drawWrappedText = (text, x, startY, maxWidth, lineHeight) => {
+        const words = String(text || '').split(/\s+/);
+        let line = '';
+        let currentY = startY;
+        words.forEach(word => {
+            const testLine = line ? `${line} ${word}` : word;
+            if (ctx.measureText(testLine).width > maxWidth && line) {
+                ctx.fillText(line, x, currentY);
+                line = word;
+                currentY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        });
+        if (line) ctx.fillText(line, x, currentY);
+        return currentY + lineHeight;
+    };
+
+    const drawLabelValue = (label, value, x, top, maxWidth) => {
+        ctx.fillStyle = '#6c757d';
+        ctx.font = 'bold 17px Arial, sans-serif';
+        ctx.fillText(label.toUpperCase(), x, top);
+        ctx.fillStyle = '#212529';
+        ctx.font = 'bold 22px Arial, sans-serif';
+        return drawWrappedText(value || 'Not available', x, top + 32, maxWidth, 29);
+    };
+
+    ctx.fillStyle = '#f5f7fb';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#0d6efd';
+    ctx.fillRect(0, 0, canvas.width, 120);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 30px Arial, sans-serif';
+    ctx.fillText(data.title, padding, 72);
+    y = 160;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(padding, y, width - (padding * 2), 125);
+    drawLabelValue('Menu assigned to', data.assignedTo, padding + 25, y + 34, 400);
+    drawLabelValue('Action performed by', data.performedBy, 570, y + 34, 380);
+    drawLabelValue('Request date', data.logDate, 1060, y + 34, 350);
+    y += 150;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(padding, y, width - (padding * 2), 130);
+    drawLabelValue('Remarks / reason', data.remarks, padding + 25, y + 34, 850);
+    drawLabelValue('Nature of assignment', data.assignmentNature, 1050, y + 34, 350);
+    y += 160;
+
+    ctx.fillStyle = '#0d6efd';
+    ctx.font = 'bold 21px Arial, sans-serif';
+    ctx.fillText(`Assigned: ${data.requestedItems.length}`, padding, y);
+    ctx.fillStyle = '#198754';
+    ctx.fillText(`New: ${data.addedCount}`, 350, y);
+    ctx.fillStyle = '#dc3545';
+    ctx.fillText(`Removed: ${data.removedItems.length}`, 560, y);
+    y += 55;
+
+    const drawProfileSection = (heading, items, headingColor, showStatus) => {
+        if (!items.length) return;
+        ctx.fillStyle = headingColor;
+        ctx.font = 'bold 25px Arial, sans-serif';
+        ctx.fillText(heading, padding, y);
+        y += 32;
+
+        items.forEach((item, index) => {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(padding, y, width - (padding * 2), 105);
+            ctx.fillStyle = '#212529';
+            ctx.font = 'bold 21px Arial, sans-serif';
+            drawWrappedText(`${index + 1}. ${menuTemplateProfileName(item)}`, padding + 20, y + 34, width - (padding * 2) - 40, 27);
+            if (showStatus) {
+                ctx.fillStyle = item.exportStatus === 'New assignment' ? '#198754' : '#6c757d';
+                ctx.font = 'bold 16px Arial, sans-serif';
+                ctx.fillText(item.exportStatus || '', padding + 20, y + 86);
+            }
+            y += 120;
+        });
+        y += 22;
+    };
+
+    drawProfileSection('All Assigned Templates / Menus', data.requestedItems, '#0d6efd', true);
+    drawProfileSection('Removed Assignments', data.removedItems, '#dc3545', false);
+
+    canvas.toBlob(blob => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = menuTemplateExportFilename('png');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }, 'image/png');
+});
 
 
 

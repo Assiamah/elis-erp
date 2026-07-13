@@ -980,6 +980,57 @@ public class reports {
 
 
 
+            if (request_type.equals("report_on_smd_cartogis_kpi")) {
+
+
+            // System.out.println(main_service);
+            // System.out.println(sub_service);
+
+            // String application_status = request.getParameter("application_status");
+            String date_from = request.getParameter("date_from");
+            String date_to = request.getParameter("date_to");
+            String userid = request.getParameter("userid");
+            // String regionid = request.getParameter("regionid");
+
+            
+
+            String report_parameters = null;
+            String json_output = null;
+
+            try {
+
+                // obj_r.put("application_status", application_status);
+                obj_r.put("date_from", date_from);
+                obj_r.put("date_to", date_to);
+                obj_r.put("userid", userid);
+                // obj_r.put("regionid", regionid);
+
+            
+                report_parameters = obj_r.toString();
+
+                report_parameters = obj_r.toString();
+                // System.out.println("Assiamah");
+                // System.out.println(report_parameters);
+
+                json_output = excel_report_cl.report_on_smd_cartogis_kpi(cls_url_config.getWeb_service_url_ser(),
+                        cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            // out.println(json_output);
+            // out.close();
+            return json_output;
+        }
+
+
+
+
+
+
+
 
 
         if (request_type.equals("general_user_in_unit")) {
