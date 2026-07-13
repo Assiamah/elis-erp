@@ -193,7 +193,6 @@ $(document)
                                     data-ar_name="${escapeHtml(ar_name)}"
                                     data-app_type="${escapeHtml(business_process_sub_name)}"
                                     data-locality="${escapeHtml(locality)}"
-                                    onclick="confirmAddFile('${escapeHtml(job_number)}', '${escapeHtml(ar_name)}', '${escapeHtml(business_process_sub_name)}', '${escapeHtml(locality)}')"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="top"
                                     title="Add file to prepared list">
@@ -326,8 +325,19 @@ $(document)
     });
 });
 
+// Use delegated events so values come from DOM attributes instead of inline JS strings.
+$(document).on('click', '.add-file-btn', function() {
+    window.confirmAddFile(
+        $(this).attr('data-job_number') || '',
+        $(this).attr('data-ar_name') || '',
+        $(this).attr('data-app_type') || '',
+        $(this).attr('data-locality') || '',
+        this
+    );
+});
+
 // Global function to confirm adding file to list
-window.confirmAddFile = function(job_number, ar_name, app_type, locality) {
+window.confirmAddFile = function(job_number, ar_name, app_type, locality, triggerButton) {
     Swal.fire({
         title: 'Add File to List?',
         html: `<div class="text-start">
@@ -405,7 +415,7 @@ window.confirmAddFile = function(job_number, ar_name, app_type, locality) {
                 });
                 
                 // Update button state
-                const btn = $(`button[data-job_number="${job_number}"]`);
+                const btn = triggerButton ? $(triggerButton) : $(`button[data-job_number="${job_number}"]`).first();
                 btn.html('<i class="fas fa-check me-1"></i>Added');
                 btn.removeClass('btn-success').addClass('btn-secondary');
                 btn.prop('disabled', true);
