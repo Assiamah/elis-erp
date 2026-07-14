@@ -6263,7 +6263,85 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 
 							// Optional: Additional call for specific service
 							if (subServiceName === 'APPLICATION FOR STAMPING(NON LANDED DOCUMENTS)') {
+								console.log('Issue')
+								console.log('Stamping Non Landed Document detected. Additional processing may be required.');
+								
 								// Make additional AJAX call if needed
+														$.ajax({
+																		type : "POST",
+																		url : "Case_Management_Serv",
+																		// target:'_blank',
+
+																		data : {
+																			request_type : 'online_select_bill_for_tamp_duty_light_document',
+																			
+																			main_service_id: mainServiceId,
+						main_service_sub_id: subServiceId,
+						main_service_desc: mainServiceName,
+						main_service_sub_desc: subServiceName,
+						client_name: clientName,
+						case_number: 'Not Case',
+						land_size: land_size,
+						registration_forms: registration_forms,
+						publication_type: publication_type,
+						type_of_use: type_of_use,
+						licensed_surveyor_number: licensed_surveyor_number,
+						licensed_surveyor_name: licensed_surveyor_name,
+						locality: locality,
+						ar_gender: ar_gender,
+						ar_district: ar_district,
+						ar_region: ar_region,
+						paper_size: 0,
+						revenue_item: revenue_item,
+						no_of_copy: no_of_copy,
+						office_region: officeRegionValue,
+						submission_type: 'Office',
+						surveyors_client: surveyors_client || clientName,
+						created_for: clientName,
+						created_for_id: clientId,
+						application_required_additional_bill: 'No'
+																			
+																		
+																			
+																		},
+																		cache : false,
+																		// responseType:
+																		// 'arraybuffer',
+																		// dataType:'blob',
+																		xhrFields : {
+																			responseType : 'blob'
+																		},
+																		beforeSend : function() {
+																			// $('#district').html('<img
+																			// src="img/loading.gif"
+																			// alt=""
+																			// width="24"
+																			// height="24">');
+																		},
+																		success : function(
+																				jobdetails) {
+																			console
+																					.log(jobdetails);
+																			// const
+																			// arrayBuffer
+																			// =
+																			// _base64ToArrayBuffer(jobdetails);
+
+																			var blob = new Blob(
+																					[ jobdetails ],
+																					{
+																						type : "application/pdf"
+																					});
+																			var objectUrl = URL
+																					.createObjectURL(blob);
+																			window
+																					.open(objectUrl);
+
+																			console
+																					.log(jobdetails);
+
+																		}
+																	});
 							}
 						},
 						error: function (xhr, status, error) {
