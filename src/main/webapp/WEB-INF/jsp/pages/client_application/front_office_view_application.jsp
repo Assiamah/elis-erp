@@ -18,6 +18,16 @@
         font-size: 12px;
 		/* font-size: 0.75rem; */
     }
+
+    #lc_public_documents_dataTable th:nth-child(3),
+    #lc_public_documents_dataTable td:nth-child(3) {
+        display: none;
+    }
+
+    #lc_main_scanned_documents_dataTable th:nth-child(3),
+    #lc_main_scanned_documents_dataTable td:nth-child(3) {
+        display: none;
+    }
 </style>
 <div class="main-content app-content">
     <div class="container-fluid page-container">
@@ -419,7 +429,7 @@
                                             <tr>
                                                 <th>Document Name</th>
                                                 <th>Type</th>
-                                                <!-- <th>Action</th> -->
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -458,7 +468,7 @@
                                             <tr>
                                                 <th>Document Name</th>
                                                 <th>Type</th>
-                                                <!-- <th>Action</th> -->
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
