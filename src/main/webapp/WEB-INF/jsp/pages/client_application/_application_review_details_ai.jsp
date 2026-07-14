@@ -1502,7 +1502,7 @@
                                             <tr>
                                                 <th>Document Name</th>
                                                 <th>Type</th>
-                                                <!-- <th>Action</th> -->
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>

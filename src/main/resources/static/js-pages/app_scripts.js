@@ -5366,18 +5366,160 @@ $('#btn_load_scanned_documents').on('click', function (e) {
 
                 $(json_p).each(function () {
 
-                    table_docs.append("<tr><td>" + this.doc_description + "</td><td>" + this.document_extention + "</td>"
-                        + '<td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td>'
-                        + "</tr>");
+                    // table_docs.append("<tr><td>" + this.doc_description + "</td><td>" + this.document_extention + "</td>"
+                    //     + '<td> <a class="link-post" href="' + this.document_file + '">' + this.doc_description + '</a></td>'
+                    //     + "</tr>");
 
-                    table_docs_mains.append('<tr><td> <a class="link-post text-secondary" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' + this.document_extention + '</td>'
-                        + "</tr>");
+                    // table_docs_mains.append('<tr><td> <a class="link-post text-secondary" href="' + this.document_file + '">' + this.doc_description + '</a></td><td>' + this.document_extention + '</td>'
+                    //     + "</tr>");
+
+                    table_docs.append(
+                        '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
+                        '<td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        '<td>.pdf</td>' +
+                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
+					    '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Delete') + ' </button></td>' +
+                        '</tr>'
+                    );
+
+                     table_docs_mains.append(
+                        '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
+                        '<td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        '<td>.pdf</td>' +
+                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
+					    '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Delete') + ' </button></td>' +
+                        '</tr>'
+                    );
 
                 });
 
             } catch (e) {
                 console.log(e)
             }
+        }
+    });
+});
+
+$('#lc_main_scanned_documents_dataTable').on('click', '.btn_delete_doc', function () {
+    var file_to_open = $(this).data('doc_uuid');
+    //console.log(file_to_open);
+    
+    if (!file_to_open) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Document identifier is missing.'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "delete_document_by_doc_uuid",
+                data: { file_to_open: file_to_open },
+                cache: false,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Deleting...',
+                        text: 'Please wait',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function (serviceresponse) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Document deleted successfully.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    // Optionally, refresh the table or remove the row
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to delete the document.'
+                    });
+                }
+            });
+        }
+    });
+});
+
+$('#lc_main_scanned_documents_dataTable').on('click', '.btn_reverse_doc', function () {
+    var file_to_open = $(this).data('doc_uuid');
+   // console.log(file_to_open);
+    
+    if (!file_to_open) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Document identifier is missing.'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to reverse this document?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, reverse it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "reverse_document_by_doc_uuid",
+                data: { file_to_open: file_to_open },
+                cache: false,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function (serviceresponse) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reversed!',
+                        text: 'Document reversed successfully.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    // Optionally, refresh the table or remove the row
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to reverse the document.'
+                    });
+                }
+            });
         }
     });
 });
@@ -5406,12 +5548,143 @@ $('#btn_load_scanned_documents_public').on('click', function (e) {
                 var json_p = JSON.parse(serviceresponse);
 
                 $(json_p).each(function () {
-                    table_docs_mains.append('<tr><td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td><td>.pdf</td>'
-                        + "</tr>");
+                    table_docs_mains.append(
+                        '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
+                        '<td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        '<td>.pdf</td>' +
+                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
+					    '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Delete') + ' </button></td>' +
+                        '</tr>'
+                    );
                 });
             } catch (e) {
                 console.log(e)
             }
+        }
+    });
+});
+
+
+$('#lc_public_documents_dataTable').on('click', '.btn_delete_doc', function () {
+    var file_to_open = $(this).data('doc_uuid');
+    //console.log(file_to_open);
+    
+    if (!file_to_open) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Document identifier is missing.'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "delete_document_by_doc_uuid",
+                data: { file_to_open: file_to_open },
+                cache: false,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Deleting...',
+                        text: 'Please wait',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function (serviceresponse) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Document deleted successfully.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    // Optionally, refresh the table or remove the row
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to delete the document.'
+                    });
+                }
+            });
+        }
+    });
+});
+
+$('#lc_public_documents_dataTable').on('click', '.btn_reverse_doc', function () {
+    var file_to_open = $(this).data('doc_uuid');
+   // console.log(file_to_open);
+    
+    if (!file_to_open) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Document identifier is missing.'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to reverse this document?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, reverse it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "reverse_document_by_doc_uuid",
+                data: { file_to_open: file_to_open },
+                cache: false,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function (serviceresponse) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reversed!',
+                        text: 'Document reversed successfully.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    // Optionally, refresh the table or remove the row
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to reverse the document.'
+                    });
+                }
+            });
         }
     });
 });
