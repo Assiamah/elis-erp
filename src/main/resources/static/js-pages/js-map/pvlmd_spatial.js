@@ -1574,7 +1574,7 @@ $('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
     $('#pvlmd_bl_wkt_polygon').val(wkt);
 
 	if(wkt) {
-		$('#pvlmd_btn_request_delete_wkt').removeClass('d-none')
+		$('#pvlmd_btn_request_add_existing_parcel').removeClass('d-none')
 	}
     
     // Update map
@@ -2123,7 +2123,7 @@ window.initiateDeleteParcel = function(parcelId) {
 
 };
 
-$('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
+$('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 	e.preventDefault();
 
 	var pvlmd_bl_wkt_polygon = $.trim($('#pvlmd_bl_wkt_polygon').val());
@@ -2139,17 +2139,17 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 	}
 
 	Swal.fire({
-		title: 'Request Parcel Deletion?',
-		icon: 'warning',
+		title: 'Request Add Existing Parcel?',
+		icon: 'info',
 		html: `
-			<p class="mb-3">This request will submit the selected polygon for review.</p>
+			<p class="mb-3">This request will submit the selected polygon for review to add existing parcel.</p>
 			<div class="form-group text-start">
-				<label for="pvlmd_delete_reference_number" class="form-label">Reference Number <span class="text-danger">*</span></label>
-				<input type="text" id="pvlmd_delete_reference_number" class="form-control" placeholder="Enter reference number">
+				<label for="pvlmd_add_exist_reference_number" class="form-label">Reference Number <span class="text-danger">*</span></label>
+				<input type="text" id="pvlmd_add_exist_reference_number" class="form-control" placeholder="Enter reference number">
 			</div>
 			<div class="form-group text-start">
-				<label for="pvlmd_delete_locality" class="form-label">Locality <span class="text-danger">*</span></label>
-				<input type="text" id="pvlmd_delete_locality" class="form-control" placeholder="Enter locality">
+				<label for="pvlmd_add_exist_locality" class="form-label">Locality <span class="text-danger">*</span></label>
+				<input type="text" id="pvlmd_add_exist_locality" class="form-control" placeholder="Enter locality">
 			</div>
 		`,
 		showCancelButton: true,
@@ -2159,14 +2159,14 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 		cancelButtonColor: '#6c757d',
 		focusConfirm: false,
 		preConfirm: function() {
-			var referenceNumber = $.trim($('#pvlmd_delete_reference_number').val());
+			var referenceNumber = $.trim($('#pvlmd_add_exist_reference_number').val());
 
 			if (!referenceNumber) {
 				Swal.showValidationMessage('Reference Number is required');
 				return false;
 			}
 
-			var locality = $.trim($('#pvlmd_delete_locality').val());
+			var locality = $.trim($('#pvlmd_add_exist_locality').val());
 
 			if (!locality) {
 				Swal.showValidationMessage('Locality is required');
@@ -2216,7 +2216,7 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 				var json_p = JSON.parse(response);
 
 				if (json_p && json_p.success === true) {
-					initiateReqDeleteParcel(json_p.reference_number, json_p.glpin)
+					initiateReqAddExistingParcel(json_p.reference_number, json_p.glpin)
 				}
 
 				// Swal.fire({
@@ -2238,7 +2238,7 @@ $('#pvlmd_btn_request_delete_wkt').on('click', function(e) {
 	});
 });
 
-window.initiateReqDeleteParcel = function(parcelId, referenceNumber) {
+window.initiateReqAddExistingParcel = function(parcelId, referenceNumber) {
 
     var selectedJobsList = [];
 

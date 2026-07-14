@@ -74,6 +74,9 @@
                                 <i class="fas fa-draw-polygon me-2"></i>WKT Polygon
                             </h6>
                             <textarea class="form-control form-control-sm" rows="3" id="lrd_txt_wkt_polygon" placeholder="POLYGON((...))"></textarea>
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100 mt-2" id="lrd_btn_visualise_wkt" data-bs-tooltip="tooltip" data-bs-original-title="Visualise Polygon">
+                                <i class="fas fa-map me-1"></i> Visualise Polygon
+                            </button>
                         </div>
 
                         <!-- Quick Coordinate Search -->

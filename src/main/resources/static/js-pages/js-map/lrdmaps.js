@@ -1076,44 +1076,157 @@ $(document)
 
 
 
-												let jsonArr = [];
-											let polygonPoints = [];
+											// 	let jsonArr = [];
+											// let polygonPoints = [];
 
-											$('#coordinatelis_Table tbody tr').each(function () {
+											// $('#coordinatelis_Table tbody tr').each(function () {
+											// 	let name = $(this).find('td:eq(0)').text().trim();
+											// 	let x = $(this).find('td:eq(1)').text().trim();
+											// 	let y = $(this).find('td:eq(2)').text().trim();
+
+											// 	jsonArr.push({
+											// 		coordinate_name: name,
+											// 		x_coordinate: x,
+											// 		y_coordinate: y
+											// 	});
+
+											// 	polygonPoints.push(`${y} ${x}`);
+											// });
+
+											// // Close polygon by repeating first point
+											// polygonPoints.push(polygonPoints[0]);
+
+											// let polygonWKT = `POLYGON((${polygonPoints.join(', ')}))`;
+
+											// console.log(jsonArr);
+											// console.log(polygonWKT);
+
+											// $('#lrd_txt_wkt_polygon').val(polygonWKT);
+
+											// lrd_pvlmd_searchLayer.setSource(new ol.source.Vector({
+											// 	features: new ol.format.WKT().readFeatures(polygonWKT)
+											// }));
+
+											// view.fit(lrd_pvlmd_searchLayer
+											// 	.getSource().getExtent());
+
+											// lrd_map.getView().fit(lrd_pvlmd_searchLayer.getSource().getExtent(), {
+											// 	size: lrd_map.getSize(),
+											// 	maxZoom: 16
+											// });
+
+
+											  let polygonGroups = {};
+
+											// Group coordinates by polygon
+											$('#coordinatelis_Table tbody tr').each(function() {
 												let name = $(this).find('td:eq(0)').text().trim();
-												let x = $(this).find('td:eq(1)').text().trim();
-												let y = $(this).find('td:eq(2)').text().trim();
+												let x = parseFloat($(this).find('td:eq(1)').text().trim());
+												let y = parseFloat($(this).find('td:eq(2)').text().trim());
 
-												jsonArr.push({
-													coordinate_name: name,
-													x_coordinate: x,
-													y_coordinate: y
+												let parts = name.split('-');
+												let polygonId = parts[0] || 'polygon1';
+												let ringType = parts[1] || 'outer';
+												
+												if (!polygonGroups[polygonId]) {
+													polygonGroups[polygonId] = { outer: [], inner: [] };
+												}
+												
+												if (ringType === 'inner') {
+													polygonGroups[polygonId].inner.push({x: x, y: y});
+												} else {
+													polygonGroups[polygonId].outer.push({x: x, y: y});
+												}
+											});
+
+											// Function to calculate polygon area (positive = CCW, negative = CW)
+											function calculateArea(points) {
+												let area = 0;
+												for (let i = 0; i < points.length - 1; i++) {
+													area += (points[i].x * points[i+1].y - points[i+1].x * points[i].y);
+												}
+												// Close the polygon for area calculation
+												let last = points.length - 1;
+												area += (points[last].x * points[0].y - points[0].x * points[last].y);
+												return area / 2;
+											}
+
+											// Function to reverse ring order
+											function reverseRing(points) {
+												return points.slice().reverse();
+											}
+
+											// Build polygons with correct orientation
+											let polygons = [];
+											Object.keys(polygonGroups).forEach(key => {
+												let group = polygonGroups[key];
+												
+												// Ensure outer ring is counter-clockwise
+												let outerArea = calculateArea(group.outer);
+												if (outerArea < 0) {
+													// Reverse to make it CCW
+													group.outer = reverseRing(group.outer);
+												}
+												
+												// Ensure inner rings are clockwise
+												if (group.inner.length > 0) {
+													let innerArea = calculateArea(group.inner);
+													if (innerArea > 0) {
+														// Reverse to make it CW
+														group.inner = reverseRing(group.inner);
+													}
+												}
+												
+												// Close rings
+												if (group.outer.length > 0) {
+													group.outer.push(group.outer[0]);
+												}
+												if (group.inner.length > 0) {
+													group.inner.push(group.inner[0]);
+												}
+												
+												// Build polygon WKT
+												let outerWKT = group.outer.map(p => p.y + " " + p.x).join(', ');
+												let polygonWKT = "((" + outerWKT;
+												
+												if (group.inner.length > 0) {
+													let innerWKT = group.inner.map(p => p.y + " " + p.x).join(', ');
+													polygonWKT += ", " + innerWKT;
+												}
+												
+												polygonWKT += "))";
+												polygons.push(polygonWKT);
+											});
+
+											// Generate final WKT
+											let wkt;
+											if (polygons.length === 1) {
+												wkt = "POLYGON" + polygons[0];
+											} else {
+												wkt = "MULTIPOLYGON(" + polygons.join(', ') + ")";
+											}
+
+											$('#lrd_txt_wkt_polygon').val(wkt);
+
+											// if(wkt) {
+											// 	$('#pvlmd_btn_request_delete_wkt').removeClass('d-none')
+											// }
+											
+											// Update map
+											try {
+												lrd_pvlmd_searchLayer.setSource(new ol.source.Vector({
+													features: (new ol.format.WKT()).readFeatures(wkt)
+												}));
+												
+												view.fit(lrd_pvlmd_searchLayer.getSource().getExtent());
+												lrd_map.getView().fit(lrd_pvlmd_searchLayer.getSource().getExtent(), {
+													size: lrd_map.getSize(),
+													maxZoom: 16
 												});
-
-												polygonPoints.push(`${y} ${x}`);
-											});
-
-											// Close polygon by repeating first point
-											polygonPoints.push(polygonPoints[0]);
-
-											let polygonWKT = `POLYGON((${polygonPoints.join(', ')}))`;
-
-											console.log(jsonArr);
-											console.log(polygonWKT);
-
-											$('#lrd_txt_wkt_polygon').val(polygonWKT);
-
-											lrd_pvlmd_searchLayer.setSource(new ol.source.Vector({
-												features: new ol.format.WKT().readFeatures(polygonWKT)
-											}));
-
-											view.fit(lrd_pvlmd_searchLayer
-												.getSource().getExtent());
-
-											lrd_map.getView().fit(lrd_pvlmd_searchLayer.getSource().getExtent(), {
-												size: lrd_map.getSize(),
-												maxZoom: 16
-											});
+											} catch (error) {
+												console.log('Map update error:', error);
+												alert('Error rendering polygon: ' + error.message);
+											}
 
 									});
 
