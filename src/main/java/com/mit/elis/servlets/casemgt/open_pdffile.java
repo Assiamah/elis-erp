@@ -264,8 +264,9 @@ if (pdfBytes != null && pdfBytes.length > 0) {
 				//System.out.println(fileToOpen);
 				
 				webservice = cls_public_mgt.delete_document_by_doc_uuid(
-						cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getDoc_mgt_api(),
+						//"http://10.4.1.47:1031/",
+						cls_url_config.getDoc_mgt_api_key(),
 						obj.toString());
 				if (webservice != null) {
 					// //System.out.println(web_service_response);
@@ -323,8 +324,9 @@ if (pdfBytes != null && pdfBytes.length > 0) {
 				//System.out.println(fileToOpen);
 				
 				webservice = cls_public_mgt.reverse_document_by_doc_uuid(
-						cls_url_config.getWeb_service_url_ser(),
-						cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getDoc_mgt_api(),
+						//"http://10.4.1.47:1031/",
+						cls_url_config.getDoc_mgt_api_key(),
 						obj.toString());
 				if (webservice != null) {
 					// //System.out.println(web_service_response);
