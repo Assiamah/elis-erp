@@ -6942,6 +6942,8 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 						formdata.append("sampleFile",
 							FiletoUpload);
 
+						$("#btn_on_case_ap_generate_acknowledgement").prop("disabled", true);
+
 						// console.log(formdata);
 						$
 							.ajax({
@@ -6968,11 +6970,12 @@ $('#chng_ref_number_for_payment').on('keypress', function(e) {
 
 									$('#btnCompleteProcessonCase').show();
 
-									$('#oncaseakblobfile')
-										.attr('src',
-											objectUrl);
+									$('#oncaseakblobfile').attr('src', objectUrl);
+									
 								},
 								error: function (e) {
+
+									$("#btn_on_case_ap_generate_acknowledgement").prop("disabled", false);
 
 								}
 							});
