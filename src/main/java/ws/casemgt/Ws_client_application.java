@@ -201,6 +201,58 @@ public String get_frrv_jobs_status_json(String web_service_url, String web_servi
 
 	}
 
+
+	public String select_business_processes_list_per_region(String web_service_url, String web_service_api_key,
+			String job_number)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/select_business_processes_list_per_region");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, job_number);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+	public String select_business_processes_sub_list_backend_per_region(String web_service_url, String web_service_api_key,
+			String job_number)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "case_management_service/select_business_processes_sub_list_backend_per_region");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, job_number);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
 	
 
 	public String get_list_of_request_purpose(String web_service_url, String web_service_api_key)

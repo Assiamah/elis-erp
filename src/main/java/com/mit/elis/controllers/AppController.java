@@ -428,6 +428,9 @@ public class AppController {
 
 						session.setAttribute("designation", designation);
 						/*
+
+						
+					obj_usr_log.put("work_station", ip_address);
 						 * //System.out.println("unit_name :" + unit_name);
 						 * //System.out.println("unit_id : " + unit_id);
 						 */
@@ -566,10 +569,16 @@ public class AppController {
 					// request.setAttribute("all_users",
 					// javaArrayListFromGSON_users);
 
+					JSONObject obj_ser_fil = new JSONObject();
+							
+					obj_ser_fil.put("region_code", regional_code);
+
+					System.out.println("regional_code : " + regional_code);
+
 					String web_service_response_main_service = null;
 					web_service_response_main_service = user_web_service
-							.get_list_of_services(cls_url_config.getWeb_service_url_ser(),
-									cls_url_config.getWeb_service_url_ser_api_key());
+							.select_business_processes_list_per_region(cls_url_config.getWeb_service_url_ser(),
+									cls_url_config.getWeb_service_url_ser_api_key(),obj_ser_fil.toString());
 					JSONObject main_service_obj = new JSONObject(web_service_response_main_service);
 
 					String all_main_service = main_service_obj.get("data").toString();
@@ -598,8 +607,8 @@ public class AppController {
 
 					String web_service_response_sub_service = null;
 					web_service_response_sub_service = user_web_service
-							.select_business_processes_sub_list_backend(cls_url_config.getWeb_service_url_ser(),
-									cls_url_config.getWeb_service_url_ser_api_key());
+							.select_business_processes_sub_list_backend_per_region(cls_url_config.getWeb_service_url_ser(),
+									cls_url_config.getWeb_service_url_ser_api_key(), obj_ser_fil.toString());
 					JSONObject sub_service_obj = new JSONObject(web_service_response_sub_service);
 					String all_sub_service = sub_service_obj.get("data").toString();
 

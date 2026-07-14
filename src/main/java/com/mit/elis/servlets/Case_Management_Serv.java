@@ -5496,8 +5496,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				rs_result = jsonArray.toString();
 
-				//System.out.println("rs_result");
-				//System.out.println(rs_result);
+				// System.out.println("rs_result");
+				// System.out.println(rs_result);
+
+
 				web_service_response = casemgt_cl.online_select_bill_for_tamp_duty_light_document(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						rs_result);
