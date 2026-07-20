@@ -3,6 +3,7 @@ package com.mit.elis.controllers;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mit.elis.class_common.Ws_url_config;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.jfree.chart.title.Title;
@@ -5765,7 +5768,841 @@ request.setAttribute("rq_id",rq_id);
 		// 		model.addAttribute("content", "../pages/client_application/general_application_without_major_process.jsp"); return "layouts/app";
 	}
 
+	
+    private final Gson gson = new Gson();
 
+    @PostMapping("/request_application_progress_details_pd")
+    public String requestPlotAndDeleteProgressDetailsAi(
+            HttpSession session,
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        if (request.getRequestedSessionId() != null
+                && !request.isRequestedSessionIdValid()) {
+
+            request.setAttribute("login", "sessionout");
+            model.addAttribute("content", "../auth/login.jsp");
+
+            return "layouts/guest";
+        }
+
+        try {
+            setSessionListsAsRequestAttributes(session, request);
+
+            String rqId = safeParameter(request, "rq_id");
+            String transactionNumber = safeParameter(request, "transaction_number");
+            String jobNumber = safeParameter(request, "job_number");
+            String jobPurpose = safeParameter(request, "job_purpose");
+            String reviewInstruction = safeParameter(request, "review_instruction");
+            String reviewType = safeParameter(request, "review_type");
+
+            request.setAttribute("job_purpose", jobPurpose);
+            request.setAttribute("review_instruction", reviewInstruction);
+            request.setAttribute("review_type", reviewType);
+            request.setAttribute("rq_id", rqId);
+
+            JSONObject serviceRequest = new JSONObject();
+
+            serviceRequest.put("case_number", transactionNumber);
+            serviceRequest.put("job_number", jobNumber);
+            serviceRequest.put("job_purpose", jobPurpose);
+            serviceRequest.put("rq_id", rqId);
+
+            String requestBody = serviceRequest.toString();
+
+            System.out.println("Workflow request: " + requestBody);
+
+            String webServiceResponse = getWorkflowResponse(
+                    reviewType,
+                    requestBody
+            );
+
+            if (webServiceResponse == null || webServiceResponse.isBlank()) {
+                request.setAttribute(
+                        "error_message",
+                        "The workflow service returned an empty response."
+                );
+
+                model.addAttribute(
+                        "content",
+                        "../pages/client_application/_application_review_details_ai.jsp"
+                );
+
+                return "layouts/app";
+            }
+
+            System.out.println("Workflow response: " + webServiceResponse);
+
+            JSONObject responseObject = new JSONObject(webServiceResponse);
+
+            setListAttributes(responseObject, request);
+            setTopLevelAttributes(responseObject, request);
+
+            JSONObject parcelDetails = getJsonObject(
+                    responseObject,
+                    "parcel_details"
+            );
+
+            JSONObject transactionDetails = getJsonObject(
+                    responseObject,
+                    "transaction_details"
+            );
+
+            JSONObject jobDetail = getJsonObject(
+                    responseObject,
+                    "job_detail"
+            );
+
+            setParcelAttributes(parcelDetails, request);
+            setTransactionAttributes(transactionDetails, request);
+            setJobAttributes(jobDetail, request, jobNumber);
+
+            setGenderList(request);
+
+			request.setAttribute("case_number", jobNumber);
+
+            request.setAttribute("page_name", "application_review_details_advanced");
+            request.setAttribute(
+                    "page_name_",
+                    "review_application_progress_details"
+            );
+
+            model.addAttribute(
+                    "content",
+                    "../pages/client_application/_application_review_details_ai.jsp"
+            );
+
+            return "layouts/app";
+
+        } catch (JSONException | JsonSyntaxException e) {
+            e.printStackTrace();
+
+            request.setAttribute(
+                    "error_message",
+                    "The server returned invalid application data."
+            );
+
+            model.addAttribute(
+                    "content",
+                    "../pages/client_application/_application_review_details_ai.jsp"
+            );
+
+            return "layouts/app";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            request.setAttribute(
+                    "error_message",
+                    "Unable to load the application review details."
+            );
+
+            model.addAttribute(
+                    "content",
+                    "../pages/client_application/_application_review_details_ai.jsp"
+            );
+
+            return "layouts/app";
+        }
+    }
+
+    private String getWorkflowResponse(
+            String reviewType,
+            String requestBody) {
+
+        String serviceUrl = cls_url_config.getWeb_service_url_ser();
+        String apiKey = cls_url_config.getWeb_service_url_ser_api_key();
+
+        if ("GeneralWorkRequest".equals(reviewType)) {
+            return vas_cl.select_review_digital_workflow(
+                    serviceUrl,
+                    apiKey,
+                    requestBody
+            );
+        }
+
+        return vas_cl.select_general_request_workflow(
+                serviceUrl,
+                apiKey,
+                requestBody
+        );
+    }
+
+    private void setSessionListsAsRequestAttributes(
+            HttpSession session,
+            HttpServletRequest request) {
+
+        List<?> officeRegionList = parseJsonList(
+                session.getAttribute("office_region_list")
+        );
+
+        List<?> regionList = parseJsonList(
+                session.getAttribute("region_list")
+        );
+
+        request.setAttribute("officeregionlist", officeRegionList);
+        request.setAttribute("regionlist", regionList);
+    }
+
+    private void setListAttributes(
+            JSONObject responseObject,
+            HttpServletRequest request) {
+
+        request.setAttribute(
+                "job_details",
+                getJsonList(responseObject, "job_details")
+        );
+
+        request.setAttribute(
+                "parcels_coordinates",
+                getJsonList(responseObject, "parcels_coordinates")
+        );
+
+        request.setAttribute(
+                "lrd_valuation_section",
+                getJsonList(responseObject, "lrd_valuation_section")
+        );
+
+        request.setAttribute(
+                "lrd_memorials_section",
+                getJsonList(responseObject, "lrd_memorials_section")
+        );
+
+        request.setAttribute(
+                "lrd_encumbrances_section",
+                getJsonList(responseObject, "lrd_encumbrances_section")
+        );
+
+        request.setAttribute(
+                "lrd_certificate_section",
+                getJsonList(responseObject, "lrd_certificate_section")
+        );
+
+        request.setAttribute(
+                "lrd_proprietorship_section",
+                getJsonList(responseObject, "lrd_proprietorship_section")
+        );
+
+        request.setAttribute(
+                "lrd_reservation_section",
+                getJsonList(responseObject, "lrd_reservation_section")
+        );
+
+        request.setAttribute(
+                "application_requests",
+                getJsonList(responseObject, "application_requests")
+        );
+
+        request.setAttribute(
+                "baby_steps_list",
+                getJsonList(responseObject, "digital_workflow_steps")
+        );
+
+        request.setAttribute(
+                "active_digital_workflow_step_list",
+                getJsonList(responseObject, "active_digital_workflow_step")
+        );
+
+        request.setAttribute(
+                "application_munites",
+                getJsonList(responseObject, "application_munites")
+        );
+
+        request.setAttribute(
+                "application_notes",
+                getJsonList(responseObject, "application_notes")
+        );
+
+        request.setAttribute(
+                "payment_bill",
+                getJsonList(responseObject, "payment_bill")
+        );
+
+        request.setAttribute(
+                "payment_invoice",
+                getJsonList(responseObject, "payment_invoice")
+        );
+
+        request.setAttribute(
+                "parties",
+                getJsonList(responseObject, "parties")
+        );
+
+        request.setAttribute(
+                "case_query",
+                getJsonList(responseObject, "case_query")
+        );
+
+        request.setAttribute(
+                "case_objection",
+                getJsonList(responseObject, "case_objection")
+        );
+
+        request.setAttribute(
+                "case_inspections",
+                getJsonList(
+                        responseObject,
+                        "inspection_reports_on_appliction"
+                )
+        );
+
+        request.setAttribute(
+                "case_letters",
+                getJsonList(responseObject, "case_letters")
+        );
+
+        request.setAttribute(
+                "mother_to_child_link_list",
+                getJsonList(responseObject, "mother_to_child_link")
+        );
+
+        request.setAttribute(
+                "certificate_search_relation_list",
+                getJsonList(responseObject, "certificate_search_relation")
+        );
+
+        request.setAttribute(
+                "baby_step_milestone_list",
+                getJsonList(responseObject, "baby_step_milestone")
+        );
+    }
+
+    private void setTopLevelAttributes(
+            JSONObject responseObject,
+            HttpServletRequest request) {
+
+        request.setAttribute(
+                "active_case_queries",
+                safeString(responseObject, "active_case_query")
+        );
+
+        request.setAttribute(
+                "active_case_objection",
+                safeString(responseObject, "active_case_objection")
+        );
+
+        request.setAttribute(
+                "compliance_query_status",
+                safeString(responseObject, "compliance_query_status")
+        );
+
+        request.setAttribute(
+                "parcel_wkt",
+                safeString(responseObject, "parcel_wkt")
+        );
+
+        request.setAttribute(
+                "certificete_approval_status",
+                safeString(responseObject, "certificete_approval_status")
+        );
+
+        request.setAttribute(
+                "final_approval_status",
+                safeString(responseObject, "final_approval_status")
+        );
+    }
+
+    private void setParcelAttributes(
+            JSONObject parcel,
+            HttpServletRequest request) {
+
+        //setStringAttribute(request, parcel, "case_number", "new_case_number");
+        setStringAttribute(request, parcel, "glpin", "glpin");
+        setStringAttribute(request, parcel, "licensed_no", "licensed_surveyor_number");
+        setStringAttribute(request, parcel, "regional_number", "regional_number");
+        setStringAttribute(request, parcel, "locality", "locality");
+        setStringAttribute(request, parcel, "district", "district");
+        setStringAttribute(request, parcel, "region", "region");
+        setStringAttribute(request, parcel, "land_size", "size_of_land");
+        setStringAttribute(request, parcel, "extent", "extent");
+        setStringAttribute(request, parcel, "registry_mapref", "registry_mapref");
+        setStringAttribute(request, parcel, "plan_no", "plan_no");
+        setStringAttribute(request, parcel, "cc_no", "cc_no");
+        setStringAttribute(request, parcel, "ltr_plan_no", "ltr_plan_no");
+
+        setStringAttribute(
+                request,
+                parcel,
+                "registration_district_number",
+                "registration_district_number"
+        );
+
+        setStringAttribute(
+                request,
+                parcel,
+                "registration_section_number",
+                "registration_section_number"
+        );
+
+        setStringAttribute(
+                request,
+                parcel,
+                "registration_block_number",
+                "registration_block_number"
+        );
+
+        setStringAttribute(
+                request,
+                parcel,
+                "smd_reference_number",
+                "smd_reference_number"
+        );
+
+        setStringAttribute(
+                request,
+                parcel,
+                "smd_type_of_plotting",
+                "smd_type_of_plotting"
+        );
+    }
+
+    private void setTransactionAttributes(
+            JSONObject transaction,
+            HttpServletRequest request) {
+
+        setStringAttribute(request, transaction, "ar_name", "ar_name");
+       // setStringAttribute(request, transaction, "case_number", "case_number");
+        setStringAttribute(
+                request,
+                transaction,
+                "transaction_number",
+                "transaction_number"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "date_of_document",
+                "date_of_document"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "nature_of_instrument",
+                "nature_of_instrument"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "certificate_number",
+                "certificate_number"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "type_of_interest",
+                "type_of_interest"
+        );
+
+        setStringAttribute(request, transaction, "type_of_use", "type_of_use");
+        setStringAttribute(request, transaction, "volume_number", "volume_number");
+        setStringAttribute(request, transaction, "folio_number", "folio_number");
+        setStringAttribute(request, transaction, "term", "term");
+
+        setStringAttribute(
+                request,
+                transaction,
+                "commencement_date",
+                "commencement_date"
+        );
+
+        setStringAttribute(request, transaction, "renewal_term", "renewal_term");
+
+        setStringAttribute(
+                request,
+                transaction,
+                "consideration_fee",
+                "consideration_fee"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "consideration_fee_currency",
+                "consideration_fee_currency"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "consideration_fee_adopted_rate",
+                "consideration_fee_adopted_rate"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "stamp_duty_payable",
+                "stamp_duty_payable"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "assessed_value",
+                "assessed_value"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "parcel_description",
+                "parcel_description"
+        );
+
+        setStringAttribute(request, transaction, "plot_number", "plot_number");
+        setStringAttribute(request, transaction, "publicity_date", "publicity_date");
+
+        setStringAttribute(
+                request,
+                transaction,
+                "family_of_grantor",
+                "family_of_grantor"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "rent_review_period",
+                "rent_review_period"
+        );
+
+        setStringAttribute(request, transaction, "annual_rent", "annual_rent");
+
+        setStringAttribute(
+                request,
+                transaction,
+                "rent_period_covered",
+                "rent_period_covered"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "rent_review_date",
+                "rent_review_date"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "date_of_first_payment",
+                "date_of_first_payment"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "outstanding_rent",
+                "outstanding_rent"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "remark_or_comment",
+                "remark_or_comment"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "date_of_registration",
+                "date_of_registration"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "time_of_registration",
+                "time_of_registration"
+        );
+
+        setStringAttribute(request, transaction, "case_status", "case_status");
+
+        setStringAttribute(
+                request,
+                transaction,
+                "stool_family_name",
+                "stool_family_name"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "stamp_duty_description",
+                "stamp_duty_description"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "certificate_type",
+                "certificate_type"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "case_file_number",
+                "case_file_number"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "case_process_stage",
+                "case_process_stage"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "interest_number",
+                "interest_number"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "sub_interest_number",
+                "sub_interest_number"
+        );
+
+        /*
+         * Preserve this misspelled request attribute if the JSP currently
+         * references it. Ideally, correct the JSP and remove this alias.
+         */
+        setStringAttribute(
+                request,
+                transaction,
+                "considertion_fee_adopted_rate",
+                "considertion_fee_adopted_rate"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "date_of_issue",
+                "date_of_issue"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "registered_number",
+                "registered_number"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "type_of_transfer",
+                "type_of_transfer"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "intended_interest",
+                "intended_interest"
+        );
+
+        setStringAttribute(
+                request,
+                transaction,
+                "intended_parcel",
+                "intended_parcel"
+        );
+
+        setStringAttribute(request, transaction, "deed_number", "deed_number");
+        setStringAttribute(request, transaction, "file_number", "file_number");
+        setStringAttribute(request, transaction, "ls_number", "ls_number");
+        setStringAttribute(request, transaction, "ground_rent", "ground_rent");
+    }
+
+    private void setJobAttributes(
+            JSONObject job,
+            HttpServletRequest request,
+            String submittedJobNumber) {
+
+        request.setAttribute("job_number", submittedJobNumber);
+
+        setStringAttribute(
+                request,
+                job,
+                "application_stage",
+                "application_stage"
+        );
+
+        setStringAttribute(request, job, "created_date", "created_date");
+        setStringAttribute(request, job, "modified_date", "modified_date");
+
+        setStringAttribute(
+                request,
+                job,
+                "business_process_id",
+                "business_process_id"
+        );
+
+        setStringAttribute(
+                request,
+                job,
+                "business_process_name",
+                "business_process_name"
+        );
+
+        setStringAttribute(
+                request,
+                job,
+                "business_process_sub_id",
+                "business_process_sub_id"
+        );
+
+        setStringAttribute(
+                request,
+                job,
+                "business_process_sub_name",
+                "business_process_sub_name"
+        );
+
+        setStringAttribute(request, job, "embossed", "embossed");
+
+        setStringAttribute(
+                request,
+                job,
+                "remark_or_comment",
+                "job_remark_or_comment"
+        );
+
+        setStringAttribute(request, job, "smd_region", "smd_region");
+
+        setStringAttribute(
+                request,
+                job,
+                "smd_licensed_surveyor_name",
+                "smd_licensed_surveyor_name"
+        );
+    }
+
+    private void setGenderList(HttpServletRequest request) {
+        String genderResponse = user_web_service.get_list_of_gender(
+                cls_url_config.getWeb_service_url_ser(),
+                cls_url_config.getWeb_service_url_ser_api_key()
+        );
+
+        request.setAttribute(
+                "genderlist",
+                parseJsonList(genderResponse)
+        );
+    }
+
+    private JSONObject getJsonObject(
+            JSONObject parent,
+            String key) throws JSONException {
+
+        if (parent == null || key == null || !parent.has(key) || parent.isNull(key)) {
+            return new JSONObject();
+        }
+
+        Object value = parent.opt(key);
+
+        if (value instanceof JSONObject) {
+            return (JSONObject) value;
+        }
+
+        String json = value == null ? "" : value.toString();
+
+        if (json.isBlank() || "null".equalsIgnoreCase(json)) {
+            return new JSONObject();
+        }
+
+        if (!json.trim().startsWith("{")) {
+            return new JSONObject();
+        }
+
+        return new JSONObject(json);
+    }
+
+    private List<?> getJsonList(
+            JSONObject parent,
+            String key) {
+
+        if (parent == null || key == null) {
+            return new ArrayList<>();
+        }
+
+        if (!parent.has(key) || parent.isNull(key)) {
+            return new ArrayList<>();
+        }
+
+        Object value = parent.opt(key);
+
+        return parseJsonList(value);
+    }
+
+    private List<?> parseJsonList(Object value) {
+        if (value == null) {
+            return new ArrayList<>();
+        }
+
+        String json = value.toString();
+
+        if (json.isBlank()
+                || "null".equalsIgnoreCase(json)
+                || !json.trim().startsWith("[")) {
+
+            return new ArrayList<>();
+        }
+
+        List<?> parsedList = gson.fromJson(json, List.class);
+
+        return parsedList == null
+                ? new ArrayList<>()
+                : parsedList;
+    }
+
+    private String safeString(
+            JSONObject object,
+            String key) {
+
+        if (object == null || key == null) {
+            return "";
+        }
+
+        if (!object.has(key) || object.isNull(key)) {
+            return "";
+        }
+
+        String value = object.optString(key, "");
+
+        return value == null ? "" : value;
+    }
+
+    private String safeParameter(
+            HttpServletRequest request,
+            String parameterName) {
+
+        String value = request.getParameter(parameterName);
+
+        return value == null ? "" : value.trim();
+    }
+
+    private void setStringAttribute(
+            HttpServletRequest request,
+            JSONObject source,
+            String jsonKey,
+            String requestAttributeName) {
+
+        request.setAttribute(
+                requestAttributeName,
+                safeString(source, jsonKey)
+        );
+    }
 
 	@RequestMapping("/new_request_application_progress_details")
 	@PostMapping

@@ -511,7 +511,7 @@
             </div>
         </div>
 
-        <c:if test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
+        <c:if test="${active_case_objection > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
             <div class="objected-application-alert mb-4 p-3">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="d-flex align-items-center">
@@ -524,7 +524,7 @@
                                 Application Objected
                             </div>
                             <div class="text-danger fw-semibold">
-                                ${case_objection.size()} objection${case_objection.size() > 1 ? 's' : ''} recorded against this application.
+                                ${active_case_objection} objection${active_case_objection > 1 ? 's' : ''} recorded against this application.
                             </div>
                         </div>
                     </div>
@@ -923,7 +923,7 @@
                                                             data-bs-username="${babyStep.username}" 
                                                             data-bs-date="${babyStep.date}" 
                                                             data-bs-time="${babyStep.time}"
-                                                            ${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION'  && job_purpose != 'Update Objection Status' ? 'disabled' : ''}
+                                                            ${active_case_objection > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION'  && job_purpose != 'Update Objection Status' ? 'disabled' : ''}
                                                             ${babyStep.bse_status == 'Pending' || babyStep.bse_status == 'Completed' ? 'disabled' : ''}>
                                                         <i class="bi bi-eye"></i> Details
                                                     </button>
@@ -939,7 +939,7 @@
                                         <div class="row mt-4">
                                             <div class="col-7">
                                                 <c:choose>
-                                                    <c:when test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
+                                                    <c:when test="${active_case_objection > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
                                                         <!-- Approve Button -->
                                                         <div class="btn-group">
                                                             <button class="btn btn-sm btn-success" disabled>
@@ -1724,8 +1724,8 @@
                                     data-bs-target="#collapseObjections">
                                 <i class="bi bi-exclamation-circle me-2"></i>
                                 Objections
-                                <c:if test="${case_objection.size() > 0}">
-                                    <span class="badge bg-danger ms-2">${case_objection.size()}</span>
+                                <c:if test="${active_case_objection > 0}">
+                                    <span class="badge bg-danger ms-2">${active_case_objection}</span>
                                 </c:if>
                             </button>
                         </h2>
@@ -1746,7 +1746,7 @@
                                         </thead>
                                         <tbody>
                                              <c:forEach items="${case_objection}" var="case_objection_row">
-                                                <tr>
+                                                <tr class="${case_objection_row.status == 'false' ? 'table-danger' : ''}">
                                                     <td>${case_objection_row.objector_name}</td>
                                                     <td>${case_objection_row.objector_address}</td>
                                                     <td>${case_objection_row.objector_contact}</td>
@@ -1989,12 +1989,12 @@
     </div>
 </div>
 
-<c:if test="${case_objection.size() > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
+<c:if test="${active_case_objection > 0 && business_process_sub_name != 'APPLICATION FOR OBJECTION' && job_purpose != 'Update Objection Status'}">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 title: 'Application Objected',
-                text: 'There ${case_objection.size() == 1 ? "is" : "are"} ${case_objection.size()} objection${case_objection.size() > 1 ? "s" : ""} recorded against this application.',
+                text: 'There ${active_case_objection == 1 ? "is" : "are"} ${active_case_objection} objection${active_case_objection > 1 ? "s" : ""} recorded against this application.',
                 icon: 'error',
                 confirmButtonText: 'View Details',
                 confirmButtonColor: '#dc3545',

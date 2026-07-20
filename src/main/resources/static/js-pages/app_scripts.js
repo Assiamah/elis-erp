@@ -5374,20 +5374,48 @@ $('#btn_load_scanned_documents').on('click', function (e) {
                     //     + "</tr>");
 
                     table_docs.append(
+                        // '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
+                        // '<td> <a class="link-post text-secondary ' + (this.doc_deleted ? 'disabled' : '') + '" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        // '<td>.pdf</td>' +
+                        // '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
+					    // '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Archive') + ' </button></td>' +
+                        // '</tr>'
+
                         '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
-                        '<td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        '<td><a class="link-post text-secondary" ' +
+                            (this.doc_deleted
+                                ? 'style="cursor:not-allowed;"'
+                                : 'href="' + this.doc_uuid + '"') +
+                            '>' + this.doc_description + '</a></td>' +
                         '<td>.pdf</td>' +
-                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
-					    '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Delete') + ' </button></td>' +
+                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') +
+                        '" data-doc_uuid="' + this.doc_uuid + '">' +
+                        '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + ' me-1"></i>' +
+                        (this.doc_deleted ? 'Reverse' : 'Archive') +
+                        '</button></td>' +
                         '</tr>'
                     );
 
                      table_docs_mains.append(
+                        // '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
+                        // '<td> <a class="link-post text-secondary ' + (this.doc_deleted ? 'disabled' : '') + '" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        // '<td>.pdf</td>' +
+                        // '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
+					    // '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Archive') + ' </button></td>' +
+                        // '</tr>'
+
                         '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
-                        '<td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        '<td><a class="link-post text-secondary" ' +
+                            (this.doc_deleted
+                                ? 'style="cursor:not-allowed;"'
+                                : 'href="' + this.doc_uuid + '"') +
+                            '>' + this.doc_description + '</a></td>' +
                         '<td>.pdf</td>' +
-                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
-					    '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Delete') + ' </button></td>' +
+                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') +
+                        '" data-doc_uuid="' + this.doc_uuid + '">' +
+                        '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + ' me-1"></i>' +
+                        (this.doc_deleted ? 'Reverse' : 'Archive') +
+                        '</button></td>' +
                         '</tr>'
                     );
 
@@ -5415,12 +5443,12 @@ $('#lc_main_scanned_documents_dataTable').on('click', '.btn_delete_doc', functio
 
     Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "This will make the document inactive!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes, archive it!',
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -5548,13 +5576,29 @@ $('#btn_load_scanned_documents_public').on('click', function (e) {
                 var json_p = JSON.parse(serviceresponse);
 
                 $(json_p).each(function () {
+                    // table_docs_mains.append(
+                    //     '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
+                    //     '<td> <a class="link-post text-secondary ' + (this.doc_deleted ? 'disabled' : '') + '" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                    //     '<td>.pdf</td>' +
+                    //     '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
+					//     '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Archive') + ' </button></td>' +
+                    //     '</tr>'
+                    // );
                     table_docs_mains.append(
                         '<tr class="' + (this.doc_deleted ? 'table-danger' : '') + '">' +
-                        '<td> <a class="link-post text-secondary" href="' + this.doc_uuid + '">' + this.doc_description + '</a></td>' +
+                        '<td><a class="link-post text-secondary" ' +
+                            (this.doc_deleted
+                                ? 'style="cursor:not-allowed;"'
+                                : 'href="' + this.doc_uuid + '"') +
+                            '>' + this.doc_description + '</a></td>' +
                         '<td>.pdf</td>' +
-                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') + ' " data-doc_uuid="' + this.doc_uuid + '">' +
-					    '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + '  me-1"></i>' + (this.doc_deleted ? 'Reverse' : 'Delete') + ' </button></td>' +
+                        '<td><button class="btn btn-sm ' + (this.doc_deleted ? 'btn-warning btn_reverse_doc' : 'btn-danger btn_delete_doc') +
+                        '" data-doc_uuid="' + this.doc_uuid + '">' +
+                        '<i class="fas ' + (this.doc_deleted ? 'fa-check-circle' : 'fa-trash') + ' me-1"></i>' +
+                        (this.doc_deleted ? 'Reverse' : 'Archive') +
+                        '</button></td>' +
                         '</tr>'
+
                     );
                 });
             } catch (e) {
@@ -5580,12 +5624,12 @@ $('#lc_public_documents_dataTable').on('click', '.btn_delete_doc', function () {
 
     Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "This will make the document inactive!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes, archive it!',
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {

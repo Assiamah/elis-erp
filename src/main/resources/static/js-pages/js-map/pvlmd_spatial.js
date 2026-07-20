@@ -2301,7 +2301,7 @@ window.initiateReqAddExistingParcel = function(parcelId, referenceNumber) {
                 jobNumberHtml: parcelId,
                 applicantNameHtml: referenceNumber,
                 applicationType: 'TEMPORAL APPLICATION',
-                batchingPurpose: 'Request to add existing parcel',
+                batchingPurpose: 'Add Plotting',
                 remarksNotes: remarks_notes,
                 // created_on: jobData.created_on,
                 // job_status: jobData.job_status
