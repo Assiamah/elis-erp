@@ -2220,6 +2220,55 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				return web_service_response;
 			}
+
+			if (request_type.equals("select_add_new_plotted_transaction")) {
+
+				String job_number = request.getParameter("job_number");
+				String parcel_wkt =  request.getParameter("parcel_wkt");
+
+				JSONObject obj_d = new JSONObject();
+
+				obj_d.put("reference_number", job_number);
+				obj_d.put("parcel_wkt", parcel_wkt);
+
+				web_service_response = casemgt_cl_m.select_add_new_plotted_transaction(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						obj_d.toString());
+				JSONObject sub_service_obj = new JSONObject(web_service_response);
+				web_service_response = sub_service_obj.get("data").toString();
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("select_delete_existing_plotted_transaction")) {
+
+				String job_number = request.getParameter("job_number");
+				String parcel_wkt =  request.getParameter("parcel_wkt");
+
+				JSONObject obj_d = new JSONObject();
+
+				obj_d.put("reference_number", job_number);
+				obj_d.put("parcel_wkt", parcel_wkt);
+
+				web_service_response = casemgt_cl_m.select_delete_existing_plotted_transaction(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						obj_d.toString());
+				JSONObject sub_service_obj = new JSONObject(web_service_response);
+				web_service_response = sub_service_obj.get("data").toString();
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("select_approve_job_note_frrv")) {
 
 				String division = (String) session.getAttribute("division");
