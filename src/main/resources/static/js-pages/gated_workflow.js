@@ -28173,6 +28173,221 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#view_parcel_and_transaction #lc_lockmapscale').prop('checked', lockScale);
     }
 
+    function syncInlinePlotMapControls(sourceSelector) {
+        const wkt = $(sourceSelector).val() || '';
+        $('#view_parcel_and_transaction #lc_bl_wkt_polygon').val(wkt);
+        $('#view_parcel_and_transaction #lc_scale_value_e').val('5000');
+        $('#view_parcel_and_transaction #lc_scale_value').val('5000');
+        $('#view_parcel_and_transaction #lc_lockmapscale').prop('checked', true);
+    }
+
+    function refreshInlinePlotMap(mapId) {
+        setTimeout(() => {
+            window.initializeMap(mapId);
+            if (typeof maps !== 'undefined' && maps[mapId]) {
+                maps[mapId].updateSize();
+            }
+        }, 150);
+    }
+
+    let inlinePlotReturnModalId = null;
+
+    function elevateModalStack(modalSelector) {
+        const $modal = $(modalSelector);
+
+        if (!$modal.length) {
+            return;
+        }
+
+        const highestZ = Math.max(
+            ...Array.from(document.querySelectorAll('.modal.show'))
+                .filter(modal => modal !== $modal[0])
+                .map(modal => parseInt(window.getComputedStyle(modal).zIndex, 10) || 1050),
+            1050
+        );
+
+        $modal.css('z-index', highestZ + 10);
+
+        setTimeout(() => {
+            $('.modal-backdrop')
+                .not('.stacked-backdrop')
+                .css('z-index', highestZ + 5)
+                .addClass('stacked-backdrop');
+        }, 0);
+    }
+
+    function visualizeInlinePlotPolygon(sourceSelector, mapId) {
+        const wkt = ($(sourceSelector).val() || '').trim();
+
+        if (!wkt) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Polygon Found',
+                text: 'There is no parcel WKT available to visualize.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        syncInlinePlotMapControls(sourceSelector);
+        $('#view_parcel_and_transaction #lc_btn_visualise_wkt_').first().trigger('click');
+        refreshInlinePlotMap(mapId);
+    }
+
+    function getPlotTransactionPayload(sourceSelector) {
+        return {
+            job_number: ($('#cs_main_job_number').val() || '').trim(),
+            case_number: ($('#cs_main_case_number').val() || '').trim(),
+            transaction_number: ($('#cs_main_transaction_number').val() || '').trim(),
+            parcel_wkt: ($(sourceSelector).val() || '').trim(),
+            wkt_polygon: ($(sourceSelector).val() || '').trim()
+        };
+    }
+
+    function isPlotTransactionSuccess(response, actionKeyword) {
+        if (response && typeof response === 'object') {
+            if (typeof response.success !== 'undefined') {
+                return Boolean(response.success);
+            }
+
+            const message = JSON.stringify(response).toLowerCase();
+            return !message.includes('error') && !message.includes('fail');
+        }
+
+        const normalized = String(response || '').toLowerCase();
+        if (!normalized) {
+            return false;
+        }
+
+        return (
+            normalized.includes('success') ||
+            normalized.includes('completed') ||
+            normalized.includes('approved') ||
+            normalized.includes(actionKeyword)
+        ) && !normalized.includes('fail') && !normalized.includes('error');
+    }
+
+    function submitPlotTransactionAction(options) {
+        const payload = getPlotTransactionPayload(options.sourceSelector);
+
+        if (!payload.job_number) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Information',
+                text: 'Job number is required before continuing.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        if (!payload.parcel_wkt) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Parcel Polygon',
+                text: 'Please provide a parcel WKT polygon before continuing.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: options.title,
+            html: `
+                <div class="text-start">
+                    <p class="mb-3">${options.message}</p>
+                    <div class="alert alert-${options.alertType} bg-${options.alertType} bg-opacity-10 border-${options.alertType}">
+                        <div><strong>Job Number:</strong> ${payload.job_number}</div>
+                        <div><strong>Case Number:</strong> ${payload.case_number}</div>
+                        <div><strong>Transaction Number:</strong> ${payload.transaction_number}</div>
+                        <div><strong>Polygon Length:</strong> ${payload.parcel_wkt.length} characters</div>
+                    </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="${options.checkboxId}">
+                        <label class="form-check-label" for="${options.checkboxId}">
+                            ${options.checkboxLabel}
+                        </label>
+                    </div>
+                </div>
+            `,
+            icon: options.icon,
+            showCancelButton: true,
+            confirmButtonText: options.confirmText,
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: options.confirmButtonColor,
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                const confirmationCheckbox = document.getElementById(options.checkboxId);
+
+                if (!confirmationCheckbox || !confirmationCheckbox.checked) {
+                    Swal.showValidationMessage('Please confirm the parcel review before continuing.');
+                    return false;
+                }
+
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'Case_Management_Serv',
+                        data: {
+                            request_type: options.requestType,
+                            ...payload
+                        },
+                        cache: false,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr, status, error) {
+                            reject(error || xhr.responseText || 'Server error occurred');
+                        }
+                    });
+                });
+            }
+        }).then((result) => {
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            const response = result.value;
+            const isSuccess = isPlotTransactionSuccess(response, options.successKeyword);
+
+            Swal.fire({
+                icon: isSuccess ? 'success' : 'error',
+                title: isSuccess ? options.successTitle : options.errorTitle,
+                text: response || options.fallbackMessage,
+                confirmButtonColor: isSuccess ? options.confirmButtonColor : '#dc3545'
+            }).then(() => {
+                if (isSuccess) {
+                    const modalElement = document.getElementById(options.modalId);
+                    const modalInstance = modalElement ? bootstrap.Modal.getInstance(modalElement) : null;
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                    location.reload();
+                }
+            });
+        }).catch((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Server Error',
+                text: error || options.fallbackMessage,
+                confirmButtonColor: '#dc3545'
+            });
+        });
+    }
+
+    $('#add_new_plotted_transaction').on('shown.bs.modal', function() {
+        refreshInlinePlotMap('lc-map__plot_add');
+    });
+
+    $('#delete_existing_plotted_transaction').on('shown.bs.modal', function() {
+        refreshInlinePlotMap('lc-map__plot_delete');
+    });
+
+    $('#view_parcel_and_transaction').on('shown.bs.modal', function() {
+        elevateModalStack('#view_parcel_and_transaction');
+    });
+
     $(document).on('click', '#flv-map-tab', function() {
         setTimeout(() => {
             window.initializeMap('lc-map__flv');
@@ -28230,6 +28445,99 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         syncFinalLrdMapControls();
         $('#view_parcel_and_transaction #btn_zoom_in').first().trigger('click');
+    });
+
+    $(document).on('click', '#btn_visualize_add_new_plotted_transaction', function(e) {
+        e.preventDefault();
+        visualizeInlinePlotPolygon('#plot_transaction_wkt_add', 'lc-map__plot_add');
+    });
+
+    $(document).on('click', '#btn_visualize_delete_existing_plotted_transaction', function(e) {
+        e.preventDefault();
+        visualizeInlinePlotPolygon('#plot_transaction_wkt_delete', 'lc-map__plot_delete');
+    });
+
+    $(document).on('click', '.open-inline-plot-full-view', function(e) {
+        e.preventDefault();
+        const sourceSelector = $(this).data('source-input');
+        const sourceModal = $(this).closest('.modal');
+        syncInlinePlotMapControls(sourceSelector);
+
+        inlinePlotReturnModalId = sourceModal.attr('id') || null;
+
+        if (sourceModal.length) {
+            sourceModal.one('hidden.bs.modal.inlinePlotFullView', function() {
+                elevateModalStack('#view_parcel_and_transaction');
+                $('#view_parcel_and_transaction').modal('show');
+                setTimeout(() => {
+                    $('#view_parcel_and_transaction #lc_btn_visualise_wkt_').first().trigger('click');
+                }, 200);
+            });
+
+            sourceModal.modal('hide');
+            return;
+        }
+
+        elevateModalStack('#view_parcel_and_transaction');
+        $('#view_parcel_and_transaction').modal('show');
+        setTimeout(() => {
+            $('#view_parcel_and_transaction #lc_btn_visualise_wkt_').first().trigger('click');
+        }, 200);
+    });
+
+    $('#view_parcel_and_transaction').on('hidden.bs.modal', function() {
+        if (!inlinePlotReturnModalId) {
+            return;
+        }
+
+        const returnModalId = inlinePlotReturnModalId;
+        inlinePlotReturnModalId = null;
+
+        setTimeout(() => {
+            $(`#${returnModalId}`).modal('show');
+        }, 150);
+    });
+
+    $(document).on('click', '#btn_confirm_add_new_plotted_transaction', function(e) {
+        e.preventDefault();
+        submitPlotTransactionAction({
+            sourceSelector: '#plot_transaction_wkt_add',
+            requestType: 'select_add_new_plotted_transaction',
+            modalId: 'add_new_plotted_transaction',
+            title: 'Confirm Parcel Plotting?',
+            message: 'This will add the parcel polygon as a new plotted transaction for the current workflow record.',
+            checkboxId: 'swalConfirmAddPlot',
+            checkboxLabel: 'I have reviewed the parcel polygon and I want to create the new plotted transaction.',
+            confirmText: 'Yes, Confirm Plotting',
+            confirmButtonColor: '#198754',
+            icon: 'question',
+            alertType: 'success',
+            successKeyword: 'add',
+            successTitle: 'Parcel Plotted',
+            errorTitle: 'Plotting Failed',
+            fallbackMessage: 'The parcel plotting action could not be completed.'
+        });
+    });
+
+    $(document).on('click', '#btn_confirm_delete_existing_plotted_transaction', function(e) {
+        e.preventDefault();
+        submitPlotTransactionAction({
+            sourceSelector: '#plot_transaction_wkt_delete',
+            requestType: 'select_delete_existing_plotted_transaction',
+            modalId: 'delete_existing_plotted_transaction',
+            title: 'Delete Plotted Parcel?',
+            message: 'This will remove the currently plotted parcel transaction from the active workflow.',
+            checkboxId: 'swalConfirmDeletePlot',
+            checkboxLabel: 'I have reviewed the parcel polygon and I want to delete this plotted transaction.',
+            confirmText: 'Yes, Delete Plot',
+            confirmButtonColor: '#dc3545',
+            icon: 'warning',
+            alertType: 'danger',
+            successKeyword: 'delete',
+            successTitle: 'Parcel Plot Deleted',
+            errorTitle: 'Deletion Failed',
+            fallbackMessage: 'The plotted parcel could not be deleted.'
+        });
     });
 
     $(document).on('click', '#lc_btn_save_register_description_flv', function(e) {

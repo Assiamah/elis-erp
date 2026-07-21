@@ -220,6 +220,168 @@
     </div>
 </div>
 
+<div class="modal fade modal-blur effect-slide map-modal" id="add_new_plotted_transaction" tabindex="-1"
+     aria-labelledby="addNewPlottedTransactionLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-success text-white border-bottom-0">
+                <div>
+                    <h5 class="modal-title text-white mb-1" id="addNewPlottedTransactionLabel">
+                        <i class="fas fa-draw-polygon me-2"></i>
+                        Confirm New Parcel Plotting
+                    </h5>
+                    <p class="mb-0 small opacity-75">Review the parcel geometry carefully before committing a new plotted transaction.</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="alert alert-success bg-success bg-opacity-10 border-success mb-4">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-map-marked-alt text-success fs-4 me-3 mt-1"></i>
+                        <div>
+                            <h6 class="mb-2 text-success">Plotting Review</h6>
+                            <p class="mb-0">
+                                This action stores the currently prepared parcel polygon as a new plotted transaction.
+                                Use the visualizer to confirm the geometry aligns with the intended parcel before submission.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light border-0">
+                                <h6 class="mb-0"><i class="fas fa-code-branch me-2"></i>Parcel WKT</h6>
+                            </div>
+                            <div class="card-body">
+                                <label for="plot_transaction_wkt_add" class="form-label fw-semibold">Polygon Coordinates</label>
+                                <textarea class="form-control" id="plot_transaction_wkt_add" rows="8"
+                                          placeholder="Parcel polygon in WKT format">${parcel_wkt}</textarea>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <button type="button" class="btn btn-primary" id="btn_visualize_add_new_plotted_transaction">
+                                        <i class="fas fa-map me-2"></i>Visualize Parcel
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary open-inline-plot-full-view"
+                                            data-source-input="#plot_transaction_wkt_add">
+                                        <i class="fas fa-expand me-2"></i>Full Parcel View
+                                    </button>
+                                </div>
+                                <div class="form-text mt-3">
+                                    The WKT can be adjusted here if you need to confirm a refined polygon before plotting.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0"><i class="fas fa-globe-africa me-2"></i>Parcel Map Preview</h6>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">Add Plot</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="small text-muted mb-3">
+                                    Click <strong>Visualize Parcel</strong> to render the polygon on the map before confirming the new plotted transaction.
+                                </div>
+                                <div class="map-container" id="lc-map__plot_add" style="min-height: 430px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+                <button type="button" class="btn btn-success" id="btn_confirm_add_new_plotted_transaction">
+                    <i class="fas fa-check-circle me-2"></i>Confirm Parcel Plotting
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-blur effect-slide map-modal" id="delete_existing_plotted_transaction" tabindex="-1"
+     aria-labelledby="deleteExistingPlottedTransactionLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white border-bottom-0">
+                <div>
+                    <h5 class="modal-title text-white mb-1" id="deleteExistingPlottedTransactionLabel">
+                        <i class="fas fa-trash-alt me-2"></i>
+                        Delete Existing Parcel Plot
+                    </h5>
+                    <p class="mb-0 small opacity-75">Inspect the plotted polygon one final time before removing it from the transaction flow.</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="alert alert-danger bg-danger bg-opacity-10 border-danger mb-4">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-exclamation-triangle text-danger fs-4 me-3 mt-1"></i>
+                        <div>
+                            <h6 class="mb-2 text-danger">Deletion Review</h6>
+                            <p class="mb-0">
+                                Deleting a plotted parcel removes it from the current workflow context. Visualize the polygon
+                                first so the correct parcel is being removed before you continue.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light border-0">
+                                <h6 class="mb-0"><i class="fas fa-code me-2"></i>Parcel WKT</h6>
+                            </div>
+                            <div class="card-body">
+                                <label for="plot_transaction_wkt_delete" class="form-label fw-semibold">Polygon Coordinates</label>
+                                <textarea class="form-control" id="plot_transaction_wkt_delete" rows="8"
+                                          placeholder="Parcel polygon in WKT format">${parcel_wkt}</textarea>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <button type="button" class="btn btn-danger" id="btn_visualize_delete_existing_plotted_transaction">
+                                        <i class="fas fa-map me-2"></i>Visualize Parcel
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary open-inline-plot-full-view"
+                                            data-source-input="#plot_transaction_wkt_delete">
+                                        <i class="fas fa-expand me-2"></i>Full Parcel View
+                                    </button>
+                                </div>
+                                <div class="form-text mt-3">
+                                    Confirm that the polygon shown here is the exact parcel plot you intend to remove.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0"><i class="fas fa-map-marked me-2"></i>Parcel Map Preview</h6>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Delete Plot</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="small text-muted mb-3">
+                                    Use the visualizer to confirm the parcel shape and location before deleting the plotted transaction.
+                                </div>
+                                <div class="map-container" id="lc-map__plot_delete" style="min-height: 430px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+                <button type="button" class="btn btn-danger" id="btn_confirm_delete_existing_plotted_transaction">
+                    <i class="fas fa-trash me-2"></i>Confirm Parcel Deleting
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="modal fade modal-blur effect-scale" id="review_generated_concurrence_certificate" tabindex="-1"
