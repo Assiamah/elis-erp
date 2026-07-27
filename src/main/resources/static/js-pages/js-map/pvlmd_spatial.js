@@ -2504,7 +2504,7 @@ function pvlmd_clearMeasurements() {
     }
 }
 
-window.initiateDeleteParcel = function(parcelId) {
+window.initiateDeleteParcel = function() {
 
     var selectedJobsList = [];
 	var pvlmd_reference_number = $('#pvlmd_reference_number').text();
@@ -2564,8 +2564,8 @@ window.initiateDeleteParcel = function(parcelId) {
 
             // Add job to list
             selectedJobsList.push({
-                jobNumberPlain: parcelId,
-                jobNumberHtml: parcelId,
+                jobNumberPlain: pvlmd_reference_number,
+                jobNumberHtml: pvlmd_reference_number,
                 applicantNameHtml: pvlmd_reference_number,
                 applicationType: 'TEMPORAL APPLICATION',
                 batchingPurpose: 'Request for parcel deletion',
