@@ -465,6 +465,40 @@ console.log('PVLMD Maps working');
 						source : pvlmd_source
 					});
 
+
+
+
+
+// Variables for drawing and measurement
+var pvlmd_drawInteraction = null;
+var pvlmd_modifyInteraction = null;
+var pvlmd_snapInteraction = null;
+var pvlmd_selectedFeature = null;
+var pvlmd_measureSource = new ol.source.Vector();
+var pvlmd_measureLayer = new ol.layer.Vector({
+    title: 'Measurement Layer',
+    source: pvlmd_measureSource,
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.2)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#ff0000',
+            width: 2
+        }),
+        image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+                color: '#ff0000'
+            })
+        })
+    })
+});
+
+
+
+
+
 					var pvlmd_projObj = new ol.proj.Projection({
 						// code: 'EPSG:3857',
 						code : 'EPSG:2136',
@@ -594,10 +628,14 @@ console.log('PVLMD Maps working');
 					pvlmd_map.addLayer(pvlmd_lc_regional_boundary_layer);
 					
 					pvlmd_map.addLayer(pvlmd_lc_searchLayer);
+					// Add measurement layer to map
+pvlmd_map.addLayer(pvlmd_measureLayer);
 					pvlmd_map.addLayer(pvlmd_markers);
 
 					loadAndZoomToRegionPolygon(regions_polygon);
-				pvlmd_map.on('click', function(evt) {
+				
+				
+					pvlmd_map.on('click', function(evt) {
     var viewResolution = pvlmd_map.getView().getResolution();
     var viewProjection = pvlmd_map.getView().getProjection();
 
@@ -1818,7 +1856,7 @@ $('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
         var value_image_scan = geoserverscannedimage;
         var only_layer = value_image_scan.split(":", 3);
       //  console.log(only_layer);
-        
+    
         var value_image_scan1 = only_layer[1];
         var layer_name = 'csau_geospatial' + ':' + value_image_scan1;
         var all_parameters = { 'LAYERS': layer_name };
@@ -1990,6 +2028,431 @@ $('#pvlmd_btn_visualise_coordinate').on('click', function(e) {
             }
         });
     });
+
+	// Drawing tool event handlers
+$('#pvlmd_btn_draw_polygon').on('click', function() {
+   lrd_click_type = 'DrawClick';
+	
+	pvlmd_startDrawing('Polygon');
+    // Update UI feedback
+    $(this).addClass('active').siblings().removeClass('active');
+});
+
+$('#pvlmd_btn_draw_circle').on('click', function() {
+    lrd_click_type = 'DrawClick';
+    pvlmd_startDrawing('Circle');
+    $(this).addClass('active').siblings().removeClass('active');
+});
+
+$('#pvlmd_btn_draw_line').on('click', function() {
+    lrd_click_type = 'DrawClick';
+    pvlmd_startDrawing('LineString');
+    $(this).addClass('active').siblings().removeClass('active');
+});
+
+$('#pvlmd_btn_modify').on('click', function() {
+    pvlmd_startModify();
+    $(this).toggleClass('active');
+});
+
+$('#pvlmd_btn_clear_measurements').on('click', function() {
+    pvlmd_clearMeasurements();
+    $('#pvlmd_btn_draw_polygon, #pvlmd_btn_draw_circle, #pvlmd_btn_draw_line, #pvlmd_btn_modify').removeClass('active');
+});
+
+// Update the existing visualise button to use the new function
+$('#pvlmd_btn_visualise_wkt').off('click').on('click', function() {
+    var wkt = $('#pvlmd_bl_wkt_polygon').val();
+    pvlmd_visualizeWKT(wkt);
+});
+
+
+// Function to format area
+function pvlmd_formatArea(area) {
+    var formattedArea;
+    if (area > 10000) {
+        formattedArea = (area / 10000).toFixed(2) + ' ha';
+    } else {
+        formattedArea = area.toFixed(2) + ' m²';
+    }
+    return formattedArea;
+}
+
+// Function to format length
+function pvlmd_formatLength(length) {
+    var formattedLength;
+    if (length > 1000) {
+        formattedLength = (length / 1000).toFixed(2) + ' km';
+    } else {
+        formattedLength = length.toFixed(2) + ' m';
+    }
+    return formattedLength;
+}
+
+// Create style for measurement features
+function pvlmd_createMeasureStyle(feature, type) {
+    var styles = [];
+    var geometry = feature.getGeometry();
+    var area = null;
+    var length = null;
+    
+    if (type === 'Polygon' || type === 'Circle') {
+        if (geometry instanceof ol.geom.Polygon) {
+            area = geometry.getArea();
+        } else if (geometry instanceof ol.geom.Circle) {
+            area = Math.PI * Math.pow(geometry.getRadius(), 2);
+        }
+    } else if (type === 'LineString') {
+        length = geometry.getLength();
+    }
+    
+    styles.push(new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.2)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#ff0000',
+            width: 2,
+            lineDash: [5, 5]
+        }),
+        image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+                color: '#ff0000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ffffff',
+                width: 2
+            })
+        })
+    }));
+    
+    // Add label for area/length
+    if (area !== null || length !== null) {
+        var label = '';
+        if (area !== null) {
+            label = 'Area: ' + pvlmd_formatArea(area);
+        } else if (length !== null) {
+            label = 'Length: ' + pvlmd_formatLength(length);
+        }
+        
+        var center = geometry.getCenter ? geometry.getCenter() : geometry.getClosestPoint(geometry.getFirstCoordinate());
+        
+        styles.push(new ol.style.Style({
+            text: new ol.style.Text({
+                text: label,
+                font: 'bold 14px Arial',
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ffffff',
+                    width: 3
+                }),
+                backgroundFill: new ol.style.Fill({
+                    color: 'rgba(255, 255, 255, 0.8)'
+                }),
+                padding: [4, 8, 4, 8],
+                textAlign: 'center',
+                textBaseline: 'middle',
+                offsetY: -15
+            }),
+            geometry: new ol.geom.Point(center)
+        }));
+    }
+    
+    return styles;
+}
+
+// Function to start drawing
+function pvlmd_startDrawing(type) {
+    // Remove existing draw interaction
+    if (pvlmd_drawInteraction) {
+        pvlmd_map.removeInteraction(pvlmd_drawInteraction);
+        pvlmd_drawInteraction = null;
+    }
+    
+    // Remove existing modify interaction
+    if (pvlmd_modifyInteraction) {
+        pvlmd_map.removeInteraction(pvlmd_modifyInteraction);
+        pvlmd_modifyInteraction = null;
+    }
+    
+    // Clear previous measurements
+    pvlmd_measureSource.clear();
+    
+    // Create new draw interaction
+    pvlmd_drawInteraction = new ol.interaction.Draw({
+        source: pvlmd_measureSource,
+        type: type,
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 0, 0.1)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ff0000',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 4,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                })
+            })
+        })
+    });
+    
+    // Add event listener for drawing end
+    pvlmd_drawInteraction.on('drawend', function(event) {
+        var feature = event.feature;
+        var geometry = feature.getGeometry();
+        var type = geometry.getType();
+        var area = null;
+        var length = null;
+        
+        // Calculate area or length
+        if (type === 'Polygon') {
+            area = geometry.getArea();
+            // Convert to hectares if large
+            var areaText = pvlmd_formatArea(area);
+            // Show popup with area
+            pvlmd_showMeasurementPopup(areaText, 'Area');
+        } else if (type === 'Circle') {
+            area = Math.PI * Math.pow(geometry.getRadius(), 2);
+            var areaText = pvlmd_formatArea(area);
+            pvlmd_showMeasurementPopup(areaText, 'Area');
+        } else if (type === 'LineString') {
+            length = geometry.getLength();
+            var lengthText = pvlmd_formatLength(length);
+            pvlmd_showMeasurementPopup(lengthText, 'Length');
+        }
+        
+        // Apply style with measurement label
+        feature.setStyle(pvlmd_createMeasureStyle(feature, type));
+        
+        // Add to WKT polygon textarea
+        var format = new ol.format.WKT();
+        var wkt = format.writeFeature(feature);
+        $('#pvlmd_bl_wkt_polygon').val(wkt);
+        
+        // Also add to coordinate list
+        pvlmd_addFeatureToCoordinateList(feature);
+        
+        // Enable visualise button
+        if (wkt) {
+            $('#pvlmd_btn_request_add_existing_parcel').removeClass('d-none');
+        }
+        
+        // Trigger visualise automatically
+        pvlmd_visualizeWKT(wkt);
+    });
+    
+    pvlmd_map.addInteraction(pvlmd_drawInteraction);
+}
+
+// Function to show measurement popup
+function pvlmd_showMeasurementPopup(value, type) {
+    // Use toast notification
+    if (typeof $.toast === 'function') {
+        $.toast({
+            heading: type + ' Measurement',
+            text: value,
+            icon: 'info',
+            position: 'bottom-right',
+            stack: false,
+            loader: false,
+            bgColor: '#7c3aed',
+            textColor: '#fff',
+            hideAfter: 5000
+        });
+    } else {
+        // Fallback to alert
+        alert(type + ': ' + value);
+    }
+}
+
+// Function to add feature to coordinate list
+function pvlmd_addFeatureToCoordinateList(feature) {
+    var geometry = feature.getGeometry();
+    var coordinates = [];
+    
+    if (geometry instanceof ol.geom.Polygon) {
+        coordinates = geometry.getCoordinates()[0];
+    } else if (geometry instanceof ol.geom.LineString) {
+        coordinates = geometry.getCoordinates();
+    } else if (geometry instanceof ol.geom.Circle) {
+        var center = geometry.getCenter();
+        var radius = geometry.getRadius();
+        // Create points around circle
+        var points = 12;
+        for (var i = 0; i <= points; i++) {
+            var angle = (i / points) * 2 * Math.PI;
+            var x = center[0] + radius * Math.cos(angle);
+            var y = center[1] + radius * Math.sin(angle);
+            coordinates.push([x, y]);
+        }
+    }
+    
+    // Add to table
+    var table = $('#coordinatelis_Table tbody');
+    table.empty();
+    
+    coordinates.forEach(function(coord, index) {
+        var name = 'P1-' + (index + 1);
+        table.append(
+            '<tr>' +
+            '<td>' + name + '</td>' +
+            '<td>' + coord[0].toFixed(2) + '</td>' +
+            '<td>' + coord[1].toFixed(2) + '</td>' +
+            '<td class="text-center">' +
+            '<button class="btn btn-danger btn-sm btn-delete-coordinate" data-index="' + index + '">' +
+            '<i class="fas fa-trash"></i>' +
+            '</button>' +
+            '</td>' +
+            '</tr>'
+        );
+    });
+    
+    // Add delete handlers
+    $('.btn-delete-coordinate').on('click', function() {
+        var index = $(this).data('index');
+        // Remove point from feature
+        // This is simplified - in production you'd need to rebuild the geometry
+        $(this).closest('tr').remove();
+        pvlmd_rebuildPolygonFromTable();
+    });
+}
+
+// Function to rebuild polygon from table
+function pvlmd_rebuildPolygonFromTable() {
+    var points = [];
+    $('#coordinatelis_Table tbody tr').each(function() {
+        var x = parseFloat($(this).find('td:eq(1)').text());
+        var y = parseFloat($(this).find('td:eq(2)').text());
+        points.push([x, y]);
+    });
+    
+    if (points.length >= 3) {
+        var polygon = new ol.geom.Polygon([points]);
+        var feature = new ol.Feature(polygon);
+        pvlmd_measureSource.clear();
+        pvlmd_measureSource.addFeature(feature);
+        
+        // Update WKT
+        var format = new ol.format.WKT();
+        var wkt = format.writeFeature(feature);
+        $('#pvlmd_bl_wkt_polygon').val(wkt);
+    }
+}
+
+// Function to visualize WKT
+function pvlmd_visualizeWKT(wkt) {
+    if (!wkt) return;
+    
+    try {
+        pvlmd_lc_searchLayer.setSource(new ol.source.Vector({
+            features: (new ol.format.WKT()).readFeatures(wkt)
+        }));
+        
+        var extent = pvlmd_lc_searchLayer.getSource().getExtent();
+        if (extent) {
+            pvlmd_map.getView().fit(extent, {
+                size: pvlmd_map.getSize(),
+                maxZoom: 16,
+                padding: [50, 50, 50, 50]
+            });
+        }
+    } catch (error) {
+        console.error('Error visualizing WKT:', error);
+    }
+}
+
+// Function to start modify interaction
+function pvlmd_startModify() {
+    // Remove existing draw interaction
+    if (pvlmd_drawInteraction) {
+        pvlmd_map.removeInteraction(pvlmd_drawInteraction);
+        pvlmd_drawInteraction = null;
+    }
+    
+    // Remove existing modify interaction
+    if (pvlmd_modifyInteraction) {
+        pvlmd_map.removeInteraction(pvlmd_modifyInteraction);
+        pvlmd_modifyInteraction = null;
+    }
+    
+    // Create modify interaction
+    pvlmd_modifyInteraction = new ol.interaction.Modify({
+        source: pvlmd_measureSource,
+        style: new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 8,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ffffff',
+                    width: 2
+                })
+            })
+        })
+    });
+    
+    // Add event listener for modify end
+    pvlmd_modifyInteraction.on('modifyend', function(event) {
+        var features = event.features;
+        features.forEach(function(feature) {
+            var geometry = feature.getGeometry();
+            var type = geometry.getType();
+            var area = null;
+            var length = null;
+            
+            if (type === 'Polygon') {
+                area = geometry.getArea();
+            } else if (type === 'Circle') {
+                area = Math.PI * Math.pow(geometry.getRadius(), 2);
+            } else if (type === 'LineString') {
+                length = geometry.getLength();
+            }
+            
+            // Update style
+            feature.setStyle(pvlmd_createMeasureStyle(feature, type));
+            
+            // Update WKT
+            var format = new ol.format.WKT();
+            var wkt = format.writeFeature(feature);
+            $('#pvlmd_bl_wkt_polygon').val(wkt);
+            
+            // Update coordinate list
+            pvlmd_addFeatureToCoordinateList(feature);
+            
+            // Show updated measurement
+            if (area !== null) {
+                pvlmd_showMeasurementPopup(pvlmd_formatArea(area), 'Updated Area');
+            } else if (length !== null) {
+                pvlmd_showMeasurementPopup(pvlmd_formatLength(length), 'Updated Length');
+            }
+        });
+    });
+    
+    pvlmd_map.addInteraction(pvlmd_modifyInteraction);
+}
+
+// Function to clear measurements
+function pvlmd_clearMeasurements() {
+    if (pvlmd_drawInteraction) {
+        pvlmd_map.removeInteraction(pvlmd_drawInteraction);
+        pvlmd_drawInteraction = null;
+    }
+    if (pvlmd_modifyInteraction) {
+        pvlmd_map.removeInteraction(pvlmd_modifyInteraction);
+        pvlmd_modifyInteraction = null;
+    }
+    pvlmd_measureSource.clear();
+    $('#pvlmd_bl_wkt_polygon').val('');
+    $('#coordinatelis_Table tbody').empty();
+    $('#pvlmd_btn_request_add_existing_parcel').addClass('d-none');
+}
 
     // Helper function
     function getResolutionFromScale(scale) {
@@ -2238,6 +2701,14 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 	});
 });
 
+
+
+
+
+
+
+
+
 window.initiateReqAddExistingParcel = function(parcelId, referenceNumber) {
 
     var selectedJobsList = [];
@@ -2319,4 +2790,9 @@ window.initiateReqAddExistingParcel = function(parcelId, referenceNumber) {
 
 };
 
+
+
 });
+
+
+
