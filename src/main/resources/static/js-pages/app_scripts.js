@@ -4630,7 +4630,7 @@ function processRequest() {
 
     // Prepare AJAX data
     const ajaxData = {
-        request_type: 'process_request_list',
+        request_type: batchType == 'Unit' ? 'process_request_list' : 'process_request_list_to_user',
         division: localStorage.getItem('division') || '',
         list_of_application: listOfApplications,
         send_to_name: recipient.name,

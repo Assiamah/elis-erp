@@ -133,7 +133,7 @@
             </div>
 
             <div class="modal-footer bg-white border-top">
-				<button type="button" class="btn btn-danger" onclick="initiateDeleteParcel('1')">
+				<button type="button" class="btn btn-danger" onclick="initiateDeleteParcel()">
                     <i class="bi bi-trash me-1"></i>Delete
                 </button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
