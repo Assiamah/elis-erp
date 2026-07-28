@@ -52,6 +52,37 @@
                                 <i class="fas fa-eye me-1"></i> Visualise
                             </button>
                         </div>
+      <!-- 2. DRAWING TOOLS (collapsible card) -->
+                        <div class="card border-info mb-3">
+                            <div class="card-header bg-info bg-opacity-10 border-info py-1 d-flex align-items-center">
+                                <i class="fas fa-ruler-combined me-2 text-info"></i>
+                                <span class="fw-semibold fs-7">Draw &amp; Measure</span>
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="d-flex flex-wrap gap-1 mb-1">
+                                    <button class="btn btn-outline-danger btn-sm flex-fill" id="pvlmd_btn_draw_polygon" title="Draw Polygon">
+                                        <i class="fas fa-draw-polygon me-1"></i> Polygon
+                                    </button>
+                                    <button class="btn btn-outline-warning btn-sm flex-fill" id="pvlmd_btn_draw_circle" title="Draw Circle">
+                                        <i class="fas fa-circle me-1"></i> Circle
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm flex-fill" id="pvlmd_btn_draw_line" title="Draw Line">
+                                        <i class="fas fa-ruler me-1"></i> Line
+                                    </button>
+                                </div>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-outline-secondary btn-sm flex-fill" id="pvlmd_btn_modify" title="Modify Features">
+                                        <i class="fas fa-edit me-1"></i> Modify
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm flex-fill" id="pvlmd_btn_clear_measurements" title="Clear All">
+                                        <i class="fas fa-eraser me-1"></i> Clear
+                                    </button>
+                                </div>
+                                <div class="mt-1 text-muted small" style="font-size:0.65rem;">
+                                    <i class="fas fa-info-circle me-1"></i>Click map to draw · area/length shown
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Coordinate List Table -->
                         <div class="mb-4">
@@ -200,6 +231,7 @@
                                     <i class="fas fa-edit me-1"></i> Modify
                                 </label>
                             </div>
+                            
 
                             <!-- Scale Controls -->
                             <div class="d-flex align-items-center gap-2">

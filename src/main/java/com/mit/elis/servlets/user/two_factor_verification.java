@@ -144,7 +144,9 @@ public class two_factor_verification extends HttpServlet {
 				String new_phone = obj.get("phone").toString();
 				String emailaddress = obj.get("emailaddress").toString();
 				String passwordchanged = obj.get("passwordchanged").toString();
+				String isdisabled = obj.get("isdisabled").toString();
 				String fullName = obj.get("fullname").toString();
+					
 				String firstName = fullName.split(" ")[0];
 
 				if(passwordchanged.equals("NO")) {
@@ -156,6 +158,17 @@ public class two_factor_verification extends HttpServlet {
         return "layouts/guest";
 
 				}
+
+				if(isdisabled.equals("true")) {
+
+						request.setAttribute("login", "failed");
+							// //System.out.println("If Not success");
+							  model.addAttribute("content", "../auth/login.jsp");
+                return "layouts/guest";
+
+				}
+
+
 
 				String new_message = "Use this OTP Code: " + verification_code_obj + " to login to ELIS";
 				////System.out.println(new_phone);

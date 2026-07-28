@@ -352,7 +352,7 @@
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="alert-heading fw-semibold mb-1">Authentication Failed</h6>
-                                            <p class="mb-0 fs-13">Invalid credentials. Please check your email and password.</p>
+                                            <p class="mb-0 fs-13">Invalid credentials/Disabled Account. Please check your email and password.</p>
                                         </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
