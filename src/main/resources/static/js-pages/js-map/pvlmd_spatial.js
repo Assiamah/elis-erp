@@ -2568,7 +2568,7 @@ window.initiateDeleteParcel = function() {
                 jobNumberHtml: pvlmd_reference_number,
                 applicantNameHtml: pvlmd_reference_number,
                 applicationType: 'TEMPORAL APPLICATION',
-                batchingPurpose: 'Request for parcel deletion',
+                batchingPurpose: 'Delete Plotting',
                 remarksNotes: remarks_notes,
                 // created_on: jobData.created_on,
                 // job_status: jobData.job_status
