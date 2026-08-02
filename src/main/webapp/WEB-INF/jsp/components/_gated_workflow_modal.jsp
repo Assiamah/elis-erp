@@ -3370,130 +3370,193 @@
                     
                     <!-- Map Visualization Tab -->
                     <div class="tab-pane fade" id="map-" role="tabpanel">
-                      <div class="row g-3"></div>
-                        <div class="card border h-100">
-                            <div class="card-header bg-light py-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0">
-                                        <i class="fas fa-map me-2"></i>
-                                        Map Visualization
-                                    </h6>
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-primary btn-sm" 
-                                                id="lc_btn_visualise_wkt_" data-bs-toggle="tooltip" 
-                                                data-bs-placement="top" title="Visualise Polygon">
-                                            <i class="fas fa-map me-1"></i>
-                                            Visualise
-                                        </button>
-                                        <button type="button" class="btn btn-outline-primary btn-sm" 
-                                                id="lc_btn_visualise_search" data-bs-toggle="tooltip" 
-                                                data-bs-placement="top" title="Visualise Search">
-                                            <i class="fas fa-search me-1"></i>
-                                            Search
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
-                                                id="lc_btnprintmap" data-bs-toggle="tooltip" 
-                                                data-bs-placement="top" title="Print Map">
-                                            <i class="fas fa-print me-1"></i>
-                                        </button>
+                        <div class="row g-3">
+                            <!-- <div class="col-xl-4">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-tools me-2"></i>
+                                            Map Side Tools
+                                        </h6>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                
-                                <!-- WKT Polygon Input -->
-                                <div class="mb-3">
-                                    <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
-                                        <i class="fas fa-draw-polygon me-1"></i>
-                                        WKT Polygon
-                                    </label>
-                                    <div class="input-group">
-                                        <input class="form-control" id="lc_bl_wkt_polygon" 
-                                               name="lc_bl_wkt_polygon" type="text" value="${parcel_wkt}"
-                                               placeholder="WKT polygon coordinates">
-                                        <button class="btn btn-outline-secondary" type="button" 
-                                                id="btn_copy_wkt" data-bs-toggle="tooltip" 
-                                                data-bs-placement="top" title="Copy WKT">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <!-- Map Controls -->
-                                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-                                    <div class="d-flex align-items-center me-3">
-                                        <label class="me-2 mb-0">Scale:</label>
-                                        <div class="input-group input-group-sm me-2" style="width: 120px;">
-                                            <input class="form-control form-control-sm" id="lc_scale_value_e" 
-                                                   name="lc_scale_value_e" type="text" placeholder="Custom scale">
-                                        </div>
-                                        <select class="form-select form-select-sm" name="lc_scale_value" 
-                                                id="lc_scale_value" style="width: 120px;">
-                                            <option value="500">1:500</option>
-                                            <option value="1107">1:1,107</option>
-                                            <option value="1250">1:1,250</option>
-                                            <option value="2140">1:2,140</option>
-                                            <option value="2215">1:2,215</option>
-                                            <option value="2500">1:2,500</option>
-                                            <option value="2670">1:2,670</option>
-                                            <option value="2825">1:2,825</option>
-                                            <option value="5000" selected>1:5,000</option>
-                                            <option value="10000">1:10,000</option>
-                                            <option value="15000">1:15,000</option>
-                                            <option value="20000">1:20,000</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="d-flex align-items-center">
-                                        <div class="form-check me-2">
-                                            <input class="form-check-input" type="checkbox" 
-                                                   checked id="lc_lockmapscale">
-                                            <label class="form-check-label small mb-0" for="lc_lockmapscale">
-                                                Lock Scale
-                                            </label>
-                                        </div>
-                                        <button type="button" class="btn btn-outline-primary btn-sm" 
-                                                id="lc_btn_scale_zoom" data-bs-toggle="tooltip" 
-                                                data-bs-placement="top" title="Zoom to Scale">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="ms-auto btn-group" role="group">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
-                                                id="btn_zoom_full">
-                                            <i class="fas fa-expand"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
-                                                id="btn_zoom_out">
-                                            <i class="fas fa-search-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" 
-                                                id="btn_zoom_in">
-                                            <i class="fas fa-search-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <!-- Map Container -->
-                                <div class="mt-3 w-100">
-                                  <div id="lc-map__"></div>
-                                </div>
+                                    <div class="card-body">
 
-                                <!-- Confirm Transaction Button -->
-                                <div class="mt-4">
-                                    <button type="button" id="btn_confirm_registration_transaction" 
-                                            class="btn btn-success w-100 py-3 d-none">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-check-circle fa-lg me-3"></i>
-                                            <div class="text-start">
-                                                <div class="fw-medium">Confirm Transaction</div>
-                                                <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
+                                        
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-xl-12">
+                                <div class="card border h-100">
+                                    <div class="card-header bg-light py-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-map me-2"></i>
+                                                Map Visualization
+                                            </h6>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                        id="lc_btn_visualise_wkt_" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Visualise Polygon">
+                                                    <i class="fas fa-map me-1"></i>
+                                                    Visualise
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        id="lc_btn_visualise_search" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Visualise Search">
+                                                    <i class="fas fa-search me-1"></i>
+                                                    Search
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                        id="lc_btnprintmap" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Print Map">
+                                                    <i class="fas fa-print me-1"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                    </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="lc_bl_wkt_polygon" class="form-label fw-medium">
+                                                <i class="fas fa-draw-polygon me-1"></i>
+                                                WKT Polygon
+                                            </label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="lc_bl_wkt_polygon"
+                                                       name="lc_bl_wkt_polygon" type="text" value="${parcel_wkt}"
+                                                       placeholder="WKT polygon coordinates">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                        id="btn_copy_wkt" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Copy WKT">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                                            <div class="d-flex align-items-center me-3">
+                                                <label class="me-2 mb-0">Scale:</label>
+                                                <div class="input-group input-group-sm me-2" style="width: 120px;">
+                                                    <input class="form-control form-control-sm" id="lc_scale_value_e"
+                                                           name="lc_scale_value_e" type="text" placeholder="Custom scale">
+                                                </div>
+                                                <select class="form-select form-select-sm" name="lc_scale_value"
+                                                        id="lc_scale_value" style="width: 120px;">
+                                                    <option value="500">1:500</option>
+                                                    <option value="1107">1:1,107</option>
+                                                    <option value="1250">1:1,250</option>
+                                                    <option value="2140">1:2,140</option>
+                                                    <option value="2215">1:2,215</option>
+                                                    <option value="2500">1:2,500</option>
+                                                    <option value="2670">1:2,670</option>
+                                                    <option value="2825">1:2,825</option>
+                                                    <option value="5000" selected>1:5,000</option>
+                                                    <option value="10000">1:10,000</option>
+                                                    <option value="15000">1:15,000</option>
+                                                    <option value="20000">1:20,000</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="d-flex align-items-center">
+                                                <div class="form-check me-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           checked id="lc_lockmapscale">
+                                                    <label class="form-check-label small mb-0" for="lc_lockmapscale">
+                                                        Lock Scale
+                                                    </label>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        id="lc_btn_scale_zoom" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Zoom to Scale">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="ms-auto btn-group" role="group">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                        id="btn_zoom_full">
+                                                    <i class="fas fa-expand"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                        id="btn_zoom_out">
+                                                    <i class="fas fa-search-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                        id="btn_zoom_in">
+                                                    <i class="fas fa-search-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-3">
+                                          <div class="col-6">
+                                            <div class="card border mb-4">
+                                                <div class="card-header bg-opacity-10 py-2">
+                                                    <h6 class="mb-0 fw-semibold">
+                                                        <i class="fas fa-layer-group me-2"></i>Scanned Maps
+                                                    </h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <select class="form-select form-select-sm" id="geoserverscannedimages_list_vpt">
+                                                            <option value="-1">Select Scanned Image</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="d-flex gap-2">
+                                                        <button type="button" class="btn btn-warning btn-sm flex-fill" id="lc_btn_search_for_scanned_maps_vpt">
+                                                            <i class="fas fa-search me-1"></i> Search
+                                                        </button>
+                                                        <button type="button" class="btn btn-success btn-sm flex-fill" id="lc_btn_load_for_scanned_maps_vpt">
+                                                            <i class="fas fa-check-circle me-1"></i> Load
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-6">
+                                            <div class="card card-body">
+                                                <h6 class="fw-semibold mb-3 text-primary">
+                                                    <i class="fas fa-copy me-2"></i>Multiple Parcel Overlays
+                                                </h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-sm mb-0" id="lrd_more_than_one_parcel_Table_vpt">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Reference Number</th>
+                                                                <th>Locality</th>
+                                                                <th>Remarks</th>
+                                                                <th class="text-center">Details</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="text-muted">
+                                                                <td colspan="4" class="text-center py-3">No overlay parcels loaded yet.</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="mt-3 w-100">
+                                          <div id="lc-map__"></div>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <button type="button" id="btn_confirm_registration_transaction"
+                                                    class="btn btn-success w-100 py-3 d-none">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-check-circle fa-lg me-3"></i>
+                                                    <div class="text-start">
+                                                        <div class="fw-medium">Confirm Transaction</div>
+                                                        <small class="d-block opacity-75">Finalize and approve this registration transaction</small>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>

@@ -28181,6 +28181,137 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#view_parcel_and_transaction #lc_lockmapscale').prop('checked', true);
     }
 
+    function syncViewParcelSidePanel() {
+        const $modal = $('#view_parcel_and_transaction');
+        if (!$modal.length) {
+            return;
+        }
+
+        const scaleInput = $modal.find('#lc_scale_value_e').val() || '';
+        const scaleSelect = $modal.find('#lc_scale_value').val() || '5000';
+
+        $modal.find('#lc_scale_value_e_vpt').val(scaleInput || scaleSelect);
+        $modal.find('#lc_scale_value_vpt').val(scaleSelect);
+        $modal.find('#lc_lockmapscale_vpt').prop('checked', $modal.find('#lc_lockmapscale').is(':checked'));
+    }
+
+    function syncViewParcelMainMapControls() {
+        const $modal = $('#view_parcel_and_transaction');
+        if (!$modal.length) {
+            return;
+        }
+
+        const scaleSelect = $modal.find('#lc_scale_value_vpt').val() || '5000';
+        const scaleInput = $modal.find('#lc_scale_value_e_vpt').val() || scaleSelect;
+
+        $modal.find('#lc_scale_value_e').val(scaleInput);
+        $modal.find('#lc_scale_value').val(scaleSelect);
+        $modal.find('#lc_lockmapscale').prop('checked', $modal.find('#lc_lockmapscale_vpt').is(':checked'));
+    }
+
+    function renderViewParcelOverlayMirror() {
+        const $mirrorBody = $('#lrd_more_than_one_parcel_Table_vpt tbody');
+        const $sourceTable = $('#lrd_more_than_one_parcel_Table');
+
+        if (!$mirrorBody.length) {
+            return;
+        }
+
+        if (!$sourceTable.length || $sourceTable.is('#lrd_more_than_one_parcel_Table_vpt')) {
+            return;
+        }
+
+        const sourceRows = $sourceTable.find('tbody').html();
+        if (sourceRows && sourceRows.trim()) {
+            $mirrorBody.html(sourceRows);
+            return;
+        }
+
+        $mirrorBody.html('<tr class="text-muted"><td colspan="4" class="text-center py-3">No overlay parcels loaded yet.</td></tr>');
+    }
+
+    function searchViewParcelScannedMaps() {
+        const wktPolygon = ($('#view_parcel_and_transaction #lc_bl_wkt_polygon').val() || '').trim();
+
+        if (!wktPolygon) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Polygon Found',
+                text: 'There is no parcel WKT available to search for scanned maps.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'Maps',
+            data: {
+                request_type: 'search_for_lrd_scan_map_for_a_polygon',
+                wkt_polygon: wktPolygon
+            },
+            cache: false,
+            success: function(jobdetails) {
+                const jsonPayload = JSON.parse(jobdetails || '{}');
+                const $options = $('#geoserverscannedimages_list_vpt');
+
+                $options.empty().append('<option value="-1">Select Scanned Image</option>');
+
+                $(jsonPayload.data || []).each(function() {
+                    $options.append(
+                        '<option value="' + this.file_name + ':' + this.extent + '">' + this.file_name + '</option>'
+                    );
+                });
+            }
+        });
+    }
+
+    function loadViewParcelScannedMap() {
+        const selectedImage = $.trim($('#geoserverscannedimages_list_vpt').val());
+
+        if (!selectedImage || selectedImage === '-1') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Scanned Map Selected',
+                text: 'Choose a scanned image before loading it onto the map.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        if (typeof ol === 'undefined' || typeof map === 'undefined' || typeof StaticImage === 'undefined') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Map Not Ready',
+                text: 'The scanned map layer could not be loaded because the map is not initialized yet.',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+
+        const layerParts = selectedImage.split(':', 3);
+        const layerName = 'csau_geospatial:' + layerParts[1];
+        const imageSource = new ol.source.ImageWMS({
+            url: getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+            params: {
+                LAYERS: layerName
+            },
+            serverType: 'geoserver'
+        });
+
+        StaticImage.setSource(imageSource);
+
+        const extentText = layerParts[2] || '';
+        const cleanedExtent = extentText.replace(/[\[\]]/g, '');
+        const extent = cleanedExtent.split(',').map(function(value) {
+            return Number($.trim(value));
+        });
+
+        if (extent.length === 4 && extent.every(function(value) { return !Number.isNaN(value); })) {
+            map.getView().fit(extent, map.getSize());
+        }
+    }
+
     function refreshInlinePlotMap(mapId) {
         setTimeout(() => {
             window.initializeMap(mapId);
@@ -28386,6 +28517,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('#view_parcel_and_transaction').on('shown.bs.modal', function() {
         elevateModalStack('#view_parcel_and_transaction');
+        syncViewParcelSidePanel();
+        renderViewParcelOverlayMirror();
     });
 
     $(document).on('click', '#flv-map-tab', function() {
@@ -28399,6 +28532,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $(document).on('change', '#lc_scale_value_flv', function() {
         $('#lc_scale_value_e_flv').val($(this).val());
+    });
+
+    $(document).on('click', '#map-tab', function() {
+        setTimeout(() => {
+            syncViewParcelSidePanel();
+            if (typeof maps !== 'undefined' && maps['lc-map__']) {
+                maps['lc-map__'].updateSize();
+            }
+        }, 100);
+    });
+
+    $(document).on('change', '#lc_scale_value_vpt', function() {
+        $('#lc_scale_value_e_vpt').val($(this).val());
+    });
+
+    $(document).on('click', '#lc_btn_visualise_wkt_vpt', function(e) {
+        e.preventDefault();
+        syncViewParcelMainMapControls();
+        $('#view_parcel_and_transaction #lc_btn_visualise_wkt_').first().trigger('click');
+        renderViewParcelOverlayMirror();
+    });
+
+    $(document).on('click', '#lc_btn_visualise_search_vpt', function(e) {
+        e.preventDefault();
+        syncViewParcelMainMapControls();
+        $('#view_parcel_and_transaction #lc_btn_visualise_search').first().trigger('click');
+        setTimeout(renderViewParcelOverlayMirror, 200);
+    });
+
+    $(document).on('click', '#lc_btn_scale_zoom_vpt', function(e) {
+        e.preventDefault();
+        syncViewParcelMainMapControls();
+        $('#view_parcel_and_transaction #lc_btn_scale_zoom').first().trigger('click');
+    });
+
+    $(document).on('click', '#lc_btn_search_for_scanned_maps_vpt', function(e) {
+        e.preventDefault();
+        searchViewParcelScannedMaps();
+    });
+
+    $(document).on('click', '#lc_btn_load_for_scanned_maps_vpt', function(e) {
+        e.preventDefault();
+        loadViewParcelScannedMap();
     });
 
     $(document).on('click', '#lc_btn_visualise_wkt_flv', function(e) {
