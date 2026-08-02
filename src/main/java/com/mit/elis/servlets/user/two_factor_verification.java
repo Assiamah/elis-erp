@@ -159,13 +159,11 @@ public class two_factor_verification extends HttpServlet {
 
 				}
 
-				if(isdisabled.equals("true")) {
-
-						request.setAttribute("login", "failed");
-							// //System.out.println("If Not success");
-							  model.addAttribute("content", "../auth/login.jsp");
-                return "layouts/guest";
-
+				String normalizedDisabled = isdisabled == null ? "" : isdisabled.trim().toLowerCase();
+				if ("true".equals(normalizedDisabled) || "yes".equals(normalizedDisabled) || "1".equals(normalizedDisabled)) {
+					request.setAttribute("login", "disabled");
+					model.addAttribute("content", "../auth/login.jsp");
+                	return "layouts/guest";
 				}
 
 

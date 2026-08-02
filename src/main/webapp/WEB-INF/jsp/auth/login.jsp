@@ -352,7 +352,20 @@
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="alert-heading fw-semibold mb-1">Authentication Failed</h6>
-                                            <p class="mb-0 fs-13">Invalid credentials/Disabled Account. Please check your email and password.</p>
+                                            <p class="mb-0 fs-13">Invalid credentials. Please check your email and password.</p>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${login == 'disabled'}">
+                                    <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center mb-4" role="alert">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-user-unfollow-line fs-20"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="alert-heading fw-semibold mb-1">Account Disabled</h6>
+                                            <p class="mb-0 fs-13">Your account is disabled. Please contact your system administrator for assistance.</p>
                                         </div>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
