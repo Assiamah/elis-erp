@@ -27,6 +27,7 @@ $(document)
 						}
 					  });
 
+					  
 
 
 
@@ -1059,10 +1060,10 @@ $(document)
 													`#listofusersbatching_rpt option[value="${inputVal}"]`
 												);
 
-												if (!option) {
-													console.warn("No matching user found for:", inputVal);
-													return;
-												}
+												// if (!option) {
+												// 	console.warn("No matching user found for:", inputVal);
+												// 	return;
+												// }
 
 												// ✅ Extract userid
 												var send_to_id = option.dataset.userid;

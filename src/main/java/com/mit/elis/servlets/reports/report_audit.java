@@ -75,7 +75,7 @@ public class report_audit {
 
 			String web_service_response = null;
 
-				if (request_type.equals("audit_report_count_on_payments")) {
+			if (request_type.equals("audit_report_count_on_payments")) {
 
                // String regional_code = (String) session.getAttribute("regional_code");
                   // String regional_code ="11";
@@ -111,7 +111,7 @@ public class report_audit {
 
             if (request_type.equals("audit_report_on_subservices")) {
 
-                
+
 
                 String regional_code = request.getParameter("regional_code");
                 String start_date = request.getParameter("start_date");
@@ -120,15 +120,15 @@ public class report_audit {
                 obj.put( "regional_code" , regional_code );
                 obj.put( "start_date" , start_date );
                 obj.put( "end_date" , end_date );
-              //  //System.out.println(obj.toString());
+              //  System.out.println(obj.toString());
 
                 web_service_response = cls_audit_report
                         .audit_report_on_subservices(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -149,15 +149,15 @@ public class report_audit {
                 obj.put( "end_date" , end_date );
                 obj.put( "regional_code" , regional_code );
                 obj.put( "business_sub_id" , business_sub_id );
-              //  //System.out.println(obj.toString());
+              //  System.out.println(obj.toString());
 
                 web_service_response = cls_audit_report
                         .audit_report_on_bill_items(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -182,9 +182,9 @@ public class report_audit {
                         .audit_report_on_all_transactions(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -200,15 +200,15 @@ public class report_audit {
                 String job_number = request.getParameter("job_number");
 
                 obj.put( "job_number" , job_number );
-              //  //System.out.println(obj.toString());
+              //  System.out.println(obj.toString());
 
                 web_service_response = cls_audit_report
                         .audit_report_on_bill_items_by_job_number(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -237,9 +237,9 @@ public class report_audit {
                         .audit_report_on_bill_items_by_regions(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -266,9 +266,9 @@ public class report_audit {
                         .get_activity_trends(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -295,15 +295,15 @@ public class report_audit {
                obj.put( "end_date_ar" , end_date_ar );
 
 
-               //System.out.println(obj.toString());
+               System.out.println(obj.toString());
 
                 web_service_response = cls_audit_report
                         .get_audit_dashboard_stats(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -330,9 +330,9 @@ public class report_audit {
                         .get_recent_activities(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -359,9 +359,9 @@ public class report_audit {
                         .get_user_activity_summary(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -381,7 +381,6 @@ public class report_audit {
                 String start_date_ar = request.getParameter("start_date_ar");
                 String end_date_ar = request.getParameter("end_date_ar");
 
-                
                 // obj.put( "bill_item_name" , bill_item_name );
                 // obj.put( "business_process_sub_name" , business_process_sub_name );
                 obj.put( "start_date_ar" , start_date_ar );
@@ -391,9 +390,9 @@ public class report_audit {
                         .get_audit_dashboard_stats_admin(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -403,7 +402,35 @@ public class report_audit {
 
 
 
-              if (request_type.equals("get_advanced_activity_logs_summary")) {
+              if (request_type.equals("get_advanced_activity_logs_summary_by_user")) {
+
+                // String bill_item_name = request.getParameter("bill_item_name");
+                // String business_process_sub_name = request.getParameter("business_process_sub_name");
+
+                String start_date_ar = request.getParameter("start_date_ar");
+                String end_date_ar = request.getParameter("end_date_ar");
+
+                // obj.put( "bill_item_name" , bill_item_name );
+                // obj.put( "business_process_sub_name" , business_process_sub_name );
+                obj.put( "start_date_ar" , start_date_ar );
+                obj.put( "end_date_ar" , end_date_ar );
+
+                web_service_response = cls_audit_report
+                        .get_advanced_activity_logs_summary_by_user(cls_url_config.getWeb_service_url_ser(),
+                                cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
+                if (web_service_response != null) {
+                  //  System.out.println(web_service_response);
+                } else {
+                  //  System.out.println(web_service_response);
+                }
+
+                return web_service_response;
+            }
+
+
+
+
+             if (request_type.equals("get_advanced_activity_logs_summary")) {
 
                 // String bill_item_name = request.getParameter("bill_item_name");
                 // String business_process_sub_name = request.getParameter("business_process_sub_name");
@@ -421,9 +448,9 @@ public class report_audit {
                         .get_advanced_activity_logs_summary(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -452,9 +479,9 @@ public class report_audit {
                         .get_advanced_activity_logs_summary_by_type(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -486,9 +513,9 @@ public class report_audit {
                         .get_advanced_activity_logs_summary_by_type_by_userid(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;
@@ -519,9 +546,9 @@ public class report_audit {
                         .get_advanced_activity_logs_summary_by_type_by_activity_id(cls_url_config.getWeb_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 } else {
-                  //  //System.out.println(web_service_response);
+                  //  System.out.println(web_service_response);
                 }
 
                 return web_service_response;

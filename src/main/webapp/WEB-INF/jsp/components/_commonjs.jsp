@@ -171,6 +171,9 @@ ${page_name == "cica_ticket_details" ? "<script src='js-pages/cica_ticket_detail
 
 ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 
+${page_name == "reports" ? "<script src='js-pages/apps_report.js'></script>" : ""}
+
+
 ${page_name == "account-reports" ? "<script src='js-pages/audit_report.js'></script>" : ""}
 
 ${page_name == "account-reports" ? "<script src='js-pages/account_reports.js'></script>" : ""}

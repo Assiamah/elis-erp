@@ -101,6 +101,103 @@
         min-height: 180px;
     }
 
+    .audit-dashboard-tabs {
+        border-bottom: 1px solid #e9ecef;
+        gap: 0.25rem;
+    }
+
+    .audit-dashboard-tabs .nav-link {
+        border: 0;
+        border-bottom: 3px solid transparent;
+        color: #6c757d;
+        font-weight: 600;
+        padding: 0.85rem 1.25rem;
+    }
+
+    .audit-dashboard-tabs .nav-link:hover,
+    .audit-dashboard-tabs .nav-link:focus {
+        border-bottom-color: rgba(13, 110, 253, 0.35);
+        color: #0d6efd;
+    }
+
+    .audit-dashboard-tabs .nav-link.active {
+        background: transparent;
+        border-bottom-color: #0d6efd;
+        color: #0d6efd;
+    }
+
+    .user-report-card {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .user-report-card:hover {
+        transform: none;
+        border-color: rgba(13, 110, 253, 0.35);
+        box-shadow: 0 5px 15px rgba(15, 23, 42, 0.08);
+    }
+
+    .user-report-avatar {
+        align-items: center;
+        background: #e7f1ff;
+        border-radius: 50%;
+        color: #0d6efd;
+        display: flex;
+        flex: 0 0 48px;
+        font-weight: 700;
+        height: 48px;
+        justify-content: center;
+        width: 48px;
+    }
+
+    .user-log-type {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        height: 100%;
+        padding: 0.85rem;
+    }
+
+    .user-log-type-count {
+        color: #212529;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .user-report-toolbar-controls {
+        align-items: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .user-report-toolbar-field label {
+        display: block;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+    }
+
+    .user-report-page-size {
+        min-width: 85px;
+    }
+
+    .user-report-sort {
+        min-width: 165px;
+    }
+
+    @media (max-width: 575.98px) {
+        .user-report-toolbar-controls,
+        .user-report-toolbar-field {
+            width: 100%;
+        }
+
+        .user-report-toolbar-field .form-select {
+            width: 100%;
+        }
+    }
+
     .milestone-export-footer {
         flex-wrap: wrap;
     }
@@ -144,6 +241,27 @@
     <input type="hidden" id="start_date">
     <input type="hidden" id="enddate">
     <input type="hidden" id="end_date">
+
+    <ul class="nav nav-tabs audit-dashboard-tabs mb-4" id="auditDashboardTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="activity-overview-tab" data-bs-toggle="tab"
+                    data-bs-target="#activity-overview-pane" type="button" role="tab"
+                    aria-controls="activity-overview-pane" aria-selected="true">
+                <i class="fas fa-chart-pie me-2"></i>Activity Overview
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="report-by-user-tab" data-bs-toggle="tab"
+                    data-bs-target="#report-by-user-pane" type="button" role="tab"
+                    aria-controls="report-by-user-pane" aria-selected="false">
+                <i class="fas fa-user-clock me-2"></i>Report by User
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="auditDashboardTabContent">
+        <div class="tab-pane fade show active" id="activity-overview-pane" role="tabpanel"
+             aria-labelledby="activity-overview-tab" tabindex="0">
 
     <!-- Dashboard Header -->
     <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
@@ -316,6 +434,193 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+        </div>
+
+        <div class="tab-pane fade" id="report-by-user-pane" role="tabpanel"
+             aria-labelledby="report-by-user-tab" tabindex="0">
+            <div class="alert alert-info d-flex align-items-center mb-4" id="userReportStatus" role="status">
+                <i class="fas fa-info-circle me-2"></i>
+                <div>Select a date range to load the activity report by user.</div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                        <div class="icon-container bg-primary bg-opacity-10 text-primary rounded-circle me-3">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">Report by User</h2>
+                            <p class="text-muted mb-0">
+                                Find staff first, then review each user's activity grouped by log type.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <label class="form-label fw-semibold" for="userReportSearch">Search user</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                                <input type="search" class="form-control" id="userReportSearch"
+                                       placeholder="Name, Division or Unit">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <label class="form-label fw-semibold" for="userReportRegion">Region</label>
+                            <select class="form-select" id="userReportRegion">
+                                <option value="">All regions</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <label class="form-label fw-semibold" for="userReportDesignation">Designation</label>
+                            <select class="form-select" id="userReportDesignation">
+                                <option value="">All designations</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-outline-secondary w-100" id="clearUserReportFilters">
+                                <i class="fas fa-undo me-1"></i>Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <div>
+                    <h3 class="h6 fw-bold mb-1">Users and Perfomed Activities</h3>
+                    <span class="text-muted small" id="userReportResultCount">No users loaded</span>
+                </div>
+                <div class="user-report-toolbar-controls">
+                    <div class="user-report-toolbar-field">
+                        <label class="small text-muted" for="userReportPageSize">Users per page</label>
+                        <select class="form-select form-select-sm user-report-page-size" id="userReportPageSize">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="user-report-toolbar-field">
+                        <label class="small text-muted" for="userReportSort">Sort users by</label>
+                        <select class="form-select form-select-sm user-report-sort" id="userReportSort">
+                            <option value="activity">Most activity</option>
+                            <option value="name">User name</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="userReportList">
+                <div class="card user-report-card user-report-item mb-3" data-name="Ama Mensah"
+                     data-search="ama mensah la-00421 land registration land administration officer"
+                     data-region="Greater Accra" data-designation="Land Administration Officer" data-total="47">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="user-report-avatar me-3">AM</div>
+                                <div>
+                                    <h4 class="h6 fw-bold mb-1">Ama Mensah <span class="badge bg-success-subtle text-success ms-1">Active</span></h4>
+                                    <div class="small text-muted">LA-00421 · Land Administration Officer</div>
+                                    <div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i>Greater Accra · Land Registration Division</div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div class="h4 fw-bold text-primary mb-0">47</div>
+                                <small class="text-muted">total activities</small>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Add Transaction</div><div class="user-log-type-count">18</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Update Parcel</div><div class="user-log-type-count">14</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Plot Parcel</div><div class="user-log-type-count">9</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Other</div><div class="user-log-type-count">6</div></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card user-report-card user-report-item mb-3" data-name="Kwame Asante"
+                     data-search="kwame asante ro-00118 records senior records officer"
+                     data-region="Ashanti" data-designation="Senior Records Officer" data-total="35">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="user-report-avatar me-3">KA</div>
+                                <div>
+                                    <h4 class="h6 fw-bold mb-1">Kwame Asante <span class="badge bg-success-subtle text-success ms-1">Active</span></h4>
+                                    <div class="small text-muted">RO-00118 · Senior Records Officer</div>
+                                    <div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i>Ashanti · Records Department</div>
+                                </div>
+                            </div>
+                            <div class="text-end"><div class="h4 fw-bold text-primary mb-0">35</div><small class="text-muted">total activities</small></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Add Parcel</div><div class="user-log-type-count">16</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Update Transaction</div><div class="user-log-type-count">11</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Delete Parcel</div><div class="user-log-type-count">3</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Other</div><div class="user-log-type-count">5</div></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card user-report-card user-report-item mb-3" data-name="Esi Hammond"
+                     data-search="esi hammond sv-00207 survey assistant surveyor"
+                     data-region="Western" data-designation="Assistant Surveyor" data-total="28">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="user-report-avatar me-3">EH</div>
+                                <div>
+                                    <h4 class="h6 fw-bold mb-1">Esi Hammond <span class="badge bg-success-subtle text-success ms-1">Active</span></h4>
+                                    <div class="small text-muted">SV-00207 · Assistant Surveyor</div>
+                                    <div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i>Western · Survey and Mapping Division</div>
+                                </div>
+                            </div>
+                            <div class="text-end"><div class="h4 fw-bold text-primary mb-0">28</div><small class="text-muted">total activities</small></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Plot Parcel</div><div class="user-log-type-count">15</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Add Parcel</div><div class="user-log-type-count">8</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Update Parcel</div><div class="user-log-type-count">4</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Other</div><div class="user-log-type-count">1</div></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card user-report-card user-report-item mb-3" data-name="Kojo Boateng"
+                     data-search="kojo boateng ad-00036 administration regional administrator"
+                     data-region="Greater Accra" data-designation="Regional Administrator" data-total="19">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="user-report-avatar me-3">KB</div>
+                                <div>
+                                    <h4 class="h6 fw-bold mb-1">Kojo Boateng <span class="badge bg-secondary-subtle text-secondary ms-1">Inactive</span></h4>
+                                    <div class="small text-muted">AD-00036 · Regional Administrator</div>
+                                    <div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i>Greater Accra · Administration</div>
+                                </div>
+                            </div>
+                            <div class="text-end"><div class="h4 fw-bold text-primary mb-0">19</div><small class="text-muted">total activities</small></div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Menu Assignment</div><div class="user-log-type-count">8</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Milestone Assignment</div><div class="user-log-type-count">6</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Update User</div><div class="user-log-type-count">4</div></div></div>
+                            <div class="col-6 col-md-3"><div class="user-log-type"><div class="small text-muted">Add User</div><div class="user-log-type-count">1</div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-light border text-center d-none" id="userReportEmptyState">
+                <i class="fas fa-user-slash text-muted me-2"></i>No users match the selected filters.
+            </div>
+
+            <nav class="d-flex justify-content-center mt-4" id="userReportPagination"
+                 aria-label="Report by user pagination"></nav>
         </div>
     </div>
 </div>
@@ -1188,6 +1493,293 @@
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.forEach(function (tooltipTriggerEl) {
             new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        var searchInput = document.getElementById('userReportSearch');
+        var regionSelect = document.getElementById('userReportRegion');
+        var designationSelect = document.getElementById('userReportDesignation');
+        var sortSelect = document.getElementById('userReportSort');
+        var pageSizeSelect = document.getElementById('userReportPageSize');
+        var clearButton = document.getElementById('clearUserReportFilters');
+        var reportList = document.getElementById('userReportList');
+        var resultCount = document.getElementById('userReportResultCount');
+        var emptyState = document.getElementById('userReportEmptyState');
+        var pagination = document.getElementById('userReportPagination');
+        var statusBox = document.getElementById('userReportStatus');
+        var allUserReportRows = [];
+        var loadedDateRange = '';
+        var currentUserReportPage = 1;
+        reportList.innerHTML = '';
+
+        function escapeUserReportValue(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getUserInitials(name) {
+            return String(name || 'Unknown User').trim().split(/\s+/).slice(0, 2)
+                .map(function (part) { return part.charAt(0).toUpperCase(); }).join('');
+        }
+
+        function getUserReportLogType(activityType) {
+            var activityMap = {
+                'New Transaction Added': 'Add Transaction',
+                'New Parcel Added': 'Add Parcel',
+                'Parcel Update': 'Update Parcel',
+                'Transaction Update': 'Upate Transaction',
+                'New Plotting Created': 'Plot Parcel',
+                'User Update': 'Upate User',
+                'New User Added': 'Add User',
+                'Parcel Deleted': 'Delete Parcel',
+                'Menu Assignment': 'Menu-Template Assignment'
+            };
+            return activityMap[activityType] || activityType;
+        }
+
+        function populateUserReportFilter(select, label, values) {
+            var currentValue = select.value;
+            select.innerHTML = '<option value="">' + label + '</option>';
+            Array.from(new Set(values.filter(Boolean))).sort(function (first, second) {
+                return first.localeCompare(second);
+            }).forEach(function (value) {
+                var option = document.createElement('option');
+                option.value = value;
+                option.textContent = value;
+                select.appendChild(option);
+            });
+            select.value = currentValue;
+        }
+
+        function renderUserReportCards(rows) {
+            reportList.innerHTML = rows.map(function (user) {
+                var userName = String(user.user_name || 'Unknown User').trim();
+                var userId = String(user.user_id || '');
+                var department = String(user.department || 'Not specified').trim();
+                var region = String(user.region || 'Not specified').trim();
+                var designation = String(user.designation || 'Not specified').trim();
+                var division = String(user.division || 'Not specified').trim() || 'Not specified';
+                var total = Number(user.total_activities) || 0;
+                var activities = Array.isArray(user.activity_types) ? user.activity_types : [];
+                var activityCards = activities.map(function (activity) {
+                    var activityType = String(activity.activity_type || 'Other').trim();
+                    var logType = getUserReportLogType(activityType);
+                    var count = Number(activity.count) || 0;
+
+                    return '<div class="col-6 col-md-4 col-xl-3">' +
+                        '<a href="javascript:void(0)" class="user-log-type d-block text-decoration-none" ' +
+                        'id="view_activities_By_usser" data-id="' + escapeUserReportValue(userId) + '" ' +
+                        'data-name_full="' + escapeUserReportValue(userName) + '" ' +
+                        'data-actv="' + escapeUserReportValue(activityType) + '" ' +
+                        'data-logt="' + escapeUserReportValue(logType) + '">' +
+                        '<div class="small text-muted">' + escapeUserReportValue(activityType) + '</div>' +
+                        '<div class="user-log-type-count">' + count.toLocaleString() + '</div>' +
+                        '<small class="text-primary">View details <i class="fas fa-arrow-right ms-1"></i></small>' +
+                        '</a></div>';
+                }).join('');
+
+                return '<div class="card user-report-card user-report-item mb-3" ' +
+                    'data-name="' + escapeUserReportValue(userName) + '" ' +
+                    'data-search="' + escapeUserReportValue((userName + ' ' + userId + ' ' + department + ' ' + division).toLowerCase()) + '" ' +
+                    'data-region="' + escapeUserReportValue(region) + '" ' +
+                    'data-designation="' + escapeUserReportValue(designation) + '" data-total="' + total + '">' +
+                    '<div class="card-body p-4">' +
+                    '<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">' +
+                    '<div class="d-flex align-items-center">' +
+                    '<div class="user-report-avatar me-3">' + escapeUserReportValue(getUserInitials(userName)) + '</div>' +
+                    '<div><h4 class="h6 fw-bold mb-1">' + escapeUserReportValue(userName) + '</h4>' +
+                    '<div class="small text-muted">' + escapeUserReportValue(designation) + '</div>' +
+                    '<div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i>' +
+                    escapeUserReportValue(region) + ' · ' + escapeUserReportValue(department) + ' · ' +
+                    escapeUserReportValue(division) + '</div></div></div>' +
+                    '<div class="text-end"><div class="h4 fw-bold text-primary mb-0">' +
+                    total.toLocaleString() + '</div><small class="text-muted">total activities</small></div></div>' +
+                    '<div class="row g-2">' + (activityCards ||
+                        '<div class="col-12 text-muted small">No grouped log types returned.</div>') +
+                    '</div></div></div>';
+            }).join('');
+        }
+
+        function renderUserReportPagination(totalRows, pageSize) {
+            var totalPages = Math.ceil(totalRows / pageSize);
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            var firstPage = Math.max(1, currentUserReportPage - 2);
+            var lastPage = Math.min(totalPages, currentUserReportPage + 2);
+            if (currentUserReportPage <= 3) lastPage = Math.min(totalPages, 5);
+            if (currentUserReportPage >= totalPages - 2) firstPage = Math.max(1, totalPages - 4);
+
+            var items = '<ul class="pagination pagination-sm mb-0">' +
+                '<li class="page-item ' + (currentUserReportPage === 1 ? 'disabled' : '') + '">' +
+                '<button class="page-link" type="button" data-page="' + (currentUserReportPage - 1) +
+                '" aria-label="Previous"><i class="fas fa-chevron-left"></i></button></li>';
+
+            if (firstPage > 1) {
+                items += '<li class="page-item"><button class="page-link" type="button" data-page="1">1</button></li>';
+                if (firstPage > 2) items += '<li class="page-item disabled"><span class="page-link">…</span></li>';
+            }
+
+            for (var page = firstPage; page <= lastPage; page += 1) {
+                items += '<li class="page-item ' + (page === currentUserReportPage ? 'active' : '') + '">' +
+                    '<button class="page-link" type="button" data-page="' + page + '">' + page + '</button></li>';
+            }
+
+            if (lastPage < totalPages) {
+                if (lastPage < totalPages - 1) items += '<li class="page-item disabled"><span class="page-link">…</span></li>';
+                items += '<li class="page-item"><button class="page-link" type="button" data-page="' +
+                    totalPages + '">' + totalPages + '</button></li>';
+            }
+
+            items += '<li class="page-item ' + (currentUserReportPage === totalPages ? 'disabled' : '') + '">' +
+                '<button class="page-link" type="button" data-page="' + (currentUserReportPage + 1) +
+                '" aria-label="Next"><i class="fas fa-chevron-right"></i></button></li></ul>';
+            pagination.innerHTML = items;
+        }
+
+        function updateUserReport() {
+            var searchValue = searchInput.value.trim().toLowerCase();
+            var regionValue = regionSelect.value;
+            var designationValue = designationSelect.value;
+            var filteredRows = allUserReportRows.filter(function (user) {
+                var searchableValue = [
+                    user.user_name, user.user_id, user.department, user.division
+                ].join(' ').toLowerCase();
+                return (!searchValue || searchableValue.indexOf(searchValue) !== -1) &&
+                    (!regionValue || String(user.region || '').trim() === regionValue) &&
+                    (!designationValue || String(user.designation || '').trim() === designationValue);
+            });
+
+            filteredRows.sort(function (first, second) {
+                if (sortSelect.value === 'name') {
+                    return String(first.user_name || '').localeCompare(String(second.user_name || ''));
+                }
+                return (Number(second.total_activities) || 0) - (Number(first.total_activities) || 0);
+            });
+
+            var pageSize = Number(pageSizeSelect.value) || 10;
+            var totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+            currentUserReportPage = Math.min(currentUserReportPage, totalPages);
+            var firstRowIndex = (currentUserReportPage - 1) * pageSize;
+            var pagedRows = filteredRows.slice(firstRowIndex, firstRowIndex + pageSize);
+
+            renderUserReportCards(pagedRows);
+            renderUserReportPagination(filteredRows.length, pageSize);
+            resultCount.textContent = filteredRows.length
+                ? 'Showing ' + (firstRowIndex + 1) + '–' + (firstRowIndex + pagedRows.length) +
+                    ' of ' + filteredRows.length + ' users'
+                : 'Showing 0 users';
+            emptyState.classList.toggle('d-none', filteredRows.length !== 0);
+        }
+
+        function loadUserReport(forceReload) {
+            var startDateValue = document.getElementById('start_date').value || document.getElementById('datefrom').value;
+            var endDateValue = document.getElementById('end_date').value || document.getElementById('dateto').value;
+            var requestedRange = startDateValue + '|' + endDateValue;
+
+            if (!startDateValue || !endDateValue) {
+                statusBox.className = 'alert alert-warning d-flex align-items-center mb-4';
+                statusBox.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i><div>Select both dates under Activity Overview first.</div>';
+                return;
+            }
+            if (!forceReload && loadedDateRange === requestedRange && allUserReportRows.length) {
+                updateUserReport();
+                return;
+            }
+
+            statusBox.className = 'alert alert-info d-flex align-items-center mb-4';
+            statusBox.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span><div>Loading user activity report...</div>';
+            reportList.innerHTML = '';
+            pagination.innerHTML = '';
+            resultCount.textContent = 'Loading users...';
+            emptyState.classList.add('d-none');
+
+            $.ajax({
+                type: 'POST',
+                url: 'audit_reporting',
+                data: {
+                    request_type: 'get_advanced_activity_logs_summary_by_user',
+                    start_date_ar: startDateValue,
+                    end_date_ar: endDateValue
+                },
+                cache: false,
+                success: function (response) {
+                    try {
+                        var result = typeof response === 'string' ? JSON.parse(response) : response;
+                        if (!result || result.success !== true) {
+                            throw new Error((result && result.message) || 'Unable to load the report.');
+                        }
+
+                        allUserReportRows = Array.isArray(result.data) ? result.data : [];
+                        loadedDateRange = requestedRange;
+                        currentUserReportPage = 1;
+                        populateUserReportFilter(regionSelect, 'All regions',
+                            allUserReportRows.map(function (user) { return String(user.region || '').trim(); }));
+                        populateUserReportFilter(designationSelect, 'All designations',
+                            allUserReportRows.map(function (user) { return String(user.designation || '').trim(); }));
+                        statusBox.className = 'alert alert-success d-flex align-items-center mb-4';
+                        statusBox.innerHTML = '<i class="fas fa-check-circle me-2"></i><div>Report loaded for ' +
+                            escapeUserReportValue(startDateValue) + ' to ' + escapeUserReportValue(endDateValue) + '.</div>';
+                        updateUserReport();
+                    } catch (error) {
+                        allUserReportRows = [];
+                        reportList.innerHTML = '';
+                        pagination.innerHTML = '';
+                        resultCount.textContent = 'No users loaded';
+                        statusBox.className = 'alert alert-danger d-flex align-items-center mb-4';
+                        statusBox.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i><div>' +
+                            escapeUserReportValue(error.message) + '</div>';
+                    }
+                },
+                error: function () {
+                    allUserReportRows = [];
+                    reportList.innerHTML = '';
+                    pagination.innerHTML = '';
+                    resultCount.textContent = 'No users loaded';
+                    statusBox.className = 'alert alert-danger d-flex align-items-center mb-4';
+                    statusBox.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i><div>Could not load the user activity report. Please try again.</div>';
+                }
+            });
+        }
+
+        [searchInput, regionSelect, designationSelect, sortSelect, pageSizeSelect].forEach(function (control) {
+            control.addEventListener(control === searchInput ? 'input' : 'change', function () {
+                currentUserReportPage = 1;
+                updateUserReport();
+            });
+        });
+
+        clearButton.addEventListener('click', function () {
+            searchInput.value = '';
+            regionSelect.value = '';
+            designationSelect.value = '';
+            sortSelect.value = 'activity';
+            pageSizeSelect.value = '10';
+            currentUserReportPage = 1;
+            updateUserReport();
+        });
+
+        pagination.addEventListener('click', function (event) {
+            var pageButton = event.target.closest('[data-page]');
+            if (!pageButton || pageButton.closest('.page-item').classList.contains('disabled')) return;
+            currentUserReportPage = Number(pageButton.dataset.page) || 1;
+            updateUserReport();
+            document.getElementById('report-by-user-pane').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        document.getElementById('report-by-user-tab').addEventListener('shown.bs.tab', function () {
+            loadUserReport(false);
+        });
+
+        document.getElementById('dateto').addEventListener('change', function () {
+            if (document.getElementById('report-by-user-tab').classList.contains('active')) {
+                loadUserReport(true);
+            }
         });
     });
 </script>

@@ -260,6 +260,26 @@ public String get_audit_dashboard_stats_admin(String web_service_url, String web
 
     
 
+	  public String get_advanced_activity_logs_summary_by_user(String web_service_url, String web_service_api_key, String json_request) {
+		//System.out.println(json_request);
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client
+					.resource(web_service_url + "audit_report_dashboard/get_advanced_activity_logs_summary_by_user");
+			ClientResponse response = webResource.accept("application/json").header("x-api-key", web_service_api_key)
+					.post(ClientResponse.class, json_request);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return output;
+	}
+
 
 
 

@@ -604,6 +604,8 @@ $(document).off('click', '.view-activity-details').on('click', '.view-activity-d
             try {
                 const json_result = typeof response === "string" ? JSON.parse(response) : response;
 
+                // console.log(json_result);
+
                 if (json_result.success && json_result.data && json_result.data.length > 0) {
                     const record = json_result.data[0];
                     const logDate = record.log_date;
@@ -2482,18 +2484,59 @@ function AddUserActivityDetails(originalData, changesData, logDate) {
 
 function AddParcelDisplayActivityDetails(originalData, changesData, logDate) {
     $('#logDateDisplay_2').text(new Date(logDate).toLocaleString());
-    $('#AddParcelchangesRequested').html(AddParcelDetailsDisplay(changesData));
-    
+
+    // Audit payloads have been returned both as an object and as a one-item
+    // array. Normalise them before rendering so a malformed spatial value does
+    // not prevent the modal from opening.
+    const parcelChanges = Array.isArray(changesData) ? changesData[0] : changesData;
+
+    const parcelModalElement = document.getElementById('addParcelDetailsModal');
+    const parentModalElement = document.getElementById('USERactivityLogsModal');
+
+    if (!parcelModalElement) {
+        console.error('Add Parcel details modal was not found in the page.');
+        return;
+    }
+
+    const showParcelModal = () => {
+        if (window.bootstrap?.Modal) {
+            bootstrap.Modal.getOrCreateInstance(parcelModalElement).show();
+        } else {
+            $(parcelModalElement).modal('show');
+        }
+    };
+
+    // Bootstrap supports one active modal at a time. Details are launched from
+    // USERactivityLogsModal, so wait for that modal to finish closing first.
+    if (parentModalElement?.classList.contains('show') && window.bootstrap?.Modal) {
+        parentModalElement.addEventListener('hidden.bs.modal', showParcelModal, { once: true });
+        bootstrap.Modal.getOrCreateInstance(parentModalElement).hide();
+    } else {
+        showParcelModal();
+    }
+
+    try {
+        $('#AddParcelchangesRequested').html(AddParcelDetailsDisplay(parcelChanges, originalData));
+    } catch (error) {
+        console.error('Unable to render Add Parcel audit details:', error);
+        $('#AddParcelchangesRequested').html(
+            '<div class="alert alert-warning mb-0">Parcel details could not be displayed.</div>'
+        );
+    }
+
     // Use the correct map container and status elements
     $('#addParcelMapStatus').html('<i class="fas fa-map-marker-alt"></i> Drawing polygons...');
-    
-    $('#addParcelDetailsModal').modal('show');
-    
-    setTimeout(() => {
-        // Pass both parameters (originalData will be null for new parcels)
-        drawPolygonOnMap(originalData?.data?.geom, changesData?.wkt_polgon, 'addParcelActivityMap');
-        $('#addParcelMapStatus').html('<i class="fas fa-check text-success"></i> Map loaded successfully');
-    }, 500);
+
+    $(parcelModalElement).one('shown.bs.modal.addParcelMap', () => {
+        try {
+            // Pass both parameters (originalData will be null for new parcels)
+            drawPolygonOnMap(originalData?.data?.geom, parcelChanges?.wkt_polgon, 'addParcelActivityMap');
+            $('#addParcelMapStatus').html('<i class="fas fa-check text-success"></i> Map loaded successfully');
+        } catch (error) {
+            console.error('Unable to render Add Parcel audit map:', error);
+            $('#addParcelMapStatus').html('<i class="fas fa-exclamation-triangle text-warning"></i> Map unavailable');
+        }
+    });
 }
 
 
@@ -2570,8 +2613,8 @@ function AddParcelDetailsDisplay(changesData, originalData) {
                     <div class="col-12 mb-2">
                         <label class="text-muted small mb-1">WKT Polygon</label>
                         <div class="technical-display p-2 bg-dark text-light rounded small font-monospace">
-                            ${changesData.wkt_polgon ? 
-                                changesData.wkt_polgon.substring(0, 80) + '...' : 
+                            ${changesData.wkt_polgon ?
+                                String(changesData.wkt_polgon).substring(0, 80) + '...' :
                                 'No spatial data provided'}
                         </div>
                     </div>
