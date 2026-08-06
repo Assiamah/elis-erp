@@ -1,87 +1,84 @@
 $(document).ready(function() {
-	
-	
-	
-	
-	$('.set_as_recorded').on('click', function(e){
-			e.preventDefault();
-			let ref_number = $(this).data('ref_number');
-			 bootbox.confirm({
-	     		    title: "Action confrimation!",
-	     		    message: "Are you sure you want to set this Payment as Updated? this is irreverable",
-	     		    buttons: {
-	     		        cancel: {
-	     		            label: '<i class="fa fa-times"></i> Cancel'
-	     		        },
-	     		        confirm: {
-	     		            label: '<i class="fa fa-check"></i> Confirm'
-	     		        }
-	     		    },
-	     		    callback: function (result) {
-	     		    	if(result){
-	         	    		
-	         	     	    
-	         	     		 $.ajax({
-	         	 				 type: "POST",
-	         	 				 url: "Case_Management_Serv",
-	         	 				 data: {
-	         	 	                	request_type: 'account_report_on_ground_rent_bill_update',
-	         	 	                	ref_number: ref_number 
-	         	 				 	   },
-	         	 				 cache: false,
-	         	 				 
-	         	 				 success: function(jobdetails) {
-	         	 					 
-	         	 					//var json_p = JSON.parse(jobdetails);
-	         	 					if( jobdetails.includes("Success")){
-	         	 						$.notify({
-	        			                    message: '<i class="fas fa-check  fa-3x fa-fw"></i><span class="text-bold">Success! Payment set as Updated </span>',
-	        			                }, {
-	        			                    type: 'success'
-	        			                });
-	        				        	
+    $(document).on('click', '.set_as_recorded', function(e) {
+        e.preventDefault();
 
-	         	 					}else{
-	         	 						$.notify({
-	        			                    message: '<i class="fas fa-exclamation  fa-3x fa-fw"></i><span class="text-bold">Sorry! Somthing went wrong </span>',
-	        			                }, {
-	        			                    type: 'danger'
-	        			                });
-	        				        	
-	         	 					}
-	         	 					
-	         	 				
-	         	 
-	         	 				 }
-	         	 				
-	         	 				});
-	         	     		 //return false;
-	         	    	
-	         	    	}
-	     		    }
-	     		});
-	     	 	
-	
-	});
+        const $button = $(this);
+        const refNumber = $button.data('ref_number');
 
-	
-	
-	
-	
-	 $("#tbl_transactions_result")
-	.DataTable({
-		dom: 'Bfrtip',						
-        buttons: [
-        	'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-	});
-	
-	
-	
-	
-	
-					
+        Swal.fire({
+            title: 'Set payment as updated?',
+            text: 'Are you sure you want to set this payment as updated? This action cannot be reversed.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa fa-check"></i> Confirm',
+            cancelButtonText: '<i class="fa fa-times"></i> Cancel',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            reverseButtons: true
+        }).then(function(result) {
+            if (!result.isConfirmed) {
+                return;
+            }
 
+            $.ajax({
+                type: 'POST',
+                url: 'Case_Management_Serv',
+                data: {
+                    request_type: 'account_report_on_ground_rent_bill_update',
+                    ref_number: refNumber
+                },
+                cache: false,
+                success: function(jobdetails) {
+                    if (String(jobdetails).includes('Success')) {
+                        const $row = $button.closest('tr');
 
-// ------ end of $(doc).ready
+                        $row.find('.status-badge')
+                            .removeClass('bg-danger')
+                            .addClass('bg-success')
+                            .text('Recorded');
+                        $button.closest('td').empty();
+
+                        if ($.fn.DataTable.isDataTable('#tbl_transactions_result')) {
+                            $('#tbl_transactions_result')
+                                .DataTable()
+                                .row($row)
+                                .invalidate('dom')
+                                .draw(false);
+                        }
+
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Payment set as updated successfully.',
+                            icon: 'success',
+                            confirmButtonColor: '#198754'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Update failed',
+                            text: 'Sorry, something went wrong while updating the payment.',
+                            icon: 'error',
+                            confirmButtonColor: '#dc3545'
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        title: 'Request failed',
+                        text: 'The payment could not be updated. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            });
+        });
+    });
+
+    if (!$.fn.DataTable.isDataTable('#tbl_transactions_result')) {
+        $('#tbl_transactions_result').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    }
 });

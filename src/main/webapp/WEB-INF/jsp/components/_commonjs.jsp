@@ -173,7 +173,7 @@ ${page_name == "reports" ? "<script src='js-pages/reports.js'></script>" : ""}
 
 ${page_name == "reports" ? "<script src='js-pages/apps_report.js'></script>" : ""}
 
-
+${(page_name == "account-reports-grand-rent")  ? "<script src='js-pages/account_reports_rent.js?v=20260806-2'></script> " : ""}
 ${page_name == "account-reports" ? "<script src='js-pages/audit_report.js'></script>" : ""}
 
 ${page_name == "account-reports" ? "<script src='js-pages/account_reports.js'></script>" : ""}
