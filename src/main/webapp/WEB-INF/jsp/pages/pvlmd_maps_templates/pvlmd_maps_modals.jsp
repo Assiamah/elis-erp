@@ -134,7 +134,7 @@
 
             <div class="modal-footer bg-white border-top">
 				<button type="button" class="btn btn-danger" onclick="initiateDeleteParcel()">
-                    <i class="bi bi-trash me-1"></i>Delete
+                    <i class="bi bi-trash me-1"></i>Archive
                 </button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <i class="bi bi-x-circle me-1"></i>Close

@@ -145,6 +145,7 @@
 						<option value="No Payment Details">No Payment Details</option>
 						<option value="Re-assessment">Re-assessment</option>
 						<option value="Completed">Completed</option>
+						<option value="Query">Query</option>
 						<option value="Other">Other</option>
 						</select>
 					</div>

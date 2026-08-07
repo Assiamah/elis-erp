@@ -159,7 +159,8 @@
                         <li>
                             <ul class="list-unstyled mb-0 sub-list">
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center alternate-link" href="javascript:void(0);"><i class="ti ti-lifebuoy me-2 fs-18"></i>Support</a>
+                                    <!-- <a class="dropdown-item d-flex align-items-center alternate-link" href="javascript:void(0);"><i class="ti ti-lifebuoy me-2 fs-18"></i>Support</a> -->
+                                      <a class="dropdown-item d-flex align-items-center" target="_blank" href="https://helpdesk.lc.gov.gh"><i class="ti ti-lifebuoy me-2 fs-18"></i>Support</a>
                                 </li>
                             </ul>        
                         </li>

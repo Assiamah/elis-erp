@@ -217,6 +217,11 @@ public class app_modal_fills_serv {
 				String modified_by = (String) session.getAttribute("fullname");
 				String modified_by_id = (String) session.getAttribute("userid");
 
+				if (modified_by_id == null || modified_by_id.trim().isEmpty()) {
+					//System.out.println("Warning: userid is null or empty. Returning null.");
+					return "session expired";
+				}
+
 				obj.put("qid", qid);
 				obj.put("job_number", job_number);
 
