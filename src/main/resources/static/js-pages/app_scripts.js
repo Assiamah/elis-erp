@@ -5266,6 +5266,19 @@ $('#form_add_query').on('submit', function (e) {
                 cache: false,
                 success: function (jobdetails) {
                     // Show success message
+
+                    if(jobdetails == "session expired") {
+
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Sorry! Your session has expired, logout and login again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+
+                        return;
+                     }
+                     
                     Swal.fire({
                         title: 'Success!',
                         text: 'Query has been submitted successfully',

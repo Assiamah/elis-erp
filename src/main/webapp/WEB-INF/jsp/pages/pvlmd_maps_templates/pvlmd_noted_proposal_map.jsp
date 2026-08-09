@@ -115,7 +115,7 @@
                             <button type="button" class="btn btn-outline-primary btn-sm w-100" id="pvlmd_btn_visualise_wkt" data-bs-toggle="tooltip" title="Visualise Polygon">
                                 <i class="fas fa-map me-1"></i> Visualise Polygon
                             </button>
-                            <button type="button" class="btn btn-warning btn-sm w-100 mt-2 d-none" id="pvlmd_btn_request_add_existing_parcel" data-bs-toggle="tooltip" title="Request For Deletion">
+                            <button type="button" class="btn btn-warning btn-sm w-100 mt-2 d-none" id="pvlmd_btn_request_add_existing_parcel" data-bs-toggle="tooltip" title="Request For Add Existing Parcel">
                                 <i class="fas fa-paper-plane me-1"></i> Request For Add Existing Parcel
                             </button>
                         </div>
