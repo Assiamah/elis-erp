@@ -8,145 +8,400 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
 
-<div class="modal fade effect-scale modal-blur" tabindex="-1"
-     id="pvlmdparcelinformation" role="dialog"
-     aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+<!-- ============================================================ -->
+<!-- MODAL: PVLMD PARCEL INFORMATION - 2 COLUMN SUMMARY           -->
+<!-- ============================================================ -->
+<div class="modal fade effect-scale modal-blur" id="pvlmdparcelinformation" tabindex="-1" aria-labelledby="pvlmdparcelinformationLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0 shadow-lg overflow-hidden">
             <div class="modal-header bg-primary text-white align-items-center">
-                <h5 class="modal-title text-white mb-0">
-                    <i class="fas fa-info-circle me-2"></i>PVLMD Parcel Information
-                </h5>
+                <div>
+                    <h5 class="modal-title text-white mb-0" id="pvlmdparcelinformationLabel">
+                        <i class="fas fa-info-circle me-2"></i>PVLMD Parcel Information
+                    </h5>
+                    <small class="text-white-50">View and manage parcel details</small>
+                </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-4">
                 <input id="pvlmd_gid" name="pvlmd_gid" type="hidden" value="">
 
-                <div class="container-fluid">
-                    <!-- Top Section: Reference, NT, File Number -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">Reference Number</label>
-                                <p class="fs-5 fw-semibold mb-0 text-primary" id="pvlmd_reference_number">-</p>
+                <div class="row g-4">
+                    <!-- LEFT COLUMN: Parcel Details + Tables -->
+                    <div class="col-lg-6">
+                        <!-- ========================================= -->
+                        <!-- SECTION 1: Parcel Details - Display Only  -->
+                        <!-- ========================================= -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-box me-2"></i>Parcel Details</h6>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">NT Number</label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_nt_number">-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">File Number</label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_file_number">-</p>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <!-- Row 1: Reference Number & NT Number -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Reference Number</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_reference_number">-</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">NT Number</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_nt_number">-</p>
+                                    </div>
 
-                    <!-- Middle Section: Sheet, Locality, Plot -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">Sheet Number</label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_sheet_number">-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">Locality</label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_locality">-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">Plot Number</label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_plot_number">-</p>
-                            </div>
-                        </div>
-                    </div>
+                                    <!-- Row 2: File Number & Sheet Number -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">File Number</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_file_number">-</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Sheet Number</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_sheet_number">-</p>
+                                    </div>
 
-                    <!-- Remarks Section -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-12">
-                            <div class="info-card p-3 bg-light rounded-3">
-                                <label class="text-muted small text-uppercase fw-bold">Remarks</label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_remarks">-</p>
-                            </div>
-                        </div>
-                    </div>
+                                    <!-- Row 3: Locality & Plot Number -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Locality</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_locality">-</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Plot Number</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_plot_number">-</p>
+                                    </div>
 
-                    <!-- Last Update Section -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">
-                                    <i class="fas fa-user me-1"></i>Last Update By
-                                </label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_modified_by">-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="info-card p-3 bg-light rounded-3 h-100">
-                                <label class="text-muted small text-uppercase fw-bold">
-                                    <i class="fas fa-calendar me-1"></i>Date Last Updated
-                                </label>
-                                <p class="fs-5 fw-semibold mb-0" id="pvlmd_modified_date">-</p>
-                            </div>
-                        </div>
-                    </div>
+                                    <!-- Row 4: Remarks (full width) -->
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small fw-bold">Remarks</label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_remarks">-</p>
+                                    </div>
 
-                    <!-- Transactions Table -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-12">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-light py-2">
-                                    <h6 class="mb-0 fw-bold">
-                                        <i class="fas fa-exchange-alt me-2 text-primary"></i>Transactions
-                                    </h6>
-                                </div>
-                                <div class="card-body p-2">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover align-middle table-sm mb-0"
-                                               id="pvlmd_transaction_dataTable" width="100%">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Grantor</th>
-                                                    <th>Reference Number</th>
-                                                    <th>Instrument Type</th>
-                                                    <th class="text-center">Details</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+                                    <!-- Row 5: Last Update By & Date Last Updated -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">
+                                            <i class="fas fa-user me-1"></i>Last Update By
+                                        </label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_modified_by">-</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">
+                                            <i class="fas fa-calendar me-1"></i>Date Last Updated
+                                        </label>
+                                        <p class="fw-semibold mb-0" id="pvlmd_modified_date">-</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- ========================================= -->
+                        <!-- SECTION 2: Transactions Table            -->
+                        <!-- ========================================= -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0"><i class="fas fa-exchange-alt me-2 text-primary"></i>Transactions</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm" id="pvlmd_transaction_dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Grantor</th>
+                                                <th>Reference Number</th>
+                                                <th>Instrument Type</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Filled dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    
+                    <!-- ============================================= -->
+                    <!-- RIGHT COLUMN: Summary Details Panel           -->
+                    <!-- 2-COLUMN LAYOUT                              -->
+                    <!-- ============================================= -->
+                    <div class="col-lg-6">
+                        <!-- Transaction Summary Card -->
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Transaction Summary</h6>
+                            </div>
+                            <div class="card-body" style="max-height: 600px; overflow-y: auto;">
+                                <!-- Selected Transaction Details -->
+                                <div id="pvlmd_selected_transaction_panel">
+                                    <div class="alert alert-info">
+                                        <small><i class="fas fa-hand-pointer me-1"></i> Click the <strong>Details</strong> button on any transaction to view summary here.</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Hidden fields for selected transaction -->
+                                <input type="hidden" id="pvlmd_selected_transaction_gid">
+                                
+                                <!-- Summary Fields - 2 COLUMN LAYOUT -->
+                                <div id="pvlmd_summary_fields" style="display: none;">
+                                    <div class="row g-2">
+                                        
+                                        <!-- Column 1 -->
+                                        <div class="col-6">
+                                            <!-- Section: Basic Information -->
+                                            <div class="bg-light p-1 rounded mb-1">
+                                                <small class="text-muted fw-bold">BASIC INFO</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">T-ID</span><br>
+                                                <span class="fw-semibold small" id="pvlmd_summary_t_id">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Reference</span><br>
+                                                <span class="fw-semibold small text-success" id="pvlmd_summary_reference">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">File No</span><br>
+                                                <span class="fw-semibold small" id="pvlmd_summary_file">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Property No</span><br>
+                                                <span class="fw-semibold small" id="pvlmd_summary_property">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">NT Number</span><br>
+                                                <span class="fw-semibold small" id="pvlmd_summary_nt">-</span>
+                                            </div>
+                                            
+                                            <!-- Section: Document Numbers -->
+                                            <div class="bg-light p-1 rounded mb-1 mt-2">
+                                                <small class="text-muted fw-bold">DOCUMENTS</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Mutation</span><br>
+                                                <span class="small" id="pvlmd_summary_mutation">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Deed</span><br>
+                                                <span class="small" id="pvlmd_summary_deed">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Serial</span><br>
+                                                <span class="small" id="pvlmd_summary_serial">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Sheet</span><br>
+                                                <span class="small" id="pvlmd_summary_sheet">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Plan</span><br>
+                                                <span class="small" id="pvlmd_summary_plan">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Plot</span><br>
+                                                <span class="small" id="pvlmd_summary_plot">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">LVB</span><br>
+                                                <span class="small" id="pvlmd_summary_lvb">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">DOC</span><br>
+                                                <span class="small" id="pvlmd_summary_doc">-</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Column 2 -->
+                                        <div class="col-6">
+                                            <!-- Section: Parties -->
+                                            <div class="bg-light p-1 rounded mb-1">
+                                                <small class="text-muted fw-bold">PARTIES</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small text-primary">Plaintiff</span><br>
+                                                <span class="fw-semibold small" id="pvlmd_summary_party1">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Tel</span><br>
+                                                <span class="small" id="pvlmd_summary_party1_tel">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Email</span><br>
+                                                <span class="small" id="pvlmd_summary_party1_email">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small text-danger">Defendant</span><br>
+                                                <span class="fw-semibold small" id="pvlmd_summary_party2">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Tel</span><br>
+                                                <span class="small" id="pvlmd_summary_party2_tel">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Email</span><br>
+                                                <span class="small" id="pvlmd_summary_party2_email">-</span>
+                                            </div>
+                                            
+                                            <!-- Section: Instrument -->
+                                            <div class="bg-light p-1 rounded mb-1 mt-2">
+                                                <small class="text-muted fw-bold">INSTRUMENT</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Type</span><br>
+                                                <span class="badge bg-warning small" id="pvlmd_summary_instrument_type">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Date</span><br>
+                                                <span class="small" id="pvlmd_summary_instrument_date">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Term</span><br>
+                                                <span class="small" id="pvlmd_summary_term">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Commencement</span><br>
+                                                <span class="small" id="pvlmd_summary_commencement">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Purpose</span><br>
+                                                <span class="small" id="pvlmd_summary_purpose">-</span>
+                                            </div>
+                                            
+                                            <!-- Section: Financial -->
+                                            <div class="bg-light p-1 rounded mb-1 mt-2">
+                                                <small class="text-muted fw-bold">FINANCIAL</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Consideration</span><br>
+                                                <span class="fw-bold small text-success" id="pvlmd_summary_consideration">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Currency</span><br>
+                                                <span class="small" id="pvlmd_summary_currency">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Premium</span><br>
+                                                <span class="fw-bold small text-primary" id="pvlmd_summary_premium">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Rent</span><br>
+                                                <span class="small" id="pvlmd_summary_rent">-</span>
+                                            </div>
+                                            
+                                            <!-- Section: Additional -->
+                                            <div class="bg-light p-1 rounded mb-1 mt-2">
+                                                <small class="text-muted fw-bold">ADDITIONAL</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Status</span><br>
+                                                <span class="badge bg-info small" id="pvlmd_summary_compensation">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Suit No</span><br>
+                                                <span class="small" id="pvlmd_summary_suit">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Floor</span><br>
+                                                <span class="small" id="pvlmd_summary_floor">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Apartment</span><br>
+                                                <span class="small" id="pvlmd_summary_apartment">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Submission</span><br>
+                                                <span class="small" id="pvlmd_summary_submission">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Unit</span><br>
+                                                <span class="small" id="pvlmd_summary_unit">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Judgement</span><br>
+                                                <span class="small" id="pvlmd_summary_judgement">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Remarks</span><br>
+                                                <span class="small" id="pvlmd_summary_remarks">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Modified By</span><br>
+                                                <span class="small" id="pvlmd_summary_modified_by">-</span>
+                                            </div>
+                                            
+                                            <div>
+                                                <span class="text-muted small">Modified Date</span><br>
+                                                <span class="small" id="pvlmd_summary_modified_date">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-grid gap-2 mt-2">
+                                    <button class="btn btn-outline-info btn-sm" id="pvlmd_btn_clear_summary">
+                                        <i class="fas fa-eraser me-1"></i>Clear Summary
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm" id="pvlmd_btn_print_summary">
+                                        <i class="fas fa-print me-1"></i>Print Summary
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="modal-footer bg-white border-top">
-				<button type="button" class="btn btn-danger" onclick="initiateDeleteParcel()">
+                <button type="button" class="btn btn-danger" onclick="initiateDeleteParcel()">
                     <i class="bi bi-trash me-1"></i>Delete
                 </button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <i class="bi bi-x-circle me-1"></i>Close
                 </button>
-                <input type="hidden" id="lrd_ps_fid" name="lrd_ps_fid">
+                <input type="hidden" id="pvlmd_ps_fid" name="pvlmd_ps_fid">
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 <div class="modal fade" id="transactionDetailsModal" tabindex="-1" aria-labelledby="transactionDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

@@ -732,6 +732,8 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
 						}
 					}
 
+                    clearPVLMDSummaryPanel();
+
 					// Populate the info cards with non-editable values
 					setText('pvlmd_gid', (firstFeature.id || '').split('.')[1] || '');
 					setText('pvlmd_reference_number', props.reference_number);
@@ -744,11 +746,10 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
 					setText('pvlmd_modified_by', props.plotted_by || props.modified_by || '');
 					setText('pvlmd_modified_date', props.plotting_date || props.modified_date || '');
 
-				
-					    // Load transactions
-   
-	
-						loadTransactions(props.reference_number, (firstFeature.id || '').split('.')[1] || '');
+				loadAllPVLMDData((firstFeature.id || '').split('.')[1] || '', props.reference_number);
+					
+
+
                     }
                 },
                 failure: function(errormsg) {
@@ -759,98 +760,287 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
     }
 });
 
-// Updated loadTransactions function to handle table data
-function loadTransactions(referenceNumber, parcelUuid) {
-    var table = $('#pvlmd_transaction_dataTable');
-    table.find("tbody tr").remove();
-
-    $.ajax({
-        type: "POST",
-        url: 'Maps',
-        data: {
-            request_type: 'pvlmd_transaction_select_by_reference_number_main',
-            reference_number: referenceNumber,
-            gid_fk: parcelUuid
-        },
-        cache: false,
-        success: function(serviceresponse) {
-// Process transactions and add to table
-if (serviceresponse && serviceresponse !== '' && serviceresponse !== 'null' && serviceresponse !== 'undefined') {
-    try {
-        var json_p = JSON.parse(serviceresponse);
-        console.log(json_p);
-
-		$('#pvlmd_bl_wkt_polygon').val(json_p.wkt);
-		pvlmd_lc_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(json_p.wkt)}));
-		//pvlmd_lc_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.GeoJSON()).readFeatures(json_p.parcels)}));
-
-		view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
-		pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
-
-
-        if (json_p && json_p.data) {
-            if (Array.isArray(json_p.data) && json_p.data.length > 0) {
-                json_p.data.forEach(function(item) {
-                    table.append(
-							`<tr>
-								<td>${item.party2_defendant || '-'}</td>
-								<td>${item.party1_plaintiff || '-'}</td>
-								<td>${item.reference_number || '-'}</td>
-								<td>${item.instrument_type || '-'}</td>
-								<td class="text-center">
-									<button class="btn btn-sm btn-info" 
-										data-bs-toggle="modal" 
-										data-bs-target="#addpvlmdtransactionlong" 
-										data-t_id="${item.t_id || ''}">
-										<i class="fas fa-eye"></i>
-									</button>
-								</td>
-							</tr>`
-						);
-                });
-            } else {
-                table.append(
-                    `<tr>
-                        <td colspan="5" class="text-center text-muted py-3">
-                            <i class="fas fa-inbox me-2"></i>No transactions found
-                        </td>
-                    </tr>`
-                );
+// ================================================================
+// FUNCTION TO UPDATE PVLMD SUMMARY PANEL
+// ================================================================
+function updatePVLMDSummaryPanel(data) {
+    // Hide the info alert and show the summary fields
+    $('#pvlmd_selected_transaction_panel .alert-info').hide();
+    $('#pvlmd_summary_fields').show();
+    
+    // Update all summary fields
+    $('#pvlmd_summary_gid').text(data.gid || '-');
+    $('#pvlmd_summary_reference').text(data.reference_number || '-');
+    $('#pvlmd_summary_file').text(data.file_number || '-');
+    $('#pvlmd_summary_property').text(data.property_number || '-');
+    $('#pvlmd_summary_nt').text(data.nt_number || '-');
+    $('#pvlmd_summary_mutation').text(data.mutation_number || '-');
+    $('#pvlmd_summary_deed').text(data.deed_number || '-');
+    $('#pvlmd_summary_serial').text(data.serial_number || '-');
+    $('#pvlmd_summary_sheet').text(data.sheet_number || '-');
+    $('#pvlmd_summary_plan').text(data.plan_number || '-');
+    $('#pvlmd_summary_plot').text(data.plot_number || '-');
+    $('#pvlmd_summary_lvb').text(data.lvb_number || '-');
+    $('#pvlmd_summary_doc').text(data.doc_number || '-');
+    $('#pvlmd_summary_party1').text(data.party1_plaintiff || '-');
+    $('#pvlmd_summary_party2').text(data.party2_defendant || '-');
+    $('#pvlmd_summary_instrument_type').text(data.instrument_type || '-');
+    $('#pvlmd_summary_instrument_date').text(data.instrument_date || '-');
+    $('#pvlmd_summary_term').text(data.term || '-');
+    $('#pvlmd_summary_commencement').text(data.commencement_date || '-');
+    $('#pvlmd_summary_purpose').text(data.purpose || '-');
+    $('#pvlmd_summary_consideration').text(data.consideration || '-');
+    $('#pvlmd_summary_currency').text(data.consideration_currency || '-');
+    $('#pvlmd_summary_premium').text(data.premium || '-');
+    $('#pvlmd_summary_rent').text(data.rent || '-');
+    $('#pvlmd_summary_compensation').text(data.compensation_status || '-');
+    $('#pvlmd_summary_suit').text(data.suit_number || '-');
+    $('#pvlmd_summary_remarks').text(data.remarks || '-');
+    $('#pvlmd_summary_modified_by').text(data.modified_by || '-');
+    $('#pvlmd_summary_modified_date').text(data.modified_date || '-');
+    
+    // Update hidden field
+    $('#pvlmd_selected_transaction_gid').val(data.t_id || '');
+    
+    // Highlight the selected row in the table
+    $('.pvlmd-table-row-selected').removeClass('pvlmd-table-row-selected table-primary');
+    if (data.t_id) {
+        $('#pvlmd_transaction_dataTable tbody tr').each(function() {
+            if ($(this).find('.pvlmd-btn-details').data('t_id') == data.t_id) {
+                $(this).addClass('pvlmd-table-row-selected table-primary');
             }
-        } else {
-            console.warn('Response missing data property:', json_p);
-            table.append(
-                `<tr>
-                    <td colspan="5" class="text-center text-muted py-3">
-                        <i class="fas fa-inbox me-2"></i>No transactions available
-                    </td>
-                </tr>`
-            );
-        }
-    } catch (e) {
-        console.error('JSON Parse Error:', e);
-        console.error('Raw response:', serviceresponse);
-        table.append(
-            `<tr>
-                <td colspan="5" class="text-center text-danger py-3">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Error loading transactions
-                </td>
-            </tr>`
-        );
+        });
     }
-} else {
-    console.warn('Empty or invalid response received');
-    table.append(
-        `<tr>
-            <td colspan="5" class="text-center text-muted py-3">
-                <i class="fas fa-inbox me-2"></i>No transactions available
-            </td>
-        </tr>`
-    );
+    
+    console.log('PVLMD Summary panel updated for T_ID:', data.t_id);
 }
-		}
-    });
+
+// ================================================================
+// FUNCTION TO CLEAR PVLMD SUMMARY PANEL
+// ================================================================
+function clearPVLMDSummaryPanel() {
+    $('#pvlmd_summary_fields').hide();
+    $('#pvlmd_selected_transaction_panel .alert-info').show();
+    
+    // Clear all summary fields
+    $('#pvlmd_summary_gid').text('-');
+    $('#pvlmd_summary_reference').text('-');
+    $('#pvlmd_summary_file').text('-');
+    $('#pvlmd_summary_property').text('-');
+    $('#pvlmd_summary_nt').text('-');
+    $('#pvlmd_summary_mutation').text('-');
+    $('#pvlmd_summary_deed').text('-');
+    $('#pvlmd_summary_serial').text('-');
+    $('#pvlmd_summary_sheet').text('-');
+    $('#pvlmd_summary_plan').text('-');
+    $('#pvlmd_summary_plot').text('-');
+    $('#pvlmd_summary_lvb').text('-');
+    $('#pvlmd_summary_doc').text('-');
+    $('#pvlmd_summary_party1').text('-');
+    $('#pvlmd_summary_party2').text('-');
+    $('#pvlmd_summary_instrument_type').text('-');
+    $('#pvlmd_summary_instrument_date').text('-');
+    $('#pvlmd_summary_term').text('-');
+    $('#pvlmd_summary_commencement').text('-');
+    $('#pvlmd_summary_purpose').text('-');
+    $('#pvlmd_summary_consideration').text('-');
+    $('#pvlmd_summary_currency').text('-');
+    $('#pvlmd_summary_premium').text('-');
+    $('#pvlmd_summary_rent').text('-');
+    $('#pvlmd_summary_compensation').text('-');
+    $('#pvlmd_summary_suit').text('-');
+    $('#pvlmd_summary_remarks').text('-');
+    $('#pvlmd_summary_modified_by').text('-');
+    $('#pvlmd_summary_modified_date').text('-');
+    
+    $('#pvlmd_selected_transaction_gid').val('');
+    $('.pvlmd-table-row-selected').removeClass('pvlmd-table-row-selected table-primary');
+    
+    console.log('PVLMD Summary panel cleared');
 }
+
+// ================================================================
+// DETAILS BUTTON CLICK HANDLER - UPDATES PVLMD SUMMARY PANEL
+// ================================================================
+$(document).on('click', '.pvlmd-btn-details', function() {
+    // Get all data from the button
+    var data = {
+        t_id: $(this).data('t_id'),
+        reference_number: $(this).data('reference'),
+        file_number: $(this).data('file'),
+        property_number: $(this).data('property'),
+        nt_number: $(this).data('nt'),
+        mutation_number: $(this).data('mutation'),
+        deed_number: $(this).data('deed'),
+        serial_number: $(this).data('serial'),
+        sheet_number: $(this).data('sheet'),
+        plan_number: $(this).data('plan'),
+        plot_number: $(this).data('plot'),
+        lvb_number: $(this).data('lvb'),
+        doc_number: $(this).data('doc'),
+        party1_plaintiff: $(this).data('party1'),
+        party1_plaintiff_tel_no: $(this).data('party1-tel'),
+        party1_plantiff_add: $(this).data('party1-add'),
+        party1_plaintiff_email: $(this).data('party1-email'),
+        party2_defendant: $(this).data('party2'),
+        party2_defendant_tel_no: $(this).data('party2-tel'),
+        party2_defendant_email: $(this).data('party2-email'),
+        party2_defendant_add: $(this).data('party2-add'),
+        instrument_date: $(this).data('instrument-date'),
+        instrument_type: $(this).data('instrument-type'),
+        term: $(this).data('term'),
+        commencement_date: $(this).data('commencement'),
+        purpose: $(this).data('purpose'),
+        consent_date: $(this).data('consent'),
+        consideration: $(this).data('consideration'),
+        consideration_currency: $(this).data('currency'),
+        premium: $(this).data('premium'),
+        premium_currency: $(this).data('premium-currency'),
+        compensation_status: $(this).data('compensation'),
+        suit_number: $(this).data('suit'),
+        floor_level: $(this).data('floor'),
+        apartment_number: $(this).data('apartment'),
+        rent: $(this).data('rent'),
+        submission_date: $(this).data('submission'),
+        unit_description: $(this).data('unit'),
+        judgement_in_favour_of: $(this).data('judgement'),
+        remarks: $(this).data('remarks'),
+        modified_by: $(this).data('modified-by'),
+        modified_date: $(this).data('modified-date')
+    };
+    
+    // Update the summary panel
+    updatePVLMDSummaryPanel(data);
+    
+    console.log('PVLMD Transaction selected - T_ID:', data.t_id);
+});
+
+// ================================================================
+// PVLMD CLEAR SUMMARY BUTTON
+// ================================================================
+$(document).on('click', '#pvlmd_btn_clear_summary', function() {
+    clearPVLMDSummaryPanel();
+});
+
+// ================================================================
+// PVLMD REFRESH SUMMARY BUTTON
+// ================================================================
+$(document).on('click', '#pvlmd_btn_refresh_summary', function() {
+    var t_id = $('#pvlmd_selected_transaction_gid').val();
+    if (t_id) {
+        $('#pvlmd_transaction_dataTable tbody tr').each(function() {
+            if ($(this).find('.pvlmd-btn-details').data('t_id') == t_id) {
+                $(this).find('.pvlmd-btn-details').click();
+                return false;
+            }
+        });
+    } else {
+        alert('No transaction selected. Please click Details on a transaction first.');
+    }
+});
+
+// ================================================================
+// PVLMD EXPORT SUMMARY BUTTON
+// ================================================================
+$(document).on('click', '#pvlmd_btn_export_summary', function() {
+    var t_id = $('#pvlmd_selected_transaction_gid').val();
+    if (!t_id) {
+        alert('No transaction selected. Please click Details on a transaction first.');
+        return;
+    }
+    
+    var exportData = {
+        t_id: $('#pvlmd_summary_gid').text(),
+        reference_number: $('#pvlmd_summary_reference').text(),
+        file_number: $('#pvlmd_summary_file').text(),
+        property_number: $('#pvlmd_summary_property').text(),
+        nt_number: $('#pvlmd_summary_nt').text(),
+        party1_plaintiff: $('#pvlmd_summary_party1').text(),
+        party2_defendant: $('#pvlmd_summary_party2').text(),
+        instrument_type: $('#pvlmd_summary_instrument_type').text(),
+        instrument_date: $('#pvlmd_summary_instrument_date').text(),
+        term: $('#pvlmd_summary_term').text(),
+        commencement_date: $('#pvlmd_summary_commencement').text(),
+        purpose: $('#pvlmd_summary_purpose').text(),
+        consideration: $('#pvlmd_summary_consideration').text(),
+        rent: $('#pvlmd_summary_rent').text(),
+        remarks: $('#pvlmd_summary_remarks').text()
+    };
+    
+    var jsonString = JSON.stringify(exportData, null, 2);
+    var blob = new Blob([jsonString], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'pvlmd_transaction_summary_' + t_id + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
+
+// ================================================================
+// PVLMD PRINT SUMMARY BUTTON
+// ================================================================
+$(document).on('click', '#pvlmd_btn_print_summary', function() {
+    var t_id = $('#pvlmd_selected_transaction_gid').val();
+    if (!t_id) {
+        alert('No transaction selected. Please click Details on a transaction first.');
+        return;
+    }
+    
+    var printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>PVLMD Transaction Summary</title>');
+    printWindow.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<div class="container mt-4">');
+    printWindow.document.write('<h3>PVLMD Transaction Summary</h3>');
+    printWindow.document.write('<hr>');
+    printWindow.document.write('<table class="table table-bordered">');
+    printWindow.document.write('<tr><th>Transaction ID</th><td>' + $('#pvlmd_summary_gid').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Reference Number</th><td>' + $('#pvlmd_summary_reference').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>File Number</th><td>' + $('#pvlmd_summary_file').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Property Number</th><td>' + $('#pvlmd_summary_property').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>NT Number</th><td>' + $('#pvlmd_summary_nt').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Party 1 (Plaintiff)</th><td>' + $('#pvlmd_summary_party1').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Party 2 (Defendant)</th><td>' + $('#pvlmd_summary_party2').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Instrument Type</th><td>' + $('#pvlmd_summary_instrument_type').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Instrument Date</th><td>' + $('#pvlmd_summary_instrument_date').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Term</th><td>' + $('#pvlmd_summary_term').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Commencement Date</th><td>' + $('#pvlmd_summary_commencement').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Purpose</th><td>' + $('#pvlmd_summary_purpose').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Consideration</th><td>' + $('#pvlmd_summary_consideration').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Rent</th><td>' + $('#pvlmd_summary_rent').text() + '</td></tr>');
+    printWindow.document.write('<tr><th>Remarks</th><td>' + $('#pvlmd_summary_remarks').text() + '</td></tr>');
+    printWindow.document.write('</table>');
+    printWindow.document.write('</div>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    
+    setTimeout(function() {
+        printWindow.print();
+    }, 500);
+});
+
+// ================================================================
+// MODAL SHOW EVENT - Load PVLMD Parcel Information
+// ================================================================
+$('#pvlmdparcelinformation').on('show.bs.modal', function(e) {
+    // Get data from the button that opened the modal
+    var button = $(e.relatedTarget);
+    var parcel_uuid = button.data('gid') || '';
+    var reference_number = button.data('reference') || '';
+    
+    // Set hidden fields
+    $('#pvlmd_gid').val(parcel_uuid);
+    
+    // Load all data
+    if (parcel_uuid && reference_number) {
+        loadAllPVLMDData(parcel_uuid, reference_number);
+    } else {
+        console.warn('Missing parcel UUID or reference number');
+    }
+});
 
 $('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
     // Get the button that triggered the modal
@@ -858,6 +1048,8 @@ $('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
     
 	console.log("button")
 	console.log(button)
+
+    clearPVLMDSummaryPanel();
     // Get data from button attributes
     var parcel_uuid = button.data('parcel_uuid');
     var nt_number = button.data('nt_number');
@@ -900,10 +1092,141 @@ $('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
 					    // Load transactions
    
 	
-						loadTransactions(reference_number, parcel_uuid);
+						//loadTransactions(reference_number, parcel_uuid);
+                        loadAllPVLMDData(parcel_uuid, reference_number);
     
    
 });
+
+
+function loadAllPVLMDData(parcel_uuid, reference_number) {
+    console.log('Loading all PVLMD data for:', parcel_uuid, reference_number);
+    
+    // ============================================================
+    // AJAX 1: LOAD PVLMD TRANSACTION DETAILS
+    // ============================================================
+    var table = $('#pvlmd_transaction_dataTable');
+    table.find("tbody tr").remove();
+    table.append("<tr><td colspan='5' class='text-center'>Loading transactions...</td></tr>");
+    
+    $.ajax({
+        type: "POST",
+        url: 'Maps',
+        data: {
+            request_type: 'pvlmd_transaction_select_by_reference_number_main',
+            reference_number: reference_number,
+            gid_fk: parcel_uuid
+        },
+        cache: false,
+        success: function(serviceresponse) {
+            try {
+                // Safe JSON parsing
+                var json_p;
+                if (typeof serviceresponse === 'object') {
+                    json_p = serviceresponse;
+                } else {
+                    try {
+                        json_p = JSON.parse(serviceresponse);
+                    } catch (parseError) {
+                        console.error('JSON Parse Error:', parseError.message);
+                        table.find("tbody tr").remove();
+                        table.append("<tr><td colspan='5' class='text-center text-danger'>Error parsing transaction data</td></tr>");
+                        return;
+                    }
+                }
+                
+                console.log('PVLMD Transaction Details:', json_p);
+                table.find("tbody tr").remove();
+                
+                // Check if data exists
+                if (json_p && json_p.data && Array.isArray(json_p.data)) {
+                    if (json_p.data.length === 0) {
+                        table.append("<tr><td colspan='5' class='text-center'>No transactions found</td></tr>");
+                    } else {
+                        $.each(json_p.data, function(index, item) {
+                            table.append(
+                                "<tr>" +
+                                    "<td>" + (item.party2_defendant || 'N/A') + "</td>" +
+                                    "<td>" + (item.party1_plaintiff || 'N/A') + "</td>" +
+                                    "<td>" + (item.reference_number || 'N/A') + "</td>" +
+                                    "<td>" + (item.instrument_type || 'N/A') + "</td>" +
+                                    '<td class="text-center">' +
+                                        '<button class="btn btn-info btn-sm pvlmd-btn-details" ' +
+                                            'data-t_id="' + (item.t_id || '') + '" ' +
+                                            'data-reference="' + (item.reference_number || '') + '" ' +
+                                            'data-file="' + (item.file_number || '') + '" ' +
+                                            'data-property="' + (item.property_number || '') + '" ' +
+                                            'data-nt="' + (item.nt_number || '') + '" ' +
+                                            'data-mutation="' + (item.mutation_number || '') + '" ' +
+                                            'data-deed="' + (item.deed_number || '') + '" ' +
+                                            'data-serial="' + (item.serial_number || '') + '" ' +
+                                            'data-sheet="' + (item.sheet_number || '') + '" ' +
+                                            'data-plan="' + (item.plan_number || '') + '" ' +
+                                            'data-plot="' + (item.plot_number || '') + '" ' +
+                                            'data-lvb="' + (item.lvb_number || '') + '" ' +
+                                            'data-doc="' + (item.doc_number || '') + '" ' +
+                                            'data-party1="' + (item.party1_plaintiff || '') + '" ' +
+                                            'data-party1-tel="' + (item.party1_plaintiff_tel_no || '') + '" ' +
+                                            'data-party1-add="' + (item.party1_plantiff_add || '') + '" ' +
+                                            'data-party1-email="' + (item.party1_plaintiff_email || '') + '" ' +
+                                            'data-party2="' + (item.party2_defendant || '') + '" ' +
+                                            'data-party2-tel="' + (item.party2_defendant_tel_no || '') + '" ' +
+                                            'data-party2-email="' + (item.party2_defendant_email || '') + '" ' +
+                                            'data-party2-add="' + (item.party2_defendant_add || '') + '" ' +
+                                            'data-instrument-date="' + (item.instrument_date || '') + '" ' +
+                                            'data-instrument-type="' + (item.instrument_type || '') + '" ' +
+                                            'data-term="' + (item.term || '') + '" ' +
+                                            'data-commencement="' + (item.commencement_date || '') + '" ' +
+                                            'data-purpose="' + (item.purpose || '') + '" ' +
+                                            'data-consent="' + (item.consent_date || '') + '" ' +
+                                            'data-consideration="' + (item.consideration || '') + '" ' +
+                                            'data-currency="' + (item.consideration_currency || '') + '" ' +
+                                            'data-premium="' + (item.premium || '') + '" ' +
+                                            'data-premium-currency="' + (item.premium_currency || '') + '" ' +
+                                            'data-compensation="' + (item.compensation_status || '') + '" ' +
+                                            'data-suit="' + (item.suit_number || '') + '" ' +
+                                            'data-floor="' + (item.floor_level || '') + '" ' +
+                                            'data-apartment="' + (item.apartment_number || '') + '" ' +
+                                            'data-rent="' + (item.rent || '') + '" ' +
+                                            'data-submission="' + (item.submission_date || '') + '" ' +
+                                            'data-unit="' + (item.unit_description || '') + '" ' +
+                                            'data-judgement="' + (item.judgement_in_favour_of || '') + '" ' +
+                                            'data-remarks="' + (item.remarks || '') + '" ' +
+                                            'data-modified-by="' + (item.modified_by || item.entered_by || '') + '" ' +
+                                            'data-modified-date="' + (item.modified_date || item.checked_by_date || '') + '" ' +
+                                            'title="View Details">' +
+                                            '<i class="fas fa-info-circle"></i> Details' +
+                                        '</button>' +
+                                    '</td>' +
+                                "</tr>"
+                            );
+                        });
+                    }
+                } else {
+                    console.warn('No data array found in response:', json_p);
+                    table.append("<tr><td colspan='5' class='text-center'>No data available</td></tr>");
+                }
+            } catch (error) {
+                console.error('Error processing PVLMD transaction details:', error);
+                table.find("tbody tr").remove();
+                table.append("<tr><td colspan='5' class='text-center text-danger'>Error loading transactions</td></tr>");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error - pvlmd_transaction_select_by_reference_number_main:');
+            console.error('Status:', status);
+            console.error('Error:', error);
+            table.find("tbody tr").remove();
+            
+            var errorMsg = 'Failed to load transactions';
+            if (xhr.status === 0) errorMsg = 'Network error - please check your connection';
+            else if (xhr.status === 404) errorMsg = 'Resource not found';
+            else if (xhr.status === 500) errorMsg = 'Server error - please try again later';
+            
+            table.append("<tr><td colspan='5' class='text-center text-danger'>" + errorMsg + "</td></tr>");
+        }
+    });
+}
 
 // Using modal show event instead of onclick
 $('#addpvlmdtransactionlong').on('show.bs.modal', function(event) {
