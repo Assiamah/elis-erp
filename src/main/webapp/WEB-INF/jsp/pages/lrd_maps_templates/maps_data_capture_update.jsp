@@ -4,19 +4,48 @@
     <div class="container-fluid page-container">
 
         <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-4">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <div>
-                    <h1 class="page-title fw-medium fs-18 mb-1">LRD Map Plottings</h1>
-                    <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Manage and plot LRD parcels and transactions</p>
-                </div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">ELIS</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">LRD Map Plotting</a></li>
-                    <li class="breadcrumb-item active text-success" aria-current="page">Maps : Total Parcels (${parcel_count})</li>
-                </ol>
-            </div>
+ <div class="page-header-breadcrumb mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <!-- Left -->
+        <div>
+            <h1 class="page-title fw-semibold fs-20 mb-1">
+                LRD Map Plottings
+            </h1>
+            <p class="text-muted mb-0">
+                <i class="ri-information-line me-1"></i>
+                Manage and plot LRD parcels and transactions
+            </p>
         </div>
+
+        <!-- Right -->
+        <div class="text-end">
+
+            <ol class="breadcrumb justify-content-end mb-2">
+                <li class="breadcrumb-item">
+                    <a href="javascript:void(0);" class="text-decoration-none">ELIS</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="javascript:void(0);" class="text-decoration-none">LRD Map Plotting</a>
+                </li>
+                <li class="breadcrumb-item active">Maps</li>
+            </ol>
+
+            <span class="badge bg-primary me-2 px-3 py-2">
+                <i class="ri-map-pin-line me-1"></i>
+                Parcels: <strong>${parcel_count}</strong>
+            </span>
+
+            <span class="badge bg-success px-3 py-2">
+                <i class="ri-ruler-2-line me-1"></i>
+                Acreage: <strong>${total_acreage}</strong>
+            </span>
+
+        </div>
+
+    </div>
+</div>
+
         <!-- End::page-header -->
 
         <div class="row">
@@ -98,7 +127,12 @@
                                         <button class="btn btn-primary btn-sm w-100" id="lrd_btn_show_location" title="Show Location">
                                             <i class="fas fa-map-marker-alt"></i>
                                         </button>
+                                          <button class="btn btn-primary btn-sm w-100" id="lrd_btn_load_for_scanned_maps_by_point" title="Load Scanned Maps">
+                                            <i class="fas fa-map"></i>
+                                        </button>
                                     </div>
+
+                                    
                                 </div>
                                 <div class="row g-2">
                                     <div class="col-10">
@@ -138,7 +172,7 @@
                         </div>
 
                         <!-- Advanced Search -->
-                        <!-- <div class="card border-info">
+                        <div class="card border-info">
                             <div class="card-header bg-info bg-opacity-10 border-info py-2">
                                 <h6 class="mb-0 fw-semibold">
                                     <i class="fas fa-search-plus me-2"></i>Advanced Search
@@ -161,7 +195,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
 
                          <!-- Multiple Parcels Table -->
                         <div class="mt-4">
@@ -199,51 +233,62 @@
                     </div>
                     <div class="card-body">
                         <!-- Map Toolbar -->
-                        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-                            <!-- Drawing Mode -->
-                            <!-- <div class="btn-group" role="group">
-                                <input type="radio" class="btn-check" name="drawingMode" id="drawMode" checked>
-                                <label class="btn btn-outline-primary btn-sm" for="drawMode">
-                                    <i class="fas fa-pencil-alt me-1"></i> Draw
-                                </label>
-                                <input type="radio" class="btn-check" name="drawingMode" id="modifyMode">
-                                <label class="btn btn-outline-warning btn-sm" for="modifyMode">
-                                    <i class="fas fa-edit me-1"></i> Modify
-                                </label>
-                            </div> -->
+                       <!-- Map Toolbar -->
+<div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+    <!-- Drawing Mode -->
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-outline-primary btn-sm" id="lrd_btn_draw_polygon" title="Draw Polygon">
+            <i class="fas fa-draw-polygon me-1"></i> Draw
+        </button>
+        <button type="button" class="btn btn-outline-warning btn-sm" id="lrd_btn_modify_polygon" title="Modify Shape">
+            <i class="fas fa-edit me-1"></i> Modify
+        </button>
+        <button type="button" class="btn btn-outline-danger btn-sm" id="lrd_btn_delete_polygon" title="Delete Selected">
+            <i class="fas fa-trash me-1"></i> Delete
+        </button>
+        <button type="button" class="btn btn-outline-success btn-sm" id="lrd_btn_measure_distance" title="Measure Distance">
+            <i class="fas fa-ruler me-1"></i> Measure
+        </button>
+        <button type="button" class="btn btn-outline-info btn-sm" id="lrd_btn_measure_area" title="Measure Area">
+            <i class="fas fa-ruler-combined me-1"></i> Area
+        </button>
+    </div>
 
-                            <!-- Scale Controls -->
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="fw-semibold text-muted">Scale:</span>
-                                <select class="form-select form-select-sm" style="width: 120px;" id="lrd_scale_value">
-                                    <option value="500">1:500</option>
-                                    <option value="1107">1:1,107</option>
-                                    <option value="1250">1:1,250</option>
-                                    <option value="2500">1:2,500</option>
-                                    <option value="5000">1:5,000</option>
-                                    <option value="10000">1:10,000</option>
-                                    <option value="15000">1:15,000</option>
-                                    <option value="20000">1:20,000</option>
-                                </select>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="lrd_lockmapscale" checked>
-                                    <label class="form-check-label small" for="lrd_lockmapscale">Lock</label>
-                                </div>
-                                <button class="btn btn-primary btn-sm" id="lrd_btn_scale_zoom" title="Zoom to Scale">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
+    <!-- Scale Controls -->
+    <div class="d-flex align-items-center gap-2">
+        <span class="fw-semibold text-muted">Scale:</span>
+        <select class="form-select form-select-sm" style="width: 120px;" id="lrd_scale_value">
+            <option value="500">1:500</option>
+            <option value="1107">1:1,107</option>
+            <option value="1250">1:1,250</option>
+            <option value="2500">1:2,500</option>
+            <option value="5000">1:5,000</option>
+            <option value="10000">1:10,000</option>
+            <option value="15000">1:15,000</option>
+            <option value="20000">1:20,000</option>
+        </select>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="lrd_lockmapscale" checked>
+            <label class="form-check-label small" for="lrd_lockmapscale">Lock</label>
+        </div>
+        <button class="btn btn-primary btn-sm" id="lrd_btn_scale_zoom" title="Zoom to Scale">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
 
-                            <!-- Action Buttons -->
-                            <div class="d-flex gap-2 ms-auto">
-                                <button class="btn btn-outline-danger btn-sm" id="lrd_btn_refresh_btn_wkt" title="Refresh Map">
-                                    <i class="fas fa-redo me-1"></i> Refresh
-                                </button>
-                                <button class="btn btn-outline-primary btn-sm" id="lrd_btn_print_map" title="Print Map">
-                                    <i class="fas fa-print me-1"></i> Print
-                                </button>
-                            </div>
-                        </div>
+    <!-- Action Buttons -->
+    <div class="d-flex gap-2 ms-auto">
+        <button class="btn btn-outline-danger btn-sm" id="lrd_btn_refresh_btn_wkt" title="Refresh Map">
+            <i class="fas fa-redo me-1"></i> Refresh
+        </button>
+        <button class="btn btn-outline-primary btn-sm" id="lrd_btn_print_map" title="Print Map">
+            <i class="fas fa-print me-1"></i> Print
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" id="lrd_btn_clear_measurements" title="Clear Measurements">
+            <i class="fas fa-eraser me-1"></i> Clear
+        </button>
+    </div>
+</div>
 
                         <!-- Map Container -->
                         <div class="border rounded" style="height: 600px;">
@@ -267,6 +312,8 @@
         </div>
     </div>
 </div>
+
+<jsp:include page="lrd_maps_modals.jsp"></jsp:include>
 
 <!-- Bootstrap 5 JS Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

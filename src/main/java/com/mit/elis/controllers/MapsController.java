@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mit.elis.class_common.Ws_url_config;
 import com.google.gson.Gson;
 import org.springframework.ui.Model;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.codehaus.jettison.json.JSONArray;
@@ -351,9 +353,27 @@ public class MapsController {
 			web_service_response = cls_maps.select_count_of_lc_spatial_objects(cls_url_config.getWeb_service_url_ser(),
 					cls_url_config.getWeb_service_url_ser_api_key(),
 					"No-Parameter");
-			JSONObject obj_test = new JSONObject(web_service_response);
-			String parcel_count = obj_test.get("data").toString();
-			request.setAttribute("parcel_count", parcel_count);
+			// JSONObject obj_test = new JSONObject(web_service_response);
+			// String parcel_count = obj_test.get("total_count").toString();
+			// String total_acreage = obj_test.get("total_acreage").toString();
+			// request.setAttribute("parcel_count", parcel_count);
+			// request.setAttribute("total_acreage", total_acreage);
+
+			JSONObject obj = new JSONObject(web_service_response);
+
+
+
+DecimalFormat countFormat = new DecimalFormat("#,###");
+
+DecimalFormat acreageFormat = new DecimalFormat("#,##0.000");
+
+String formattedParcelCount = countFormat.format(obj.getLong("total_count"));
+
+String formattedTotalAcreage = acreageFormat.format(obj.getDouble("total_acreage"));
+
+request.setAttribute("parcel_count", formattedParcelCount);
+
+request.setAttribute("total_acreage", formattedTotalAcreage);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

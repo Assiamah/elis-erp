@@ -7,9 +7,478 @@
 <%@ page import="org.codehaus.jettison.json.JSONException"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
+<!-- ============================================================ -->
+<!-- MODAL 1: MAIN LRD PARCEL INFORMATION                          -->
+<!-- ============================================================ -->
+<div class="modal fade" id="lrdparcelIndormation" tabindex="-1" aria-labelledby="lrdparcelIndormationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lrdparcelIndormationLabel">LRD Transaction Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <!-- LEFT COLUMN: Parcel Details + Tables -->
+                    <div class="col-lg-8">
+                        <!-- ========================================= -->
+                        <!-- SECTION 1: Parcel Details - 2 per row    -->
+                        <!-- ========================================= -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Parcel Details</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <!-- Row 1: Reference Number & Locality -->
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_reference_number" class="form-label">Reference Number</label>
+                                        <input type="text" class="form-control" id="lrd_ps_reference_number">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_locality" class="form-label">Locality</label>
+                                        <input type="text" class="form-control" id="lrd_ps_locality">
+                                    </div>
+
+                                    <!-- Row 2: Plotted By & Date Plotted -->
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_plotted_by" class="form-label">Plotted By</label>
+                                        <input type="text" class="form-control" id="lrd_ps_plotted_by">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_date_plott" class="form-label">Date Plotted</label>
+                                        <input type="text" class="form-control" id="lrd_ps_date_plott">
+                                    </div>
+
+                                    <!-- Row 3: Checked By & Type of Plotting -->
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_checked_by" class="form-label">Checked By</label>
+                                        <input type="text" class="form-control" id="lrd_ps_checked_by">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_type_of_plotting" class="form-label">Type of Plotting</label>
+                                        <input type="text" class="form-control" id="lrd_ps_type_of_plotting">
+                                    </div>
+
+                                    <!-- Row 4: Last Update By & Date Last Updated -->
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_modified_by" class="form-label">Last Update By</label>
+                                        <input type="text" class="form-control" id="lrd_ps_modified_by" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lrd_ps_modified_date" class="form-label">Date Last Updated</label>
+                                        <input type="text" class="form-control" id="lrd_ps_modified_date" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- SECTION 2: Transactions Table            -->
+                        <!-- ========================================= -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Transactions</h6>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addlrdtransaction">
+                                    <i class="fas fa-plus-circle me-1"></i>Add New
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm" id="lrd_transaction_dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Grantor</th>
+                                                <th>Certificate No</th>
+                                                <th>Instrument Type</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Filled dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- SECTION 3: Encumbrance Table             -->
+                        <!-- ========================================= -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Encumbrance and Caveat</h6>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#lrdpEncumbranceModal">
+                                    <i class="fas fa-plus-circle me-1"></i>Add New
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm" id="lrd_memorial_encumbrance_details_dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Registered No</th>
+                                                <th>Memorials</th>
+                                                <th>Date of Instrument</th>
+                                                <th>Date of Registration</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${lrd_memorials_section}" var="memorials_section">
+                                                <tr>
+                                                    <td>${memorials_section.m_registered_no}</td>
+                                                    <td>${memorials_section.m_memorials}</td>
+                                                    <td>${memorials_section.m_date_of_instrument}</td>
+                                                    <td>${memorials_section.m_date_of_registration}</td>
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- SECTION 4: Scanned Documents Table       -->
+                        <!-- ========================================= -->
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Scanned Documents</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm" id="lrd_scanned_documents_dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Document Name</th>
+                                                <th>Document Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Filled dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================= -->
+                    <!-- RIGHT COLUMN: Summary Details Panel           -->
+                    <!-- ============================================= -->
+                    <div class="col-lg-4">
+                        <!-- Transaction Summary Card -->
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Transaction Summary</h6>
+                            </div>
+                            <div class="card-body">
+                                <!-- Selected Transaction Details -->
+                                <div id="selected_transaction_panel">
+                                    <div class="alert alert-info">
+                                        <small><i class="fas fa-hand-pointer me-1"></i> Click the <strong>Details</strong> button on any transaction to view summary here.</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Hidden fields for selected transaction -->
+                                <input type="hidden" id="selected_transaction_gid">
+                                
+                                <!-- Summary Fields -->
+                                <div id="summary_fields" style="display: none;">
+                                    <!-- Summary Item 1 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">GID</span>
+                                        <span class="badge bg-secondary" id="summary_gid">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 2 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Applicant Name</span>
+                                        <span class="text-sm fw-bold" id="summary_applicant">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 3 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Grantor Name</span>
+                                        <span class="text-sm fw-bold" id="summary_grantor">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 4 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Certificate Number</span>
+                                        <span class="badge bg-success" id="summary_certificate">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 5 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Instrument Type</span>
+                                        <span class="badge bg-warning" id="summary_instrument">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 6 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Date Registered</span>
+                                        <span class="text-sm" id="summary_date_reg">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 7 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Date of Instrument</span>
+                                        <span class="text-sm" id="summary_date_inst">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 8 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Volume/Folio</span>
+                                        <span class="text-sm" id="summary_volume_folio">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 9 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Consideration</span>
+                                        <span class="text-sm fw-bold text-success" id="summary_consideration">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 10 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Purpose</span>
+                                        <span class="text-sm" id="summary_purpose">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 11 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Term</span>
+                                        <span class="text-sm" id="summary_term">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 12 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Land Size</span>
+                                        <span class="text-sm" id="summary_land_size">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 13 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">Job Number</span>
+                                        <span class="badge bg-info" id="summary_job_number">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 14 -->
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                                        <span class="text-muted">CC Number</span>
+                                        <span class="badge bg-secondary" id="summary_cc_number">-</span>
+                                    </div>
+                                    
+                                    <!-- Summary Item 15 -->
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted">Remarks</span>
+                                        <span class="text-sm" id="summary_remarks">-</span>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Action Buttons -->
+                                <div class="d-grid gap-2">
+                                    <!-- <button class="btn btn-outline-primary btn-sm" id="btn_refresh_summary">
+                                        <i class="fas fa-sync me-1"></i>Refresh Summary
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm" id="btn_export_summary">
+                                        <i class="fas fa-file-export me-1"></i>Export Summary -->
+                                    </button>
+                                    <button class="btn btn-outline-info btn-sm" id="btn_clear_summary">
+                                        <i class="fas fa-eraser me-1"></i>Clear Summary
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Actions Card -->
+                        <div class="card mt-3">
+                            <div class="card-header bg-secondary text-white">
+                                <h6 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <!-- <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addlrdtransaction">
+                                        <i class="fas fa-plus me-1"></i>Add Transaction
+                                    </button> -->
+                                    <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#lrdpEncumbranceModal">
+                                        <i class="fas fa-lock me-1"></i>Add Encumbrance
+                                    </button>
+                                    <button class="btn btn-outline-info btn-sm" id="btn_print_summary">
+                                        <i class="fas fa-print me-1"></i>Print Summary
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="lrd_ps_fid" name="lrd_ps_fid">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_save_all">
+                    <i class="fas fa-save me-1"></i>Save All Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
+<!-- ============================================================ -->
+<!-- MODAL 2: ADD LRD TRANSACTION                                 -->
+<!-- ============================================================ -->
+<div class="modal fade modal-blur" id="addlrdtransaction" tabindex="-1" aria-labelledby="addlrdtransactionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <div class="modal-header bg-primary text-white align-items-center">
+                <div>
+                    <h5 class="modal-title text-white mb-0" id="addlrdtransactionLabel">LRD Transaction Information</h5>
+                    <small class="text-white-50">Add, review, and update transaction details</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Hidden Inputs -->
+                <input type="hidden" id="lrd_td_gid">
+                <input type="hidden" id="lrd_td_fid_id_fk">
+                <input type="hidden" id="lrd_td_plotted_by_reg">
+                <input type="hidden" id="lrd_td_checked_by">
+                <input type="hidden" id="lrd_td_plott_date_reg">
+
+                <div class="container-fluid px-0">
+                    <div class="row g-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-6">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="lrd_td_nature_of_instument" class="form-label small fw-semibold">Nature of Instrument</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_nature_of_instument">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_date_of_registration" class="form-label small fw-semibold">Date of Registration</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_of_registration">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_date_of_instument" class="form-label small fw-semibold">Date of Instrument</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_of_instument">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_volume" class="form-label small fw-semibold">Volume</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_volume">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_folio" class="form-label small fw-semibold">Folio</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_folio">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_date_of_issued_cert_no" class="form-label small fw-semibold">Date of Issue Certificate No</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_of_issued_cert_no">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_type_of_certificate" class="form-label small fw-semibold">Type of Certificate</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_type_of_certificate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_registered_number" class="form-label small fw-semibold">Registered No</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_registered_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_cc_number" class="form-label small fw-semibold">CC Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_cc_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_certicate_number" class="form-label small fw-semibold">Certificate Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_certicate_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_applicant_name" class="form-label small fw-semibold">Applicant Name</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_applicant_name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_grantor_name" class="form-label small fw-semibold">Grantor Name</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_grantor_name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-6">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="lrd_td_job_number" class="form-label small fw-semibold">Job Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_job_number">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_type_instrument" class="form-label small fw-semibold">Type of Instrument</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_type_instrument">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_consideration" class="form-label small fw-semibold">Consideration</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_consideration">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_purpose" class="form-label small fw-semibold">Purpose</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_purpose">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_date_commencement" class="form-label small fw-semibold">Date Commencement</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_date_commencement">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_term" class="form-label small fw-semibold">Term</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_term">
+                                </div>
+                                <div class="col-12">
+                                    <label for="lrd_td_remarks" class="form-label small fw-semibold">Remarks</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_remarks">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_type_of_registration" class="form-label small fw-semibold">Type of Registration</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_type_of_registration">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_land_size" class="form-label small fw-semibold">Land Size</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_land_size">
+                                </div>
+                                <div class="col-12">
+                                    <label for="lrd_td_reference_number" class="form-label small fw-semibold">Reference Number</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_reference_number" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_modified_by" class="form-label small fw-semibold">Last Update By</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_modified_by" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lrd_td_modified_date" class="form-label small fw-semibold">Date Last Updated</label>
+                                    <input type="text" class="form-control form-control-sm" id="lrd_td_modified_date" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-white border-top">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+                <!-- <button type="button" class="btn btn-primary btn-lg px-5" id="btn_save_lrd_transaction">
+                    Save Data
+                </button> -->
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="modal fade" id="lrdparcelinformationfirsttimesavewithinfo" role="dialog"
@@ -2986,66 +3455,60 @@ Lenders Act, 2008 (Act 773)</option>
 </div>
 
 
-
-<!-- Memorials Section============================= -->
-	<div class="modal fade" id="lrdpEncumbranceModal" tabindex="-1" role="dialog" aria-labelledby="lrdpEncumbranceModalModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="lrdpEncumbranceModalLabel">Memorials Section</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <form id="" >
-	        
-	        	<input  id="lrdp_id" name="lrdp_id" type="hidden" value="0" >
-	        	
-	        	
-	        	
-	          <div class="row">
-	          	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-	          		<div class="form-group">
-	            		<label for="m_case_number" class="col-form-label">Ref Number</label>
-	            		<input type="text" name="lrdp_ref_number" id="lrdp_ref_number" value="${case_number}" class="form-control" readonly >
-	          		</div>
-	          		<div class="form-group">
-	            		<label for="m_registered" class="col-form-label">Registered</label>
-	            		<input type="text" name="lrdp_registered" id="lrdp_registered" class="form-control" required>
-	          		</div>
-	          		<div class="form-group">
-	            		<label for="lrdp_memorials" class="">Memorials</label>
-	            		
-	            		<textarea name="lrdp_memorials" id="lrdp_memorials" class="form-control" required></textarea>
-	          		</div>
-	          		<div class="form-group">
-	            		<label for="lrdp_date_of_registration" class="col-form-label">Date of Instrument</label>
-	            		<input type="date" name="lrdp_date_of_instrument" id="lrdp_date_of_instrument" class="form-control" required>
-	          		</div>
-	          	</div>
-	          	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-	          		<div class="form-group">
-	            		<label for="m_date_of_registration" class="col-form-label">Date of Registration</label>
-	            		<input type="date" name="lrdp_date_of_registration" id="lrdp_date_of_registration" class="form-control" required>
-	          		</div>
-	          		
-	          		<div class="form-group">
-	            		<label for="m_remarks" class="col-form-label">Remarks</label>
-	            		<textarea name="lrdp_remarks" id="lrdp_remarks" class="form-control" required></textarea>
-	          		</div>
-	          	</div>
-	          </div>
-	          <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		        <button type="button" id="btn_lrdp_save_encumbrance" class="btn btn-primary">Save Changes</button>
-	            </div>
-	        </form>
-	      </div>
-	      
-	    </div>
-	  </div>
-	</div>
+<!-- Memorials Section - Bootstrap 5 -->
+<div class="modal fade" id="lrdpEncumbranceModal" tabindex="-1" aria-labelledby="lrdpEncumbranceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lrdpEncumbranceModalLabel">Memorials Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form_lrdp_encumbrance">
+                    
+                    <input id="lrdp_id" name="lrdp_id" type="hidden" value="0">
+                    
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="lrdp_ref_number" class="form-label">Ref Number</label>
+                                <input type="text" name="lrdp_ref_number" id="lrdp_ref_number" value="${case_number}" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lrdp_registered" class="form-label">Registered</label>
+                                <input type="text" name="lrdp_registered" id="lrdp_registered" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lrdp_memorials" class="form-label">Memorials</label>
+                                <textarea name="lrdp_memorials" id="lrdp_memorials" class="form-control" required rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lrdp_date_of_instrument" class="form-label">Date of Instrument</label>
+                                <input type="date" name="lrdp_date_of_instrument" id="lrdp_date_of_instrument" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="lrdp_date_of_registration" class="form-label">Date of Registration</label>
+                                <input type="date" name="lrdp_date_of_registration" id="lrdp_date_of_registration" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lrdp_remarks" class="form-label">Remarks</label>
+                                <textarea name="lrdp_remarks" id="lrdp_remarks" class="form-control" required rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="btn_lrdp_save_encumbrance" class="btn btn-primary">Save Changes</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 	
 	
 	   <!-- Certificate Section============================= -->
