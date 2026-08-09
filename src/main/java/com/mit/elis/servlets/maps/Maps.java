@@ -1436,6 +1436,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String party_2 = request.getParameter("party_2");
 				String acreage = request.getParameter("acreage");
 				String comments = request.getParameter("comments");
+				String division = request.getParameter("division");
 
 				JSONObject obj = new JSONObject();
 
@@ -1451,6 +1452,7 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("party_2", party_2);
 				obj.put("acreage", acreage);
 				obj.put("comments", comments);
+				obj.put("division", division);
 				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_add_lc_temp_parcels(

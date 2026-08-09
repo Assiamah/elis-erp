@@ -324,6 +324,9 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="lrd_ps_fid" name="lrd_ps_fid">
+				<button type="button" class="btn btn-danger" onclick="initiateDeleteParcel()">
+                    <i class="bi bi-trash me-1"></i>Archive
+                </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="btn_save_all">
                     <i class="fas fa-save me-1"></i>Save All Changes

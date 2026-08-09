@@ -2872,12 +2872,12 @@ window.initiateDeleteParcel = function() {
                 return;
             }
 
-            const exists = selectedJobsList.some(job => job.job_number === parcelId);
+            const exists = selectedJobsList.some(job => job.jobNumberPlain === pvlmd_reference_number);
         
             if (exists) {
                 Swal.fire({
                     title: 'Duplicate Job',
-                    text: `Job ${parcelId} is already in the list.`,
+                    text: `Job ${pvlmd_reference_number} is already in the list.`,
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
@@ -3035,6 +3035,7 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 				party_2: result.value.party2,
 				acreage: result.value.acreage,
 				comments: result.value.comments,
+                division: 'PVLMD'
 			},
 			cache: false,
 			success: function(response) {
@@ -3118,7 +3119,7 @@ window.initiateReqAddExistingParcel = function(parcelId, referenceNumber, party1
                 return;
             }
 
-            const exists = selectedJobsList.some(job => job.job_number === parcelId);
+            const exists = selectedJobsList.some(job => job.jobNumberPlain === parcelId);
         
             if (exists) {
                 Swal.fire({

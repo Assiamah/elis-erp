@@ -85,6 +85,9 @@
                             <button type="button" class="btn btn-outline-primary btn-sm w-100" id="smd_btn_visualise_wkt" data-bs-tooltip="tooltip" title="Visualise Polygon">
                                 <i class="fas fa-map me-1"></i> Visualise Polygon
                             </button>
+                            <button type="button" class="btn btn-warning btn-sm w-100 mt-2 d-none" id="smd_btn_request_add_existing_parcel" data-bs-toggle="tooltip" title="Request For Add Existing Parcel">
+                                <i class="fas fa-paper-plane me-1"></i> Request For Add Existing Parcel
+                            </button>
                         </div>
 
                         <!-- Quick Coordinate Search -->
@@ -270,6 +273,5 @@
     });
 </script>
 
+<script src="${pageContext.request.contextPath}/js-pages/js-map/smdmaps.js?v=20260809-1"></script>
 <script src="${pageContext.request.contextPath}/js-pages/gated_workflow.js"></script>
-
-<script src="${pageContext.request.contextPath}/js-pages/js-map/smdmaps.js"></script>
