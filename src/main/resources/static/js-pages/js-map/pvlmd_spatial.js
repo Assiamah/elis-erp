@@ -2568,7 +2568,7 @@ window.initiateDeleteParcel = function() {
                 jobNumberHtml: pvlmd_reference_number,
                 applicantNameHtml: pvlmd_reference_number,
                 applicationType: 'TEMPORAL APPLICATION',
-                batchingPurpose: 'Delete Plotting',
+                batchingPurpose: 'Archive Plotting',
                 remarksNotes: remarks_notes,
                 // created_on: jobData.created_on,
                 // job_status: jobData.job_status
@@ -2606,13 +2606,33 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 		icon: 'info',
 		html: `
 			<p class="mb-3">This request will submit the selected polygon for review to add existing parcel.</p>
-			<div class="form-group text-start">
+			<div class="form-group text-start mb-2">
 				<label for="pvlmd_add_exist_reference_number" class="form-label">Reference Number <span class="text-danger">*</span></label>
 				<input type="text" id="pvlmd_add_exist_reference_number" class="form-control" placeholder="Enter reference number">
 			</div>
-			<div class="form-group text-start">
+            <div class="form-group text-start mb-2">
+				<label for="pvlmd_add_exist_file_number" class="form-label">File Number</label>
+				<input type="text" id="pvlmd_add_exist_file_number" class="form-control" placeholder="Enter file number">
+			</div>
+            <div class="form-group text-start mb-2">
+				<label for="pvlmd_add_exist_party_1" class="form-label">Party 1 (Grantor)</label>
+				<textarea id="pvlmd_add_exist_party_1" class="form-control" placeholder="Enter party"></textarea>
+			</div>
+            <div class="form-group text-start mb-2">
+				<label for="pvlmd_add_exist_party_2" class="form-label">Party 2 (Grantee)</label>
+				<textarea id="pvlmd_add_exist_party_2" class="form-control" placeholder="Enter party"></textarea>
+			</div>
+            <div class="form-group text-start mb-2">
+				<label for="pvlmd_add_exist_acreage" class="form-label">Acreage <span class="text-danger">*</span></label>
+				<input type="number" id="pvlmd_add_exist_acreage" min="0.01" class="form-control" placeholder="Enter acreage">
+			</div>
+			<div class="form-group text-start mb-2">
 				<label for="pvlmd_add_exist_locality" class="form-label">Locality <span class="text-danger">*</span></label>
 				<input type="text" id="pvlmd_add_exist_locality" class="form-control" placeholder="Enter locality">
+			</div>
+            <div class="form-group text-start mb-2">
+				<label for="pvlmd_add_exist_comments" class="form-label">Comments<span class="text-danger">*</span></label>
+				<textarea id="pvlmd_add_exist_comments" class="form-control" placeholder="Enter comments"></textarea>
 			</div>
 		`,
 		showCancelButton: true,
@@ -2636,9 +2656,33 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 				return false;
 			}
 
+            var acreage = $.trim($('#pvlmd_add_exist_acreage').val());
+
+			if (!acreage) {
+				Swal.showValidationMessage('Acreage is required');
+				return false;
+			}
+
+            var comments = $.trim($('#pvlmd_add_exist_comments').val());
+
+            if (!comments) {
+				Swal.showValidationMessage('Comments is required');
+				return false;
+			}
+
+			var fileNumber = $.trim($('#pvlmd_add_exist_file_number').val());
+			var party1 = $.trim($('#pvlmd_add_exist_party_1').val());
+			var party2 = $.trim($('#pvlmd_add_exist_party_2').val());
+			
+
 			return {
 				referenceNumber: referenceNumber,
-				locality: locality
+                fileNumber: fileNumber,
+                party1: party1,
+                party2: party2,
+				locality: locality,
+                acreage: acreage,
+                comments: comments
 			};
 		}
 	}).then(function(result) {
@@ -2662,7 +2706,12 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 				request_type: 'select_add_lc_temp_parcels',
 				wkt_polygon: pvlmd_bl_wkt_polygon,
 				locality: result.value.locality,
-				reference_number: result.value.referenceNumber
+				reference_number: result.value.referenceNumber,
+				file_number: result.value.fileNumber,
+				party_1: result.value.party1,
+				party_2: result.value.party2,
+				acreage: result.value.acreage,
+				comments: result.value.comments,
 			},
 			cache: false,
 			success: function(response) {
@@ -2679,7 +2728,7 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 				var json_p = JSON.parse(response);
 
 				if (json_p && json_p.success === true) {
-					initiateReqAddExistingParcel(json_p.reference_number, json_p.glpin)
+					initiateReqAddExistingParcel(json_p.reference_number, json_p.glpin, json_p.party_1, json_p.party_2);
 				}
 
 				// Swal.fire({
@@ -2702,14 +2751,7 @@ $('#pvlmd_btn_request_add_existing_parcel').on('click', function(e) {
 });
 
 
-
-
-
-
-
-
-
-window.initiateReqAddExistingParcel = function(parcelId, referenceNumber) {
+window.initiateReqAddExistingParcel = function(parcelId, referenceNumber, party1, party2) {
 
     var selectedJobsList = [];
 
@@ -2766,11 +2808,13 @@ window.initiateReqAddExistingParcel = function(parcelId, referenceNumber) {
                 return;
             }
 
+            let applicantName = referenceNumber + (party2 == '' ? ' - (' + party1 + ')' : ' - (' + party2 + ')');
+
             // Add job to list
             selectedJobsList.push({
                 jobNumberPlain: parcelId,
                 jobNumberHtml: parcelId,
-                applicantNameHtml: referenceNumber,
+                applicantNameHtml: applicantName,
                 applicationType: 'TEMPORAL APPLICATION',
                 batchingPurpose: 'Add Plotting',
                 remarksNotes: remarks_notes,

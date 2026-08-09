@@ -1431,6 +1431,11 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				String ip_address = (String) session.getAttribute("ip_address");
 				String userid = (String) session.getAttribute("userid");
 				String reference_number = request.getParameter("reference_number");
+				String file_number = request.getParameter("file_number");
+				String party_1 = request.getParameter("party_1");
+				String party_2 = request.getParameter("party_2");
+				String acreage = request.getParameter("acreage");
+				String comments = request.getParameter("comments");
 
 				JSONObject obj = new JSONObject();
 
@@ -1441,6 +1446,11 @@ obj.put("fullname", fullname); obj.put("mac_address", mac_address); obj.put("ip_
 				obj.put("mac_address", mac_address);
 				obj.put("ip_address", ip_address);
 				obj.put("userid", userid);
+				obj.put("file_number", file_number);
+				obj.put("party_1", party_1);
+				obj.put("party_2", party_2);
+				obj.put("acreage", acreage);
+				obj.put("comments", comments);
 				// //System.out.println(parcel_id);
 				web_service_response = cls_maps
 						.select_add_lc_temp_parcels(

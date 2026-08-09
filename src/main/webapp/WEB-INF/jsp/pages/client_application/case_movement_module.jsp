@@ -281,7 +281,7 @@
                                         <!-- Actions -->
                                         <td class="">
                                             <div class="d-flex gap-2">
-                                                <form action="front_office_view_application" method="post" class="d-inline ${appfiles.job_purpose != 'Add Plotting' && appfiles.job_purpose != 'Delete Plotting' ? '' : 'd-none'}">
+                                                <form action="front_office_view_application" method="post" class="d-inline ${appfiles.job_purpose != 'Add Plotting' && appfiles.job_purpose != 'Archive Plotting' ? '' : 'd-none'}">
                                                     <input type="hidden" name="search_text" value="${appfiles.case_number}">
                                                     <input type="hidden" name="case_number" value="${appfiles.transaction_number}">
                                                     <input type="hidden" name="job_number" value="${appfiles.job_number}">
@@ -290,7 +290,7 @@
                                                         <i class="ri-eye-line"></i>
                                                     </button>
                                                 </form>
-                                                <form action="${appfiles.job_purpose != 'Add Plotting' && appfiles.job_purpose != 'Delete Plotting' ? 'request_application_progress_details_ai' : 'request_application_progress_details_pd'}" method="post" class="d-inline">
+                                                <form action="${appfiles.job_purpose != 'Add Plotting' && appfiles.job_purpose != 'Archive Plotting' ? 'request_application_progress_details_ai' : 'request_application_progress_details_pd'}" method="post" class="d-inline">
                                                     <input type="hidden" name="case_number" value="${appfiles.case_number}">
                                                     <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
                                                     <input type="hidden" name="job_number" value="${appfiles.job_number}">
