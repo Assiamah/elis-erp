@@ -28230,6 +28230,23 @@ document.addEventListener('DOMContentLoaded', function() {
         $mirrorBody.html('<tr class="text-muted"><td colspan="4" class="text-center py-3">No overlay parcels loaded yet.</td></tr>');
     }
 
+    function renderDeedParcelOverlayMirror() {
+        const $mirrorBody = $('#lrd_more_than_one_parcel_Table_vpt_deed tbody');
+        const $sourceTable = $('#lrd_more_than_one_parcel_Table');
+
+        if (!$mirrorBody.length || !$sourceTable.length) {
+            return;
+        }
+
+        const sourceRows = $sourceTable.find('tbody').html();
+        if (sourceRows && sourceRows.trim()) {
+            $mirrorBody.html(sourceRows);
+            return;
+        }
+
+        $mirrorBody.html('<tr class="text-muted"><td colspan="4" class="text-center py-3">No overlay parcels loaded yet.</td></tr>');
+    }
+
     function searchViewParcelScannedMaps() {
         const wktPolygon = ($('#view_parcel_and_transaction #lc_bl_wkt_polygon').val() || '').trim();
 
@@ -28309,6 +28326,110 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (extent.length === 4 && extent.every(function(value) { return !Number.isNaN(value); })) {
             map.getView().fit(extent, map.getSize());
+        }
+    }
+
+    function searchDeedParcelScannedMaps() {
+        const wktPolygon = ($('#view_parcel_and_transaction_for_deed #lc_bl_wkt_polygon').val() || '').trim();
+
+        if (!wktPolygon) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Polygon Found',
+                text: 'There is no deed parcel WKT available to search for scanned maps.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'Maps',
+            data: {
+                request_type: 'search_for_lrd_scan_map_for_a_polygon',
+                wkt_polygon: wktPolygon
+            },
+            cache: false,
+            success: function(jobdetails) {
+                let jsonPayload;
+
+                try {
+                    jsonPayload = typeof jobdetails === 'string' ? JSON.parse(jobdetails || '{}') : jobdetails;
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Map Response',
+                        text: 'The scanned-map search returned an invalid response.',
+                        confirmButtonColor: '#dc3545'
+                    });
+                    return;
+                }
+
+                const $options = $('#geoserverscannedimages_list_vpt_deed');
+                $options.empty().append('<option value="-1">Select Scanned Image</option>');
+
+                $((jsonPayload && jsonPayload.data) || []).each(function() {
+                    $options.append(
+                        '<option value="' + this.file_name + ':' + this.extent + '">' + this.file_name + '</option>'
+                    );
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Search Failed',
+                    text: 'The scanned maps could not be loaded. Please try again.',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        });
+    }
+
+    function loadDeedParcelScannedMap() {
+        const selectedImage = $.trim($('#geoserverscannedimages_list_vpt_deed').val());
+        const deedMap = typeof maps !== 'undefined' ? maps['lc-map__deed'] : null;
+
+        if (!selectedImage || selectedImage === '-1') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No Scanned Map Selected',
+                text: 'Choose a scanned image before loading it onto the deed map.',
+                confirmButtonColor: '#fd7e14'
+            });
+            return;
+        }
+
+        if (typeof ol === 'undefined' || !deedMap) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Map Not Ready',
+                text: 'Open the Map Visualization tab and wait for the deed map to initialize.',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+
+        const layerParts = selectedImage.split(':', 3);
+        const scannedLayer = new ol.layer.Image({
+            title: 'Deed Scanned Map - ' + layerParts[1],
+            source: new ol.source.ImageWMS({
+                url: getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+                params: {
+                    LAYERS: 'csau_geospatial:' + layerParts[1]
+                },
+                serverType: 'geoserver'
+            })
+        });
+
+        deedMap.addLayer(scannedLayer);
+
+        const extent = (layerParts[2] || '')
+            .replace(/[\[\]]/g, '')
+            .split(',')
+            .map(function(value) { return Number($.trim(value)); });
+
+        if (extent.length === 4 && extent.every(function(value) { return !Number.isNaN(value); })) {
+            deedMap.getView().fit(extent, deedMap.getSize());
         }
     }
 
@@ -28521,6 +28642,10 @@ document.addEventListener('DOMContentLoaded', function() {
         renderViewParcelOverlayMirror();
     });
 
+    $('#view_parcel_and_transaction_for_deed').on('shown.bs.modal', function() {
+        renderDeedParcelOverlayMirror();
+    });
+
     $(document).on('click', '#flv-map-tab', function() {
         setTimeout(() => {
             window.initializeMap('lc-map__flv');
@@ -28542,6 +28667,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 100);
     });
+
+    $(document).on('click', '#map-tab-deed', function() {
+        setTimeout(() => {
+            renderDeedParcelOverlayMirror();
+            if (typeof maps !== 'undefined' && maps['lc-map__deed']) {
+                maps['lc-map__deed'].updateSize();
+            }
+        }, 150);
+    });
+
+    $(document).on(
+        'click',
+        '#view_parcel_and_transaction_for_deed #lc_btn_visualise_wkt_, ' +
+        '#view_parcel_and_transaction_for_deed #lc_btn_visualise_search',
+        function() {
+            setTimeout(renderDeedParcelOverlayMirror, 250);
+        }
+    );
 
     $(document).on('change', '#lc_scale_value_vpt', function() {
         $('#lc_scale_value_e_vpt').val($(this).val());
@@ -28575,6 +28718,16 @@ document.addEventListener('DOMContentLoaded', function() {
     $(document).on('click', '#lc_btn_load_for_scanned_maps_vpt', function(e) {
         e.preventDefault();
         loadViewParcelScannedMap();
+    });
+
+    $(document).on('click', '#lc_btn_search_for_scanned_maps_vpt_deed', function(e) {
+        e.preventDefault();
+        searchDeedParcelScannedMaps();
+    });
+
+    $(document).on('click', '#lc_btn_load_for_scanned_maps_vpt_deed', function(e) {
+        e.preventDefault();
+        loadDeedParcelScannedMap();
     });
 
     $(document).on('click', '#lc_btn_visualise_wkt_flv', function(e) {

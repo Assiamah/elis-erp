@@ -4492,7 +4492,8 @@ function getRequestType(batchType, lblBatchType) {
         'cst_supervisor_to_cordinator': 'process_batch_list_cst_supervisor_to_cordinator',
         'frrv_cst': 'process_batch_list_frrv_cst',
         'frrv_cst_supervisor': 'process_batch_list_frrv_cst_supervisor',
-        'frrv_cst_supervisor_to_cordinator': 'process_batch_list_frrv_cst_supervisor_to_cordinator'
+        'frrv_cst_supervisor_to_cordinator': 'process_batch_list_frrv_cst_supervisor_to_cordinator',
+        'Cross-Unit': 'process_batch_list_new'
     };
 
     // Check for special batch types first

@@ -787,6 +787,8 @@ $("#btn_process_batchlist_crb").click(async function(event) {
     const region_name = $("#get_change_region_compliance_crb option:selected").text();
     const unit_division = $("#unit_division_to_send_to_crb").val();
     const unit_name = $("#unit_to_send_to_crb").val();
+    const batch_target_type = $("#crb_batch_target_type").val() || 'Unit';
+    const user_name = $("#user_to_send_to_crb").val();
 
     // Validate all fields
     if (!bl_job_purpose_new || bl_job_purpose_new === '-- Select --' || bl_job_purpose_new === '0') {
@@ -799,7 +801,7 @@ $("#btn_process_batchlist_crb").click(async function(event) {
         return;
     }
 
-    if (!region_id || region_id === 'Please Select') {
+    if (!region_id || region_id === 'Please Select' || region_id === '-- Select Region --') {
         showError('Please select a region');
         return;
     }
@@ -811,6 +813,11 @@ $("#btn_process_batchlist_crb").click(async function(event) {
 
     if (!unit_name) {
         showError('Please select/enter a unit');
+        return;
+    }
+
+    if (batch_target_type === 'Individual' && !user_name) {
+        showError('Please select an individual');
         return;
     }
 
@@ -829,16 +836,29 @@ $("#btn_process_batchlist_crb").click(async function(event) {
 
     if (!confirmed) return;
 
-    // ==================== GET UNIT DETAILS ====================
+    // ==================== GET DESTINATION DETAILS ====================
     const unitOption = $('#listofunitsbatching option').filter(function() {
         return this.value === unit_name;
     });
+
+    if (!unitOption.data('id') || !unitOption.data('name')) {
+        showError('Invalid unit selection');
+        return;
+    }
+
+    const destinationName = batch_target_type === 'Individual' ? user_name : unit_name;
+    const destinationList = batch_target_type === 'Individual'
+        ? '#listofusersbatching_crb option'
+        : '#listofunitsbatching option';
+    const destinationOption = $(destinationList).filter(function() {
+        return this.value === destinationName;
+    });
     
-    const send_to_id = unitOption.data('id');
-    const send_to_name = unitOption.data('name');
+    const send_to_id = destinationOption.data('id');
+    const send_to_name = destinationOption.data('name');
 
     if (!send_to_id || !send_to_name) {
-        showError('Invalid unit selection');
+        showError(`Invalid ${batch_target_type.toLowerCase()} selection`);
         return;
     }
 
@@ -870,14 +890,17 @@ $("#btn_process_batchlist_crb").click(async function(event) {
             type: "POST",
             url: "Case_Management_Serv",
             data: {
-                request_type: 'process_batch_list_unit_crb',
+                request_type: batch_target_type === 'Individual' ? 'process_batch_list_new' : 'process_batch_list_unit_crb',
                 division: localStorage.getItem('division'),
                 list_of_application: list_of_application_new,
                 send_to_name: send_to_name,
                 send_to_id: send_to_id,
                 region_id: region_id.replace(".0", ""),
                 region_name: region_name,
-                divison_name: unit_division
+                division_name: unit_division,
+                batch_target_type: batch_target_type,
+                destination_unit_id: unitOption.data('id'),
+                destination_unit_name: unit_name
             },
             cache: false
         });
@@ -904,21 +927,13 @@ $("#btn_process_batchlist_crb").click(async function(event) {
         });
 
         // ==================== SHOW PDF PREVIEW ====================
-        Swal.close(); // Close loading dialog
-        
-        // Create blob and show PDF
-        const blob = new Blob([pdfResponse], { type: "application/pdf" });
-        const objectUrl = URL.createObjectURL(blob);
-        
-        // Show PDF in modal
-        $('#elisdocumentpreviewblobfile').attr('src', objectUrl);
-        $('#elisDocumentPreview').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
+        if (typeof displayPdfInModal !== 'function') {
+            throw new Error('The batch PDF preview is not available on this page');
+        }
 
-        // ==================== SUCCESS NOTIFICATION ====================
-        showSuccess(`${applications.length} application(s) moved successfully!`);
+        // Use the same PDF modal and download flow as generateBatchReport().
+        Swal.close();
+        displayPdfInModal(pdfResponse, jsonResponse.batch_number);
 
         // ==================== CLEANUP ====================
         // Clear table
@@ -930,6 +945,7 @@ $("#btn_process_batchlist_crb").click(async function(event) {
         $("#get_change_region_compliance_crb").val('');
         $("#unit_division_to_send_to_crb").val('none');
         $("#unit_to_send_to_crb").val('');
+        $("#crb_batch_target_type").val('Unit').trigger('change');
         
         // Clear localStorage
         localStorage.setItem('batchlistdata', '');
@@ -973,7 +989,8 @@ function validateBatchForm() {
         { id: '#bl_remarks_notes', name: 'Remarks/Notes' },
         { id: '#get_change_region_compliance_crb', name: 'Region' },
         { id: '#unit_division_to_send_to_crb', name: 'Division' },
-        { id: '#unit_to_send_to_crb', name: 'Unit' }
+        { id: '#unit_to_send_to_crb', name: 'Unit' },
+        { id: '#user_to_send_to_crb', name: 'Individual', optional: $('#crb_batch_target_type').val() !== 'Individual' }
     ];
 
     let isValid = true;
@@ -987,7 +1004,7 @@ function validateBatchForm() {
         element.removeClass('is-valid is-invalid');
         
         // Check if valid
-        if (!value || value === '-- Select --' || value === '0' || value === 'none' || value === 'Please Select') {
+        if (!field.optional && (!value || value === '-- Select --' || value === '-- Select Region --' || value === '0' || value === 'none' || value === 'Please Select')) {
             element.addClass('is-invalid');
             isValid = false;
             if (!firstInvalidField) firstInvalidField = element;

@@ -9,6 +9,114 @@
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
+<style>
+    .crb-destination-card {
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 20px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.09) !important;
+        overflow: hidden;
+    }
+
+    .crb-card-header {
+        background: linear-gradient(135deg, #0f766e 0%, #0d9488 55%, #14b8a6 100%);
+        padding: 1.5rem 1.75rem;
+        position: relative;
+    }
+
+    .crb-card-header::after {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        content: "";
+        height: 150px;
+        position: absolute;
+        right: -45px;
+        top: -70px;
+        width: 150px;
+    }
+
+    .crb-header-icon {
+        align-items: center;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 14px;
+        display: flex;
+        height: 48px;
+        justify-content: center;
+        width: 48px;
+    }
+
+    .crb-card-body {
+        background: #ffffff;
+        padding: 1.5rem 1.75rem 1.75rem;
+    }
+
+    .crb-card-body .form-label {
+        color: #334155 !important;
+        font-size: 0.82rem;
+        letter-spacing: 0.01em;
+        margin-bottom: 0.5rem;
+    }
+
+    .crb-card-body .form-control,
+    .crb-card-body .form-select {
+        border-color: #dbe3ec;
+        border-radius: 10px;
+        min-height: 44px;
+    }
+
+    .crb-card-body .form-control:focus,
+    .crb-card-body .form-select:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.13);
+    }
+
+    #crb_batch_target_tabs {
+        background: #f1f5f9;
+        border: 0;
+        border-radius: 12px;
+        gap: 6px;
+        padding: 6px;
+    }
+
+    #crb_batch_target_tabs .nav-link {
+        border: 0;
+        border-radius: 9px;
+        color: #64748b;
+        padding: 0.7rem 1rem;
+        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        width: 100%;
+    }
+
+    #crb_batch_target_tabs .nav-link.active {
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.13);
+        color: #0f766e;
+    }
+
+    .crb-individual-panel {
+        background: #f0fdfa;
+        border: 1px solid #ccfbf1;
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    .crb-process-button {
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+        border: 0;
+        border-radius: 11px;
+        box-shadow: 0 8px 18px rgba(15, 118, 110, 0.2);
+        color: #ffffff;
+        min-height: 46px;
+    }
+
+    .crb-process-button:hover,
+    .crb-process-button:focus {
+        background: linear-gradient(135deg, #115e59, #0d9488);
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+</style>
+
 
       <!-- Start::app-content -->
 <div class="main-content app-content">
@@ -110,21 +218,44 @@
         </div>
     </div>
     
-    <!-- Regional Unit Batching Section -->
+    <!-- Regional Batching Section -->
     <div class="col-lg-6">
-        <div class="card shadow-sm border-0 mb-4 bg-success text-white" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="rounded-circle bg-white bg-opacity-25 p-3 me-3">
-                        <i class="fa fa-sitemap text-success fa-fw"></i>
+        <div class="card crb-destination-card mb-4">
+            <div class="crb-card-header text-white">
+                <div class="d-flex align-items-center position-relative" style="z-index: 1;">
+                    <div class="crb-header-icon me-3">
+                        <i class="fa fa-sitemap text-white fa-fw"></i>
                     </div>
                     <div>
-                        <h5 class="mb-1 fw-bold text-white">Regional Unit Batching</h5>
-                        <p class="text-white-50 small mb-0">Batch jobs to regional units</p>
+                        <h5 class="mb-1 fw-bold text-white">Regional Batching</h5>
+                        <p class="small mb-0" style="color: rgba(255,255,255,.78);">Choose where the selected applications should be sent</p>
                     </div>
                 </div>
-                
+            </div>
+            <div class="card-body crb-card-body">
                 <div class="row g-3">
+                    <!-- Destination Type Tabs -->
+                    <div class="col-12">
+                        <label class="form-label text-white fw-semibold">
+                            <i class="fa fa-random me-2"></i>Batch To
+                        </label>
+                        <input type="hidden" id="crb_batch_target_type" value="Unit">
+                        <ul class="nav nav-tabs nav-fill" id="crb_batch_target_tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link active fw-semibold"
+                                        data-crb-target="Unit" role="tab" aria-selected="true">
+                                    <i class="fa fa-cubes me-2"></i>Unit
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link fw-semibold"
+                                        data-crb-target="Individual" role="tab" aria-selected="false">
+                                    <i class="fa fa-user me-2"></i>Individual
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
                     <!-- Region Selection -->
                     <div class="col-12">
                         <label class="form-label text-white fw-semibold">
@@ -165,6 +296,19 @@
                                placeholder="Select or enter unit" required>
                         <datalist id="listofunitsbatching"></datalist>
                     </div>
+
+                    <div class="col-12 d-none" id="crb_individual_batching">
+                        <div class="crb-individual-panel">
+                        <label class="form-label text-white fw-semibold" for="user_to_send_to_crb">
+                            <i class="fa fa-user me-2"></i>Individual
+                        </label>
+                        <input autocomplete="off" class="form-control" id="user_to_send_to_crb"
+                               type="text" list="listofusersbatching_crb"
+                               placeholder="Select an individual" required disabled>
+                        <datalist id="listofusersbatching_crb"></datalist>
+                        <div class="form-text text-muted">Individuals are loaded from the selected regional unit.</div>
+                        </div>
+                    </div>
                     
                     <!-- Purpose and Remarks -->
                     <div class="col-12">
@@ -188,7 +332,7 @@
                     
                     <!-- Process Button -->
                     <div class="col-12 mt-3">
-                        <button type="submit" class="btn btn-warning w-100 fw-semibold py-2" 
+                        <button type="submit" class="btn crb-process-button w-100 fw-semibold py-2"
                                 id="btn_process_batchlist_crb">
                             <i class="fa fa-play-circle me-2"></i>Process Batch
                         </button>
@@ -263,12 +407,8 @@
         </div>
     </div>
 </div>
-     
-     
-    
- </div>
- 
- 
-   </div>
-    </div> 
- 
+
+</div>
+
+</div>
+</div>

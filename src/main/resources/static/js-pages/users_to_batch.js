@@ -134,11 +134,46 @@ $(document)
 
 									});
 
-									$('#get_change_region_compliance_crb')
+					function resetCrbIndividual() {
+						$('#user_to_send_to_crb').val('');
+						$('#listofusersbatching_crb').empty();
+					}
+
+					function updateCrbTargetType() {
+						var isIndividual = $('#crb_batch_target_type').val() === 'Individual';
+						$('#crb_batch_target_tabs [data-crb-target]').each(function() {
+							var isActive = $(this).attr('data-crb-target') === $('#crb_batch_target_type').val();
+							$(this).toggleClass('active', isActive).attr('aria-selected', isActive);
+						});
+						$('#crb_individual_batching').toggleClass('d-none', !isIndividual);
+						$('#user_to_send_to_crb').prop('disabled', !isIndividual);
+						resetCrbIndividual();
+						$('#btn_process_batchlist_crb').toggle(!isIndividual && !!$('#unit_to_send_to_crb').val());
+
+						if (isIndividual && $('#unit_to_send_to_crb').val()) {
+							$('#unit_to_send_to_crb').trigger('change');
+						}
+					}
+
+					$(document).off('click.crbBatchTarget', '#crb_batch_target_tabs [data-crb-target]')
+							.on('click.crbBatchTarget', '#crb_batch_target_tabs [data-crb-target]', function(event) {
+								event.preventDefault();
+								var targetType = $(this).attr('data-crb-target');
+
+								if ($('#crb_batch_target_type').val() !== targetType) {
+									$('#crb_batch_target_type').val(targetType).trigger('change');
+								}
+							});
+
+					$('#crb_batch_target_type').change(updateCrbTargetType);
+					updateCrbTargetType();
+
+					$('#get_change_region_compliance_crb')
 							.change(
 									function() {
 										$("#unit_to_send_to_crb").val("");
-										$('#unit_division_to_send_to_crb').val("")
+										$('#unit_division_to_send_to_crb').val("none");
+										resetCrbIndividual();
 										$("#btn_process_batchlist_crb").hide();
 									});
 
@@ -157,6 +192,7 @@ $(document)
 										}
 
 										$("#unit_to_send_to_crb").val("");
+										resetCrbIndividual();
 										$("#btn_process_batchlist_crb").hide();
 										$
 												.ajax({
@@ -215,7 +251,47 @@ $(document)
 									$('#unit_to_send_to_crb')
 							.change(
 									function() {
-										$("#btn_process_batchlist_crb").show();
+										var unitName = $(this).val();
+										var isIndividual = $('#crb_batch_target_type').val() === 'Individual';
+										resetCrbIndividual();
+										$("#btn_process_batchlist_crb").toggle(!isIndividual && !!unitName);
+
+										if (isIndividual && unitName) {
+											var regionId = $('#get_change_region_compliance_crb').val();
+											var divisionName = $('#unit_division_to_send_to_crb').val();
+
+											$.ajax({
+												type: 'POST',
+												url: 'Case_Management_Serv',
+												data: {
+													request_type: 'get_lc_list_of_users_rpt',
+													region_code: regionId ? regionId.replace('.0', '') : '',
+													division_name: divisionName,
+													unit_id: unitName
+												},
+												cache: false,
+												success: function(jobdetails) {
+													var json_p = JSON.parse(jobdetails);
+													var datalist = $('#listofusersbatching_crb');
+
+													if (Array.isArray(json_p.data)) {
+														$(json_p.data).each(function() {
+															datalist.append('<option data-name="' + this.fullname
+																	+ '" data-id="' + this.userid + '" value="'
+																	+ this.fullname + '"></option>');
+														});
+													}
+
+													if (!json_p.data || json_p.data.length === 0) {
+														toastr.info('No individuals were found in the selected unit');
+													}
+												},
+												error: function() {
+													toastr.error('Unable to load individuals for the selected unit');
+												}
+											});
+										}
+
 										$.ajax({
     				 type: "POST",
     				 url: "app_modal_fills_serv",
@@ -259,6 +335,14 @@ $(document)
      			 
           
 									});
+
+					$('#user_to_send_to_crb').on('input change', function() {
+						var selectedName = $(this).val();
+						var validUser = $('#listofusersbatching_crb option').filter(function() {
+							return this.value === selectedName;
+						}).length > 0;
+						$('#btn_process_batchlist_crb').toggle(validUser);
+					});
 
 									
 

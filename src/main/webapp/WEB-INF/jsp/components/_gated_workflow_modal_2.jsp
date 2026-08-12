@@ -53,23 +53,6 @@
             Creates an official memo document in pdf format
           </div>
         </div>
-        
-        <!-- Memo Information -->
-        <!-- <div class="alert alert-light border">
-          <div class="d-flex">
-            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
-            <div class="text-start">
-              <strong class="text-dark">Memo Features:</strong>
-              <ul class="mb-0 mt-2 ps-3">
-                <li class="text-muted">Professional memo format</li>
-                <li class="text-muted">Official letterhead and signatures</li>
-                <li class="text-muted">Downloadable Word document</li>
-                <li class="text-muted">Ready for printing and distribution</li>
-              </ul>
-            </div>
-          </div>
-        </div> -->
-        
       </div>
       
       <!-- Modal Footer -->
@@ -126,24 +109,6 @@
                             <div class="instruction-content p-4 bg-light rounded border">
                                 ${review_instruction}
                             </div>
-                            
-                            <!-- Instruction Metadata (Optional) -->
-                            <!-- <div class="instruction-meta mt-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="d-flex align-items-center text-muted small mb-2">
-                                            <i class="fas fa-calendar-alt me-2"></i>
-                                            <span>Last Updated: <span id="instructionDate">Just now</span></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 text-md-end">
-                                        <div class="d-flex align-items-center justify-content-md-end text-muted small mb-2">
-                                            <i class="fas fa-user-edit me-2"></i>
-                                            <span>Provided by: <span id="instructionAuthor">System</span></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -286,14 +251,6 @@
                                 <option>FREEHOLD</option>
                             </select>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <label for="land_size_on_tc_e" class="form-label">
-                                <i class="bi bi-hash me-1"></i>Licensed Surveyor No.
-                            </label>
-                            <input class="form-control" id="land_size_on_tc_e"
-                                name="licensed_surveyor_no_on_tcland_size_on_tc" type="text"
-                                aria-describedby="nameHelp" placeholder="Enter Licensed Surveyor no." required>
-                        </div> -->
                     </div>
                 </div>
 
@@ -958,23 +915,6 @@
                                             Visualize Polygon
                                         </button>
                                         
-                                        <!-- Plot Parcels Button -->
-                                        <!-- <button type="button" class="btn btn-success btn-sm" 
-                                            id="lc_btn_visualise_search" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Plot Parcels">
-                                            <i class="fas fa-object-ungroup me-1"></i>
-                                            Plot Parcels
-                                        </button> -->
-                                        
-                                        <!-- Print Map Button -->
-                                        <!-- <button type="button" class="btn btn-info btn-sm" 
-                                            id="lc_btnprintmap" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Print Map">
-                                            <i class="fas fa-print me-1"></i>
-                                            Print
-                                        </button> -->
                                     </div>
                                     
                                     <!-- Scale Controls -->
@@ -1019,7 +959,7 @@
                                                     Lock Scale
                                                 </label>
                                             </div>
-                                            
+
                                             <button type="button" class="btn btn-info btn-sm" 
                                                 id="lc_btn_scale_zoom" 
                                                 data-bs-toggle="tooltip" data-bs-placement="top" 
@@ -1029,17 +969,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Map Container -->
                                 <div class="map-container border rounded" 
                                     id="lc-map____" 
                                     style="height: 400px; min-height: 300px;">
-                                    <!-- <div class="d-flex justify-content-center align-items-center h-100 bg-light">
-                                        <div class="text-center text-muted">
-                                            <i class="fas fa-map fa-3x mb-3"></i>
-                                            <p class="mb-0">Map visualization will appear here</p>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                         </form>
@@ -1289,24 +1223,6 @@
                                             <i class="fas fa-map-marked-alt me-1"></i>
                                             Visualize Polygon
                                         </button>
-                                        
-                                        <!-- Plot Parcels Button -->
-                                        <!-- <button type="button" class="btn btn-success btn-sm" 
-                                            id="lc_btn_visualise_search" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Plot Parcels">
-                                            <i class="fas fa-object-ungroup me-1"></i>
-                                            Plot Parcels
-                                        </button> -->
-                                        
-                                        <!-- Print Map Button -->
-                                        <!-- <button type="button" class="btn btn-info btn-sm" 
-                                            id="lc_btnprintmap" 
-                                            data-bs-toggle="tooltip" data-bs-placement="top" 
-                                            title="Print Map">
-                                            <i class="fas fa-print me-1"></i>
-                                            Print
-                                        </button> -->
                                     </div>
                                     
                                     <!-- Scale Controls -->
@@ -1366,37 +1282,9 @@
                                 <div class="map-container border rounded" 
                                     id="lc-map_____" 
                                     style="height: 400px; min-height: 300px;">
-                                    <!-- <div class="d-flex justify-content-center align-items-center h-100 bg-light">
-                                        <div class="text-center text-muted">
-                                            <i class="fas fa-map fa-3x mb-3"></i>
-                                            <p class="mb-0">Click "Visualize Polygon" to display the map</p>
-                                            <p class="small">Map will appear here after visualization</p>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                             
-                            <!-- Review Actions -->
-                            <!-- <div class="mt-4 pt-3 border-top">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="alert alert-info mb-0">
-                                            <i class="fas fa-check-circle me-2"></i>
-                                            <strong>Review Status:</strong> All plan details are loaded and ready for review.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 text-end">
-                                        <button type="button" class="btn btn-success" id="btn_approve_plan">
-                                            <i class="fas fa-check me-1"></i>
-                                            Approve Plan
-                                        </button>
-                                        <button type="button" class="btn btn-outline-danger ms-2" id="btn_reject_plan">
-                                            <i class="fas fa-times me-1"></i>
-                                            Request Changes
-                                        </button>
-                                    </div>
-                                </div>
-                            </div> -->
                         </form>
                     </div>
                 </div>
@@ -1675,11 +1563,6 @@
                                         </button>
                                     </div>
                                     <div>
-                                        <!-- <button type="button" class="btn btn-outline-secondary btn-sm" 
-                                                id="btn_export_app_docs">
-                                            <i class="fas fa-download me-1"></i>
-                                            Export
-                                        </button> -->
                                     </div>
                                 </div>
                                 
@@ -1846,41 +1729,6 @@
             </div>
           </div>
         </div>
-        
-        <!-- Optional Volume and Folio Display -->
-        <!-- 
-        <div class="row g-3 mb-4">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="" class="form-label fw-medium">
-                <i class="fas fa-book me-1"></i>
-                Volume Number
-              </label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-                <input type="text" class="form-control" readonly value="${volume_number}">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="" class="form-label fw-medium">
-                <i class="fas fa-file-alt me-1"></i>
-                Folio Number
-              </label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-                <input type="text" class="form-control" readonly value="${folio_number}">
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
-        
         <!-- Generate OTP Button -->
         <div class="text-center py-3">
           <button type="button" id="lc_btn_approve_for_plot_transaction_to_smd_layer" 
@@ -1978,21 +1826,6 @@
                                             <i class="fas fa-map-marked-alt me-1"></i>
                                             Visualize Polygon
                                         </button>
-                                        
-                                        <!-- Plot Parcels Button -->
-                                        <!-- <button type="button" class="btn btn-success btn-sm" 
-                                            id="lc_btn_visualise_search">
-                                            <i class="fas fa-object-ungroup me-1"></i>
-                                            Plot Parcels
-                                        </button> -->
-                                        
-                                        <!-- Print Map Button -->
-                                        <!-- <button type="button" class="btn btn-info btn-sm" 
-                                            id="lc_btnprintmap">
-                                            <i class="fas fa-print me-1"></i>
-                                            Print
-                                        </button> -->
-
                                         <button type="button" class="btn btn-danger btn-sm" 
                                             id="lc_btn_check_related_jobs">
                                             <i class="fas fa-eye me-1"></i>
@@ -2225,25 +2058,7 @@
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label for="lc_search_report_summary_details_2" class="form-label">Report Summary</label>
-                                            <!-- <textarea id="lc_search_report_summary_details_2" 
-                                                name="lc_search_report_summary_details" 
-                                                class="form-control" 
-                                                required 
-                                                rows="7" 
-                                                style="padding:50px !important;">${remark_or_comment}</textarea>
-                                            </div> -->
                                             <div class="position-relative">
-                                                <!-- <textarea id="lc_search_report_summary_details" 
-                                                            name="lc_search_report_summary_details" 
-                                                            class="form-control" 
-                                                            required 
-                                                            rows="7"
-                                                            style="min-height: 200px; padding: 1.5rem !important;"
-                                                            placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                                </textarea> -->
-                                                <!-- <div id="lc_search_report_summary_details_2" class="quill-editor" style="height: 300px;">
-                                                    ${remark_or_comment}
-                                                </div> -->
                                                 <textarea id="lc_search_report_summary_details_2">
                                                     ${remark_or_comment}
                                                 </textarea>
@@ -2255,15 +2070,6 @@
                                     
                                     <div class="row g-3 mt-2">
                                         <div class="col-auto">
-                                        <!-- <button type="button" 
-                                            name="btn_compose_certificate_template_2" 
-                                            id="btn_compose_certificate_template_2" 
-                                            class="btn btn-warning btn-icon-split">
-                                            <span class="icon text-white-50"> 
-                                            <i class="fas fa-edit"></i>
-                                            </span>
-                                            <span class="text">Compose Template</span>
-                                        </button> -->
                                         </div>
                                         
                                         <div class="col-auto">
@@ -2431,25 +2237,8 @@
                                     <div class="row g-3">
                                         <div class="col-12">
                                             <label for="lc_search_report_summary_details_3" class="form-label">Report Summary</label>
-                                            <!-- <textarea id="lc_search_report_summary_details_3" 
-                                                name="lc_search_report_summary_details" 
-                                                class="form-control" 
-                                                required 
-                                                rows="7" 
-                                                style="padding:50px !important;">${remark_or_comment}</textarea>
-                                            </div> -->
+
                                             <div class="position-relative">
-                                                <!-- <textarea id="lc_search_report_summary_details" 
-                                                            name="lc_search_report_summary_details" 
-                                                            class="form-control" 
-                                                            required 
-                                                            rows="7"
-                                                            style="min-height: 200px; padding: 1.5rem !important;"
-                                                            placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                                </textarea> -->
-                                                <!-- <div id="lc_search_report_summary_details_3" class="quill-editor" style="height: 300px;">
-                                                    ${remark_or_comment}
-                                                </div> -->
                                                 <textarea id="lc_search_report_summary_details_3">
                                                     ${remark_or_comment}
                                                 </textarea>
@@ -2460,17 +2249,6 @@
                                         </div>
                                     
                                     <div class="row g-3 mt-2">
-                                        <!-- <div class="col-auto">
-                                        <button type="button" 
-                                            name="btn_compose_certificate_template_2" 
-                                            id="btn_compose_certificate_template_2" 
-                                            class="btn btn-warning btn-icon-split">
-                                            <span class="icon text-white-50"> 
-                                            <i class="fas fa-edit"></i>
-                                            </span>
-                                            <span class="text">Compose Template</span>
-                                        </button>
-                                        </div> -->
                                         
                                         <div class="col-auto">
                                         <button type="button" 
@@ -2594,16 +2372,6 @@
             </div>
 			
 			<div class="modal-body">
-				<!-- Description Section -->
-				<!-- <div class="alert alert-success bg-success bg-opacity-10 border-success mb-4">
-					<div class="d-flex">
-						<i class="fas fa-info-circle fa-lg me-3 mt-1 text-success"></i>
-						<div>
-							<h6 class="alert-heading mb-2">About Signed Report Upload</h6>
-							<p class="mb-2">Upload the final signed search report here. Once uploaded, this document will be attached to the applicant's public record and become part of the official case documentation.</p>
-						</div>
-					</div>
-				</div> -->
 				
 				<!-- Upload Information Banner -->
 				<div class="alert alert-warning bg-warning bg-opacity-10 border-warning mb-4">
@@ -2619,10 +2387,6 @@
 				<div class="text-center p-5 border-dashed rounded-3 bg-light" style="border: 2px dashed #ccc;">
 					<i class="fas fa-cloud-upload-alt text-primary fa-4x mb-3"></i>
 					<h5 class="mb-3">Upload Signed Search Report</h5>
-					<!-- <p class="text-muted mb-4">
-						Select the final signed search report file to upload. 
-						This document will be permanently attached to the applicant's public record.
-					</p> -->
 					
 					<div class="d-grid gap-2 d-md-flex justify-content-center">
 						<button type="button" id="btn_upload_signed_report" class="btn btn-primary btn-lg px-4">
@@ -2645,12 +2409,6 @@
 					<i class="fas fa-times me-2"></i>
 					Cancel
 				</button>
-				<!-- <button type="button" 
-					class="btn btn-outline-primary"
-					disabled>
-					<i class="fas fa-upload me-2"></i>
-					Upload
-				</button> -->
 			</div>
 		</div>
 	</div>
@@ -2683,40 +2441,6 @@
             </div>
           </div>
         </div>
-        
-        <!-- Optional Volume and Folio Display -->
-        <!-- 
-        <div class="row g-3 mb-4">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="" class="form-label fw-medium">
-                <i class="fas fa-book me-1"></i>
-                Volume Number
-              </label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-                <input type="text" class="form-control" readonly value="${volume_number}">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="" class="form-label fw-medium">
-                <i class="fas fa-file-alt me-1"></i>
-                Folio Number
-              </label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="fas fa-hashtag"></i>
-                </span>
-                <input type="text" class="form-control" readonly value="${folio_number}">
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
         
         <!-- Generate OTP Button -->
         <div class="text-center py-3">
@@ -2784,52 +2508,6 @@
 						</div>
 					</div>
 				</div>
-				
-				<!-- Report Summary Section -->
-				<!-- <div class="card border-0 shadow-sm mb-4">
-					<div class="card-header bg-light py-3">
-						<h6 class="mb-0">
-							<i class="fas fa-file-alt me-2"></i>
-							Report Details
-						</h6>
-					</div>
-					<div class="card-body">
-						<div class="row g-3">
-							<div class="col-md-6">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-hashtag me-1"></i> Job Number
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_job_number">
-									<span class="text-muted">Not specified</span>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-file-code me-1"></i> Case Number
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_case_number">
-									<span class="text-muted">Not specified</span>
-								</div>
-							</div>
-							<div class="col-12">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-tasks me-1"></i> Process Type
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_process_type">
-									<span class="text-muted">Not specified</span>
-								</div>
-							</div>
-							<div class="col-12">
-								<label class="form-label text-muted small mb-1">
-									<i class="fas fa-calendar-check me-1"></i> Last Modified
-								</label>
-								<div class="form-control-plaintext border-bottom pb-2" id="preview_last_modified">
-									<span class="text-muted">Just now</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> -->
 				
 				<!-- Preview Action Section -->
 				<div class="text-center p-4 border-dashed rounded-3 bg-light">
@@ -2950,24 +2628,11 @@
         <!-- Modal Footer -->
         <div class="modal-footer bg-light">
             <div class="d-flex justify-content-end w-100 align-items-center">
-                <!-- <div class="text-muted small">
-                    <i class="fas fa-history me-1"></i>
-                    Last updated: <span id="planLastUpdated">
-                        <c:choose>
-                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
-                            <c:otherwise>Never</c:otherwise>
-                        </c:choose>
-                    </span>
-                </div> -->
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>
                         Close
                     </button>
-                    <!-- <button type="button" class="btn btn-outline-info" id="btn_view_plan_preview">
-                        <i class="fas fa-eye me-1"></i>
-                        Preview
-                    </button> -->
                 </div>
             </div>
         </div>
@@ -3089,24 +2754,11 @@
         <!-- Modal Footer -->
         <div class="modal-footer bg-light">
             <div class="d-flex justify-content-end w-100 align-items-center">
-                <!-- <div class="text-muted small">
-                    <i class="fas fa-history me-1"></i>
-                    Last updated: <span id="planLastUpdated">
-                        <c:choose>
-                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
-                            <c:otherwise>Never</c:otherwise>
-                        </c:choose>
-                    </span>
-                </div> -->
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>
                         Close
                     </button>
-                    <!-- <button type="button" class="btn btn-outline-info" id="btn_view_plan_preview">
-                        <i class="fas fa-eye me-1"></i>
-                        Preview
-                    </button> -->
                 </div>
             </div>
         </div>
@@ -3225,15 +2877,6 @@
         <!-- Modal Footer -->
         <div class="modal-footer bg-light">
             <div class="d-flex justify-content-end w-100 align-items-center">
-                <!-- <div class="text-muted small">
-                    <i class="fas fa-history me-1"></i>
-                    Last updated: <span id="planLastUpdated">
-                        <c:choose>
-                            <c:when test="${not empty plan_no and plan_no != 'null'}">Recently</c:when>
-                            <c:otherwise>Never</c:otherwise>
-                        </c:choose>
-                    </span>
-                </div> -->
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>
@@ -3684,20 +3327,6 @@
                         <i class="bi bi-eye me-1"></i> View WKT
                         </button>
 
-                        <!-- <button type="button" class="btn btn-info btn-sm" 
-                                id="lc_btn_visualise_search"
-                                data-bs-toggle="tooltip" data-bs-placement="top" 
-                                title="Plot Parcels">
-                        <i class="bi bi-layers me-1"></i> Plot Parcels
-                        </button>
-
-                        <button type="button" class="btn btn-warning btn-sm" 
-                                id="lc_btnprintmap"
-                                data-bs-toggle="tooltip" data-bs-placement="top" 
-                                title="Print Map">
-                        <i class="bi bi-printer me-1"></i> Print
-                        </button> -->
-
                         <!-- Scale Controls -->
                         <div class="d-flex align-items-center gap-2">
                             <span class="fw-semibold text-muted">Scale:</span>
@@ -3721,48 +3350,6 @@
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
-
-                        <!-- Scale Controls -->
-                        <!-- <div class="d-flex align-items-center ms-auto">
-                            <label class="form-label me-2 mb-0 fw-medium">
-                                <i class="bi bi-zoom-in me-1"></i>Scale:
-                            </label>
-                            <div class="input-group input-group-sm" style="width: 200px;">
-                                <input type="text" class="form-control lc_scale_value_e" id="lc_scale_value_e" 
-                                    placeholder="Custom scale">
-                                <select class="form-select lc_scale_value" data-trigger id="lc_scale_value" style="width: 100px;">
-                                <option value="500">500</option>
-                                <option value="1107">1107</option>
-                                <option value="1250">1250</option>
-                                <option value="2500" selected>2500</option>
-                                <option value="2140">2140</option>
-                                <option value="2670">2670</option>
-                                <option value="2215">2215</option>
-                                <option value="2825">2825</option>
-                                <option value="5000">5000</option>
-                                <option value="10000">10000</option>
-                                <option value="15000">15000</option>
-                                <option value="20000">20000</option>
-                                </select>
-                            </div>
-                        </div> -->
-
-                        <!-- Scale Lock -->
-                        <!-- <div class="d-flex align-items-center ms-2">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" 
-                                id="lc_lockmapscale" checked>
-                            <label class="form-check-label small" for="lc_lockmapscale">
-                            Lock Scale
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm ms-2 lc_btn_scale_zoom" 
-                                id="lc_btn_scale_zoom"
-                                data-bs-toggle="tooltip" data-bs-placement="top" 
-                                title="Zoom to Scale">
-                            <i class="bi bi-search"></i>
-                        </button>
-                        </div> -->
                     </div>
                     </div>
                 </div>
@@ -3794,34 +3381,6 @@
             </div>
 
           </div>
-
-          
-
-        <!-- Advanced Search -->
-        <!-- <div class="card border-info">
-            <div class="card-header bg-info bg-opacity-10 border-info py-2">
-                <h6 class="mb-0 fw-semibold">
-                    <i class="fas fa-search-plus me-2"></i>Advanced Search
-                </h6>
-            </div>
-            <div class="card-body p-3">
-                <div class="mb-3">
-                    <input class="form-control form-control-sm" type="text" 
-                            id="scannned_map_to_search_for" 
-                            placeholder="Enter Map name"
-                            list="listofscannnedmaptosearchfor">
-                    <datalist id="listofscannnedmaptosearchfor"></datalist>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-info btn-sm flex-fill" id="lrd_btn_search_for_scanned_maps_all">
-                        <i class="fas fa-search me-1"></i> Find
-                    </button>
-                    <button class="btn btn-primary btn-sm flex-fill" id="lrd_btn_load_for_scanned_maps_all">
-                        <i class="fas fa-layer-group me-1"></i> Load All
-                    </button>
-                </div>
-            </div>
-        </div> -->
 
             <!-- Multiple Parcels Table -->
         <div class="card card-body mt-4">
@@ -4674,14 +4233,6 @@
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <!-- <label class="form-label fw-semibold text-muted small text-uppercase">
-                                        <i class="fas fa-exclamation-triangle me-1"></i> Priority Level
-                                    </label>
-                                    <select class="form-select" id="inspection_priority">
-                                        <option value="normal" selected>Normal</option>
-                                        <option value="urgent">Urgent</option>
-                                        <option value="high">High Priority</option>
-                                    </select> -->
                                 </div>
                                 
                                 <div class="col-12">
@@ -4866,30 +4417,6 @@ Thank you.</textarea>
 
             <!-- Body -->
             <div class="modal-body p-4">
-                <!-- Certificate Type (commented out but ready to use) -->
-                <!-- 
-                <div class="mb-4">
-                    <label for="lc_txt_type_of_certificate" class="form-label fw-medium text-muted mb-2">
-                        <i class="bi bi-award me-1"></i>
-                        Certificate Type
-                    </label>
-                    <select name="lc_txt_type_of_certificate" 
-                            id="lc_txt_type_of_certificate" 
-                            class="form-select form-select-lg bg-light border-0" 
-                            required>
-                        <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
-                            ${certificate_type == 'Individual' ? '-- select certificate type --' : certificate_type}
-                        </option>
-                        <option value="Provisional Certificate">📄 Provisional Certificate</option>
-                        <option value="Land Certificate">🏞️ Land Certificate</option>
-                        <option value="Substituted Certificate">📋 Substituted Certificate</option>
-                    </select>
-                    <div class="form-text">
-                        <i class="bi bi-info-circle me-1"></i>
-                        Select the type of certificate to generate deed number
-                    </div>
-                </div>
-                -->
 
                 <!-- Deed Number Display -->
                 <div class="deed-number-container mb-4">
@@ -4957,17 +4484,6 @@ Thank you.</textarea>
                             <span class="btn-text">Generate New Deed Number</span>
                         </div>
                     </button>
-
-                    <!-- Quick Actions (shown when deed number exists) -->
-                    <!-- <div class="quick-actions d-flex gap-2 ${empty deed_number or deed_number == 'null' ? 'd-none' : ''}" 
-                         id="quickActions">
-                        <button type="button" class="btn btn-outline-primary flex-fill" onclick="useDeedNumber()">
-                            <i class="bi bi-check-circle me-2"></i>Use Number
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="regenerateDeedNumber()">
-                            <i class="bi bi-arrow-repeat me-2"></i>Regenerate
-                        </button>
-                    </div> -->
                 </div>
 
                 <!-- Information Footer -->
@@ -4990,10 +4506,6 @@ Thank you.</textarea>
                     <i class="bi bi-x-circle me-2"></i>
                     Close
                 </button>
-                <!-- <button type="button" class="btn btn-outline-primary" onclick="printDeedInfo()">
-                    <i class="bi bi-printer me-2"></i>
-                    Print
-                </button> -->
             </div>
         </div>
     </div>
@@ -5045,24 +4557,7 @@ Thank you.</textarea>
                                 </div>
                                 
                                 <div class="form-floating">
-                                    <!-- <textarea id="lc_search_report_summary_details_cs" 
-                                            name="lc_search_report_summary_details_cs" 
-                                            class="form-control" 
-                                            required 
-                                            style="height: 180px;">${remark_or_comment}</textarea> -->
-                                    <!-- <label for="lc_search_report_summary_details_cs">
-                                        <i class="bi bi-chat-left-text me-1"></i>
-                                        Certificate Summary / Remarks
-                                    </label> -->
                                     <div class="position-relative">
-                                        <!-- <textarea id="lc_search_report_summary_details" 
-                                                name="lc_search_report_summary_details" 
-                                                class="form-control" 
-                                                required 
-                                                rows="7"
-                                                style="min-height: 200px; padding: 1.5rem !important;"
-                                                placeholder="Enter certificate summary and details...">${remark_or_comment}
-                                        </textarea> -->
                                         <div id="lc_concurrence_certificate_summary_details">
                                         ${remark_or_comment}
                                         </div>
@@ -5079,17 +4574,6 @@ Thank you.</textarea>
 
                             <!-- Action Buttons -->
                             <div class="action-buttons">
-                                <!-- Compose Template (commented out but ready to use) -->
-                                <!-- 
-                                <div class="col-4 mb-3">
-                                    <button type="button" name="btn_compose_certificate_template" 
-                                            id="btn_compose_certificate_template" 
-                                            class="btn btn-outline-primary w-100 py-3">
-                                        <i class="bi bi-file-earmark-plus me-2"></i>
-                                        <span>Compose Template</span>
-                                    </button>
-                                </div>
-                                -->
 
                                 <div class="row g-3">
                                     <!-- Save Certificate Button -->
@@ -5145,14 +4629,6 @@ Thank you.</textarea>
                     <i class="bi bi-x-circle me-2"></i>
                     Close
                 </button>
-                <!-- <button type="button" class="btn btn-outline-primary" onclick="previewCertificate()">
-                    <i class="bi bi-eye me-2"></i>
-                    Preview
-                </button>
-                <button type="button" class="btn btn-outline-info" onclick="printCertificate()">
-                    <i class="bi bi-printer me-2"></i>
-                    Print
-                </button> -->
             </div>
         </div>
     </div>
@@ -5290,17 +4766,6 @@ Thank you.</textarea>
                                 <span class="btn-text">Generate Serial Number</span>
                             </div>
                         </button>
-
-                        <!-- Quick Actions (shown when LS number exists) -->
-                        <!-- <div class="quick-actions d-flex gap-2 ${empty ls_number or ls_number == 'null' ? 'd-none' : ''}" 
-                             id="quickActions">
-                            <button type="button" class="btn btn-outline-primary flex-fill" onclick="useLsNumber()">
-                                <i class="bi bi-check-circle me-2"></i>Use Number
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary flex-fill" onclick="regenerateLsNumber()">
-                                <i class="bi bi-arrow-repeat me-2"></i>Regenerate
-                            </button>
-                        </div> -->
                     </div>
 
                 </div>
@@ -5342,40 +4807,6 @@ Thank you.</textarea>
 
             <!-- Body -->
             <div class="modal-body p-4">
-                <!-- Volume and Folio Information (commented out but ready to use) -->
-                <!-- 
-                <div class="info-section mb-4">
-                    <h6 class="section-title mb-3">
-                        <i class="bi bi-info-circle me-2 text-primary"></i>
-                        Document Reference
-                    </h6>
-                    
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control bg-light border-0" 
-                                       id="volume_number" readonly value="${volume_number}" 
-                                       placeholder="Volume number">
-                                <label for="volume_number">
-                                    <i class="bi bi-book me-1"></i>
-                                    Volume Number
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control bg-light border-0" 
-                                       id="folio_number" readonly value="${folio_number}" 
-                                       placeholder="Folio number">
-                                <label for="folio_number">
-                                    <i class="bi bi-file-text me-1"></i>
-                                    Folio Number
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                -->
 
                 <!-- Certificate Preview Card -->
                 <div class="certificate-preview-card mb-4">
@@ -5394,21 +4825,6 @@ Thank you.</textarea>
                     </div>
                 </div>
 
-                <!-- Certificate Status -->
-                <!-- <div class="status-indicator mb-4">
-                    <div class="d-flex align-items-center p-3 bg-success bg-opacity-10 rounded-3">
-                        <div class="flex-shrink-0">
-                            <i class="bi bi-shield-check text-success fs-4"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="mb-1 text-success">Digitally Signed</h6>
-                            <p class="small text-muted mb-0">
-                                Certificate has been digitally signed and verified
-                            </p>
-                        </div>
-                    </div>
-                </div> -->
-
                 <!-- Action Buttons -->
                 <div class="action-section">
                     <!-- View Certificate Button -->
@@ -5423,15 +4839,6 @@ Thank you.</textarea>
                         </div>
                     </button>
 
-                    <!-- Quick Actions -->
-                    <!-- <div class="quick-actions d-flex gap-2">
-                        <button type="button" class="btn btn-outline-primary flex-fill" onclick="downloadCertificate()">
-                            <i class="bi bi-download me-2"></i>Download
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary flex-fill" onclick="printCertificate()">
-                            <i class="bi bi-printer me-2"></i>Print
-                        </button>
-                    </div> -->
                 </div>
 
             </div>
@@ -5476,30 +4883,6 @@ Thank you.</textarea>
 
             <!-- Body -->
             <div class="modal-body p-4">
-                <!-- Certificate Type (commented out but ready to use) -->
-                <!-- 
-                <div class="mb-4">
-                    <label for="lc_txt_type_of_certificate" class="form-label fw-medium text-muted mb-2">
-                        <i class="bi bi-award me-1"></i>
-                        Certificate Type
-                    </label>
-                    <select name="lc_txt_type_of_certificate" 
-                            id="lc_txt_type_of_certificate" 
-                            class="form-select form-select-lg bg-light border-0" 
-                            required>
-                        <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
-                            ${certificate_type == 'Individual' ? '-- select certificate type --' : certificate_type}
-                        </option>
-                        <option value="Provisional Certificate">📄 Provisional Certificate</option>
-                        <option value="Land Certificate">🏞️ Land Certificate</option>
-                        <option value="Substituted Certificate">📋 Substituted Certificate</option>
-                    </select>
-                    <div class="form-text">
-                        <i class="bi bi-info-circle me-1"></i>
-                        Select certificate type to generate related numbers
-                    </div>
-                </div>
-                -->
 
                 <!-- Preview Summary -->
                 <div class="preview-summary mb-4">
@@ -5612,41 +4995,7 @@ Thank you.</textarea>
                                 <span class="btn-text">View Signed Certificate</span>
                             </div>
                         </button>
-
-                        <!-- Quick Actions -->
-                        <!-- <div class="quick-actions d-flex gap-2">
-                            <button type="button" class="btn btn-outline-primary flex-fill" onclick="downloadCertificate()">
-                                <i class="bi bi-download me-2"></i>Download
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary flex-fill" onclick="printCertificate()">
-                                <i class="bi bi-printer me-2"></i>Print
-                            </button>
-                        </div> -->
                     </div>
-
-                    <!-- Volume & Folio Section (can be uncommented when needed) -->
-                    <!-- 
-                    <div class="row g-3 mt-3">
-                        <div class="col-md-6">
-                            <div class="number-card">
-                                <label class="form-label small fw-medium text-muted mb-2">
-                                    <i class="bi bi-book me-1"></i>
-                                    Volume Number
-                                </label>
-                                <input type="text" class="form-control bg-light" readonly value="${volume_number}" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="number-card">
-                                <label class="form-label small fw-medium text-muted mb-2">
-                                    <i class="bi bi-file-text me-1"></i>
-                                    Folio Number
-                                </label>
-                                <input type="text" class="form-control bg-light" readonly value="${folio_number}" />
-                            </div>
-                        </div>
-                    </div>
-                    -->
                 </div>
 
             </div>
@@ -7043,6 +6392,65 @@ Thank you.</textarea>
                                                 id="btn_zoom_in">
                                             <i class="fas fa-search-plus"></i>
                                         </button>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <div class="card border h-100">
+                                            <div class="card-header bg-light py-2">
+                                                <h6 class="mb-0 fw-semibold">
+                                                    <i class="fas fa-layer-group me-2"></i>Scanned Maps
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <select class="form-select form-select-sm mb-3"
+                                                        id="geoserverscannedimages_list_vpt_deed"
+                                                        aria-label="Available scanned images for deed parcel">
+                                                    <option value="-1">Select Scanned Image</option>
+                                                </select>
+                                                <div class="d-flex gap-2">
+                                                    <button type="button" class="btn btn-warning btn-sm flex-fill"
+                                                            id="lc_btn_search_for_scanned_maps_vpt_deed">
+                                                        <i class="fas fa-search me-1"></i>Search
+                                                    </button>
+                                                    <button type="button" class="btn btn-success btn-sm flex-fill"
+                                                            id="lc_btn_load_for_scanned_maps_vpt_deed">
+                                                        <i class="fas fa-check-circle me-1"></i>Load
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="card border h-100">
+                                            <div class="card-header bg-light py-2">
+                                                <h6 class="mb-0 fw-semibold text-primary">
+                                                    <i class="fas fa-copy me-2"></i>Multiple Parcel Overlays
+                                                </h6>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-sm mb-0"
+                                                           id="lrd_more_than_one_parcel_Table_vpt_deed">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Reference Number</th>
+                                                                <th>Locality</th>
+                                                                <th>Remarks</th>
+                                                                <th class="text-center">Details</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="text-muted">
+                                                                <td colspan="4" class="text-center py-3">No overlay parcels loaded yet.</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 

@@ -8001,6 +8001,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				String send_to_name = request.getParameter("send_to_name");
 				String region_id = request.getParameter("region_id");
 				String region_name = request.getParameter("region_name");
+				String division_name = request.getParameter("division_name");
+				String batch_target_type = request.getParameter("batch_target_type");
+				String destination_unit_id = request.getParameter("destination_unit_id");
+				String destination_unit_name = request.getParameter("destination_unit_name");
 
 				String division = (String) session.getAttribute("division");
 
@@ -8020,6 +8024,10 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj.put("list_of_application", list_of_application);
 				obj.put("region_id", region_id);
 				obj.put("region_name", region_name);
+				obj.put("division_name", division_name);
+				obj.put("batch_target_type", batch_target_type != null ? batch_target_type : "Unit");
+				obj.put("destination_unit_id", destination_unit_id);
+				obj.put("destination_unit_name", destination_unit_name);
 
 				String batchlistdivison = obj.toString();
 
