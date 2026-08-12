@@ -130,7 +130,7 @@
                             <div class="card-header bg-primary text-white">
                                 <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Transaction Summary</h6>
                             </div>
-                            <div class="card-body" style="max-height: 600px; overflow-y: auto;">
+                            <div class="card-body h-100">
                                 <!-- Selected Transaction Details -->
                                 <div id="pvlmd_selected_transaction_panel">
                                     <div class="alert alert-info">
@@ -221,6 +221,61 @@
                                                 <span class="text-muted small">DOC</span><br>
                                                 <span class="small" id="pvlmd_summary_doc">-</span>
                                             </div>
+
+											<!-- Section: Additional -->
+                                            <div class="bg-light p-1 rounded mb-1 mt-2">
+                                                <small class="text-muted fw-bold">ADDITIONAL</small>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Status</span><br>
+                                                <span class="badge bg-info small" id="pvlmd_summary_compensation">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Suit No</span><br>
+                                                <span class="small" id="pvlmd_summary_suit">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Floor</span><br>
+                                                <span class="small" id="pvlmd_summary_floor">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Apartment</span><br>
+                                                <span class="small" id="pvlmd_summary_apartment">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Submission</span><br>
+                                                <span class="small" id="pvlmd_summary_submission">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Unit</span><br>
+                                                <span class="small" id="pvlmd_summary_unit">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Judgement</span><br>
+                                                <span class="small" id="pvlmd_summary_judgement">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Remarks</span><br>
+                                                <span class="small" id="pvlmd_summary_remarks">-</span>
+                                            </div>
+                                            
+                                            <div class="border-bottom pb-1 mb-1">
+                                                <span class="text-muted small">Modified By</span><br>
+                                                <span class="small" id="pvlmd_summary_modified_by">-</span>
+                                            </div>
+                                            
+                                            <div>
+                                                <span class="text-muted small">Modified Date</span><br>
+                                                <span class="small" id="pvlmd_summary_modified_date">-</span>
+                                            </div>
                                         </div>
                                         
                                         <!-- Column 2 -->
@@ -231,7 +286,7 @@
                                             </div>
                                             
                                             <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small text-primary">Plaintiff</span><br>
+                                                <span class="text-muted small text-primary">Grantor/Plaintiff</span><br>
                                                 <span class="fw-semibold small" id="pvlmd_summary_party1">-</span>
                                             </div>
                                             
@@ -246,7 +301,7 @@
                                             </div>
                                             
                                             <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small text-danger">Defendant</span><br>
+                                                <span class="text-muted small text-danger">Grantee/Defendant</span><br>
                                                 <span class="fw-semibold small" id="pvlmd_summary_party2">-</span>
                                             </div>
                                             
@@ -315,60 +370,6 @@
                                                 <span class="small" id="pvlmd_summary_rent">-</span>
                                             </div>
                                             
-                                            <!-- Section: Additional -->
-                                            <div class="bg-light p-1 rounded mb-1 mt-2">
-                                                <small class="text-muted fw-bold">ADDITIONAL</small>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Status</span><br>
-                                                <span class="badge bg-info small" id="pvlmd_summary_compensation">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Suit No</span><br>
-                                                <span class="small" id="pvlmd_summary_suit">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Floor</span><br>
-                                                <span class="small" id="pvlmd_summary_floor">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Apartment</span><br>
-                                                <span class="small" id="pvlmd_summary_apartment">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Submission</span><br>
-                                                <span class="small" id="pvlmd_summary_submission">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Unit</span><br>
-                                                <span class="small" id="pvlmd_summary_unit">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Judgement</span><br>
-                                                <span class="small" id="pvlmd_summary_judgement">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Remarks</span><br>
-                                                <span class="small" id="pvlmd_summary_remarks">-</span>
-                                            </div>
-                                            
-                                            <div class="border-bottom pb-1 mb-1">
-                                                <span class="text-muted small">Modified By</span><br>
-                                                <span class="small" id="pvlmd_summary_modified_by">-</span>
-                                            </div>
-                                            
-                                            <div>
-                                                <span class="text-muted small">Modified Date</span><br>
-                                                <span class="small" id="pvlmd_summary_modified_date">-</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

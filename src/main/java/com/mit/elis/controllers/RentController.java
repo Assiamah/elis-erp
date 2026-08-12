@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mit.elis.class_common.Ws_url_config;
 import com.google.gson.Gson;
@@ -170,6 +171,47 @@ public class RentController {
 			ArrayList javaArrayListFromGSON_regions = googleJson_regions.fromJson(region_list, ArrayList.class);
 			request.setAttribute("regionlist", javaArrayListFromGSON_regions);
 
+			String regional_code = (String) session.getAttribute("regional_code");
+
+			String web_service_response_incoming_lessee_update = null;
+			web_service_response_incoming_lessee_update = rent_mgt_service
+					.select_ground_rent_lessee_information_update_by_region(
+							cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), regional_code);
+
+			JSONObject incoming_lessee_update_obj = new JSONObject(web_service_response_incoming_lessee_update);
+			String incoming_lessee_update_data = incoming_lessee_update_obj.optString("data", "[]");
+			JSONArray incoming_lessee_update_array = new JSONArray(incoming_lessee_update_data);
+			ArrayList<Object> incoming_lessee_updates = new ArrayList<>();
+			ArrayList<Object> pending_lessee_updates = new ArrayList<>();
+			ArrayList<Object> approved_lessee_updates = new ArrayList<>();
+			ArrayList<Object> rejected_lessee_updates = new ArrayList<>();
+
+			for (int i = 0; i < incoming_lessee_update_array.length(); i++) {
+				JSONObject update = incoming_lessee_update_array.getJSONObject(i);
+				Object update_data = googleJson.fromJson(update.toString(), Object.class);
+				String review_status = update.optString("review_status", "pending_review").trim().toLowerCase();
+
+				incoming_lessee_updates.add(update_data);
+				if (review_status.equals("accepted") || review_status.equals("approved")) {
+					approved_lessee_updates.add(update_data);
+				} else if (review_status.equals("rejected")) {
+					rejected_lessee_updates.add(update_data);
+				} else {
+					pending_lessee_updates.add(update_data);
+				}
+			}
+
+			request.setAttribute("total_incoming_lessee_update",
+					incoming_lessee_update_obj.optInt("record_count", incoming_lessee_updates.size()));
+			request.setAttribute("incoming_lessee_updates", incoming_lessee_updates);
+			request.setAttribute("pending_lessee_updates", pending_lessee_updates);
+			request.setAttribute("approved_lessee_updates", approved_lessee_updates);
+			request.setAttribute("rejected_lessee_updates", rejected_lessee_updates);
+			request.setAttribute("pending_lessee_update_count", pending_lessee_updates.size());
+			request.setAttribute("approved_lessee_update_count", approved_lessee_updates.size());
+			request.setAttribute("rejected_lessee_update_count", rejected_lessee_updates.size());
+
 			request.setAttribute("page_name", "rent_management_dashboard");
 					model.addAttribute("content", "../pages/rent_management/rent_management_dashboard.jsp"); return "layouts/app";
 
@@ -179,6 +221,55 @@ public class RentController {
 		}
 		return null;
 
+	}
+
+	@PostMapping("/review_ground_rent_lessee_information_update")
+	@ResponseBody
+	public String review_ground_rent_lessee_information_update(HttpSession session, HttpServletRequest request) {
+		JSONObject response = new JSONObject();
+		try {
+			String user_id = (String) session.getAttribute("userid");
+			String reviewed_by = (String) session.getAttribute("fullname");
+			if (user_id == null || user_id.trim().isEmpty()) {
+				response.put("success", false);
+				response.put("message", "Your session has expired. Please sign in again.");
+				return response.toString();
+			}
+
+			if (reviewed_by == null || reviewed_by.trim().isEmpty()) {
+				reviewed_by = user_id;
+			}
+
+			String submission_id_value = request.getParameter("submission_id");
+			String decision = request.getParameter("decision");
+			String review_comment = request.getParameter("review_comment");
+			long submission_id = Long.parseLong(submission_id_value);
+
+			JSONObject review_data = new JSONObject();
+			review_data.put("submission_id", submission_id);
+			review_data.put("decision", decision == null ? "" : decision.trim().toLowerCase());
+			review_data.put("reviewed_by", reviewed_by);
+			review_data.put("review_comment", review_comment == null ? "" : review_comment.trim());
+
+			String service_response = rent_mgt_service.review_ground_rent_lessee_information_update(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), review_data.toString());
+			return new JSONObject(service_response).toString();
+		} catch (NumberFormatException e) {
+			try {
+				response.put("success", false);
+				response.put("message", "A valid submission is required.");
+			} catch (JSONException ignored) {
+			}
+			return response.toString();
+		} catch (Exception e) {
+			try {
+				response.put("success", false);
+				response.put("message", "The review could not be completed. Please try again.");
+			} catch (JSONException ignored) {
+			}
+			return response.toString();
+		}
 	}
 
 	@RequestMapping("/rent_management_map")

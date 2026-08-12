@@ -93,9 +93,14 @@
                                 <div class="card-title">
                                     Lessee & Rent Records
                                 </div>
-                                <button class="btn btn-warning label-btn" data-bs-toggle="modal" data-bs-target="#addlegder">
-                                    <i class="ri-add-line label-btn-icon me-2"></i>Add Lessee
-                                </button>
+                                <div>
+                                    <button class="btn btn-danger label-btn" data-bs-toggle="modal" data-bs-target="#incomingLesseeUpdatesModal">
+                                        <i class="ri-download-2-line label-btn-icon me-2"></i>Incoming Lessee Updates [ <b>${total_incoming_lessee_update}</b> ]
+                                    </button>
+                                    <button class="btn btn-warning label-btn" data-bs-toggle="modal" data-bs-target="#addlegder">
+                                        <i class="ri-add-line label-btn-icon me-2"></i>Add Lessee
+                                    </button>
+                                </div>
                             </div>
                            <div class="card-body">
                                 <!-- Search Panel -->
@@ -221,6 +226,7 @@
     </div>
 </div>
 
+<jsp:include page="../../components/_incoming_lessee_updates_modal.jsp"></jsp:include>
 <jsp:include page="../../components/_rent_management_modals.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
 
