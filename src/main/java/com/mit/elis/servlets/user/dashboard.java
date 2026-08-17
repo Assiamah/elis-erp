@@ -212,6 +212,52 @@ public class dashboard {
 		// doGet(request, response);
 	}
 
+	@RequestMapping("/live_monitoring")
+	@PostMapping
+	public String live_monitoring(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {
+
+		String servletName = request.getServletPath();
+		servletName = servletName.replace("/", "");
+		String assigenedmenus = (String) session.getAttribute("menus_com");
+		boolean isFound = false;
+		try {
+			isFound = assigenedmenus.contains(servletName); // true
+		} catch (Exception e) {
+
+		}
+
+		/////System.out.println(assigenedmenus);
+			////System.out.println(isFound);
+			////System.out.println("servletName");
+			////System.out.println(servletName);
+		// Log User out if the user tries to access right not assigned
+		
+		// if (!isFound) {
+		// 	request.setAttribute("login", "Please this is not alllowed");
+		// 	//
+		// 	 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		// }
+		// HttpSession session = request.getSession();
+
+		try {
+			request.setAttribute("page_name", "live_monitoring");
+			model.addAttribute("content", "../pages/developer/live_monitoring.jsp");
+			return "layouts/app";
+
+		} catch (
+
+		Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+		// $result['success'] = true; // #15
+		// $result['msg'] = 'User authenticated!'; // #16
+		// doGet(request, response);
+	}
+
 	@RequestMapping("/load_application_gated_steps")
 	@PostMapping
 	public String load_application_gated_steps(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) {

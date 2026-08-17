@@ -109,7 +109,7 @@ ${page_name == "csau_monitoring"  ? "<script src='assets/libs/chart.js/Chart.min
 
 <script src="${pageContext.request.contextPath}/js-pages/csau_online.js"></script>
 <script src="${pageContext.request.contextPath}/js-pages/app_scripts.js"></script>
-<script src="${pageContext.request.contextPath}/js-pages/global.js"></script>
+${page_name != "live_monitoring" ? "<script src='js-pages/global.js'></script>" : ""}
 <!-- <script src="${pageContext.request.contextPath}/js-pages/all_functions.js"></script> -->
 <script src="${pageContext.request.contextPath}/js-pages/inactivity_check.js"></script>
 
