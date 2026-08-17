@@ -261,6 +261,19 @@
                 </div>
 
                 <div class="card custom-card mb-3">
+                    <div class="card-header"><div class="card-title">Payee Details</div></div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6"><span class="detail-label">Same as Lessee</span><p class="detail-value" id="incoming-detail-payee_same_as_lessee">—</p></div>
+                            <div class="col-md-6"><span class="detail-label">Payee Name</span><p class="detail-value" id="incoming-detail-payee_name">—</p></div>
+                            <div class="col-md-6"><span class="detail-label">Payee Phone Number</span><p class="detail-value" id="incoming-detail-payee_phone_number">—</p></div>
+                            <div class="col-md-6"><span class="detail-label">Payee Email Address</span><p class="detail-value" id="incoming-detail-payee_email_address">—</p></div>
+                            <div class="col-12"><span class="detail-label">Payee Address</span><p class="detail-value" id="incoming-detail-payee_address">—</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card custom-card mb-3">
                     <div class="card-header"><div class="card-title">Current Occupier / User</div></div>
                     <div class="card-body">
                         <div class="row g-3">
@@ -332,6 +345,11 @@
             <span data-field="email_address"><c:out value="${update.email_address}"/></span>
             <span data-field="postal_address"><c:out value="${update.postal_address}"/></span>
             <span data-field="lessee_contactable"><c:out value="${update.lessee_contactable}"/></span>
+            <span data-field="payee_same_as_lessee"><c:out value="${update.payee_same_as_lessee}"/></span>
+            <span data-field="payee_name"><c:out value="${update.payee_name}"/></span>
+            <span data-field="payee_phone_number"><c:out value="${update.payee_phone_number}"/></span>
+            <span data-field="payee_email_address"><c:out value="${update.payee_email_address}"/></span>
+            <span data-field="payee_address"><c:out value="${update.payee_address}"/></span>
             <span data-field="occupier_name"><c:out value="${update.occupier_name}"/></span>
             <span data-field="occupier_phone_number"><c:out value="${update.occupier_phone_number}"/></span>
             <span data-field="relationship_to_lessee"><c:out value="${update.relationship_to_lessee}"/></span>
@@ -383,7 +401,8 @@
             'region', 'plot_number', 'street_name', 'area_town', 'digital_address', 'landmark',
             'land_use', 'development_status', 'occupancy_status', 'lessee_name', 'lessee_type',
             'identification_number', 'phone_number', 'email_address', 'postal_address',
-            'lessee_contactable', 'occupier_name', 'occupier_phone_number',
+            'lessee_contactable', 'payee_same_as_lessee', 'payee_name', 'payee_phone_number',
+            'payee_email_address', 'payee_address', 'occupier_name', 'occupier_phone_number',
             'relationship_to_lessee', 'nature_of_use', 'submitted_by', 'submitted_at',
             'reviewed_by', 'reviewed_at', 'review_comment'
         ];
@@ -437,7 +456,7 @@
                 var destination = document.getElementById('incoming-detail-' + field);
                 if (destination) {
                     var value = getRecordValue(record, field);
-                    if (field === 'lessee_contactable') {
+                    if (field === 'lessee_contactable' || field === 'payee_same_as_lessee') {
                         value = value === 'true' ? 'Yes' : (value === 'false' ? 'No' : value);
                     }
                     if (field === 'submitted_at' || field === 'reviewed_at') {
