@@ -178,6 +178,8 @@ ${page_name == "account-reports" ? "<script src='js-pages/audit_report.js'></scr
 
 ${page_name == "account-reports" ? "<script src='js-pages/account_reports.js'></script>" : ""}
 
+${page_name == "rent_report_dashboard" ? "<script src='js-pages/rent_reports.js'></script>" : ""}
+
 ${page_name == "page_file_management" ?  "<script src='js-pages/file_management.js'></script>" : ""}
 
 ${page_name == "csau_monitoring" ? "<script src='js-pages/monitoring_csau.js'></script>" : ""}

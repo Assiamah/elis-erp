@@ -159,7 +159,7 @@
                 <header><span>API response time</span><i></i></header>
                 <strong data-live-value="api_response_time_display">--</strong>
                 <div class="elis-live-spark" data-live-spark aria-label="Recent API response time trend"></div>
-                <p>P95 <b data-live-value="p95_response_display">--</b> / latest <b data-live-value="latest_response_display">--</b></p>
+                <p>Highest in 30 mins / avg <b data-live-value="avg_response_display">--</b></p>
                 <span class="elis-live-card-action">View response details <i class="ri-arrow-right-line"></i></span>
             </article>
             <article class="elis-live-card" data-live-card="errors" data-live-drilldown="errors" role="button" tabindex="0" aria-label="View failed API requests">
@@ -373,7 +373,7 @@
                 var value = values[key];
                 root.querySelectorAll('[data-live-value="' + key + '"]').forEach(function(element) {
                     if (typeof value === "number") {
-                        var decimals = ["connection_usage_pct", "cache_hit_pct", "rollback_pct", "failure_rate_pct", "avg_response_ms", "latest_response_ms", "p95_response_ms"].indexOf(key) >= 0 ? 1 : 0;
+                        var decimals = ["connection_usage_pct", "cache_hit_pct", "rollback_pct", "failure_rate_pct", "avg_response_ms", "latest_response_ms", "max_response_30m_ms", "p95_response_ms"].indexOf(key) >= 0 ? 1 : 0;
                         element.textContent = format(value, decimals);
                     } else {
                         element.textContent = value == null || value === "" ? "--" : value;
@@ -450,7 +450,9 @@
                 activityList.innerHTML = '<div class="elis-live-empty"><span>i</span><strong>No recent events loaded</strong><small>Activity appears here when API logs are available.</small></div>';
                 return;
             }
-            activity.forEach(function(item) {
+            activity.slice().sort(function(a, b) {
+                return new Date(b.logged_at || 0).getTime() - new Date(a.logged_at || 0).getTime();
+            }).forEach(function(item) {
                 var row = document.createElement("article");
                 var left = document.createElement("div");
                 var title = document.createElement("strong");
@@ -566,14 +568,14 @@
             } else if (name === "api") {
                 kicker = "API";
                 title = "API Response Time";
-                subtitle = api.response_time_source && api.response_time_source !== "not detected" ? "Response timing is read from " + api.response_time_source + " on every refresh." : "The API log source was found, but no response-time column was detected yet.";
+                subtitle = api.response_time_source && api.response_time_source !== "not detected" ? "Highest response time is calculated from " + api.response_time_source + " over the last 30 minutes." : "The API log source was found, but no response-time column was detected yet.";
                 warningAt = 1000;
                 criticalAt = 2000;
                 summary = [
-                    metric("Average", formatMs(api.avg_response_ms), "15-minute window"),
+                    metric("Highest", formatMs(api.max_response_30m_ms), "last 30 minutes"),
+                    metric("Average", formatMs(api.avg_response_ms), "last 15 minutes"),
                     metric("P95", formatMs(api.p95_response_ms), "slower 5% threshold"),
-                    metric("Latest", formatMs(api.latest_response_ms), "most recent sample"),
-                    metric("Slow responses", format(api.slow_response_count), ">= 2 seconds")
+                    metric("Latest", formatMs(api.latest_response_ms), "most recent logged event")
                 ];
                 rows = endpoints.map(function(item) {
                     var ms = number(item.avg_response_ms);
@@ -640,14 +642,19 @@
             var data = payload && payload.data ? payload.data : {};
             var database = data.database || {};
             var api = data.api || {};
+            if (!hasNumber(api.max_response_30m_ms) && hasNumber(api.avg_response_ms)) {
+                api.max_response_30m_ms = api.avg_response_ms;
+            }
             if (!hasNumber(api.avg_response_ms) && hasNumber(api.monitor_response_ms)) {
                 api.avg_response_ms = api.monitor_response_ms;
                 api.latest_response_ms = api.monitor_response_ms;
                 api.p95_response_ms = api.monitor_response_ms;
+                api.max_response_30m_ms = api.monitor_response_ms;
                 api.slow_response_count = number(api.monitor_response_ms) >= 2000 ? 1 : 0;
                 api.response_time_source = "monitoring request";
             }
-            api.api_response_time_display = formatMs(api.avg_response_ms);
+            api.api_response_time_display = formatMs(api.max_response_30m_ms);
+            api.avg_response_display = formatMs(api.avg_response_ms);
             api.latest_response_display = formatMs(api.latest_response_ms);
             api.p95_response_display = formatMs(api.p95_response_ms);
             latestData = data;
@@ -658,7 +665,7 @@
             setMeter("lock_pressure_pct", Math.min(number(database.blocked_connections) * 25 + number(database.slow_queries) * 10, 100));
             addHistory("connections", database.connection_usage_pct);
             addHistory("cache", database.cache_hit_pct);
-            addHistory("api", hasNumber(api.avg_response_ms) ? api.avg_response_ms : 0);
+            addHistory("api", hasNumber(api.max_response_30m_ms) ? api.max_response_30m_ms : 0);
             addHistory("errors", api.failed_15m);
             addHistory("locks", number(database.blocked_connections) + number(database.slow_queries) + number(database.idle_in_transaction));
             renderSpark();
@@ -674,7 +681,7 @@
 
             var connectionStatus = number(database.connection_usage_pct) >= 90 ? "critical" : number(database.connection_usage_pct) >= 70 ? "warning" : "healthy";
             var cacheStatus = number(database.cache_hit_pct) < 90 ? "critical" : number(database.cache_hit_pct) < 95 ? "warning" : "healthy";
-            var apiStatus = number(api.avg_response_ms) >= 2000 || number(api.p95_response_ms) >= 3000 ? "critical" : number(api.avg_response_ms) >= 1000 || number(api.p95_response_ms) >= 1500 ? "warning" : "healthy";
+            var apiStatus = number(api.max_response_30m_ms) >= 2000 || number(api.p95_response_ms) >= 3000 ? "critical" : number(api.max_response_30m_ms) >= 1000 || number(api.p95_response_ms) >= 1500 ? "warning" : "healthy";
             var errorStatus = number(api.failed_15m) >= 10 || number(api.failure_rate_pct) >= 10 ? "critical" : number(api.failed_15m) > 0 ? "warning" : "healthy";
             var lockStatus = number(database.blocked_connections) > 0 ? "critical" : number(database.slow_queries) > 0 || number(database.idle_in_transaction) > 2 ? "warning" : "healthy";
             setCardStatus("connections", connectionStatus);
@@ -697,7 +704,7 @@
                 if (number(database.slow_queries) > 0) conditions.push(database.slow_queries + " slow query(s)");
                 if (number(database.idle_in_transaction) > 0) conditions.push(database.idle_in_transaction + " idle transaction(s)");
                 if (number(api.failed_15m) > 0) conditions.push(api.failed_15m + " failed API request(s)");
-                if (number(api.avg_response_ms) >= 1000) conditions.push(formatMs(api.avg_response_ms) + " avg API response");
+                if (number(api.max_response_30m_ms) >= 1000) conditions.push(formatMs(api.max_response_30m_ms) + " highest API response");
                 alertCopy.textContent = conditions.length ? conditions.join(" - ") : "One or more operating thresholds have been crossed.";
             }
             if (activeDrawer) openDrawer(activeDrawer);

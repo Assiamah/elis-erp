@@ -104,6 +104,100 @@
         vertical-align: middle;
     }
 
+    .report-table-toolbar {
+        border: 1px solid #e9ecef;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 0.75rem;
+    }
+
+    .report-table-toolbar .view-presets .btn.active {
+        color: #fff;
+        background: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    #job_casemgtdetailsdataTable_elis_reports_wrapper.report-density-compact td,
+    #job_casemgtdetailsdataTable_elis_reports_wrapper.report-density-compact th {
+        padding: 0.45rem 0.6rem;
+        font-size: 0.78rem;
+    }
+
+    #job_casemgtdetailsdataTable_elis_reports_wrapper.report-density-comfortable td,
+    #job_casemgtdetailsdataTable_elis_reports_wrapper.report-density-comfortable th {
+        padding: 0.9rem 1rem;
+    }
+
+    .report-row-details td {
+        background: #f8f9fa !important;
+        white-space: normal !important;
+    }
+
+    .report-detail-label {
+        color: #6c757d;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .report-detail-value {
+        overflow-wrap: anywhere;
+    }
+
+    div.dt-button-collection.report-column-chooser {
+        width: min(90vw, 380px) !important;
+        max-height: 70vh;
+        overflow-y: auto;
+        color: #212529;
+        border-radius: 8px;
+    }
+
+    div.dt-button-collection.report-column-chooser .dt-button-collection-title {
+        color: #212529;
+        font-weight: 600;
+    }
+
+    div.dt-button-collection.report-column-chooser .buttons-columnVisibility {
+        display: grid !important;
+        grid-template-columns: 1rem minmax(0, 1fr);
+        align-items: center;
+        gap: 0.75rem;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 0.65rem 0.75rem !important;
+        color: #495057;
+        text-align: left;
+        white-space: normal;
+        overflow: visible;
+    }
+
+    div.dt-button-collection.report-column-chooser .buttons-columnVisibility::before {
+        content: "";
+        position: static;
+        width: 1rem;
+        height: 1rem;
+        box-sizing: border-box;
+        border: 2px solid #6c757d;
+        border-radius: 3px;
+        background: #fff;
+    }
+
+    div.dt-button-collection.report-column-chooser .buttons-columnVisibility.active {
+        color: #0d6efd;
+        background: #e7f1ff;
+        font-weight: 600;
+    }
+
+    div.dt-button-collection.report-column-chooser .buttons-columnVisibility.active::before {
+        content: "\2713";
+        color: #fff;
+        border-color: #0d6efd;
+        background: #0d6efd;
+        font-size: 0.75rem;
+        line-height: 0.75rem;
+        text-align: center;
+    }
+
     .accordion-button {
         border-radius: 8px !important;
         padding: 1rem 1.25rem;
@@ -381,8 +475,8 @@
                                                     <option value="Completed">Completed</option>
                                                     <option value="Pending">Pending</option>
                                                     <option value="KEEP IN VIEW">Keep In View</option>
-                                                    <option value="gra_stamp_duty_report">GRA Stamp Duty Report</option>
-                                                    <option value="lrd_plotting_report">LRD Plotting Report</option>
+                                                    <!-- <option value="gra_stamp_duty_report">GRA Stamp Duty Report</option>
+                                                    <option value="lrd_plotting_report">LRD Plotting Report</option> -->
                                                 </select>
                                             </div>
                                             
@@ -411,6 +505,7 @@
                                                 <label class="form-label">Sub Service</label>
                                                 <select name="sub_service_rpt" id="sub_service_rpt" class="form-select form-select-sm">
                                                     <option value="-1">Select Sub Service</option>
+                                                    <option value="0">All Subservices</option>
                                                 </select>
                                             </div>
                                             
@@ -564,21 +659,89 @@
                     
                     <div class="collapse show" id="reviewCollapse">
                         <div class="card-body">
+                            <div id="general_reporting_summary_cards" class="row g-3 mb-3"></div>
+                            <div id="general_reporting_breakdown" class="accordion mb-3 d-none">
+                                <div class="accordion-item border-0">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#generalReportingGroups" aria-expanded="true">
+                                            <i class="ri-pie-chart-2-line me-2"></i> Report Breakdown
+                                        </button>
+                                    </h2>
+                                    <div id="generalReportingGroups" class="accordion-collapse collapse show">
+                                        <div class="accordion-body bg-light rounded-bottom">
+                                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                                                <div>
+                                                    <h6 class="mb-1">Grouped report summary</h6>
+                                                    <small class="text-muted">Choose one category to keep the report focused.</small>
+                                                </div>
+                                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                                    <label for="general_reporting_group_by" class="form-label mb-0 text-nowrap">Group by</label>
+                                                    <select id="general_reporting_group_by" class="form-select form-select-sm">
+                                                        <option value="business_process_sub_name">Application Type</option>
+                                                        <option value="regional_name">Region</option>
+                                                        <option value="locality">Locality</option>
+                                                        <option value="district">Registration District</option>
+                                                        <option value="nature_of_instrument">Nature of Instrument</option>
+                                                    </select>
+                                                    <button type="button" id="export_general_group_image" class="btn btn-sm btn-outline-primary text-nowrap">
+                                                        <i class="ri-image-line me-1"></i>Image
+                                                    </button>
+                                                    <button type="button" id="export_general_group_pdf" class="btn btn-sm btn-outline-danger text-nowrap">
+                                                        <i class="ri-file-pdf-2-line me-1"></i>PDF
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div id="general_reporting_breakdown_cards" class="row g-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="report-table-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                <div>
+                                    <div class="small fw-semibold mb-2">Table view</div>
+                                    <div class="btn-group btn-group-sm view-presets flex-wrap" role="group" aria-label="Report column presets">
+                                        <button type="button" class="btn btn-outline-primary active" data-report-view="overview">Overview</button>
+                                        <button type="button" class="btn btn-outline-primary" data-report-view="applicant">Applicant</button>
+                                        <button type="button" class="btn btn-outline-primary" data-report-view="property">Property</button>
+                                        <button type="button" class="btn btn-outline-primary" data-report-view="registration">Registration</button>
+                                        <button type="button" class="btn btn-outline-primary" data-report-view="timeline">Timeline</button>
+                                        <button type="button" class="btn btn-outline-primary" data-report-view="all">All Columns</button>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <label for="report_table_density" class="form-label mb-0 text-nowrap">Row density</label>
+                                    <select id="report_table_density" class="form-select form-select-sm">
+                                        <option value="standard">Standard</option>
+                                        <option value="compact">Compact</option>
+                                        <option value="comfortable">Comfortable</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="table-responsive">
-                                <table class="table table-hover data-table" id="job_casemgtdetailsdataTable_elis_reports">
+                                <table class="table table-hover data-table text-nowrap w-100" id="job_casemgtdetailsdataTable_elis_reports">
                                     <thead>
                                         <tr>
+                                            <th class="no-export" aria-label="Expand details"></th>
                                             <th>Job Number</th>
                                             <th>Applicant Name</th>
                                             <th>Application Type</th>
                                             <th>Date Received</th>
                                             <th>Job Status</th>
+                                            <th>Locality</th>
+                                            <th>Region</th>
+                                            <th>Certificate Number</th>
+                                            <th>Registration District</th>
+                                            <th>Date of Instrument</th>
+                                            <th>Grantor</th>
+                                            <th>Nature of Instrument</th>
+                                             <th>Date of Registration</th>
                                             <th>Case Number</th>
                                             <th>Days (Received)</th>
                                             <th>Days (Batched)</th>
                                             <th>Date (Completed)</th>
                                             <th>Days (Completed)</th>
                                             <th>Date (Collected)</th>
+
                                             <th>View</th>
                                         </tr>
                                     </thead>
