@@ -28283,8 +28283,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function getEmbeddedScannedMapLayer(targetMap, layerPropertyName) {
+        let scannedLayer = targetMap.get(layerPropertyName);
+
+        if (scannedLayer) {
+            return scannedLayer;
+        }
+
+        const mapLayers = targetMap.getLayers();
+        const layerArray = mapLayers.getArray();
+        const sharedScannedLayer = layerArray.find(function(layer) {
+            return layer && layer.get && layer.get('title') === 'Scanned Map';
+        });
+        const scannedLayerIndex = sharedScannedLayer ? layerArray.indexOf(sharedScannedLayer) : 2;
+
+        // Keep the scanned sheet below the parcel/vector overlays, matching the
+        // embedded scanned-map layer used by the PVLMD noted proposal map.
+        scannedLayer = new ol.layer.Image({
+            title: 'Scanned Map',
+            visible: true,
+            source: undefined
+        });
+
+        if (sharedScannedLayer) {
+            mapLayers.remove(sharedScannedLayer);
+        }
+
+        mapLayers.insertAt(Math.min(scannedLayerIndex, mapLayers.getLength()), scannedLayer);
+        targetMap.set(layerPropertyName, scannedLayer);
+
+        return scannedLayer;
+    }
+
     function loadViewParcelScannedMap() {
         const selectedImage = $.trim($('#geoserverscannedimages_list_vpt').val());
+        const viewParcelMap = typeof maps !== 'undefined' ? maps['lc-map__'] : null;
 
         if (!selectedImage || selectedImage === '-1') {
             Swal.fire({
@@ -28296,11 +28329,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (typeof ol === 'undefined' || typeof map === 'undefined' || typeof StaticImage === 'undefined') {
+        if (typeof ol === 'undefined' || !viewParcelMap) {
             Swal.fire({
                 icon: 'error',
                 title: 'Map Not Ready',
-                text: 'The scanned map layer could not be loaded because the map is not initialized yet.',
+                text: 'Open the Map Visualization tab and wait for the parcel map to initialize.',
                 confirmButtonColor: '#dc3545'
             });
             return;
@@ -28315,8 +28348,9 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             serverType: 'geoserver'
         });
+        const scannedLayer = getEmbeddedScannedMapLayer(viewParcelMap, 'viewParcelScannedMapLayer');
 
-        StaticImage.setSource(imageSource);
+        scannedLayer.setSource(imageSource);
 
         const extentText = layerParts[2] || '';
         const cleanedExtent = extentText.replace(/[\[\]]/g, '');
@@ -28325,7 +28359,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (extent.length === 4 && extent.every(function(value) { return !Number.isNaN(value); })) {
-            map.getView().fit(extent, map.getSize());
+            viewParcelMap.getView().fit(extent, viewParcelMap.getSize());
         }
     }
 
@@ -28410,18 +28444,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const layerParts = selectedImage.split(':', 3);
-        const scannedLayer = new ol.layer.Image({
-            title: 'Deed Scanned Map - ' + layerParts[1],
-            source: new ol.source.ImageWMS({
-                url: getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
-                params: {
-                    LAYERS: 'csau_geospatial:' + layerParts[1]
-                },
-                serverType: 'geoserver'
-            })
+        const imageSource = new ol.source.ImageWMS({
+            url: getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+            params: {
+                LAYERS: 'csau_geospatial:' + layerParts[1]
+            },
+            serverType: 'geoserver'
         });
+        const scannedLayer = getEmbeddedScannedMapLayer(deedMap, 'deedScannedMapLayer');
 
-        deedMap.addLayer(scannedLayer);
+        scannedLayer.setSource(imageSource);
 
         const extent = (layerParts[2] || '')
             .replace(/[\[\]]/g, '')

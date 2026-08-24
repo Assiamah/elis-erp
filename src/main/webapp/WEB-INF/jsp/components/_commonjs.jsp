@@ -142,7 +142,7 @@ ${(page_name == "compliance_cst") ? "<script src='js-pages//compliance_cst.js'><
 
 ${(page_name == "compliance_cst") ? "<script src='js-pages/corporate_application.js'></script> " : ""}
 
-${(page_name == "application_review_details_advanced") || (page_name == "add_new_case_template") || (page_name == "deed_data_capture") ? "<script src='js-pages/gated_workflow.js?v=20260812-2'></script>" : ""}
+${(page_name == "application_review_details_advanced") || (page_name == "add_new_case_template") || (page_name == "deed_data_capture") ? "<script src='js-pages/gated_workflow.js?v=20260824-2'></script>" : ""}
 ${page_name == "deed_data_capture" ? "<script src='js-pages/deed_data_capture.js'></script>" : ""}
 
 ${page_name == "page_enquiry_backoffice" ? "<script src='js-pages/enquiry_backoffice.js'></script>" : ""}
