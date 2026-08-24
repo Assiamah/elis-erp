@@ -15239,14 +15239,13 @@ function createTableRow(item) {
 												// 	$('#btnSaveChangeOfNames').show();
 												// });
 
-												$('#chs_load_data').on('click', function (e) {
+												$('#chs_business_process_name').on('change', function (e) {
 
-													$('#chs_job_number').val($(this).data('ref_number'));
-													$('#chs_ar_name').val($(this).data('ar_name'));
-													$('#chs_business_process_name').val($(this).data('business_process_name'));
-													//$('#chs_job_number').val($(event.relatedTarget).data('ref_number'));
+													var main_service = $(this).val();
 
-													var main_service_id = $(this).data('business_process_id');
+													const main_service_id = main_service.split('-');
+													var chs_main_service_id = main_service_id[0];
+													// var chs_main_service_name = main_service_id[1];
 
 
 													$
@@ -15258,10 +15257,6 @@ function createTableRow(item) {
 															},
 															cache: false,
 															beforeSend: function () {
-																// $('#district').html('<img
-																// src="img/loading.gif"
-																// alt="" width="24"
-																// height="24">');
 															},
 															success: function (
 																jobdetails) {
@@ -15285,7 +15280,7 @@ function createTableRow(item) {
 
 																			//console.log(this.business_process_id);
 
-																			if (main_service_id == this.business_process_id) {
+																			if (chs_main_service_id == this.business_process_id) {
 																				// if
 																				// (this.business_process_on_case
 																				// ==
@@ -15314,6 +15309,62 @@ function createTableRow(item) {
 													$('#btnSaveChangeOfService').show();
 												});
 
+												$('#chs_load_data').on('click', function (e) {
+
+													$('#chs_job_number').val($(this).data('ref_number'));
+													$('#chs_ar_name').val($(this).data('ar_name'));
+													
+
+													$
+														.ajax({
+															type: "POST",
+															url: "Case_Management_Serv",
+															data: {
+																request_type: 'get_lc_main_service',
+															},
+															cache: false,
+															beforeSend: function () {
+															},
+															success: function (
+																jobdetails) {
+
+																//console.log(jobdetails);
+																var json_p = JSON
+																	.parse(jobdetails);
+																var options = $("#chs_business_process_name");
+
+																// var options =
+																// $("#selector");
+																options.empty();
+																options
+																	.append(new Option(
+																		"-- Select --",
+																		0));
+
+																$(json_p)
+																	.each(
+																		function () {
+
+																				$(
+																					'#chs_business_process_name')
+																					.append(
+																						'<option value="'
+																						+ this.business_process_id
+																						+ '-'
+																						+ this.business_process_name
+																						+ '">'
+																						+ this.business_process_name
+																						+ '</option>');
+
+
+																		});
+																
+															}
+														});
+
+													// $('#btnSaveChangeOfService').show();
+												});
+
 											});
 
 								}
@@ -15331,6 +15382,7 @@ function createTableRow(item) {
 
     var chs_job_number = $('#chs_job_number').val();
     var chs_comment = $('#chs_comment').val();
+	var main_service = $('#chs_business_process_name').val();
     var sub_service = $('#chs_business_process_sub_name').val();
 
     if (sub_service == 0 || sub_service == '') {
@@ -15379,12 +15431,18 @@ function createTableRow(item) {
                 var chs_sub_service_id = sub_service_name_id[0];
                 var chs_sub_service_name = sub_service_name_id[1];
 
+				const main_service_name_id = main_service.split('-');
+                var chs_main_service_id = main_service_name_id[0];
+                var chs_main_service_name = main_service_name_id[1];
+
                 $.ajax({
                     type: "POST",
                     url: "Case_Management_Serv",
                     data: {
                         request_type: 'update_application_sub_service',
                         job_number: chs_job_number,
+						main_service_id: chs_main_service_id,
+                        main_service_name: chs_main_service_name,
                         sub_service_id: chs_sub_service_id,
                         sub_service_name: chs_sub_service_name,
                         officer_comment: chs_comment

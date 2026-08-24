@@ -89,7 +89,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold small">Main Service</label>
-                                        <input type="text" class="form-control bg-white" name="chs_business_process_name" id="chs_business_process_name" readonly>
+                                        <!-- <input type="text" class="form-control bg-white" name="chs_business_process_name" id="chs_business_process_name" readonly> -->
+                                         <select class="form-select" name="chs_business_process_name" id="chs_business_process_name">
+                                            <option value="">Select main service...</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold small">Sub Service <span class="text-danger">*</span></label>
