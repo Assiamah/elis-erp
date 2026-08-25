@@ -150,6 +150,21 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				return web_service_response;
 			}
 
+			if (request_type.equals("select_rent_dashboard_stats_by_estate")) {
+				String estate = request.getParameter("estate");
+
+				JSONObject obj = new JSONObject();
+				obj.put("office_region", (String) session.getAttribute("regional_code"));
+				obj.put("estate_id", estate);
+
+				web_service_response = casemgt_cl_m.select_rent_dashboard_stats_by_estate(
+						cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+
+				return web_service_response;
+			}
+
 
 			if (request_type.equals("add_update_rent_leasee_details")) {
 

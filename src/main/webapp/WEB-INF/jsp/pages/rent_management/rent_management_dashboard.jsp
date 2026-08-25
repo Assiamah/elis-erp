@@ -30,7 +30,7 @@
                                     </div>
                                     <div>
                                         <span class="d-block text-muted mb-1">Total Lessees/Assignees</span>
-                                        <h6 class="fw-semibold mb-0">${total_leasee}</h6>
+                                        <h6 class="fw-semibold mb-0" id="total_leasee">${total_leasee}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                     </div>
                                     <div>
                                         <span class="d-block text-muted mb-1">Total Rent Outstanding</span>
-                                        <h6 class="fw-semibold mb-0"><small class="fw-light">GHS</small> ${total_rent_outstanding}</h6>
+                                        <h6 class="fw-semibold mb-0" id="rentOutstanding"><small class="fw-light">GHS</small> ${total_rent_outstanding}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div>
                                         <span class="d-block text-muted mb-1">Accounts Linked</span>
-                                        <h6 class="fw-semibold mb-0">0</h6>
+                                        <h6 class="fw-semibold mb-0" id="total_account_linked">0</h6>
                                     </div>
                                 </div>
                             </div>
@@ -295,10 +295,10 @@
         }
     };
 
-    const chart2 = new ApexCharts(
+    window.rentEstateOutstandingChart = new ApexCharts(
         document.querySelector("#estate-outstanding-statistics"),
         options2
     );
 
-    chart2.render();
+    window.rentEstateOutstandingChart.render();
 </script>

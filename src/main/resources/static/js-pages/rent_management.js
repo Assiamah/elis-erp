@@ -2785,6 +2785,10 @@ if (!$('#add-form-styles').length) {
 
                     // Add hover effects and improve table styling
                     $('.dataTable').addClass('table-hover');
+
+                    if (rts_estate) {
+                        loadEstateStats(rts_estate);
+                    }
                     
                 } catch (e) {
                     console.error('Error parsing JSON response:', e);
@@ -2809,6 +2813,82 @@ if (!$('#add-form-styles').length) {
             }
         });
     });
+
+
+
+    window.loadEstateStats = function(estate) {
+        return $.ajax({
+            type: "POST",
+            url: "rent_mgt_serv",
+            data: {
+                request_type: 'select_rent_dashboard_stats_by_estate',
+                estate: estate
+            },
+            cache: false,
+            success: function(response) {
+                try {
+                    const estateStats = typeof response === 'string'
+                        ? JSON.parse(response)
+                        : response;
+
+                    if (!estateStats || estateStats.success !== true) {
+                        console.error('Estate dashboard stats request was not successful:', estateStats);
+                        return;
+                    }
+
+                    const countFormatter = new Intl.NumberFormat('en-GH');
+                    const currencyFormatter = new Intl.NumberFormat('en-GH', {
+                        style: 'currency',
+                        currency: 'GHS',
+                        minimumFractionDigits: 2
+                    });
+
+                    $('#total_leasee').text(
+                        countFormatter.format(Number(estateStats.total_leasee) || 0)
+                    );
+                    $('#rentOutstanding').text(
+                        currencyFormatter.format(Number(estateStats.total_rent_outstanding) || 0)
+                    );
+                    $('#total_account_linked').text(
+                        countFormatter.format(Number(estateStats.total_account_linked) || 0)
+                    );
+
+                    const outstandingByEstate = Array.isArray(estateStats.estate_outstanding_rent)
+                        ? estateStats.estate_outstanding_rent
+                        : [];
+                    const chartCategories = outstandingByEstate.map(item => item.estate_name || '—');
+                    const chartSeries = outstandingByEstate.map(
+                        item => Number(item.total_outstanding_for_estate) || 0
+                    );
+
+                    while (chartCategories.length < 10) {
+                        chartCategories.push('—');
+                        chartSeries.push(0);
+                    }
+
+                    if (window.rentEstateOutstandingChart) {
+                        window.rentEstateOutstandingChart.updateOptions({
+                            xaxis: { categories: chartCategories }
+                        });
+                        window.rentEstateOutstandingChart.updateSeries([{
+                            name: 'Outstanding Rent (GHS)',
+                            data: chartSeries
+                        }]);
+                    }
+                } catch (error) {
+                    console.error('Invalid estate dashboard stats response:', response, error);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error(
+                    'Failed to load estate dashboard stats:',
+                    textStatus,
+                    errorThrown,
+                    jqXHR.responseText
+                );
+            }
+        });
+    };
 
     //   $('#btn_load_scanned_documents_rent').on('click', function(e) { 
 	   
@@ -5519,4 +5599,3 @@ $(document).on('click', '.rentFileUploadModal', function() {
 });
 
 });
-

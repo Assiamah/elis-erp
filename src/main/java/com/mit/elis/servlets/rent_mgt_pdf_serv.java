@@ -113,7 +113,7 @@ public class rent_mgt_pdf_serv {
 
 				property_data_json.put("rdn_rent_id", rdn_rent_id);
 				property_data_json.put("rdn_account_number", rdn_account_number);
-				
+
 				property_data_json.put("userid", userid);
 				property_data_json.put("fullname", fullname);
 				property_data_json.put("mac_address", mac_address); 
@@ -216,45 +216,45 @@ public class rent_mgt_pdf_serv {
 
 				String client_id = request.getParameter("client_id");
 
-				// //System.out.println(client_id);
-				// web_service_response = casemgt_cl.select_get_party_by_party_id(cls_url_config.getWeb_service_url_ser(),
-				// 		cls_url_config.getWeb_service_url_ser_api_key(),
-				// 		client_id);
 				if (web_service_response != null) {
-					// //System.out.println(web_service_response);
-					// //System.out.println("nothing to " + web_service_response);
 
 				} else {
-					//System.out.println(web_service_response);
-					// //System.out.println("son=mtni to " +
-					// web_service_response);
 				}
 
 				return web_service_response;
 
 			}
-
 		
-
 			if (request_type.equals("select_rent_leasee_details")) {
-
-
 				String select_type = request.getParameter("select_type");		
 				String estate = request.getParameter("estate");	
 				String keyword = request.getParameter("keyword");			
-
-				// //System.out.println(list_of_application);
 
 				JSONObject obj = new JSONObject();
 				obj.put("select_type", select_type);
 				obj.put("estate", estate);
 				obj.put("keyword", keyword);
 				
-
-				// String batchlistdivison = obj.toString();
-
-				// //System.out.println("testing cabinet batch: " + obj.toString());
 				web_service_response = casemgt_cl_m.select_rent_leasee_details(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("select_rent_dashboard_stats_by_estate")) {
+				String estate = request.getParameter("estate");
+
+				JSONObject obj = new JSONObject();
+				obj.put("office_region", (String) session.getAttribute("regional_code"));
+				obj.put("estate_id", estate);
+
+				web_service_response = casemgt_cl_m.select_rent_dashboard_stats_by_estate(
 						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
