@@ -4139,18 +4139,25 @@
                         </div>
                         
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <button type="button" name="lc_btn_save_register_description" 
                                         id="lc_btn_save_register_description" class="btn btn-primary w-100">
                                     <i class="fas fa-save me-2"></i>
                                     Save Register Description
                                 </button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <button type="button" name="lc_btn_save_register_description" 
                                         id="lc_btn_activate_final_register_" class="btn btn-success w-100">
                                     <i class="fas fa-file-export me-2"></i>
                                     Generate Final Register
+                                </button>
+                            </div>
+                               <div class="col-md-2">
+                                <button type="button" name="lc_btn_save_register_description" 
+                                        id="lc_btn_activate_final_register_a3_" class="btn btn-success w-100">
+                                    <i class="fas fa-file-export me-2"></i>
+                                    A3 Register
                                 </button>
                             </div>
                         </div>
@@ -5231,6 +5238,18 @@
             This will create a downloadable PDF certificate
           </div>
         </div>
+
+         <div class="mb-4">
+          <button type="button" id="lc_btn_activate_final_certificate_upload_signed" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-pdf me-2"></i>
+            Upload Signed Certificate
+          </button>
+          <div class="form-text mt-2">
+            <i class="fas fa-info-circle me-1"></i>
+            This will create a downloadable PDF certificate
+          </div>
+        </div>
         
         <!-- Certificate Information -->
         <div class="alert alert-light border">
@@ -5297,10 +5316,23 @@
             <i class="fas fa-file-alt me-2"></i>
             Generate Register
           </button>
+            <button type="button" id="lc_btn_activate_final_register_a3" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-alt me-2"></i>
+            A3 Register
+          </button>
           <div class="form-text mt-2">
             <i class="fas fa-info-circle me-1"></i>
             This will create an official register document
           </div>
+        </div>
+
+          <div class="mb-4">
+          <button type="button" id="lc_btn_activate_final_register_upload_signed" 
+                  class="btn btn-primary btn-lg w-100 py-3 shadow-sm">
+            <i class="fas fa-file-alt me-2"></i>
+            Upload Signed Register
+          </button>
         </div>
         
         <!-- Register Information -->

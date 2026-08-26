@@ -654,6 +654,8 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
             }
         );
 
+
+
         var thislayer = pvlmd_pvlmd_current_dataLayer.getSource().getParams().LAYERS;
        // console.log(thislayer);
 
@@ -734,6 +736,8 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
 
                     clearPVLMDSummaryPanel();
 
+
+
 					// Populate the info cards with non-editable values
 					setText('pvlmd_gid', (firstFeature.id || '').split('.')[1] || '');
 					setText('pvlmd_reference_number', props.reference_number);
@@ -746,6 +750,7 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
 					setText('pvlmd_modified_by', props.plotted_by || props.modified_by || '');
 					setText('pvlmd_modified_date', props.plotting_date || props.modified_date || '');
 
+                    	
 				loadAllPVLMDData((firstFeature.id || '').split('.')[1] || '', props.reference_number);
 					
 
@@ -1024,23 +1029,23 @@ $(document).on('click', '#pvlmd_btn_print_summary', function() {
 
 // ================================================================
 // MODAL SHOW EVENT - Load PVLMD Parcel Information
-// ================================================================
-$('#pvlmdparcelinformation').on('show.bs.modal', function(e) {
-    // Get data from the button that opened the modal
-    var button = $(e.relatedTarget);
-    var parcel_uuid = button.data('gid') || '';
-    var reference_number = button.data('reference') || '';
+// // ================================================================
+// $('#pvlmdparcelinformation').on('show.bs.modal', function(e) {
+//     // Get data from the button that opened the modal
+//     var button = $(e.relatedTarget);
+//     var parcel_uuid = button.data('gid') || '';
+//     var reference_number = button.data('reference') || '';
     
-    // Set hidden fields
-    $('#pvlmd_gid').val(parcel_uuid);
+//     // Set hidden fields
+//     $('#pvlmd_gid').val(parcel_uuid);
     
-    // Load all data
-    if (parcel_uuid && reference_number) {
-        loadAllPVLMDData(parcel_uuid, reference_number);
-    } else {
-        console.warn('Missing parcel UUID or reference number');
-    }
-});
+//     // Load all data
+//     if (parcel_uuid && reference_number) {
+//         loadAllPVLMDData(parcel_uuid, reference_number);
+//     } else {
+//         console.warn('Missing parcel UUID or reference number');
+//     }
+// });
 
 $('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
     // Get the button that triggered the modal
@@ -1094,6 +1099,9 @@ $('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
 	
 						//loadTransactions(reference_number, parcel_uuid);
                         loadAllPVLMDData(parcel_uuid, reference_number);
+
+                     
+
     
    
 });
@@ -1134,6 +1142,14 @@ function loadAllPVLMDData(parcel_uuid, reference_number) {
                         return;
                     }
                 }
+
+
+
+                		$('#pvlmd_bl_wkt_polygon').val(json_p.wkt);
+						pvlmd_lc_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(json_p.wkt)}));
+						view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
+						pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
+
                 
                 console.log('PVLMD Transaction Details:', json_p);
                 table.find("tbody tr").remove();

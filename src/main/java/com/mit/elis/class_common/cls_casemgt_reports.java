@@ -2815,7 +2815,1932 @@ public class cls_casemgt_reports {
 
 	}
 
-	public byte[] create_land_register_A3(String web_service_url, String web_service_api_key,
+public byte[] create_land_register_a3(
+        String web_service_url,
+        String web_service_api_key,
+        String software_file_location,
+        String case_number,
+        String job_number,
+        String output_file)
+        throws IOException, SQLException, JSONException {
+
+    JSONObject request_json = new JSONObject();
+    request_json.put("transaction_number", case_number);
+    request_json.put("job_number", job_number);
+
+    String case_records =
+            cls_case_management.select_lrd_recodes_for_register_by_case_number(
+                    web_service_url,
+                    web_service_api_key,
+                    request_json.toString()
+            );
+
+    JSONObject case_obj = new JSONObject(case_records);
+
+    // =========================================================
+    // GET MAIN JSON OBJECTS
+    // =========================================================
+    String parcel_details = case_obj.get("parcel_details").toString();
+    String transaction_details = case_obj.get("transaction_details").toString();
+    String job_detail = case_obj.get("job_detail").toString();
+
+    String json_lrd_valuation_section =
+            case_obj.optString("lrd_valuation_section", "null");
+
+    String json_lrd_memorials_section =
+            case_obj.optString("lrd_memorials_section", "null");
+
+    String json_lrd_encumbrances_section =
+            case_obj.optString("lrd_encumbrances_section", "null");
+
+    String json_lrd_certificate_section =
+            case_obj.optString("lrd_certificate_section", "null");
+
+    String json_lrd_proprietorship_section =
+            case_obj.optString("lrd_proprietorship_section", "null");
+
+    String json_lrd_reservation_section =
+            case_obj.optString("lrd_reservation_section", "null");
+
+
+    // =========================================================
+    // PARCEL DETAILS
+    // =========================================================
+    JSONObject parcel_details_obj = new JSONObject(parcel_details);
+
+    String glpin = parcel_details_obj.optString("glpin", "");
+    String licensed_surveyor_number = parcel_details_obj.optString("licensed_no", "");
+    String regional_number = parcel_details_obj.optString("regional_number", "");
+    String locality = parcel_details_obj.optString("locality", "");
+    String district = parcel_details_obj.optString("district", "");
+    String region = parcel_details_obj.optString("region", "");
+    String size_of_land = parcel_details_obj.optString("land_size", "");
+    String extent = parcel_details_obj.optString("extent", "");
+    String registry_mapref = parcel_details_obj.optString("registry_mapref", "");
+    String plan_no = parcel_details_obj.optString("plan_no", "");
+    String cc_no = parcel_details_obj.optString("cc_no", "");
+    String ltr_plan_no = parcel_details_obj.optString("ltr_plan_no", "");
+    String locality_class = parcel_details_obj.optString("locality_class", "");
+
+    String registration_district_number =
+            parcel_details_obj.optString("registration_district_number", "");
+
+    String registration_section_number =
+            parcel_details_obj.optString("registration_section_number", "");
+
+    String registration_block_number =
+            parcel_details_obj.optString("registration_block_number", "");
+
+
+    // =========================================================
+    // TRANSACTION DETAILS
+    // =========================================================
+    JSONObject transaction_details_obj = new JSONObject(transaction_details);
+
+    String ar_name = transaction_details_obj.optString("ar_name", "");
+    String new_case_number = transaction_details_obj.optString("case_number", "");
+    String date_of_document = transaction_details_obj.optString("date_of_document", "");
+    String nature_of_instrument = transaction_details_obj.optString("nature_of_instrument", "");
+    String certificate_number = transaction_details_obj.optString("certificate_number", "");
+
+    String type_of_interest = transaction_details_obj.optString("type_of_interest", "");
+    String type_of_use = transaction_details_obj.optString("type_of_use", "");
+    String volume_number = transaction_details_obj.optString("volume_number", "");
+    String folio_number = transaction_details_obj.optString("folio_number", "");
+    String term = transaction_details_obj.optString("term", "");
+    String commencement_date = transaction_details_obj.optString("commencement_date", "");
+
+    String renewal_term = transaction_details_obj.optString("renewal_term", "");
+    String consideration_fee = transaction_details_obj.optString("consideration_fee", "");
+    String stamp_duty_payable = transaction_details_obj.optString("stamp_duty_payable", "");
+    String assessed_value = transaction_details_obj.optString("assessed_value", "");
+    String parcel_description = transaction_details_obj.optString("parcel_description", "");
+    String plot_number = transaction_details_obj.optString("plot_number", "");
+    String publicity_date = transaction_details_obj.optString("publicity_date", "");
+
+    String family_of_grantor = transaction_details_obj.optString("family_of_grantor", "");
+
+    String rent_review_period = transaction_details_obj.optString("rent_review_period", "");
+    String annual_rent = transaction_details_obj.optString("annual_rent", "");
+    String rent_period_covered = transaction_details_obj.optString("rent_period_covered", "");
+    String rent_review_date = transaction_details_obj.optString("rent_review_date", "");
+    String date_of_first_payment = transaction_details_obj.optString("date_of_first_payment", "");
+    String outstanding_rent = transaction_details_obj.optString("outstanding_rent", "");
+    String remark_or_comment = transaction_details_obj.optString("remark_or_comment", "");
+    String date_of_registration = transaction_details_obj.optString("date_of_registration", "");
+    String case_status = transaction_details_obj.optString("case_status", "");
+    String grantors_name = transaction_details_obj.optString("grantors_name", "");
+
+    String stool_family_name = transaction_details_obj.optString("stool_family_name", "");
+    String stamp_duty_description =
+            transaction_details_obj.optString("stamp_duty_description", "");
+
+    String certificate_type =
+            transaction_details_obj.optString("certificate_type", "");
+
+    String case_file_number =
+            transaction_details_obj.optString("case_file_number", "");
+
+    String case_process_stage =
+            transaction_details_obj.optString("case_process_stage", "");
+
+
+    // =========================================================
+    // JOB DETAILS
+    // =========================================================
+    JSONObject job_detail_obj = new JSONObject(job_detail);
+
+    String application_stage =
+            job_detail_obj.optString("application_stage", "");
+
+    String business_process_id =
+            job_detail_obj.optString("business_process_id", "");
+
+    String business_process_name =
+            job_detail_obj.optString("business_process_name", "");
+
+    String business_process_sub_id =
+            job_detail_obj.optString("business_process_sub_id", "");
+
+    String business_process_sub_name =
+            job_detail_obj.optString("business_process_sub_name", "");
+
+    String embossed =
+            job_detail_obj.optString("embossed", "");
+
+    String description_of_land =
+            job_detail_obj.optString("smd_region", "");
+
+
+    // Clean description HTML
+    if (description_of_land != null) {
+        description_of_land = description_of_land
+                .replace("<ol><li>", "")
+                .replace("</li></ol>", "")
+                .replace("<li>", "")
+                .replace("</li>", "")
+                .replace("<ol>", "")
+                .replace("</ol>", "");
+    }
+
+
+    DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    try {
+
+        // =========================================================
+        // A3 LANDSCAPE PAGE
+        // =========================================================
+        Rectangle pageSize = PageSize.A3.rotate();
+
+        float leftMargin = 40f;
+        float rightMargin = 40f;
+        float topMargin = 45f;
+        float bottomMargin = 40f;
+
+        Document document = new Document(
+                pageSize,
+                leftMargin,
+                rightMargin,
+                topMargin,
+                bottomMargin
+        );
+
+        PdfWriter writer =
+                PdfWriter.getInstance(document, out);
+
+        document.open();
+
+        float pageWidth = pageSize.getWidth();
+        float pageHeight = pageSize.getHeight();
+
+
+        // =========================================================
+        // FONTS
+        // =========================================================
+        Font font14pt =
+                new Font(FontFamily.TIMES_ROMAN, 14);
+
+        Font font12ptBold =
+                new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+
+        Font font11pt =
+                new Font(FontFamily.TIMES_ROMAN, 11);
+
+        Font font11ptBold =
+                new Font(FontFamily.TIMES_ROMAN, 11, Font.BOLD);
+
+        Font font10pt =
+                new Font(FontFamily.TIMES_ROMAN, 10);
+
+        Font font10pt_bold =
+                new Font(FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+
+        Font font9pt =
+                new Font(FontFamily.TIMES_ROMAN, 9);
+
+        Font font9ptBold =
+                new Font(FontFamily.TIMES_ROMAN, 9, Font.BOLD);
+
+
+        // =========================================================
+        // HEADER
+        // =========================================================
+
+        // -------------------------
+        // QR CODE - LEFT
+        // -------------------------
+        BarcodeQRCode barcodeQRCode =
+                new BarcodeQRCode(
+                        new_case_number,
+                        1000,
+                        1000,
+                        null
+                );
+
+        Image codeQrImage =
+                barcodeQRCode.getImage();
+
+        codeQrImage.scaleAbsolute(110f, 110f);
+
+        codeQrImage.setAbsolutePosition(
+                leftMargin,
+                pageHeight - 150f
+        );
+
+        document.add(codeQrImage);
+
+
+        // -------------------------
+        // COAT OF ARMS - CENTRE
+        // -------------------------
+        File coatFile =
+                new File(software_file_location + "CoatofArm.jpg");
+
+        if (coatFile.exists()) {
+
+            Image coatImage =
+                    Image.getInstance(coatFile.getAbsolutePath());
+
+            coatImage.scaleToFit(95f, 95f);
+
+            coatImage.setAbsolutePosition(
+                    (pageWidth - coatImage.getScaledWidth()) / 2,
+                    pageHeight - 125f
+            );
+
+            document.add(coatImage);
+        }
+
+
+        // -------------------------
+        // LAND COMMISSION LOGO - RIGHT
+        // -------------------------
+        File logoFile =
+                new File(software_file_location + "NewLogo.jpg");
+
+        if (logoFile.exists()) {
+
+            Image logoImage =
+                    Image.getInstance(logoFile.getAbsolutePath());
+
+            logoImage.scaleToFit(100f, 100f);
+
+            logoImage.setAbsolutePosition(
+                    pageWidth - rightMargin - logoImage.getScaledWidth(),
+                    pageHeight - 135f
+            );
+
+            document.add(logoImage);
+        }
+
+
+        // =========================================================
+        // CERTIFICATE DETAILS
+        // =========================================================
+        // BaseFont bfaddress =
+        //         BaseFont.createFont(
+        //                 BaseFont.TIMES_ROMAN,
+        //                 BaseFont.CP1252,
+        //                 BaseFont.NOT_EMBEDDED
+        //         );
+
+        // PdfContentByte cbaddress =
+        //         writer.getDirectContent();
+
+        // cbaddress.beginText();
+
+        // cbaddress.setFontAndSize(
+        //         bfaddress,
+        //         11
+        // );
+
+        // float infoY = pageHeight - 45f;
+
+        // cbaddress.setTextMatrix(
+        //         leftMargin,
+        //         infoY
+        // );
+
+        // cbaddress.showText(
+        //         "Cert. No: " + certificate_number
+        // );
+
+        // cbaddress.setTextMatrix(
+        //         leftMargin,
+        //         infoY - 16f
+        // );
+
+        // cbaddress.showText(
+        //         "Volume: " + volume_number
+        // );
+
+        // cbaddress.setTextMatrix(
+        //         leftMargin,
+        //         infoY - 32f
+        // );
+
+        // cbaddress.showText(
+        //         "Folio: " + folio_number
+        // );
+
+        // cbaddress.endText();
+
+
+        // =========================================================
+        // CREATE HEADER SPACE
+        // =========================================================
+        for (int i = 0; i < 5; i++) {
+            document.add(new Phrase(Chunk.NEWLINE));
+        }
+
+
+        // =========================================================
+        // DOCUMENT TITLE
+        // =========================================================
+        Paragraph republicTitle =
+                new Paragraph(
+                        "REPUBLIC OF GHANA",
+                        font12ptBold
+                );
+
+        republicTitle.setAlignment(
+                Element.ALIGN_CENTER
+        );
+
+        document.add(republicTitle);
+
+
+        Paragraph registerTitle =
+                new Paragraph(
+                        "LAND REGISTER",
+                        new Font(
+                                FontFamily.TIMES_ROMAN,
+                                20,
+                                Font.BOLD
+                        )
+                );
+
+        registerTitle.setAlignment(
+                Element.ALIGN_CENTER
+        );
+
+        registerTitle.setSpacingAfter(8f);
+
+        document.add(registerTitle);
+
+
+        // =========================================================
+        // ADMINISTRATIVE / PROPERTY INFORMATION
+        // =========================================================
+        PdfPTable myTable_admin =
+                new PdfPTable(2);
+
+        myTable_admin.setWidthPercentage(100);
+
+        myTable_admin.setWidths(
+                new float[]{
+                        1.2f,
+                        4.8f
+                }
+        );
+
+        myTable_admin.setHorizontalAlignment(
+                Element.ALIGN_LEFT
+        );
+
+        myTable_admin.setSpacingBefore(5f);
+        myTable_admin.setSpacingAfter(8f);
+
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Nature of Interest",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                type_of_interest,
+                                font10pt
+                        )
+                )
+        );
+
+
+        String vr_commencement_date =
+                formatDateSafe(
+                        commencement_date,
+                        formatter
+                );
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Commencement Date",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                vr_commencement_date,
+                                font10pt
+                        )
+                )
+        );
+
+
+        if (type_of_interest != null &&
+                !type_of_interest.toUpperCase().contains("FREE")) {
+
+            myTable_admin.addCell(
+                    new PdfPCell(
+                            new Phrase(
+                                    "Term",
+                                    font10pt_bold
+                            )
+                    )
+            );
+
+            myTable_admin.addCell(
+                    new PdfPCell(
+                            new Phrase(
+                                    term + " Year(s)",
+                                    font10pt
+                            )
+                    )
+            );
+
+
+            myTable_admin.addCell(
+                    new PdfPCell(
+                            new Phrase(
+                                    "Option for Renewal",
+                                    font10pt_bold
+                            )
+                    )
+            );
+
+            myTable_admin.addCell(
+                    new PdfPCell(
+                            new Phrase(
+                                    renewal_term,
+                                    font10pt
+                            )
+                    )
+            );
+        }
+
+
+        String vr_date_of_registration =
+                formatDateSafe(
+                        date_of_registration,
+                        formatter
+                );
+
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Date of Registration",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                vr_date_of_registration,
+                                font10pt
+                        )
+                )
+        );
+
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Volume",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                volume_number,
+                                font10pt
+                        )
+                )
+        );
+
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Folio",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_admin.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                folio_number,
+                                font10pt
+                        )
+                )
+        );
+
+
+        PdfPCell landDescriptionHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Description of Land",
+                                font10pt_bold
+                        )
+                );
+
+        landDescriptionHeader.setColspan(2);
+
+        landDescriptionHeader.setPadding(5f);
+
+        myTable_admin.addCell(
+                landDescriptionHeader
+        );
+
+
+        PdfPCell landDescriptionCell =
+                new PdfPCell(
+                        new Paragraph(
+                                description_of_land,
+                                font10pt
+                        )
+                );
+
+        landDescriptionCell.setColspan(2);
+
+        landDescriptionCell.setPadding(6f);
+
+        myTable_admin.addCell(
+                landDescriptionCell
+        );
+
+
+        document.add(myTable_admin);
+
+
+        // =========================================================
+        // VALUATION TABLE
+        // =========================================================
+        PdfPTable myTable_valuation =
+                new PdfPTable(3);
+
+        myTable_valuation.setWidthPercentage(100);
+
+        myTable_valuation.setWidths(
+                new float[]{
+                        1.2f,
+                        1.8f,
+                        5f
+                }
+        );
+
+        myTable_valuation.setSpacingBefore(5f);
+        myTable_valuation.setSpacingAfter(8f);
+
+
+        PdfPCell valuationHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Valuation "
+                                        + "(Note: The date at the beginning of the last entry "
+                                        + "is the date on which the parcel was valued.)",
+                                font10pt_bold
+                        )
+                );
+
+        valuationHeader.setColspan(3);
+        valuationHeader.setPadding(5f);
+
+        myTable_valuation.addCell(
+                valuationHeader
+        );
+
+
+        myTable_valuation.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Date",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_valuation.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Amount",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_valuation.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Remarks",
+                                font10pt_bold
+                        )
+                )
+        );
+
+
+        if (isValidJsonArrayString(
+                json_lrd_valuation_section)) {
+
+            JSONArray valuationArray =
+                    new JSONArray(
+                            json_lrd_valuation_section
+                    );
+
+            for (int i = 0;
+                 i < valuationArray.length();
+                 i++) {
+
+                JSONObject obj =
+                        valuationArray.getJSONObject(i);
+
+                String valuationDate =
+                        formatDateSafe(
+                                obj.optString(
+                                        "vs_date_of_valuation",
+                                        ""
+                                ),
+                                formatter
+                        );
+
+
+                myTable_valuation.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        valuationDate,
+                                        font10pt
+                                )
+                        )
+                );
+
+                myTable_valuation.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "vs_amount",
+                                                ""
+                                        ),
+                                        font10pt
+                                )
+                        )
+                );
+
+                myTable_valuation.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "vs_remarks",
+                                                ""
+                                        ),
+                                        font10pt
+                                )
+                        )
+                );
+            }
+        }
+
+        document.add(
+                myTable_valuation
+        );
+
+
+        // =========================================================
+        // RESERVATION TABLE
+        // =========================================================
+        PdfPTable myTable_reservation =
+                new PdfPTable(2);
+
+        myTable_reservation.setWidthPercentage(100);
+
+        myTable_reservation.setWidths(
+                new float[]{
+                        1.2f,
+                        6.8f
+                }
+        );
+
+        myTable_reservation.setSpacingBefore(5f);
+        myTable_reservation.setSpacingAfter(8f);
+
+
+        PdfPCell reservationHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Reservations, etc.",
+                                font10pt_bold
+                        )
+                );
+
+        reservationHeader.setColspan(2);
+
+        reservationHeader.setPadding(5f);
+
+        myTable_reservation.addCell(
+                reservationHeader
+        );
+
+
+        String reservationRegistrationDate =
+                formatDateSafe(
+                        date_of_registration,
+                        formatter
+                );
+
+
+        if (isValidJsonArrayString(
+                json_lrd_reservation_section)) {
+
+            JSONArray reservationArray =
+                    new JSONArray(
+                            json_lrd_reservation_section
+                    );
+
+            for (int i = 0;
+                 i < reservationArray.length();
+                 i++) {
+
+                JSONObject obj =
+                        reservationArray.getJSONObject(i);
+
+
+                myTable_reservation.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        reservationRegistrationDate,
+                                        font10pt
+                                )
+                        )
+                );
+
+                myTable_reservation.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "reservation_description",
+                                                ""
+                                        ),
+                                        font10pt
+                                )
+                        )
+                );
+            }
+        }
+
+        document.add(
+                myTable_reservation
+        );
+
+
+        // =========================================================
+        // LAND CERTIFICATE TABLE
+        // =========================================================
+        PdfPTable myTable_land_certificate =
+                new PdfPTable(4);
+
+        myTable_land_certificate.setWidthPercentage(100);
+
+        myTable_land_certificate.setWidths(
+                new float[]{
+                        1.2f,
+                        3f,
+                        1.5f,
+                        3.5f
+                }
+        );
+
+        myTable_land_certificate.setSpacingBefore(5f);
+        myTable_land_certificate.setSpacingAfter(8f);
+
+
+        PdfPCell certificateHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Land Certificate / Provisional Certificate",
+                                font10pt_bold
+                        )
+                );
+
+        certificateHeader.setColspan(4);
+        certificateHeader.setPadding(5f);
+
+        myTable_land_certificate.addCell(
+                certificateHeader
+        );
+
+
+        myTable_land_certificate.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Date of Issue",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_land_certificate.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "To Whom Issued",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_land_certificate.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Serial No.",
+                                font10pt_bold
+                        )
+                )
+        );
+
+        myTable_land_certificate.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Official Notes",
+                                font10pt_bold
+                        )
+                )
+        );
+
+
+        if (isValidJsonArrayString(
+                json_lrd_certificate_section)) {
+
+            JSONArray certificateArray =
+                    new JSONArray(
+                            json_lrd_certificate_section
+                    );
+
+            for (int i = 0;
+                 i < certificateArray.length();
+                 i++) {
+
+                JSONObject obj =
+                        certificateArray.getJSONObject(i);
+
+                String certificateDate =
+                        formatDateSafe(
+                                obj.optString(
+                                        "cs_date_of_registration",
+                                        ""
+                                ),
+                                formatter
+                        );
+
+
+                myTable_land_certificate.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        certificateDate,
+                                        font10pt
+                                )
+                        )
+                );
+
+                myTable_land_certificate.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "cs_to_whom_issued",
+                                                ""
+                                        ),
+                                        font10pt
+                                )
+                        )
+                );
+
+                myTable_land_certificate.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "cs_serial_number",
+                                                ""
+                                        ),
+                                        font10pt
+                                )
+                        )
+                );
+
+                myTable_land_certificate.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "cs_official_notes",
+                                                ""
+                                        ),
+                                        font10pt
+                                )
+                        )
+                );
+            }
+        }
+
+        document.add(
+                myTable_land_certificate
+        );
+
+
+        // =========================================================
+        // PAGE 2
+        // =========================================================
+       //document.newPage();
+
+
+        // =========================================================
+        // PROPRIETORSHIP TABLE
+        // =========================================================
+        PdfPTable myTable_proprietors =
+                new PdfPTable(10);
+
+        myTable_proprietors.setWidthPercentage(100);
+
+        myTable_proprietors.setWidths(
+                new float[]{
+                        0.7f,   // Entry
+                        1.1f,   // Registered No
+                        2.8f,   // Proprietor
+                        1.2f,   // Instrument date
+                        1.5f,   // Instrument nature
+                        1.2f,   // Registration date
+                        2.3f,   // Parties
+                        1.1f,   // Price
+                        1.5f,   // Remarks
+                        1.4f    // Registrar
+                }
+        );
+
+        myTable_proprietors.setSpacingBefore(5f);
+        myTable_proprietors.setSpacingAfter(10f);
+
+
+        PdfPCell proprietorshipHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Proprietorship",
+                                font10pt_bold
+                        )
+                );
+
+        proprietorshipHeader.setColspan(10);
+        proprietorshipHeader.setPadding(6f);
+
+        myTable_proprietors.addCell(
+                proprietorshipHeader
+        );
+
+
+        PdfPCell entryHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Entry No.",
+                                font9ptBold
+                        )
+                );
+
+        entryHeader.setRowspan(2);
+        myTable_proprietors.addCell(
+                entryHeader
+        );
+
+
+        PdfPCell registeredHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Registered No.",
+                                font9ptBold
+                        )
+                );
+
+        registeredHeader.setRowspan(2);
+
+        myTable_proprietors.addCell(
+                registeredHeader
+        );
+
+
+        PdfPCell proprietorHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Proprietors "
+                                        + "(Names, Addresses and Descriptions)",
+                                font9ptBold
+                        )
+                );
+
+        proprietorHeader.setRowspan(2);
+
+        myTable_proprietors.addCell(
+                proprietorHeader
+        );
+
+
+        PdfPCell instrumentHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Instruments Relevant to the Title",
+                                font9ptBold
+                        )
+                );
+
+        instrumentHeader.setColspan(5);
+
+        instrumentHeader.setHorizontalAlignment(
+                Element.ALIGN_CENTER
+        );
+
+        myTable_proprietors.addCell(
+                instrumentHeader
+        );
+
+
+        PdfPCell remarksHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Remarks",
+                                font9ptBold
+                        )
+                );
+
+        remarksHeader.setRowspan(2);
+
+        myTable_proprietors.addCell(
+                remarksHeader
+        );
+
+
+        PdfPCell signatureHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Signature of Registrar",
+                                font9ptBold
+                        )
+                );
+
+        signatureHeader.setRowspan(2);
+
+        myTable_proprietors.addCell(
+                signatureHeader
+        );
+
+
+        myTable_proprietors.addCell(
+                new PdfPCell(
+                        new Paragraph(
+                                "Date of Instrument",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_proprietors.addCell(
+                new PdfPCell(
+                        new Paragraph(
+                                "Nature of Instrument",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_proprietors.addCell(
+                new PdfPCell(
+                        new Paragraph(
+                                "Date of Registration",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_proprietors.addCell(
+                new PdfPCell(
+                        new Paragraph(
+                                "Parties",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_proprietors.addCell(
+                new PdfPCell(
+                        new Paragraph(
+                                "Price Paid",
+                                font9ptBold
+                        )
+                )
+        );
+
+
+        int proprietorCount = 1;
+
+
+        if (isValidJsonArrayString(
+                json_lrd_proprietorship_section)) {
+
+            JSONArray proprietorArray =
+                    new JSONArray(
+                            json_lrd_proprietorship_section
+                    );
+
+            for (int i = 0;
+                 i < proprietorArray.length();
+                 i++) {
+
+                JSONObject obj =
+                        proprietorArray.getJSONObject(i);
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        String.valueOf(
+                                                proprietorCount
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "ps_registration_number",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "ps_proprietor",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                String instrumentDate =
+                        formatDateSafe(
+                                obj.optString(
+                                        "ps_date_of_instrument",
+                                        ""
+                                ),
+                                formatter
+                        );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        instrumentDate,
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "ps_nature_of_instrument",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                String registrationDate =
+                        formatDateSafe(
+                                obj.optString(
+                                        "ps_date_of_registration",
+                                        ""
+                                ),
+                                formatter
+                        );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        registrationDate,
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                String transferor =
+                        obj.optString(
+                                "ps_transferor",
+                                ""
+                        );
+
+                String transferee =
+                        obj.optString(
+                                "ps_transferee",
+                                ""
+                        );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        transferor
+                                                + " (1) "
+                                                + transferee
+                                                + " (2)",
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "ps_price_paid",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_proprietors.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "ps_remarks",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                // =================================================
+                // APPROVAL / SIGNATURE
+                // =================================================
+                String approvalStatus =
+                        obj.optString(
+                                "approval_status",
+                                "0"
+                        );
+
+
+                if ("1".equals(
+                        approvalStatus)) {
+
+                    String approvalById =
+                            obj.optString(
+                                    "approval_by_id",
+                                    ""
+                            );
+
+                    File signatureFile =
+                            new File(
+                                    software_file_location
+                                            + approvalById
+                                            + ".jpg"
+                            );
+
+
+                    if (signatureFile.exists()
+                            && signatureFile.isFile()) {
+
+                        Image signature =
+                                Image.getInstance(
+                                        signatureFile.getAbsolutePath()
+                                );
+
+                        signature.scaleToFit(
+                                90f,
+                                55f
+                        );
+
+                        PdfPCell signatureCell =
+                                new PdfPCell(
+                                        signature,
+                                        true
+                                );
+
+                        signatureCell.setHorizontalAlignment(
+                                Element.ALIGN_CENTER
+                        );
+
+                        signatureCell.setVerticalAlignment(
+                                Element.ALIGN_MIDDLE
+                        );
+
+                        signatureCell.setPadding(3f);
+
+                        myTable_proprietors.addCell(
+                                signatureCell
+                        );
+
+                    } else {
+
+                        PdfPCell approvedCell =
+                                new PdfPCell(
+                                        new Phrase(
+                                                "Approved",
+                                                font9ptBold
+                                        )
+                                );
+
+                        approvedCell.setHorizontalAlignment(
+                                Element.ALIGN_CENTER
+                        );
+
+                        approvedCell.setVerticalAlignment(
+                                Element.ALIGN_MIDDLE
+                        );
+
+                        myTable_proprietors.addCell(
+                                approvedCell
+                        );
+                    }
+
+                } else {
+
+                    PdfPCell notApprovedCell =
+                            new PdfPCell(
+                                    new Phrase(
+                                            "Transaction Not Approved",
+                                            font9ptBold
+                                    )
+                            );
+
+                    notApprovedCell.setHorizontalAlignment(
+                            Element.ALIGN_CENTER
+                    );
+
+                    notApprovedCell.setVerticalAlignment(
+                            Element.ALIGN_MIDDLE
+                    );
+
+                    myTable_proprietors.addCell(
+                            notApprovedCell
+                    );
+                }
+
+
+                proprietorCount++;
+            }
+        }
+
+
+        document.add(
+                myTable_proprietors
+        );
+
+
+        // =========================================================
+        // ENCUMBRANCE TABLE
+        // =========================================================
+        PdfPTable myTable_encumbrances =
+                new PdfPTable(9);
+
+        myTable_encumbrances.setWidthPercentage(100);
+
+        myTable_encumbrances.setWidths(
+                new float[]{
+                        0.7f,   // Entry
+                        1.2f,   // Instrument Date
+                        1.2f,   // Registration Date
+                        1.3f,   // Registered No
+                        4.0f,   // Memorial
+                        0.8f,   // Back
+                        0.8f,   // Forward
+                        1.5f,   // Remarks
+                        1.5f    // Signature
+                }
+        );
+
+        myTable_encumbrances.setSpacingBefore(5f);
+        myTable_encumbrances.setSpacingAfter(10f);
+
+
+        PdfPCell encumbranceHeader =
+                new PdfPCell(
+                        new Paragraph(
+                                "Leases, Charges, Encumbrances, etc. Affecting Land",
+                                font10pt_bold
+                        )
+                );
+
+        encumbranceHeader.setColspan(9);
+
+        encumbranceHeader.setHorizontalAlignment(
+                Element.ALIGN_CENTER
+        );
+
+        encumbranceHeader.setPadding(6f);
+
+        myTable_encumbrances.addCell(
+                encumbranceHeader
+        );
+
+
+        // Header row
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Entry No.",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Date of Instrument",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Date of Registration",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Registered No.",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Memorials",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Back",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Forward",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Remarks",
+                                font9ptBold
+                        )
+                )
+        );
+
+        myTable_encumbrances.addCell(
+                new PdfPCell(
+                        new Phrase(
+                                "Signature of Registrar",
+                                font9ptBold
+                        )
+                )
+        );
+
+
+        int encumbranceCount = 1;
+
+
+        if (isValidJsonArrayString(
+                json_lrd_encumbrances_section)) {
+
+            JSONArray encumbranceArray =
+                    new JSONArray(
+                            json_lrd_encumbrances_section
+                    );
+
+            for (int i = 0;
+                 i < encumbranceArray.length();
+                 i++) {
+
+                JSONObject obj =
+                        encumbranceArray.getJSONObject(i);
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        String.valueOf(
+                                                encumbranceCount
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                String instrumentDate =
+                        formatDateSafe(
+                                obj.optString(
+                                        "es_date_of_instrument",
+                                        ""
+                                ),
+                                formatter
+                        );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        instrumentDate,
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                String registrationDate =
+                        formatDateSafe(
+                                obj.optString(
+                                        "es_date_of_registration",
+                                        ""
+                                ),
+                                formatter
+                        );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        registrationDate,
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "es_registered_number",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "es_memorials",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "es_back",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "es_forward",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                myTable_encumbrances.addCell(
+                        new PdfPCell(
+                                new Phrase(
+                                        obj.optString(
+                                                "es_remarks",
+                                                ""
+                                        ),
+                                        font9pt
+                                )
+                        )
+                );
+
+
+                // =================================================
+                // APPROVAL / SIGNATURE
+                // =================================================
+                String approvalStatus =
+                        obj.optString(
+                                "approval_status",
+                                "0"
+                        );
+
+
+                if ("1".equals(
+                        approvalStatus)) {
+
+                    String approvalById =
+                            obj.optString(
+                                    "approval_by_id",
+                                    ""
+                            );
+
+                    File signatureFile =
+                            new File(
+                                    software_file_location
+                                            + approvalById
+                                            + ".jpg"
+                            );
+
+
+                    if (signatureFile.exists()
+                            && signatureFile.isFile()) {
+
+                        Image signature =
+                                Image.getInstance(
+                                        signatureFile.getAbsolutePath()
+                                );
+
+                        signature.scaleToFit(
+                                90f,
+                                55f
+                        );
+
+                        PdfPCell signatureCell =
+                                new PdfPCell(
+                                        signature,
+                                        true
+                                );
+
+                        signatureCell.setHorizontalAlignment(
+                                Element.ALIGN_CENTER
+                        );
+
+                        signatureCell.setVerticalAlignment(
+                                Element.ALIGN_MIDDLE
+                        );
+
+                        signatureCell.setPadding(3f);
+
+                        myTable_encumbrances.addCell(
+                                signatureCell
+                        );
+
+                    } else {
+
+                        PdfPCell approvedCell =
+                                new PdfPCell(
+                                        new Phrase(
+                                                "Approved",
+                                                font9ptBold
+                                        )
+                                );
+
+                        approvedCell.setHorizontalAlignment(
+                                Element.ALIGN_CENTER
+                        );
+
+                        approvedCell.setVerticalAlignment(
+                                Element.ALIGN_MIDDLE
+                        );
+
+                        myTable_encumbrances.addCell(
+                                approvedCell
+                        );
+                    }
+
+                } else {
+
+                    PdfPCell notApprovedCell =
+                            new PdfPCell(
+                                    new Phrase(
+                                            "Transaction Not Approved",
+                                            font9ptBold
+                                    )
+                            );
+
+                    notApprovedCell.setHorizontalAlignment(
+                            Element.ALIGN_CENTER
+                    );
+
+                    notApprovedCell.setVerticalAlignment(
+                            Element.ALIGN_MIDDLE
+                    );
+
+                    myTable_encumbrances.addCell(
+                            notApprovedCell
+                    );
+                }
+
+
+                encumbranceCount++;
+            }
+        }
+
+
+        document.add(
+                myTable_encumbrances
+        );
+
+
+        // =========================================================
+        // FOOTER
+        // =========================================================
+        Paragraph printedBy =
+                new Paragraph(
+                        "Printed By",
+                        font10pt
+                );
+
+        printedBy.setAlignment(
+                Element.ALIGN_CENTER
+        );
+
+        printedBy.setSpacingBefore(
+                10f
+        );
+
+        document.add(
+                printedBy
+        );
+
+
+        document.close();
+
+        return out.toByteArray();
+
+
+    } catch (FileNotFoundException e) {
+
+        e.printStackTrace();
+        throw new IOException(
+                "Required image/file could not be found.",
+                e
+        );
+
+    } catch (DocumentException e) {
+
+        e.printStackTrace();
+        throw new IOException(
+                "Error while creating A3 Land Register PDF.",
+                e
+        );
+    }
+}
+
+private String formatDateSafe(
+        String dateValue,
+        DateTimeFormatter outputFormatter) {
+
+    if (dateValue == null
+            || dateValue.trim().isEmpty()
+            || "null".equalsIgnoreCase(dateValue.trim())) {
+
+        return "";
+    }
+
+    try {
+
+        LocalDateTime dateTime =
+                LocalDateTime.parse(dateValue);
+
+        return dateTime.format(
+                outputFormatter
+        );
+
+    } catch (Exception e) {
+
+        try {
+
+            LocalDate date =
+                    LocalDate.parse(dateValue);
+
+            return date.format(
+                    outputFormatter
+            );
+
+        } catch (Exception ignored) {
+
+            // If the API sends a format we cannot parse,
+            // return the original instead of crashing
+            return dateValue;
+        }
+    }
+}
+
+
+private boolean isValidJsonArrayString(
+        String json) {
+
+    return json != null
+            && !json.trim().isEmpty()
+            && !"null".equalsIgnoreCase(json.trim())
+            && json.trim().startsWith("[");
+}
+
+
+	public byte[] create_land_register_A3_old(String web_service_url, String web_service_api_key,
 			String software_file_location, String case_number, String job_number,
 			String output_file)
 			throws IOException, SQLException, JSONException {
