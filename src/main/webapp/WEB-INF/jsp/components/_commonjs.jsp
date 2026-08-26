@@ -92,7 +92,7 @@
 
 
 <!-- Echarts-->
-${(page_name == "compliance_cst") || (page_name == "director_compliance") || (page_name == "csau_monitoring")  || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name == "account-reports") || (page_name=="compliance_no_login") || (page_name == "focal_compliance_person") ? "<script src='assets/libs/echarts/dist/echarts.min.js'></script> " : ""}
+${(page_name == "compliance_cst") || (page_name == "director_compliance") || (page_name == "csau_monitoring")  || (page_name == "compliance") || (page_name=="unit_case_management_revised") || (page_name == "account-reports") ||(page_name == "rent_report_dashboard")  || (page_name=="compliance_no_login") || (page_name == "focal_compliance_person") ? "<script src='assets/libs/echarts/dist/echarts.min.js'></script> " : ""}
 ${page_name == "executive_dashboard" ? "<script src='assets/libs/chart.js/Chart.min.js'></script>" : ""}
 ${page_name == "csau_monitoring"  ? "<script src='assets/libs/chart.js/Chart.min.js'></script>" : ""}
 

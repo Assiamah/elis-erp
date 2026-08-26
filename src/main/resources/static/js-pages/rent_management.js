@@ -2670,7 +2670,7 @@ if (!$('#add-form-styles').length) {
                                     title="Actions">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 220px;">
+                            <ul class="dropdown-menu dropdown-menu-start p-2" style="min-width: 220px; z-index: 9999;">
                                 <li>
                                     <h6 class="dropdown-header text-primary mb-1">
                                         <i class="fas fa-user-circle me-2"></i>${this.owners_name || 'Leasee'}

@@ -646,6 +646,32 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				return web_service_response;
 			}
 
+			if (request_type.equals("select_rent_reporting_dashboard_stats")) {
+				
+				System.out.println("dddddddd");
+				String office_region = request.getParameter("office_region");
+				String start_date = request.getParameter("start_date");
+				String end_date = request.getParameter("end_date");
+
+				JSONObject obj_d = new JSONObject();
+
+				obj_d.put("office_region", office_region);
+				obj_d.put("start_date", start_date);
+				obj_d.put("end_date", end_date);
+				System.out.println(obj_d.toString());
+				web_service_response = rent_mgt_cl
+						.select_rent_reporting_dashboard_stats(cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
+			
+								System.out.println("web_service_response");
+				if (web_service_response != null) {
+					 System.out.println(web_service_response);
+				} else {
+					System.out.println(web_service_response);
+				}
+
+			}
+
 			return web_service_response;
 
 		} catch (Exception e) {
