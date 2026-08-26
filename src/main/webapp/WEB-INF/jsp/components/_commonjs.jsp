@@ -106,6 +106,7 @@ ${page_name == "csau_monitoring"  ? "<script src='assets/libs/chart.js/Chart.min
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/js-pages/csau_online.js"></script>
 <script src="${pageContext.request.contextPath}/js-pages/app_scripts.js"></script>
