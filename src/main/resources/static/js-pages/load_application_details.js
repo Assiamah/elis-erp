@@ -3,6 +3,15 @@ $(document).ready(function() {
     var cs_main_transaction_number = $('#cs_main_transaction_number').val();
     var cs_main_job_number = $('#cs_main_job_number').val();
 
+    function escapeHtmlAttribute(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     $('#btnloadjobsrelatedtocase').on('click', function(e){
 
         $('#jobsrelatedtocase_dataTable').DataTable().destroy();
@@ -312,10 +321,11 @@ $(document).ready(function() {
 
                     var json_p = JSON.parse(serviceresponse);
                     $(json_p.data).each(function() {
+                        var escapedDescription = escapeHtmlAttribute(this.an_description);
                         
                         var rowNode =  datatable.row.add([
                             //this.an_status,
-                            '<p class="text-truncate" style="max-width:100px;">'+this.an_description+'</p>',
+                            '<p class="text-truncate" style="max-width:100px;">'+escapedDescription+'</p>',
                             this.created_by,
                             this.created_date,
                             this.division,
@@ -323,7 +333,7 @@ $(document).ready(function() {
 			          							<button class="btn btn-info btn-icon-split" data-title="Edit"  data-toggle="modal"
 			          								data-target="#addNotesModal"
 			          								data-target-id="${this.an_id}"
-			          								data-an_description="${this.an_description}"
+                                                                data-an_description="${escapedDescription}"
 			          								data-created_by="${this.created_by}"
 			          								data-created_date="${this.created_date}"
 			          								data-modified_by="${this.created_by}"
@@ -933,4 +943,3 @@ $(document).ready(function() {
 
     });
 })
-

@@ -1391,14 +1391,27 @@ window.removeJobFromFilelist = function (job_number_plain) {
 
         if (!result.isConfirmed) return;
 
-        const existing = JSON.parse(localStorage.getItem('filelistdata') || '[]');
+        const existing = JSON.parse(localStorage.getItem('filelistdata') || '{}');
+        let updated;
 
-        // ✅ REMOVE item from array
-        const updated = existing.filter(item =>
-            item.jobNumberPlain !== job_number_plain
-        );
+        // Current entries are stored as an object keyed by job number. Keep
+        // support for older array-form entries that may still be in storage.
+        if (Array.isArray(existing)) {
+            updated = existing.filter(item =>
+                item && item.jobNumberPlain !== job_number_plain
+            );
+        } else {
+            updated = existing;
+            Object.keys(updated).forEach(key => {
+                const item = updated[key];
+                if (key === job_number_plain ||
+                    (item && item.jobNumberPlain === job_number_plain)) {
+                    delete updated[key];
+                }
+            });
+        }
 
-        if (!updated.length) {
+        if (Object.keys(updated).length === 0) {
             localStorage.removeItem('filelistdata');
         } else {
             localStorage.setItem('filelistdata', JSON.stringify(updated));
