@@ -3042,8 +3042,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatNoteDescription(description) {
         if (!description) return '<span class="text-muted">No description provided</span>';
         
-        // Replace newlines with <br> tags
-        let formatted = description.replace(/\n/g, '<br>');
+        // Treat the note as text before adding display-only line breaks.
+        // This preserves quotes while preventing note content from becoming HTML.
+        let formatted = $('<div>').text(String(description)).html().replace(/\r?\n/g, '<br>');
         
         // Highlight important text patterns
         // formatted = formatted.replace(/(URGENT|IMPORTANT|CRITICAL|ACTION REQUIRED)/gi, 

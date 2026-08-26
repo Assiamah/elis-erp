@@ -1034,7 +1034,7 @@
                                                     <td class="text-center">
                                                         <button class="btn btn-outline-primary btn-sm viewNotesModal" 
                                                                 data-target-id="${application_notes_row.an_id}"
-                                                                data-an_description="${application_notes_row.an_description}"
+                                                                data-an_description="${fn:escapeXml(application_notes_row.an_description)}"
                                                                 data-created_by="${application_notes_row.created_by}"
                                                                 data-created_date="${application_notes_row.created_date}"
                                                                 data-modified_by="${application_notes_row.created_by}"

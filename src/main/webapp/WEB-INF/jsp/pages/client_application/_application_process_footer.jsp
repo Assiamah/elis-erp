@@ -435,7 +435,7 @@
 								                    <td><p data-placement="top" data-toggle="tooltip" title="View/Edit">
 								                    	<button class="btn btn-info btn-icon-split"  data-toggle="modal" data-target="#addNotesModal" 
 								                    	data-target-id="${application_notes_row.an_id}" 
-								                    	data-an_description="${application_notes_row.an_description}" 
+                                                                    data-an_description="${fn:escapeXml(application_notes_row.an_description)}"
 								                    	data-created_by="${application_notes_row.created_by}"  
 								                    	data-created_date="${application_notes_row.created_date}" 
 								                    	data-modified_by="${application_notes_row.created_by}"  
@@ -456,7 +456,7 @@
 								                    <td><p data-placement="top" data-toggle="tooltip" title="View/Edit">
 								                    	<button class="btn btn-info btn-icon-split"  data-toggle="modal" data-target="#addNotesModal" 
 								                    	data-target-id="${application_notes_row.an_id}" 
-								                    	data-an_description="${application_notes_row.an_description}" 
+                                                                    data-an_description="${fn:escapeXml(application_notes_row.an_description)}"
 								                    	data-created_by="${application_notes_row.created_by}"  
 								                    	data-created_date="${application_notes_row.created_date}" 
 								                    	data-modified_by="${application_notes_row.created_by}"  
