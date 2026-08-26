@@ -6818,6 +6818,118 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+     $('#lc_btn_activate_final_register_upload_signed').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_transaction_number").val();
+        
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_register_upload_signed',
+                job_number: job_number,
+                case_number: case_number
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                // Show loading indicator
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                // Create file object from blob
+                const file = new File([pdfBlob], `Register_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+
+                // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+                hideLoadingIndicator();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to generate PDF document. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
+
+       $('#lc_btn_activate_final_register_flv_a3, #lc_btn_activate_final_register_a3_, #lc_btn_activate_final_register_a3').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_transaction_number").val();
+        
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_register_a3',
+                job_number: job_number,
+                case_number: case_number
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                // Show loading indicator
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                // Create file object from blob
+                const file = new File([pdfBlob], `Register_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+
+                // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+                hideLoadingIndicator();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to generate PDF document. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
     $('#lc_btn_activate_final_register_md').on('click', function(e) {
         var job_number = $("#certificateAndRegisterDetailsJobNumber").val();
         var case_number = $("#certificateAndRegisterDetailsTransactionNumber").val();
@@ -7938,6 +8050,71 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+     $('#lc_btn_activate_final_certificate_upload_signed').on('click', function(e) {
+        var job_number = $("#cs_main_job_number").val();
+        var case_number = $("#cs_main_case_number").val();
+        var transaction_number = $("#cs_main_transaction_number").val();
+        var registration_district_number = $("#txt_lc_registration_district_number").val();
+        var registration_section_number = $("#txt_lc_registration_section_number").val();
+        var type_of_certificate = $('#lc_txt_type_of_certificate').find(":selected").text() == "Land Certificate" ? "LAND CERTIFICATE" : $('#lc_txt_type_of_certificate').find(":selected").text();
+        
+        $.ajax({
+            type: "POST",
+            url: "GenerateCaseReports",
+            data: {
+                request_type: 'request_to_generate_certificate_upload_signed',
+                job_number:job_number,
+                case_number:case_number,
+                transaction_number:transaction_number,
+                cert_type:'LEASEHOLD',
+                registration_district_number:registration_district_number,
+                registration_section_number:registration_section_number,
+                type_of_certificate: type_of_certificate.trim() 
+            },
+            cache: false,
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                // Show loading indicator
+                showLoadingIndicator();
+            },
+            success: function(pdfBlob) {
+                // Create file object from blob
+                const file = new File([pdfBlob], `Certificate_${job_number}_${case_number}.pdf`, {
+                    type: "application/pdf",
+                    lastModified: Date.now()
+                });
+                
+                // Create object URL
+                const fileURL = URL.createObjectURL(file);
+                
+                // Open PDF in modal
+                openPDFModal(file, fileURL);
+                
+                // Hide loading indicator
+                hideLoadingIndicator();
+
+                // var blob = new Blob([pdfBlob], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+                hideLoadingIndicator();
+                
+                // Show error message
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to generate PDF document. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
 
     // $("#compose_certificate").on('shown.bs.modal', function(e) {
     //     var bs_id = $(e.relatedTarget).data("bs-id");

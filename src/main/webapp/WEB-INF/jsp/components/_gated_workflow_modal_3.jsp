@@ -2450,14 +2450,20 @@
                       <div class="form-text">Complete description of the land as it appears in the register.</div>
                     </div>
                     <div class="row g-3">
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <button type="button" id="lc_btn_save_register_description_flv" class="btn btn-primary w-100 py-3">
                           <i class="fas fa-save me-2"></i>
                           Save Register Description
                         </button>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <button type="button" id="lc_btn_activate_final_register_flv" class="btn btn-success w-100 py-3">
+                          <i class="fas fa-file-export me-2"></i>
+                          Generate Final Register
+                        </button>
+                      </div>
+                       <div class="col-md-2">
+                        <button type="button" id="lc_btn_activate_final_register_flv_a3" class="btn btn-success w-100 py-3">
                           <i class="fas fa-file-export me-2"></i>
                           Generate Final Register
                         </button>

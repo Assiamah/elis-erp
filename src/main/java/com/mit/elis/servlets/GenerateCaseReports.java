@@ -731,6 +731,74 @@ public class GenerateCaseReports {
 			// File pdfFile = new File(contextPath + pdfFileName);
 			//byte[] buffer = null;
 				
+		
+
+			if (buffer != null) {
+				// Set response content type to PDF
+				response.setContentType("application/pdf");
+				
+				// Set the content-disposition header to download the file with the specified name
+				response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+				
+				// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+				response.setContentLength(buffer.length);
+				
+				// Write the PDF byte array to the output stream to download it
+				response.getOutputStream().write(buffer, 0, buffer.length);
+				
+				// Flush the output stream
+				response.getOutputStream().flush();
+				
+				// Close the output stream
+				response.getOutputStream().close();
+			} else {
+				// Handle the case where the PDF generation failed
+				response.setContentType("text/html");
+				response.getWriter().write("Error generating PDF.");
+			}
+		}
+
+		if (request_type.equals("request_to_generate_register_upload_signed")) {
+
+			String case_number = request.getParameter("case_number");
+			String job_number = request.getParameter("job_number");
+			//System.out.println(request_type);
+
+			String contextPath = cls_url_config.getCase_upload_location();
+			// String contextPath
+			// ="C:\\gelisscans\\scanpdf\\LCGARGACN37542018\\";
+			String pdfFileName = case_number + "_register" + timeStamp + ".pdf";
+
+			// String pdfFileName = "timer.pdf";
+
+			// String contextPath =
+			// getServletContext().getRealPath(File.separator);
+			File pdfFile = new File(contextPath + case_number + "/" + pdfFileName);
+			File files_pdf_jackets = new File(contextPath + case_number);
+			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
+			if (!files_pdf_jackets.exists()) {
+				if (files_pdf_jackets.mkdirs()) {
+					//System.out.println("Multiple directories are created!");
+				} else {
+					//System.out.println("Failed to create multiple directories!");
+				}
+			}
+
+			try {
+				buffer = case_reports_cl.create_land_register(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+						case_number, job_number,
+						files_pdf_jackets_p);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// File pdfFile = new File(contextPath + pdfFileName);
+			//byte[] buffer = null;
+				
 			JSONObject pdf_upload_obj = new JSONObject();
 			String base64Encoded = Base64.getEncoder().encodeToString(buffer);
 
@@ -740,7 +808,7 @@ public class GenerateCaseReports {
 						
 			
 			pdf_upload_obj.put("doc_name",job_number);
-			pdf_upload_obj.put("doc_description","Land Register");
+			pdf_upload_obj.put("doc_description","Final_Land_Register_" + timeStamp );
 			pdf_upload_obj.put("doc_category","case_docs");
 			pdf_upload_obj.put("doc_app_uploaded","elis");
 			pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
@@ -764,6 +832,75 @@ public class GenerateCaseReports {
 
 			String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 			cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
+			if (buffer != null) {
+				// Set response content type to PDF
+				response.setContentType("application/pdf");
+				
+				// Set the content-disposition header to download the file with the specified name
+				response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+				
+				// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+				response.setContentLength(buffer.length);
+				
+				// Write the PDF byte array to the output stream to download it
+				response.getOutputStream().write(buffer, 0, buffer.length);
+				
+				// Flush the output stream
+				response.getOutputStream().flush();
+				
+				// Close the output stream
+				response.getOutputStream().close();
+			} else {
+				// Handle the case where the PDF generation failed
+				response.setContentType("text/html");
+				response.getWriter().write("Error generating PDF.");
+			}
+		}
+
+		if (request_type.equals("request_to_generate_register_a3")) {
+
+			String case_number = request.getParameter("case_number");
+			String job_number = request.getParameter("job_number");
+			//System.out.println(request_type);
+
+			String contextPath = cls_url_config.getCase_upload_location();
+			// String contextPath
+			// ="C:\\gelisscans\\scanpdf\\LCGARGACN37542018\\";
+			String pdfFileName = case_number + "_register" + timeStamp + ".pdf";
+
+			// String pdfFileName = "timer.pdf";
+
+			// String contextPath =
+			// getServletContext().getRealPath(File.separator);
+			File pdfFile = new File(contextPath + case_number + "/" + pdfFileName);
+			File files_pdf_jackets = new File(contextPath + case_number);
+			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
+			if (!files_pdf_jackets.exists()) {
+				if (files_pdf_jackets.mkdirs()) {
+					//System.out.println("Multiple directories are created!");
+				} else {
+					//System.out.println("Failed to create multiple directories!");
+				}
+			}
+
+			try {
+				buffer = case_reports_cl.create_land_register_a3(cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+						case_number, job_number,
+						files_pdf_jackets_p);
+
+						
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// File pdfFile = new File(contextPath + pdfFileName);
+			//byte[] buffer = null;
+		
 
 			if (buffer != null) {
 				// Set response content type to PDF
@@ -2929,6 +3066,231 @@ public class GenerateCaseReports {
 
 	//  String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
 	//  cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
+		if (buffer != null) {
+			// Set response content type to PDF
+			response.setContentType("application/pdf");
+			
+			// Set the content-disposition header to download the file with the specified name
+			response.addHeader("Content-Disposition", "attachment; filename=" + pdfFileName);
+			
+			// Set the content length of the response based on the buffer length (size of the PDF in bytes)
+			response.setContentLength(buffer.length);
+			
+			// Write the PDF byte array to the output stream to download it
+			response.getOutputStream().write(buffer, 0, buffer.length);
+			
+			// Flush the output stream
+			response.getOutputStream().flush();
+			
+			// Close the output stream
+			response.getOutputStream().close();
+		} else {
+			// Handle the case where the PDF generation failed
+			response.setContentType("text/html");
+			response.getWriter().write("Error generating PDF.");
+		}
+		}
+
+
+		if (request_type.equals("request_to_generate_certificate_upload_signed")) {
+
+			String case_number = request.getParameter("case_number");
+			String job_number = request.getParameter("job_number");
+			String cert_type = request.getParameter("cert_type");
+			String registration_district_number = request.getParameter("registration_district_number");
+			String registration_section_number = request.getParameter("registration_section_number");
+			String type_of_certificate = request.getParameter("type_of_certificate");
+			// String case_number = request.getParameter("case_number");
+			// String job_number = request.getParameter("job_number");
+			String transaction_number = request.getParameter("transaction_number");
+			String business_process_sub_name = request.getParameter("ir_business_process_sub_name");
+			String notes = request.getParameter("notes");
+
+			String designation = (String) session.getAttribute("designation");
+
+
+			
+			//System.out.println(cert_type);
+			////System.out.println(case_number);
+			////System.out.println(job_number);
+			////System.out.println(transaction_number);
+
+
+			String contextPath = cls_url_config.getCase_upload_location();
+			// String contextPath
+			// ="C:\\gelisscans\\scanpdf\\LCGARGACN37542018\\";
+			String pdfFileName = case_number + "_certificate" + timeStamp + ".pdf";
+
+			// String pdfFileName = "timer.pdf";
+
+			// String contextPath =
+			// getServletContext().getRealPath(File.separator);
+			File pdfFile = new File(contextPath + case_number + "/" + pdfFileName);
+			File files_pdf_jackets = new File(contextPath + case_number);
+			String files_pdf_jackets_p = contextPath + case_number + "/" + pdfFileName;
+			// if (!files_pdf_jackets.exists()) {
+			// 	if (files_pdf_jackets.mkdirs()) {
+			// 		// //System.out.println("Multiple directories are created!");
+			// 	} else {
+			// 		//System.out.println("Failed to create multiple directories!");
+			// 	}
+			// }
+			try {
+
+				// cls_case_m.select_generate_cert_volume_folio_number(cls_url_config.getWeb_service_url_ser(),cls_url_config.getWeb_service_url_ser_api_key(),cls_url_config.getSoftfile_location(),case_number,registration_district_number,registration_section_number);
+
+				if (cert_type.equals("ASSIGNMENT")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("LEASEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+							
+							transaction_number, job_number,
+							files_pdf_jackets_p);
+				} else if (cert_type.equals("COMPANY ASSIGNMENT")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+						
+							transaction_number, job_number, 
+							files_pdf_jackets_p);
+				} else if (cert_type.equals("COMPANY LEASEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("FREEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number,
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CASDASTRAL LEASE")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CASDASTRAL ASSIGNMENT")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number,
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CASDASTRAL FREEHOLD")) {
+					buffer = case_reports_cl.create_land_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, 
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CONCURRENCE")) {
+					buffer = case_reports_cl.create_concurrence_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+					
+					transaction_number, job_number, type_of_certificate,
+					files_pdf_jackets_p);
+				} else if (cert_type.equals("CERTIFICATE_FOR_REGISTRATION_OF_INSTRUMENT")) {
+				buffer = case_reports_cl.create_deeds_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+				cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+				
+				transaction_number, job_number, type_of_certificate,
+				files_pdf_jackets_p);
+				} else if (cert_type.equals("CONSENT")) {
+				buffer = case_reports_cl.create_consent_certificate_typed(cls_url_config.getWeb_service_url_ser(),
+				cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),
+				
+				transaction_number, job_number, type_of_certificate,
+				files_pdf_jackets_p);
+			}
+
+				
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// File pdfFile = new File(contextPath + pdfFileName);
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		//byte[] buffer = null;
+			
+	// 	JSONObject pdf_upload_obj = new JSONObject();
+	// 	String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+
+
+	// 	pdf_upload_obj.put("jobNumber", job_number);
+	// 	pdf_upload_obj.put("caseNumber",case_number);
+	// 	pdf_upload_obj.put("fileData",base64Encoded);
+					
+	
+	// 	pdf_upload_obj.put("doc_name",job_number);
+	// 	pdf_upload_obj.put("doc_description","Land Certificate");
+	// 	pdf_upload_obj.put("doc_category","case_docs");
+	// 	pdf_upload_obj.put("doc_app_uploaded","elis");
+	// 	pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+	// 	pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+	// 	pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+		
+	
+    //                                                     // 1. Get size in bytes
+    //                         long sizeInBytes = buffer.length;
+    //                         //System.out.println("Size in bytes: " + sizeInBytes);
+
+    //                         // 2. Human-readable format (KB, MB, GB...)
+    //                         String humanReadable = formatFileSize(sizeInBytes);
+    //                         //System.out.println("Human readable: " + humanReadable);
+                                    
+    //                     pdf_upload_obj.put("doc_file_size",humanReadable);
+    //                     pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+    //                     pdf_upload_obj.put("doc_version",1);
+    //                     pdf_upload_obj.put("doc_type","Portable Document Format");
+
+	//  String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	//  cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
+
+//String timeStamp_1 = new SimpleDateFormat("yyyy_MM_dd_HHmmss").format(Calendar.getInstance().getTime());
+		JSONObject pdf_upload_obj = new JSONObject();
+		String base64Encoded = Base64.getEncoder().encodeToString(buffer);
+	
+		pdf_upload_obj.put("jobNumber", job_number);
+		pdf_upload_obj.put("caseNumber",case_number);
+		pdf_upload_obj.put("fileData",base64Encoded);
+
+		pdf_upload_obj.put("doc_name",job_number);
+		pdf_upload_obj.put("doc_description","Final_Land_Certificate_" + timeStamp  );
+		pdf_upload_obj.put("doc_category","public_docs");
+		pdf_upload_obj.put("doc_app_uploaded","elis");
+		pdf_upload_obj.put("doc_uploaded_by",session.getAttribute("fullname").toString());
+		pdf_upload_obj.put("doc_uploaded_by_id",session.getAttribute("userid").toString());
+		pdf_upload_obj.put("doc_uploaded_by_ip_address",session.getAttribute("mac_address"));
+                                                        // 1. Get size in bytes
+        long sizeInBytes = buffer.length;
+        //System.out.println("Size in bytes: " + sizeInBytes);
+
+        // 2. Human-readable format (KB, MB, GB...)
+        String humanReadable = formatFileSize(sizeInBytes);
+        //System.out.println("Human readable: " + humanReadable);
+                                    
+        pdf_upload_obj.put("doc_file_size",humanReadable);
+        pdf_upload_obj.put("doc_file_size_byte",sizeInBytes);
+        pdf_upload_obj.put("doc_version",1);
+        pdf_upload_obj.put("doc_type","Portable Document Format");
+
+	    String pdf_upload_response= casemgt_cl.pdf_byte_upload_to_service(cls_url_config.getDoc_mgt_api(),
+	    cls_url_config.getDoc_mgt_api_key(),pdf_upload_obj.toString());
+
 
 		if (buffer != null) {
 			// Set response content type to PDF
