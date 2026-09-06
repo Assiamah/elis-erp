@@ -153,6 +153,7 @@ public class rent_mgt_pdf_serv {
 
 					byte[] buffer = null;
 
+
 					// Generate the PDF as a byte array
 					buffer = billgeneration_cl.create_lc_rent_demand_notice_for_rent_mgt_unit(
 							cls_url_config.getSoftfile_location(), web_service_response,estate_name,

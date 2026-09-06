@@ -3418,7 +3418,7 @@ document.add(propertyAndAccount);
 
 			//System.out.println("formattedAmountDue");
 		//System.out.println(formattedAmountDue);
-
+System.out.println("rentArrearsNewPeriod: " + rentArrearsNewPeriod);
 
         Paragraph p5 = new Paragraph();
         p5.add(new Chunk("TAKE NOTICE", boldItalicBodyFont));

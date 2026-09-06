@@ -303,6 +303,19 @@
                                                         <i class="ri-folder-open-line"></i>
                                                     </button>
                                                 </form>
+                                                 <form action="${appfiles.job_purpose != 'Add Plotting' && appfiles.job_purpose != 'Archive Plotting' ? 'request_application_progress_details_advance_ai' : 'request_application_progress_details_advance_ai'}" method="post" class="d-inline">
+                                                    <input type="hidden" name="case_number" value="${appfiles.case_number}">
+                                                    <input type="hidden" name="transaction_number" value="${appfiles.transaction_number}">
+                                                    <input type="hidden" name="job_number" value="${appfiles.job_number}">
+                                                    <input type="hidden" name="business_process_sub_name" value="${appfiles.business_process_sub_name}">
+                                                    <input type="hidden" name="review_type" value="${appfiles.request_category}">
+                                                    <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
+                                                    <input type="hidden" name="review_instruction" value="${appfiles.request_comments}">
+                                                    <input type="hidden" name="job_purpose" value="${appfiles.job_purpose}">
+                                                    <button type="submit" class="btn btn-sm btn-secondary" data-bs-custom-class="tooltip-primary" title="AI" data-bs-toggle="tooltip">
+                                                        <i class="ri-folder-open-line"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
