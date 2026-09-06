@@ -1025,7 +1025,7 @@ public class CsauServlet {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
-                        .compliance_executive_dashboard10(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_executive_dashboard10(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1047,7 +1047,7 @@ public class CsauServlet {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
-                        .compliance_executive_dashboard11(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_executive_dashboard11(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1069,7 +1069,7 @@ public class CsauServlet {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
-                        .compliance_executive_dashboard12(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_executive_dashboard12(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1090,7 +1090,7 @@ public class CsauServlet {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_monitoring
-                        .compliance_executive_dashboard13(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_executive_dashboard13(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);

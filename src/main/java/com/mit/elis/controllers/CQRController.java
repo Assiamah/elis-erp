@@ -131,7 +131,7 @@ public class CQRController {
 			////System.out.println(input_details);
 
 			String web_service_response = cls_compliance.select_compliance_application_notice_count_per_region(
-					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+					cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 					input_details);
 
 			if (web_service_response != null) {

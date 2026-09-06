@@ -69,7 +69,7 @@ public class ComplianceReport {
                   obj.put( "end_date" , end_date );
 				String input_details = obj.toString();
 				//System.out.println(input_details + " Shade @ : " + new java.util.Date());
-				web_service_response = cls_compliance.report_dashboard_all_post(cls_url_config.getWeb_service_url_ser(),
+				web_service_response = cls_compliance.report_dashboard_all_post(cls_url_config.getReport_web_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 

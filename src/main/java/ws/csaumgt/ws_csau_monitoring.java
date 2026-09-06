@@ -913,13 +913,13 @@ public class ws_csau_monitoring {
 
 
 
-	public String compliance_executive_dashboard10(String web_service_url, String web_service_api_key, String json_request) {
+	public String compliance_executive_dashboard10(String report_web_service_url, String web_service_api_key, String json_request) {
 		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client
-					.resource(web_service_url + "compliance_executive/compliance_executive_dashboard10");
+					.resource(report_web_service_url + "compliance_executive/compliance_executive_dashboard10");
 			ClientResponse response = webResource.accept("application/json").header("x-api-key", web_service_api_key)
 					.post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {
@@ -936,13 +936,13 @@ public class ws_csau_monitoring {
 
 
 
-	public String compliance_executive_dashboard11(String web_service_url, String web_service_api_key, String json_request) {
+	public String compliance_executive_dashboard11(String report_web_service_url, String web_service_api_key, String json_request) {
 		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client
-					.resource(web_service_url + "compliance_executive/compliance_executive_dashboard11");
+					.resource(report_web_service_url + "compliance_executive/compliance_executive_dashboard11");
 			ClientResponse response = webResource.accept("application/json").header("x-api-key", web_service_api_key)
 					.post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {
@@ -959,13 +959,13 @@ public class ws_csau_monitoring {
 
 
 
-	public String compliance_executive_dashboard12(String web_service_url, String web_service_api_key, String json_request) {
+	public String compliance_executive_dashboard12(String report_web_service_url, String web_service_api_key, String json_request) {
 		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client
-					.resource(web_service_url + "compliance_executive/compliance_executive_dashboard12");
+					.resource(report_web_service_url + "compliance_executive/compliance_executive_dashboard12");
 			ClientResponse response = webResource.accept("application/json").header("x-api-key", web_service_api_key)
 					.post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {
@@ -982,13 +982,13 @@ public class ws_csau_monitoring {
 
 
 
-	public String compliance_executive_dashboard13(String web_service_url, String web_service_api_key, String json_request) {
+	public String compliance_executive_dashboard13(String report_web_service_url, String web_service_api_key, String json_request) {
 		////System.out.println(json_request);
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client
-					.resource(web_service_url + "compliance_executive/compliance_executive_dashboard13");
+					.resource(report_web_service_url + "compliance_executive/compliance_executive_dashboard13");
 			ClientResponse response = webResource.accept("application/json").header("x-api-key", web_service_api_key)
 					.post(ClientResponse.class, json_request);
 			if (response.getStatus() != 200) {

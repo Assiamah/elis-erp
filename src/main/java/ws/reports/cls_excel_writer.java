@@ -26,13 +26,13 @@ public class cls_excel_writer {
             "Application Status", "Date Completed", "Date Collected", "Days Completed", "Days Collected",
             "Service Type" };
 
-    public String get_list_of_users(String web_service_url, String web_service_api_key, String data_input) {
+    public String get_list_of_users(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_on_the_cases");
+                    .resource(report_web_service_url + "report_service/report_on_the_cases");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -50,13 +50,13 @@ public class cls_excel_writer {
 
     }
 
-    public String report_on_the_cases_stamping(String web_service_url, String web_service_api_key, String data_input) {
+    public String report_on_the_cases_stamping(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_on_the_cases_stamping");
+                    .resource(report_web_service_url + "report_service/report_on_the_cases_stamping");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -74,14 +74,14 @@ public class cls_excel_writer {
 
     }
 
-    public String report_dashboard_unit_for_each_staff(String web_service_url, String web_service_api_key,
+    public String report_dashboard_unit_for_each_staff(String report_web_service_url, String web_service_api_key,
             String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "compliance_service/report_dashboard_unit_for_each_staff_v5");
+                    .resource(report_web_service_url + "compliance_service/report_dashboard_unit_for_each_staff_v5");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -100,14 +100,14 @@ public class cls_excel_writer {
     }
 
 
-    public String report_audit_for_each_staff(String web_service_url, String web_service_api_key,
+    public String report_audit_for_each_staff(String report_web_service_url, String web_service_api_key,
             String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "compliance_service/report_audit_for_each_staff");
+                    .resource(report_web_service_url + "compliance_service/report_audit_for_each_staff");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -125,14 +125,14 @@ public class cls_excel_writer {
 
     }
 
-    public String report_landed_cases_gra_revised(String web_service_url, String web_service_api_key,
+    public String report_landed_cases_gra_revised(String report_web_service_url, String web_service_api_key,
             String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_landed_cases_gra_revised");
+                    .resource(report_web_service_url + "report_service/report_landed_cases_gra_revised");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -364,13 +364,13 @@ public class cls_excel_writer {
         return output;
     }
 
-    public String get_count_of_query(String web_service_url, String web_service_api_key, String data_input) {
+    public String get_count_of_query(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_count_on_query_cases");
+                    .resource(report_web_service_url + "report_service/report_count_on_query_cases");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -388,38 +388,13 @@ public class cls_excel_writer {
 
     }
 
-    public String get_count_of_users(String web_service_url, String web_service_api_key, String data_input) {
+    public String get_count_of_users(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_count_on_the_cases");
-            // ClientResponse response =
-            // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
-            ClientResponse response = webResource.accept("application/json")
-                    .header("x-api-key", web_service_api_key).post(ClientResponse.class, data_input);
-            if (response.getStatus() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            }
-            output = response.getEntity(String.class);
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-        return output;
-
-    }
-
-
-    public String report_on_plan_approval(String web_service_url, String web_service_api_key, String data_input) {
-
-        String output = "Data Not Received";
-        try {
-            Client client = Client.create();
-            WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_on_plan_approval");
+                    .resource(report_web_service_url + "report_service/report_count_on_the_cases");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -438,14 +413,13 @@ public class cls_excel_writer {
     }
 
 
-
-    public String report_on_plan_approval2(String web_service_url, String web_service_api_key, String data_input) {
+    public String report_on_plan_approval(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_on_plan_approval2");
+                    .resource(report_web_service_url + "report_service/report_on_plan_approval");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -465,15 +439,13 @@ public class cls_excel_writer {
 
 
 
-
-
-    public String report_on_smd_cartogis(String web_service_url, String web_service_api_key, String data_input) {
+    public String report_on_plan_approval2(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_on_smd_cartogis");
+                    .resource(report_web_service_url + "report_service/report_on_plan_approval2");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -495,15 +467,13 @@ public class cls_excel_writer {
 
 
 
-
-
-      public String report_on_smd_cartogis_kpi(String web_service_url, String web_service_api_key, String data_input) {
+    public String report_on_smd_cartogis(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/report_on_smd_cartogis_kpi");
+                    .resource(report_web_service_url + "report_service/report_on_smd_cartogis");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")
@@ -525,13 +495,43 @@ public class cls_excel_writer {
 
 
 
-    public String general_user_in_unit(String web_service_url, String web_service_api_key, String data_input) {
+
+
+      public String report_on_smd_cartogis_kpi(String report_web_service_url, String web_service_api_key, String data_input) {
 
         String output = "Data Not Received";
         try {
             Client client = Client.create();
             WebResource webResource = client
-                    .resource(web_service_url + "report_service/general_user_in_unit");
+                    .resource(report_web_service_url + "report_service/report_on_smd_cartogis_kpi");
+            // ClientResponse response =
+            // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+            ClientResponse response = webResource.accept("application/json")
+                    .header("x-api-key", web_service_api_key).post(ClientResponse.class, data_input);
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            }
+            output = response.getEntity(String.class);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+        return output;
+
+    }
+
+
+
+
+
+    public String general_user_in_unit(String report_web_service_url, String web_service_api_key, String data_input) {
+
+        String output = "Data Not Received";
+        try {
+            Client client = Client.create();
+            WebResource webResource = client
+                    .resource(report_web_service_url + "report_service/general_user_in_unit");
             // ClientResponse response =
             // webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
             ClientResponse response = webResource.accept("application/json")

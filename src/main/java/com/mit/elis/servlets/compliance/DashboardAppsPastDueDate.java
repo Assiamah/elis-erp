@@ -63,7 +63,7 @@ public class DashboardAppsPastDueDate {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.report_dashboard_units_with_apps_past_due_year_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_units_with_apps_past_due_year_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
@@ -89,7 +89,7 @@ public class DashboardAppsPastDueDate {
 
 				web_service_response = cls_compliance
 						.report_dashboard_officers_within_units_with_apps_past_due_year_post(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -111,7 +111,7 @@ public class DashboardAppsPastDueDate {
 
 				web_service_response = cls_compliance
 						.report_dashboard_applications_with_officers_that_are_apps_past_due_year_post(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);

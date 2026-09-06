@@ -89,7 +89,7 @@ public class ComplianceExecutive {
             //     //System.out.println(obj.toString());
 
             //     web_service_response = cls_executivedashboard
-            //             .compliance_executive_dashboard10(cls_url_config.getWeb_service_url_ser(),
+            //             .compliance_executive_dashboard10(cls_url_config.getReport_web_service_url_ser(),
             //                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             //     if (web_service_response != null) {
             //         //System.out.println(web_service_response);
@@ -119,7 +119,7 @@ public class ComplianceExecutive {
             //     //System.out.println(obj.toString());
 
             //     web_service_response = cls_executivedashboard
-            //             .compliance_executive_dashboard11(cls_url_config.getWeb_service_url_ser(),
+            //             .compliance_executive_dashboard11(cls_url_config.getReport_web_service_url_ser(),
             //                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             //     if (web_service_response != null) {
             //         //System.out.println(web_service_response);
@@ -149,7 +149,7 @@ public class ComplianceExecutive {
             //     //System.out.println(obj.toString());
 
             //     web_service_response = cls_executivedashboard
-            //             .compliance_executive_dashboard12(cls_url_config.getWeb_service_url_ser(),
+            //             .compliance_executive_dashboard12(cls_url_config.getReport_web_service_url_ser(),
             //                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             //     if (web_service_response != null) {
             //         //System.out.println(web_service_response);
@@ -177,7 +177,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_report_all_count(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_report_all_count(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -204,7 +204,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_report_charts(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_report_charts(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -233,7 +233,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_get_division_totals(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_get_division_totals(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -262,7 +262,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_get_regional_received(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_get_regional_received(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -292,7 +292,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_get_regional_completed_stats(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_get_regional_completed_stats(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -324,7 +324,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_recieved(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_recieved(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -357,7 +357,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_subservices_recieved(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_subservices_recieved(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -390,7 +390,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_applications_recieved(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_applications_recieved(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -422,7 +422,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_pending(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_pending(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -456,7 +456,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_subservices_pending(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_subservices_pending(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -489,7 +489,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_applications_pending(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_applications_pending(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -524,7 +524,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_completed(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_completed(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -558,7 +558,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_subservices_completed(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_subservices_completed(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -591,7 +591,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_applications_completed(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_applications_completed(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -626,7 +626,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_recieved_completed(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_recieved_completed(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -660,7 +660,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_subservices_received_completed(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_subservices_received_completed(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -693,7 +693,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_applications_received_completed(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_applications_received_completed(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -729,7 +729,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_queried(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_queried(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -763,7 +763,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_subservices_queried(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_subservices_queried(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -796,7 +796,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_applications_queried(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_applications_queried(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -828,7 +828,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_report_received_vs_pending(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_report_received_vs_pending(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -859,7 +859,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_regions(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_regions(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -894,7 +894,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_regional_apps_division(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_regional_apps_division(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -927,7 +927,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_past_due(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_past_due(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -961,7 +961,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_past_due_regions(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_past_due_regions(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -998,7 +998,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_pastdue_units(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_pastdue_units(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1035,7 +1035,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_pastdue_within_unit(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_pastdue_within_unit(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1070,7 +1070,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_pastdue_with_officer(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_pastdue_with_officer(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1103,7 +1103,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_apps_by_regions_to_divisions(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_apps_by_regions_to_divisions(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1137,7 +1137,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_divisions_services(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_divisions_services(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1177,7 +1177,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_divisions_sub_services(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_divisions_sub_services(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1218,7 +1218,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_divisions_sub_services_applications(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_divisions_sub_services_applications(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);
@@ -1250,7 +1250,7 @@ public class ComplianceExecutive {
                 //System.out.println(obj.toString());
 
                 web_service_response = cls_executivedashboard
-                        .executive_dashboard_get_apps_by_subservices_for_barchart(cls_url_config.getWeb_service_url_ser(),
+                        .executive_dashboard_get_apps_by_subservices_for_barchart(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                     //System.out.println(web_service_response);

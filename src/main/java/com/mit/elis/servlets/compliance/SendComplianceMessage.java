@@ -74,7 +74,7 @@ public class SendComplianceMessage {
 				//System.out.println("ff" + input_details);
 				
 				web_service_response = cls_compliance
-						.send_compliance_message_post(cls_url_config.getWeb_service_url_ser(),
+						.send_compliance_message_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -97,7 +97,7 @@ public class SendComplianceMessage {
 				//System.out.println("ff" + input_details);
 				
 				web_service_response = cls_compliance
-						.send_compliance_focal_person_message(cls_url_config.getWeb_service_url_ser(),
+						.send_compliance_focal_person_message(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -113,7 +113,7 @@ public class SendComplianceMessage {
 				String input_details = obj.toString();
 				// //System.out.println("ff" + input_details);
 				web_service_response = cls_compliance
-						.update_compliance_application_notice(cls_url_config.getWeb_service_url_ser(),
+						.update_compliance_application_notice(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -129,7 +129,7 @@ public class SendComplianceMessage {
 				String input_details = obj.toString();
 				// //System.out.println("ff" + input_details);
 				web_service_response = cls_compliance
-						.select_responses_on_compliance_application_notice(cls_url_config.getWeb_service_url_ser(),
+						.select_responses_on_compliance_application_notice(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);

@@ -59,7 +59,7 @@ public class ComplianceReportNationalNew {
 				obj.put("region_id", region_id);
 				String input_details = obj.toString();
 
-				web_service_response = cls_compliance.report_dashboard_all_post(cls_url_config.getWeb_service_url_ser(),
+				web_service_response = cls_compliance.report_dashboard_all_post(cls_url_config.getReport_web_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {

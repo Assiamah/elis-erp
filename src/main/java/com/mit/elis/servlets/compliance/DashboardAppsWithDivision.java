@@ -63,7 +63,7 @@ public class DashboardAppsWithDivision {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.report_dashboard_units_with_apps_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_units_with_apps_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -86,7 +86,7 @@ public class DashboardAppsWithDivision {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.report_dashboard_officers_within_units_with_apps_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_officers_within_units_with_apps_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
@@ -110,7 +110,7 @@ public class DashboardAppsWithDivision {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance.report_dashboard_applications_with_officers_post(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					// System.out.println(web_service_response);
@@ -134,7 +134,7 @@ public class DashboardAppsWithDivision {
 				////System.out.println(input_details);
 
 				web_service_response = cls_compliance.select_reminder_apps_from_complaince_notice_by_unit(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					//System.out.println(web_service_response);
@@ -158,7 +158,7 @@ public class DashboardAppsWithDivision {
 				//System.out.println(input_details);
 
 				web_service_response = cls_compliance.select_warning_apps_from_complaince_notice_by_unit(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					//System.out.println(web_service_response);
@@ -184,7 +184,7 @@ public class DashboardAppsWithDivision {
 				//System.out.println(input_details);
 
 				web_service_response = cls_compliance.select_update_compliance_notice_to_active(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					//System.out.println(web_service_response);
@@ -208,7 +208,7 @@ public class DashboardAppsWithDivision {
 				//System.out.println(input_details);
 
 				web_service_response = cls_compliance.select_compliance_application_notice_by_unit(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					//System.out.println(web_service_response);
