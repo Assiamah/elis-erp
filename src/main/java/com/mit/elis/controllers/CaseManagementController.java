@@ -13937,7 +13937,7 @@ request.setAttribute("rq_id",rq_id);
 				////System.out.println(web_service_response_menu);
 
 				web_service_response_compliance_notice = casemgt_web_service
-							.select_load_compliance_notice_count_by_unit(cls_url_config.getWeb_service_url_ser(),
+							.select_load_compliance_notice_count_by_unit(cls_url_config.getReport_web_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									obj.toString());
 
@@ -14055,7 +14055,7 @@ request.setAttribute("rq_id",rq_id);
 				////System.out.println(web_service_response_menu);
 
 				web_service_response_compliance_notice = casemgt_web_service
-							.select_load_compliance_notice_count_by_unit(cls_url_config.getWeb_service_url_ser(),
+							.select_load_compliance_notice_count_by_unit(cls_url_config.getReport_web_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									obj.toString());
 
@@ -14170,7 +14170,7 @@ request.setAttribute("rq_id",rq_id);
 				}
 
 				// web_service_response_compliance_notice = casemgt_web_service
-				// 			.select_load_compliance_notice_count_by_unit(cls_url_config.getWeb_service_url_ser(),
+				// 			.select_load_compliance_notice_count_by_unit(cls_url_config.getReport_web_service_url_ser(),
 				// 					cls_url_config.getWeb_service_url_ser_api_key(),
 				// 					obj.toString());
 
@@ -15214,7 +15214,7 @@ request.setAttribute("rq_id",rq_id);
 				obj.put("division", (String) session.getAttribute("division"));
 
 				web_service_response_compliance_notice = casemgt_web_service
-							.select_load_app_request_count_by_unit(cls_url_config.getWeb_service_url_ser(),
+							.select_load_app_request_count_by_unit(cls_url_config.getReport_web_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									obj.toString());
 
@@ -15344,7 +15344,7 @@ request.setAttribute("rq_id",rq_id);
 				obj.put("division", (String) session.getAttribute("division"));
 
 				web_service_response_compliance_notice = casemgt_web_service
-							.select_load_job_app_request_count_by_unit(cls_url_config.getWeb_service_url_ser(),
+							.select_load_job_app_request_count_by_unit(cls_url_config.getReport_web_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									obj.toString());
 
@@ -15470,7 +15470,7 @@ request.setAttribute("rq_id",rq_id);
 				obj.put("division", (String) session.getAttribute("division"));
 
 				web_service_response_compliance_notice = casemgt_web_service
-							.select_load_job_app_request_count_by_unit(cls_url_config.getWeb_service_url_ser(),
+							.select_load_job_app_request_count_by_unit(cls_url_config.getReport_web_service_url_ser(),
 									cls_url_config.getWeb_service_url_ser_api_key(),
 									obj.toString());
 

@@ -63,7 +63,7 @@ public class Corporate_DashboardDivisionSummary {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.report_dashboard_created_today_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_created_today_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -83,7 +83,7 @@ public class Corporate_DashboardDivisionSummary {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance.report_dashboard_created_day_by_division_post(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -104,7 +104,7 @@ public class Corporate_DashboardDivisionSummary {
 
 				web_service_response = cls_compliance
 						.report_dashboard_created_day_application_for_each_service_post(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -119,7 +119,7 @@ public class Corporate_DashboardDivisionSummary {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.report_dashboard_created_month_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_created_month_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -140,7 +140,7 @@ public class Corporate_DashboardDivisionSummary {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance.report_dashboard_created_month_by_division_post(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -162,7 +162,7 @@ public class Corporate_DashboardDivisionSummary {
 
 				web_service_response = cls_compliance
 						.report_dashboard_created_month_application_for_each_service_post(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// ////System.out.println(web_service_response);
@@ -178,7 +178,7 @@ public class Corporate_DashboardDivisionSummary {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.report_dashboard_completed_today_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_completed_today_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -198,7 +198,7 @@ public class Corporate_DashboardDivisionSummary {
 
 				String input_details = obj.toString();
 				web_service_response = cls_compliance.report_dashboard_completed_day_by_division_post(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -220,7 +220,7 @@ public class Corporate_DashboardDivisionSummary {
 
 				web_service_response = cls_compliance
 						.report_dashboard_completed_day_application_for_each_service_post(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -236,7 +236,7 @@ public class Corporate_DashboardDivisionSummary {
 				//System.out.println("testing comp  by divsion: " + input_details);
 
 				web_service_response = cls_compliance
-						.report_dashboard_completed_month_post(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_completed_month_post(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -257,7 +257,7 @@ public class Corporate_DashboardDivisionSummary {
 				//System.out.println("testing comp  by service: " + input_details);
 
 				web_service_response = cls_compliance.report_dashboard_completed_month_by_division_post(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -278,7 +278,7 @@ public class Corporate_DashboardDivisionSummary {
 
 				web_service_response = cls_compliance
 						.report_dashboard_completed_month_application_for_each_service_post(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);

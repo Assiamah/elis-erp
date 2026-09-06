@@ -411,7 +411,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 System.out.println(report_parameters);
 
-                json_output = excel_report_cl.get_list_of_users(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.get_list_of_users(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -465,7 +465,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 // //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.get_count_of_users(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.get_count_of_users(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -523,7 +523,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 // //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.get_count_of_query(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.get_count_of_query(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -576,7 +576,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.report_on_the_cases_stamping(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.report_on_the_cases_stamping(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -626,7 +626,7 @@ public class reports {
                 //System.out.println(report_parameters);
 
                 web_service_response = excel_report_cl
-                        .report_landed_cases_gra_revised(cls_url_config.getWeb_service_url_ser(),
+                        .report_landed_cases_gra_revised(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
                 //System.out.println(web_service_response);
@@ -672,7 +672,7 @@ public class reports {
                 // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_dashboard_unit_for_each_staff(
-                        cls_url_config.getWeb_service_url_ser(),
+                        cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
                         return json_output;
@@ -703,7 +703,7 @@ public class reports {
                 // //System.out.println(report_parameters);
 
                 json_output = excel_report_cl.report_audit_for_each_staff(
-                        cls_url_config.getWeb_service_url_ser(),
+                        cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
                         return json_output;
@@ -870,7 +870,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 // //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.report_on_plan_approval(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.report_on_plan_approval(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -915,7 +915,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 // //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.report_on_plan_approval2(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.report_on_plan_approval2(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -964,7 +964,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 // //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.report_on_smd_cartogis(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.report_on_smd_cartogis(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -1012,7 +1012,7 @@ public class reports {
                 // System.out.println("Assiamah");
                 // System.out.println(report_parameters);
 
-                json_output = excel_report_cl.report_on_smd_cartogis_kpi(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.report_on_smd_cartogis_kpi(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {
@@ -1059,7 +1059,7 @@ public class reports {
                 // //System.out.println("Assiamah");
                 // //System.out.println(report_parameters);
 
-                json_output = excel_report_cl.general_user_in_unit(cls_url_config.getWeb_service_url_ser(),
+                json_output = excel_report_cl.general_user_in_unit(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(), report_parameters);
 
             } catch (Exception e) {

@@ -33,5 +33,255 @@
     "name": "AES_SECRET_KEY",
     "type": "java.lang.String",
     "description": "A description for 'AES_SECRET_KEY'"
+  },
+  {
+    "name": "app.config.web_service_url_ser",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.web_service_url_ser'"
+  },
+  {
+    "name": "app.config.web_service_url_ser_api_key",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.web_service_url_ser_api_key'"
+  },
+  {
+    "name": "app.config.web_service_url_dlrev_server",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.web_service_url_dlrev_server'"
+  },
+  {
+    "name": "app.config.site_plan_verification",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.site_plan_verification'"
+  },
+  {
+    "name": "app.config.doc_mgt_api",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.doc_mgt_api'"
+  },
+  {
+    "name": "app.config.doc_mgt_api_key",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.doc_mgt_api_key'"
+  },
+  {
+    "name": "app.config.doc_mgt_api_v1",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.doc_mgt_api_v1'"
+  },
+  {
+    "name": "app.config.geoserver_url",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.geoserver_url'"
+  },
+  {
+    "name": "app.config.geoserver_workspace_name",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.geoserver_workspace_name'"
+  },
+  {
+    "name": "spring.mail.from.address",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.mail.from.address'"
+  },
+  {
+    "name": "spring.mail.from.name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.mail.from.name'"
+  },
+  {
+    "name": "app.config.oblique_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.oblique_file_location'"
+  },
+  {
+    "name": "app.config.soft_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.soft_file_location'"
+  },
+  {
+    "name": "app.config.pic_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.pic_file_location'"
+  },
+  {
+    "name": "app.config.apkpath",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.apkpath'"
+  },
+  {
+    "name": "app.config.get_public_docs_upload_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.get_public_docs_upload_location'"
+  },
+  {
+    "name": "app.config.case_upload_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.case_upload_location'"
+  },
+  {
+    "name": "app.config.public_docs_upload_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.public_docs_upload_location'"
+  },
+  {
+    "name": "app.config.jasper_report_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.jasper_report_file_location'"
+  },
+  {
+    "name": "app.config.public_docs_upload_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.public_docs_upload_location'"
+  },
+  {
+    "name": "app.config.sample_sign_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.sample_sign_location'"
+  },
+  {
+    "name": "app.config.batching_files_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.batching_files_location'"
+  },
+  {
+    "name": "app.config.publicaton_files_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.publicaton_files_location'"
+  },
+  {
+    "name": "app.config.tempfile_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.tempfile_location'"
+  },
+  {
+    "name": "app.config.lrd_jacket_raw_path",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.lrd_jacket_raw_path'"
+  },
+  {
+    "name": "app.config.egcr_url",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.egcr_url'"
+  },
+  {
+    "name": "app.config.egcr_apikey",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.egcr_apikey'"
+  },
+  {
+    "name": "app.config.legal_request_document",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.legal_request_document'"
+  },
+  {
+    "name": "app.config.legal_document_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.legal_document_location'"
+  },
+  {
+    "name": "app.config.legal_provide_document",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.legal_provide_document'"
+  },
+  {
+    "name": "app.config.legal_batch_list_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.legal_batch_list_location'"
+  },
+  {
+    "name": "app.config.legal_provide_document",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.legal_provide_document'"
+  },
+  {
+    "name": "app.config.lisag_api",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.lisag_api'"
+  },
+  {
+    "name": "app.config.lisag_api_key",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.lisag_api_key'"
+  },
+  {
+    "name": "app.config.report_web_service_url_ser",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.report_web_service_url_ser'"
+  },
+  {
+    "name": "app.config.doc_mgt_api_v1_key",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.doc_mgt_api_v1_key'"
+  },
+  {
+    "name": "app.config.geoserver_user",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.geoserver_user'"
+  },
+  {
+    "name": "app.config.geoserver_password",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.geoserver_password'"
+  },
+  {
+    "name": "app.config.cica_reply_document",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.cica_reply_document'"
+  },
+  {
+    "name": "app.config.cica_created_ticket",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.cica_created_ticket'"
+  },
+  {
+    "name": "app.config.cica_request_form",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.cica_request_form'"
+  },
+  {
+    "name": "app.config.softfile_location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.softfile_location'"
+  },
+  {
+    "name": "app.config.lc_temp_folder",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.lc_temp_folder'"
+  },
+  {
+    "name": "app.config.lc_deleted_case",
+    "type": "java.lang.String",
+    "description": "A description for 'app.config.lc_deleted_case'"
+  },
+  {
+    "name": "file.upload.oblique_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.oblique_file_location'"
+  },
+  {
+    "name": "file.upload.soft_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.soft_file_location'"
+  },
+  {
+    "name": "file.upload.pic_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.pic_file_location'"
+  },
+  {
+    "name": "file.upload.apkpath",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.apkpath'"
+  },
+  {
+    "name": "file.upload.tempfile_location",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.tempfile_location'"
+  },
+  {
+    "name": "file.upload.jasper_report_file_location",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.jasper_report_file_location'"
   }
 ]}

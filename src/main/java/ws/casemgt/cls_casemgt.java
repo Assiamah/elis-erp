@@ -3211,13 +3211,13 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String compliance_create_notice_reply(String web_service_url, String web_service_api_key,
+	public String compliance_create_notice_reply(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/compliance_create_notice_reply");
+					report_web_service_url + "compliance_service/compliance_create_notice_reply");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3234,12 +3234,12 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String get_lc_list_notifications(String web_service_url, String web_service_api_key, String job_number) {
+	public String get_lc_list_notifications(String report_web_service_url, String web_service_api_key, String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/compliance_get_notice_for_user");
+					report_web_service_url + "compliance_service/compliance_get_notice_for_user");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3256,12 +3256,12 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String get_lc_list_messages(String web_service_url, String web_service_api_key, String job_number) {
+	public String get_lc_list_messages(String report_web_service_url, String web_service_api_key, String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/compliance_get_message_for_user");
+					report_web_service_url + "compliance_service/compliance_get_message_for_user");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3278,12 +3278,12 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String report_dashboard_all_by_user(String web_service_url, String web_service_api_key, String job_number) {
+	public String report_dashboard_all_by_user(String report_web_service_url, String web_service_api_key, String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client
-					.resource(web_service_url + "compliance_service/report_dashboard_all_by_user_v5");
+					.resource(report_web_service_url + "compliance_service/report_dashboard_all_by_user_v5");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3326,12 +3326,12 @@ public class cls_casemgt {
 
 	
 
-	public String report_dashboard_apps_comp_month_by_user(String web_service_url, String web_service_api_key,
+	public String report_dashboard_apps_comp_month_by_user(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
-			WebResource webResource = client.resource(web_service_url
+			WebResource webResource = client.resource(report_web_service_url
 					+ "compliance_service/report_dashboard_apps_comp_month_by_user");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
@@ -3349,13 +3349,13 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String report_dashboard_apps_rec_month_by_user(String web_service_url, String web_service_api_key,
+	public String report_dashboard_apps_rec_month_by_user(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/report_dashboard_apps_rec_month_by_user");
+					report_web_service_url + "compliance_service/report_dashboard_apps_rec_month_by_user");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3372,12 +3372,12 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String report_dashboard_apps_past_due_date_by_user(String web_service_url, String web_service_api_key,
+	public String report_dashboard_apps_past_due_date_by_user(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
-			WebResource webResource = client.resource(web_service_url
+			WebResource webResource = client.resource(report_web_service_url
 					+ "compliance_service/report_dashboard_apps_past_due_date_by_user");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
@@ -3395,12 +3395,12 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String report_dashboard_corp_apps_past_due_date_by_user(String web_service_url, String web_service_api_key,
+	public String report_dashboard_corp_apps_past_due_date_by_user(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
-			WebResource webResource = client.resource(web_service_url
+			WebResource webResource = client.resource(report_web_service_url
 					+ "compliance_service/report_dashboard_corp_apps_past_due_date_by_user");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
@@ -3487,13 +3487,13 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String select_load_compliance_notice_count_by_unit(String web_service_url, String web_service_api_key,
+	public String select_load_compliance_notice_count_by_unit(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/select_load_compliance_notice_count_by_unit");
+					report_web_service_url + "compliance_service/select_load_compliance_notice_count_by_unit");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3510,13 +3510,13 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String select_load_app_request_count_by_unit(String web_service_url, String web_service_api_key,
+	public String select_load_app_request_count_by_unit(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/select_load_app_request_count_by_unit");
+					report_web_service_url + "compliance_service/select_load_app_request_count_by_unit");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")
@@ -3533,13 +3533,13 @@ public class cls_casemgt {
 		return output;
 	}
 
-	public String select_load_job_app_request_count_by_unit(String web_service_url, String web_service_api_key,
+	public String select_load_job_app_request_count_by_unit(String report_web_service_url, String web_service_api_key,
 			String job_number) {
 		String output = "Data Not Received";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(
-					web_service_url + "compliance_service/select_load_job_app_request_count_by_unit");
+					report_web_service_url + "compliance_service/select_load_job_app_request_count_by_unit");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")

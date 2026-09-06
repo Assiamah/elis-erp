@@ -11,6 +11,8 @@ import lombok.Data;
 public class Ws_url_config {
 
     String web_service_url_ser;
+    String report_web_service_url_ser;
+
     String web_service_url_ser_api_key;
     String web_service_url_dlrev_server;
 

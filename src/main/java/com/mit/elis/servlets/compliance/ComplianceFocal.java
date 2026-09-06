@@ -85,7 +85,7 @@ public class ComplianceFocal {
                //System.out.println(userdivision);
 
                 web_service_response = cls_focal_compliance
-                        .compliance_focal_report_dashboard_created_today(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_focal_report_dashboard_created_today(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -110,7 +110,7 @@ public class ComplianceFocal {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_focal_compliance
-                        .compliance_focal_report_dashboard_created_day_by_division(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_focal_report_dashboard_created_day_by_division(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -134,7 +134,7 @@ public class ComplianceFocal {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_focal_compliance
-                        .compliance_focal_report_dashboard_created_day_by_service_type(cls_url_config.getWeb_service_url_ser(),
+                        .compliance_focal_report_dashboard_created_day_by_service_type(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -159,7 +159,7 @@ public class ComplianceFocal {
             //  //System.out.println(obj.toString());
 
               web_service_response = cls_focal_compliance
-                      .compliance_focal_report_dashboard_created_this_month(cls_url_config.getWeb_service_url_ser(),
+                      .compliance_focal_report_dashboard_created_this_month(cls_url_config.getReport_web_service_url_ser(),
                               cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
               if (web_service_response != null) {
                 //  //System.out.println(web_service_response);
@@ -182,7 +182,7 @@ public class ComplianceFocal {
                 // //System.out.println(userdivision);
 
             web_service_response = cls_focal_compliance
-                    .compliance_focal_report_dashboard_created_month_by_division(cls_url_config.getWeb_service_url_ser(),
+                    .compliance_focal_report_dashboard_created_month_by_division(cls_url_config.getReport_web_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
               //  //System.out.println(web_service_response);
@@ -206,7 +206,7 @@ public class ComplianceFocal {
                   // //System.out.println(service);
 
           web_service_response = cls_focal_compliance
-                  .compliance_focal_report_dashboard_created_month_by_service_type(cls_url_config.getWeb_service_url_ser(),
+                  .compliance_focal_report_dashboard_created_month_by_service_type(cls_url_config.getReport_web_service_url_ser(),
                           cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
           if (web_service_response != null) {
             //  //System.out.println(web_service_response);
@@ -227,7 +227,7 @@ public class ComplianceFocal {
             obj.put( "user_division" , userdivision );
 
         web_service_response = cls_focal_compliance
-                .compliance_focal_report_dashboard_completed_today(cls_url_config.getWeb_service_url_ser(),
+                .compliance_focal_report_dashboard_completed_today(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
         if (web_service_response != null) {
           //  //System.out.println(web_service_response);
@@ -250,7 +250,7 @@ public class ComplianceFocal {
                 obj.put( "user_division" , userdivision );
 
     web_service_response = cls_focal_compliance
-            .compliance_focal_report_dashboard_completed_today_by_division(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_report_dashboard_completed_today_by_division(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -276,7 +276,7 @@ if (request_type.equals("summary_completed_day_service_type_applications")) {
                   // //System.out.println(service);
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_completed_today_by_service_ty(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_completed_today_by_service_ty(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -300,7 +300,7 @@ if (request_type.equals("summary_completed_month")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_completed_month(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_completed_month(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -322,7 +322,7 @@ if (request_type.equals("summary_completed_month_service_type")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_completed_month_by_division(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_completed_month_by_division(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -346,7 +346,7 @@ if (request_type.equals("summary_completed_month_service_type_applications")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_completed_month_by_service_ty(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_completed_month_by_service_ty(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -373,7 +373,7 @@ if (request_type.equals("compliance_focal_report_dashboard_all")) {
  //System.out.println(start_date);
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_all(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_all(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     // //System.out.println(web_service_response);
@@ -398,7 +398,7 @@ if (request_type.equals("compliance_focal_report_dashboard_created_year_by_divis
  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_created_year_by_division(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_created_year_by_division(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
 //   //System.out.println(web_service_response);
@@ -422,7 +422,7 @@ if (request_type.equals("compliance_focal_report_dashboard_created_year_by_servi
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_created_year_by_service_type(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_created_year_by_service_type(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -446,7 +446,7 @@ if (request_type.equals("compliance_focal_report_dashboard_created_completed_yea
  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_created_completed_year_by_div(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_created_completed_year_by_div(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
 //   //System.out.println(web_service_response);
@@ -471,7 +471,7 @@ if (request_type.equals("compliance_focal_report_dashboard_created_completed_yea
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_created_completed_year_by_ser(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_created_completed_year_by_ser(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -496,7 +496,7 @@ if (request_type.equals("compliance_focal_report_dashboard_completed_year_by_div
  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_completed_year_by_division(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_completed_year_by_division(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
 //   //System.out.println(web_service_response);
@@ -520,7 +520,7 @@ if (request_type.equals("compliance_focal_report_dashboard_completed_year_by_ser
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_focal_compliance
-          .compliance_focal_report_dashboard_completed_year_by_service_typ(cls_url_config.getWeb_service_url_ser(),
+          .compliance_focal_report_dashboard_completed_year_by_service_typ(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -546,7 +546,7 @@ if (request_type.equals("compliance_focal_apps_pastdue_units")) {
   //  //System.out.println(obj.toString());
   
     web_service_response = cls_focal_compliance
-            .compliance_focal_apps_pastdue_units(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_apps_pastdue_units(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -576,7 +576,7 @@ if (request_type.equals("compliance_focal_apps_pastdue_units")) {
   //  //System.out.println(obj.toString());
   
     web_service_response = cls_focal_compliance
-            .compliance_focal_apps_pastdue_within_unit(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_apps_pastdue_within_unit(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -606,7 +606,7 @@ if (request_type.equals("compliance_focal_apps_pastdue_units")) {
   //  //System.out.println(obj.toString());
   
     web_service_response = cls_focal_compliance
-            .compliance_focal_apps_pastdue_with_officer(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_apps_pastdue_with_officer(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -632,7 +632,7 @@ if (request_type.equals("compliance_focal_apps_pastdue_units")) {
   //  //System.out.println(obj.toString());
   
     web_service_response = cls_focal_compliance
-            .compliance_focal_apps_with_division(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_apps_with_division(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -664,7 +664,7 @@ if (request_type.equals("compliance_focal_apps_pastdue_units")) {
   //  //System.out.println(obj.toString());
   
     web_service_response = cls_focal_compliance
-            .compliance_focal_apps_with_division_unit(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_apps_with_division_unit(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -697,7 +697,7 @@ if (request_type.equals("compliance_focal_apps_pastdue_units")) {
   //  //System.out.println(obj.toString());
   
     web_service_response = cls_focal_compliance
-            .compliance_focal_apps_with_division_staff_apps(cls_url_config.getWeb_service_url_ser(),
+            .compliance_focal_apps_with_division_staff_apps(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);

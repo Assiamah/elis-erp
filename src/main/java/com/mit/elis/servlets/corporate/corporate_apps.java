@@ -93,7 +93,7 @@ public class corporate_apps {
                //  //System.out.println(obj.toString());
  
                  web_service_response = cls_corporate_apps
-                         .corporate_applications_report_dashboard_all(cls_url_config.getWeb_service_url_ser(),
+                         .corporate_applications_report_dashboard_all(cls_url_config.getReport_web_service_url_ser(),
                                  cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                  if (web_service_response != null) {
                    //  //System.out.println(web_service_response);
@@ -118,7 +118,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_division_apps(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_division_apps(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -144,7 +144,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_division_apps_by_service(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_division_apps_by_service(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -167,7 +167,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_today(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_today(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -193,7 +193,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_day_by_division(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_day_by_division(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -218,7 +218,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_day_by_service(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_day_by_service(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -243,7 +243,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_month(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_month(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -269,7 +269,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_month_by_divisi(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_month_by_divisi(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -295,7 +295,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_month_by_servic(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_month_by_servic(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -319,7 +319,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_today(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_today(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -345,7 +345,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_day_by_divisi(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_day_by_divisi(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -371,7 +371,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_day_by_servic(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_day_by_servic(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -393,7 +393,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_month(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_month(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -419,7 +419,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_month_by_divi(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_month_by_divi(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -445,7 +445,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_month_by_serv(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_month_by_serv(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -472,7 +472,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_recieved_between_dates(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_recieved_between_dates(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -501,7 +501,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_created_by_date_range(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_created_by_date_range(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -532,7 +532,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_division_apps_by_service_date_range(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_division_apps_by_service_date_range(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -561,7 +561,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_apps_report_dashboard_recieved_completed_by_dates(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_apps_report_dashboard_recieved_completed_by_dates(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -592,7 +592,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_apps_report_dashboard_created_comp_by_date_range(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_apps_report_dashboard_created_comp_by_date_range(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -623,7 +623,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_app_division_apps_by_service_date_range_rec_comp(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_app_division_apps_by_service_date_range_rec_comp(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -651,7 +651,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_by_dates(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_by_dates(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -681,7 +681,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_by_date(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_by_date(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -710,7 +710,7 @@ public class corporate_apps {
               //  //System.out.println(obj.toString());
 
                 web_service_response = cls_corporate_apps
-                        .corporate_applications_report_dashboard_completed_by_serv_dates(cls_url_config.getWeb_service_url_ser(),
+                        .corporate_applications_report_dashboard_completed_by_serv_dates(cls_url_config.getReport_web_service_url_ser(),
                                 cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
                 if (web_service_response != null) {
                   //  //System.out.println(web_service_response);
@@ -738,7 +738,7 @@ public class corporate_apps {
             //  //System.out.println(obj.toString());
 
               web_service_response = cls_corporate_apps
-                      .corporate_sub_applications_report_dashboard_created_today(cls_url_config.getWeb_service_url_ser(),
+                      .corporate_sub_applications_report_dashboard_created_today(cls_url_config.getReport_web_service_url_ser(),
                               cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
               if (web_service_response != null) {
                 //  //System.out.println(web_service_response);
@@ -765,7 +765,7 @@ public class corporate_apps {
           //  //System.out.println(obj.toString());
 
             web_service_response = cls_corporate_apps
-                    .corporate_sub_applications_report_dashboard_created_month(cls_url_config.getWeb_service_url_ser(),
+                    .corporate_sub_applications_report_dashboard_created_month(cls_url_config.getReport_web_service_url_ser(),
                             cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
             if (web_service_response != null) {
               //  //System.out.println(web_service_response);
@@ -793,7 +793,7 @@ public class corporate_apps {
         //  //System.out.println(obj.toString());
 
           web_service_response = cls_corporate_apps
-                  .corporate_sub_applications_report_dashboard_completed_day(cls_url_config.getWeb_service_url_ser(),
+                  .corporate_sub_applications_report_dashboard_completed_day(cls_url_config.getReport_web_service_url_ser(),
                           cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
           if (web_service_response != null) {
             //  //System.out.println(web_service_response);
@@ -823,7 +823,7 @@ public class corporate_apps {
       //  //System.out.println(obj.toString());
 
         web_service_response = cls_corporate_apps
-                .corporate_sub_applications_report_dashboard_completed_month(cls_url_config.getWeb_service_url_ser(),
+                .corporate_sub_applications_report_dashboard_completed_month(cls_url_config.getReport_web_service_url_ser(),
                         cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
         if (web_service_response != null) {
           //  //System.out.println(web_service_response);
@@ -849,7 +849,7 @@ public class corporate_apps {
     //  //System.out.println(obj.toString());
 
       web_service_response = cls_corporate_apps
-              .corporate_applications_report_dashboard_past_due_apps(cls_url_config.getWeb_service_url_ser(),
+              .corporate_applications_report_dashboard_past_due_apps(cls_url_config.getReport_web_service_url_ser(),
                       cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
       if (web_service_response != null) {
         //  //System.out.println(web_service_response);
@@ -876,7 +876,7 @@ public class corporate_apps {
   //  //System.out.println(obj.toString());
 
     web_service_response = cls_corporate_apps
-            .corporate_dashboard_two_all(cls_url_config.getWeb_service_url_ser(),
+            .corporate_dashboard_two_all(cls_url_config.getReport_web_service_url_ser(),
                     cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
     if (web_service_response != null) {
       //  //System.out.println(web_service_response);
@@ -904,7 +904,7 @@ if (request_type.equals("corporate_dashboard_two_apps_recieved")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_recieved(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_recieved(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -931,7 +931,7 @@ if (request_type.equals("corporate_dashboard_two_apps_pending")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_pending(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_pending(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -961,7 +961,7 @@ if (request_type.equals("corporate_dashboard_two_apps_completed")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_completed(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_completed(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -991,7 +991,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_recieved"))
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_recieved(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_recieved(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1020,7 +1020,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_completed")
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_completed(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_completed(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1051,7 +1051,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_pending")) 
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_pending(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_pending(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1084,7 +1084,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_recieved_fr
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_recieved_from_banks(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_recieved_from_banks(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1115,7 +1115,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_pending_fro
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_pending_from_banks(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_pending_from_banks(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1149,7 +1149,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_completed_f
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_completed_from_bank(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_completed_from_bank(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1187,7 +1187,7 @@ if (request_type.equals("corporate_dashboard_two_applications_recieved_from_bank
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_applications_recieved_from_bank(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_applications_recieved_from_bank(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1222,7 +1222,7 @@ if (request_type.equals("corporate_dashboard_two_applications_pending_from_bank"
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_applications_pending_from_bank(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_applications_pending_from_bank(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1259,7 +1259,7 @@ if (request_type.equals("corporate_dashboard_two_applications_completed_from_ban
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_applications_completed_from_bank(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_applications_completed_from_bank(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1290,7 +1290,7 @@ if (request_type.equals("corporate_dashboard_two_all_chart")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_all_chart(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_all_chart(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1322,7 +1322,7 @@ if (request_type.equals("corporate_dashboard_two_applications_top_five_banks")) 
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_applications_top_five_banks(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_applications_top_five_banks(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1353,7 +1353,7 @@ if (request_type.equals("corporate_dashboard_two_all_barchart")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_all_barchart(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_all_barchart(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1383,7 +1383,7 @@ if (request_type.equals("corporate_dashboard_two_apps_queried")) {
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_queried(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_queried(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1419,7 +1419,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_queried")) 
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_queried(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_queried(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1454,7 +1454,7 @@ if (request_type.equals("corporate_dashboard_two_apps_by_subservices_queried_fro
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_apps_by_subservices_queried_from_banks(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_apps_by_subservices_queried_from_banks(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1493,7 +1493,7 @@ if (request_type.equals("corporate_dashboard_two_applications_queried_from_bank"
 //  //System.out.println(obj.toString());
 
   web_service_response = cls_corporate_apps
-          .corporate_dashboard_two_applications_queried_from_bank(cls_url_config.getWeb_service_url_ser(),
+          .corporate_dashboard_two_applications_queried_from_bank(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1552,7 +1552,7 @@ if (request_type.equals("report_on_the_corporate_applications")) {
   
 
   web_service_response = cls_corporate_apps
-          .report_on_the_corporate_applications(cls_url_config.getWeb_service_url_ser(),
+          .report_on_the_corporate_applications(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1593,7 +1593,7 @@ if (request_type.equals("report_on_the_corporate_applications_by_services")) {
   
 
   web_service_response = cls_corporate_apps
-          .report_on_the_corporate_applications_by_services(cls_url_config.getWeb_service_url_ser(),
+          .report_on_the_corporate_applications_by_services(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1635,7 +1635,7 @@ if (request_type.equals("report_on_the_corporate_applications_by_sub_services"))
   
 
   web_service_response = cls_corporate_apps
-          .report_on_the_corporate_applications_by_sub_services(cls_url_config.getWeb_service_url_ser(),
+          .report_on_the_corporate_applications_by_sub_services(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);
@@ -1676,7 +1676,7 @@ if (request_type.equals("report_on_the_corporate_applications_by_applications"))
   
 
   web_service_response = cls_corporate_apps
-          .report_on_the_corporate_applications_by_applications(cls_url_config.getWeb_service_url_ser(),
+          .report_on_the_corporate_applications_by_applications(cls_url_config.getReport_web_service_url_ser(),
                   cls_url_config.getWeb_service_url_ser_api_key(),  obj.toString());
   if (web_service_response != null) {
     //  //System.out.println(web_service_response);

@@ -317,7 +317,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 				// //System.out.println("user_id");
 				// //System.out.println(user_id);
-				web_service_response = casemgt_cl_m.get_lc_list_notifications(cls_url_config.getWeb_service_url_ser(),
+				web_service_response = casemgt_cl_m.get_lc_list_notifications(cls_url_config.getReport_web_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						user_id);
 				////System.out.println(web_service_response);
@@ -332,7 +332,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 				// //System.out.println("user_id");
 				// //System.out.println(user_id);
-				web_service_response = casemgt_cl_m.get_lc_list_messages(cls_url_config.getWeb_service_url_ser(),
+				web_service_response = casemgt_cl_m.get_lc_list_messages(cls_url_config.getReport_web_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
 						user_id);
 				//System.out.println(web_service_response);
@@ -348,7 +348,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 
 				web_service_response = casemgt_cl_m
-						.report_dashboard_all_by_user(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_all_by_user(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), user_id);
 
 				if (web_service_response != null) {
@@ -379,7 +379,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 
 				web_service_response = casemgt_cl_m
-						.report_dashboard_apps_comp_month_by_user(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_apps_comp_month_by_user(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), user_id);
 
 				if (web_service_response != null) {
@@ -392,7 +392,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 
 				web_service_response = casemgt_cl_m
-						.report_dashboard_apps_rec_month_by_user(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_apps_rec_month_by_user(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), user_id);
 
 				if (web_service_response != null) {
@@ -406,7 +406,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 
 				web_service_response = casemgt_cl_m
-						.report_dashboard_apps_past_due_date_by_user(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_apps_past_due_date_by_user(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), user_id);
 
 				if (web_service_response != null) {
@@ -421,7 +421,7 @@ public class Case_Management_Serv {
 				String user_id = (String) session.getAttribute("userid");
 
 				web_service_response = casemgt_cl_m
-						.report_dashboard_corp_apps_past_due_date_by_user(cls_url_config.getWeb_service_url_ser(),
+						.report_dashboard_corp_apps_past_due_date_by_user(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), user_id);
 
 				if (web_service_response != null) {

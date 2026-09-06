@@ -52,7 +52,7 @@ public class dashboard {
 		try {
 
 			String web_service_response = casemagt_cl
-					.report_dashboard_all_by_user(cls_url_config.getWeb_service_url_ser(),
+					.report_dashboard_all_by_user(cls_url_config.getReport_web_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(),
 							(String) session.getAttribute("userid"));
 			JSONObject dash_obj = new JSONObject(web_service_response);
@@ -116,7 +116,7 @@ public class dashboard {
 		try {
 
 			String web_service_response = casemagt_cl
-					.report_dashboard_all_by_user(cls_url_config.getWeb_service_url_ser(),
+					.report_dashboard_all_by_user(cls_url_config.getReport_web_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(),
 							(String) session.getAttribute("userid"));
 			JSONObject dash_obj = new JSONObject(web_service_response);

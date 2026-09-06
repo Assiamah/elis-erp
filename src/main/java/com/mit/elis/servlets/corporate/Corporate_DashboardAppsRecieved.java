@@ -87,7 +87,7 @@ public class Corporate_DashboardAppsRecieved {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance.corporate_applications_report_dashboard_created_year_by_divisio(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						cls_url_config.getReport_web_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -109,7 +109,7 @@ public class Corporate_DashboardAppsRecieved {
 
 				web_service_response = cls_compliance
 						.corporate_applications_report_dashboard_created_year_by_service(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -131,7 +131,7 @@ public class Corporate_DashboardAppsRecieved {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.corporate_applications_report_dashboard_completed_year_by_divis(cls_url_config.getWeb_service_url_ser(),
+						.corporate_applications_report_dashboard_completed_year_by_divis(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
@@ -155,7 +155,7 @@ public class Corporate_DashboardAppsRecieved {
 
 				web_service_response = cls_compliance
 						.corporate_applications_report_dashboard_completed_year_by_servi(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -180,7 +180,7 @@ public class Corporate_DashboardAppsRecieved {
 
 				web_service_response = cls_compliance
 						.corporate_applications_report_dashboard_created_completed_year(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -209,7 +209,7 @@ public class Corporate_DashboardAppsRecieved {
 
 				web_service_response = cls_compliance
 						.corporate_applications_report_dashboard_created_completed(
-								cls_url_config.getWeb_service_url_ser(),
+								cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(), input_details);
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
@@ -233,7 +233,7 @@ public class Corporate_DashboardAppsRecieved {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.corporate_applications_report_dashboard_apps_past_due_officer(cls_url_config.getWeb_service_url_ser(),
+						.corporate_applications_report_dashboard_apps_past_due_officer(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
@@ -257,7 +257,7 @@ public class Corporate_DashboardAppsRecieved {
 				String input_details = obj.toString();
 
 				web_service_response = cls_compliance
-						.corporate_applications_report_dashboard_apps_past_due_appss(cls_url_config.getWeb_service_url_ser(),
+						.corporate_applications_report_dashboard_apps_past_due_appss(cls_url_config.getReport_web_service_url_ser(),
 								cls_url_config.getWeb_service_url_ser_api_key(),
 								input_details);
 				if (web_service_response != null) {
