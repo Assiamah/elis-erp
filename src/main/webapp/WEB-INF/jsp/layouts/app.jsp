@@ -32,9 +32,7 @@
 
     <!-- include loader.jsp"-->
     <jsp:include page="../components/_loader.jsp"></jsp:include>
-
     <div class="page">
-
         <!-- include header.jsp"-->
         <jsp:include page="../components/_header.jsp"></jsp:include>
 

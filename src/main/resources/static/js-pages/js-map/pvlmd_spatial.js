@@ -245,6 +245,22 @@ console.log('PVLMD Maps working');
 
 							})
 
+ var lrd_undergoing_registration_dataSource = new ol.source.TileWMS({
+        url: getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
+        params: {
+            'LAYERS': 'csau_geospatial:lc_spatial_objects_undergoing_registration',
+            'TILED': true
+        },
+        serverType: 'geoserver',
+        transition: 0
+    });
+
+    var lrd_undergoing_registration_dataLayer = new ol.layer.Tile({
+        title: 'Undergoing Registration Layer',
+        source: lrd_undergoing_registration_dataSource
+    });
+
+
 					// 104_modified_CR
 					// DIST_03_01_A_modified
 
@@ -602,6 +618,7 @@ var pvlmd_measureLayer = new ol.layer.Vector({
 					
 					pvlmd_map.addLayer(pvlmd_registration_district_dataLayer);
 
+                   pvlmd_map.addLayer(lrd_undergoing_registration_dataLayer);
 					pvlmd_map.addLayer(pvlmd_grid_lrd_dataLayer);
 					pvlmd_map.addLayer(pvlmd_grid_lrd_dataLayer_new);
 

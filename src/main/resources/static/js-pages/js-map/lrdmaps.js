@@ -39,7 +39,7 @@ $(document).ready(function() {
     var lrd_undergoing_registration_dataSource = new ol.source.TileWMS({
         url: getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
         params: {
-            'LAYERS': 'csau_geospatial:lc_published_undergoing_registration_applications',
+            'LAYERS': 'csau_geospatial:lc_spatial_objects_undergoing_registration',
             'TILED': true
         },
         serverType: 'geoserver',

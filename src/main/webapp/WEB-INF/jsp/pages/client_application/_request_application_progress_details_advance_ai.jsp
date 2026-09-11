@@ -1304,38 +1304,8 @@
 
         <!-- Chat Messages -->
         <div class="chat-messages" id="chatMessages">
-            <!-- Welcome Message -->
-            <div class="chat-message assistant">
-                <div class="avatar">AI</div>
-                <div class="message-content">
-                    👋 Hello! I'm your AI assistant. How can I help you today?
-                    <span class="timestamp">Just now</span>
-                </div>
-            </div>
+            
 
-            <!-- Example User Message -->
-            <div class="chat-message user">
-                <div class="avatar">JD</div>
-                <div class="message-content">
-                    Can you help me understand the dashboard analytics?
-                    <span class="timestamp">2 min ago</span>
-                </div>
-            </div>
-
-            <!-- Example AI Response -->
-            <div class="chat-message assistant">
-                <div class="avatar">AI</div>
-                <div class="message-content">
-                    Absolutely! The dashboard shows key metrics for your business:
-                    <ul>
-                        <li><strong>Revenue:</strong> $48,295 (12.5% increase)</li>
-                        <li><strong>Active Users:</strong> 2,847 (8.2% increase)</li>
-                        <li><strong>Orders:</strong> 1,243 (18.7% increase)</li>
-                    </ul>
-                    Would you like me to dive deeper into any specific metric?
-                    <span class="timestamp">1 min ago</span>
-                </div>
-            </div>
 
             <!-- Typing Indicator -->
             <div class="typing-indicator" id="typingIndicator">

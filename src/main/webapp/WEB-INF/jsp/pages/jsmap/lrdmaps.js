@@ -30,7 +30,7 @@ $(document)
 							url : getGeoServerEndPoint() + '/geoserver/csau_geospatial/wms',
 							//url : 'http://102.176.83.18:8284/geoserver/csau_geospatial/wms',
 							params : {
-								'LAYERS' : 'csau_geospatial:lc_published_undergoing_registration_applications',
+								'LAYERS' : 'csau_geospatial:lc_spatial_objects_undergoing_registration',
 								'TILED' : true
 							},
 							// params: {'LAYERS':

@@ -284,6 +284,26 @@ public class cls_valueadded_services {
 	}
 
 
+	public String select_review_digital_workflow_short(String web_service_url, String web_service_api_key,
+			String data_input) {
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client
+					.resource(web_service_url + "value_added_service/select_review_digital_workflow_short");
+			ClientResponse response_ws = webResource.type("application/json").header("x-api-key", web_service_api_key).post(ClientResponse.class, data_input);
+			if (response_ws.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response_ws.getStatus());
+			}
+			output = response_ws.getEntity(String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return output;
+
+	}
+
+
 	public String select_general_request_workflow(String web_service_url, String web_service_api_key,
 			String data_input) {
 		String output = "Data Not Received";
