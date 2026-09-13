@@ -1244,7 +1244,7 @@
                             <div class="accordion-body">
 <button type="button" class="btn btn-sm btn-outline-primary mb-3 short-review-load" data-section="minutes" data-panel="collapseMinutes">Load</button>
 <span class="short-review-status small ms-2" role="status" aria-live="polite"></span>
-                                <button class="btn btn-sm btn-primary" id="btn_add_public_document"
+                                <button class="btn btn-sm mb-3 btn-primary" id="btn_add_public_document"
                                         data-bs-toggle="modal" data-bs-target="#addMinutesModal">
                                     <i class="bi bi-plus"></i> Add Minutes
                                 </button>
@@ -1347,10 +1347,10 @@
                              data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_scanned_documents">
+                                    <button class="btn btn-sm mb-3 btn-outline-primary" id="btn_load_scanned_documents">
                                         <i class="bi bi-eye"></i> Load Docs
                                     </button>
-                                    <button class="btn btn-sm btn-primary" id="btn_add_public_document"
+                                    <button class="btn btn-sm mb-3 btn-primary" id="btn_add_public_document"
                                             data-bs-toggle="modal" data-bs-target="#fileUploadModal">
                                         <i class="bi bi-plus"></i> Add
                                     </button>
@@ -1386,10 +1386,10 @@
                              data-bs-parent="#sidebarAccordion">
                             <div class="accordion-body">
                                 <div class="d-flex gap-2 mb-3">
-                                    <button class="btn btn-sm btn-outline-primary" id="btn_load_scanned_documents_public">
+                                    <button class="btn btn-sm mb-3 btn-outline-primary" id="btn_load_scanned_documents_public">
                                         <i class="bi bi-eye"></i> Load Docs
                                     </button>
-                                    <button class="btn btn-sm btn-primary" id="btn_add_public_document"
+                                    <button class="btn btn-sm mb-3 btn-primary" id="btn_add_public_document"
                                             data-bs-toggle="modal" data-bs-target="#publicFileUploadModal">
                                         <i class="bi bi-plus"></i> Add
                                     </button>
@@ -1432,7 +1432,7 @@
                             <div class="accordion-body">
 <button type="button" class="btn btn-sm btn-outline-primary mb-3 short-review-load" data-section="queries" data-panel="collapseQueries">Load</button>
 <span class="short-review-status small ms-2" role="status" aria-live="polite"></span>
-                                <button class="btn btn-sm btn-danger" id="btn_add_public_document"
+                                <button class="btn btn-sm mb-3 btn-danger" id="btn_add_public_document"
                                         data-bs-toggle="modal" data-bs-target="#newQueryModal">
                                     <i class="bi bi-plus"></i> Add Query
                                 </button>
@@ -2040,4 +2040,4 @@ var undergoing_registration_status_dataLayer = new ol.layer.Tile({
 <jsp:include page="../../components/_gated_workflow_modal_3.jsp"></jsp:include>
 
 <input type="hidden" id="short-review-context" value="${short_review_context}">
-<script src="<c:url value='/js-pages/short_review_sections.js'/>"></script>
+<script src="<c:url value='/js-pages/short_review_sections.js?v=20260913-1'/>"></script>

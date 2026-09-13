@@ -312,8 +312,8 @@
                                                     <input type="hidden" name="rq_id" value="${appfiles.rq_id}">
                                                     <input type="hidden" name="review_instruction" value="${appfiles.request_comments}">
                                                     <input type="hidden" name="job_purpose" value="${appfiles.job_purpose}">
-                                                    <button type="submit" class="btn btn-sm btn-warning" data-bs-custom-class="tooltip-primary" title="Work" data-bs-toggle="tooltip">
-                                                        <i class="ri-folder-open-line"></i>
+                                                    <button type="submit" class="btn btn-sm btn-danger" data-bs-custom-class="tooltip-primary" title="Smart Work" data-bs-toggle="tooltip">
+                                                        <i class="ri-folder-shared-line"></i>
                                                     </button>
                                                 </form>
                                                  <form action="${appfiles.job_purpose != 'Add Plotting' && appfiles.job_purpose != 'Archive Plotting' ? 'request_application_progress_details_advance_ai' : 'request_application_progress_details_advance_ai'}" method="post" class="d-inline">
@@ -326,7 +326,7 @@
                                                     <input type="hidden" name="review_instruction" value="${appfiles.request_comments}">
                                                     <input type="hidden" name="job_purpose" value="${appfiles.job_purpose}">
                                                     <button type="submit" class="btn btn-sm btn-secondary" data-bs-custom-class="tooltip-primary" title="AI" data-bs-toggle="tooltip">
-                                                        <i class="ri-folder-open-line"></i>
+                                                        <i class="ri-robot-3-line"></i>
                                                     </button>
                                                 </form>
                                             </div>

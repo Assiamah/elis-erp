@@ -126,9 +126,9 @@ String prompt = ai_cl.prepare_llm_prompt(
 
 JSONObject ollama_request = new JSONObject();
 
-ollama_request.put( "model","llama3.2:latest");
+//ollama_request.put( "model","llama3.8:latest");
+ollama_request.put( "model","qwen3:8b");
 
-// ollama_request.put( "model","qwen3:8b");
 ollama_request.put(
         "prompt",
         prompt

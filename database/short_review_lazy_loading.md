@@ -42,3 +42,36 @@ Validation after applying the function in a test environment:
    compatibility with other callers.
 
 The SQL has not been executed against a live database in this workspace.
+
+## Workflow modals on the short page
+
+Apply the updated `short_review_lazy_loading.sql` before deploying this change.
+It only replaces `vas.select_review_digital_workflow_short(text)`; it does not
+replace `vas.select_review_digital_workflow(text)` or change the full ERP request.
+
+Clicking a step's Details button on the short page now calls `/short_review_modal`
+with its page token and modal ID. The server chooses the template and collection
+keys from `src/main/resources/short-review-modals.json`; browser-supplied application
+IDs, template paths and collection names are not accepted. `section: "modal"`
+returns fresh parcel, transaction, job and approval fields plus only the collections
+needed by that modal. It skips workflow initialization and workflow aggregation.
+The response's `section` marker prevents an older SQL function from silently
+returning the full dataset. Modal requests for specific work requests also use
+this read-only application-data section; their workflow definitions remain unchanged.
+
+The shared JSPs keep their existing modal elements on the initial page. Hydration
+metadata marks server-rendered fields and collection containers. The loader updates
+those containers before replaying the Details click, so existing Bootstrap handlers,
+form controls and map elements remain attached. The conditional JSP filter only
+applies to fragment requests. Each Details click refreshes the data; loading disables
+the trigger, and failures leave a retry message without opening incomplete details.
+The accordion Load/Refresh buttons remain independent.
+
+When adding a modal or changing the JSP fields it consumes, keep
+`short-review-modals.json` (template and collection dependencies) and
+`short-review-fields.json` (the short page's scalar attribute aliases) in sync.
+Keep `data-short-hydrate` keys unique within each modal, and mark conditional
+collection containers outside the condition so empty-to-populated transitions work.
+
+Local checks use dummy data; the SQL migration and an authenticated application
+workflow still need validation against the deployed database and service.

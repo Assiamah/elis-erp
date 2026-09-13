@@ -5357,52 +5357,54 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 			}
 			
 
-			if (web_service_response != null) {
+			if (web_service_response != null && !web_service_response.trim().isEmpty()) {
 				////System.out.println(web_service_response);
 				JSONObject case_obj;
-				case_obj = new JSONObject(web_service_response);
+                case_obj = ShortReviewSectionController.parseInitialResponse(web_service_response,
+                    "GeneralWorkRequest".equals(review_type) ? "select_review_digital_workflow_short"
+                        : "select_general_request_workflow", job_number);
 
-				String parcel_details = case_obj.get("parcel_details").toString();
-				String transaction_details = case_obj.get("transaction_details").toString();
-				String job_detail = case_obj.get("job_detail").toString();
+				String parcel_details = case_obj.optString("parcel_details");
+				String transaction_details = case_obj.optString("transaction_details");
+				String job_detail = case_obj.optString("job_detail");
 
-				String job_details = case_obj.get("job_details").toString();
-				String parcels_coordinates = case_obj.get("parcels_coordinates").toString();
-				String lrd_valuation_section = case_obj.get("lrd_valuation_section").toString();
-				String lrd_memorials_section = case_obj.get("lrd_memorials_section").toString();
-				String lrd_encumbrances_section = case_obj.get("lrd_encumbrances_section").toString();
-				String lrd_certificate_section = case_obj.get("lrd_certificate_section").toString();
-				String lrd_proprietorship_section = case_obj.get("lrd_proprietorship_section").toString();
+				String job_details = case_obj.optString("job_details");
+				String parcels_coordinates = case_obj.optString("parcels_coordinates");
+				String lrd_valuation_section = case_obj.optString("lrd_valuation_section");
+				String lrd_memorials_section = case_obj.optString("lrd_memorials_section");
+				String lrd_encumbrances_section = case_obj.optString("lrd_encumbrances_section");
+				String lrd_certificate_section = case_obj.optString("lrd_certificate_section");
+				String lrd_proprietorship_section = case_obj.optString("lrd_proprietorship_section");
 
-				String lrd_reservation_section = case_obj.get("lrd_reservation_section").toString();
-				//String outgoing_sms = case_obj.get("outgoing_sms").toString();
+				String lrd_reservation_section = case_obj.optString("lrd_reservation_section");
+				//String outgoing_sms = case_obj.optString("outgoing_sms", "");
 
-				String application_requests = case_obj.get("application_requests").toString();
-String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString();
+				String application_requests = case_obj.optString("application_requests");
+String digital_workflow_steps = case_obj.optString("digital_workflow_steps");
 
 				
-				//String collection_checklist = case_obj.get("collection_checklist").toString();
-				String application_munites = case_obj.get("application_munites").toString();
-				String application_notes = case_obj.get("application_notes").toString();
-				String payment_bill = case_obj.get("payment_bill").toString();
-				String payment_invoice = case_obj.get("payment_invoice").toString();
-				//String comments_on_application = case_obj.get("comments_on_application").toString();
-				String parties = case_obj.get("parties").toString();
-				String active_case_queries = case_obj.get("active_case_query").toString();
-				String active_case_objection = case_obj.get("active_case_objection").toString();
-				String case_query = case_obj.get("case_query").toString();
-				String case_objection = case_obj.get("case_objection").toString();
-				String case_inspections = case_obj.get("inspection_reports_on_appliction").toString();
-				String case_letters = case_obj.get("case_letters").toString();
-				String mother_to_child_link = case_obj.get("mother_to_child_link").toString();
-				String certificate_search_relation = case_obj.get("certificate_search_relation").toString();
-				String compliance_query_status = case_obj.get("compliance_query_status").toString();
+				//String collection_checklist = case_obj.optString("collection_checklist", "");
+				String application_munites = case_obj.optString("application_munites");
+				String application_notes = case_obj.optString("application_notes");
+				String payment_bill = case_obj.optString("payment_bill");
+				String payment_invoice = case_obj.optString("payment_invoice");
+				//String comments_on_application = case_obj.optString("comments_on_application", "");
+				String parties = case_obj.optString("parties");
+				String active_case_queries = case_obj.optString("active_case_query");
+				String active_case_objection = case_obj.optString("active_case_objection");
+				String case_query = case_obj.optString("case_query");
+				String case_objection = case_obj.optString("case_objection");
+				String case_inspections = case_obj.optString("inspection_reports_on_appliction");
+				String case_letters = case_obj.optString("case_letters");
+				String mother_to_child_link = case_obj.optString("mother_to_child_link");
+				String certificate_search_relation = case_obj.optString("certificate_search_relation");
+				String compliance_query_status = case_obj.optString("compliance_query_status");
 
 
-				String baby_step_milestone = case_obj.get("baby_step_milestone").toString();
+				String baby_step_milestone = case_obj.optString("baby_step_milestone");
 
 
-				String active_digital_workflow_step = case_obj.get("active_digital_workflow_step").toString();
+				String active_digital_workflow_step = case_obj.optString("active_digital_workflow_step");
 
 				
 
@@ -5496,131 +5498,133 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 			//	request.setAttribute("outgoing_sms", outgoing_sms_list);
 
-				request.setAttribute("parcel_wkt", case_obj.get("parcel_wkt").toString());
+				request.setAttribute("parcel_wkt", case_obj.optString("parcel_wkt", ""));
 				request.setAttribute("certificete_approval_status",
-						case_obj.get("certificete_approval_status").toString());
-				request.setAttribute("final_approval_status", case_obj.get("final_approval_status").toString());
+						case_obj.optString("certificete_approval_status", ""));
+				request.setAttribute("final_approval_status", case_obj.optString("final_approval_status", ""));
 
 				request.setAttribute("compliance_query_status", compliance_query_status);
 
 			//	//System.out.println("case_obj.getparcel_wkt.toString()");
-			//	//System.out.println(case_obj.get("parcel_wkt").toString());
+			//	//System.out.println(case_obj.optString("parcel_wkt", ""));
 
 				String new_case_number = "";
 				JSONObject parcel_details_obj;
 
-				parcel_details_obj = new JSONObject(parcel_details);
+				parcel_details_obj = case_obj.optJSONObject("parcel_details");
+                if (parcel_details_obj == null) parcel_details_obj = new JSONObject();
 
-				new_case_number = parcel_details_obj.get("case_number").toString();
-				request.setAttribute("glpin", parcel_details_obj.get("glpin").toString());
+				new_case_number = parcel_details_obj.optString("case_number", "");
+				request.setAttribute("glpin", parcel_details_obj.optString("glpin", ""));
 				request.setAttribute("licensed_surveyor_number", parcel_details_obj.optString("licensed_no", ""));
-				request.setAttribute("regional_number", parcel_details_obj.get("regional_number").toString());
-				request.setAttribute("locality", parcel_details_obj.get("locality").toString());
+				request.setAttribute("regional_number", parcel_details_obj.optString("regional_number", ""));
+				request.setAttribute("locality", parcel_details_obj.optString("locality", ""));
 				request.setAttribute("district", parcel_details_obj.optString("district", ""));
 				request.setAttribute("region", parcel_details_obj.optString("region", ""));
-				request.setAttribute("size_of_land", parcel_details_obj.get("land_size").toString());
+				request.setAttribute("size_of_land", parcel_details_obj.optString("land_size", ""));
 				request.setAttribute("extent", parcel_details_obj.optString("extent", ""));
-				request.setAttribute("registry_mapref", parcel_details_obj.get("registry_mapref").toString());
-				request.setAttribute("plan_no", parcel_details_obj.get("plan_no").toString());
-				request.setAttribute("cc_no", parcel_details_obj.get("cc_no").toString());
-				request.setAttribute("ltr_plan_no", parcel_details_obj.get("ltr_plan_no").toString());
-				//request.setAttribute("locality_class", parcel_details_obj.get("locality_class").toString());
+				request.setAttribute("registry_mapref", parcel_details_obj.optString("registry_mapref", ""));
+				request.setAttribute("plan_no", parcel_details_obj.optString("plan_no", ""));
+				request.setAttribute("cc_no", parcel_details_obj.optString("cc_no", ""));
+				request.setAttribute("ltr_plan_no", parcel_details_obj.optString("ltr_plan_no", ""));
+				//request.setAttribute("locality_class", parcel_details_obj.optString("locality_class", ""));
 				request.setAttribute("registration_district_number",
-						parcel_details_obj.get("registration_district_number").toString());
+						parcel_details_obj.optString("registration_district_number", ""));
 				request.setAttribute("registration_section_number",
-						parcel_details_obj.get("registration_section_number").toString());
+						parcel_details_obj.optString("registration_section_number", ""));
 				request.setAttribute("registration_block_number",
-						parcel_details_obj.get("registration_block_number").toString());
+						parcel_details_obj.optString("registration_block_number", ""));
 
-				//request.setAttribute("need_for_new_transaction",parcel_details_obj.get("need_for_new_transaction").toString());
+				//request.setAttribute("need_for_new_transaction",parcel_details_obj.optString("need_for_new_transaction", ""));
 
-				//request.setAttribute("parcel_remarks",parcel_details_obj.get("remarks").toString());
+				//request.setAttribute("parcel_remarks",parcel_details_obj.optString("remarks", ""));
 
 				request.setAttribute("smd_reference_number",
-						parcel_details_obj.get("smd_reference_number").toString());
+						parcel_details_obj.optString("smd_reference_number", ""));
 				request.setAttribute("smd_type_of_plotting",
-						parcel_details_obj.get("smd_type_of_plotting").toString());
+						parcel_details_obj.optString("smd_type_of_plotting", ""));
 
 				JSONObject transaction_details_obj;
-				transaction_details_obj = new JSONObject(transaction_details);
-				request.setAttribute("ar_name", transaction_details_obj.get("ar_name").toString());
-				request.setAttribute("case_number", transaction_details_obj.get("case_number").toString());
+				transaction_details_obj = case_obj.optJSONObject("transaction_details");
+                if (transaction_details_obj == null) transaction_details_obj = new JSONObject();
+				request.setAttribute("ar_name", transaction_details_obj.optString("ar_name", ""));
+				request.setAttribute("case_number", transaction_details_obj.optString("case_number", ""));
 				request.setAttribute("transaction_number",
-						transaction_details_obj.get("transaction_number").toString());
-				request.setAttribute("date_of_document", transaction_details_obj.get("date_of_document").toString());
+						transaction_details_obj.optString("transaction_number", ""));
+				request.setAttribute("date_of_document", transaction_details_obj.optString("date_of_document", ""));
 				request.setAttribute("nature_of_instrument",
-						transaction_details_obj.get("nature_of_instrument").toString());
+						transaction_details_obj.optString("nature_of_instrument", ""));
 				request.setAttribute("certificate_number",
-						transaction_details_obj.get("certificate_number").toString());
+						transaction_details_obj.optString("certificate_number", ""));
 
-				request.setAttribute("type_of_interest", transaction_details_obj.get("type_of_interest").toString());
-				request.setAttribute("type_of_use", transaction_details_obj.get("type_of_use").toString());
-				request.setAttribute("volume_number", transaction_details_obj.get("volume_number").toString());
-				request.setAttribute("folio_number", transaction_details_obj.get("folio_number").toString());
-				request.setAttribute("term", transaction_details_obj.get("term").toString());
-				request.setAttribute("commencement_date", transaction_details_obj.get("commencement_date").toString());
+				request.setAttribute("type_of_interest", transaction_details_obj.optString("type_of_interest", ""));
+				request.setAttribute("type_of_use", transaction_details_obj.optString("type_of_use", ""));
+				request.setAttribute("volume_number", transaction_details_obj.optString("volume_number", ""));
+				request.setAttribute("folio_number", transaction_details_obj.optString("folio_number", ""));
+				request.setAttribute("term", transaction_details_obj.optString("term", ""));
+				request.setAttribute("commencement_date", transaction_details_obj.optString("commencement_date", ""));
 
-				request.setAttribute("renewal_term", transaction_details_obj.get("renewal_term").toString());
-				request.setAttribute("consideration_fee", transaction_details_obj.get("consideration_fee").toString());
+				request.setAttribute("renewal_term", transaction_details_obj.optString("renewal_term", ""));
+				request.setAttribute("consideration_fee", transaction_details_obj.optString("consideration_fee", ""));
 				request.setAttribute("consideration_fee_currency",
-						transaction_details_obj.get("consideration_fee_currency").toString());
+						transaction_details_obj.optString("consideration_fee_currency", ""));
 				request.setAttribute("consideration_fee_adopted_rate",
-						transaction_details_obj.get("consideration_fee_adopted_rate").toString());
+						transaction_details_obj.optString("consideration_fee_adopted_rate", ""));
 				request.setAttribute("stamp_duty_payable",
-						transaction_details_obj.get("stamp_duty_payable").toString());
-				request.setAttribute("assessed_value", transaction_details_obj.get("assessed_value").toString());
+						transaction_details_obj.optString("stamp_duty_payable", ""));
+				request.setAttribute("assessed_value", transaction_details_obj.optString("assessed_value", ""));
 				request.setAttribute("parcel_description",
-						transaction_details_obj.get("parcel_description").toString());
-				request.setAttribute("plot_number", transaction_details_obj.get("plot_number").toString());
-				request.setAttribute("parcel_description", transaction_details_obj.get("plot_number").toString());
-				request.setAttribute("publicity_date", transaction_details_obj.get("publicity_date").toString());
+						transaction_details_obj.optString("parcel_description", ""));
+				request.setAttribute("plot_number", transaction_details_obj.optString("plot_number", ""));
+				request.setAttribute("parcel_description", transaction_details_obj.optString("plot_number", ""));
+				request.setAttribute("publicity_date", transaction_details_obj.optString("publicity_date", ""));
 
-				request.setAttribute("family_of_grantor", transaction_details_obj.get("family_of_grantor").toString());
+				request.setAttribute("family_of_grantor", transaction_details_obj.optString("family_of_grantor", ""));
 
 				request.setAttribute("rent_review_period",
-						transaction_details_obj.get("rent_review_period").toString());
-				request.setAttribute("annual_rent", transaction_details_obj.get("annual_rent").toString());
+						transaction_details_obj.optString("rent_review_period", ""));
+				request.setAttribute("annual_rent", transaction_details_obj.optString("annual_rent", ""));
 
 				request.setAttribute("rent_period_covered",
-						transaction_details_obj.get("rent_period_covered").toString());
-				request.setAttribute("rent_review_date", transaction_details_obj.get("rent_review_date").toString());
+						transaction_details_obj.optString("rent_period_covered", ""));
+				request.setAttribute("rent_review_date", transaction_details_obj.optString("rent_review_date", ""));
 				request.setAttribute("date_of_first_payment",
-						transaction_details_obj.get("date_of_first_payment").toString());
-				request.setAttribute("outstanding_rent", transaction_details_obj.get("outstanding_rent").toString());
-				request.setAttribute("remark_or_comment", transaction_details_obj.get("remark_or_comment").toString());
-				request.setAttribute("date_of_registration", transaction_details_obj.get("date_of_registration").toString());
-				request.setAttribute("time_of_registration", transaction_details_obj.get("time_of_registration").toString());
-				request.setAttribute("case_status", transaction_details_obj.get("case_status").toString());
+						transaction_details_obj.optString("date_of_first_payment", ""));
+				request.setAttribute("outstanding_rent", transaction_details_obj.optString("outstanding_rent", ""));
+				request.setAttribute("remark_or_comment", transaction_details_obj.optString("remark_or_comment", ""));
+				request.setAttribute("date_of_registration", transaction_details_obj.optString("date_of_registration", ""));
+				request.setAttribute("time_of_registration", transaction_details_obj.optString("time_of_registration", ""));
+				request.setAttribute("case_status", transaction_details_obj.optString("case_status", ""));
 
-				request.setAttribute("stool_family_name", transaction_details_obj.get("stool_family_name").toString());
+				request.setAttribute("stool_family_name", transaction_details_obj.optString("stool_family_name", ""));
 				// request.setAttribute("is_part_of_gelis_area",
-				// transaction_details_obj.get("is_part_of_gelis_area").toString());
+				// transaction_details_obj.optString("is_part_of_gelis_area", ""));
 				request.setAttribute("stamp_duty_description",
-						transaction_details_obj.get("stamp_duty_description").toString());
-				request.setAttribute("certificate_type", transaction_details_obj.get("certificate_type").toString());
-				request.setAttribute("case_file_number", transaction_details_obj.get("case_file_number").toString());
+						transaction_details_obj.optString("stamp_duty_description", ""));
+				request.setAttribute("certificate_type", transaction_details_obj.optString("certificate_type", ""));
+				request.setAttribute("case_file_number", transaction_details_obj.optString("case_file_number", ""));
 
 				request.setAttribute("case_process_stage",
-						transaction_details_obj.get("case_process_stage").toString());
+						transaction_details_obj.optString("case_process_stage", ""));
 						request.setAttribute("interest_number",
-						transaction_details_obj.get("interest_number").toString());
+						transaction_details_obj.optString("interest_number", ""));
 						request.setAttribute("sub_interest_number",
-						transaction_details_obj.get("sub_interest_number").toString());
-				//request.setAttribute("sub_interest_number",transaction_details_obj.get("sub_interest_number").toString());
+						transaction_details_obj.optString("sub_interest_number", ""));
+				//request.setAttribute("sub_interest_number",transaction_details_obj.optString("sub_interest_number", ""));
 				request.setAttribute("considertion_fee_adopted_rate",
-						transaction_details_obj.get("considertion_fee_adopted_rate").toString());
+						transaction_details_obj.optString("considertion_fee_adopted_rate", ""));
 
-				    request.setAttribute("date_of_issue",transaction_details_obj.get("date_of_issue").toString());
-					request.setAttribute("registered_number",transaction_details_obj.get("registered_number").toString());
+				    request.setAttribute("date_of_issue",transaction_details_obj.optString("date_of_issue", ""));
+					request.setAttribute("registered_number",transaction_details_obj.optString("registered_number", ""));
 
 					request.setAttribute("type_of_transfer",transaction_details_obj.optString("type_of_transfer", ""));
 					request.setAttribute("intended_interest",transaction_details_obj.optString("intended_interest", ""));
 					request.setAttribute("intended_parcel",transaction_details_obj.optString("intended_parcel", ""));
 		
-					// request.setAttribute("deed_number",transaction_details_obj.get("deed_number").toString());
-					// request.setAttribute("file_number",transaction_details_obj.get("file_number").toString());
-					// request.setAttribute("ls_number",transaction_details_obj.get("ls_number").toString());
-				//request.setAttribute("ground_rent",transaction_details_obj.get("ground_rent").toString());
+					// request.setAttribute("deed_number",transaction_details_obj.optString("deed_number", ""));
+					// request.setAttribute("file_number",transaction_details_obj.optString("file_number", ""));
+					// request.setAttribute("ls_number",transaction_details_obj.optString("ls_number", ""));
+				//request.setAttribute("ground_rent",transaction_details_obj.optString("ground_rent", ""));
 
 				request.setAttribute("deed_number", transaction_details_obj.optString("deed_number", ""));
 				request.setAttribute("file_number", transaction_details_obj.optString("file_number", ""));
@@ -5631,24 +5635,24 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 				JSONObject job_detail_obj;
 				job_detail_obj = new JSONObject(job_detail);
 				request.setAttribute("job_number", job_number);
-				request.setAttribute("application_stage", job_detail_obj.get("application_stage").toString());
-				request.setAttribute("created_date", job_detail_obj.get("created_date").toString());
-				request.setAttribute("modified_date", job_detail_obj.get("modified_date").toString());
-				// //System.out.println(job_detail_obj.get("application_stage").toString());
-				request.setAttribute("business_process_id", job_detail_obj.get("business_process_id").toString());
-				request.setAttribute("business_process_name", job_detail_obj.get("business_process_name").toString());
+				request.setAttribute("application_stage", job_detail_obj.optString("application_stage", ""));
+				request.setAttribute("created_date", job_detail_obj.optString("created_date", ""));
+				request.setAttribute("modified_date", job_detail_obj.optString("modified_date", ""));
+				// //System.out.println(job_detail_obj.optString("application_stage", ""));
+				request.setAttribute("business_process_id", job_detail_obj.optString("business_process_id", ""));
+				request.setAttribute("business_process_name", job_detail_obj.optString("business_process_name", ""));
 				request.setAttribute("business_process_sub_id",
-						job_detail_obj.get("business_process_sub_id").toString());
+						job_detail_obj.optString("business_process_sub_id", ""));
 				request.setAttribute("business_process_sub_name",
-						job_detail_obj.get("business_process_sub_name").toString());
-				request.setAttribute("embossed", job_detail_obj.get("embossed").toString());
-				request.setAttribute("remark_or_comment", job_detail_obj.get("remark_or_comment").toString());
-				request.setAttribute("smd_region", job_detail_obj.get("smd_region").toString());
+						job_detail_obj.optString("business_process_sub_name", ""));
+				request.setAttribute("embossed", job_detail_obj.optString("embossed", ""));
+				request.setAttribute("remark_or_comment", job_detail_obj.optString("remark_or_comment", ""));
+				request.setAttribute("smd_region", job_detail_obj.optString("smd_region", ""));
 				request.setAttribute("smd_licensed_surveyor_name",
-						job_detail_obj.get("smd_licensed_surveyor_name").toString());
+						job_detail_obj.optString("smd_licensed_surveyor_name", ""));
 
 				request.setAttribute("rq_id",rq_id);
-				business_process_sub_name = job_detail_obj.get("business_process_sub_name").toString();
+				business_process_sub_name = job_detail_obj.optString("business_process_sub_name", "");
 				request.setAttribute("review_type",review_type);
 
 				String get_gender_list = user_web_service.get_list_of_gender(
@@ -5668,17 +5672,18 @@ String digital_workflow_steps = case_obj.get("digital_workflow_steps").toString(
 
 				
 
-			} else {
-				//System.out.println(web_service_response);
-			}
+            } else {
+                throw new JSONException("Short workflow service returned an empty response");
+            }
 
 		} catch (
 
-		JSONException e) {
+		Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "";
+		response.setStatus(502);
+        return "pages/client_application/_short_review_error";
 		// 		model.addAttribute("content", "../pages/client_application/general_application_without_major_process.jsp"); return "layouts/app";
 	}
 

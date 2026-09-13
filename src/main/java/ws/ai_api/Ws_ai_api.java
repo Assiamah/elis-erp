@@ -44,12 +44,12 @@ public String select_llm_response(
 
             WebResource webResource =
                     client.resource(
-                            "http://localhost:11434/api/generate"
+                            "http://10.4.0.53:11434/api/generate"
                     );
 
             System.out.println(
                     "Calling Ollama: "
-                    + "http://localhost:11434/api/generate"
+                    + "http://10.4.0.53:11434/api/generate"
             );
 
             System.out.println(
