@@ -12,6 +12,7 @@ AS $BODY$
 DECLARE
     v_input JSONB;
     v_section TEXT;
+    v_modal_keys JSONB := '[]'::JSONB;
 
     json_result_obj JSONB := '{}'::JSONB;
 
@@ -47,7 +48,8 @@ BEGIN
 
     v_input := application_details::JSONB;
     v_section := COALESCE(v_input ->> 'section', 'all');
-    IF v_section NOT IN ('all', 'initial', 'workflow', 'jobs', 'parties', 'payments', 'minutes', 'records', 'queries', 'encumbrances', 'links', 'objections', 'letters') THEN
+    v_modal_keys := COALESCE(v_input -> 'collections', '[]'::JSONB);
+    IF v_section NOT IN ('all', 'initial', 'workflow', 'modal', 'jobs', 'parties', 'payments', 'minutes', 'records', 'queries', 'encumbrances', 'links', 'objections', 'letters') THEN
         RETURN jsonb_build_object('success', FALSE, 'message', 'Unknown section')::TEXT;
     END IF;
 
@@ -102,7 +104,7 @@ BEGIN
 
 
     -- Section requests read only their original query and never initialize workflow.
-    IF v_section NOT IN ('all', 'initial', 'workflow') THEN
+    IF v_section NOT IN ('all', 'initial', 'workflow', 'modal') THEN
         RETURN jsonb_build_object('success', TRUE, 'data', CASE v_section
             WHEN 'jobs' THEN COALESCE(((SELECT array_to_json(array_agg(row_to_json(q)))
 
@@ -325,6 +327,7 @@ FROM csau.lc_case_letters Where job_number=p_job_number ORDER BY created_date DE
     -- Do this AFTER initialization.
     ------------------------------------------------------------------
 
+    IF v_section <> 'modal' THEN
     SELECT a.ms_id_m
     INTO vr_ms_id_m
     FROM csau.lc_application_mile_stone_baby_steps_each a
@@ -338,6 +341,8 @@ FROM csau.lc_case_letters Where job_number=p_job_number ORDER BY created_date DE
         a.bse_id
     LIMIT 1;
 
+
+    END IF;
 
     ------------------------------------------------------------------
     -- 5. BUILD WORKFLOW TREE
@@ -436,7 +441,7 @@ FROM csau.lc_case_letters Where job_number=p_job_number ORDER BY created_date DE
     ) x;
 
 
-    ELSE
+    ELSIF v_section = 'initial' THEN
         SELECT COALESCE(jsonb_agg(jsonb_build_object(
             'mile_stone_status', 'Ongoing',
             'milestone_description', milestone_description,
@@ -524,6 +529,7 @@ FROM csau.lc_case_letters Where job_number=p_job_number ORDER BY created_date DE
 
     json_result_obj := jsonb_build_object(
         'success', true,
+        'section', v_section,
 
         'parcel_details', v_parcel_details,
 
@@ -567,7 +573,7 @@ business_process_sub_name, divisional_registry_unit, old_file_record_numbers,
 application_priority_level, application_stage,embossed,smd_region,smd_licensed_surveyor_name
 FROM csau.lrd_registration_sub_process Where job_number=p_job_number LIMIT 1) q),
 
-        'job_details', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(q)))
+        'job_details', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'job_details') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(q)))
 
 from (SELECT jn_id, transaction_number, job_number, business_process_id, business_process_name,
 job_purpose, job_status, job_datesend, job_recieved_by, job_forwarded_by,
@@ -585,7 +591,7 @@ business_process_sub_name, divisional_registry_unit, old_file_record_numbers,
 application_priority_level, application_stage, created_date
 FROM csau.lrd_registration_sub_process Where transaction_number=p_transaction_number) q))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'parcels_coordinates', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(v)))
+        'parcels_coordinates', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'parcels_coordinates') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(v)))
 
 from (SELECT vs_id, case_number, vs_date_of_valuation, vs_amount, vs_remarks,
 created_by, created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) AS created_date, 
@@ -594,7 +600,7 @@ created_by, created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) A
 	  
 FROM csau.lrd_valuation_section Where case_number=p_transaction_number) v))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'lrd_valuation_section', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(v)))
+        'lrd_valuation_section', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'lrd_valuation_section') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(v)))
 
 from (SELECT vs_id, case_number, (to_char(vs_date_of_valuation, 'YYYY-mm-dd')) AS vs_date_of_valuation , vs_amount, vs_remarks,
 created_by, created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) AS created_date, 
@@ -602,7 +608,7 @@ created_by, created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) A
 (to_char(modified_date, 'DD Mon YYYY | HH12:MI:SS')) AS modified_date, year_created
 FROM csau.lrd_valuation_section Where case_number=new_p_transaction_number) v))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'lrd_memorials_section', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(m)))
+        'lrd_memorials_section', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'lrd_memorials_section') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(m)))
 
 from (SELECT mid, case_number, m_registered_no, m_memorials, (to_char(m_date_of_instrument, 'YYYY-mm-dd')) as m_date_of_instrument,
 m_date_of_registration::DATE, 
@@ -612,7 +618,7 @@ created_by_id, created_date::DATE,
 year_created,m_entry_number
 FROM csau.lrd_memorials_section Where case_number=new_p_transaction_number) m))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'lrd_encumbrances_section', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(e)))
+        'lrd_encumbrances_section', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'lrd_encumbrances_section') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(e)))
 
 from (SELECT es_id, case_number, es_date_of_instrument, (to_char(es_date_of_registration, 'YYYY-mm-dd')) AS es_date_of_registration,
 es_registered_number, es_memorials, es_back, es_forward, es_remarks,
@@ -620,7 +626,7 @@ es_signature, created_by, created_by_id, (to_char(created_date, 'DD Mon YYYY | H
 modified_by_id, (to_char(modified_date, 'DD Mon YYYY | HH12:MI:SS')) AS modified_date, year_created, es_entry_number
 FROM csau.lrd_encumbrances_section Where case_number=new_p_transaction_number) e))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'lrd_certificate_section', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(c)))
+        'lrd_certificate_section', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'lrd_certificate_section') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(c)))
 
 from (SELECT cs_id, case_number, (to_char(cs_date_of_registration, 'YYYY-mm-dd')) AS cs_date_of_registration, cs_to_whom_issued,
 cs_serial_number, cs_official_notes, created_by, created_by_id,
@@ -628,7 +634,7 @@ cs_serial_number, cs_official_notes, created_by, created_by_id,
     modified_by_id, (to_char(modified_date, 'DD Mon YYYY | HH12:MI:SS')) AS modified_date, year_created
 FROM csau.lrd_certificate_section Where case_number=new_p_transaction_number) c))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'lrd_proprietorship_section', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(p)))
+        'lrd_proprietorship_section', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'lrd_proprietorship_section') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(p)))
 
 from (SELECT 0 AS approval_status,  c.ps_id, c.case_number, c.ps_registration_number, c.ps_proprietor, (to_char(c.ps_date_of_instrument, 'YYYY-mm-dd')) AS ps_date_of_instrument,
 c.ps_nature_of_instrument, (to_char(c.ps_date_of_registration, 'YYYY-mm-dd')) AS ps_date_of_registration, c.ps_transferor,
@@ -644,24 +650,24 @@ FROM csau.lrd_proprietorship_section c
 	
 	 ) p))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'lrd_reservation_section', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(r)))
+        'lrd_reservation_section', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'lrd_reservation_section') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(r)))
 from (SELECT rs_id, case_number, reservation_description, modified_by, modified_by_id, (to_char(created_date, 'YYYY-mm-dd')) AS created_date
 FROM csau.lrd_reservation_section Where case_number=new_p_transaction_number) r))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'collection_checklist', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(c)))
+        'collection_checklist', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'collection_checklist') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(c)))
 
 from (SELECT collection_of_application_checklist_id, collection_of_application_checklist_name,
 collection_of_application_checklist_option, business_process_id,
 business_process_sub_id
 FROM csau.collection_of_application_checklist) c))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'recieving_checklist', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(c)))
+        'recieving_checklist', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'recieving_checklist') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(c)))
 
 from (SELECT business_process_checklist_id, business_process_checklist_name, business_process_checklist_option, business_process_id, business_process_sub_id, priority_value
 	
 FROM csau.business_process_checklist WHERE business_process_id=new_business_process_id AND business_process_sub_id=new_business_process_sub_id) c))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'application_munites', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(k)))
+        'application_munites', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'application_munites') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(k)))
 
 from (SELECT am_id, am_case_number, am_job_number, am_description, am_from_officer,
 am_from_position, am_to_officer, am_to_position, am_activity_date,
@@ -669,14 +675,14 @@ am_status, created_by, created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12
 modified_by_id, (to_char(modified_date, 'DD Mon YYYY | HH12:MI:SS')) AS modified_date , year_created
 FROM csau.lc_application_minutes Where am_case_number=new_p_transaction_number) k))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'application_notes', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(k)))
+        'application_notes', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'application_notes') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(k)))
 
 from (SELECT an_id, an_status, an_description,  created_by, an_division as division, an_type as type, 
 	  (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) AS created_date , modified_by,
 	  (to_char(modified_date, 'DD Mon YYYY | HH12:MI:SS')) AS modified_date
 FROM csau.lc_application_notes Where an_case_number=new_p_transaction_number) k))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'payment_bill', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
+        'payment_bill', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'payment_bill') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
 
 from (SELECT payment_id, customer_uid, customer_id, customer_name, job_number,
 business_process_id, business_process_name, (to_char(bill_date, 'DD Mon YYYY | HH12:MI:SS')) AS bill_date, bill_amount,
@@ -689,13 +695,13 @@ payment_bank_branch, payment_confiration_status, account_number,
 payment_amount,(to_char(payment_date, 'DD Mon YYYY | HH12:MI:SS')) AS  payment_date, business_process_sub_id, business_process_sub_name
 FROM csau.lc_job_number_payment_bill Where job_number=p_job_number ORDER BY created_date) g))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'payment_invoice', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
+        'payment_invoice', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'payment_invoice') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
 
 from (SELECT  bill_amount, payment_slip_number, payment_mode, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) AS created_date, ref_number, payment_status,
 payment_amount, (to_char(payment_date, 'DD Mon YYYY | HH12:MI:SS')) AS payment_date
 FROM csau.lrd_registration_sub_process_dashboard Where job_number=p_job_number ORDER BY created_date) g))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'case_query', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
+        'case_query', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'case_query') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
 
 from (SELECT qid, job_number, case_number, status, reasons, query_response, remarks, created_by,
 created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) AS created_date, modified_by, 
@@ -706,7 +712,7 @@ FROM csau.lc_case_query Where case_number=new_p_transaction_number  ORDER BY cre
         'active_case_query', (SELECT COUNT(*) 
 FROM csau.lc_case_query Where case_number=new_p_transaction_number AND status='1'),
 
-        'case_objection', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
+        'case_objection', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'case_objection') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
 
 from (SELECT id, job_number, case_number, objector_name, objector_address,
 objector_contact, status, reasons, remarks, created_by, created_by_id,
@@ -714,7 +720,7 @@ objector_contact, status, reasons, remarks, created_by, created_by_id,
     modified_by_id, (to_char(modified_date, 'DD Mon YYYY | HH12:MI:SS')) AS modified_date, year_created
 FROM csau.lc_case_objection Where case_number=new_p_transaction_number ORDER BY created_date DESC) g))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'case_letters', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
+        'case_letters', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'case_letters') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(g)))
 
 from (SELECT id, job_number, case_number, letter_type, letter_template, carbon_copy, created_by, 
             created_by_id, 
@@ -724,7 +730,7 @@ FROM csau.lc_case_letters Where job_number=p_job_number ORDER BY created_date DE
         'active_case_objection', (SELECT COUNT(*) 
 FROM csau.lc_case_objection Where case_number=new_p_transaction_number AND status=true),
 
-        'comments_on_application', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(h)))
+        'comments_on_application', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'comments_on_application') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(h)))
 
 from (SELECT coa_id, jn_id, job_number, officers_general_comments, officers_recommendation,
 officers_remarks, division, divisional_registry_unit, created_by,
@@ -733,36 +739,36 @@ created_by_id, (to_char(created_date, 'DD Mon YYYY | HH12:MI:SS')) AS created_da
 year_created
 FROM csau.lc_comments_on_application Where job_number=p_job_number ORDER BY created_date DESC) h))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'outgoing_sms', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(sm)))
+        'outgoing_sms', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'outgoing_sms') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(sm)))
 
 from (SELECT sms_id, sms_message, sms_receiver_number, sms_sent_status, sms_job_number,
 sms_client_name, sms_milestone_number, sms_date_sent, sms_created_by,
 sms_created_by_id, (to_char(sms_created_date, 'DD Mon YYYY | HH12:MI:SS')) AS sms_created_date
 FROM csau.lc_outgoing_sms Where sms_job_number=p_job_number ORDER BY sms_created_date DESC) sm))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'mother_to_child_link', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(h)))
+        'mother_to_child_link', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'mother_to_child_link') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(h)))
 
 from (SELECT id, job_number, case_number, mc_job_number, mc_case_number, mc_type_of_relationship, created_by, created_by_id, created_date, modified_by, modified_by_id, modified_date, year_created
 	FROM csau.lc_mother_child_relation_details Where case_number=new_p_transaction_number ORDER BY created_date DESC) h))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'inspection_reports_on_appliction', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(v1)))
+        'inspection_reports_on_appliction', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'inspection_reports_on_appliction') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(v1)))
 
 from (SELECT * FROM csau.lc_inspection_reports  Where job_number=p_job_number) v1))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
         'parcel_wkt', v_parcel_wkt,
 
-        'certificete_approval_status', CASE WHEN v_section = 'all' THEN to_jsonb((SELECT approval_status
+        'certificete_approval_status', CASE WHEN v_section IN ('all', 'initial', 'modal') THEN to_jsonb((SELECT approval_status
 FROM csau.lc_transaction_approvals_certificate Where case_number=new_p_transaction_number LIMIT 1)) ELSE NULL::JSONB END,
 
-        'final_approval_status', CASE WHEN v_section = 'all' THEN to_jsonb((SELECT final_approval_status
+        'final_approval_status', CASE WHEN v_section IN ('all', 'initial', 'modal') THEN to_jsonb((SELECT final_approval_status
 FROM csau.lc_transaction_approvals_certificate Where case_number=new_p_transaction_number LIMIT 1)) ELSE NULL::JSONB END,
 
-        'compliance_query_status', CASE WHEN v_section = 'all' THEN to_jsonb((SELECT (case when count(*) > 0 then 'yes' else 'no' end) as status
+        'compliance_query_status', CASE WHEN v_section IN ('all', 'initial', 'modal') THEN to_jsonb((SELECT (case when count(*) > 0 then 'yes' else 'no' end) as status
 FROM csau.compliance_application_notice Where status='active' and (notice_type = 'query' or notice_type = 'Query') and job_number=p_job_number LIMIT 1)) ELSE NULL::JSONB END,
 
         'baby_step_milestone', vr_new_baby_step_milestone,
 
-        'digital_workflow_steps', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(r)))
+        'digital_workflow_steps', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'digital_workflow_steps') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(r)))
 from (SELECT 
                a.start_date,
              
@@ -784,7 +790,7 @@ from (SELECT
 	  
    ) r))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'active_digital_workflow_step', COALESCE(((SELECT array_to_json(array_agg(row_to_json(v)))
+        'active_digital_workflow_step', CASE WHEN v_section <> 'modal' THEN COALESCE(((SELECT array_to_json(array_agg(row_to_json(v)))
 from (SELECT 
                a.start_date,
                
@@ -802,13 +808,13 @@ from (SELECT
 	  
    
 		 ORDER BY a.bse_id ASC
-   ) v))::JSONB, '[]'::JSONB),
+   ) v))::JSONB, '[]'::JSONB) ELSE '[]'::JSONB END,
 
-        'certificate_search_relation', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(r)))
+        'certificate_search_relation', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'certificate_search_relation') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(r)))
 from (SELECT job_number, mc_job_number, mc_job_number, modified_by, modified_by_id, (to_char(created_date, 'YYYY-mm-dd')) AS created_date
 FROM csau.lc_certificate_search_relation_details Where case_number=new_p_transaction_number) r))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'parties', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(l)))
+        'parties', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'parties') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(l)))
 
 from (SELECT a.ar_id, a.ar_client_id, a.ar_name, a.ar_gender, a.ar_cell_phone, a.ar_cell_phone2,
 a.ar_fax, a.ar_email, a.ar_nationality, a.ar_address, a.ar_tin_no, a.ar_id_type,
@@ -817,7 +823,7 @@ a.ar_non_natural_person_type, a.ar_contact_person_name, a.ar_ownership_identifie
 a.created_by, a.created_by_id, a.created_date, a.modified_by,a. modified_by_id, p.p_uid,
 a.modified_date, a.year_created, p.type_of_party FROM csau.party p INNER JOIN csau.address_register a ON p.ar_client_id = a.ar_client_id where p.case_number = p_transaction_number) l))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END,
 
-        'application_requests', CASE WHEN v_section = 'all' THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(rl)))
+        'application_requests', CASE WHEN v_section = 'all' OR (v_section = 'modal' AND v_modal_keys ? 'application_requests') THEN to_jsonb(COALESCE(((SELECT array_to_json(array_agg(row_to_json(rl)))
 
 from (SELECT r.rq_id, r.job_purpose, r.job_recieved_by, r.job_recieved_by_id, r.created_on::DATE, r.is_completed, r.request_inbox FROM csau.lc_application_request r WHERE r.job_number = p_job_number) rl))::JSONB, '[]'::JSONB)) ELSE '[]'::JSONB END
     );

@@ -1,0 +1,480 @@
+{
+  "check_for_payment": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "payment_invoice"
+    ]
+  },
+  "check_review_documents": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "add_edit_parties": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "parties"
+    ]
+  },
+  "addeditpartyGeneral": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "further_entry": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "upload_coordinate": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "visualise_and_confirm": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "send_to_frrv": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "review_records_verification": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "application_notes"
+    ]
+  },
+  "viewNotesModal": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "review_documents": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "sent_for_publication": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "send_for_title_plan_preparation": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "check_for_objection": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "case_objection"
+    ]
+  },
+  "view_parcel_and_transaction": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "enter_root_of_title": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "lrd_certificate_section",
+      "lrd_encumbrances_section",
+      "lrd_memorials_section",
+      "lrd_proprietorship_section",
+      "lrd_reservation_section",
+      "lrd_valuation_section"
+    ]
+  },
+  "newProprietorshipModal": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "newMemorialsModal": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "newReservationModal": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "newEncumberancesModal": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "compose_certificate": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "confirm_otp_for_approval_certificate": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "view_certificate": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "view_register": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "preview_certificate": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "send_a_message_to_client": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "enter_details_for_collection_and_print_collection": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "check_availability_of_mother_file": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "transitional_certificate_template": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "check_interest_and_sub_interest_mother_file": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "link_to_mother_file": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "determining_type_of_transfer": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "generate_certificate_number": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "generate_volume_and_folio": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "enter_encumbrance_transaction_on_mother": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "verify_transaction_on_mother": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "mother_to_child_link_list"
+    ]
+  },
+  "enter_mortgage_transaction": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": [
+      "lrd_memorials_section"
+    ]
+  },
+  "compose_mmemo": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "check_review_application_documents": {
+    "template": "_gated_workflow_modal.jsp",
+    "collections": []
+  },
+  "preview_memo": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "review_instruction_with_request": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "CreateJobNumberModal": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "CreateJobNumberModalExisting": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "lrd_initial_approval": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": [
+      "application_notes"
+    ]
+  },
+  "instruction_from_lrd_to_smd": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_smd_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "review_plan_details": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "upload_pdf_plan": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "upload_final_pdf_plan": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "plot_transaction_to_smd_layer": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "review_application_against_fifo": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "compose_search_report": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": [
+      "application_notes"
+    ]
+  },
+  "check_search_report_details": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": [
+      "application_notes"
+    ]
+  },
+  "preview_composed_report": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "upload_signed_search_report": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "confirm_otp_for_approval_search": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "check_signed_report": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "update_motherfile_certificate_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "update_case_volume_and_folio": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "update_case_date_of_issue": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_interest_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_sub_interest_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "ground_rent": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "add_new_records_Info_frrv": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": [
+      "application_notes"
+    ]
+  },
+  "newValuationModal": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "enter_assessed_value_and_duty_payable": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "inspection_of_site": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_barcode_on_plan": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_deed_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_concurrence_certificate": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_ls_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "check_signed_certificate_of_registration_of_instrument": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "preview_certificate_deed_land_serial_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "generate_file_number": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "update_digital_workflow_milestone": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "newCertificateModal": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "transaction_details_for_deed": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": [
+      "parties"
+    ]
+  },
+  "newTransactionModal": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "view_parcel_and_transaction_for_deed": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": [
+      "parties"
+    ]
+  },
+  "check_availability_of_mother_file_for_deed": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "transitional_certificate_template_deed": {
+    "template": "_gated_workflow_modal_2.jsp",
+    "collections": []
+  },
+  "recommend_execution_of_certificate_rh": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "application_munites"
+    ]
+  },
+  "add_new_plotted_transaction": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "delete_existing_plotted_transaction": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "review_generated_concurrence_certificate": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "application_munites"
+    ]
+  },
+  "request_for_file_creation": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "recommend_execution_of_certificate_rlo": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "application_munites"
+    ]
+  },
+  "review_generated_lrd_numbers": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "check_interest_and_sub_interest_mother_file_for_deed": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "link_to_mother_file_for_deed": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "enter_transaction_details_for_deed": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "verify_transaction_details_for_deed": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "update_file_number": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "update_deed_number": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "update_serial_number": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "final_lrd_vetting": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "lrd_certificate_section",
+      "lrd_encumbrances_section",
+      "lrd_memorials_section",
+      "lrd_proprietorship_section",
+      "lrd_reservation_section",
+      "lrd_valuation_section"
+    ]
+  },
+  "upload_signed_certificate_and_register": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "reset_certificate_number_and_indexing": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "update_and_review_plan_details": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "deed_further_entry": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "deed_check_polygon": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "schedule_adjudication_hearing": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "determine_outcome_of_objection": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  },
+  "delink_jobs_mother_from_baby": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "mother_to_child_link_list"
+    ]
+  },
+  "confirm_notation_of_objection": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "application_notes"
+    ]
+  },
+  "update_objection_status": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": [
+      "case_objection"
+    ]
+  },
+  "edit_objection_modal": {
+    "template": "_gated_workflow_modal_3.jsp",
+    "collections": []
+  }
+}

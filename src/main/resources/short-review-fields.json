@@ -1,0 +1,306 @@
+{
+  "glpin": [
+    "parcel_details",
+    "glpin"
+  ],
+  "licensed_surveyor_number": [
+    "parcel_details",
+    "licensed_no"
+  ],
+  "regional_number": [
+    "parcel_details",
+    "regional_number"
+  ],
+  "locality": [
+    "parcel_details",
+    "locality"
+  ],
+  "district": [
+    "parcel_details",
+    "district"
+  ],
+  "region": [
+    "parcel_details",
+    "region"
+  ],
+  "size_of_land": [
+    "parcel_details",
+    "land_size"
+  ],
+  "extent": [
+    "parcel_details",
+    "extent"
+  ],
+  "registry_mapref": [
+    "parcel_details",
+    "registry_mapref"
+  ],
+  "plan_no": [
+    "parcel_details",
+    "plan_no"
+  ],
+  "cc_no": [
+    "parcel_details",
+    "cc_no"
+  ],
+  "ltr_plan_no": [
+    "parcel_details",
+    "ltr_plan_no"
+  ],
+  "registration_district_number": [
+    "parcel_details",
+    "registration_district_number"
+  ],
+  "registration_section_number": [
+    "parcel_details",
+    "registration_section_number"
+  ],
+  "registration_block_number": [
+    "parcel_details",
+    "registration_block_number"
+  ],
+  "smd_reference_number": [
+    "parcel_details",
+    "smd_reference_number"
+  ],
+  "smd_type_of_plotting": [
+    "parcel_details",
+    "smd_type_of_plotting"
+  ],
+  "ar_name": [
+    "transaction_details",
+    "ar_name"
+  ],
+  "case_number": [
+    "transaction_details",
+    "case_number"
+  ],
+  "transaction_number": [
+    "transaction_details",
+    "transaction_number"
+  ],
+  "date_of_document": [
+    "transaction_details",
+    "date_of_document"
+  ],
+  "nature_of_instrument": [
+    "transaction_details",
+    "nature_of_instrument"
+  ],
+  "certificate_number": [
+    "transaction_details",
+    "certificate_number"
+  ],
+  "type_of_interest": [
+    "transaction_details",
+    "type_of_interest"
+  ],
+  "type_of_use": [
+    "transaction_details",
+    "type_of_use"
+  ],
+  "volume_number": [
+    "transaction_details",
+    "volume_number"
+  ],
+  "folio_number": [
+    "transaction_details",
+    "folio_number"
+  ],
+  "term": [
+    "transaction_details",
+    "term"
+  ],
+  "commencement_date": [
+    "transaction_details",
+    "commencement_date"
+  ],
+  "renewal_term": [
+    "transaction_details",
+    "renewal_term"
+  ],
+  "consideration_fee": [
+    "transaction_details",
+    "consideration_fee"
+  ],
+  "consideration_fee_currency": [
+    "transaction_details",
+    "consideration_fee_currency"
+  ],
+  "consideration_fee_adopted_rate": [
+    "transaction_details",
+    "consideration_fee_adopted_rate"
+  ],
+  "stamp_duty_payable": [
+    "transaction_details",
+    "stamp_duty_payable"
+  ],
+  "assessed_value": [
+    "transaction_details",
+    "assessed_value"
+  ],
+  "parcel_description": [
+    "transaction_details",
+    "plot_number"
+  ],
+  "plot_number": [
+    "transaction_details",
+    "plot_number"
+  ],
+  "publicity_date": [
+    "transaction_details",
+    "publicity_date"
+  ],
+  "family_of_grantor": [
+    "transaction_details",
+    "family_of_grantor"
+  ],
+  "rent_review_period": [
+    "transaction_details",
+    "rent_review_period"
+  ],
+  "annual_rent": [
+    "transaction_details",
+    "annual_rent"
+  ],
+  "rent_period_covered": [
+    "transaction_details",
+    "rent_period_covered"
+  ],
+  "rent_review_date": [
+    "transaction_details",
+    "rent_review_date"
+  ],
+  "date_of_first_payment": [
+    "transaction_details",
+    "date_of_first_payment"
+  ],
+  "outstanding_rent": [
+    "transaction_details",
+    "outstanding_rent"
+  ],
+  "remark_or_comment": [
+    "job_detail",
+    "remark_or_comment"
+  ],
+  "date_of_registration": [
+    "transaction_details",
+    "date_of_registration"
+  ],
+  "time_of_registration": [
+    "transaction_details",
+    "time_of_registration"
+  ],
+  "case_status": [
+    "transaction_details",
+    "case_status"
+  ],
+  "stool_family_name": [
+    "transaction_details",
+    "stool_family_name"
+  ],
+  "stamp_duty_description": [
+    "transaction_details",
+    "stamp_duty_description"
+  ],
+  "certificate_type": [
+    "transaction_details",
+    "certificate_type"
+  ],
+  "case_file_number": [
+    "transaction_details",
+    "case_file_number"
+  ],
+  "case_process_stage": [
+    "transaction_details",
+    "case_process_stage"
+  ],
+  "interest_number": [
+    "transaction_details",
+    "interest_number"
+  ],
+  "sub_interest_number": [
+    "transaction_details",
+    "sub_interest_number"
+  ],
+  "considertion_fee_adopted_rate": [
+    "transaction_details",
+    "considertion_fee_adopted_rate"
+  ],
+  "date_of_issue": [
+    "transaction_details",
+    "date_of_issue"
+  ],
+  "registered_number": [
+    "transaction_details",
+    "registered_number"
+  ],
+  "type_of_transfer": [
+    "transaction_details",
+    "type_of_transfer"
+  ],
+  "intended_interest": [
+    "transaction_details",
+    "intended_interest"
+  ],
+  "intended_parcel": [
+    "transaction_details",
+    "intended_parcel"
+  ],
+  "deed_number": [
+    "transaction_details",
+    "deed_number"
+  ],
+  "file_number": [
+    "transaction_details",
+    "file_number"
+  ],
+  "ls_number": [
+    "transaction_details",
+    "ls_number"
+  ],
+  "ground_rent": [
+    "transaction_details",
+    "ground_rent"
+  ],
+  "application_stage": [
+    "job_detail",
+    "application_stage"
+  ],
+  "created_date": [
+    "job_detail",
+    "created_date"
+  ],
+  "modified_date": [
+    "job_detail",
+    "modified_date"
+  ],
+  "business_process_id": [
+    "job_detail",
+    "business_process_id"
+  ],
+  "business_process_name": [
+    "job_detail",
+    "business_process_name"
+  ],
+  "business_process_sub_id": [
+    "job_detail",
+    "business_process_sub_id"
+  ],
+  "business_process_sub_name": [
+    "job_detail",
+    "business_process_sub_name"
+  ],
+  "embossed": [
+    "job_detail",
+    "embossed"
+  ],
+  "smd_region": [
+    "job_detail",
+    "smd_region"
+  ],
+  "smd_licensed_surveyor_name": [
+    "job_detail",
+    "smd_licensed_surveyor_name"
+  ]
+}

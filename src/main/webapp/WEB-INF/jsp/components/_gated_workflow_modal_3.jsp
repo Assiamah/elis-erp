@@ -14,8 +14,9 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'recommend_execution_of_certificate_rh'}">
 <div class="modal fade modal-blur effect-slide" id="recommend_execution_of_certificate_rh" tabindex="-1"
-     aria-labelledby="generateConcurrenceCertificateLabel" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="generateConcurrenceCertificateLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <!-- Header -->
@@ -74,7 +75,7 @@
                                           style="min-height: 200px; padding: 1.5rem !important;"
                                           placeholder="Enter certificate summary and details...">${remark_or_comment}
                                 </textarea> -->
-                                <div id="lc_concurrence_certificate_summary_details_rh">
+                                <div id="lc_concurrence_certificate_summary_details_rh" data-short-hydrate="recommend_execution_of_certificate_rh-1" data-short-content="true">
                                   ${remark_or_comment}
                                 </div>
                                 <div class="position-absolute top-0 end-0 p-3 text-muted">
@@ -130,7 +131,7 @@
                     </div>
 
                     <!-- Hidden Inputs -->
-                    <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id" value="${transaction_id}">
+                    <input type="hidden" id="lbl_transaction_id" name="lbl_transaction_id" value="${fn:escapeXml(transaction_id)}" data-short-hydrate="recommend_execution_of_certificate_rh-2" data-short-attributes="value" data-short-control="true">
 
                     <!-- Action Status -->
                     <div class="action-status mt-4" id="actionStatus" style="display: none;">
@@ -169,25 +170,25 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="recommend_execution_of_certificate_rh-3" data-short-content="true">
                                     <c:forEach items="${application_munites}" var="application_munites_row">
                                         <tr>
-                                            <td class="fs-15">${application_munites_row.am_description}</td>
-                                            <td class="fs-12">${application_munites_row.ar_name}</td>
-                                            <td class="fs-12">${application_munites_row.am_to_officer}</td>
-                                            <td class="fs-12">${application_munites_row.am_activity_date}</td>
+                                            <td class="fs-15">${fn:escapeXml(application_munites_row.am_description)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.ar_name)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_to_officer)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_activity_date)}</td>
                                             <td>
                                                 <button class="btn btn-sm btn-info text-dark view-minute-btn"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#viewMinutesModal"
-                                                    data-minute-id="${application_munites_row.am_id}"
-                                                    data-minute-description="${application_munites_row.am_description}"
-                                                    data-minute-from="${application_munites_row.ar_name}"
-                                                    data-minute-to="${application_munites_row.am_to_officer}"
-                                                    data-minute-date="${application_munites_row.am_activity_date}"
-                                                    data-minute-case-number="${case_number}"
-                                                    data-minute-job-number="${job_number}"
-                                                    data-minute-status="${application_munites_row.status || 'active'}">
+                                                    data-minute-id="${fn:escapeXml(application_munites_row.am_id)}"
+                                                    data-minute-description="${fn:escapeXml(application_munites_row.am_description)}"
+                                                    data-minute-from="${fn:escapeXml(application_munites_row.ar_name)}"
+                                                    data-minute-to="${fn:escapeXml(application_munites_row.am_to_officer)}"
+                                                    data-minute-date="${fn:escapeXml(application_munites_row.am_activity_date)}"
+                                                    data-minute-case-number="${fn:escapeXml(case_number)}"
+                                                    data-minute-job-number="${fn:escapeXml(job_number)}"
+                                                    data-minute-status="${fn:escapeXml(empty application_munites_row.status ? 'active' : application_munites_row.status)}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </td>
@@ -219,9 +220,11 @@
         </div>
     </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'add_new_plotted_transaction'}">
 <div class="modal fade modal-blur effect-slide map-modal" id="add_new_plotted_transaction" tabindex="-1"
-     aria-labelledby="addNewPlottedTransactionLabel" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="addNewPlottedTransactionLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-success text-white border-bottom-0">
@@ -257,7 +260,7 @@
                             <div class="card-body">
                                 <label for="plot_transaction_wkt_add" class="form-label fw-semibold">Polygon Coordinates</label>
                                 <textarea class="form-control" id="plot_transaction_wkt_add" rows="8"
-                                          placeholder="Parcel polygon in WKT format">${parcel_wkt}</textarea>
+                                          placeholder="Parcel polygon in WKT format" data-short-hydrate="add_new_plotted_transaction-1" data-short-content="true" data-short-control="true">${parcel_wkt}</textarea>
                                 <div class="d-flex flex-wrap gap-2 mt-3">
                                     <button type="button" class="btn btn-primary" id="btn_visualize_add_new_plotted_transaction">
                                         <i class="fas fa-map me-2"></i>Visualize Parcel
@@ -300,9 +303,11 @@
         </div>
     </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'delete_existing_plotted_transaction'}">
 <div class="modal fade modal-blur effect-slide map-modal" id="delete_existing_plotted_transaction" tabindex="-1"
-     aria-labelledby="deleteExistingPlottedTransactionLabel" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="deleteExistingPlottedTransactionLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-danger text-white border-bottom-0">
@@ -338,7 +343,7 @@
                             <div class="card-body">
                                 <label for="plot_transaction_wkt_delete" class="form-label fw-semibold">Polygon Coordinates</label>
                                 <textarea class="form-control" id="plot_transaction_wkt_delete" rows="8"
-                                          placeholder="Parcel polygon in WKT format">${parcel_wkt}</textarea>
+                                          placeholder="Parcel polygon in WKT format" data-short-hydrate="delete_existing_plotted_transaction-1" data-short-content="true" data-short-control="true">${parcel_wkt}</textarea>
                                 <div class="d-flex flex-wrap gap-2 mt-3">
                                     <button type="button" class="btn btn-danger" id="btn_visualize_delete_existing_plotted_transaction">
                                         <i class="fas fa-map me-2"></i>Visualize Parcel
@@ -381,12 +386,14 @@
         </div>
     </div>
 </div>
+</c:if>
 
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'review_generated_concurrence_certificate'}">
 <div class="modal fade modal-blur effect-scale" id="review_generated_concurrence_certificate" tabindex="-1"
 	role="dialog" aria-labelledby="review_generated_concurrence_certificate" aria-hidden="true"
->
+ data-short-review-modal="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content border-0">
             <div class="modal-header bg-primary text-white">
@@ -458,22 +465,22 @@
                                 <tbody>
                                     <c:forEach items="${application_munites}" var="application_munites_row">
                                         <tr>
-                                            <td class="fs-15">${application_munites_row.am_description}</td>
-                                            <td class="fs-12">${application_munites_row.ar_name}</td>
-                                            <td class="fs-12">${application_munites_row.am_to_officer}</td>
-                                            <td class="fs-12">${application_munites_row.am_activity_date}</td>
+                                            <td class="fs-15">${fn:escapeXml(application_munites_row.am_description)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.ar_name)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_to_officer)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_activity_date)}</td>
                                             <td>
                                                 <button class="btn btn-sm btn-info text-dark view-minute-btn"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#viewMinutesModal"
-                                                    data-minute-id="${application_munites_row.am_id}"
-                                                    data-minute-description="${application_munites_row.am_description}"
-                                                    data-minute-from="${application_munites_row.ar_name}"
-                                                    data-minute-to="${application_munites_row.am_to_officer}"
-                                                    data-minute-date="${application_munites_row.am_activity_date}"
-                                                    data-minute-case-number="${case_number}"
-                                                    data-minute-job-number="${job_number}"
-                                                    data-minute-status="${application_munites_row.status || 'active'}">
+                                                    data-minute-id="${fn:escapeXml(application_munites_row.am_id)}"
+                                                    data-minute-description="${fn:escapeXml(application_munites_row.am_description)}"
+                                                    data-minute-from="${fn:escapeXml(application_munites_row.ar_name)}"
+                                                    data-minute-to="${fn:escapeXml(application_munites_row.am_to_officer)}"
+                                                    data-minute-date="${fn:escapeXml(application_munites_row.am_activity_date)}"
+                                                    data-minute-case-number="${fn:escapeXml(case_number)}"
+                                                    data-minute-job-number="${fn:escapeXml(job_number)}"
+                                                    data-minute-status="${fn:escapeXml(empty application_munites_row.status ? 'active' : application_munites_row.status)}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </td>
@@ -497,10 +504,12 @@
 		</div>
 	</div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'request_for_file_creation'}">
 <div class="modal fade modal-blur effect-scale" id="request_for_file_creation" tabindex="-1"
-     role="dialog" aria-labelledby="request_for_file_creation_label" aria-hidden="true" data-bs-backdrop="static">
+     role="dialog" aria-labelledby="request_for_file_creation_label" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
             
@@ -538,7 +547,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">Job Number</small>
-                                        <strong class="text-dark">${job_number}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-1" data-short-content="true">${job_number}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -549,7 +558,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">Application Type</small>
-                                        <strong class="text-dark">${business_process_sub_name}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-2" data-short-content="true">${business_process_sub_name}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -560,7 +569,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">Applicant</small>
-                                        <strong class="text-dark">${ar_name}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-3" data-short-content="true">${ar_name}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -572,7 +581,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">File Number</small>
-                                        <strong class="text-dark">${file_number}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-4" data-short-content="true">${file_number}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -584,7 +593,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">Deed Number</small>
-                                        <strong class="text-dark">${deed_number}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-5" data-short-content="true">${deed_number}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -596,7 +605,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">Locality</small>
-                                        <strong class="text-dark">${locality}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-6" data-short-content="true">${locality}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -608,7 +617,7 @@
                                     </div> -->
                                     <div>
                                         <small class="text-muted d-block">Type of Transfer</small>
-                                        <strong class="text-dark">${intended_parcel}</strong>
+                                        <strong class="text-dark" data-short-hydrate="request_for_file_creation-7" data-short-content="true">${intended_parcel}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -662,11 +671,13 @@
         </div>
     </div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'recommend_execution_of_certificate_rlo'}">
 <div class="modal fade modal-blur effect-scale" id="recommend_execution_of_certificate_rlo" tabindex="-1"
 	role="dialog" aria-labelledby="recommend_execution_of_certificate_rlo" aria-hidden="true"
->
+ data-short-review-modal="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content border-0">
             <div class="modal-header bg-primary text-white">
@@ -695,25 +706,25 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="recommend_execution_of_certificate_rlo-1" data-short-content="true">
                                     <c:forEach items="${application_munites}" var="application_munites_row">
                                         <tr>
-                                            <td class="fs-15">${application_munites_row.am_description}</td>
-                                            <td class="fs-12">${application_munites_row.am_from_officer}</td>
-                                            <td class="fs-12">${application_munites_row.am_to_officer}</td>
-                                            <td class="fs-12">${application_munites_row.am_activity_date}</td>
+                                            <td class="fs-15">${fn:escapeXml(application_munites_row.am_description)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_from_officer)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_to_officer)}</td>
+                                            <td class="fs-12">${fn:escapeXml(application_munites_row.am_activity_date)}</td>
                                             <td>
                                                 <button class="btn btn-sm btn-info text-dark view-minute-btn"
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#viewMinutesModal"
-                                                    data-minute-id="${application_munites_row.am_id}"
-                                                    data-minute-description="${application_munites_row.am_description}"
-                                                    data-minute-from="${application_munites_row.ar_name}"
-                                                    data-minute-to="${application_munites_row.am_to_officer}"
-                                                    data-minute-date="${application_munites_row.am_activity_date}"
-                                                    data-minute-case-number="${case_number}"
-                                                    data-minute-job-number="${job_number}"
-                                                    data-minute-status="${application_munites_row.status || 'active'}">
+                                                    data-minute-id="${fn:escapeXml(application_munites_row.am_id)}"
+                                                    data-minute-description="${fn:escapeXml(application_munites_row.am_description)}"
+                                                    data-minute-from="${fn:escapeXml(application_munites_row.ar_name)}"
+                                                    data-minute-to="${fn:escapeXml(application_munites_row.am_to_officer)}"
+                                                    data-minute-date="${fn:escapeXml(application_munites_row.am_activity_date)}"
+                                                    data-minute-case-number="${fn:escapeXml(case_number)}"
+                                                    data-minute-job-number="${fn:escapeXml(job_number)}"
+                                                    data-minute-status="${fn:escapeXml(empty application_munites_row.status ? 'active' : application_munites_row.status)}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </td>
@@ -737,11 +748,13 @@
 		</div>
 	</div>
 </div>
+</c:if>
 
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'review_generated_lrd_numbers'}">
 <div class="modal fade modal-blur effect-scale" id="review_generated_lrd_numbers" tabindex="-1"
-	role="dialog" aria-labelledby="review_generated_lrd_numbers" aria-hidden="true">
+	role="dialog" aria-labelledby="review_generated_lrd_numbers" aria-hidden="true" data-short-review-modal="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0">
             <div class="modal-header bg-primary text-white">
@@ -770,7 +783,7 @@
 							</div>
 							<div>
 								<span class="text-muted small d-block">Job Number</span>
-								<strong class="fs-5">${job_number}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-1" data-short-content="true">${job_number}</strong>
 							</div>
 						</div>
 
@@ -780,7 +793,7 @@
 							</div>
 							<div>
 								<span class="text-muted small d-block">GLPIN</span>
-								<strong class="fs-5">${glpin}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-2" data-short-content="true">${glpin}</strong>
 							</div>
 						</div>
 
@@ -793,7 +806,7 @@
                 <fmt:parseDate value="${date_of_registration}" pattern="yyyy-MM-dd" var="parsedRegistrationDate"/>
                 <fmt:formatDate value="${parsedRegistrationDate}" pattern="dd MMM yyyy" var="formattedRegistrationDate"/>
                 <div class="fw-medium text-dark"></div>
-								<strong class="fs-5">${empty formattedRegistrationDate ? '--' : formattedRegistrationDate}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-3" data-short-content="true">${empty formattedRegistrationDate ? '--' : formattedRegistrationDate}</strong>
 							</div>
 						</div>
  
@@ -803,7 +816,7 @@
 							</div>
 							<div>
 								<span class="text-muted small d-block">Registration Time</span>
-								<strong class="fs-5">${empty time_of_registration ? '--' : time_of_registration}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-4" data-short-content="true">${empty time_of_registration ? '--' : time_of_registration}</strong>
 							</div>
 						</div>
 
@@ -813,7 +826,7 @@
 							</div>
 							<div>
 								<span class="text-muted small d-block">File Number</span>
-								<strong class="fs-5">${file_number}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-5" data-short-content="true">${file_number}</strong>
 							</div>
 						</div>
 						
@@ -823,7 +836,7 @@
 							</div>
 							<div>
 								<span class="text-muted small d-block">Deed Number</span>
-								<strong class="fs-5">${deed_number}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-6" data-short-content="true">${deed_number}</strong>
 							</div>
 						</div>
 						
@@ -833,7 +846,7 @@
 							</div>
 							<div>
 								<span class="text-muted small d-block">Serial Number</span>
-								<strong class="fs-5">${ls_number}</strong>
+								<strong class="fs-5" data-short-hydrate="review_generated_lrd_numbers-7" data-short-content="true">${ls_number}</strong>
 							</div>
 						</div>
 					</div>
@@ -865,9 +878,11 @@
 		</div>
 	</div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'check_interest_and_sub_interest_mother_file_for_deed'}">
 <div class="modal fade" id="check_interest_and_sub_interest_mother_file_for_deed" tabindex="-1"
-     aria-labelledby="checkInterestModalLabel" aria-hidden="true">
+     aria-labelledby="checkInterestModalLabel" aria-hidden="true" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 shadow-lg">
       
@@ -1074,9 +1089,11 @@
     </div>
   </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'link_to_mother_file_for_deed'}">
 <div class="modal fade effect-scale modal-blur" id="link_to_mother_file_for_deed" tabindex="-1"
-     aria-labelledby="linkToMotherFileModalLabel" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="linkToMotherFileModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 shadow-lg">
       
@@ -1091,7 +1108,7 @@
       
       <!-- Modal Body -->
       <div class="modal-body">
-         <input class="form-control" hidden id="linkedMotherFile_deed" value="${mother_to_child_link_list}" />    
+         <input class="form-control" hidden id="linkedMotherFile_deed" value="${fn:escapeXml(mother_to_child_link_list)}" data-short-hydrate="link_to_mother_file_for_deed-1" data-short-attributes="value" data-short-control="true" />
          <div class="mb-3" id="htmlLinkedMotherFile_deed"></div>
         <!-- Search Form Card -->
         <div class="card">
@@ -1322,9 +1339,11 @@
     </div>
   </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'enter_transaction_details_for_deed'}">
 <div class="modal fade effect-scale modal-blur" id="enter_transaction_details_for_deed" tabindex="-1" 
-     aria-labelledby="enter_transaction_details_for_deed_label" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="enter_transaction_details_for_deed_label" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg">
             
@@ -1360,7 +1379,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_region" name="region" 
-                                                    placeholder="Region" value="${region}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Region" value="${fn:escapeXml(region)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-1" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_region">
                                                     <i class="fas fa-map-marker-alt me-1 text-muted"></i>
                                                     Region
@@ -1370,7 +1389,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_reference_number" name="reference_number" 
-                                                    placeholder="Reference Number" value="${glpin}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Reference Number" value="${fn:escapeXml(glpin)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-2" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_reference_number">
                                                     <i class="fas fa-hashtag me-1 text-muted"></i>
                                                     Reference Number
@@ -1380,7 +1399,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_file_number" name="file_number" 
-                                                    placeholder="File Number" value="${file_number}" readonly style="cursor: not-allowed;">
+                                                    placeholder="File Number" value="${fn:escapeXml(file_number)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-3" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_file_number">
                                                     <i class="fas fa-folder-open me-1 text-muted"></i>
                                                     File Number
@@ -1400,7 +1419,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="date" class="form-control" id="td_submission_date" name="submission_date" 
-                                                    placeholder="Submission Date" value="${created_date}" >
+                                                    placeholder="Submission Date" value="${fn:escapeXml(created_date)}"  data-short-hydrate="enter_transaction_details_for_deed-4" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_submission_date">
                                                     <i class="fas fa-calendar-alt me-1 text-muted"></i>
                                                     Submission Date
@@ -1434,7 +1453,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_deed_number" name="deed_number" 
-                                                    placeholder="Deed Number" value="${deed_number}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Deed Number" value="${fn:escapeXml(deed_number)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-5" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_deed_number">
                                                     <i class="fas fa-file-alt me-1 text-muted"></i>
                                                     Deed Number
@@ -1444,7 +1463,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_serial_number" name="serial_number" 
-                                                    placeholder="Serial Number" value="${ls_number}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Serial Number" value="${fn:escapeXml(ls_number)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-6" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_serial_number">
                                                     <i class="fas fa-barcode me-1 text-muted"></i>
                                                     Serial Number
@@ -1454,7 +1473,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="date" class="form-control bg-light" id="td_instrument_date" name="instrument_date" 
-                                                    placeholder="Instrument Date" value="${date_of_document}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Instrument Date" value="${fn:escapeXml(date_of_document)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-7" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_instrument_date">
                                                     <i class="fas fa-calendar-check me-1 text-muted"></i>
                                                     Instrument Date
@@ -1464,7 +1483,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_instrument_type" name="instrument_type" 
-                                                    placeholder="Instrument Type" value="${nature_of_instrument}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Instrument Type" value="${fn:escapeXml(nature_of_instrument)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-8" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_instrument_type">
                                                     <i class="fas fa-tag me-1 text-muted"></i>
                                                     Instrument Type
@@ -1474,7 +1493,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_doc_number" name="doc_number" 
-                                                    placeholder="Job Number" value="${job_number}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Job Number" value="${fn:escapeXml(job_number)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-9" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_doc_number">
                                                     <i class="fas fa-file-pdf me-1 text-muted"></i>
                                                     Job Number
@@ -1484,7 +1503,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control bg-light" id="td_term" name="term" 
-                                                    placeholder="Term" value="${term}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Term" value="${fn:escapeXml(term)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-10" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_term">
                                                     <i class="fas fa-hourglass-half me-1 text-muted"></i>
                                                     Term
@@ -1494,7 +1513,7 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <input type="date" class="form-control bg-light" id="td_commencement_date" name="commencement_date" 
-                                                    placeholder="Commencement Date" value="${commencement_date}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Commencement Date" value="${fn:escapeXml(commencement_date)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-11" data-short-attributes="value" data-short-control="true">
                                                 <label for="td_commencement_date">
                                                     <i class="fas fa-play-circle me-1 text-muted"></i>
                                                     Commencement Date
@@ -1621,7 +1640,7 @@
                                             </label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control bg-light" id="td_consideration" name="consideration" 
-                                                    placeholder="Amount" value="${consideration_fee}" readonly style="cursor: not-allowed;">
+                                                    placeholder="Amount" value="${fn:escapeXml(consideration_fee)}" readonly style="cursor: not-allowed;" data-short-hydrate="enter_transaction_details_for_deed-12" data-short-attributes="value" data-short-control="true">
                                                 <select class="form-select" id="td_consideration_currency" name="consideration_currency" 
                                                         style="max-width: 100px;">
                                                     <option value="GHS">GHS</option>
@@ -1722,9 +1741,11 @@
         </div>
     </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'verify_transaction_details_for_deed'}">
 <div class="modal fade effect-scale modal-blur" id="verify_transaction_details_for_deed" tabindex="-1"
-     aria-labelledby="verifyTransactionDetailsForDeedModalLabel" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="verifyTransactionDetailsForDeedModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content border-0 shadow-lg">
       
@@ -1827,10 +1848,12 @@
     </div>
   </div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'update_file_number'}">
 <div class="modal fade effect-fade modal-blur" id="update_file_number" tabindex="-1"
-     aria-labelledby="updateFileNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+     aria-labelledby="updateFileNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content border-0">
       
@@ -1854,7 +1877,7 @@
             <span class="input-group-text">
               <i class="fas fa-file"></i>
             </span>
-            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_file_number_up" placeholder="Enter file number" value="${file_number}" />
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_file_number_up" placeholder="Enter file number" value="${fn:escapeXml(file_number)}" data-short-hydrate="update_file_number-1" data-short-attributes="value" data-short-control="true" />
           </div>
         </div>
         
@@ -1879,9 +1902,11 @@
     </div>
   </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'update_deed_number'}">
 <div class="modal fade effect-fade modal-blur" id="update_deed_number" tabindex="-1"
-     aria-labelledby="updateDeedNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+     aria-labelledby="updateDeedNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content border-0">
       
@@ -1905,7 +1930,7 @@
             <span class="input-group-text">
               <i class="fas fa-file"></i>
             </span>
-            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_deed_number_up" placeholder="Enter new deed number" value="${deed_number}" />
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_deed_number_up" placeholder="Enter new deed number" value="${fn:escapeXml(deed_number)}" data-short-hydrate="update_deed_number-1" data-short-attributes="value" data-short-control="true" />
           </div>
         </div>
         
@@ -1930,10 +1955,12 @@
     </div>
   </div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'update_serial_number'}">
 <div class="modal fade effect-fade modal-blur" id="update_serial_number" tabindex="-1"
-     aria-labelledby="updateSerialNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+     aria-labelledby="updateSerialNumberLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content border-0">
       
@@ -1957,7 +1984,7 @@
             <span class="input-group-text">
               <i class="fas fa-file"></i>
             </span>
-            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_serial_number_up" placeholder="Enter new serial number" value="${ls_number}" />
+            <input type="text" class="form-control form-control-lg bg-light" id="lc_txt_serial_number_up" placeholder="Enter new serial number" value="${fn:escapeXml(ls_number)}" data-short-hydrate="update_serial_number-1" data-short-attributes="value" data-short-control="true" />
           </div>
         </div>
         
@@ -1982,10 +2009,12 @@
     </div>
   </div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'final_lrd_vetting'}">
 <div class="modal fade effect-scale modal-blur" id="final_lrd_vetting" tabindex="-1"
-     aria-labelledby="finalLrdVettingLabel" aria-hidden="true" data-bs-backdrop="static">
+     aria-labelledby="finalLrdVettingLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content border-0 final-vetting-shell">
       <div class="modal-header border-0 px-4 px-lg-5 pt-4 pb-0 justify-content-end">
@@ -2009,19 +2038,19 @@
               <div class="col-sm-6 col-xl-4">
                 <div class="final-vetting-soft p-3 h-100">
                   <div class="small opacity-75 mb-1">Case Number</div>
-                  <div class="fw-bold">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-1" data-short-content="true">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="final-vetting-soft p-3 h-100">
                   <div class="small opacity-75 mb-1">Job Number</div>
-                  <div class="fw-bold">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
+                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-2" data-short-content="true">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="final-vetting-soft p-3 h-100">
                   <div class="small opacity-75 mb-1">Applicant</div>
-                  <div class="fw-bold">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-3" data-short-content="true">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
                 </div>
               </div>
             </div>
@@ -2032,25 +2061,25 @@
           <div class="col-md-6 col-xl-3">
             <div class="final-vetting-stat">
               <div class="final-vetting-stat-label mb-2">Parcel GLPIN</div>
-              <div class="final-vetting-stat-value">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+              <div class="final-vetting-stat-value" data-short-hydrate="final_lrd_vetting-4" data-short-content="true">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
             </div>
           </div>
           <div class="col-md-6 col-xl-3">
             <div class="final-vetting-stat">
               <div class="final-vetting-stat-label mb-2">Certificate Number</div>
-              <div class="final-vetting-stat-value">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+              <div class="final-vetting-stat-value" data-short-hydrate="final_lrd_vetting-5" data-short-content="true">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
             </div>
           </div>
           <div class="col-md-6 col-xl-3">
             <div class="final-vetting-stat">
               <div class="final-vetting-stat-label mb-2">Registered Number</div>
-              <div class="final-vetting-stat-value">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+              <div class="final-vetting-stat-value" data-short-hydrate="final_lrd_vetting-6" data-short-content="true">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
             </div>
           </div>
           <div class="col-md-6 col-xl-3">
             <div class="final-vetting-stat">
               <div class="final-vetting-stat-label mb-2">Certificate Type</div>
-              <div class="final-vetting-stat-value">${empty fn:trim(certificate_type) ? '--' : fn:trim(certificate_type)}</div>
+              <div class="final-vetting-stat-value" data-short-hydrate="final_lrd_vetting-7" data-short-content="true">${empty fn:trim(certificate_type) ? '--' : fn:trim(certificate_type)}</div>
             </div>
           </div>
         </div>
@@ -2111,27 +2140,27 @@
                             <div class="row g-3">
                               <div class="col-sm-6">
                                 <div class="small text-muted">Transaction Number</div>
-                                <div class="fw-semibold">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-8" data-short-content="true">${empty fn:trim(transaction_number) ? '--' : fn:trim(transaction_number)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Regional Number</div>
-                                <div class="fw-semibold">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-9" data-short-content="true">${empty fn:trim(regional_number) ? '--' : fn:trim(regional_number)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Date of Document</div>
-                                <div class="fw-semibold">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-10" data-short-content="true">${empty fn:trim(date_of_document) ? '--' : fn:trim(date_of_document)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Date of Registration</div>
-                                <div class="fw-semibold">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-11" data-short-content="true">${empty fn:trim(date_of_registration) ? '--' : fn:trim(date_of_registration)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Nature of Instrument</div>
-                                <div class="fw-semibold">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-12" data-short-content="true">${empty fn:trim(nature_of_instrument) ? '--' : fn:trim(nature_of_instrument)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Type of Interest</div>
-                                <div class="fw-semibold">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-13" data-short-content="true">${empty fn:trim(type_of_interest) ? '--' : fn:trim(type_of_interest)}</div>
                               </div>
                             </div>
                           </div>
@@ -2146,27 +2175,27 @@
                             <div class="row g-3">
                               <div class="col-sm-6">
                                 <div class="small text-muted">Term</div>
-                                <div class="fw-semibold">${empty fn:trim(term) ? '--' : fn:trim(term)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-14" data-short-content="true">${empty fn:trim(term) ? '--' : fn:trim(term)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Type of Use</div>
-                                <div class="fw-semibold">${empty fn:trim(type_of_use) ? '--' : fn:trim(type_of_use)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-15" data-short-content="true">${empty fn:trim(type_of_use) ? '--' : fn:trim(type_of_use)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Commencement Date</div>
-                                <div class="fw-semibold">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-16" data-short-content="true">${empty fn:trim(commencement_date) ? '--' : fn:trim(commencement_date)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Option for Renewal</div>
-                                <div class="fw-semibold">${empty fn:trim(renewal_term) ? '--' : fn:trim(renewal_term)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-17" data-short-content="true">${empty fn:trim(renewal_term) ? '--' : fn:trim(renewal_term)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Certificate Number</div>
-                                <div class="fw-semibold">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-18" data-short-content="true">${empty fn:trim(certificate_number) ? '--' : fn:trim(certificate_number)}</div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="small text-muted">Date of Issue</div>
-                                <div class="fw-semibold">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-19" data-short-content="true">${empty fn:trim(date_of_issue) ? '--' : fn:trim(date_of_issue)}</div>
                               </div>
                             </div>
                           </div>
@@ -2181,47 +2210,47 @@
                             <div class="row g-3">
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Plan Number</div>
-                                <div class="fw-semibold">${empty fn:trim(plan_no) ? '--' : fn:trim(plan_no)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-20" data-short-content="true">${empty fn:trim(plan_no) ? '--' : fn:trim(plan_no)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">LTR Plan Number</div>
-                                <div class="fw-semibold">${empty fn:trim(ltr_plan_no) ? '--' : fn:trim(ltr_plan_no)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-21" data-short-content="true">${empty fn:trim(ltr_plan_no) ? '--' : fn:trim(ltr_plan_no)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Registry Map Ref</div>
-                                <div class="fw-semibold">${empty fn:trim(registry_mapref) ? '--' : fn:trim(registry_mapref)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-22" data-short-content="true">${empty fn:trim(registry_mapref) ? '--' : fn:trim(registry_mapref)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">CC Number</div>
-                                <div class="fw-semibold">${empty fn:trim(cc_no) ? '--' : fn:trim(cc_no)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-23" data-short-content="true">${empty fn:trim(cc_no) ? '--' : fn:trim(cc_no)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">GLPIN</div>
-                                <div class="fw-semibold">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-24" data-short-content="true">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Interest Number</div>
-                                <div class="fw-semibold">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-25" data-short-content="true">${empty fn:trim(interest_number) ? '--' : fn:trim(interest_number)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Sub-Interest Number</div>
-                                <div class="fw-semibold">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-26" data-short-content="true">${empty fn:trim(sub_interest_number) ? '--' : fn:trim(sub_interest_number)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Registered Number</div>
-                                <div class="fw-semibold">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-27" data-short-content="true">${empty fn:trim(registered_number) ? '--' : fn:trim(registered_number)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Type of Plotting</div>
-                                <div class="fw-semibold">${empty fn:trim(smd_type_of_plotting) ? '--' : fn:trim(smd_type_of_plotting)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-28" data-short-content="true">${empty fn:trim(smd_type_of_plotting) ? '--' : fn:trim(smd_type_of_plotting)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">SMD Reference Number</div>
-                                <div class="fw-semibold">${empty fn:trim(smd_reference_number) ? '--' : fn:trim(smd_reference_number)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-29" data-short-content="true">${empty fn:trim(smd_reference_number) ? '--' : fn:trim(smd_reference_number)}</div>
                               </div>
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Publication Date</div>
-                                <div class="fw-semibold">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-30" data-short-content="true">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
                               </div>
                             </div>
                           </div>
@@ -2239,43 +2268,43 @@
                         <div class="row g-3">
                           <div class="col-sm-6">
                             <div class="small text-muted">Region</div>
-                            <div class="fw-semibold">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-31" data-short-content="true">${empty fn:trim(region) ? '--' : fn:trim(region)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">District</div>
-                            <div class="fw-semibold">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-32" data-short-content="true">${empty fn:trim(district) ? '--' : fn:trim(district)}</div>
                           </div>
                           <div class="col-12">
                             <div class="small text-muted">Locality</div>
-                            <div class="fw-semibold">${empty fn:trim(locality) ? '--' : fn:trim(locality)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-33" data-short-content="true">${empty fn:trim(locality) ? '--' : fn:trim(locality)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Size of Land</div>
-                            <div class="fw-semibold">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-34" data-short-content="true">${empty fn:trim(size_of_land) ? '--' : fn:trim(size_of_land)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">GLPIN</div>
-                            <div class="fw-semibold">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-35" data-short-content="true">${empty fn:trim(glpin) ? '--' : fn:trim(glpin)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Registration District</div>
-                            <div class="fw-semibold">${empty fn:trim(registration_district_number) ? '--' : fn:trim(registration_district_number)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-36" data-short-content="true">${empty fn:trim(registration_district_number) ? '--' : fn:trim(registration_district_number)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Registration Section</div>
-                            <div class="fw-semibold">${empty fn:trim(registration_section_number) ? '--' : fn:trim(registration_section_number)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-37" data-short-content="true">${empty fn:trim(registration_section_number) ? '--' : fn:trim(registration_section_number)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Registration Block</div>
-                            <div class="fw-semibold">${empty fn:trim(registration_block_number) ? '--' : fn:trim(registration_block_number)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-38" data-short-content="true">${empty fn:trim(registration_block_number) ? '--' : fn:trim(registration_block_number)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Created Date</div>
-                            <div class="fw-semibold">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-39" data-short-content="true">${empty fn:trim(created_date) ? '--' : fn:trim(created_date)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Modified Date</div>
-                            <div class="fw-semibold">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-40" data-short-content="true">${empty fn:trim(modified_date) ? '--' : fn:trim(modified_date)}</div>
                           </div>
                         </div>
                       </div>
@@ -2291,23 +2320,23 @@
                         <div class="row g-3">
                           <div class="col-12">
                             <div class="small text-muted">Assessed Value</div>
-                            <div class="h4 text-primary mb-0">${empty fn:trim(assessed_value) ? '--' : fn:trim(assessed_value)}</div>
+                            <div class="h4 text-primary mb-0" data-short-hydrate="final_lrd_vetting-41" data-short-content="true">${empty fn:trim(assessed_value) ? '--' : fn:trim(assessed_value)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Stamp Duty Payable</div>
-                            <div class="fw-semibold">${empty fn:trim(stamp_duty_payable) ? '--' : fn:trim(stamp_duty_payable)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-42" data-short-content="true">${empty fn:trim(stamp_duty_payable) ? '--' : fn:trim(stamp_duty_payable)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Consideration in Document</div>
-                            <div class="fw-semibold">${empty fn:trim(consideration_fee) ? '--' : fn:trim(consideration_fee)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-43" data-short-content="true">${empty fn:trim(consideration_fee) ? '--' : fn:trim(consideration_fee)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Consideration Currency</div>
-                            <div class="fw-semibold">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-44" data-short-content="true">${empty fn:trim(consideration_fee_currency) ? '--' : fn:trim(consideration_fee_currency)}</div>
                           </div>
                           <div class="col-sm-6">
                             <div class="small text-muted">Adopted Currency Rate</div>
-                            <div class="fw-semibold">${empty fn:trim(consideration_fee_adopted_rate) ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
+                            <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-45" data-short-content="true">${empty fn:trim(consideration_fee_adopted_rate) ? '--' : fn:trim(consideration_fee_adopted_rate)}</div>
                           </div>
                         </div>
                       </div>
@@ -2339,7 +2368,7 @@
                         <div class="mb-3">
                           <label for="lc_bl_wkt_polygon_flv" class="form-label fw-semibold">WKT Polygon</label>
                           <div class="input-group">
-                            <input class="form-control" id="lc_bl_wkt_polygon_flv" name="lc_bl_wkt_polygon_flv" type="text" value="${parcel_wkt}" placeholder="WKT polygon coordinates">
+                            <input class="form-control" id="lc_bl_wkt_polygon_flv" name="lc_bl_wkt_polygon_flv" type="text" value="${fn:escapeXml(parcel_wkt)}" placeholder="WKT polygon coordinates" data-short-hydrate="final_lrd_vetting-46" data-short-attributes="value" data-short-control="true">
                             <button class="btn btn-outline-secondary" type="button" id="btn_copy_wkt_flv" onclick="copyWktToClipboard('lc_bl_wkt_polygon_flv')">
                               <i class="fas fa-copy"></i>
                             </button>
@@ -2446,7 +2475,7 @@
                   <div class="card-body p-4">
                     <div class="mb-3">
                       <label for="lc_description_of_land_lrd_flv" class="form-label fw-semibold">Land Description</label>
-                      <textarea id="lc_description_of_land_lrd_flv" name="lc_description_of_land_lrd_flv" class="form-control" rows="5" required>${smd_region}</textarea>
+                      <textarea id="lc_description_of_land_lrd_flv" name="lc_description_of_land_lrd_flv" class="form-control" rows="5" required data-short-hydrate="final_lrd_vetting-47" data-short-content="true" data-short-control="true">${smd_region}</textarea>
                       <div class="form-text">Complete description of the land as it appears in the register.</div>
                     </div>
                     <div class="row g-3">
@@ -2493,37 +2522,37 @@
                       <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="flv-proprietorship-tab" data-bs-toggle="tab"
                                 data-bs-target="#flv-proprietorship" type="button" role="tab">
-                          Proprietorship <span class="badge bg-primary ms-1">${fn:length(lrd_proprietorship_section)}</span>
+                          Proprietorship <span class="badge bg-primary ms-1" data-short-hydrate="final_lrd_vetting-48" data-short-content="true">${fn:length(lrd_proprietorship_section)}</span>
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
                         <button class="nav-link" id="flv-memorial-tab" data-bs-toggle="tab"
                                 data-bs-target="#flv-memorial" type="button" role="tab">
-                          Memorials <span class="badge bg-primary ms-1">${fn:length(lrd_memorials_section)}</span>
+                          Memorials <span class="badge bg-primary ms-1" data-short-hydrate="final_lrd_vetting-49" data-short-content="true">${fn:length(lrd_memorials_section)}</span>
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
                         <button class="nav-link" id="flv-reservation-tab" data-bs-toggle="tab"
                                 data-bs-target="#flv-reservation" type="button" role="tab">
-                          Reservations <span class="badge bg-primary ms-1">${fn:length(lrd_reservation_section)}</span>
+                          Reservations <span class="badge bg-primary ms-1" data-short-hydrate="final_lrd_vetting-50" data-short-content="true">${fn:length(lrd_reservation_section)}</span>
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
                         <button class="nav-link" id="flv-encumbrance-tab" data-bs-toggle="tab"
                                 data-bs-target="#flv-encumbrance" type="button" role="tab">
-                          Encumbrances <span class="badge bg-primary ms-1">${fn:length(lrd_encumbrances_section)}</span>
+                          Encumbrances <span class="badge bg-primary ms-1" data-short-hydrate="final_lrd_vetting-51" data-short-content="true">${fn:length(lrd_encumbrances_section)}</span>
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
                         <button class="nav-link" id="flv-valuation-tab" data-bs-toggle="tab"
                                 data-bs-target="#flv-valuation" type="button" role="tab">
-                          Valuation <span class="badge bg-primary ms-1">${fn:length(lrd_valuation_section)}</span>
+                          Valuation <span class="badge bg-primary ms-1" data-short-hydrate="final_lrd_vetting-52" data-short-content="true">${fn:length(lrd_valuation_section)}</span>
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
                         <button class="nav-link" id="flv-certificate-tab" data-bs-toggle="tab"
                                 data-bs-target="#flv-certificate" type="button" role="tab">
-                          Certificate <span class="badge bg-primary ms-1">${fn:length(lrd_certificate_section)}</span>
+                          Certificate <span class="badge bg-primary ms-1" data-short-hydrate="final_lrd_vetting-53" data-short-content="true">${fn:length(lrd_certificate_section)}</span>
                         </button>
                       </li>
                     </ul>
@@ -2555,44 +2584,44 @@
                                     <th class="text-center">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="final_lrd_vetting-54" data-short-content="true">
                                   <c:forEach items="${lrd_proprietorship_section}" var="proprietorship_section">
                                     <tr>
-                                      <td><span class="badge bg-info bg-opacity-10 text-info">${proprietorship_section.ps_registration_number}</span></td>
-                                      <td>${proprietorship_section.ps_proprietor}</td>
-                                      <td>${proprietorship_section.ps_date_of_instrument}</td>
-                                      <td><span class="badge bg-secondary">${proprietorship_section.ps_nature_of_instrument}</span></td>
-                                      <td>${proprietorship_section.ps_date_of_registration}</td>
+                                      <td><span class="badge bg-info bg-opacity-10 text-info">${fn:escapeXml(proprietorship_section.ps_registration_number)}</span></td>
+                                      <td>${fn:escapeXml(proprietorship_section.ps_proprietor)}</td>
+                                      <td>${fn:escapeXml(proprietorship_section.ps_date_of_instrument)}</td>
+                                      <td><span class="badge bg-secondary">${fn:escapeXml(proprietorship_section.ps_nature_of_instrument)}</span></td>
+                                      <td>${fn:escapeXml(proprietorship_section.ps_date_of_registration)}</td>
                                       <td>
                                         <div class="small">
-                                          <div><strong>From:</strong> ${proprietorship_section.ps_transferor}</div>
-                                          <div><strong>To:</strong> ${proprietorship_section.ps_transferee}</div>
+                                          <div><strong>From:</strong> ${fn:escapeXml(proprietorship_section.ps_transferor)}</div>
+                                          <div><strong>To:</strong> ${fn:escapeXml(proprietorship_section.ps_transferee)}</div>
                                         </div>
                                       </td>
-                                      <td>${proprietorship_section.ps_price_paid}</td>
-                                      <td>${proprietorship_section.ps_term}</td>
+                                      <td>${fn:escapeXml(proprietorship_section.ps_price_paid)}</td>
+                                      <td>${fn:escapeXml(proprietorship_section.ps_term)}</td>
                                       <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                           <button class="btn btn-outline-primary btn-sm me-1 editProprietorshipModal ${proprietorship_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-target-id="${proprietorship_section.ps_id}"
-                                                  data-ps_id="${proprietorship_section.ps_id}"
-                                                  data-ps_case_number="${proprietorship_section.ps_case_number}"
-                                                  data-ps_registration_number="${proprietorship_section.ps_registration_number}"
-                                                  data-ps_proprietor="${proprietorship_section.ps_proprietor}"
-                                                  data-ps_date_of_instrument="${proprietorship_section.ps_date_of_instrument}"
-                                                  data-ps_nature_of_instrument="${proprietorship_section.ps_nature_of_instrument}"
-                                                  data-ps_date_of_registration="${proprietorship_section.ps_date_of_registration}"
-                                                  data-ps_transferor="${proprietorship_section.ps_transferor}"
-                                                  data-ps_transferee="${proprietorship_section.ps_transferee}"
-                                                  data-ps_price_paid="${proprietorship_section.ps_price_paid}"
-                                                  data-ps_remarks="${proprietorship_section.ps_remarks}"
-                                                  data-ps_signature="${proprietorship_section.ps_signature}"
-                                                  data-ps_term="${proprietorship_section.ps_term}">
+                                                  data-target-id="${fn:escapeXml(proprietorship_section.ps_id)}"
+                                                  data-ps_id="${fn:escapeXml(proprietorship_section.ps_id)}"
+                                                  data-ps_case_number="${fn:escapeXml(proprietorship_section.ps_case_number)}"
+                                                  data-ps_registration_number="${fn:escapeXml(proprietorship_section.ps_registration_number)}"
+                                                  data-ps_proprietor="${fn:escapeXml(proprietorship_section.ps_proprietor)}"
+                                                  data-ps_date_of_instrument="${fn:escapeXml(proprietorship_section.ps_date_of_instrument)}"
+                                                  data-ps_nature_of_instrument="${fn:escapeXml(proprietorship_section.ps_nature_of_instrument)}"
+                                                  data-ps_date_of_registration="${fn:escapeXml(proprietorship_section.ps_date_of_registration)}"
+                                                  data-ps_transferor="${fn:escapeXml(proprietorship_section.ps_transferor)}"
+                                                  data-ps_transferee="${fn:escapeXml(proprietorship_section.ps_transferee)}"
+                                                  data-ps_price_paid="${fn:escapeXml(proprietorship_section.ps_price_paid)}"
+                                                  data-ps_remarks="${fn:escapeXml(proprietorship_section.ps_remarks)}"
+                                                  data-ps_signature="${fn:escapeXml(proprietorship_section.ps_signature)}"
+                                                  data-ps_term="${fn:escapeXml(proprietorship_section.ps_term)}">
                                             <i class="fas fa-edit"></i>
                                           </button>
                                           <button class="btn btn-danger btn-sm deleteProprietorshipModal ${proprietorship_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-ps_id="${proprietorship_section.ps_id}"
-                                                  data-ps_case_number="${proprietorship_section.ps_case_number}">
+                                                  data-ps_id="${fn:escapeXml(proprietorship_section.ps_id)}"
+                                                  data-ps_case_number="${fn:escapeXml(proprietorship_section.ps_case_number)}">
                                             <i class="fas fa-trash"></i>
                                           </button>
                                         </div>
@@ -2629,32 +2658,32 @@
                                     <th class="text-center">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="final_lrd_vetting-55" data-short-content="true">
                                   <c:forEach items="${lrd_memorials_section}" var="memorials_section">
                                     <tr>
-                                      <td><span class="badge bg-danger bg-opacity-10 text-danger">${memorials_section.m_registered_no}</span></td>
-                                      <td>${memorials_section.m_memorials}</td>
-                                      <td>${memorials_section.m_date_of_instrument}</td>
-                                      <td>${memorials_section.m_date_of_registration}</td>
-                                      <td><span class="badge bg-secondary">${memorials_section.m_entry_number}</span></td>
+                                      <td><span class="badge bg-danger bg-opacity-10 text-danger">${fn:escapeXml(memorials_section.m_registered_no)}</span></td>
+                                      <td>${fn:escapeXml(memorials_section.m_memorials)}</td>
+                                      <td>${fn:escapeXml(memorials_section.m_date_of_instrument)}</td>
+                                      <td>${fn:escapeXml(memorials_section.m_date_of_registration)}</td>
+                                      <td><span class="badge bg-secondary">${fn:escapeXml(memorials_section.m_entry_number)}</span></td>
                                       <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                           <button class="btn btn-outline-danger btn-sm me-1 editMemorialsModal ${memorials_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-target-id="${memorials_section.mid}"
-                                                  data-mid="${memorials_section.mid}"
-                                                  data-m_case_number="${memorials_section.m_case_number}"
-                                                  data-m_registered_no="${memorials_section.m_registered_no}"
-                                                  data-m_memorials="${memorials_section.m_memorials}"
-                                                  data-m_date_of_registration="${memorials_section.m_date_of_registration}"
-                                                  data-m_date_of_instrument="${memorials_section.m_date_of_instrument}"
-                                                  data-m_back="${memorials_section.m_back}"
-                                                  data-m_remarks="${memorials_section.m_remarks}"
-                                                  data-m_entry_number="${memorials_section.m_entry_number}">
+                                                  data-target-id="${fn:escapeXml(memorials_section.mid)}"
+                                                  data-mid="${fn:escapeXml(memorials_section.mid)}"
+                                                  data-m_case_number="${fn:escapeXml(memorials_section.m_case_number)}"
+                                                  data-m_registered_no="${fn:escapeXml(memorials_section.m_registered_no)}"
+                                                  data-m_memorials="${fn:escapeXml(memorials_section.m_memorials)}"
+                                                  data-m_date_of_registration="${fn:escapeXml(memorials_section.m_date_of_registration)}"
+                                                  data-m_date_of_instrument="${fn:escapeXml(memorials_section.m_date_of_instrument)}"
+                                                  data-m_back="${fn:escapeXml(memorials_section.m_back)}"
+                                                  data-m_remarks="${fn:escapeXml(memorials_section.m_remarks)}"
+                                                  data-m_entry_number="${fn:escapeXml(memorials_section.m_entry_number)}">
                                             <i class="fas fa-edit"></i>
                                           </button>
                                           <button class="btn btn-danger btn-sm deleteMemorialsModal ${memorials_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-target-id="${memorials_section.mid}"
-                                                  data-mid="${memorials_section.mid}">
+                                                  data-target-id="${fn:escapeXml(memorials_section.mid)}"
+                                                  data-mid="${fn:escapeXml(memorials_section.mid)}">
                                             <i class="fas fa-trash"></i>
                                           </button>
                                         </div>
@@ -2689,22 +2718,22 @@
                                     <th class="text-center">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="final_lrd_vetting-56" data-short-content="true">
                                   <c:forEach items="${lrd_reservation_section}" var="reservation_section">
                                     <tr>
-                                      <td>${reservation_section.reservation_description}</td>
-                                      <td>${reservation_section.modified_by}</td>
-                                      <td>${reservation_section.created_date}</td>
+                                      <td>${fn:escapeXml(reservation_section.reservation_description)}</td>
+                                      <td>${fn:escapeXml(reservation_section.modified_by)}</td>
+                                      <td>${fn:escapeXml(reservation_section.created_date)}</td>
                                       <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                           <button class="btn btn-outline-success btn-sm me-1 editReservationModal ${reservation_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-rs_id="${reservation_section.rs_id}"
-                                                  data-rs_reservation_description="${reservation_section.reservation_description}"
-                                                  data-rs_case_number="${reservation_section.case_number}">
+                                                  data-rs_id="${fn:escapeXml(reservation_section.rs_id)}"
+                                                  data-rs_reservation_description="${fn:escapeXml(reservation_section.reservation_description)}"
+                                                  data-rs_case_number="${fn:escapeXml(reservation_section.case_number)}">
                                             <i class="fas fa-edit"></i>
                                           </button>
                                           <button class="btn btn-danger btn-sm deleteReservationModal ${reservation_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-rs_id="${reservation_section.rs_id}">
+                                                  data-rs_id="${fn:escapeXml(reservation_section.rs_id)}">
                                             <i class="fas fa-trash"></i>
                                           </button>
                                         </div>
@@ -2741,33 +2770,33 @@
                                     <th class="text-center">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="final_lrd_vetting-57" data-short-content="true">
                                   <c:forEach items="${lrd_encumbrances_section}" var="lrd_encumbrances_section_row">
                                     <tr>
-                                      <td><span class="badge bg-warning bg-opacity-10 text-warning">${lrd_encumbrances_section_row.es_registered_number}</span></td>
-                                      <td>${lrd_encumbrances_section_row.es_date_of_instrument}</td>
-                                      <td>${lrd_encumbrances_section_row.es_date_of_registration}</td>
-                                      <td>${lrd_encumbrances_section_row.es_memorials}</td>
-                                      <td><span class="badge bg-secondary">${lrd_encumbrances_section_row.es_entry_number}</span></td>
+                                      <td><span class="badge bg-warning bg-opacity-10 text-warning">${fn:escapeXml(lrd_encumbrances_section_row.es_registered_number)}</span></td>
+                                      <td>${fn:escapeXml(lrd_encumbrances_section_row.es_date_of_instrument)}</td>
+                                      <td>${fn:escapeXml(lrd_encumbrances_section_row.es_date_of_registration)}</td>
+                                      <td>${fn:escapeXml(lrd_encumbrances_section_row.es_memorials)}</td>
+                                      <td><span class="badge bg-secondary">${fn:escapeXml(lrd_encumbrances_section_row.es_entry_number)}</span></td>
                                       <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                           <button class="btn btn-outline-warning btn-sm me-1 editEncumberancesModal ${lrd_encumbrances_section_row.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-es_id="${lrd_encumbrances_section_row.es_id}"
-                                                  data-es_case_number="${lrd_encumbrances_section_row.es_case_number}"
-                                                  data-es_registered_number="${lrd_encumbrances_section_row.es_registered_number}"
-                                                  data-es_date_of_registration="${lrd_encumbrances_section_row.es_date_of_registration}"
-                                                  data-es_date_of_instrument="${lrd_encumbrances_section_row.es_date_of_instrument}"
-                                                  data-es_back="${lrd_encumbrances_section_row.es_back}"
-                                                  data-es_forward="${lrd_encumbrances_section_row.es_forward}"
-                                                  data-es_remarks="${lrd_encumbrances_section_row.es_remarks}"
-                                                  data-es_memorials="${lrd_encumbrances_section_row.es_memorials}"
-                                                  data-es_signature="${lrd_encumbrances_section_row.es_signature}"
-                                                  data-es_entry_number="${lrd_encumbrances_section_row.es_entry_number}"
+                                                  data-es_id="${fn:escapeXml(lrd_encumbrances_section_row.es_id)}"
+                                                  data-es_case_number="${fn:escapeXml(lrd_encumbrances_section_row.es_case_number)}"
+                                                  data-es_registered_number="${fn:escapeXml(lrd_encumbrances_section_row.es_registered_number)}"
+                                                  data-es_date_of_registration="${fn:escapeXml(lrd_encumbrances_section_row.es_date_of_registration)}"
+                                                  data-es_date_of_instrument="${fn:escapeXml(lrd_encumbrances_section_row.es_date_of_instrument)}"
+                                                  data-es_back="${fn:escapeXml(lrd_encumbrances_section_row.es_back)}"
+                                                  data-es_forward="${fn:escapeXml(lrd_encumbrances_section_row.es_forward)}"
+                                                  data-es_remarks="${fn:escapeXml(lrd_encumbrances_section_row.es_remarks)}"
+                                                  data-es_memorials="${fn:escapeXml(lrd_encumbrances_section_row.es_memorials)}"
+                                                  data-es_signature="${fn:escapeXml(lrd_encumbrances_section_row.es_signature)}"
+                                                  data-es_entry_number="${fn:escapeXml(lrd_encumbrances_section_row.es_entry_number)}"
                                                   data-es_action_on_form_encumbrances="edit">
                                             <i class="fas fa-edit"></i>
                                           </button>
                                           <button class="btn btn-danger btn-sm deleteEncumberancesModal ${lrd_encumbrances_section_row.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-es_id="${lrd_encumbrances_section_row.es_id}">
+                                                  data-es_id="${fn:escapeXml(lrd_encumbrances_section_row.es_id)}">
                                             <i class="fas fa-trash"></i>
                                           </button>
                                         </div>
@@ -2802,26 +2831,26 @@
                                     <th class="text-center">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="final_lrd_vetting-58" data-short-content="true">
                                   <c:forEach items="${lrd_valuation_section}" var="valuation_section">
                                     <tr>
-                                      <td>${valuation_section.vs_date_of_valuation}</td>
-                                      <td class="text-end text-success">${valuation_section.vs_amount}</td>
-                                      <td>${valuation_section.vs_remarks}</td>
+                                      <td>${fn:escapeXml(valuation_section.vs_date_of_valuation)}</td>
+                                      <td class="text-end text-success">${fn:escapeXml(valuation_section.vs_amount)}</td>
+                                      <td>${fn:escapeXml(valuation_section.vs_remarks)}</td>
                                       <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                           <button class="btn btn-outline-danger btn-sm me-1 editValuationModal ${valuation_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-vs_id="${valuation_section.vs_id}"
-                                                  data-case_number="${valuation_section.case_number}"
-                                                  data-vs_date_of_valuation="${valuation_section.vs_date_of_valuation}"
-                                                  data-vs_amount="${valuation_section.vs_amount}"
-                                                  data-vs_remarks="${valuation_section.vs_remarks}"
+                                                  data-vs_id="${fn:escapeXml(valuation_section.vs_id)}"
+                                                  data-case_number="${fn:escapeXml(valuation_section.case_number)}"
+                                                  data-vs_date_of_valuation="${fn:escapeXml(valuation_section.vs_date_of_valuation)}"
+                                                  data-vs_amount="${fn:escapeXml(valuation_section.vs_amount)}"
+                                                  data-vs_remarks="${fn:escapeXml(valuation_section.vs_remarks)}"
                                                   data-es_action_on_form_encumbrances="edit">
                                             <i class="fas fa-edit"></i>
                                           </button>
                                           <button class="btn btn-danger btn-sm deleteValuationModal ${valuation_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-vs_id="${valuation_section.vs_id}"
-                                                  data-case_number="${valuation_section.case_number}">
+                                                  data-vs_id="${fn:escapeXml(valuation_section.vs_id)}"
+                                                  data-case_number="${fn:escapeXml(valuation_section.case_number)}">
                                             <i class="fas fa-trash"></i>
                                           </button>
                                         </div>
@@ -2857,31 +2886,31 @@
                                     <th class="text-center">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="final_lrd_vetting-59" data-short-content="true">
                                   <c:forEach items="${lrd_certificate_section}" var="certificate_section">
                                     <tr>
-                                      <td>${certificate_section.cs_date_of_registration}</td>
-                                      <td>${certificate_section.cs_to_whom_issued}</td>
-                                      <td>${certificate_section.cs_serial_number}</td>
-                                      <td>${certificate_section.cs_official_notes}</td>
+                                      <td>${fn:escapeXml(certificate_section.cs_date_of_registration)}</td>
+                                      <td>${fn:escapeXml(certificate_section.cs_to_whom_issued)}</td>
+                                      <td>${fn:escapeXml(certificate_section.cs_serial_number)}</td>
+                                      <td>${fn:escapeXml(certificate_section.cs_official_notes)}</td>
                                       <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                           <button class="btn btn-outline-info btn-sm me-1 editCertificateModal ${certificate_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-cs_id="${certificate_section.cs_id}"
-                                                  data-cs_case_number="${certificate_section.case_number}"
-                                                  data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
-                                                  data-cs_to_whom_issued="${certificate_section.cs_to_whom_issued}"
-                                                  data-cs_serial_number="${certificate_section.cs_serial_number}"
-                                                  data-cs_official_notes="${certificate_section.cs_official_notes}">
+                                                  data-cs_id="${fn:escapeXml(certificate_section.cs_id)}"
+                                                  data-cs_case_number="${fn:escapeXml(certificate_section.case_number)}"
+                                                  data-cs_date_of_registration="${fn:escapeXml(certificate_section.cs_date_of_registration)}"
+                                                  data-cs_to_whom_issued="${fn:escapeXml(certificate_section.cs_to_whom_issued)}"
+                                                  data-cs_serial_number="${fn:escapeXml(certificate_section.cs_serial_number)}"
+                                                  data-cs_official_notes="${fn:escapeXml(certificate_section.cs_official_notes)}">
                                             <i class="fas fa-edit"></i>
                                           </button>
                                           <button class="btn btn-danger btn-sm deleteCertificateModal ${certificate_section.approval_status == 1 ? 'd-none' : ''}"
-                                                  data-cs_id="${certificate_section.cs_id}"
-                                                  data-cs_case_number="${certificate_section.case_number}"
-                                                  data-cs_date_of_registration="${certificate_section.cs_date_of_registration}"
-                                                  data-cs_to_whom_issued="${certificate_section.cs_to_whom_issued}"
-                                                  data-cs_serial_number="${certificate_section.cs_serial_number}"
-                                                  data-cs_official_notes="${certificate_section.cs_official_notes}">
+                                                  data-cs_id="${fn:escapeXml(certificate_section.cs_id)}"
+                                                  data-cs_case_number="${fn:escapeXml(certificate_section.case_number)}"
+                                                  data-cs_date_of_registration="${fn:escapeXml(certificate_section.cs_date_of_registration)}"
+                                                  data-cs_to_whom_issued="${fn:escapeXml(certificate_section.cs_to_whom_issued)}"
+                                                  data-cs_serial_number="${fn:escapeXml(certificate_section.cs_serial_number)}"
+                                                  data-cs_official_notes="${fn:escapeXml(certificate_section.cs_official_notes)}">
                                             <i class="fas fa-trash"></i>
                                           </button>
                                         </div>
@@ -2923,8 +2952,8 @@
                           <div class="card-body">
                             <div class="mb-3">
                               <label for="lc_txt_type_of_certificate_flv" class="form-label fw-semibold">Certificate Type</label>
-                              <select name="lc_txt_type_of_certificate_flv" id="lc_txt_type_of_certificate_flv" class="form-select">
-                                <option value="${certificate_type == 'Individual' ? '' : certificate_type}">
+                              <select name="lc_txt_type_of_certificate_flv" id="lc_txt_type_of_certificate_flv" class="form-select" data-short-hydrate="select-_gated_workflow_modal_3-1" data-short-control="true">
+                                <option value="${fn:escapeXml(certificate_type == 'Individual' ? '' : certificate_type)}" data-short-hydrate="final_lrd_vetting-60" data-short-content="true" data-short-attributes="value">
                                   ${certificate_type == 'Individual' ? '-- Select Certificate Type --' : certificate_type}
                                 </option>
                                 <option value="Provisional Certificate">Provisional Certificate</option>
@@ -2934,7 +2963,7 @@
                             </div>
                             <div class="mb-3">
                               <label for="lc_txt_certificate_number_flv" class="form-label fw-semibold">Certificate Number</label>
-                              <input type="text" class="form-control" id="lc_txt_certificate_number_flv" value="${certificate_number}">
+                              <input type="text" class="form-control" id="lc_txt_certificate_number_flv" value="${fn:escapeXml(certificate_number)}" data-short-hydrate="final_lrd_vetting-61" data-short-attributes="value" data-short-control="true">
                             </div>
                             <!-- <div class="alert alert-info bg-info bg-opacity-10 border-info mb-0">
                               <div class="small">
@@ -2962,7 +2991,7 @@
                           </button> -->
                         </div>
                         <div class="final-vetting-editor">
-                          <div id="lc_search_report_summary_details_flv">${remark_or_comment}</div>
+                          <div id="lc_search_report_summary_details_flv" data-short-hydrate="final_lrd_vetting-62" data-short-content="true">${remark_or_comment}</div>
                         </div>
                         <div class="row g-3 mt-1">
                           <div class="col-md-6">
@@ -3008,10 +3037,12 @@
     </div>
   </div>
 </div>
+</c:if>
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'upload_signed_certificate_and_register'}">
 <div class="modal fade modal-blur effect-scale" id="upload_signed_certificate_and_register" tabindex="-1"
 	role="dialog" aria-labelledby="upload_signed_search_report_label" aria-hidden="true"
->
+ data-short-review-modal="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content border-0">
             <div class="modal-header bg-primary text-white">
@@ -3084,10 +3115,12 @@
 		</div>
 	</div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'reset_certificate_number_and_indexing'}">
 <div class="modal fade effect-fade modal-blur" id="reset_certificate_number_and_indexing" tabindex="-1"
-     aria-labelledby="resetCertificateAndIndexingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+     aria-labelledby="resetCertificateAndIndexingLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content border-0">
       
@@ -3144,10 +3177,12 @@
     </div>
   </div>
 </div>
+</c:if>
 
 
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'update_and_review_plan_details'}">
 <div class="modal fade modal-blur effect-scale" id="update_and_review_plan_details" tabindex="-1"
-    role="dialog" aria-labelledby="reviewPlanDetailsLabel" aria-hidden="true">
+    role="dialog" aria-labelledby="reviewPlanDetailsLabel" aria-hidden="true" data-short-review-modal="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0 shadow-lg">
             <!-- Modal Header -->
@@ -3180,7 +3215,7 @@
                                             <i class="fas fa-id-card text-primary"></i>
                                         </span>
                                         <input class="form-control bg-light" type="text" style="cursor: not-allowed;"
-                                            value="${glpin}" readonly>
+                                            value="${fn:escapeXml(glpin)}" readonly data-short-hydrate="update_and_review_plan_details-1" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3194,7 +3229,7 @@
                                         </span>
                                         <input class="form-control bg-light" type="text" style="cursor: not-allowed;"
                                             name="txt_lc_smd_type_of_plotting" type="text" style="cursor: not-allowed;"
-                                            value="${smd_type_of_plotting}" readonly>
+                                            value="${fn:escapeXml(smd_type_of_plotting)}" readonly data-short-hydrate="update_and_review_plan_details-2" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3208,7 +3243,7 @@
                                         </span>
                                         <input class="form-control bg-light" type="text" style="cursor: not-allowed;"
                                             name="txt_lc_smd_reference_number" type="text"
-                                            value="${smd_reference_number}" readonly>
+                                            value="${fn:escapeXml(smd_reference_number)}" readonly data-short-hydrate="update_and_review_plan_details-3" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                             </div>
@@ -3225,7 +3260,7 @@
                                         </span>
                                         <input class="form-control bg-light" style="cursor: not-allowed;" readonly
                                             name="txt_lc_registration_district_number" type="text"
-                                            value="${registration_district_number}">
+                                            value="${fn:escapeXml(registration_district_number)}" data-short-hydrate="update_and_review_plan_details-4" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3238,7 +3273,7 @@
                                             <i class="fas fa-layer-group text-primary"></i>
                                         </span>
                                         <input class="form-control bg-light" style="cursor: not-allowed;" readonly
-                                            type="text" value="${registration_section_number}">
+                                            type="text" value="${fn:escapeXml(registration_section_number)}" data-short-hydrate="update_and_review_plan_details-5" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3251,7 +3286,7 @@
                                             <i class="fas fa-cubes text-primary"></i>
                                         </span>
                                         <input class="form-control bg-light"  style="cursor: not-allowed;" readonly
-                                            type="text" value="${registration_block_number}">
+                                            type="text" value="${fn:escapeXml(registration_block_number)}" data-short-hydrate="update_and_review_plan_details-6" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                             </div>
@@ -3267,7 +3302,7 @@
                                             <i class="fas fa-expand-arrows-alt text-primary"></i>
                                         </span>
                                         <input class="form-control bg-light" 
-                                            type="text" style="cursor: not-allowed;" value="${size_of_land}" readonly>
+                                            type="text" style="cursor: not-allowed;" value="${fn:escapeXml(size_of_land)}" readonly data-short-hydrate="update_and_review_plan_details-7" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3280,7 +3315,7 @@
                                             <i class="fas fa-map-marked text-primary"></i>
                                         </span>
                                         <input class="form-control" id="txt_lc_plan_no_up" 
-                                            type="text" value="${plan_no}">
+                                            type="text" value="${fn:escapeXml(plan_no)}" data-short-hydrate="update_and_review_plan_details-8" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3293,7 +3328,7 @@
                                             <i class="fas fa-file-contract text-primary"></i>
                                         </span>
                                         <input class="form-control" id="ltr_plan_no_up" 
-                                            type="text"  value="${ltr_plan_no}">
+                                            type="text"  value="${fn:escapeXml(ltr_plan_no)}" data-short-hydrate="update_and_review_plan_details-9" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                             </div>
@@ -3309,7 +3344,7 @@
                                             <i class="fas fa-landmark text-primary"></i>
                                         </span>
                                         <input class="form-control" id="txt_lc_registry_mapref_up" 
-                                            type="text"  value="${registry_mapref}">
+                                            type="text"  value="${fn:escapeXml(registry_mapref)}" data-short-hydrate="update_and_review_plan_details-10" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                                 
@@ -3322,7 +3357,7 @@
                                             <i class="fas fa-certificate text-primary"></i>
                                         </span>
                                         <input class="form-control" id="txt_lc_cc_no_up" 
-                                            type="text" value="${cc_no}">
+                                            type="text" value="${fn:escapeXml(cc_no)}" data-short-hydrate="update_and_review_plan_details-11" data-short-attributes="value" data-short-control="true">
                                     </div>
                                 </div>
                             </div>
@@ -3344,8 +3379,10 @@
         </div>
     </div>
 </div>
+</c:if>
 
-<div class="modal fade effect-scale modal-blur" id="deed_further_entry" tabindex="-1" aria-labelledby="deedFurtherEntryLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'deed_further_entry'}">
+<div class="modal fade effect-scale modal-blur" id="deed_further_entry" tabindex="-1" aria-labelledby="deedFurtherEntryLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-warning text-dark">
@@ -3374,11 +3411,11 @@
                     <label for="dfe_job_number" class="form-label fw-semibold">
                       <i class="bi bi-file-earmark-text me-2"></i>Job Number
                     </label>
-                    <input type="text" class="form-control bg-light" id="dfe_job_number" value="${job_number}" readonly>
+                    <input type="text" class="form-control bg-light" id="dfe_job_number" value="${fn:escapeXml(job_number)}" readonly data-short-hydrate="deed_further_entry-1" data-short-attributes="value" data-short-control="true">
                   </div>
 
-                  <input type="hidden" id="dfe_client_name" value="${ar_name}">
-                  <input type="hidden" id="dfe_business_process_sub_name" value="${business_process_sub_name}">
+                  <input type="hidden" id="dfe_client_name" value="${fn:escapeXml(ar_name)}" data-short-hydrate="deed_further_entry-2" data-short-attributes="value" data-short-control="true">
+                  <input type="hidden" id="dfe_business_process_sub_name" value="${fn:escapeXml(business_process_sub_name)}" data-short-hydrate="deed_further_entry-3" data-short-attributes="value" data-short-control="true">
 
                   <div class="mb-3">
                     <label for="dfe_surveyor_number" class="form-label fw-semibold">
@@ -3386,7 +3423,7 @@
                     </label>
                     <div class="input-group">
                       <span class="input-group-text bg-light"><i class="bi bi-123"></i></span>
-                      <input type="text" class="form-control" id="dfe_surveyor_number" value="${licensed_surveyor_number}" placeholder="Enter surveyor number">
+                      <input type="text" class="form-control" id="dfe_surveyor_number" value="${fn:escapeXml(licensed_surveyor_number)}" placeholder="Enter surveyor number" data-short-hydrate="deed_further_entry-4" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3396,7 +3433,7 @@
                     </label>
                     <div class="input-group">
                       <span class="input-group-text bg-light"><i class="bi bi-pin-map"></i></span>
-                      <input type="text" class="form-control" id="dfe_regional_number" value="${regional_number}" placeholder="Enter regional number">
+                      <input type="text" class="form-control" id="dfe_regional_number" value="${fn:escapeXml(regional_number)}" placeholder="Enter regional number" data-short-hydrate="deed_further_entry-5" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3405,7 +3442,7 @@
                       <i class="bi bi-aspect-ratio me-2"></i>Land Size
                     </label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="dfe_land_size" value="${size_of_land}" placeholder="Enter land size" step="0.111">
+                      <input type="text" class="form-control" id="dfe_land_size" value="${fn:escapeXml(size_of_land)}" placeholder="Enter land size" step="0.111" data-short-hydrate="deed_further_entry-6" data-short-attributes="value" data-short-control="true">
                       <span class="input-group-text bg-light">Acre</span>
                     </div>
                   </div>
@@ -3414,14 +3451,14 @@
                     <label for="dfe_nature_of_instrument" class="form-label fw-semibold">
                       <i class="bi bi-file-earmark me-2"></i>Nature of Instrument
                     </label>
-                    <input type="text" class="form-control" id="dfe_nature_of_instrument" value="${nature_of_instrument}">
+                    <input type="text" class="form-control" id="dfe_nature_of_instrument" value="${fn:escapeXml(nature_of_instrument)}" data-short-hydrate="deed_further_entry-7" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
                     <label for="dfe_type_of_use" class="form-label fw-semibold">
                       <i class="bi bi-building me-2"></i>Type of Use
                     </label>
-                    <input type="text" class="form-control" id="dfe_type_of_use" value="${type_of_use}">
+                    <input type="text" class="form-control" id="dfe_type_of_use" value="${fn:escapeXml(type_of_use)}" data-short-hydrate="deed_further_entry-8" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
@@ -3429,7 +3466,7 @@
                       <i class="bi bi-briefcase me-2"></i>Type of Interest
                       <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" id="dfe_type_of_interest" required>
+                    <select class="form-select" id="dfe_type_of_interest" required data-short-hydrate="select-_gated_workflow_modal_3-2" data-short-control="true">
                       <option value="">Select Type of Interest</option>
                       <option value="LEASEHOLD" ${type_of_interest=="LEASEHOLD" ? "selected" : ""}>LEASEHOLD</option>
                       <option value="FREEHOLD" ${type_of_interest=="FREEHOLD" ? "selected" : ""}>FREEHOLD</option>
@@ -3441,7 +3478,7 @@
                       <i class="bi bi-currency-exchange me-2"></i>Consideration Currency
                       <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" id="dfe_consideration_currency" required>
+                    <select class="form-select" id="dfe_consideration_currency" required data-short-hydrate="select-_gated_workflow_modal_3-3" data-short-control="true">
                       <option value="GHS" ${consideration_fee_currency=="GHS" ? "selected":"" }>Ghana Cedis (GHS)</option>
                       <option value="USD" ${consideration_fee_currency=="USD" ? "selected":"" }>US Dollars (USD)</option>
                       <option value="GBP" ${consideration_fee_currency=="GBP" ? "selected":"" }>Pound Sterling (GBP)</option>
@@ -3454,7 +3491,7 @@
                       <i class="bi bi-calendar-date me-2"></i>Date of Document
                       <span class="text-danger">*</span>
                     </label>
-                    <input type="date" class="form-control" id="dfe_date_of_document" value="${date_of_document}" required>
+                    <input type="date" class="form-control" id="dfe_date_of_document" value="${fn:escapeXml(date_of_document)}" required data-short-hydrate="deed_further_entry-9" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
@@ -3462,21 +3499,21 @@
                       <i class="bi bi-calendar-check me-2"></i>Commencement Date
                       <span class="text-danger">*</span>
                     </label>
-                    <input type="date" class="form-control" id="dfe_commencement_date" value="${commencement_date}" required>
+                    <input type="date" class="form-control" id="dfe_commencement_date" value="${fn:escapeXml(commencement_date)}" required data-short-hydrate="deed_further_entry-10" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
                     <label for="dfe_publication_date" class="form-label fw-semibold">
                       <i class="bi bi-calendar-event me-2"></i>Publication Date
                     </label>
-                    <input type="date" class="form-control" id="dfe_publication_date" value="${publicity_date}">
+                    <input type="date" class="form-control" id="dfe_publication_date" value="${fn:escapeXml(publicity_date)}" data-short-hydrate="deed_further_entry-11" data-short-attributes="value" data-short-control="true">
                   </div>
 
                    <div class="mb-3">
                     <label for="dfe_publication_date" class="form-label fw-semibold">
                       <i class="bi bi-calendar-event me-2"></i>Registration Date
                     </label>
-                    <input type="date" class="form-control" id="dfe_date_of_registration" value="${date_of_registration}">
+                    <input type="date" class="form-control" id="dfe_date_of_registration" value="${fn:escapeXml(date_of_registration)}" data-short-hydrate="deed_further_entry-12" data-short-attributes="value" data-short-control="true">
                   </div>
                 </div>
 
@@ -3485,7 +3522,7 @@
                     <label for="dfe_case_number" class="form-label fw-semibold">
                       <i class="bi bi-journal-text me-2"></i>Case Number
                     </label>
-                    <input type="text" class="form-control bg-light" id="dfe_case_number" value="${case_number}" readonly>
+                    <input type="text" class="form-control bg-light" id="dfe_case_number" value="${fn:escapeXml(case_number)}" readonly data-short-hydrate="deed_further_entry-13" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="row g-2 mb-3">
@@ -3493,19 +3530,19 @@
                       <label for="dfe_locality" class="form-label fw-semibold">
                         <i class="bi bi-geo me-2"></i>Locality
                       </label>
-                      <input type="text" class="form-control" id="dfe_locality" value="${locality}" required>
+                      <input type="text" class="form-control" id="dfe_locality" value="${fn:escapeXml(locality)}" required data-short-hydrate="deed_further_entry-14" data-short-attributes="value" data-short-control="true">
                     </div>
                     <div class="col-md-4">
                       <label for="dfe_district" class="form-label fw-semibold">
                         <i class="bi bi-geo me-2"></i>District
                       </label>
-                      <input type="text" class="form-control" id="dfe_district" value="${district}" required>
+                      <input type="text" class="form-control" id="dfe_district" value="${fn:escapeXml(district)}" required data-short-hydrate="deed_further_entry-15" data-short-attributes="value" data-short-control="true">
                     </div>
                     <div class="col-md-4">
                       <label for="dfe_region" class="form-label fw-semibold">
                         <i class="bi bi-geo me-2"></i>Region
                       </label>
-                      <input type="text" class="form-control" id="dfe_region" value="${region}" required>
+                      <input type="text" class="form-control" id="dfe_region" value="${fn:escapeXml(region)}" required data-short-hydrate="deed_further_entry-16" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3515,7 +3552,7 @@
                       <span class="text-danger">*</span>
                     </label>
                     <div class="input-group">
-                      <input type="number" class="form-control" id="dfe_term" value="${term}" placeholder="Enter term in years" required>
+                      <input type="number" class="form-control" id="dfe_term" value="${fn:escapeXml(term)}" placeholder="Enter term in years" required data-short-hydrate="deed_further_entry-17" data-short-attributes="value" data-short-control="true">
                       <span class="input-group-text bg-light">Years</span>
                     </div>
                   </div>
@@ -3538,7 +3575,7 @@
                         <i class="bi bi-arrow-repeat me-2"></i>Renewal Term (Years)
                         <span class="text-danger">*</span>
                       </label>
-                      <input type="text" class="form-control" id="dfe_renewal_term" value="${renewal_term}" required>
+                      <input type="text" class="form-control" id="dfe_renewal_term" value="${fn:escapeXml(renewal_term)}" required data-short-hydrate="deed_further_entry-18" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3554,7 +3591,7 @@
                       <button class="btn btn-secondary" id="convert_acres_to_extent_deed">
                         <i class="bi bi-arrow-repeat me-2"></i>Load Extent
                       </button>
-                      <input type="text" class="form-control bg-light" id="dfe_extent" value="${extent}" required readonly>
+                      <input type="text" class="form-control bg-light" id="dfe_extent" value="${fn:escapeXml(extent)}" required readonly data-short-hydrate="deed_further_entry-19" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3564,10 +3601,10 @@
                       <span class="text-danger">*</span>
                     </label>
                     <div class="input-group">
-                      <span class="input-group-text bg-light" id="dfe_currencySymbol">
+                      <span class="input-group-text bg-light" id="dfe_currencySymbol" data-short-hydrate="deed_further_entry-20" data-short-content="true">
                         ${empty fn:trim(consideration_fee_currency) ? 'GHS' : fn:trim(consideration_fee_currency)}
                       </span>
-                      <input type="number" class="form-control" id="dfe_consideration_fee" value="${consideration_fee}" placeholder="Enter amount" step="0.01" required>
+                      <input type="number" class="form-control" id="dfe_consideration_fee" value="${fn:escapeXml(consideration_fee)}" placeholder="Enter amount" step="0.01" required data-short-hydrate="deed_further_entry-21" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3578,7 +3615,7 @@
                     </label>
                     <div class="input-group">
                       <span class="input-group-text bg-light">GHS</span>
-                      <input type="number" class="form-control" id="dfe_annual_rent" value="${annual_rent}" placeholder="Enter annual rent" step="0.01" required>
+                      <input type="number" class="form-control" id="dfe_annual_rent" value="${fn:escapeXml(annual_rent)}" placeholder="Enter annual rent" step="0.01" required data-short-hydrate="deed_further_entry-22" data-short-attributes="value" data-short-control="true">
                     </div>
                   </div>
 
@@ -3586,35 +3623,35 @@
                     <label for="dfe_transaction_number" class="form-label fw-semibold">
                       <i class="bi bi-receipt me-2"></i>Transaction Number
                     </label>
-                    <input type="text" class="form-control bg-light" id="dfe_transaction_number" value="${transaction_number}" readonly>
+                    <input type="text" class="form-control bg-light" id="dfe_transaction_number" value="${fn:escapeXml(transaction_number)}" readonly data-short-hydrate="deed_further_entry-23" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
                     <label for="dfe_serial_number" class="form-label fw-semibold">
                       <i class="bi bi-upc-scan me-2"></i>Serial Number
                     </label>
-                    <input type="text" class="form-control" id="dfe_serial_number" value="${ls_number}" placeholder="Enter serial number">
+                    <input type="text" class="form-control" id="dfe_serial_number" value="${fn:escapeXml(ls_number)}" placeholder="Enter serial number" data-short-hydrate="deed_further_entry-24" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
                     <label for="dfe_deed_number" class="form-label fw-semibold">
                       <i class="bi bi-file-earmark-ruled me-2"></i>Deed Number
                     </label>
-                    <input type="text" class="form-control" id="dfe_deed_number" value="${deed_number}" placeholder="Enter deed number">
+                    <input type="text" class="form-control" id="dfe_deed_number" value="${fn:escapeXml(deed_number)}" placeholder="Enter deed number" data-short-hydrate="deed_further_entry-25" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
                     <label for="dfe_file_number" class="form-label fw-semibold">
                       <i class="bi bi-folder2-open me-2"></i>File Number
                     </label>
-                    <input type="text" class="form-control" id="dfe_file_number" value="${file_number}" placeholder="Enter file number">
+                    <input type="text" class="form-control" id="dfe_file_number" value="${fn:escapeXml(file_number)}" placeholder="Enter file number" data-short-hydrate="deed_further_entry-26" data-short-attributes="value" data-short-control="true">
                   </div>
 
                   <div class="mb-3">
                     <label for="dfe_property_number" class="form-label fw-semibold">
                       <i class="bi bi-folder2-open me-2"></i>Property Number
                     </label>
-                    <input type="text" class="form-control" id="dfe_property_number" value="${property_number}" placeholder="Enter property number">
+                    <input type="text" class="form-control" id="dfe_property_number" value="${fn:escapeXml(property_number)}" placeholder="Enter property number" data-short-hydrate="deed_further_entry-27" data-short-attributes="value" data-short-control="true">
                   </div>
                 </div>
               </div>
@@ -3640,8 +3677,10 @@
     </div>
   </div>
 </div>
+</c:if>
 
-<div class="modal fade effect-scale modal-blur map-modal" id="deed_check_polygon" tabindex="-1" aria-labelledby="deedCheckPolygonLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'deed_check_polygon'}">
+<div class="modal fade effect-scale modal-blur map-modal" id="deed_check_polygon" tabindex="-1" aria-labelledby="deedCheckPolygonLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
   <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-danger text-white">
@@ -3672,7 +3711,7 @@
               <i class="bi bi-code-slash me-2"></i>WKT Polygon
             </label>
             <div class="input-group">
-              <textarea class="form-control font-monospace" id="deed_check_wkt_polygon" rows="4" placeholder="POLYGON((...))" readonly style="cursor: not-allowed;">${parcel_wkt}</textarea>
+              <textarea class="form-control font-monospace" id="deed_check_wkt_polygon" rows="4" placeholder="POLYGON((...))" readonly style="cursor: not-allowed;" data-short-hydrate="deed_check_polygon-1" data-short-content="true" data-short-control="true">${parcel_wkt}</textarea>
               <button class="btn btn-outline-secondary" type="button" onclick="copyWktToClipboard('deed_check_wkt_polygon')" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard">
                 <i class="bi bi-clipboard"></i>
               </button>
@@ -3743,9 +3782,11 @@
     </div>
   </div>
 </div>
+</c:if>
 
 
-<div class="modal fade modal-blur" id="schedule_adjudication_hearing" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'schedule_adjudication_hearing'}">
+<div class="modal fade modal-blur" id="schedule_adjudication_hearing" tabindex="-1" aria-labelledby="inspectionOfSiteModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg">
             
@@ -3790,7 +3831,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Case Number</small>
-                                        <span class="fw-semibold small" id="adjudication_hearing_case_number">${case_number}</span>
+                                        <span class="fw-semibold small" id="adjudication_hearing_case_number" data-short-hydrate="schedule_adjudication_hearing-1" data-short-content="true">${case_number}</span>
                                     </div>
                                 </div>
                             </div>
@@ -3801,7 +3842,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Job Number</small>
-                                        <span class="fw-semibold small" id="adjudication_hearing_job_number">${job_number}</span>
+                                        <span class="fw-semibold small" id="adjudication_hearing_job_number" data-short-hydrate="schedule_adjudication_hearing-2" data-short-content="true">${job_number}</span>
                                     </div>
                                 </div>
                             </div>
@@ -3812,7 +3853,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Applicant Name</small>
-                                        <span class="fw-semibold small" id="adjudication_hearing_applicant_name">${ar_name}</span>
+                                        <span class="fw-semibold small" id="adjudication_hearing_applicant_name" data-short-hydrate="schedule_adjudication_hearing-3" data-short-content="true">${ar_name}</span>
                                     </div>
                                 </div>
                             </div>
@@ -3823,7 +3864,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Application Type</small>
-                                        <span class="fw-semibold small" id="adjudication_hearing_app_type">${business_process_sub_name}</span>
+                                        <span class="fw-semibold small" id="adjudication_hearing_app_type" data-short-hydrate="schedule_adjudication_hearing-4" data-short-content="true">${business_process_sub_name}</span>
                                     </div>
                                 </div>
                             </div>
@@ -3948,8 +3989,10 @@
         </div>
     </div>
 </div>
+</c:if>
 
-<div class="modal fade modal-blur" id="determine_outcome_of_objection" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'determine_outcome_of_objection'}">
+<div class="modal fade modal-blur" id="determine_outcome_of_objection" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-lg modal-dialog-centered ">
         <div class="modal-content border-0 shadow-lg">
             
@@ -3994,7 +4037,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Case Number</small>
-                                        <span class="fw-semibold small" id="obj_case_number_display">${case_number}</span>
+                                        <span class="fw-semibold small" id="obj_case_number_display" data-short-hydrate="determine_outcome_of_objection-1" data-short-content="true">${case_number}</span>
                                     </div>
                                 </div>
                             </div>
@@ -4005,7 +4048,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Job Number</small>
-                                        <span class="fw-semibold small" id="obj_job_number_display">${job_number}</span>
+                                        <span class="fw-semibold small" id="obj_job_number_display" data-short-hydrate="determine_outcome_of_objection-2" data-short-content="true">${job_number}</span>
                                     </div>
                                 </div>
                             </div>
@@ -4016,7 +4059,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Applicant Name</small>
-                                        <span class="fw-semibold small" id="obj_applicant_name_display">${ar_name}</span>
+                                        <span class="fw-semibold small" id="obj_applicant_name_display" data-short-hydrate="determine_outcome_of_objection-3" data-short-content="true">${ar_name}</span>
                                     </div>
                                 </div>
                             </div>
@@ -4083,7 +4126,7 @@
                         <div class="card-body">
                             <form id="form_objection_upheld">
                                 <input id="action_on_form_upheld" type="hidden" value="upheld">
-                                <input id="obj_id_upheld" name="obj_id" type="hidden" value="${userid}">
+                                <input id="obj_id_upheld" name="obj_id" type="hidden" value="${fn:escapeXml(userid)}" data-short-hydrate="determine_outcome_of_objection-4" data-short-attributes="value" data-short-control="true">
                                 
                                 <div class="row g-3">
                                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -4154,7 +4197,7 @@
                         <div class="card-body">
                             <form id="form_objection_not_upheld">
                                 <input id="action_on_form_not_upheld" type="hidden" value="not_upheld">
-                                <input id="obj_id_not_upheld" name="obj_id" type="hidden" value="${userid}">
+                                <input id="obj_id_not_upheld" name="obj_id" type="hidden" value="${fn:escapeXml(userid)}" data-short-hydrate="determine_outcome_of_objection-5" data-short-attributes="value" data-short-control="true">
                                 
                                 <div class="row g-3">
                                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -4239,8 +4282,10 @@
         </div>
     </div>
 </div>
+</c:if>
 
-<div class="modal fade modal-blur" id="delink_jobs_mother_from_baby" tabindex="-1" aria-labelledby="delinkMotherBabyModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'delink_jobs_mother_from_baby'}">
+<div class="modal fade modal-blur" id="delink_jobs_mother_from_baby" tabindex="-1" aria-labelledby="delinkMotherBabyModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4301,8 +4346,8 @@
                                             <i class="fas fa-hashtag text-muted"></i>
                                         </span>
                                         <input type="text" class="form-control bg-light" id="baby_job_number" 
-                                               name="baby_job_number" value="${job_number}" placeholder="Enter baby job number" 
-                                               required readonly autocomplete="off" style="cursor: not-allowed;">
+                                               name="baby_job_number" value="${fn:escapeXml(job_number)}" placeholder="Enter baby job number"
+                                               required readonly autocomplete="off" style="cursor: not-allowed;" data-short-hydrate="delink_jobs_mother_from_baby-1" data-short-attributes="value" data-short-control="true">
                                     </div>
                                     <!-- <div class="form-text text-muted">
                                         <i class="fas fa-info-circle me-1"></i>
@@ -4329,21 +4374,21 @@
                                                           <th>Action</th>
                                                       </tr>
                                                   </thead>
-                                                  <tbody>
+                                                  <tbody data-short-hydrate="delink_jobs_mother_from_baby-2" data-short-content="true">
                                                       <c:forEach items="${mother_to_child_link_list}" var="mother_to_child_link_row">
                                                           <tr>
                                                           
-                                                              <td>${mother_to_child_link_row.job_number}</td>
-                                                              <td>${mother_to_child_link_row.mc_case_number}</td>
-                                                              <td>${mother_to_child_link_row.mc_type_of_relationship}</td>
-                                                              <td>${mother_to_child_link_row.created_date}</td>
+                                                              <td>${fn:escapeXml(mother_to_child_link_row.job_number)}</td>
+                                                              <td>${fn:escapeXml(mother_to_child_link_row.mc_case_number)}</td>
+                                                              <td>${fn:escapeXml(mother_to_child_link_row.mc_type_of_relationship)}</td>
+                                                              <td>${fn:escapeXml(mother_to_child_link_row.created_date)}</td>
                                                               <td>
                                                                   <c:choose>
                                                                       <c:when test="${not empty business_process_sub_name and fn:containsIgnoreCase(business_process_sub_name, 'deed')}">
                                                                           <button type="button"  
-                                                                              data-job_number="${mother_to_child_link_row.mc_job_number}" 
-                                                                              data-case_number="${mother_to_child_link_row.mc_case_number}" 
-                                                                              data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
+                                                                              data-job_number="${fn:escapeXml(mother_to_child_link_row.mc_job_number)}"
+                                                                              data-case_number="${fn:escapeXml(mother_to_child_link_row.mc_case_number)}"
+                                                                              data-transaction_number="${fn:escapeXml(mother_to_child_link_row.mc_transaction_number)}"
                                                                               class="btn btn-sm btn-warning btn-view-mother-Child-details-deed"
                                                                           >
                                                                               <i class="fas fa-eye"></i>
@@ -4352,9 +4397,9 @@
 
                                                                       <c:otherwise>
                                                                           <button type="button"  
-                                                                              data-job_number="${mother_to_child_link_row.mc_job_number}" 
-                                                                              data-case_number="${mother_to_child_link_row.mc_case_number}" 
-                                                                              data-transaction_number="${mother_to_child_link_row.mc_transaction_number}"
+                                                                              data-job_number="${fn:escapeXml(mother_to_child_link_row.mc_job_number)}"
+                                                                              data-case_number="${fn:escapeXml(mother_to_child_link_row.mc_case_number)}"
+                                                                              data-transaction_number="${fn:escapeXml(mother_to_child_link_row.mc_transaction_number)}"
                                                                               class="btn btn-sm btn-warning btn-view-mother-Child-details"
                                                                           >
                                                                               <i class="fas fa-eye"></i>
@@ -4446,9 +4491,11 @@
         </div>
     </div>
 </div>
+</c:if>
 
 
-<div class="modal fade modal-blur effect-scale" id="confirm_notation_of_objection" tabindex="-1" aria-labelledby="lrd_initial_approvalLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'confirm_notation_of_objection'}">
+<div class="modal fade modal-blur effect-scale" id="confirm_notation_of_objection" tabindex="-1" aria-labelledby="lrd_initial_approvalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-fullscreen modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4496,7 +4543,7 @@
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody data-short-hydrate="confirm_notation_of_objection-1" data-short-content="true">
                                             <c:forEach items="${application_notes}" var="application_notes_row">
                                             <tr class="${application_notes_row.an_status == false ? 'table-danger' : ''}" 
                                                 ${application_notes_row.an_status == false ? "data-bs-toggle='tooltip' data-bs-placement='top' title='Note has been disabled'" : ""}>
@@ -4504,7 +4551,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-comment text-muted me-2"></i>
                                                         <span class="text-truncate" style="max-width: 200px;">
-                                                            ${application_notes_row.an_description}
+                                                            ${fn:escapeXml(application_notes_row.an_description)}
                                                         </span>
                                                         ${application_notes_row.an_status == false ? 
                                                             '<span class="badge bg-danger ms-2">Disabled</span>' : ''}
@@ -4513,31 +4560,31 @@
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-user-circle text-muted me-2"></i>
-                                                        <span>${application_notes_row.created_by}</span>
+                                                        <span>${fn:escapeXml(application_notes_row.created_by)}</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <i class="fas fa-calendar-alt text-muted me-2"></i>
-                                                        <span>${application_notes_row.created_date}</span>
+                                                        <span>${fn:escapeXml(application_notes_row.created_date)}</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <span class="badge bg-secondary bg-opacity-10 text-dark">
-                                                        ${application_notes_row.division}
+                                                        ${fn:escapeXml(application_notes_row.division)}
                                                     </span>
                                                 </td>
                                                 <td class="text-center">
                                                     <button class="btn ${application_notes_row.an_status == false ? 'btn-outline-dark' : 'btn-outline-primary'} btn-sm open-view-notes" 
-                                                            data-target-id="${application_notes_row.an_id}"
+                                                            data-target-id="${fn:escapeXml(application_notes_row.an_id)}"
                                                             data-an_description="${fn:escapeXml(application_notes_row.an_description)}"
-                                                            data-created_by="${application_notes_row.created_by}"
-                                                            data-created_date="${application_notes_row.created_date}"
-                                                            data-modified_by="${application_notes_row.created_by}"
-                                                            data-modified_date="${application_notes_row.created_date}"
-                                                            data-division="${application_notes_row.division}"
-                                                            data-job_number="${application_notes_row.job_number}"
-                                                            data-case_number="${application_notes_row.case_number}"
+                                                            data-created_by="${fn:escapeXml(application_notes_row.created_by)}"
+                                                            data-created_date="${fn:escapeXml(application_notes_row.created_date)}"
+                                                            data-modified_by="${fn:escapeXml(application_notes_row.created_by)}"
+                                                            data-modified_date="${fn:escapeXml(application_notes_row.created_date)}"
+                                                            data-division="${fn:escapeXml(application_notes_row.division)}"
+                                                            data-job_number="${fn:escapeXml(application_notes_row.job_number)}"
+                                                            data-case_number="${fn:escapeXml(application_notes_row.case_number)}"
                                                             ${application_notes_row.an_status == false ? "disabled" : ""}>
                                                         <i class="fas fa-eye me-1"></i>
                                                         View
@@ -4583,8 +4630,10 @@
         </div>
     </div>
 </div>
+</c:if>
 
-<div class="modal fade modal-blur" id="update_objection_status" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'update_objection_status'}">
+<div class="modal fade modal-blur" id="update_objection_status" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-lg modal-dialog-centered ">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4627,7 +4676,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Case Number</small>
-                                        <span class="fw-semibold small">${case_number}</span>
+                                        <span class="fw-semibold small" data-short-hydrate="update_objection_status-1" data-short-content="true">${case_number}</span>
                                     </div>
                                 </div>
                             </div>
@@ -4638,7 +4687,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Job Number</small>
-                                        <span class="fw-semibold small">${job_number}</span>
+                                        <span class="fw-semibold small" data-short-hydrate="update_objection_status-2" data-short-content="true">${job_number}</span>
                                     </div>
                                 </div>
                             </div>
@@ -4649,7 +4698,7 @@
                                     </div>
                                     <div>
                                         <small class="text-muted d-block">Applicant Name</small>
-                                        <span class="fw-semibold small">${ar_name}</span>
+                                        <span class="fw-semibold small" data-short-hydrate="update_objection_status-3" data-short-content="true">${ar_name}</span>
                                     </div>
                                 </div>
                             </div>
@@ -4674,28 +4723,28 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody data-short-hydrate="update_objection_status-4" data-short-content="true">
                                       <c:forEach items="${case_objection}" var="case_objection_row">
                                         <tr>
-                                            <td>${case_objection_row.objector_name}</td>
-                                            <td>${case_objection_row.objector_address}</td>
-                                            <td>${case_objection_row.objector_contact}</td>
-                                            <td>${case_objection_row.reasons}</td>
-                                            <td>${case_objection_row.remarks}</td>
+                                            <td>${fn:escapeXml(case_objection_row.objector_name)}</td>
+                                            <td>${fn:escapeXml(case_objection_row.objector_address)}</td>
+                                            <td>${fn:escapeXml(case_objection_row.objector_contact)}</td>
+                                            <td>${fn:escapeXml(case_objection_row.reasons)}</td>
+                                            <td>${fn:escapeXml(case_objection_row.remarks)}</td>
                                             
                                             <td>
                                                     <button type="button" 
                                                     
                                                     id="editOjectionModal"  
-                                                    data-target-id="${case_objection_row.id}"
-                                                    data-objector_name= "${case_objection_row.objector_name}" 
-                                                    data-objector_address="${case_objection_row.objector_address}" 
-                                                    data-objector_contact="${case_objection_row.objector_contact}" 
-                                                    data-reasons= "${case_objection_row.reasons}" 
-                                                    data-remarks="${case_objection_row.remarks}" 
-                                                    data-status="${case_objection_row.status}" 
-                                                    data-job_number="${case_objection_row.job_number}"
-                                                    data-case_number="${case_objection_row.case_number}"
+                                                    data-target-id="${fn:escapeXml(case_objection_row.id)}"
+                                                    data-objector_name= "${fn:escapeXml(case_objection_row.objector_name)}"
+                                                    data-objector_address="${fn:escapeXml(case_objection_row.objector_address)}"
+                                                    data-objector_contact="${fn:escapeXml(case_objection_row.objector_contact)}"
+                                                    data-reasons= "${fn:escapeXml(case_objection_row.reasons)}"
+                                                    data-remarks="${fn:escapeXml(case_objection_row.remarks)}"
+                                                    data-status="${fn:escapeXml(case_objection_row.status)}"
+                                                    data-job_number="${fn:escapeXml(case_objection_row.job_number)}"
+                                                    data-case_number="${fn:escapeXml(case_objection_row.case_number)}"
                                                     class="btn btn-danger btn-sm"
                                                     >
                                                         <i class="fas fa-eye"></i>
@@ -4723,8 +4772,10 @@
         </div>
     </div>
 </div>
+</c:if>
 
-<div class="modal fade modal-blur" id="edit_objection_modal" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'edit_objection_modal'}">
+<div class="modal fade modal-blur" id="edit_objection_modal" tabindex="-1" aria-labelledby="determineOutcomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
     <div class="modal-dialog modal-dialog-centered ">
         <div class="modal-content border-0 shadow-lg">
             
@@ -4855,3 +4906,4 @@
         </div>
     </div>
 </div>
+</c:if>
