@@ -111,7 +111,7 @@
                                             <h6 class="mb-1">Milestone Steps</h6>
                                             <small class="text-muted" id="milestoneStats"></small>
                                         </div>
-                                        <button class="btn btn-danger btn-sm" id="removeDuplicateMilestonesBtn" style="display: none;">
+                                        <button class="btn btn-danger btn-sm" id="removeDuplicateMilestonesBtn" style="display: block;">
                                             <i class="bi bi-trash3 me-1"></i>
                                             Remove Duplicates
                                         </button>
@@ -149,7 +149,7 @@
                                             <h6 class="mb-1">Baby Steps</h6>
                                             <small class="text-muted" id="babystepStats"></small>
                                         </div>
-                                        <button class="btn btn-danger btn-sm" id="removeDuplicateBabystepsBtn" style="display: none;">
+                                        <button class="btn btn-danger btn-sm" id="removeDuplicateBabystepsBtn" style="display: block;">
                                             <i class="bi bi-trash3 me-1"></i>
                                             Remove Duplicates
                                         </button>
@@ -468,11 +468,11 @@
         $('#milestoneStats').text(`${milestones.length} total steps (${duplicateCount} duplicates found)`);
         
         // Show remove button if duplicates exist
-        if (duplicateCount > 0) {
-            $('#removeDuplicateMilestonesBtn').show();
-        } else {
-            $('#removeDuplicateMilestonesBtn').hide();
-        }
+        // if (duplicateCount > 0) {
+        //     $('#removeDuplicateMilestonesBtn').show();
+        // } else {
+        //     $('#removeDuplicateMilestonesBtn').hide();
+        // }
     }
 
     function displayBabysteps(babysteps) {
@@ -527,11 +527,11 @@
         $('#babystepCount').text(babysteps.length);
         $('#babystepStats').text(`${babysteps.length} total steps (${duplicateCount} duplicates found)`);
         
-        if (duplicateCount > 0) {
-            $('#removeDuplicateBabystepsBtn').show();
-        } else {
-            $('#removeDuplicateBabystepsBtn').hide();
-        }
+        // if (duplicateCount > 0) {
+        //     $('#removeDuplicateBabystepsBtn').show();
+        // } else {
+        //     $('#removeDuplicateBabystepsBtn').hide();
+        // }
     }
 
     function removeSelectedSteps(type) {
