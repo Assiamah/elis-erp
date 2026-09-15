@@ -4907,3 +4907,127 @@
     </div>
 </div>
 </c:if>
+
+
+<c:if test="${empty short_review_modal_id or short_review_modal_id == 'change_of_service'}">
+<!-- Change of Service Modal - Redesigned (Bootstrap 5) -->
+<div class="modal fade effect-scale modal-blur" id="change_of_service" tabindex="-1" aria-labelledby="changeOfServiceLabel" aria-hidden="true" data-bs-backdrop="static" data-short-review-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <!-- Modal Header -->
+            <div class="modal-header bg-primary text-white border-0 py-3 px-4">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-md bg-white text-primary rounded-circle me-3">
+                        <i class="bi bi-pencil-square fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white mb-0 fw-semibold" id="changeOfServiceLabel">
+                            Change of Service
+                        </h5>
+                        <p class="mb-0 small opacity-75">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Update service details
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4 bg-white">
+                <!-- Search Section -->
+                <div class="card border-0 bg-light rounded-3 mb-4">
+                    <div class="card-body p-4">
+                        <h6 class="fw-semibold mb-3 text-dark">
+                            <i class="fas fa-search me-2 text-primary"></i>Search Job
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <input type="text" 
+                                      class="form-control form-control-lg rounded-3 text-uppercase" 
+                                      id="txt_job_number_for_adding_case_and_status" 
+                                      name="txt_job_number_for_adding_case_and_status" 
+                                      placeholder="Enter Job Number" readonly value="${job_number}"
+                                      style="text-transform: uppercase; cursor:not-allowed" required>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary btn-lg w-100 rounded-3 fw-medium" id="btn_job_number_for_change_of_job_service">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Job Details Table -->
+                <div class="table-responsive mb-4 rounded-3 border">
+                    <table class="table table-hover align-middle mb-0" id="tbl_job_detail_dataTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="fw-semibold border-0 py-3 px-4">Job Number</th>
+                                <th class="fw-semibold border-0 py-3 px-4">Case Number</th>
+                                <th class="fw-semibold border-0 py-3 px-4">Applicant Name</th>
+                                <th class="fw-semibold border-0 py-3 px-4 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Change of Service Form -->
+                <form id="frmChangeofService" method="post">
+                    <div class="card rounded-3">
+                        <div class="card-header bg-transparent border-0 pt-4 px-4 pb-0">
+                            <h6 class="fw-semibold mb-0 text-dark">
+                                <i class="fas fa-edit me-2 text-primary"></i>Service Change Details
+                            </h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small">Job Number</label>
+                                    <input type="text" class="form-control bg-light" name="chs_job_number" id="chs_job_number" style="cursor:not-allowed;" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small">Applicant Name</label>
+                                    <input type="text" class="form-control bg-light" name="chs_ar_name" id="chs_ar_name" style="cursor:not-allowed;" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small">Main Service</label>
+                                    <select class="form-select" name="chs_business_process_name" id="chs_business_process_name">
+                                        <option value="">Select main service...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small">Sub Service <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="chs_business_process_sub_name" id="chs_business_process_sub_name">
+                                        <option value="">Select sub service...</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small">Comment <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" name="chs_comment" id="chs_comment" rows="3" placeholder="Please provide details for the service change..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 px-4 pb-4 pt-2 d-flex justify-content-end">
+                            <button class="btn btn-primary btn-lg px-5 rounded-3 fw-medium" id="btnSaveChangeOfService" style="display:none">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <!-- <div class="modal-footer bg-white border-0">
+                <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Close
+                </button>
+            </div> -->
+        </div>
+    </div>
+</div>
+</c:if>
