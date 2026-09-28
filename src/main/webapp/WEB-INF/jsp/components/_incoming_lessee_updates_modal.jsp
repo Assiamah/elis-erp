@@ -481,11 +481,17 @@
                 reviewButton.disabled = false;
             });
 
-            returnToUpdates = true;
-            updatesModalElement.addEventListener('hidden.bs.modal', function showDetails() {
+            returnToUpdates = updatesModalElement.classList.contains('show');
+            if (returnToUpdates) {
+                updatesModalElement.addEventListener('hidden.bs.modal', function showDetails() {
+                    detailsModal.show();
+                }, {once: true});
+                updatesModal.hide();
+            } else {
+                // The admin register can open Details directly while the queue
+                // modal is closed; waiting for its hidden event would do nothing.
                 detailsModal.show();
-            }, {once: true});
-            updatesModal.hide();
+            }
         });
 
         function showReviewError(message) {

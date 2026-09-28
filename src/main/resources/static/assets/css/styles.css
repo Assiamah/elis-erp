@@ -81,7 +81,8 @@
   --primary09: rgba(var(--primary-rgb), 0.9);
   --primary005: rgba(var(--primary-rgb), 0.05);
   /* --default-font-family: "Space Grotesk", sans-serif; */
-  --default-font-family: "Rubik", sans-serif;
+  /* --default-font-family: "Rubik", sans-serif; */
+  --default-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --default-font-weight: 400;
   --default-text-color: #011a42;
   --default-border: #e2e8ee;

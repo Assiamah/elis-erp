@@ -12,7 +12,12 @@ import com.google.gson.Gson;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import org.springframework.ui.Model;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -699,6 +704,130 @@ public class RentController {
 		}
 		return null;
 
+	}
+
+		/**
+	 * Admin review workspace. The regional service remains the source of truth;
+	 * this route aggregates one response per region that the session is allowed
+	 * to see, rather than accepting region codes from the browser.
+	 */
+	@RequestMapping("/incoming_lessee_updates")
+	@GetMapping
+	public String admin_incoming_lessee_updates(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+		// 	request.setAttribute("login", "sessionout");
+		// 	model.addAttribute("content", "../auth/login.jsp");
+		// 	return "layouts/guest";
+		// }
+
+		// if (!canViewAllLesseeUpdates(session)) {
+		// 	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		// 	request.setAttribute("error_title", "Administrator access required");
+		// 	request.setAttribute("error_message", "This workspace is available to authorised rent administrators only.");
+		// 	model.addAttribute("content", "../errors/403.jsp");
+		// 	return "layouts/app";
+		// }
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		try {
+			loadAdminIncomingLesseeUpdates(session, request);
+			request.setAttribute("page_name", "admin_incoming_lessee_updates");
+			model.addAttribute("content", "../pages/rent_management/admin_incoming_lessee_updates.jsp");
+			return "layouts/app";
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+			request.setAttribute("error_title", "Updates unavailable");
+			request.setAttribute("error_message", "Incoming lessee updates could not be loaded. Please try again.");
+			model.addAttribute("content", "../errors/500.jsp");
+			return "layouts/app";
+		}
+	}
+
+	// private boolean canViewAllLesseeUpdates(HttpSession session) {
+	// 	String viewAll = String.valueOf(session.getAttribute("view_all_offices"));
+	// 	String userLevel = String.valueOf(session.getAttribute("user_level"));
+	// 	String designation = String.valueOf(session.getAttribute("designation"));
+	// 	return "true".equalsIgnoreCase(viewAll) || "yes".equalsIgnoreCase(viewAll)
+	// 			|| userLevel.toLowerCase(Locale.ROOT).contains("admin")
+	// 			|| designation.toLowerCase(Locale.ROOT).contains("admin");
+	// }
+
+	private void loadAdminIncomingLesseeUpdates(HttpSession session, HttpServletRequest request) throws Exception {
+		Gson gson = new Gson();
+		Map<String, String> regions = new LinkedHashMap<>();
+		String regionList = (String) session.getAttribute("region_list");
+		if (regionList != null && !regionList.trim().isEmpty()) {
+			JSONArray regionArray = new JSONArray(regionList);
+			for (int i = 0; i < regionArray.length(); i++) {
+				JSONObject region = regionArray.optJSONObject(i);
+				if (region == null) continue;
+				String code = firstNonBlank(region.optString("regional_code"), region.optString("region_code"),
+						region.optString("code"));
+				String name = firstNonBlank(region.optString("region"), region.optString("regional_name"),
+						region.optString("name"), code);
+				if (!code.isEmpty()) regions.putIfAbsent(code, name);
+			}
+		}
+		String currentRegion = String.valueOf(session.getAttribute("regional_code"));
+		if (regions.isEmpty() && !currentRegion.isBlank() && !"null".equalsIgnoreCase(currentRegion)) {
+			regions.put(currentRegion, String.valueOf(session.getAttribute("regional_name")));
+		}
+
+		List<Object> updates = new ArrayList<>();
+		Set<String> seenSubmissionIds = new LinkedHashSet<>();
+		Map<String, Integer> regionCounts = new LinkedHashMap<>();
+		for (Map.Entry<String, String> region : regions.entrySet()) {
+			String raw = rent_mgt_service.select_ground_rent_lessee_information_update_by_region(
+					cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(), region.getKey());
+			if (raw == null || raw.isBlank() || "Data Not Received".equalsIgnoreCase(raw.trim())) continue;
+			JSONObject payload = new JSONObject(raw);
+			JSONArray rows = new JSONArray(payload.optString("data", "[]"));
+			int regionCount = 0;
+			for (int i = 0; i < rows.length(); i++) {
+				JSONObject row = rows.optJSONObject(i);
+				if (row == null) continue;
+				String submissionId = row.optString("submission_id", "");
+				if (!submissionId.isBlank() && !seenSubmissionIds.add(submissionId)) continue;
+				if (row.optString("region").isBlank()) row.put("region", region.getValue());
+				if (row.optString("regional_code").isBlank()) row.put("regional_code", region.getKey());
+				updates.add(gson.fromJson(row.toString(), Object.class));
+				regionCount++;
+			}
+			regionCounts.put(region.getKey(), regionCount);
+		}
+
+		List<Object> pending = new ArrayList<>(), approved = new ArrayList<>(), rejected = new ArrayList<>();
+		for (Object value : updates) {
+			JSONObject row = new JSONObject(gson.toJson(value));
+			String status = row.optString("review_status", "pending_review").trim().toLowerCase(Locale.ROOT);
+			if ("accepted".equals(status) || "approved".equals(status)) approved.add(value);
+			else if ("rejected".equals(status)) rejected.add(value);
+			else pending.add(value);
+		}
+		request.setAttribute("incoming_lessee_updates", updates);
+		request.setAttribute("pending_lessee_updates", pending);
+		request.setAttribute("approved_lessee_updates", approved);
+		request.setAttribute("rejected_lessee_updates", rejected);
+		request.setAttribute("pending_lessee_update_count", pending.size());
+		request.setAttribute("approved_lessee_update_count", approved.size());
+		request.setAttribute("rejected_lessee_update_count", rejected.size());
+		request.setAttribute("total_incoming_lessee_update", updates.size());
+		request.setAttribute("admin_lessee_region_counts", regionCounts);
+		request.setAttribute("admin_lessee_region_options", regions);
+	}
+
+	private String firstNonBlank(String... values) {
+		for (String value : values) if (value != null && !value.isBlank() && !"null".equalsIgnoreCase(value)) return value.trim();
+		return "";
 	}
 
 }

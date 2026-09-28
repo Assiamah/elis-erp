@@ -94,6 +94,11 @@
                                     Lessee & Rent Records
                                 </div>
                                 <div>
+                                    <c:if test="${sessionScope.view_all_offices == 'true' or sessionScope.view_all_offices == 'yes' or fn:containsIgnoreCase(sessionScope.user_level, 'admin') or fn:containsIgnoreCase(sessionScope.designation, 'admin')}">
+                                        <a class="btn btn-primary-light label-btn me-2" href="${pageContext.request.contextPath}/admin/incoming_lessee_updates">
+                                            <i class="ri-dashboard-3-line label-btn-icon me-2"></i>Regional review centre
+                                        </a>
+                                    </c:if>
                                     <button class="btn btn-danger label-btn" data-bs-toggle="modal" data-bs-target="#incomingLesseeUpdatesModal">
                                         <i class="ri-download-2-line label-btn-icon me-2"></i>Incoming Lessee Updates [ <b>${total_incoming_lessee_update}</b> ]
                                     </button>
