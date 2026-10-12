@@ -29,11 +29,34 @@ public class Ws_ai_api {
 
 		return output;
 	}
+
+        public String select_ask_elis_ai_question(String web_service_url, String web_service_api_key, String json_request) {
+		String output = null;
+		try {
+			try {
+				Client client = Client.create();
+				WebResource webResource = client.resource(web_service_url + "elis_rag_api/ask");
+
+				ClientResponse response_ws = webResource.type("application/json")
+						.header("x-api-key", web_service_api_key).post(ClientResponse.class, json_request);
+				if (response_ws.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : " + response_ws.getStatus());
+				}
+				output = response_ws.getEntity(String.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return output;
+	}
 public String select_llm_response(
         String web_service_url,
         String web_service_api_key,
         String json_request) {
-
     String output = null;
 
     try {

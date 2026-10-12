@@ -4718,7 +4718,8 @@ document.addEventListener(
                         data: {
 
                             request_type:
-                                "chat_with_agent",
+                                "send_agent_question",
+                            query:message,
 
                             chat_message:
                                 message,

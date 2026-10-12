@@ -25,8 +25,14 @@ public class Ws_url_config {
     String doc_mgt_api_v1_key;
 
 
-    String ai_api;
-    String ai_api_key;
+    String smart_ai_api;
+    String  smart_ai_api_key;
+
+    String  ocr_api;
+    String ocr_api_key;
+
+    String plan_extractor_api;
+    String plan_extractor_api_key;
 
     String get_public_docs_upload_location;
 
