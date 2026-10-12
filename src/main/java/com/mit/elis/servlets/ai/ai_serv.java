@@ -60,22 +60,13 @@ public class ai_serv {
 		}
 		try {
 			String request_type = request.getParameter("request_type");
-
-			//System.out.println(request_type);
-
 	     if (request_type.equals("send_agent_question")) {
-               
                 String query = (String) request.getParameter("query"); 
                //System.out.println(query);
 				JSONObject obj_d = new JSONObject();
-
-                obj_d.put("user_question", query);
-			
-
-             
-
-               web_service_response = ai_cl.select_ai_response(
-               cls_url_config.getAi_api(),cls_url_config.getAi_api_key(),
+                obj_d.put("question", query);
+               web_service_response = ai_cl.select_ask_elis_ai_question(
+               cls_url_config.getSmart_ai_api(),cls_url_config.getSmart_ai_api_key(),
                obj_d.toString());
 
 				if (web_service_response != null) {
@@ -86,22 +77,21 @@ public class ai_serv {
 
 			}
 
-          
 		  if (request_type.equals("chat_with_agent")) {
                
-                String chat_messages = (String) request.getParameter("chat_message"); 
-				 String case_number = (String) request.getParameter("case_number"); 
-				  String job_number = (String) request.getParameter("job_number"); 
-				    String business_process_sub_name = (String) request.getParameter("business_process_sub_name"); 
+			String chat_messages = (String) request.getParameter("chat_message"); 
+			String case_number = (String) request.getParameter("case_number"); 
+			String job_number = (String) request.getParameter("job_number"); 
+			String business_process_sub_name = (String) request.getParameter("business_process_sub_name"); 
                //System.out.println(query);
 			JSONObject obj_d = new JSONObject();
 
-obj_d.put("user_question", chat_messages);
-obj_d.put("case_number", case_number);
-obj_d.put("job_number", job_number);
-obj_d.put("business_process_sub_name", business_process_sub_name);
+			obj_d.put("user_question", chat_messages);
+			obj_d.put("case_number", case_number);
+			obj_d.put("job_number", job_number);
+			obj_d.put("business_process_sub_name", business_process_sub_name);
 
-JSONObject obj = new JSONObject();
+			JSONObject obj = new JSONObject();
 
 			obj.put("case_number", case_number);
 			obj.put("job_number", job_number);
@@ -115,49 +105,20 @@ JSONObject obj = new JSONObject();
 					obj_d.put("applicationdetails", web_service_response);
 
 
-System.out.println(obj_d.toString());
-
-String prompt = ai_cl.prepare_llm_prompt(
-
-        obj_d.toString()
-
-);
+			System.out.println(obj_d.toString());
+			String prompt = ai_cl.prepare_llm_prompt(obj_d.toString());
 
 
 JSONObject ollama_request = new JSONObject();
 
 //ollama_request.put( "model","llama3.8:latest");
 ollama_request.put( "model","qwen3:8b");
+ollama_request.put("prompt",prompt);
+ollama_request.put("stream",false);
+System.out.println("Ollama Request: " + ollama_request.toString());
 
-ollama_request.put(
-        "prompt",
-        prompt
-);
-
-ollama_request.put(
-        "stream",
-        false
-);
-
-
-
-System.out.println(
-
-        "Ollama Request: "
-
-        + ollama_request.toString()
-
-);
-
-web_service_response = ai_cl.select_llm_response(
-
-        cls_url_config.getAi_api(),
-
-        cls_url_config.getAi_api_key(),
-
-        ollama_request.toString()
-
-);
+web_service_response = ai_cl.select_llm_response(cls_url_config.getSmart_ai_api(),cls_url_config.getSmart_ai_api_key(),
+        ollama_request.toString());
 
 				if (web_service_response != null) {
 					//System.out.println(web_service_response);

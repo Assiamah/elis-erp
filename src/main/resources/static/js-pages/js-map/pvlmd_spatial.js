@@ -651,136 +651,1641 @@ pvlmd_map.addLayer(pvlmd_measureLayer);
 
 					loadAndZoomToRegionPolygon(regions_polygon);
 				
-				
-					pvlmd_map.on('click', function(evt) {
-    var viewResolution = pvlmd_map.getView().getResolution();
-    var viewProjection = pvlmd_map.getView().getProjection();
 
-    if (lrd_click_type === 'MapClick') {
-        var coordinate = evt.coordinate;
-       // console.log(coordinate);
-        
-        var url = pvlmd_pvlmd_current_dataSource.getGetFeatureInfoUrl(
-            evt.coordinate,
-            viewResolution,
-            viewProjection,
-            {
-                'INFO_FORMAT': 'application/json',
-                'propertyName': 'remarks,src_info,src_date,pvlmdid,sheet_number,file_number,property_number,reference_number,data_of_clearness,town_name,type_of_plotting,active_status,source_of_data,gid_unique_across,plotting_date,plotted_by,plotted_by_id,checked_by,checked_by_id,checked_by_date,locality,plan_number,plot_number,cro_reference,nt_number,modified_by,modified_date',
-                'FEATURE_COUNT': 50
+
+
+
+
+                    
+           
+
+                    // ================================================================
+// PVLMD CLICKABLE WMS LAYER CONFIGURATION
+// ================================================================
+//
+// PVLMD Current remains the PRIMARY layer.
+// Its existing modal/workflow is preserved.
+//
+// Other layers use the generic Identify modal.
+//
+// enabled:
+//     true  = allow map click identification
+//     false = do not query this layer
+//
+// primary:
+//     true = use existing PVLMD parcel workflow
+//     false = use generic information dialog
+// ================================================================
+
+var pvlmdClickableLayers = [
+    {
+        key: 'pvlmd_current',
+        title: 'PVLMD Current Layer',
+        layer: pvlmd_pvlmd_current_dataLayer,
+        source: pvlmd_pvlmd_current_dataSource,
+        enabled: true,
+        primary: true
+    },
+
+    {
+        key: 'lrd_parcels',
+        title: 'LRD Parcels Layer',
+        layer: pvlmd_lrd_parcels_dataLayer,
+        source: pvlmd_parcel_lrd_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'smd_parcels',
+        title: 'SMD Parcels Layer',
+        layer: pvlmd_parcels_smd_dataLayer,
+        source: pvlmd_parcels_smd_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'smd_cadastral',
+        title: 'SMD Cadastral Layer',
+        layer: pvlmd_cadastral_smd_dataLayer,
+        source: pvlmd_cadastral_smd_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'garro',
+        title: 'Existing GARRO Layer',
+        layer: pvlmd_garro_parcels_dataLayer,
+        source: pvlmd_garro_parcels_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'cro',
+        title: 'Existing CRO Layer',
+        layer: pvlmd_cro_parcels_dataLayer,
+        source: pvlmd_cro_sp_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'undergoing_registration',
+        title: 'Undergoing Registration Layer',
+        layer: lrd_undergoing_registration_dataLayer,
+        source: lrd_undergoing_registration_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'registration_district',
+        title: 'Registration District',
+        layer: pvlmd_registration_district_dataLayer,
+        source: pvlmd_registration_district_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'volta_old_data',
+        title: 'Volta Old Data',
+        layer: pvlmd_volta_region_old_data_dataLayer,
+        source: pvlmd_volta_region_old_data_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'regional_boundary',
+        title: 'Regional Boundary',
+        layer: pvlmd_regional_boundary_dataLayer,
+        source: pvlmd_regional_boundary_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'grid',
+        title: 'Grid',
+        layer: pvlmd_grid_lrd_dataLayer,
+        source: pvlmd_grid_lrd_dataSource,
+        enabled: true,
+        primary: false
+    },
+
+    {
+        key: 'grid_country',
+        title: 'Grid Country',
+        layer: pvlmd_grid_lrd_dataLayer_new,
+        source: pvlmd_grid_lrd_dataSource_new,
+        enabled: true,
+        primary: false
+    }
+];
+
+
+// ================================================================
+// GENERIC IDENTIFY MODAL
+// ================================================================
+// No HTML modal is required in your JSP.
+// JavaScript creates it automatically.
+// ================================================================
+// ================================================================
+// GENERIC IDENTIFY MODAL - CREATED ONCE, NEVER RE-CREATED
+// ================================================================
+function pvlmdCreateIdentifyModal() {
+
+    if (document.getElementById('pvlmdGenericIdentifyModal')) {
+        return;
+    }
+
+    var modalHtml = `
+        <div class="modal fade"
+             id="pvlmdGenericIdentifyModal"
+             tabindex="-1"
+             aria-labelledby="pvlmdGenericIdentifyModalLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+                <div class="modal-content">
+
+                    <div class="modal-header bg-primary text-white">
+                        <div>
+                            <h5 class="modal-title"
+                                id="pvlmdGenericIdentifyModalLabel">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                Map Feature Information
+                            </h5>
+                            <small id="pvlmdIdentifyLayerName"
+                                   class="text-white-50"></small>
+                        </div>
+                        <button type="button"
+                                class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="pvlmdIdentifyLoading"
+                             class="text-center py-4 d-none">
+                            <div class="spinner-border text-primary"
+                                 role="status"></div>
+                            <div class="mt-2 text-muted">
+                                Loading feature information...
+                            </div>
+                        </div>
+
+                        <div id="pvlmdIdentifyNoData"
+                             class="alert alert-info d-none">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No information was found at this location.
+                        </div>
+
+                        <div id="pvlmdIdentifyMultipleFeatures"
+                             class="mb-3 d-none">
+                            <label class="form-label fw-bold">
+                                Features found
+                            </label>
+                            <select id="pvlmdIdentifyFeatureSelector"
+                                    class="form-select"></select>
+                        </div>
+
+                        <div id="pvlmdIdentifyContent"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="pvlmdIdentifyCopyBtn">
+                            <i class="fas fa-copy me-1"></i>
+                            Copy Information
+                        </button>
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    `;
+
+    $('body').append(modalHtml);
+}
+
+pvlmdCreateIdentifyModal();
+
+
+// ================================================================
+// REMOVE ORPHANED BOOTSTRAP BACKDROPS
+// Bootstrap 5 sometimes leaves <div class="modal-backdrop"> behind
+// when a modal is opened while another one is still transitioning,
+// which freezes the map (invisible overlay blocks all events).
+// ================================================================
+function pvlmdCleanupBootstrapBackdrops() {
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+    $('body').css({
+        'overflow': '',
+        'padding-right': ''
+    });
+}
+
+// ================================================================
+// BLUR THE OPENLAYERS CANVAS SO BOOTSTRAP DOES NOT TRAP FOCUS
+// ================================================================
+function pvlmdBlurMapCanvas() {
+    var target = pvlmd_map && pvlmd_map.getTargetElement
+        ? pvlmd_map.getTargetElement()
+        : null;
+
+    if (!target) { return; }
+
+    // Remove tabindex if present so the canvas cannot retain focus
+    target.removeAttribute('tabindex');
+
+    // Blur any element inside the map container
+    var active = document.activeElement;
+    if (active && target.contains(active)) {
+        active.blur();
+    }
+}
+
+
+// ================================================================
+// HTML ESCAPE
+// Very important because GeoServer attribute values must not be
+// inserted directly into HTML.
+// ================================================================
+
+function pvlmdEscapeHtml(value) {
+
+    if (value === null ||
+        value === undefined ||
+        value === '') {
+
+        return '-';
+    }
+
+    return $('<div>')
+        .text(String(value))
+        .html();
+}
+
+
+// ================================================================
+// FORMAT PROPERTY NAME
+// property_number -> Property Number
+// plotting_date   -> Plotting Date
+// ================================================================
+
+function pvlmdFormatPropertyName(name) {
+
+    if (!name) {
+        return '';
+    }
+
+    return String(name)
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, function(letter) {
+            return letter.toUpperCase();
+        });
+}
+
+
+// ================================================================
+// PROPERTIES THAT SHOULD NOT NORMALLY BE DISPLAYED
+// ================================================================
+
+function pvlmdShouldHideProperty(propertyName) {
+
+    var hiddenProperties = [
+        'geom',
+        'geometry',
+        'the_geom',
+        'wkb_geometry'
+    ];
+
+    return hiddenProperties.indexOf(
+        String(propertyName).toLowerCase()
+    ) !== -1;
+}
+
+
+// ================================================================
+// BUILD FEATURE INFORMATION TABLE
+// ================================================================
+
+function pvlmdBuildFeatureTable(feature) {
+
+    if (!feature) {
+        return `
+            <div class="alert alert-warning">
+                Feature information is unavailable.
+            </div>
+        `;
+    }
+
+    var properties = feature.properties || {};
+
+    var html = `
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-header bg-light">
+
+                <div class="d-flex
+                            justify-content-between
+                            align-items-center">
+
+                    <span class="fw-bold">
+                        Feature Details
+                    </span>
+
+                    <span class="badge bg-secondary">
+                        ${pvlmdEscapeHtml(feature.id || 'Feature')}
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table
+                                  table-sm
+                                  table-striped
+                                  table-hover
+                                  mb-0">
+
+                        <tbody>
+    `;
+
+    var propertyCount = 0;
+
+    Object.keys(properties).forEach(function(key) {
+
+        if (pvlmdShouldHideProperty(key)) {
+            return;
+        }
+
+        var value = properties[key];
+
+        // Handle objects / arrays safely
+        if (typeof value === 'object' &&
+            value !== null) {
+
+            try {
+                value = JSON.stringify(value);
+            } catch (e) {
+                value = String(value);
             }
+        }
+
+        html += `
+            <tr>
+
+                <th style="
+                    width:35%;
+                    min-width:180px;
+                    vertical-align:top;
+                ">
+                    ${pvlmdEscapeHtml(
+                        pvlmdFormatPropertyName(key)
+                    )}
+                </th>
+
+                <td style="
+                    word-break:break-word;
+                    vertical-align:top;
+                ">
+                    ${pvlmdEscapeHtml(value)}
+                </td>
+
+            </tr>
+        `;
+
+        propertyCount++;
+    });
+
+
+    if (propertyCount === 0) {
+
+        html += `
+            <tr>
+                <td class="text-center
+                           text-muted
+                           py-4">
+                    No attributes available.
+                </td>
+            </tr>
+        `;
+    }
+
+
+    html += `
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    return html;
+}
+
+
+// ================================================================
+// CURRENT GENERIC IDENTIFY DATA
+// ================================================================
+
+var pvlmdCurrentIdentifyFeatures = [];
+var pvlmdCurrentIdentifyLayer = null;
+
+
+// ================================================================
+// DISPLAY GENERIC IDENTIFY MODAL
+// ================================================================
+// ================================================================
+// DISPLAY GENERIC IDENTIFY MODAL
+// ================================================================
+function pvlmdShowIdentifyModal(layerConfig, features) {
+
+    pvlmdCurrentIdentifyLayer = layerConfig;
+    pvlmdCurrentIdentifyFeatures = features || [];
+
+    $('#pvlmdIdentifyLayerName')
+        .text(layerConfig.title || 'Map Layer');
+
+    $('#pvlmdIdentifyLoading')
+        .addClass('d-none');
+
+    $('#pvlmdIdentifyNoData')
+        .addClass('d-none');
+
+    $('#pvlmdIdentifyContent')
+        .empty();
+
+    $('#pvlmdIdentifyMultipleFeatures')
+        .addClass('d-none');
+
+    $('#pvlmdIdentifyFeatureSelector')
+        .empty();
+
+
+    if (!features || features.length === 0) {
+        $('#pvlmdIdentifyNoData')
+            .removeClass('d-none');
+        return;
+    }
+
+
+    // ------------------------------------------------------------
+    // Multiple features
+    // ------------------------------------------------------------
+    if (features.length > 1) {
+
+        $('#pvlmdIdentifyMultipleFeatures')
+            .removeClass('d-none');
+
+        features.forEach(function (feature, index) {
+
+            var props = feature.properties || {};
+
+            var label =
+                props.reference_number ||
+                props.property_number ||
+                props.plot_number ||
+                props.name ||
+                props.locality ||
+                props.sheet_number ||
+                feature.id ||
+                ('Feature ' + (index + 1));
+
+            $('#pvlmdIdentifyFeatureSelector')
+                .append(
+                    $('<option>', {
+                        value: index,
+                        text: (index + 1) + '. ' + label
+                    })
+                );
+        });
+    }
+
+
+    // Show first feature
+    $('#pvlmdIdentifyContent')
+        .html(pvlmdBuildFeatureTable(features[0]));
+
+
+    // ============================================================
+    // SHOW MODAL - CLEAN AND SAFE
+    // ============================================================
+
+    // 1) Blur the map canvas BEFORE showing the modal so the
+    //    focus-trap does not fight with the OpenLayers canvas.
+    pvlmdBlurMapCanvas();
+
+    // 2) Remove any leftover backdrops from previous modals.
+    //    This is the actual fix for the "map frozen on 2nd open".
+    pvlmdCleanupBootstrapBackdrops();
+
+    // 3) Get the modal element.
+    var modalElement =
+        document.getElementById('pvlmdGenericIdentifyModal');
+
+    if (!modalElement) { return; }
+
+    // 4) Dispose of any existing instance so we get a fresh one.
+    var existingInstance =
+        bootstrap.Modal.getInstance(modalElement);
+
+    if (existingInstance) {
+        try { existingInstance.dispose(); } catch (e) {}
+    }
+
+    // 5) Create a fresh instance and show it.
+    var modal = new bootstrap.Modal(modalElement, {
+        backdrop: true,
+        keyboard: true,
+        focus: true
+    });
+
+    modal.show();
+}
+
+
+// ================================================================
+// CHANGE FEATURE IN GENERIC MODAL
+// ================================================================
+
+$(document).on(
+    'change',
+    '#pvlmdIdentifyFeatureSelector',
+    function() {
+
+        var index = parseInt(
+            $(this).val(),
+            10
         );
 
+        if (isNaN(index)) {
+            return;
+        }
+
+        var feature =
+            pvlmdCurrentIdentifyFeatures[index];
+
+        $('#pvlmdIdentifyContent')
+            .html(
+                pvlmdBuildFeatureTable(feature)
+            );
+    }
+);
 
 
-        var thislayer = pvlmd_pvlmd_current_dataLayer.getSource().getParams().LAYERS;
-       // console.log(thislayer);
+// ================================================================
+// COPY GENERIC FEATURE INFORMATION
+// ================================================================
 
-        if (url) {
-           // console.log(url);
-            var parser = new ol.format.GeoJSON();
+$(document).on(
+    'click',
+    '#pvlmdIdentifyCopyBtn',
+    function() {
 
-            $.ajax({
-                type: "GET",
-                url: url,
-                cache: false,
-                success: function(serviceresponse) {
-                    // console.log('service response');
-                    // console.log(serviceresponse);
-                    // console.log('FEATURES');
+        if (!pvlmdCurrentIdentifyFeatures ||
+            pvlmdCurrentIdentifyFeatures.length === 0) {
 
-                    var feature = serviceresponse.features;
-                   // console.log(serviceresponse.features);
+            return;
+        }
 
-                  
-   
-                    // console.log('feature count');
-                    // console.log(feature.length);
 
-                    var table = $('#pvlmd_more_than_one_parcel_Table');
-                    table.find("tbody tr").remove();
+        var index = parseInt(
+            $('#pvlmdIdentifyFeatureSelector').val(),
+            10
+        );
 
-                    if (feature.length > 1) {
-                        feature.forEach(function(feat) {
-                            var props = feat.properties;
-                            var parcel_uuid = (feat.id || '').split('.')[1] || '';
-                           // console.log(parcel_uuid);
+        if (isNaN(index)) {
+            index = 0;
+        }
 
-                          table.append(
-								"<tr><td>" + props.reference_number + 
-								"</td><td>" + props.nt_number + 
-								"</td><td>" + props.locality +
-								"</td>" +
-								'<td><p data-placement="top" data-toggle="tooltip" title="Details of Client">' +
-								'<button class="btn btn-success btn-circle btn-sm" data-bs-title="Delete" data-bs-toggle="modal" data-bs-target="#pvlmdparcelinformation" ' +
-								'data-parcel_uuid="' + parcel_uuid + '" ' +
-								'data-nt_number="' + props.nt_number + '" ' +
-								'data-cro_reference="' + props.cro_reference + '" ' +
-								'data-property_number="' + props.property_number + '" ' +
-								'data-reference_number="' + props.reference_number + '" ' +
-								'data-file_number="' + props.file_number + '" ' +
-								'data-locality="' + props.locality + '" ' +
-								'data-plot_number="' + props.plot_number + '" ' +
-								'data-sheet_number="' + props.sheet_number + '" ' +
-								'data-modified_by="' + props.modified_by + '" ' +
-								'data-modified_date="' + props.modified_date + '" ' +
-								'data-remarks="' + props.remarks + '" id="deletede">' +
-								'<span class="fas fa-check"></span></button></p> </td>' +
-								"</tr>"
-							);
+
+        var feature =
+            pvlmdCurrentIdentifyFeatures[index];
+
+        var text =
+            JSON.stringify(
+                feature.properties || {},
+                null,
+                2
+            );
+
+
+        if (navigator.clipboard &&
+            navigator.clipboard.writeText) {
+
+            navigator.clipboard
+                .writeText(text)
+                .then(function() {
+
+                    if (typeof Swal !== 'undefined') {
+
+                        Swal.fire({
+                            title: 'Copied',
+                            text: 'Feature information copied to clipboard.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
                         });
-                    } else if (feature.length === 1) {
-                         var myModal = new bootstrap.Modal(document.getElementById('pvlmdparcelinformation'));
-                    myModal.show();
-
-                    var feature = serviceresponse.features;
-    
-					if (!feature || feature.length === 0) {
-						//console.warn('No features found');
-						return;
-					}
-
-					var firstFeature = feature[0];
-					var props = firstFeature.properties;
-
-					// Helper function to set text content safely
-					function setText(id, value) {
-						var element = document.getElementById(id);
-						if (element) {
-							element.textContent = value || '-';
-						}
-					}
-
-                    clearPVLMDSummaryPanel();
-
-
-
-					// Populate the info cards with non-editable values
-					setText('pvlmd_gid', (firstFeature.id || '').split('.')[1] || '');
-					setText('pvlmd_reference_number', props.reference_number);
-					setText('pvlmd_nt_number', props.nt_number);
-					setText('pvlmd_file_number', props.file_number);
-					setText('pvlmd_sheet_number', props.sheet_number);
-					setText('pvlmd_locality', props.locality);
-					setText('pvlmd_plot_number', props.plot_number);
-					setText('pvlmd_remarks', props.remarks);
-					setText('pvlmd_modified_by', props.plotted_by || props.modified_by || '');
-					setText('pvlmd_modified_date', props.plotting_date || props.modified_date || '');
-
-                    	
-				loadAllPVLMDData((firstFeature.id || '').split('.')[1] || '', props.reference_number);
-					
-
-
                     }
-                },
-                failure: function(errormsg) {
-                    console.log(errormsg);
-                }
-            });
+                });
+
+        } else {
+
+            var textarea =
+                document.createElement('textarea');
+
+            textarea.value = text;
+
+            document.body.appendChild(textarea);
+
+            textarea.select();
+
+            document.execCommand('copy');
+
+            document.body.removeChild(textarea);
         }
     }
-});
+);
+
+
+// ================================================================
+// CHECK WHETHER LAYER CAN CURRENTLY BE IDENTIFIED
+// ================================================================
+
+function pvlmdCanIdentifyLayer(config) {
+
+    if (!config) {
+        return false;
+    }
+
+    if (!config.enabled) {
+        return false;
+    }
+
+    if (!config.layer) {
+        return false;
+    }
+
+    if (!config.source) {
+        return false;
+    }
+
+
+    // Important:
+    // only query layers currently visible in LayerSwitcher.
+    //
+    // If you want hidden layers to also be queried,
+    // remove this condition.
+    // ------------------------------------------------------------
+
+    if (!config.layer.getVisible()) {
+        return false;
+    }
+
+
+    if (typeof config.source.getGetFeatureInfoUrl !== 'function') {
+        return false;
+    }
+
+
+    return true;
+}
+
+
+// ================================================================
+// GENERATE FEATURE INFO URL
+// ================================================================
+
+function pvlmdGetFeatureInfoUrl(
+    config,
+    coordinate,
+    resolution,
+    projection
+) {
+
+    if (!pvlmdCanIdentifyLayer(config)) {
+        return null;
+    }
+
+
+    return config.source.getGetFeatureInfoUrl(
+        coordinate,
+        resolution,
+        projection,
+        {
+            'INFO_FORMAT': 'application/json',
+            'FEATURE_COUNT': 50
+        }
+    );
+}
+
+
+// ================================================================
+// QUERY ONE WMS LAYER
+// ================================================================
+
+function pvlmdQueryLayer(
+    config,
+    coordinate,
+    resolution,
+    projection
+) {
+
+    return new Promise(function(resolve) {
+
+        var url =
+            pvlmdGetFeatureInfoUrl(
+                config,
+                coordinate,
+                resolution,
+                projection
+            );
+
+
+        if (!url) {
+
+            resolve({
+                config: config,
+                features: []
+            });
+
+            return;
+        }
+
+
+        $.ajax({
+
+            type: 'GET',
+
+            url: url,
+
+            cache: false,
+
+            dataType: 'json',
+
+            success: function(response) {
+
+                resolve({
+                    config: config,
+                    features:
+                        response &&
+                        Array.isArray(response.features)
+                            ? response.features
+                            : []
+                });
+            },
+
+            error: function(xhr, status, error) {
+
+                console.warn(
+                    'FeatureInfo failed:',
+                    config.title,
+                    status,
+                    error
+                );
+
+                // Do not break all layer querying just
+                // because one GeoServer layer fails.
+
+                resolve({
+                    config: config,
+                    features: []
+                });
+            }
+        });
+    });
+}
+
+
+// ================================================================
+// PROCESS EXISTING PVLMD CURRENT LAYER
+// ================================================================
+//
+// This preserves your existing PVLMD workflow.
+// ================================================================
+
+function pvlmdProcessCurrentLayerFeatures(features) {
+
+    if (!features ||
+        features.length === 0) {
+
+        return false;
+    }
+
+
+    var table =
+        $('#pvlmd_more_than_one_parcel_Table');
+
+    table.find('tbody tr').remove();
+
+
+    // ============================================================
+    // MORE THAN ONE PVLMD PARCEL
+    // ============================================================
+
+    if (features.length > 1) {
+
+        features.forEach(function(feat) {
+
+            var props =
+                feat.properties || {};
+
+            var parcel_uuid =
+                (feat.id || '')
+                    .split('.')[1] || '';
+
+
+            // Build row using jQuery instead of raw string
+            // concatenation to avoid breaking HTML when a value
+            // contains quotes.
+
+            var $row = $('<tr>');
+
+
+            $('<td>')
+                .text(
+                    props.reference_number || '-'
+                )
+                .appendTo($row);
+
+
+            $('<td>')
+                .text(
+                    props.nt_number || '-'
+                )
+                .appendTo($row);
+
+
+            $('<td>')
+                .text(
+                    props.locality || '-'
+                )
+                .appendTo($row);
+
+
+            var $actionCell =
+                $('<td>');
+
+
+            var $button =
+                $('<button>', {
+                    type: 'button',
+                    class:
+                        'btn btn-success btn-circle btn-sm',
+                    title: 'Details of Parcel'
+                });
+
+
+            $button.attr({
+                'data-bs-toggle': 'modal',
+                'data-bs-target':
+                    '#pvlmdparcelinformation'
+            });
+
+
+            // Store values using jQuery .data()
+            // rather than building raw HTML attributes.
+
+            $button.data(
+                'parcel_uuid',
+                parcel_uuid
+            );
+
+            $button.data(
+                'nt_number',
+                props.nt_number || ''
+            );
+
+            $button.data(
+                'cro_reference',
+                props.cro_reference || ''
+            );
+
+            $button.data(
+                'property_number',
+                props.property_number || ''
+            );
+
+            $button.data(
+                'reference_number',
+                props.reference_number || ''
+            );
+
+            $button.data(
+                'file_number',
+                props.file_number || ''
+            );
+
+            $button.data(
+                'locality',
+                props.locality || ''
+            );
+
+            $button.data(
+                'plot_number',
+                props.plot_number || ''
+            );
+
+            $button.data(
+                'sheet_number',
+                props.sheet_number || ''
+            );
+
+            $button.data(
+                'modified_by',
+                props.modified_by ||
+                props.plotted_by ||
+                ''
+            );
+
+            $button.data(
+                'modified_date',
+                props.modified_date ||
+                props.plotting_date ||
+                ''
+            );
+
+            $button.data(
+                'remarks',
+                props.remarks || ''
+            );
+
+
+            $button.append(
+                $('<span>', {
+                    class: 'fas fa-check'
+                })
+            );
+
+
+            $actionCell
+                .append($button);
+
+            $row
+                .append($actionCell);
+
+            table
+                .append($row);
+        });
+
+
+        // --------------------------------------------------------
+        // IMPORTANT
+        //
+        // Your original code populated the table but did not
+        // explicitly show a modal containing that table.
+        //
+        // If the table is already inside another modal/panel,
+        // leave this as-is.
+        // --------------------------------------------------------
+
+        return true;
+    }
+
+
+    // ============================================================
+    // ONE PVLMD PARCEL
+    // ============================================================
+
+    var firstFeature =
+        features[0];
+
+    var props =
+        firstFeature.properties || {};
+
+    var parcel_uuid =
+        (firstFeature.id || '')
+            .split('.')[1] || '';
+
+
+    clearPVLMDSummaryPanel();
+
+
+    function setText(id, value) {
+
+        var element =
+            document.getElementById(id);
+
+        if (element) {
+
+            element.textContent =
+                value === null ||
+                value === undefined ||
+                value === ''
+                    ? '-'
+                    : value;
+        }
+    }
+
+
+    setText(
+        'pvlmd_gid',
+        parcel_uuid
+    );
+
+    setText(
+        'pvlmd_reference_number',
+        props.reference_number
+    );
+
+    setText(
+        'pvlmd_nt_number',
+        props.nt_number
+    );
+
+    setText(
+        'pvlmd_file_number',
+        props.file_number
+    );
+
+    setText(
+        'pvlmd_sheet_number',
+        props.sheet_number
+    );
+
+    setText(
+        'pvlmd_locality',
+        props.locality
+    );
+
+    setText(
+        'pvlmd_plot_number',
+        props.plot_number
+    );
+
+    setText(
+        'pvlmd_remarks',
+        props.remarks
+    );
+
+    setText(
+        'pvlmd_modified_by',
+        props.plotted_by ||
+        props.modified_by ||
+        ''
+    );
+
+    setText(
+        'pvlmd_modified_date',
+        props.plotting_date ||
+        props.modified_date ||
+        ''
+    );
+
+
+    // Load transaction information
+    loadAllPVLMDData(
+        parcel_uuid,
+        props.reference_number
+    );
+
+
+    // Open your EXISTING PVLMD modal
+    var modalElement =
+        document.getElementById(
+            'pvlmdparcelinformation'
+        );
+
+    if (modalElement) {
+
+        var modal =
+            bootstrap.Modal.getOrCreateInstance(
+                modalElement
+            );
+
+        modal.show();
+    }
+
+
+    return true;
+}
+
+
+// ================================================================
+// FIND PRIMARY PVLMD CONFIG
+// ================================================================
+
+function pvlmdGetPrimaryLayerConfig() {
+
+    for (
+        var i = 0;
+        i < pvlmdClickableLayers.length;
+        i++
+    ) {
+
+        if (pvlmdClickableLayers[i].primary) {
+            return pvlmdClickableLayers[i];
+        }
+    }
+
+    return null;
+}
+
+
+// ================================================================
+// FIND OTHER CLICKABLE LAYERS
+// ================================================================
+
+function pvlmdGetSecondaryLayerConfigs() {
+
+    return pvlmdClickableLayers.filter(
+        function(config) {
+
+            return !config.primary &&
+                   pvlmdCanIdentifyLayer(config);
+        }
+    );
+}
+
+
+// ================================================================
+// QUERY SECONDARY LAYERS
+// ================================================================
+
+function pvlmdQuerySecondaryLayers(
+    coordinate,
+    resolution,
+    projection
+) {
+
+    var configs =
+        pvlmdGetSecondaryLayerConfigs();
+
+
+    if (configs.length === 0) {
+        return Promise.resolve([]);
+    }
+
+
+    var requests =
+        configs.map(function(config) {
+
+            return pvlmdQueryLayer(
+                config,
+                coordinate,
+                resolution,
+                projection
+            );
+        });
+
+
+    return Promise.all(requests);
+}
+
+
+// ================================================================
+// SHOW SECONDARY RESULT
+// ================================================================
+//
+// If exactly one layer has data -> open that layer.
+//
+// If several layers have data -> display a layer selection modal.
+// ================================================================
+
+function pvlmdProcessSecondaryResults(results) {
+
+    var matchingResults =
+        results.filter(function(result) {
+
+            return result.features &&
+                   result.features.length > 0;
+        });
+
+
+    if (matchingResults.length === 0) {
+
+        return false;
+    }
+
+
+    // ============================================================
+    // ONLY ONE SECONDARY LAYER HAS DATA
+    // ============================================================
+
+    if (matchingResults.length === 1) {
+
+        pvlmdShowIdentifyModal(
+            matchingResults[0].config,
+            matchingResults[0].features
+        );
+
+        return true;
+    }
+
+
+    // ============================================================
+    // SEVERAL LAYERS HAVE DATA
+    // ============================================================
+
+    pvlmdShowMultiLayerIdentifyDialog(
+        matchingResults
+    );
+
+    return true;
+}
+
+
+// ================================================================
+// MULTIPLE LAYER SELECTION DIALOG
+// ================================================================
+
+function pvlmdShowMultiLayerIdentifyDialog(results) {
+
+    var html = `
+        <div class="text-start">
+
+            <p class="text-muted mb-3">
+                Features were found in multiple map layers.
+                Select the layer you want to inspect.
+            </p>
+
+            <div class="list-group">
+    `;
+
+
+    results.forEach(function(result, index) {
+
+        var featureCount =
+            result.features.length;
+
+        html += `
+            <button type="button"
+                    class="list-group-item
+                           list-group-item-action
+                           d-flex
+                           justify-content-between
+                           align-items-center
+                           pvlmd-identify-layer-option"
+                    data-result-index="${index}">
+
+                <div>
+
+                    <div class="fw-bold">
+                        ${pvlmdEscapeHtml(
+                            result.config.title
+                        )}
+                    </div>
+
+                    <small class="text-muted">
+                        ${featureCount}
+                        feature${featureCount === 1 ? '' : 's'}
+                        found
+                    </small>
+
+                </div>
+
+                <span class="badge
+                             bg-primary
+                             rounded-pill">
+                    ${featureCount}
+                </span>
+
+            </button>
+        `;
+    });
+
+
+    html += `
+            </div>
+
+        </div>
+    `;
+
+
+    Swal.fire({
+
+        title: 'Multiple Layers Found',
+
+        html: html,
+
+        icon: 'info',
+
+        showConfirmButton: false,
+
+        showCancelButton: true,
+
+        cancelButtonText: 'Close',
+
+        width: 600,
+
+        didOpen: function() {
+
+            $('.pvlmd-identify-layer-option')
+                .off('click')
+                .on('click', function() {
+
+                    var index =
+                        parseInt(
+                            $(this)
+                                .attr(
+                                    'data-result-index'
+                                ),
+                            10
+                        );
+
+
+                    var result =
+                        results[index];
+
+
+                    Swal.close();
+
+
+                    setTimeout(function() {
+
+                        pvlmdShowIdentifyModal(
+                            result.config,
+                            result.features
+                        );
+
+                    }, 200);
+                });
+        }
+    });
+}
+
+
+// ================================================================
+// MAP CURSOR
+// ================================================================
+
+// pvlmd_map
+//     .getTargetElement()
+//     .style.cursor = 'default';
+
+
+// ================================================================
+// REPLACE YOUR EXISTING pvlmd_map.on('click'...) WITH THIS
+// ================================================================
+
+pvlmd_map.on(
+    'click',
+    function(evt) {
+
+        // --------------------------------------------------------
+        // Do NOT identify map layers while drawing.
+        // --------------------------------------------------------
+
+        if (lrd_click_type !== 'MapClick') {
+            return;
+        }
+
+
+        var coordinate =
+            evt.coordinate;
+
+        var view =
+            pvlmd_map.getView();
+
+        var resolution =
+            view.getResolution();
+
+        var projection =
+            view.getProjection();
+
+
+        // ========================================================
+        // STEP 1
+        // QUERY PVLMD CURRENT LAYER FIRST
+        //
+        // This maintains your existing behaviour.
+        // ========================================================
+
+        var primaryConfig =
+            pvlmdGetPrimaryLayerConfig();
+
+
+        var primaryPromise;
+
+
+        if (primaryConfig &&
+            pvlmdCanIdentifyLayer(primaryConfig)) {
+
+            primaryPromise =
+                pvlmdQueryLayer(
+                    primaryConfig,
+                    coordinate,
+                    resolution,
+                    projection
+                );
+
+        } else {
+
+            primaryPromise =
+                Promise.resolve({
+                    config: primaryConfig,
+                    features: []
+                });
+        }
+
+
+        primaryPromise.then(
+            function(primaryResult) {
+
+                // ------------------------------------------------
+                // PVLMD parcel exists.
+                //
+                // Give PVLMD priority and preserve existing modal.
+                // ------------------------------------------------
+
+                if (
+                    primaryResult.features &&
+                    primaryResult.features.length > 0
+                ) {
+
+                    pvlmdProcessCurrentLayerFeatures(
+                        primaryResult.features
+                    );
+
+                    return;
+                }
+
+
+                // =================================================
+                // STEP 2
+                // PVLMD CURRENT HAD NOTHING.
+                // NOW QUERY OTHER VISIBLE LAYERS.
+                // =================================================
+
+                pvlmdQuerySecondaryLayers(
+                    coordinate,
+                    resolution,
+                    projection
+                )
+                .then(
+                    function(results) {
+
+                        pvlmdProcessSecondaryResults(
+                            results
+                        );
+                    }
+                )
+                .catch(
+                    function(error) {
+
+                        console.error(
+                            'Secondary layer identify error:',
+                            error
+                        );
+                    }
+                );
+            }
+        )
+        .catch(
+            function(error) {
+
+                console.error(
+                    'PVLMD Current identify error:',
+                    error
+                );
+            }
+        );
+    }
+);
+
+
+// ================================================================
+// ESC KEY / MODAL CLEANUP
+// ================================================================
+
+$('#pvlmdGenericIdentifyModal')
+    .on(
+        'hidden.bs.modal',
+        function() {
+
+            pvlmdCurrentIdentifyFeatures = [];
+            pvlmdCurrentIdentifyLayer = null;
+
+            $('#pvlmdIdentifyContent')
+                .empty();
+
+            $('#pvlmdIdentifyFeatureSelector')
+                .empty();
+
+            $('#pvlmdIdentifyMultipleFeatures')
+                .addClass('d-none');
+        }
+    );
+
+
+// ================================================================
+// OPTIONAL PUBLIC FUNCTIONS
+// ================================================================
+//
+// These allow you to enable/disable layer identification later.
+//
+// Example:
+// pvlmdSetLayerClickable('garro', false);
+// pvlmdSetLayerClickable('cro', true);
+// ================================================================
+
+window.pvlmdSetLayerClickable =
+    function(layerKey, enabled) {
+
+        pvlmdClickableLayers.forEach(
+            function(config) {
+
+                if (config.key === layerKey) {
+
+                    config.enabled =
+                        enabled === true;
+                }
+            }
+        );
+    };
+
+
+// ================================================================
+// CHECK CLICKABLE STATUS
+// ================================================================
+
+window.pvlmdIsLayerClickable =
+    function(layerKey) {
+
+        for (
+            var i = 0;
+            i < pvlmdClickableLayers.length;
+            i++
+        ) {
+
+            if (
+                pvlmdClickableLayers[i].key ===
+                layerKey
+            ) {
+
+                return pvlmdClickableLayers[i]
+                    .enabled;
+            }
+        }
+
+        return false;
+    };
+
+
+// ================================================================
+// STOP DRAWING AND RETURN TO IDENTIFY MODE
+// ================================================================
+
+window.pvlmdReturnToIdentifyMode =
+    function() {
+
+        if (pvlmd_drawInteraction) {
+
+            pvlmd_map.removeInteraction(
+                pvlmd_drawInteraction
+            );
+
+            pvlmd_drawInteraction = null;
+        }
+
+
+        if (pvlmd_modifyInteraction) {
+
+            pvlmd_map.removeInteraction(
+                pvlmd_modifyInteraction
+            );
+
+            pvlmd_modifyInteraction = null;
+        }
+
+
+        lrd_click_type = 'MapClick';
+
+
+        $(
+            '#pvlmd_btn_draw_polygon,' +
+            '#pvlmd_btn_draw_circle,' +
+            '#pvlmd_btn_draw_line,' +
+            '#pvlmd_btn_modify'
+        )
+        .removeClass('active');
+    };
+
+         
+	
 
 // ================================================================
 // FUNCTION TO UPDATE PVLMD SUMMARY PANEL
@@ -1063,202 +2568,1121 @@ $(document).on('click', '#pvlmd_btn_print_summary', function() {
 //         console.warn('Missing parcel UUID or reference number');
 //     }
 // });
+// ================================================================
+// PVLMD PARCEL INFORMATION MODAL
+// ================================================================
 
-$('#pvlmdparcelinformation').on('show.bs.modal', function(event) {
-    // Get the button that triggered the modal
+$('#pvlmdparcelinformation').on('show.bs.modal', function (event) {
+
+    console.log('Opening PVLMD Parcel Information Modal');
+
+    // ============================================================
+    // IMPORTANT:
+    // When the modal is opened from a button,
+    // Bootstrap provides event.relatedTarget.
+    //
+    // When we open the modal programmatically from the map,
+    // event.relatedTarget may be undefined/null.
+    //
+    // In that case, the map-click function has already populated
+    // the modal, so do not overwrite the values.
+    // ============================================================
+
+    if (!event.relatedTarget) {
+
+        console.log(
+            'PVLMD modal opened programmatically - ' +
+            'using data already populated by map click.'
+        );
+
+        return;
+    }
+
+
+    // ============================================================
+    // GET BUTTON THAT OPENED MODAL
+    // ============================================================
+
     var button = $(event.relatedTarget);
-    
-	console.log("button")
-	console.log(button)
+
+    console.log('PVLMD modal trigger button:');
+    console.log(button);
+
+
+    // ============================================================
+    // CLEAR OLD TRANSACTION SUMMARY
+    // ============================================================
 
     clearPVLMDSummaryPanel();
-    // Get data from button attributes
-    var parcel_uuid = button.data('parcel_uuid');
-    var nt_number = button.data('nt_number');
-    var cro_reference = button.data('cro_reference');
-    var property_number = button.data('property_number');
-    var reference_number = button.data('reference_number');
 
-    var file_number = button.data('file_number');
-	var sheet_number = button.data('sheet_number');
-    var locality = button.data('locality');
-    var plot_number = button.data('plot_number');
-    var modified_by = button.data('modified_by');
-    var modified_date = button.data('modified_date');
-    var remarks = button.data('remarks');
-    
-   // console.log('Loading parcel info for:', reference_number);
 
-	// Helper function to set text content safely
-					function setText(id, value) {
-						var element = document.getElementById(id);
-						if (element) {
-							element.textContent = value || '-';
-						}
-					}
+    // ============================================================
+    // READ DATA FROM BUTTON
+    // ============================================================
 
-					// Populate the info cards with non-editable values
-					
-					setText('pvlmd_gid', parcel_uuid);
-					setText('pvlmd_reference_number', reference_number);
-					setText('pvlmd_nt_number', nt_number);
-					setText('pvlmd_file_number', file_number);
-					setText('pvlmd_sheet_number', sheet_number);
-					setText('pvlmd_locality', locality);
-					setText('pvlmd_plot_number', plot_number);
-					setText('pvlmd_remarks', remarks);
-					setText('pvlmd_modified_by',modified_by || modified_by || '');
-					setText('pvlmd_modified_date', modified_date || modified_date || '');
+    var parcel_uuid =
+        button.data('parcel_uuid');
 
-				
-					    // Load transactions
-   
-	
-						//loadTransactions(reference_number, parcel_uuid);
-                        loadAllPVLMDData(parcel_uuid, reference_number);
+    var nt_number =
+        button.data('nt_number');
 
-                     
+    var cro_reference =
+        button.data('cro_reference');
 
-    
-   
+    var property_number =
+        button.data('property_number');
+
+    var reference_number =
+        button.data('reference_number');
+
+    var file_number =
+        button.data('file_number');
+
+    var sheet_number =
+        button.data('sheet_number');
+
+    var locality =
+        button.data('locality');
+
+    var plot_number =
+        button.data('plot_number');
+
+    var modified_by =
+        button.data('modified_by');
+
+    var modified_date =
+        button.data('modified_date');
+
+    var remarks =
+        button.data('remarks');
+
+
+    console.log(
+        'Loading parcel:',
+        parcel_uuid,
+        reference_number
+    );
+
+
+    // ============================================================
+    // HELPER FUNCTION
+    // ============================================================
+
+    function setText(id, value) {
+
+        var element =
+            document.getElementById(id);
+
+        if (element) {
+
+            if (
+                value !== undefined &&
+                value !== null &&
+                value !== ''
+            ) {
+                element.textContent =
+                    value;
+            } else {
+                element.textContent =
+                    '-';
+            }
+        }
+    }
+
+
+    // ============================================================
+    // POPULATE PARCEL INFORMATION
+    // ============================================================
+
+    setText(
+        'pvlmd_gid',
+        parcel_uuid
+    );
+
+    setText(
+        'pvlmd_reference_number',
+        reference_number
+    );
+
+    setText(
+        'pvlmd_nt_number',
+        nt_number
+    );
+
+    setText(
+        'pvlmd_file_number',
+        file_number
+    );
+
+    setText(
+        'pvlmd_sheet_number',
+        sheet_number
+    );
+
+    setText(
+        'pvlmd_locality',
+        locality
+    );
+
+    setText(
+        'pvlmd_plot_number',
+        plot_number
+    );
+
+    setText(
+        'pvlmd_remarks',
+        remarks
+    );
+
+    setText(
+        'pvlmd_modified_by',
+        modified_by
+    );
+
+    setText(
+        'pvlmd_modified_date',
+        modified_date
+    );
+
+
+    // ============================================================
+    // LOAD TRANSACTIONS
+    // ============================================================
+
+    if (
+        parcel_uuid ||
+        reference_number
+    ) {
+
+        loadAllPVLMDData(
+            parcel_uuid,
+            reference_number
+        );
+
+    } else {
+
+        console.warn(
+            'Cannot load PVLMD transactions: ' +
+            'parcel_uuid and reference_number are empty.'
+        );
+    }
+
 });
 
 
-function loadAllPVLMDData(parcel_uuid, reference_number) {
-    console.log('Loading all PVLMD data for:', parcel_uuid, reference_number);
-    
+// ================================================================
+// FIX BOOTSTRAP ARIA-HIDDEN / FOCUS WARNING
+// ================================================================
+
+$('#pvlmdparcelinformation').on(
+    'hide.bs.modal',
+    function () {
+
+        var modalElement =
+            this;
+
+        var activeElement =
+            document.activeElement;
+
+
+        // If focus is currently somewhere inside
+        // the modal, remove it BEFORE Bootstrap
+        // adds aria-hidden="true".
+        if (
+            activeElement &&
+            modalElement.contains(
+                activeElement
+            )
+        ) {
+
+            activeElement.blur();
+        }
+    }
+);
+
+// ================================================================
+// GENERIC IDENTIFY MODAL - CLEANUP ON CLOSE
+// ================================================================
+$(document).on(
+    'hidden.bs.modal',
+    '#pvlmdGenericIdentifyModal',
+    function () {
+
+        // Reset stored feature state
+        pvlmdCurrentIdentifyFeatures = [];
+        pvlmdCurrentIdentifyLayer = null;
+
+        $('#pvlmdIdentifyContent').empty();
+        $('#pvlmdIdentifyFeatureSelector').empty();
+        $('#pvlmdIdentifyMultipleFeatures').addClass('d-none');
+        $('#pvlmdIdentifyNoData').addClass('d-none');
+        $('#pvlmdIdentifyLoading').addClass('d-none');
+
+        // Ensure no orphaned backdrop is left behind
+        setTimeout(pvlmdCleanupBootstrapBackdrops, 0);
+
+        // Blur the modal button so the map canvas regains the page
+        var active = document.activeElement;
+        if (active && active.blur) {
+            active.blur();
+        }
+    }
+);
+
+
+// ================================================================
+// SAME FIX FOR THE PVLMD PARCEL INFORMATION MODAL
+// ================================================================
+$(document).on(
+    'hidden.bs.modal',
+    '#pvlmdparcelinformation',
+    function () {
+        setTimeout(pvlmdCleanupBootstrapBackdrops, 0);
+    }
+);
+
+// ================================================================
+// LOAD ALL PVLMD DATA
+// ================================================================
+
+function loadAllPVLMDData(
+    parcel_uuid,
+    reference_number
+) {
+
+    console.log(
+        'Loading all PVLMD data for:',
+        parcel_uuid,
+        reference_number
+    );
+
+
     // ============================================================
-    // AJAX 1: LOAD PVLMD TRANSACTION DETAILS
+    // VALIDATE PARAMETERS
     // ============================================================
-    var table = $('#pvlmd_transaction_dataTable');
-    table.find("tbody tr").remove();
-    table.append("<tr><td colspan='5' class='text-center'>Loading transactions...</td></tr>");
-    
+
+    if (
+        (!parcel_uuid ||
+            parcel_uuid === '') &&
+        (!reference_number ||
+            reference_number === '')
+    ) {
+
+        console.warn(
+            'loadAllPVLMDData(): ' +
+            'parcel_uuid and reference_number are empty.'
+        );
+
+        return;
+    }
+
+
+    // ============================================================
+    // TRANSACTION TABLE
+    // ============================================================
+
+    var table =
+        $('#pvlmd_transaction_dataTable');
+
+
+    table
+        .find('tbody tr')
+        .remove();
+
+
+    table.append(
+        "<tr>" +
+        "<td colspan='5' " +
+        "class='text-center'>" +
+        "Loading transactions..." +
+        "</td>" +
+        "</tr>"
+    );
+
+
+    // ============================================================
+    // AJAX
+    // ============================================================
+
     $.ajax({
-        type: "POST",
+
+        type: 'POST',
+
         url: 'Maps',
+
         data: {
-            request_type: 'pvlmd_transaction_select_by_reference_number_main',
-            reference_number: reference_number,
-            gid_fk: parcel_uuid
+
+            request_type:
+                'pvlmd_transaction_select_by_reference_number_main',
+
+            reference_number:
+                reference_number || '',
+
+            gid_fk:
+                parcel_uuid || ''
         },
+
         cache: false,
-        success: function(serviceresponse) {
+
+
+        // ========================================================
+        // SUCCESS
+        // ========================================================
+
+        success: function (
+            serviceresponse
+        ) {
+
             try {
-                // Safe JSON parsing
+
+                // =================================================
+                // SAFE JSON PARSING
+                // =================================================
+
                 var json_p;
-                if (typeof serviceresponse === 'object') {
-                    json_p = serviceresponse;
+
+
+                if (
+                    typeof serviceresponse ===
+                    'object'
+                ) {
+
+                    json_p =
+                        serviceresponse;
+
                 } else {
+
                     try {
-                        json_p = JSON.parse(serviceresponse);
-                    } catch (parseError) {
-                        console.error('JSON Parse Error:', parseError.message);
-                        table.find("tbody tr").remove();
-                        table.append("<tr><td colspan='5' class='text-center text-danger'>Error parsing transaction data</td></tr>");
+
+                        json_p =
+                            JSON.parse(
+                                serviceresponse
+                            );
+
+                    } catch (
+                        parseError
+                    ) {
+
+                        console.error(
+                            'JSON Parse Error:',
+                            parseError.message
+                        );
+
+
+                        table
+                            .find(
+                                'tbody tr'
+                            )
+                            .remove();
+
+
+                        table.append(
+                            "<tr>" +
+                            "<td colspan='5' " +
+                            "class='text-center text-danger'>" +
+                            "Error parsing transaction data" +
+                            "</td>" +
+                            "</tr>"
+                        );
+
+
                         return;
                     }
                 }
 
 
+                console.log(
+                    'PVLMD Transaction Details:',
+                    json_p
+                );
 
-                		$('#pvlmd_bl_wkt_polygon').val(json_p.wkt);
-						pvlmd_lc_searchLayer.setSource(new ol.source.Vector({features : (new ol.format.WKT()).readFeatures(json_p.wkt)}));
-						view.fit(pvlmd_lc_searchLayer.getSource().getExtent());
-						pvlmd_map.getView().fit(pvlmd_lc_searchLayer.getSource().getExtent(),{size : map.getSize(),maxZoom : 16})
 
-                
-                console.log('PVLMD Transaction Details:', json_p);
-                table.find("tbody tr").remove();
-                
-                // Check if data exists
-                if (json_p && json_p.data && Array.isArray(json_p.data)) {
-                    if (json_p.data.length === 0) {
-                        table.append("<tr><td colspan='5' class='text-center'>No transactions found</td></tr>");
-                    } else {
-                        $.each(json_p.data, function(index, item) {
-                            table.append(
-                                "<tr>" +
-                                    "<td>" + (item.party2_defendant || 'N/A') + "</td>" +
-                                    "<td>" + (item.party1_plaintiff || 'N/A') + "</td>" +
-                                    "<td>" + (item.reference_number || 'N/A') + "</td>" +
-                                    "<td>" + (item.instrument_type || 'N/A') + "</td>" +
-                                    '<td class="text-center">' +
-                                        '<button class="btn btn-info btn-sm pvlmd-btn-details" ' +
-                                            'data-t_id="' + (item.t_id || '') + '" ' +
-                                            'data-reference="' + (item.reference_number || '') + '" ' +
-                                            'data-file="' + (item.file_number || '') + '" ' +
-                                            'data-property="' + (item.property_number || '') + '" ' +
-                                            'data-nt="' + (item.nt_number || '') + '" ' +
-                                            'data-mutation="' + (item.mutation_number || '') + '" ' +
-                                            'data-deed="' + (item.deed_number || '') + '" ' +
-                                            'data-serial="' + (item.serial_number || '') + '" ' +
-                                            'data-sheet="' + (item.sheet_number || '') + '" ' +
-                                            'data-plan="' + (item.plan_number || '') + '" ' +
-                                            'data-plot="' + (item.plot_number || '') + '" ' +
-                                            'data-lvb="' + (item.lvb_number || '') + '" ' +
-                                            'data-doc="' + (item.doc_number || '') + '" ' +
-                                            'data-party1="' + (item.party1_plaintiff || '') + '" ' +
-                                            'data-party1-tel="' + (item.party1_plaintiff_tel_no || '') + '" ' +
-                                            'data-party1-add="' + (item.party1_plantiff_add || '') + '" ' +
-                                            'data-party1-email="' + (item.party1_plaintiff_email || '') + '" ' +
-                                            'data-party2="' + (item.party2_defendant || '') + '" ' +
-                                            'data-party2-tel="' + (item.party2_defendant_tel_no || '') + '" ' +
-                                            'data-party2-email="' + (item.party2_defendant_email || '') + '" ' +
-                                            'data-party2-add="' + (item.party2_defendant_add || '') + '" ' +
-                                            'data-instrument-date="' + (item.instrument_date || '') + '" ' +
-                                            'data-instrument-type="' + (item.instrument_type || '') + '" ' +
-                                            'data-term="' + (item.term || '') + '" ' +
-                                            'data-commencement="' + (item.commencement_date || '') + '" ' +
-                                            'data-purpose="' + (item.purpose || '') + '" ' +
-                                            'data-consent="' + (item.consent_date || '') + '" ' +
-                                            'data-consideration="' + (item.consideration || '') + '" ' +
-                                            'data-currency="' + (item.consideration_currency || '') + '" ' +
-                                            'data-premium="' + (item.premium || '') + '" ' +
-                                            'data-premium-currency="' + (item.premium_currency || '') + '" ' +
-                                            'data-compensation="' + (item.compensation_status || '') + '" ' +
-                                            'data-suit="' + (item.suit_number || '') + '" ' +
-                                            'data-floor="' + (item.floor_level || '') + '" ' +
-                                            'data-apartment="' + (item.apartment_number || '') + '" ' +
-                                            'data-rent="' + (item.rent || '') + '" ' +
-                                            'data-submission="' + (item.submission_date || '') + '" ' +
-                                            'data-unit="' + (item.unit_description || '') + '" ' +
-                                            'data-judgement="' + (item.judgement_in_favour_of || '') + '" ' +
-                                            'data-remarks="' + (item.remarks || '') + '" ' +
-                                            'data-modified-by="' + (item.modified_by || item.entered_by || '') + '" ' +
-                                            'data-modified-date="' + (item.modified_date || item.checked_by_date || '') + '" ' +
-                                            'title="View Details">' +
-                                            '<i class="fas fa-info-circle"></i> Details' +
-                                        '</button>' +
-                                    '</td>' +
-                                "</tr>"
+                // =================================================
+                // DISPLAY / ZOOM TO PARCEL WKT
+                // =================================================
+
+                if (
+                    json_p &&
+                    json_p.wkt &&
+                    typeof json_p.wkt ===
+                        'string' &&
+                    json_p.wkt.trim() !==
+                        ''
+                ) {
+
+                    try {
+
+                        console.log(
+                            'Loading PVLMD WKT:',
+                            json_p.wkt
+                        );
+
+
+                        // =========================================
+                        // STORE WKT
+                        // =========================================
+
+                        $('#pvlmd_bl_wkt_polygon')
+                            .val(
+                                json_p.wkt
                             );
-                        });
+
+
+                        // =========================================
+                        // READ WKT
+                        // =========================================
+
+                        var wktFormat =
+                            new ol.format.WKT();
+
+
+                        var features =
+                            wktFormat.readFeatures(
+                                json_p.wkt
+                            );
+
+
+                        // =========================================
+                        // CREATE VECTOR SOURCE
+                        // =========================================
+
+                        var vectorSource =
+                            new ol.source.Vector({
+                                features:
+                                    features
+                            });
+
+
+                        // =========================================
+                        // SET SEARCH LAYER SOURCE
+                        // =========================================
+
+                        pvlmd_lc_searchLayer
+                            .setSource(
+                                vectorSource
+                            );
+
+
+                        // =========================================
+                        // GET EXTENT
+                        // =========================================
+
+                        var extent =
+                            vectorSource
+                                .getExtent();
+
+
+                        // =========================================
+                        // VALIDATE EXTENT
+                        // =========================================
+
+                        if (
+                            extent &&
+                            !ol.extent.isEmpty(
+                                extent
+                            )
+                        ) {
+
+                            // =====================================
+                            // IMPORTANT FIX:
+                            //
+                            // OLD CODE:
+                            // view.fit(...)
+                            // map.getSize()
+                            //
+                            // NEW CODE:
+                            // pvlmd_map.getView()
+                            // pvlmd_map.getSize()
+                            // =====================================
+
+                            pvlmd_map
+                                .getView()
+                                .fit(
+                                    extent,
+                                    {
+                                        size:
+                                            pvlmd_map
+                                                .getSize(),
+
+                                        maxZoom:
+                                            16,
+
+                                        padding: [
+                                            50,
+                                            50,
+                                            50,
+                                            50
+                                        ],
+
+                                        duration:
+                                            500
+                                    }
+                                );
+
+                        } else {
+
+                            console.warn(
+                                'PVLMD parcel has an empty extent.'
+                            );
+                        }
+
+
+                    } catch (
+                        geometryError
+                    ) {
+
+                        console.error(
+                            'Error loading PVLMD WKT:',
+                            geometryError
+                        );
                     }
+
                 } else {
-                    console.warn('No data array found in response:', json_p);
-                    table.append("<tr><td colspan='5' class='text-center'>No data available</td></tr>");
+
+                    console.warn(
+                        'No WKT geometry returned for PVLMD parcel.'
+                    );
                 }
-            } catch (error) {
-                console.error('Error processing PVLMD transaction details:', error);
-                table.find("tbody tr").remove();
-                table.append("<tr><td colspan='5' class='text-center text-danger'>Error loading transactions</td></tr>");
+
+
+                // =================================================
+                // CLEAR LOADING MESSAGE
+                // =================================================
+
+                table
+                    .find(
+                        'tbody tr'
+                    )
+                    .remove();
+
+
+                // =================================================
+                // PROCESS TRANSACTION DATA
+                // =================================================
+
+                if (
+                    json_p &&
+                    json_p.data &&
+                    Array.isArray(
+                        json_p.data
+                    )
+                ) {
+
+
+                    // =============================================
+                    // NO TRANSACTIONS
+                    // =============================================
+
+                    if (
+                        json_p.data.length ===
+                        0
+                    ) {
+
+                        table.append(
+                            "<tr>" +
+                            "<td colspan='5' " +
+                            "class='text-center'>" +
+                            "No transactions found" +
+                            "</td>" +
+                            "</tr>"
+                        );
+
+                        return;
+                    }
+
+
+                    // =============================================
+                    // ADD TRANSACTION ROWS
+                    // =============================================
+
+                    $.each(
+                        json_p.data,
+                        function (
+                            index,
+                            item
+                        ) {
+
+                            table.append(
+
+                                "<tr>" +
+
+                                "<td>" +
+                                (
+                                    item.party2_defendant ||
+                                    'N/A'
+                                ) +
+                                "</td>" +
+
+                                "<td>" +
+                                (
+                                    item.party1_plaintiff ||
+                                    'N/A'
+                                ) +
+                                "</td>" +
+
+                                "<td>" +
+                                (
+                                    item.reference_number ||
+                                    'N/A'
+                                ) +
+                                "</td>" +
+
+                                "<td>" +
+                                (
+                                    item.instrument_type ||
+                                    'N/A'
+                                ) +
+                                "</td>" +
+
+                                '<td class="text-center">' +
+
+                                '<button ' +
+                                'type="button" ' +
+                                'class="btn btn-info btn-sm pvlmd-btn-details" ' +
+
+                                'data-t_id="' +
+                                escapePVLMDAttribute(
+                                    item.t_id
+                                ) +
+                                '" ' +
+
+                                'data-reference="' +
+                                escapePVLMDAttribute(
+                                    item.reference_number
+                                ) +
+                                '" ' +
+
+                                'data-file="' +
+                                escapePVLMDAttribute(
+                                    item.file_number
+                                ) +
+                                '" ' +
+
+                                'data-property="' +
+                                escapePVLMDAttribute(
+                                    item.property_number
+                                ) +
+                                '" ' +
+
+                                'data-nt="' +
+                                escapePVLMDAttribute(
+                                    item.nt_number
+                                ) +
+                                '" ' +
+
+                                'data-mutation="' +
+                                escapePVLMDAttribute(
+                                    item.mutation_number
+                                ) +
+                                '" ' +
+
+                                'data-deed="' +
+                                escapePVLMDAttribute(
+                                    item.deed_number
+                                ) +
+                                '" ' +
+
+                                'data-serial="' +
+                                escapePVLMDAttribute(
+                                    item.serial_number
+                                ) +
+                                '" ' +
+
+                                'data-sheet="' +
+                                escapePVLMDAttribute(
+                                    item.sheet_number
+                                ) +
+                                '" ' +
+
+                                'data-plan="' +
+                                escapePVLMDAttribute(
+                                    item.plan_number
+                                ) +
+                                '" ' +
+
+                                'data-plot="' +
+                                escapePVLMDAttribute(
+                                    item.plot_number
+                                ) +
+                                '" ' +
+
+                                'data-lvb="' +
+                                escapePVLMDAttribute(
+                                    item.lvb_number
+                                ) +
+                                '" ' +
+
+                                'data-doc="' +
+                                escapePVLMDAttribute(
+                                    item.doc_number
+                                ) +
+                                '" ' +
+
+                                'data-party1="' +
+                                escapePVLMDAttribute(
+                                    item.party1_plaintiff
+                                ) +
+                                '" ' +
+
+                                'data-party1-tel="' +
+                                escapePVLMDAttribute(
+                                    item.party1_plaintiff_tel_no
+                                ) +
+                                '" ' +
+
+                                'data-party1-add="' +
+                                escapePVLMDAttribute(
+                                    item.party1_plantiff_add
+                                ) +
+                                '" ' +
+
+                                'data-party1-email="' +
+                                escapePVLMDAttribute(
+                                    item.party1_plaintiff_email
+                                ) +
+                                '" ' +
+
+                                'data-party2="' +
+                                escapePVLMDAttribute(
+                                    item.party2_defendant
+                                ) +
+                                '" ' +
+
+                                'data-party2-tel="' +
+                                escapePVLMDAttribute(
+                                    item.party2_defendant_tel_no
+                                ) +
+                                '" ' +
+
+                                'data-party2-email="' +
+                                escapePVLMDAttribute(
+                                    item.party2_defendant_email
+                                ) +
+                                '" ' +
+
+                                'data-party2-add="' +
+                                escapePVLMDAttribute(
+                                    item.party2_defendant_add
+                                ) +
+                                '" ' +
+
+                                'data-instrument-date="' +
+                                escapePVLMDAttribute(
+                                    item.instrument_date
+                                ) +
+                                '" ' +
+
+                                'data-instrument-type="' +
+                                escapePVLMDAttribute(
+                                    item.instrument_type
+                                ) +
+                                '" ' +
+
+                                'data-term="' +
+                                escapePVLMDAttribute(
+                                    item.term
+                                ) +
+                                '" ' +
+
+                                'data-commencement="' +
+                                escapePVLMDAttribute(
+                                    item.commencement_date
+                                ) +
+                                '" ' +
+
+                                'data-purpose="' +
+                                escapePVLMDAttribute(
+                                    item.purpose
+                                ) +
+                                '" ' +
+
+                                'data-consent="' +
+                                escapePVLMDAttribute(
+                                    item.consent_date
+                                ) +
+                                '" ' +
+
+                                'data-consideration="' +
+                                escapePVLMDAttribute(
+                                    item.consideration
+                                ) +
+                                '" ' +
+
+                                'data-currency="' +
+                                escapePVLMDAttribute(
+                                    item.consideration_currency
+                                ) +
+                                '" ' +
+
+                                'data-premium="' +
+                                escapePVLMDAttribute(
+                                    item.premium
+                                ) +
+                                '" ' +
+
+                                'data-premium-currency="' +
+                                escapePVLMDAttribute(
+                                    item.premium_currency
+                                ) +
+                                '" ' +
+
+                                'data-compensation="' +
+                                escapePVLMDAttribute(
+                                    item.compensation_status
+                                ) +
+                                '" ' +
+
+                                'data-suit="' +
+                                escapePVLMDAttribute(
+                                    item.suit_number
+                                ) +
+                                '" ' +
+
+                                'data-floor="' +
+                                escapePVLMDAttribute(
+                                    item.floor_level
+                                ) +
+                                '" ' +
+
+                                'data-apartment="' +
+                                escapePVLMDAttribute(
+                                    item.apartment_number
+                                ) +
+                                '" ' +
+
+                                'data-rent="' +
+                                escapePVLMDAttribute(
+                                    item.rent
+                                ) +
+                                '" ' +
+
+                                'data-submission="' +
+                                escapePVLMDAttribute(
+                                    item.submission_date
+                                ) +
+                                '" ' +
+
+                                'data-unit="' +
+                                escapePVLMDAttribute(
+                                    item.unit_description
+                                ) +
+                                '" ' +
+
+                                'data-judgement="' +
+                                escapePVLMDAttribute(
+                                    item.judgement_in_favour_of
+                                ) +
+                                '" ' +
+
+                                'data-remarks="' +
+                                escapePVLMDAttribute(
+                                    item.remarks
+                                ) +
+                                '" ' +
+
+                                'data-modified-by="' +
+                                escapePVLMDAttribute(
+                                    item.modified_by ||
+                                    item.entered_by
+                                ) +
+                                '" ' +
+
+                                'data-modified-date="' +
+                                escapePVLMDAttribute(
+                                    item.modified_date ||
+                                    item.checked_by_date
+                                ) +
+                                '" ' +
+
+                                'title="View Details">' +
+
+                                '<i class="fas fa-info-circle"></i> ' +
+                                'Details' +
+
+                                '</button>' +
+
+                                '</td>' +
+
+                                '</tr>'
+                            );
+                        }
+                    );
+
+
+                } else {
+
+                    console.warn(
+                        'No data array found in response:',
+                        json_p
+                    );
+
+
+                    table.append(
+                        "<tr>" +
+                        "<td colspan='5' " +
+                        "class='text-center'>" +
+                        "No data available" +
+                        "</td>" +
+                        "</tr>"
+                    );
+                }
+
+
+            } catch (
+                error
+            ) {
+
+                console.error(
+                    'Error processing PVLMD transaction details:',
+                    error
+                );
+
+
+                table
+                    .find(
+                        'tbody tr'
+                    )
+                    .remove();
+
+
+                table.append(
+                    "<tr>" +
+                    "<td colspan='5' " +
+                    "class='text-center text-danger'>" +
+                    "Error loading transactions" +
+                    "</td>" +
+                    "</tr>"
+                );
             }
         },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error - pvlmd_transaction_select_by_reference_number_main:');
-            console.error('Status:', status);
-            console.error('Error:', error);
-            table.find("tbody tr").remove();
-            
-            var errorMsg = 'Failed to load transactions';
-            if (xhr.status === 0) errorMsg = 'Network error - please check your connection';
-            else if (xhr.status === 404) errorMsg = 'Resource not found';
-            else if (xhr.status === 500) errorMsg = 'Server error - please try again later';
-            
-            table.append("<tr><td colspan='5' class='text-center text-danger'>" + errorMsg + "</td></tr>");
+
+
+        // ========================================================
+        // AJAX ERROR
+        // ========================================================
+
+        error: function (
+            xhr,
+            status,
+            error
+        ) {
+
+            console.error(
+                'AJAX Error - ' +
+                'pvlmd_transaction_select_by_reference_number_main'
+            );
+
+            console.error(
+                'Status:',
+                status
+            );
+
+            console.error(
+                'Error:',
+                error
+            );
+
+            console.error(
+                'HTTP Status:',
+                xhr.status
+            );
+
+
+            table
+                .find(
+                    'tbody tr'
+                )
+                .remove();
+
+
+            var errorMsg =
+                'Failed to load transactions';
+
+
+            if (
+                xhr.status ===
+                0
+            ) {
+
+                errorMsg =
+                    'Network error - ' +
+                    'please check your connection';
+
+            } else if (
+                xhr.status ===
+                404
+            ) {
+
+                errorMsg =
+                    'Resource not found';
+
+            } else if (
+                xhr.status ===
+                500
+            ) {
+
+                errorMsg =
+                    'Server error - ' +
+                    'please try again later';
+            }
+
+
+            table.append(
+                "<tr>" +
+                "<td colspan='5' " +
+                "class='text-center text-danger'>" +
+                errorMsg +
+                "</td>" +
+                "</tr>"
+            );
         }
+
     });
+}
+
+
+// ================================================================
+// ESCAPE VALUES USED INSIDE HTML DATA ATTRIBUTES
+// ================================================================
+
+function escapePVLMDAttribute(
+    value
+) {
+
+    if (
+        value === undefined ||
+        value === null
+    ) {
+        return '';
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+
+        .replace(
+            /'/g,
+            '&#39;'
+        )
+
+        .replace(
+            /</g,
+            '&lt;'
+        )
+
+        .replace(
+            />/g,
+            '&gt;'
+        );
 }
 
 // Using modal show event instead of onclick
@@ -1269,13 +3693,32 @@ $('#addpvlmdtransactionlong').on('show.bs.modal', function(event) {
    // console.log('Modal showing, t_id:', t_id);
 
 	    // Close the parcel information modal if it's open
-    var parcelModalElement = document.getElementById('pvlmdparcelinformation');
-    if (parcelModalElement) {
-        var parcelModal = bootstrap.Modal.getInstance(parcelModalElement);
-        if (parcelModal) {
-            parcelModal.hide();
-           //'Closed pvlmdparcelinformation modal');
+       // Open your EXISTING PVLMD modal - safely
+    pvlmdBlurMapCanvas();
+    pvlmdCleanupBootstrapBackdrops();
+
+    var modalElement =
+        document.getElementById('pvlmdparcelinformation');
+
+    if (modalElement) {
+
+        // Dispose any previous instance so Bootstrap does not
+        // reuse a stale one (this is what causes the freeze).
+        var existing =
+            bootstrap.Modal.getInstance(modalElement);
+
+        if (existing) {
+            try { existing.dispose(); } catch (e) {}
         }
+
+        var modal =
+            new bootstrap.Modal(modalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+
+        modal.show();
     }
     
     if (t_id) {
@@ -2411,9 +4854,22 @@ $('#pvlmd_btn_modify').on('click', function() {
     $(this).toggleClass('active');
 });
 
+// $('#pvlmd_btn_clear_measurements').on('click', function() {
+//     pvlmd_clearMeasurements();
+//     $('#pvlmd_btn_draw_polygon, #pvlmd_btn_draw_circle, #pvlmd_btn_draw_line, #pvlmd_btn_modify').removeClass('active');
+// });
+
 $('#pvlmd_btn_clear_measurements').on('click', function() {
+
     pvlmd_clearMeasurements();
-    $('#pvlmd_btn_draw_polygon, #pvlmd_btn_draw_circle, #pvlmd_btn_draw_line, #pvlmd_btn_modify').removeClass('active');
+
+    lrd_click_type = 'MapClick';
+
+    $('#pvlmd_btn_draw_polygon, ' +
+      '#pvlmd_btn_draw_circle, ' +
+      '#pvlmd_btn_draw_line, ' +
+      '#pvlmd_btn_modify')
+        .removeClass('active');
 });
 
 // Update the existing visualise button to use the new function
@@ -2558,50 +5014,115 @@ function pvlmd_startDrawing(type) {
         })
     });
     
-    // Add event listener for drawing end
     pvlmd_drawInteraction.on('drawend', function(event) {
-        var feature = event.feature;
-        var geometry = feature.getGeometry();
-        var type = geometry.getType();
-        var area = null;
-        var length = null;
-        
-        // Calculate area or length
-        if (type === 'Polygon') {
-            area = geometry.getArea();
-            // Convert to hectares if large
-            var areaText = pvlmd_formatArea(area);
-            // Show popup with area
-            pvlmd_showMeasurementPopup(areaText, 'Area');
-        } else if (type === 'Circle') {
-            area = Math.PI * Math.pow(geometry.getRadius(), 2);
-            var areaText = pvlmd_formatArea(area);
-            pvlmd_showMeasurementPopup(areaText, 'Area');
-        } else if (type === 'LineString') {
-            length = geometry.getLength();
-            var lengthText = pvlmd_formatLength(length);
-            pvlmd_showMeasurementPopup(lengthText, 'Length');
+
+    // ============================================================
+    // YOUR EXISTING DRAWEND CODE
+    // ============================================================
+
+    var feature = event.feature;
+    var geometry = feature.getGeometry();
+    var type = geometry.getType();
+
+    var area = null;
+    var length = null;
+
+    if (type === 'Polygon') {
+
+        area = geometry.getArea();
+
+        pvlmd_showMeasurementPopup(
+            pvlmd_formatArea(area),
+            'Area'
+        );
+
+    } else if (type === 'Circle') {
+
+        area =
+            Math.PI *
+            Math.pow(
+                geometry.getRadius(),
+                2
+            );
+
+        pvlmd_showMeasurementPopup(
+            pvlmd_formatArea(area),
+            'Area'
+        );
+
+    } else if (type === 'LineString') {
+
+        length =
+            geometry.getLength();
+
+        pvlmd_showMeasurementPopup(
+            pvlmd_formatLength(length),
+            'Length'
+        );
+    }
+
+
+    feature.setStyle(
+        pvlmd_createMeasureStyle(
+            feature,
+            type
+        )
+    );
+
+
+    var format =
+        new ol.format.WKT();
+
+    var wkt =
+        format.writeFeature(feature);
+
+
+    $('#pvlmd_bl_wkt_polygon')
+        .val(wkt);
+
+
+    pvlmd_addFeatureToCoordinateList(
+        feature
+    );
+
+
+    if (wkt) {
+
+        $('#pvlmd_btn_request_add_existing_parcel')
+            .removeClass('d-none');
+    }
+
+
+    pvlmd_visualizeWKT(wkt);
+
+
+    // ============================================================
+    // IMPORTANT:
+    // REMOVE DRAW INTERACTION AFTER DRAWING
+    // ============================================================
+
+    setTimeout(function() {
+
+        if (pvlmd_drawInteraction) {
+
+            pvlmd_map.removeInteraction(
+                pvlmd_drawInteraction
+            );
+
+            pvlmd_drawInteraction = null;
         }
-        
-        // Apply style with measurement label
-        feature.setStyle(pvlmd_createMeasureStyle(feature, type));
-        
-        // Add to WKT polygon textarea
-        var format = new ol.format.WKT();
-        var wkt = format.writeFeature(feature);
-        $('#pvlmd_bl_wkt_polygon').val(wkt);
-        
-        // Also add to coordinate list
-        pvlmd_addFeatureToCoordinateList(feature);
-        
-        // Enable visualise button
-        if (wkt) {
-            $('#pvlmd_btn_request_add_existing_parcel').removeClass('d-none');
-        }
-        
-        // Trigger visualise automatically
-        pvlmd_visualizeWKT(wkt);
-    });
+
+        lrd_click_type = 'MapClick';
+
+        $(
+            '#pvlmd_btn_draw_polygon,' +
+            '#pvlmd_btn_draw_circle,' +
+            '#pvlmd_btn_draw_line'
+        )
+        .removeClass('active');
+
+    }, 100);
+});
     
     pvlmd_map.addInteraction(pvlmd_drawInteraction);
 }

@@ -706,12 +706,7 @@
 				                </div>
 				             
 				            </div>
-						              
-						           
-						           
-						              
-						              
-						            
+
 						            <!-- The form Ends Hers -->
 						            
 						          </div>
