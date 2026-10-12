@@ -5031,3 +5031,247 @@
     </div>
 </div>
 </c:if>
+
+<!-- ============================================================
+     GENERATE CONCURRENCE CERTIFICATE - DCS MODAL
+     Bootstrap 5 Compatible
+============================================================ -->
+
+<div class="modal fade"
+     id="generate_concurrence_certificate_dcs"
+     tabindex="-1"
+     aria-labelledby="generate_concurrence_certificate_dcs_label"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- MODAL HEADER -->
+            <div class="modal-header">
+
+                <h4 class="modal-title custom_align"
+                    id="generate_concurrence_certificate_dcs_label">
+                    Generate Concurrence Certificate
+                </h4>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+            <!-- MODAL BODY -->
+            <div class="modal-body">
+
+                <div class="card card-body">
+
+                    <!-- CERTIFICATE SUMMARY -->
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <label for="lc_search_report_summary_details_dcs"
+                                   class="form-label fw-bold">
+                                Concurrence Certificate Summary
+                            </label>
+
+                            <textarea
+                                id="lc_search_report_summary_details_dcs"
+                                name="lc_search_report_summary_details_dcs"
+                                class="form-control"
+                                required
+                                rows="7"
+                                style="padding:15px !important; resize:vertical;">${smd_licensed_surveyor_name}</textarea>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="row mt-4">
+
+                        <!-- SAVE CERTIFICATE -->
+                        <div class="col-md-6 mb-2">
+
+                            <button
+                                type="button"
+                                name="lc_btn_save_search_report_dcs"
+                                id="lc_btn_save_search_report_dcs"
+                                class="btn btn-secondary w-100">
+
+                                <i class="fas fa-upload me-2"></i>
+                                Save Certificate
+
+                            </button>
+
+                        </div>
+
+                        <!-- GENERATE CERTIFICATE -->
+                        <div class="col-md-6 mb-2">
+
+                            <button
+                                type="button"
+                                name="lc_btn_activate_final_concurrence_certificate_dcs"
+                                id="lc_btn_activate_final_concurrence_certificate_dcs"
+                                class="btn btn-success w-100">
+
+                                <i class="fas fa-file-alt me-2"></i>
+                                Generate Certificate
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- MODAL FOOTER -->
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+
+                    <i class="fas fa-times me-2"></i>
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+        <!-- END MODAL CONTENT -->
+
+    </div>
+    <!-- END MODAL DIALOG -->
+
+</div>
+<!-- END DCS MODAL -->
+
+<!-- ============================================================
+     GENERATE CONCURRENCE CERTIFICATE - DCS MODAL
+     Bootstrap 5 Compatible
+============================================================ -->
+
+<div class="modal fade"
+     id="generate_concurrence_certificate_dcs"
+     tabindex="-1"
+     aria-labelledby="generate_concurrence_certificate_dcs_label"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- MODAL HEADER -->
+            <div class="modal-header">
+
+                <h4 class="modal-title custom_align"
+                    id="generate_concurrence_certificate_dcs_label">
+                    Generate Concurrence Certificate
+                </h4>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+            <!-- MODAL BODY -->
+            <div class="modal-body">
+
+                <div class="card card-body">
+
+                    <!-- CERTIFICATE SUMMARY -->
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <label for="lc_search_report_summary_details_dcs"
+                                   class="form-label fw-bold">
+                                Concurrence Certificate Summary
+                            </label>
+
+                            <textarea
+                                id="lc_search_report_summary_details_dcs"
+                                name="lc_search_report_summary_details_dcs"
+                                class="form-control"
+                                required
+                                rows="7"
+                                style="padding:15px !important; resize:vertical;">${smd_licensed_surveyor_name}</textarea>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="row mt-4">
+
+                        <!-- SAVE CERTIFICATE -->
+                        <div class="col-md-6 mb-2">
+
+                            <button
+                                type="button"
+                                name="lc_btn_save_search_report_dcs"
+                                id="lc_btn_save_search_report_dcs"
+                                class="btn btn-secondary w-100">
+
+                                <i class="fas fa-upload me-2"></i>
+                                Save Certificate
+
+                            </button>
+
+                        </div>
+
+                        <!-- GENERATE CERTIFICATE -->
+                        <div class="col-md-6 mb-2">
+
+                            <button
+                                type="button"
+                                name="lc_btn_activate_final_concurrence_certificate_dcs"
+                                id="lc_btn_activate_final_concurrence_certificate_dcs"
+                                class="btn btn-success w-100">
+
+                                <i class="fas fa-file-alt me-2"></i>
+                                Generate Certificate
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- MODAL FOOTER -->
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+
+                    <i class="fas fa-times me-2"></i>
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+        <!-- END MODAL CONTENT -->
+
+    </div>
+    <!-- END MODAL DIALOG -->
+
+</div>
+<!-- END DCS MODAL -->
