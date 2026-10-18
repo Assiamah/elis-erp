@@ -2914,7 +2914,7 @@ public class GenerateCaseReports {
 			String transaction_number = request.getParameter("transaction_number");
 			String business_process_sub_name = request.getParameter("ir_business_process_sub_name");
 			String notes = request.getParameter("notes");
-
+			String certificate_template =  request.getParameter("certificate_template");
 			String designation = (String) session.getAttribute("designation");
 
 

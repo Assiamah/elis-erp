@@ -4577,6 +4577,7 @@ Thank you.</textarea>
     <div class="modal-dialog  modal-fullscreen modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <!-- Header -->
+             <input type="hidden" value="deed_certificate" id="deed_certificate_template_type" />
             <div class="modal-header bg-primary text-white border-bottom-0">
                 <div class="d-flex align-items-center w-100">
                     <div class="flex-shrink-0">

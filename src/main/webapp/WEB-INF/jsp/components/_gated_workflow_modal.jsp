@@ -5041,7 +5041,7 @@
             
             <!-- Modal Body -->
             <div class="modal-body">
-                
+                <input type="hidden" value="title_certificate" id='title_certificate_template_type' />
                 <!-- Certificate Type Card (Hidden by default) -->
                 <div class="card mb-3" id="cert_type_for_reg">
                     <div class="card-header bg-primary bg-opacity-10 text-primary">

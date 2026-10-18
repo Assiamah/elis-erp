@@ -6626,7 +6626,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'online_select_update_resgister_description',
                             search_report: search_report,
                             case_number: case_number,
-                            job_number: job_number
+                            job_number: job_number,
+                            certificate_template: $('#title_certificate_template_type').val()
                         },
                         cache: false,
                         success: function(response) {
@@ -7869,7 +7870,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             request_type: 'online_select_update_search_summary',
                             search_report: search_report,
                             case_number: case_number,
-                            job_number: job_number
+                            job_number: job_number,
+                            certificate_template: $('#title_certificate_template_type').val()
                         },
                         cache: false,
                         success: function(response) {
@@ -21848,7 +21850,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         cert_type:  business_process_sub_name.includes('CONCURRENCE') ? 'CONCURRENCE' : 'CONSENT',
                         registration_district_number: registration_district_number,
                         registration_section_number: registration_section_number,
-                        type_of_certificate: type_of_certificate.trim()
+                        type_of_certificate: type_of_certificate.trim(),
+                        certificate_template: $('#deed_certificate_template_type').val()
                     },
                     cache: false,
                     xhrFields: {
@@ -22002,7 +22005,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         request_type: 'online_select_update_search_summary',
                         search_report: search_report,
                         case_number: case_number,
-                        job_number: job_number
+                        job_number: job_number,
+                        certificate_template: $('#deed_certificate_template_type').val()
                     },
                     cache: false,
                     success: function(jobdetails) {
@@ -22792,7 +22796,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         job_number: job_number,
                         case_number: case_number,
                         business_process_sub_name: business_process_sub_name,
-                        cert_type: 'concurrence_certificate'
+                        cert_type: 'concurrence_certificate',
                     },
                     cache: false,
                     beforeSend: function() {

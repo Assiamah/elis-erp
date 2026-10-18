@@ -2549,6 +2549,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				String job_number = request.getParameter("job_number");
 				String search_report = request.getParameter("search_report");
+				String certificate_template =  request.getParameter("certificate_template");
 				String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
 
 				String fullname =  (String) session.getAttribute("fullname");
@@ -2562,6 +2563,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				obj_d.put("job_number", job_number);
 				obj_d.put("search_report", search_report);
+				obj_d.put("certificate_template", certificate_template);
 				obj_d.put("fullname", fullname);
 				obj_d.put("userid", userid); 
 				obj_d.put("mac_address", mac_address); obj_d.put("ip_address", ip_address);
@@ -2655,6 +2657,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				String job_number = request.getParameter("job_number");
 				String search_report = request.getParameter("search_report");
+				String certificate_template = request.getParameter("certificate_template");
 				String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
 
 				String fullname =  (String) session.getAttribute("fullname");
@@ -2670,6 +2673,7 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				obj_d.put("search_report", search_report);
 				obj_d.put("fullname", fullname);
 				obj_d.put("userid", userid); 
+				obj_d.put("certificate_template", certificate_template); 
 				obj_d.put("mac_address", mac_address); obj_d.put("ip_address", ip_address);
 				// //System.out.println(obj_d.toString());
 
