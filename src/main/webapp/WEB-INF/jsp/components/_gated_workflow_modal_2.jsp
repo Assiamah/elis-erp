@@ -1017,7 +1017,7 @@
 <c:if test="${empty short_review_modal_id or short_review_modal_id == 'review_plan_details'}">
 <div class="modal fade modal-blur effect-scale" id="review_plan_details" tabindex="-1"
     role="dialog" aria-labelledby="reviewPlanDetailsLabel" aria-hidden="true" data-short-review-modal="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content border-0 shadow-lg">
             <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
@@ -1028,7 +1028,9 @@
             </div>
             
             <!-- Modal Body -->
-            <div class="modal-body p-4">
+            <div class="modal-body p-3">
+                <div class="row g-3 h-100">
+                    <div class="col-lg-6 d-flex flex-column" style="min-height: 0;">
                 <!-- Property Information Card -->
                 <div class="card border mb-4">
                     <div class="card-header bg-light py-3">
@@ -1301,6 +1303,11 @@
                             </div>
                             
                         </form>
+                    </div>
+                </div>
+                    </div>
+                    <div class="col-lg-6 d-flex flex-column" style="min-height: 0;">
+                        <div class="_gated_workflow_documents"></div>
                     </div>
                 </div>
             </div>

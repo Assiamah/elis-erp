@@ -3753,6 +3753,8 @@ document.addEventListener('DOMContentLoaded', function() {
             container = document.querySelector('#newValuationModal ._gated_workflow_documents');
         } else if (modalType === 'certificate') {
             container = document.querySelector('#newCertificateModal ._gated_workflow_documents');
+        } else if (modalType === 'review_plan_details') {
+            container = document.querySelector('#review_plan_details ._gated_workflow_documents');
         } else if (modalType === 'transaction') {
             container = document.querySelector('#newTransactionModal ._gated_workflow_documents');
         } else if (modalType === 'lrd_initial_approval') {
@@ -16504,6 +16506,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $("#review_plan_details").on('shown.bs.modal', function() {
         window.initializeMap('lc-map_____');
+        window.loadGatedWorkFlowDocuments('review_plan_details');
     })
 
     $("#deed_check_polygon").on('shown.bs.modal', function() {

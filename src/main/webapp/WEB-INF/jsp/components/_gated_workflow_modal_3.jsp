@@ -2021,7 +2021,7 @@
         <button type="button" class="btn-close ms-3 mt-2" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <div class="modal-body px-4 px-lg-5 pb-4 pb-lg-5 pt-4">
+      <div class="modal-body">
         <div class="final-vetting-hero p-4 p-lg-5 mb-4">
           <div class="d-flex flex-column flex-xl-row align-items-xl-start justify-content-between gap-4">
             <div>
@@ -2038,19 +2038,19 @@
               <div class="col-sm-6 col-xl-4">
                 <div class="final-vetting-soft p-3 h-100">
                   <div class="small opacity-75 mb-1">Case Number</div>
-                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-1" data-short-content="true">${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</div>
+                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-1" data-short-content="true"><small>${empty fn:trim(case_number) ? '--' : fn:trim(case_number)}</small></div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="final-vetting-soft p-3 h-100">
                   <div class="small opacity-75 mb-1">Job Number</div>
-                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-2" data-short-content="true">${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</div>
+                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-2" data-short-content="true"><small>${empty fn:trim(job_number) ? '--' : fn:trim(job_number)}</small></div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="final-vetting-soft p-3 h-100">
                   <div class="small opacity-75 mb-1">Applicant</div>
-                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-3" data-short-content="true">${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</div>
+                  <div class="fw-bold" data-short-hydrate="final_lrd_vetting-3" data-short-content="true"><small>${empty fn:trim(ar_name) ? '--' : fn:trim(ar_name)}</small></div>
                 </div>
               </div>
             </div>
@@ -2251,6 +2251,14 @@
                               <div class="col-md-3 col-sm-6">
                                 <div class="small text-muted">Publication Date</div>
                                 <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-30" data-short-content="true">${empty fn:trim(publicity_date) ? '--' : fn:trim(publicity_date)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">File Number</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-30" data-short-content="true">${empty fn:trim(file_number) ? '--' : fn:trim(file_number)}</div>
+                              </div>
+                              <div class="col-md-3 col-sm-6">
+                                <div class="small text-muted">Deed Number</div>
+                                <div class="fw-semibold" data-short-hydrate="final_lrd_vetting-30" data-short-content="true">${empty fn:trim(deed_number) ? '--' : fn:trim(deed_number)}</div>
                               </div>
                             </div>
                           </div>

@@ -943,6 +943,10 @@
               <option value="Sub Lessor">Sub Lessor</option>
               <option value="Declarant">Declarant</option>
               <option value="Adminstrator/Executive/Beneficiary">Adminstrator/Executive/Beneficiary</option>
+              <option value="Transferor">Transferor</option>
+              <option value="Transferree">Transferree</option>
+              <option value="Alloter">Alloter</option>
+              <option value="Allotee">Allotee</option>
             </select>
             <div class="form-text">
               <i class="bi bi-info-circle me-1"></i>Select the role this party plays in the transaction
