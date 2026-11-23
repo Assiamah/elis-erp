@@ -2359,6 +2359,13 @@ public class GenerateCaseReports {
 					buffer = case_reports_cl.create_search_report_lc_consolidated_search(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(),cls_url_config.getSoftfile_location(),
 							"",case_number, job_number, files_pdf_jackets_p, sign_path, case_docs_location, contextPath);
+				} else if (business_process_sub_name.equals("APPLICATION FOR CONSOLIDATED SEARCH KTC")) {
+					
+					
+					
+					buffer = case_reports_cl.create_search_report_lc_consolidated_search(cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(),cls_url_config.getSoftfile_location(),
+							"",case_number, job_number, files_pdf_jackets_p, sign_path, case_docs_location, contextPath);
 				} else if (business_process_sub_name.equals("APPLICATION FOR LRD SITE PLAN SEARCH")) {
 					buffer = case_reports_cl.create_search_report_lrd(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getSoftfile_location(),

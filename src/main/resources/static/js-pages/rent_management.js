@@ -4102,7 +4102,8 @@ $(document).on('blur', '#rt_e_rent_passing, #rt_e_location_rate, #rt_e_rent_outs
 });
 
 // Format numeric inputs
-$(document).on('blur', '#rt_e_plot_size, #rt_e_term, #rt_e_rent_review_clause', function () {
+// $(document).on('blur', '#rt_e_plot_size, #rt_e_term, #rt_e_rent_review_clause', function () {
+$(document).on('blur', '#rt_e_term, #rt_e_rent_review_clause', function () {
     const value = parseFloat($(this).val()) || 0;
     $(this).val(value.toFixed(1));
 });
