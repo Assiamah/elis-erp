@@ -157,6 +157,115 @@ public class Ws_rent_mgt {
 
 	}
 
+
+
+	public String select_rent_leasee_details_by_approval_id(String web_service_url, String web_service_api_key,
+			String estate_code)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "rent_mgt_service/select_rent_leasee_details_by_approval_id");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, estate_code);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+
+
+	public String update_rent_leasee_approval_id(String web_service_url, String web_service_api_key,
+			String estate_code)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "rent_mgt_service/update_rent_leasee_approval_id");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, estate_code);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+
+	public String select_rent_leasee_details_by_for_bulk_demand_notice(String web_service_url, String web_service_api_key,
+			String estate_code)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "rent_mgt_service/select_rent_leasee_details_by_for_bulk_demand_notice");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, estate_code);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+
+	public String select_generate_bulk_demand_notice(String web_service_url, String web_service_api_key,
+			String estate_code)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "rent_mgt_service/select_generate_bulk_demand_notice");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, estate_code);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
 	
 
 	public String select_ground_rent_lessee_information_update_by_region(String web_service_url, String web_service_api_key,
@@ -421,6 +530,33 @@ public String select_rent_leasee_details_by_account_number(String web_service_ur
 			Client client = Client.create();
 			WebResource webResource = client.resource(
 					web_service_url + "rent_mgt_service/select_rent_reporting_dashboard_stats");
+			// ClientResponse response =
+			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
+			ClientResponse response = webResource.accept("application/json")
+					.header("x-api-key", web_service_api_key).post(ClientResponse.class, estate_code);
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			output = response.getEntity(String.class);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return output;
+
+	}
+
+
+	public String manage_estate_setup(String web_service_url, String web_service_api_key,
+			String estate_code)
+
+	{
+		String output = "Data Not Received";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(
+					web_service_url + "rent_mgt_service/manage_estate_setup");
 			// ClientResponse response =
 			// webResource.accept("text/plain").header("api-key",ws_url_config.get_service_api_key()).post(ClientResponse.class,job_number);
 			ClientResponse response = webResource.accept("application/json")

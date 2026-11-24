@@ -1,487 +1,87 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<%-- <%@ page import="com.report_class.cls_reports" %> --%>
-<%@ page import="org.codehaus.jettison.json.*" %>
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.google.gson.GsonBuilder" %>
-
-<%@ page import="org.codehaus.jettison.json.JSONArray" %>
-<%@ page import="org.codehaus.jettison.json.JSONException" %>
-<%@ page import="org.codehaus.jettison.json.JSONObject" %>
 <jsp:useBean id="now" class="java.util.Date" />
-
 <fmt:parseNumber value="${completion_rate}" integerOnly="true" var="completionRate" />
 <fmt:parseNumber value="${avg_turnaround_days}" type="number" var="avgTurnaroundDays" />
 <fmt:parseNumber value="${working_days_percentage}" type="number" var="workingDaysPercentage" />
-
 <style>
-    .stat-card {
-        transition: all 0.3s ease;
-        border: none;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.4);
-    }
-
-    .stat-icon {
-        transition: all 0.3s ease;
-    }
-
-    .stat-card:hover .stat-icon {
-        transform: scale(1.1) rotate(5deg);
-        background: rgba(255, 255, 255, 0.3) !important;
-    }
-
-    .bg-gradient-danger {
-        background: linear-gradient(135deg, #f5365c 0%, #f56036 100%);
-    }
-
-    .bg-gradient-info {
-        background: linear-gradient(135deg, #11cdef 0%, #1171ef 100%);
-    }
-
-    .bg-gradient-success {
-        background: linear-gradient(135deg, #2dce89 0%, #2dcecc 100%);
-    }
-
-    .bg-white-20 {
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .display-4 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1;
-    }
-
-    @media (max-width: 768px) {
-        .display-4 {
-            font-size: 2rem;
-        }
-    }
-
-    .progress {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        border-radius: 10px;
-    }
+.elis-dash-v2{--forest:#07543f;--green:#0b8a61;--mint:#e9f8f0;--ink:#163b30;--line:#dbece3;color:var(--ink)}
+.elis-dash-v2 .dash-hero{background:linear-gradient(112deg,#064632,#087553 65%,#0ca473);color:#fff;border-radius:16px;box-shadow:0 12px 28px rgba(7,84,63,.17);padding:24px 28px;position:relative;overflow:hidden}
+.elis-dash-v2 .dash-hero:after{content:'';position:absolute;right:-70px;top:-115px;width:320px;height:320px;border-radius:50%;border:55px solid rgba(255,255,255,.06);pointer-events:none}
+.elis-dash-v2 .dash-hero h1,.elis-dash-v2 .dash-hero h2,.elis-dash-v2 .dash-hero p,.elis-dash-v2 .dash-hero a,.elis-dash-v2 .dash-hero .breadcrumb-item,.elis-dash-v2 .dash-hero .breadcrumb-item.active{color:#fff!important}
+.elis-dash-v2 .dash-hero .breadcrumb-item+.breadcrumb-item:before{color:#d0f1df!important}
+.elis-dash-v2 .dash-kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#c3f3dc}
+.elis-dash-v2 .dash-hero h2{font-size:clamp(20px,2.2vw,30px);font-weight:750;margin:8px 0}
+.elis-dash-v2 .dash-date{display:inline-block;padding:7px 12px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:9px;font-size:12px}
+.elis-dash-v2 .dash-section-heading{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:750;color:var(--ink);margin:0 0 15px}
+.elis-dash-v2 .dash-section-heading:before{content:'';height:19px;width:4px;border-radius:4px;background:var(--green)}
+.elis-dash-v2 .dash-stat{height:100%;border:1px solid var(--line)!important;border-radius:14px;background:#fff;box-shadow:0 5px 18px rgba(9,79,56,.045);transition:box-shadow .2s,transform .2s}
+.elis-dash-v2 .dash-stat:hover{transform:translateY(-3px);box-shadow:0 11px 25px rgba(9,79,56,.11)}
+.elis-dash-v2 .dash-stat a{color:inherit!important;display:block;height:100%}
+.elis-dash-v2 .dash-stat .card-body{padding:22px!important}
+.elis-dash-v2 .dash-stat-label{color:#60796e;font-size:12px;font-weight:650}
+.elis-dash-v2 .dash-stat-value{font-size:32px;font-weight:800;line-height:1.2;color:var(--forest);margin:10px 0 5px}
+.elis-dash-v2 .dash-stat-note{color:#73877c;font-size:12px}
+.elis-dash-v2 .dash-stat-icon{display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex:0 0 48px;border-radius:13px;background:var(--mint);color:var(--green);font-size:23px}
+.elis-dash-v2 .dash-stat.dash-danger{border-color:#f4d6d8!important}.elis-dash-v2 .dash-danger .dash-stat-icon{background:#fff0f0;color:#d43e49}.elis-dash-v2 .dash-danger .dash-stat-value{color:#bf3541}
+.elis-dash-v2 .dash-stat.dash-amber{border-color:#f3e7c9!important}.elis-dash-v2 .dash-amber .dash-stat-icon{background:#fff8e5;color:#b78215}
+.elis-dash-v2 .dash-panel{border:1px solid var(--line)!important;border-radius:15px;overflow:hidden;box-shadow:0 5px 18px rgba(9,79,56,.05);background:#fff}
+.elis-dash-v2 .dash-panel-header{background:linear-gradient(110deg,#07543f,#0b8a61);padding:18px 22px}
+.elis-dash-v2 .dash-panel-header h5,.elis-dash-v2 .dash-panel-header p{color:#fff!important;margin:0}.elis-dash-v2 .dash-panel-header h5{font-weight:750;font-size:17px}.elis-dash-v2 .dash-panel-header p{opacity:.84;font-size:12px;margin-top:4px}
+.elis-dash-v2 .dash-metric{height:100%;border-radius:13px;padding:20px;background:#f0faf5;border:1px solid #d7eddf}
+.elis-dash-v2 .dash-metric .metric-label{font-size:12px;font-weight:700;color:#416b58}.elis-dash-v2 .dash-metric .metric-value{font-size:27px;font-weight:800;color:var(--forest);margin:11px 0 4px}.elis-dash-v2 .dash-metric .metric-foot{font-size:12px;color:#658174}
+.elis-dash-v2 .dash-metric .metric-icon{font-size:21px;color:var(--green)}
+.elis-dash-v2 .dash-progress{height:7px;border-radius:8px;background:#d8eadf;overflow:hidden;margin-top:15px}.elis-dash-v2 .dash-progress span{display:block;height:100%;background:linear-gradient(90deg,#087451,#22ae7a);border-radius:8px}
+.elis-dash-v2 .dash-insights{background:#f5fbf7;border:1px solid #dbeee3;border-radius:12px;padding:20px}.elis-dash-v2 .dash-insights h6{font-weight:750;color:var(--forest)}
+.elis-dash-v2 .dash-insights .insight-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;margin-top:10px}.elis-dash-v2 .dash-insights .insight-item i{font-size:17px;color:var(--green)}
+.elis-dash-v2 .dash-shortcut{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:15px;text-decoration:none!important;color:var(--ink)!important;background:#fff;transition:background .2s}.elis-dash-v2 .dash-shortcut:hover{background:#effaf4}.elis-dash-v2 .dash-shortcut i{color:var(--green);font-size:23px}.elis-dash-v2 .dash-shortcut strong{font-size:13px}.elis-dash-v2 .dash-shortcut small{display:block;color:#698075;font-size:11px}
+@media(max-width:575px){.elis-dash-v2 .dash-hero{padding:19px}.elis-dash-v2 .dash-stat-value{font-size:27px}}
 </style>
-
-<div class="main-content app-content">
-    <div class="container-fluid page-container">
-
-        <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-3">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <h1 class="page-title fw-medium fs-18 mb-0">Dashboard</h1>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a
-                            href="javascript:void(0);">ELIS</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        Dashboard</li>
-                </ol>
-            </div>
-        </div>
-        <!-- End::page-header -->
-
-        <!-- Start:: row-1 -->
-        <!-- Welcome Header -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card custom-card border-0 h-100 shadow-sm">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar avatar-xl bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                            <i class="ri-user-line fs-24 text-primary"></i>
-                        </div>
-                        <div>
-                            <h2 class="mb-1">Welcome, <span class="text-primary">${fullname}</span></h2>
-                            <p class="text-muted mb-0">
-                                <i class="ri-calendar-line me-1"></i>
-                                <fmt:formatDate value="${now}" pattern="EEEE, MMMM d, yyyy" />
-                                <!-- <span class="mx-2">•</span>
-                                <i class="ri-time-line me-1"></i>
-                                <span id="currentTime"></span> -->
-                            </p>
-                        </div>
-                    </div>
-                    <!-- <div class="d-none d-md-block">
-                        <div class="d-flex align-items-center">
-                            <div class="me-3 text-end">
-                                <div class="text-muted small">Productivity Score</div>
-                                <div class="h4 mb-0">${completion_rate}</div>
-                            </div>
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <fmt:parseNumber value="${completion_rate}" integerOnly="true" var="completionRate" />
-                                <div class="progress-bar bg-gradient-primary" role="progressbar" 
-                                     style="width: ${completionRate > 100 ? 100 : completionRate}%">
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-        </div>
+<div class="main-content app-content elis-dash-v2">
+<div class="container-fluid page-container">
+  <section class="dash-hero mb-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 position-relative" style="z-index:1">
+      <div>
+        <div class="dash-kicker"><i class="ri-dashboard-3-line me-1"></i> ELIS · Staff workspace</div>
+        <h1 class="fs-18 fw-semibold mt-2 mb-0">Dashboard</h1>
+        <h2>Welcome back, ${fullname}</h2>
+        <div class="dash-date"><i class="ri-calendar-line me-2"></i><fmt:formatDate value="${now}" pattern="EEEE, MMMM d, yyyy" /></div>
+      </div>
+      <ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li><li class="breadcrumb-item active" aria-current="page">Dashboard</li></ol>
     </div>
+  </section>
+
+  <h5 class="dash-section-heading">Application overview</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6"><div class="card dash-stat mb-0"><a href="${pageContext.request.contextPath}/case_movement_module" class="text-decoration-none"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div class="dash-stat-label">Current Applications</div><div class="dash-stat-icon"><i class="ri-file-list-3-line"></i></div></div><div class="dash-stat-value">${apps_with_user}</div><div class="dash-stat-note"><i class="ri-calendar-event-line me-1"></i>Assigned to you</div></div></a></div></div>
+    <div class="col-xl-3 col-md-6"><div class="card dash-stat dash-danger mb-0"><a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div class="dash-stat-label">Requires Attention</div><div class="dash-stat-icon"><i class="ri-alarm-warning-line"></i></div></div><div class="dash-stat-value">${apps_past_due_dates}</div><div class="dash-stat-note">Overdue applications · View details <i class="ri-arrow-right-up-line"></i></div></div></a></div></div>
+    <div class="col-xl-3 col-md-6"><div class="card dash-stat dash-amber mb-0"><a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsReceivedMonthModal"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div class="dash-stat-label">This Month's Inflow</div><div class="dash-stat-icon"><i class="ri-download-2-line"></i></div></div><div class="dash-stat-value">${apps_rec_month}</div><div class="dash-stat-note"><fmt:formatDate value="${now}" pattern="MMMM" /> · Received applications</div></div></a></div></div>
+    <div class="col-xl-3 col-md-6"><div class="card dash-stat mb-0"><a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsCompletedMonthModal"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div class="dash-stat-label">Monthly Achievements</div><div class="dash-stat-icon"><i class="ri-checkbox-circle-line"></i></div></div><div class="dash-stat-value">${apps_comp_month}</div><div class="dash-stat-note">Completed this month · View details <i class="ri-arrow-right-up-line"></i></div></div></a></div></div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-xl-9">
+      <div class="card dash-panel h-100 mb-0">
+        <div class="dash-panel-header"><h5><i class="ri-line-chart-line me-2"></i>Performance Dashboard</h5><p>Performance metrics for <fmt:formatDate value="${now}" pattern="MMMM yyyy" /></p></div>
+        <div class="card-body p-4">
+          <div class="row g-3">
+            <div class="col-lg-4"><div class="dash-metric"><div class="d-flex align-items-center justify-content-between"><span class="metric-label">Completion Rate</span><i class="ri-pie-chart-2-line metric-icon"></i></div><div class="metric-value">${completion_rate}</div><div class="metric-foot">Target: 85% · Year <fmt:formatDate value="${now}" pattern="yyyy" /></div><div class="dash-progress"><span style="width:${completionRate > 100 ? 100 : completionRate < 0 ? 0 : completionRate}%;"></span></div><div class="mt-2"><c:choose><c:when test="${completionRate >= 90}"><span class="badge bg-success">Excellent</span></c:when><c:when test="${completionRate >= 70}"><span class="badge bg-warning text-dark">Good</span></c:when><c:otherwise><span class="badge bg-danger">Needs Improvement</span></c:otherwise></c:choose></div></div></div>
+            <div class="col-lg-4"><div class="dash-metric"><div class="d-flex align-items-center justify-content-between"><span class="metric-label">Turn-around Time</span><i class="ri-time-line metric-icon"></i></div><div class="metric-value">${avg_turnaround_days} <small class="fs-14 fw-normal">days</small></div><div class="metric-foot">Target: 2 days · Year <fmt:formatDate value="${now}" pattern="yyyy" /></div><div class="dash-progress"><span style="width:${avgTurnaroundDays <= 2 ? '100' : avgTurnaroundDays <= 3 ? '65' : avgTurnaroundDays <= 4 ? '40' : '20'}%;"></span></div><div class="mt-2"><span class="badge ${turnaround_performance == 'Excellent' ? 'bg-success' : turnaround_performance == 'Good' ? 'bg-info' : turnaround_performance == 'Average' ? 'bg-warning text-dark' : 'bg-danger'}">${turnaround_performance}</span></div></div></div>
+            <div class="col-lg-4"><div class="dash-metric"><div class="d-flex align-items-center justify-content-between"><span class="metric-label">Working Days</span><i class="ri-calendar-check-line metric-icon"></i></div><div class="metric-value">${working_days}</div><div class="metric-foot">Target: 260 days · Year <fmt:formatDate value="${now}" pattern="yyyy" /></div><div class="dash-progress"><span style="width:${workingDaysPercentage > 100 ? 100 : workingDaysPercentage < 0 ? 0 : workingDaysPercentage}%;"></span></div><div class="mt-2"><span class="badge bg-success">${working_days_status}</span> <span class="small text-muted ms-1">${workingDaysPercentage}%</span></div></div></div>
+          </div>
+          <div class="dash-insights mt-4"><h6 class="mb-1"><i class="ri-lightbulb-flash-line me-2"></i>Performance Insights</h6><p class="small text-muted mb-2">Guidance based on your ${completion_rate} completion rate.</p><div class="row"><c:choose><c:when test="${completionRate >= 90}"><div class="col-md-6"><div class="insight-item"><i class="ri-check-line"></i><span>Continue leveraging efficient workflow patterns.</span></div></div><div class="col-md-6"><div class="insight-item"><i class="ri-team-line"></i><span>Share best practices with team members.</span></div></div></c:when><c:when test="${completionRate >= 70}"><div class="col-md-6"><div class="insight-item"><i class="ri-sort-asc"></i><span>Prioritize critical assignments.</span></div></div><div class="col-md-6"><div class="insight-item"><i class="ri-time-line"></i><span>Reserve focused time for complex cases.</span></div></div></c:when><c:otherwise><div class="col-md-6"><div class="insight-item"><i class="ri-focus-3-line"></i><span>Focus on 2–3 priority tasks each day.</span></div></div><div class="col-md-6"><div class="insight-item"><i class="ri-automation-line"></i><span>Use workflow automation for routine work.</span></div></div></c:otherwise></c:choose></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3">
+      <div class="card dash-panel h-100 mb-0"><div class="dash-panel-header"><h5><i class="ri-flashlight-line me-2"></i>Quick Access</h5><p>Frequently used actions</p></div><div class="card-body p-3 d-flex flex-column gap-3">
+        <a class="dash-shortcut" href="${pageContext.request.contextPath}/case_movement_module"><i class="ri-folder-open-line"></i><span><strong>My Applications</strong><small>Open your assigned cases</small></span></a>
+        <a class="dash-shortcut" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal"><i class="ri-error-warning-line"></i><span><strong>Overdue Cases</strong><small>Review pending deadlines</small></span></a>
+        <a class="dash-shortcut" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#appsReceivedMonthModal"><i class="ri-inbox-line"></i><span><strong>Monthly Inflow</strong><small>See applications received</small></span></a>
+        <a class="dash-shortcut" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#appsCompletedMonthModal"><i class="ri-checkbox-multiple-line"></i><span><strong>Completed Cases</strong><small>Review monthly output</small></span></a>
+      </div></div>
+    </div>
+  </div>
 </div>
-
-<!-- Quick Stats Cards -->
-<div class="row mb-4">
-    <div class="col-xxl-5">
-        <div class="row">
-            <!-- Current Applications -->
-            <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
-                    <a href="${pageContext.request.contextPath}/case_movement_module" class="text-decoration-none">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-muted small mb-1">Current Applications</div>
-                                    <h3 class="fw-bold mb-0">${apps_with_user}</h3>
-                                    <div class="text-muted small mt-1">
-                                        <i class="ri-calendar-event-line me-1"></i>
-                                        As of today
-                                    </div>
-                                </div>
-                                <div class="avatar avatar-lg bg-info bg-opacity-10 rounded-circle p-3">
-                                    <i class="ri-file-list-3-line fs-24 text-info"></i>
-                                </div>
-                            </div>
-                            <div class="progress mt-3" style="height: 4px;">
-                                <div class="progress-bar bg-info" style="width: ${apps_with_user > 0 ? '60%' : '0%'}"></div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Overdue Applications -->
-            <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
-                    <a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsPassedDueModal">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-muted small mb-1">Requires Attention</div>
-                                    <h3 class="fw-bold mb-0 text-danger">${apps_past_due_dates}</h3>
-                                    <div class="text-danger small mt-1">
-                                        <i class="ri-alert-line me-1"></i>
-                                        Overdue applications
-                                    </div>
-                                </div>
-                                <div class="avatar avatar-lg bg-danger bg-opacity-10 rounded-circle p-3">
-                                    <i class="ri-alert-line fs-24 text-danger"></i>
-                                </div>
-                            </div>
-                            <!-- <c:if test="${apps_past_due_dates > 0}">
-                                <div class="alert alert-danger light mt-3 py-2 small mb-0">
-                                    <i class="ri-information-line me-1"></i>
-                                    ${apps_past_due_dates} applications need immediate review
-                                </div>
-                            </c:if> -->
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Applications Received -->
-            <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
-                    <a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsReceivedMonthModal">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-muted small mb-1">This Month's Inflow</div>
-                                    <h3 class="fw-bold mb-0 text-warning">${apps_rec_month}</h3>
-                                    <div class="text-muted small mt-1">
-                                        <i class="ri-arrow-down-line me-1"></i>
-                                        <fmt:formatDate value="${now}" pattern="MMMM" /> applications
-                                    </div>
-                                </div>
-                                <div class="avatar avatar-lg bg-warning bg-opacity-10 rounded-circle p-3">
-                                    <i class="ri-download-2-line fs-24 text-warning"></i>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <span class="badge bg-warning bg-opacity-10 text-warning">
-                                    <i class="ri-trending-up-line me-1"></i>
-                                    Monthly intake
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Completed Applications -->
-            <div class="col-xl-6 mb-3">
-                <div class="card stat-card custom-card border-0 h-100 shadow-sm hover-lift">
-                    <a href="javascript:void(0);" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#appsCompletedMonthModal">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-muted small mb-1">Monthly Achievements</div>
-                                    <h3 class="fw-bold mb-0 text-primary">${apps_comp_month}</h3>
-                                    <div class="text-muted small mt-1">
-                                        <i class="ri-checkbox-circle-line me-1"></i>
-                                        Completed this month
-                                    </div>
-                                </div>
-                                <div class="avatar avatar-lg bg-primary bg-opacity-10 rounded-circle p-3">
-                                    <i class="ri-checkbox-circle-line fs-24 text-primary"></i>
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <span class="badge bg-primary bg-opacity-10 text-primary">
-                                    <i class="ri-trophy-line me-1"></i>
-                                    On track
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Performance Metrics -->
-    <div class="col-xxl-7">
-        <div class="card custom-card border-0 shadow-sm h-100">
-            <div class="card-header bg-transparent border-0 pb-0 d-flex justify-content-between align-items-center">
-                <!-- <div class=""> -->
-                    <div>
-                        <h5 class="card-title mb-1">Performance Dashboard</h5>
-                        <p class="text-muted small mb-0">Real-time metrics for <fmt:formatDate value="${now}" pattern="MMMM yyyy" /></p>
-                    </div>
-                    <!-- <div class="dropdown">
-                        <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="dropdown">
-                            <i class="ri-more-2-line"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="ri-download-line me-2"></i>Export Report</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="ri-settings-3-line me-2"></i>Customize View</a></li>
-                        </ul>
-                    </div> -->
-                <!-- </div> -->
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <!-- Completion Rate -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card border-1 bg-gradient-primary text-white rounded overflow-hidden h-100">
-                            <div class="card-body p-4 position-relative">
-                                <!-- <div class="position-absolute end-0 top-0 opacity-10">
-                                    <i class="ri-pie-chart-line fs-8"></i>
-                                </div> -->
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle p-2 me-2">
-                                            <i class="ri-checkbox-circle-line text-primary fs-24"></i>
-                                        </div>
-                                        <h6 class="mb-0">Completion Rate</h6>
-                                    </div>
-                                    <div class="small opacity-75">Year <fmt:formatDate value="${now}" pattern="YYYY" /></div>
-                                </div>
-                                <div class="d-flex align-items-end justify-content-between">
-                                    <div>
-                                        <h2 class="mb-0">${completion_rate}</h2>
-                                        <div class="small mt-2">
-                                            <c:choose>
-                                                <c:when test="${completionRate >= 90}">
-                                                    <span class="badge bg-primary text-white">Excellent</span>
-                                                </c:when>
-                                                <c:when test="${completionRate >= 70}">
-                                                    <span class="badge bg-warning text-white">Good</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="badge bg-danger text-white">Needs Improvement</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="small opacity-75 mb-1">Target: 85%</div>
-                                        <div class="progress" style="width: 80px; height: 6px;">
-                                            <div class="progress-bar ${completionRate <= 35 ? 'bg-danger' : completionRate <= 70 ? 'bg-warning' : 'bg-success'}" style="width: ${completionRate > 100 ? 100 : completionRate}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Turn-around Time -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card bg-gradient-info text-white border-0 overflow-hidden h-100">
-                            <div class="card-body p-4 position-relative">
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle p-2 me-2">
-                                            <i class="ri-time-line text-info fs-20"></i>
-                                        </div>
-                                        <h6 class="mb-0">Turn-around Time</h6>
-                                    </div>
-                                    <div class="small opacity-75">Year <fmt:formatDate value="${now}" pattern="YYYY" /></div>
-                                </div>
-                                
-                                <div class="d-flex align-items-end justify-content-between">
-                                    <div>
-                                        <h2 class="mb-0">
-                                            ${avg_turnaround_days} <span class="fs-5 fw-normal">days</span>
-                                        </h2>
-                                        <div class="small mt-2">
-                                            <span class="badge 
-                                                ${turnaround_performance == 'Excellent' ? 'bg-success' : 
-                                                turnaround_performance == 'Good' ? 'bg-info' : 
-                                                turnaround_performance == 'Average' ? 'bg-warning' : 'bg-danger'}">
-                                                ${turnaround_performance}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="text-end">
-                                        <div class="small opacity-75 mb-1">Target: 2 days</div>
-                                        <div class="progress" style="width: 80px; height: 6px;">
-                                            <!-- Progress bar logic: Lower is better -->
-                                            <div class="progress-bar ${avgTurnaroundDays <= 2 ? 'bg-success' : avgTurnaroundDays <= 3 ? 'bg-warning' : 'bg-danger'}" 
-                                                role="progressbar"
-                                                style="width: ${avgTurnaroundDays <= 2 ? '100' : 
-                                                                avgTurnaroundDays <= 3 ? '65' : 
-                                                                avgTurnaroundDays <= 4 ? '40' : '20'}%;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Working Days -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card bg-gradient-success text-white border-0 overflow-hidden h-100">
-                            <div class="card-body p-4 position-relative">
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="avatar avatar-sm bg-white bg-opacity-20 rounded-circle p-2 me-2">
-                                            <i class="ri-calendar-2-line text-success fs-24"></i>
-                                        </div>
-                                        <h6 class="mb-0">Working Days</h6>
-                                    </div>
-                                    <div class="small opacity-75">Year <fmt:formatDate value="${now}" pattern="YYYY" /></div>
-                                </div>
-                                
-                                <div class="d-flex align-items-end justify-content-between">
-                                    <div>
-                                        <h2 class="mb-0">${working_days}</h2>
-                                        <div class="small mt-2">
-                                            <span class="badge bg-white text-success">${working_days_status}</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="text-end">
-                                        <div class="small opacity-75 mb-1">Target: 260 days</div>
-                                        <div class="d-flex justify-content-between">
-                                            <div class="progress mt-2" style="width: 50px; height: 6px;">
-                                                <div class="progress-bar ${workingDaysPercentage <= 35 ? 'bg-danger' : workingDaysPercentage <= 70 ? 'bg-warning' : 'bg-success'}" 
-                                                    style="width: ${workingDaysPercentage}%;">
-                                                </div> 
-                                            </div>
-                                            <small class="text-white-50">${workingDaysPercentage}%</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Performance Insights -->
-                    <div class="col-12 mt-3">
-                        <div class="card bg-light border-0">
-                            <div class="card-body p-4">
-                                <div class="d-flex align-items-start">
-                                    <div class="avatar avatar-lg bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="ri-lightbulb-line fs-24 text-primary"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-2">Performance Insights</h6>
-                                        <p class="text-muted small mb-3">Based on your <strong>${completion_rate}</strong> completion rate:</p>
-                                        <div class="row g-2">
-                                            <c:choose>
-                                                <c:when test="${completionRate >= 90}">
-                                                    <div class="col-md-6">
-                                                        <div class="d-flex align-items-start mb-2">
-                                                            <i class="ri-check-line text-success me-2 mt-1"></i>
-                                                            <div class="small">Continue leveraging efficient workflow patterns</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="d-flex align-items-start mb-2">
-                                                            <i class="ri-team-line text-success me-2 mt-1"></i>
-                                                            <div class="small">Consider mentoring team members to share best practices</div>
-                                                        </div>
-                                                    </div>
-                                                </c:when>
-                                                <c:when test="${completionRate >= 70}">
-                                                    <div class="col-md-6">
-                                                        <div class="d-flex align-items-start mb-2">
-                                                            <i class="ri-sort-asc text-warning me-2 mt-1"></i>
-                                                            <div class="small">Review task prioritization for critical assignments</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="d-flex align-items-start mb-2">
-                                                            <i class="ri-time-line text-warning me-2 mt-1"></i>
-                                                            <div class="small">Allocate specific time blocks for complex cases</div>
-                                                        </div>
-                                                    </div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="col-md-6">
-                                                        <div class="d-flex align-items-start mb-2">
-                                                            <i class="ri-focus-3-line text-danger me-2 mt-1"></i>
-                                                            <div class="small">Focus on completing 2-3 priority tasks daily</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="d-flex align-items-start mb-2">
-                                                            <i class="ri-automation-line text-danger me-2 mt-1"></i>
-                                                            <div class="small">Utilize workflow automation for routine processes</div>
-                                                        </div>
-                                                    </div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-        <!-- End:: row-1 -->
-
-    </div>
 </div>

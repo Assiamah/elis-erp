@@ -156,3 +156,77 @@ window.getGeoServerEndPoint = function getGeoServerEndPoint(url = document.locat
 	return link_url;
 }
 </script>
+
+
+<!-- ELIS emerald colour theme: colour-only overrides, no sizing or layout changes -->
+<style id="elis-emerald-colour-theme">
+:root {
+  --elis-green-dark: #07543f;
+  --elis-green-mid: #087f5b;
+  --elis-green-bright: #0b9569;
+  --elis-green-mint: #baf4d9;
+}
+/* Header and sidebar surfaces */
+#header.app-header,
+#header .main-header-container {
+  background-color: #07543f !important;
+  background-image: linear-gradient(110deg,#07543f,#087f5b) !important;
+  border-color: rgba(186,244,217,.18) !important;
+}
+#sidebar.app-sidebar,
+#sidebar .main-sidebar,
+#sidebar #sidebar-scroll {
+  background-color: #07543f !important;
+  background-image: linear-gradient(180deg,#07543f,#086448) !important;
+  border-color: rgba(186,244,217,.14) !important;
+}
+#sidebar .main-sidebar-header {
+  background: linear-gradient(110deg,#07543f,#0b9569) !important;
+  border-color: rgba(186,244,217,.18) !important;
+}
+#sidebar .header-logo,
+#sidebar .header-logo:visited { color: #fff !important; }
+/* Navigation text and icon colours; do not alter display, padding, dimensions */
+#sidebar .side-menu__item,
+#sidebar .side-menu__label,
+#sidebar .side-menu__icon,
+#sidebar .side-menu__item svg,
+#sidebar .side-menu__item svg path,
+#sidebar .category-name { color: #e3f8ee !important; }
+#sidebar .side-menu__item svg { fill: currentColor; }
+#sidebar .slide__category .category-name { color: #baf4d9 !important; }
+#sidebar .slide { border-bottom-color: rgba(186,244,217,.12) !important; }
+#sidebar .slide:hover > .side-menu__item,
+#sidebar .side-menu__item:hover { background-color: rgba(186,244,217,.12) !important; color: #fff !important; }
+#sidebar .slide.active,
+#sidebar .slide:has(> .side-menu__item.active) {
+  background-color: rgba(27,186,127,.23) !important;
+  border-left-color: #baf4d9 !important;
+}
+#sidebar .side-menu__item.active,
+#sidebar .slide.active > .side-menu__item {
+  background-color: rgba(27,186,127,.20) !important;
+  color: #fff !important;
+}
+#sidebar .side-menu__item.active .side-menu__icon,
+#sidebar .slide.active .side-menu__icon { color: #baf4d9 !important; }
+#sidebar .doublemenu_bottom-menu { border-top-color: rgba(186,244,217,.22) !important; }
+#sidebar .slide-left svg,
+#sidebar .slide-right svg { fill: #baf4d9 !important; }
+/* Header controls: maintain theme's original structure and behaviour */
+#header .header-link,
+#header .header-link-icon,
+#header .header-link svg,
+#header .header-element > a,
+#header .sidemenu-toggle { color: #effff6 !important; }
+#header .header-link:hover,
+#header .header-element > a:hover { color: #baf4d9 !important; }
+#header .sidemenu-toggle span,
+#header .sidemenu-toggle span::before,
+#header .sidemenu-toggle span::after { background-color: #effff6 !important; }
+/* Footer palette only */
+footer.footer { background-color: #f0faf5 !important; border-top-color: #cbeedd !important; }
+footer.footer .text-muted { color: #426858 !important; }
+footer.footer a { color: #087f5b !important; }
+/* No global .slide, .active, .card, .modal, .btn or body overrides. */
+</style>

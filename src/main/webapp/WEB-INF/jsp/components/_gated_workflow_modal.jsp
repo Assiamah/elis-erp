@@ -1535,6 +1535,13 @@
                   <i class="bi bi-eye me-1"></i> Visualize
                 </button>
 
+
+                <button type="button" class="btn btn-primary btn-sm" 
+                        id="lc_btn_visualise_wkt_new_gf"
+                        data-bs-placement="top" data-bs-title="Visualize Polygon">
+                  <i class="bi bi-eye me-1"></i> Allow WKT
+                </button>
+
                 <button type="button" class="btn btn-warning btn-sm" 
                         id="btn_lc_save_parcel_for_general_noting"
                         data-bs-placement="top" data-bs-title="Save Parcel">

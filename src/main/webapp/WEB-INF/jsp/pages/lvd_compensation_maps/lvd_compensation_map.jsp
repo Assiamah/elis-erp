@@ -1,282 +1,34 @@
-
-<div class="main-content app-content">
-    <div class="container-fluid page-container">
-
-        <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-4">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <div>
-                    <h1 class="page-title fw-medium fs-18 mb-1">LVD Compensation Map</h1>
-                    <p class="text-muted small mb-0"><i class="ri-information-line me-1"></i>Manage and plot LVD compensation parcels</p>
-                </div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">ELIS</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-dark">LVD Compensation Map</a></li>
-                    <li class="breadcrumb-item active text-success" aria-current="page">Maps</li>
-                </ol>
-            </div>
-        </div>
-        <!-- End::page-header -->
-
-        <div class="row">
-            <!-- Left Sidebar Controls -->
-            <div class="col-lg-4 col-xl-3">
-                <!-- Control Panel Card -->
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-gradient-primary text-white border-0 py-3">
-                        <h5 class="mb-0 fw-semibold">
-                            <i class="fas fa-sliders-h me-2"></i>Map Plotting
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Action Buttons -->
-                        <div class="btn-group w-100 mb-4">
-                            <button type="button" class="btn btn-primary btn-sm" id="comp_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Draw a Line">
-                                <i class="fas fa-plus-circle me-1"></i> Add
-                            </button>
-                            <button type="button" class="btn btn-info btn-sm" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" data-bs-tooltip="tooltip" title="Upload CSV">
-                                <i class="fas fa-upload me-1"></i> CSV
-                            </button>
-                            <button type="button" class="btn btn-warning btn-sm" id="comp_btn_visualise_coordinate" data-bs-tooltip="tooltip" title="Visualise Coordinate">
-                                <i class="fas fa-eye me-1"></i> Visualise
-                            </button>
-                        </div>
-
-                        <!-- Coordinate List Table -->
-                        <div class="mb-4">
-                            <h6 class="fw-semibold mb-3 text-primary">
-                                <i class="fas fa-list-ol me-2"></i>Coordinate List
-                            </h6>
-                            <div class="table-responsive">
-                                <table class="table table-hover table-sm" id="coordinatelis_Table">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>X</th>
-                                            <th>Y</th>
-                                            <th class="text-center">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Dynamic content will be inserted here -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- WKT Polygon Section -->
-                        <div class="mb-4">
-                            <h6 class="fw-semibold mb-2 text-primary">
-                                <i class="fas fa-draw-polygon me-2"></i>WKT Polygon
-                            </h6>
-                            <textarea class="form-control form-control-sm" rows="3" id="comp_bl_wkt_polygon" placeholder="POLYGON((...))"></textarea>
-                            <div class="mt-2 d-flex gap-2">
-                                <button type="button" class="btn btn-primary btn-sm flex-fill" id="comp_btn_visualise_wkt" data-bs-tooltip="tooltip" title="Visualise Polygon(WKT)">
-                                    <i class="fas fa-map me-1"></i> Visualise
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm flex-fill" id="comp_btn_save_wkt" data-bs-tooltip="tooltip" title="Save Parcels">
-                                    <i class="fas fa-save me-1"></i> Save
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Quick Coordinate Search -->
-                        <div class="card border-success mb-4">
-                            <div class="card-header bg-success bg-opacity-10 border-success py-2">
-                                <h6 class="mb-0 fw-semibold">
-                                    <i class="fas fa-search-location me-2"></i>Quick Search
-                                </h6>
-                            </div>
-                            <div class="card-body p-3">
-                                <div class="row g-2 mb-2">
-                                    <div class="col-5">
-                                        <input type="text" class="form-control form-control-sm" id="comp_x_coordinate_mak" placeholder="Eastings">
-                                    </div>
-                                    <div class="col-5">
-                                        <input type="text" class="form-control form-control-sm" id="comp_y_coordinate_mak" placeholder="Northings">
-                                    </div>
-                                    <div class="col-2">
-                                        <button class="btn btn-primary btn-sm w-100" id="comp_btn_show_location" title="Show Location">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row g-2">
-                                    <div class="col-10">
-                                        <input type="text" class="form-control form-control-sm" id="comp_search_by_text" placeholder="Search by Ref Number">
-                                    </div>
-                                    <div class="col-2">
-                                        <button class="btn btn-info btn-sm w-100" id="comp_btn_search_by_reference_number" title="Search">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Multiple Parcels Table -->
-                        <div class="mt-4">
-                            <h6 class="fw-semibold mb-3 text-primary">
-                                <i class="fas fa-copy me-2"></i>More Than One Overlay
-                            </h6>
-                            <div class="table-responsive">
-                                <table class="table table-hover table-sm" id="comp_more_than_one_parcel_Table">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Ref Number</th>
-                                            <th>Locality</th>
-                                            <th>Plotted By</th>
-                                            <th class="text-center">Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Dynamic content will be inserted here -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Map Area -->
-            <div class="col-lg-8 col-xl-9">
-                <!-- Map Controls Card -->
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-gradient-success text-white border-0 py-3">
-                        <h5 class="mb-0 fw-semibold">
-                            <i class="fas fa-map me-2"></i>Map Sample
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Map Toolbar -->
-                        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-                            <!-- Drawing Mode -->
-                            <div class="btn-group" role="group">
-                                <input type="radio" class="btn-check" name="drawingMode" id="draw" value="draw" checked>
-                                <label class="btn btn-outline-primary btn-sm" for="draw">
-                                    <i class="fas fa-pencil-alt me-1"></i> Draw
-                                </label>
-                                <input type="radio" class="btn-check" name="drawingMode" id="modify" value="modify">
-                                <label class="btn btn-outline-warning btn-sm" for="modify">
-                                    <i class="fas fa-edit me-1"></i> Modify
-                                </label>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="d-flex gap-2 ms-auto">
-                                <button class="btn btn-outline-primary btn-sm" id="comp_btnprintmap" title="Print Map">
-                                    <i class="fas fa-print me-1"></i> Print
-                                </button>
-                                <button class="btn btn-outline-info btn-sm" id="comp_btn_visualise_search" title="Visualise Search">
-                                    <i class="fas fa-search me-1"></i> Search
-                                </button>
-                                <button class="btn btn-outline-success btn-sm" id="comp_btngeneratesearchreport" title="Print Search Report">
-                                    <i class="fas fa-file-alt me-1"></i> Report
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Map Container -->
-                        <div class="border rounded" style="height: 600px;">
-                            <div id="lvdc-map" class="h-100 w-100"></div>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 pt-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="text-muted small">
-                                <i class="fas fa-info-circle me-1"></i> Plottings
-                            </div>
-                            <div class="text-muted small">
-                                <i class="fas fa-sync-alt me-1"></i> Last updated: Just now
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- Modal 1: LVD Compensation Claim -->
-<div class="modal fade effect-scale modal-blur" tabindex="-1" 
-id="compparcelinformation" tabindex="-1" aria-labelledby="compparcelinformationLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <!-- Header -->
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-semibold" id="compparcelinformationLabel">
-                    <i class="fas fa-file-invoice me-2"></i>LVD Compensation Claim
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- Body -->
-            <div class="modal-body">
-                <form method="POST" action="Maps" target="_blank" id="downloadForm">
-                    <input type="hidden" name="cc_id" id="cc_id">
-                    
-                    <div class="row g-3">
-                        <!-- Row 1: Claim No & Claimant -->
-                        <div class="col-md-6">
-                            <label for="cc_claim_no" class="form-label fw-semibold">Claim No</label>
-                            <input class="form-control" type="text" placeholder="Enter Claim No" id="cc_claim_no">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="cc_claimant" class="form-label fw-semibold">Claimant</label>
-                            <input class="form-control" type="text" placeholder="Enter Claimant Name" id="cc_claimant">
-                        </div>
-                        
-                        <!-- Row 2: File No & Plan No -->
-                        <div class="col-md-6">
-                            <label for="cc_file_no" class="form-label fw-semibold">File No</label>
-                            <input class="form-control" type="text" placeholder="Enter File No" id="cc_file_no">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="cc_plan_no" class="form-label fw-semibold">Plan No</label>
-                            <input class="form-control" type="text" placeholder="Enter Plan No" id="cc_plan_no">
-                        </div>
-                        
-                        <!-- Row 3: Locality & Land Size -->
-                        <div class="col-md-6">
-                            <label for="cc_locality" class="form-label fw-semibold">Locality</label>
-                            <input class="form-control" type="text" placeholder="Enter Locality" id="cc_locality">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="cc_land_size" class="form-label fw-semibold">Land Size</label>
-                            <input class="form-control" type="text" placeholder="Enter Land Size" id="cc_land_size">
-                        </div>
-                        
-                        <!-- Row 4: Remarks -->
-                        <div class="col-12">
-                            <label for="cc_remarks" class="form-label fw-semibold">Remarks</label>
-                            <textarea class="form-control" rows="3" placeholder="Enter Remarks" id="cc_remarks"></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i>Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Bootstrap 5 JS Dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<style>
+/* ELIS LVD Compensation Map — emerald theme; scoped to this page */
+.lvd-comp{--lc-deep:#064b39;--lc-green:#087f5b;--lc-mid:#0c9b6c;--lc-pale:#e9f8ef;--lc-border:#d4e9dc;--lc-ink:#173f30;color:var(--lc-ink)}
+.lvd-comp .lc-hero{background:linear-gradient(112deg,#064b39 0%,#087f5b 68%,#2aa67a 100%);border-radius:17px;padding:23px 27px;color:white;box-shadow:0 12px 28px #064b3924;position:relative;overflow:hidden}
+.lvd-comp .lc-hero:after{content:'';position:absolute;width:220px;height:220px;border:35px solid #ffffff12;border-radius:50%;right:-60px;top:-95px;pointer-events:none}
+.lvd-comp .lc-hero h1{color:#fff!important;font-weight:800;font-size:23px;margin:0 0 5px}.lvd-comp .lc-hero p{color:#ddf8e9!important;margin:0}.lvd-comp .lc-hero .breadcrumb-item,.lvd-comp .lc-hero .breadcrumb-item a{color:#e6fff0!important}.lvd-comp .lc-hero .breadcrumb-item+.breadcrumb-item:before{color:#b7ebd0}
+.lvd-comp .card{border:1px solid var(--lc-border)!important;border-radius:14px!important;overflow:hidden;box-shadow:0 5px 20px #064b3910!important}
+.lvd-comp .lc-card-head{background:linear-gradient(110deg,#064b39,#0b9469)!important;color:#fff!important;padding:16px 19px!important;border:0!important}.lvd-comp .lc-card-head h5{color:#fff!important;font-weight:750;font-size:15px}.lvd-comp .lc-card-head i{color:#d2f7df}
+.lvd-comp .card-body{padding:19px}.lvd-comp h6{color:#075b43!important;font-weight:750}.lvd-comp .lc-section-title{border-bottom:1px solid var(--lc-border);padding-bottom:10px;margin-bottom:13px!important}
+.lvd-comp .lc-subcard{border:1px solid var(--lc-border)!important;border-radius:11px!important;background:#fbfefc}.lvd-comp .lc-subcard>.card-header{background:#e8f7ee!important;border-bottom:1px solid #d5eadb!important;padding:11px 13px!important}
+.lvd-comp .form-control,.lvd-comp .form-select{border:1px solid #cfe3d6;border-radius:9px;background:#fff;color:#204835;min-height:37px}.lvd-comp .form-control:focus,.lvd-comp .form-select:focus{border-color:#0a9567;box-shadow:0 0 0 .2rem #0a95671c}.lvd-comp textarea{resize:vertical;min-height:80px}
+.lvd-comp .btn{border-radius:8px;font-weight:650;transition:all .18s ease}.lvd-comp .btn:hover{transform:translateY(-1px)}.lvd-comp .btn-primary,.lvd-comp .btn-success,.lvd-comp .btn-info{background:linear-gradient(110deg,#087f5b,#0b9e70)!important;border-color:#087f5b!important;color:#fff!important}.lvd-comp .btn-outline-primary,.lvd-comp .btn-outline-info,.lvd-comp .btn-outline-success{border-color:#7fbfa0!important;color:#087f5b!important;background:#fff}.lvd-comp .btn-outline-primary:hover,.lvd-comp .btn-outline-info:hover,.lvd-comp .btn-outline-success:hover{background:#087f5b!important;color:#fff!important}.lvd-comp .btn-warning{background:#fff2d9!important;border-color:#efcf8b!important;color:#8a6015!important}.lvd-comp .btn-check:checked+.btn-outline-primary,.lvd-comp .btn-check:checked+.btn-outline-warning{background:#087f5b!important;color:#fff!important;border-color:#087f5b!important}
+.lvd-comp .table{font-size:12px;margin-bottom:0}.lvd-comp .table thead th{background:#087f5b!important;color:#fff!important;font-weight:700;white-space:nowrap;border:0;padding:10px 9px}.lvd-comp .table tbody td{vertical-align:middle;border-color:#e0eee5;padding:9px}.lvd-comp .table tbody tr:nth-child(even){background:#f5fbf7}.lvd-comp .table tbody tr:hover{background:#e8f7ee}
+.lvd-comp .lc-map-shell{height:600px;border:2px solid #b9deca!important;border-radius:12px!important;overflow:hidden;background:#f0f7f3;position:relative}.lvd-comp .lc-map-shell #lvdc-map{width:100%;height:100%}.lvd-comp .lc-map-toolbar{background:#f4faf6;border:1px solid var(--lc-border);padding:13px;border-radius:11px}.lvd-comp .card-footer{background:#fbfefc!important;border-top:1px solid var(--lc-border)!important}
+#compparcelinformation .modal-content{border:0;border-radius:15px;overflow:hidden;box-shadow:0 20px 65px #064b3933}#compparcelinformation .modal-header{background:linear-gradient(110deg,#064b39,#0b9469)!important;color:#fff!important;padding:18px 22px}#compparcelinformation .modal-title{color:#fff!important;font-weight:800}#compparcelinformation .modal-body{background:#fbfefc;padding:23px}#compparcelinformation .form-label{font-size:12px;font-weight:750;color:#315c46}#compparcelinformation .form-control{border:1px solid #cfe3d6;border-radius:9px;min-height:41px}#compparcelinformation .form-control:focus{border-color:#0a9567;box-shadow:0 0 0 .2rem #0a95671c}#compparcelinformation .modal-footer{border-top:1px solid #d4e9dc;background:#f4faf6}
+@media(max-width:767px){.lvd-comp .lc-hero{padding:18px}.lvd-comp .lc-hero h1{font-size:20px}.lvd-comp .card-body{padding:13px}.lvd-comp .lc-map-shell{height:450px}.lvd-comp .lc-map-toolbar{gap:10px!important}}
+</style>
+<div class="main-content app-content lvd-comp"><div class="container-fluid page-container">
+ <div class="lc-hero mb-4"><div class="d-flex align-items-center justify-content-between flex-wrap gap-3"><div><div class="small fw-bold mb-1" style="letter-spacing:1.2px;color:#bff0d2">ELIS / LAND VALUATION DIVISION</div><h1><i class="fas fa-map-marked-alt me-2"></i>LVD Compensation Map</h1><p class="small"><i class="ri-information-line me-1"></i>Manage, plot and review compensation parcels on the interactive map.</p></div><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="javascript:void(0)">ELIS</a></li><li class="breadcrumb-item">LVD Compensation Map</li><li class="breadcrumb-item active">Maps</li></ol></div></div>
+ <div class="row g-3"><div class="col-lg-4 col-xl-3"><div class="card mb-4"><div class="card-header lc-card-head"><h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Map Plotting</h5></div><div class="card-body">
+  <div class="d-flex gap-2 mb-4"><button type="button" class="btn btn-primary btn-sm flex-fill" id="comp_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Draw a Line"><i class="fas fa-plus-circle me-1"></i>Add</button><button type="button" class="btn btn-info btn-sm flex-fill" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" data-bs-tooltip="tooltip" title="Upload CSV"><i class="fas fa-upload me-1"></i>CSV</button><button type="button" class="btn btn-warning btn-sm flex-fill" id="comp_btn_visualise_coordinate" data-bs-tooltip="tooltip" title="Visualise Coordinate"><i class="fas fa-eye me-1"></i>Visualise</button></div>
+  <section class="mb-4"><h6 class="lc-section-title"><i class="fas fa-list-ol me-2"></i>Coordinate List</h6><div class="table-responsive"><table class="table table-hover table-sm" id="coordinatelis_Table"><thead><tr><th>Name</th><th>X</th><th>Y</th><th class="text-center">Action</th></tr></thead><tbody></tbody></table></div></section>
+  <section class="mb-4"><h6 class="lc-section-title"><i class="fas fa-draw-polygon me-2"></i>WKT Polygon</h6><textarea class="form-control form-control-sm" rows="3" id="comp_bl_wkt_polygon" placeholder="POLYGON((...))"></textarea><div class="mt-2 d-flex gap-2"><button type="button" class="btn btn-primary btn-sm flex-fill" id="comp_btn_visualise_wkt" data-bs-tooltip="tooltip" title="Visualise Polygon(WKT)"><i class="fas fa-map me-1"></i>Visualise</button><button type="button" class="btn btn-success btn-sm flex-fill" id="comp_btn_save_wkt" data-bs-tooltip="tooltip" title="Save Parcels"><i class="fas fa-save me-1"></i>Save</button></div></section>
+  <div class="card lc-subcard mb-4"><div class="card-header"><h6 class="mb-0"><i class="fas fa-search-location me-2"></i>Quick Search</h6></div><div class="card-body p-3"><div class="row g-2 mb-2"><div class="col-5"><input type="text" class="form-control form-control-sm" id="comp_x_coordinate_mak" placeholder="Eastings"></div><div class="col-5"><input type="text" class="form-control form-control-sm" id="comp_y_coordinate_mak" placeholder="Northings"></div><div class="col-2"><button type="button" class="btn btn-primary btn-sm w-100" id="comp_btn_show_location" title="Show Location"><i class="fas fa-map-marker-alt"></i></button></div></div><div class="row g-2"><div class="col-10"><input type="text" class="form-control form-control-sm" id="comp_search_by_text" placeholder="Search by Ref Number"></div><div class="col-2"><button type="button" class="btn btn-info btn-sm w-100" id="comp_btn_search_by_reference_number" title="Search"><i class="fas fa-search"></i></button></div></div></div></div>
+  <section><h6 class="lc-section-title"><i class="fas fa-copy me-2"></i>More Than One Overlay</h6><div class="table-responsive"><table class="table table-hover table-sm" id="comp_more_than_one_parcel_Table"><thead><tr><th>Ref Number</th><th>Locality</th><th>Plotted By</th><th class="text-center">Details</th></tr></thead><tbody></tbody></table></div></section>
+ </div></div></div>
+ <div class="col-lg-8 col-xl-9"><div class="card mb-4"><div class="card-header lc-card-head"><h5 class="mb-0"><i class="fas fa-map me-2"></i>Interactive Compensation Map</h5></div><div class="card-body"><div class="d-flex flex-wrap align-items-center gap-3 mb-3 lc-map-toolbar"><div class="btn-group" role="group"><input type="radio" class="btn-check" name="drawingMode" id="draw" value="draw" checked><label class="btn btn-outline-primary btn-sm" for="draw"><i class="fas fa-pencil-alt me-1"></i>Draw</label><input type="radio" class="btn-check" name="drawingMode" id="modify" value="modify"><label class="btn btn-outline-warning btn-sm" for="modify"><i class="fas fa-edit me-1"></i>Modify</label></div><div class="d-flex flex-wrap gap-2 ms-auto"><button type="button" class="btn btn-outline-primary btn-sm" id="comp_btnprintmap" title="Print Map"><i class="fas fa-print me-1"></i>Print</button><button type="button" class="btn btn-outline-info btn-sm" id="comp_btn_visualise_search" title="Visualise Search"><i class="fas fa-search me-1"></i>Search</button><button type="button" class="btn btn-outline-success btn-sm" id="comp_btngeneratesearchreport" title="Print Search Report"><i class="fas fa-file-alt me-1"></i>Report</button></div></div><div class="lc-map-shell"><div id="lvdc-map"></div></div></div><div class="card-footer py-3"><div class="d-flex justify-content-between align-items-center gap-2 flex-wrap"><div class="text-muted small"><i class="fas fa-info-circle me-1"></i>Plottings</div><div class="text-muted small"><i class="fas fa-map-marker-alt me-1"></i>LVD Compensation Parcels</div></div></div></div></div></div>
+</div></div>
+<div class="modal fade effect-scale modal-blur" id="compparcelinformation" tabindex="-1" aria-labelledby="compparcelinformationLabel" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="compparcelinformationLabel"><i class="fas fa-file-invoice me-2"></i>LVD Compensation Claim</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><form method="POST" action="Maps" target="_blank" id="downloadForm"><input type="hidden" name="cc_id" id="cc_id"><div class="row g-3"><div class="col-md-6"><label for="cc_claim_no" class="form-label">Claim No</label><input class="form-control" type="text" placeholder="Enter Claim No" id="cc_claim_no"></div><div class="col-md-6"><label for="cc_claimant" class="form-label">Claimant</label><input class="form-control" type="text" placeholder="Enter Claimant Name" id="cc_claimant"></div><div class="col-md-6"><label for="cc_file_no" class="form-label">File No</label><input class="form-control" type="text" placeholder="Enter File No" id="cc_file_no"></div><div class="col-md-6"><label for="cc_plan_no" class="form-label">Plan No</label><input class="form-control" type="text" placeholder="Enter Plan No" id="cc_plan_no"></div><div class="col-md-6"><label for="cc_locality" class="form-label">Locality</label><input class="form-control" type="text" placeholder="Enter Locality" id="cc_locality"></div><div class="col-md-6"><label for="cc_land_size" class="form-label">Land Size</label><input class="form-control" type="text" placeholder="Enter Land Size" id="cc_land_size"></div><div class="col-12"><label for="cc_remarks" class="form-label">Remarks</label><textarea class="form-control" rows="3" placeholder="Enter Remarks" id="cc_remarks"></textarea></div></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Close</button></div></div></div></div>
 <script>
-    // Initialize Bootstrap tooltips
-    document.addEventListener('DOMContentLoaded', function() {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-tooltip="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    });
+(function(){function init(){if(!window.bootstrap||!bootstrap.Tooltip)return;document.querySelectorAll('[data-bs-tooltip="tooltip"]').forEach(function(el){if(!bootstrap.Tooltip.getInstance(el))new bootstrap.Tooltip(el);});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();})();
 </script>
-
 <script src="${pageContext.request.contextPath}/js-pages/gated_workflow.js"></script>

@@ -1,623 +1,209 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ page import="com.google.gson.Gson"%>
-<%@ page import="com.google.gson.GsonBuilder"%>
-<!-- Start::app-content -->
-<div class="main-content app-content">
-    <div class="container-fluid page-container">
-
-        <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-3">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <div>
-                    <h1 class="page-title fw-medium fs-18 mb-1">Rent Management Upload</h1>
-                    <p class="text-muted mb-0"><i class="ri-information-line me-1"></i>Bulk rent data upload for ${fullname}</p>
-                </div>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Rent Management</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Bulk Upload</li>
-                </ol>
-            </div>
-        </div>
-        <!-- End::page-header -->
-
-        <!-- Start::row-1 -->
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card custom-card">
-                    <!-- Card Header - Accordion -->
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <i class="ri-upload-cloud-2-line text-primary me-2 fs-5"></i>
-                                <h5 class="card-title mb-0">Bulk Rent Data Upload</h5>
-                            </div>
-                            <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" 
-                                    data-bs-target="#collapseBulkRent" aria-expanded="true">
-                                <i class="ri-arrow-down-s-line"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Card Content - Collapse -->
-                    <div class="collapse show" id="collapseBulkRent">
-                        <div class="card-body">
-
-                            <!-- Region & Estate Selection -->
-                            <div class="row mb-4">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold">Office Region</label>
-                                    <select class="form-select" id="rnt_upload_office_region" required>
-                                        <option value="" disabled selected>Select Office Region</option>
-                                        <c:forEach items="${officeregionlist}" var="region">
-                                            <option value="${region.ord_region_code}">${region.ord_region_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-semibold">Estate</label>
-                                    <select class="form-select" id="rnt_upload_estate" required>
-                                        <option value="" disabled selected>Select Estate</option>
-                                        <c:forEach items="${estate_list}" var="estate">
-                                            <option value="${estate.ge_id}">${estate.ge_location_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="row mb-4">
-                                <div class="col-md-6 mb-3">
-                                    <button type="button" class="btn btn-info w-100" 
-                                            id="btn_upload_rent_by_csv" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#fileRentUploadModal">
-                                        <i class="ri-upload-cloud-2-line me-1"></i> Upload CSV
-                                    </button>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <button type="button" class="btn btn-success w-100" 
-                                            id="btn_process_rent_data_by_csv">
-                                        <i class="ri-cpu-line me-1"></i> Process Rent Data
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Success / Error Alert -->
-                            <div id="uploadAlert" class="alert d-none" role="alert"></div>
-
-                            <!-- Data Table -->
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0" 
-                                       id="bulk_rent_data_list_dataTable_smd">
-                                    <thead class="bg-light">
-                                        <tr>
-                                            <th>Owner's Name</th>
-                                            <th>Address</th>
-                                            <th>File No.</th>
-                                            <th>Ledger</th>
-                                            <th>Folio</th>
-                                            <th>Plot No.</th>
-                                            <th>Plot Size</th>
-                                            <th>Covenanted User</th>
-                                            <th>LS Number</th>
-                                            <th>Nature of Instrument</th>
-                                            <th>Comm. Date</th>
-                                            <th>Term</th>
-                                            <th>Consent Date</th>
-                                            <th>Rent Review</th>
-                                            <th>Rent Passing</th>
-                                            <th>Arrears</th>
-                                            <th>Out. Rent</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--End::row-1 -->
-
-    </div>
-</div>
-
-<!-- CSV Upload Modal -->
-<div class="modal fade" id="fileRentUploadModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="ri-file-excel-2-line me-2"></i>Upload Rent CSV
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="csvUploadForm" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="csvFile" class="form-label fw-semibold">Select CSV File</label>
-                        <input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv" required>
-                        <div class="form-text">
-                            Only <code>.csv</code> files are allowed. Max size: 10MB.
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="btnConfirmUpload">
-                    <i class="ri-upload-cloud-2-line me-1"></i> Upload
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
-    /* Custom styles for better UI */
-    .form-select {
-        border-radius: 0.375rem;
-        border: 1px solid #e9ecef;
-        padding: 0.5rem 0.75rem;
-        font-size: 0.875rem;
-    }
-    
-    .form-select:focus {
-        border-color: #3a7bd5;
-        box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
-    }
-    
-    .table th {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #6c757d;
-        font-weight: 600;
-        background-color: #f9fafc;
-        border-bottom: 2px solid #e9ecef;
-    }
-    
-    .table td {
-        vertical-align: middle;
-        font-size: 0.875rem;
-    }
-    
-    #uploadAlert {
-        border-radius: 0.375rem;
-        padding: 1rem 1.25rem;
-    }
-    
-    #uploadAlert.alert-success {
-        background-color: rgba(25, 135, 84, 0.1);
-        border-color: rgba(25, 135, 84, 0.2);
-        color: #198754;
-    }
-    
-    #uploadAlert.alert-danger {
-        background-color: rgba(220, 53, 69, 0.1);
-        border-color: rgba(220, 53, 69, 0.2);
-        color: #dc3545;
-    }
-    
-    #uploadAlert.alert-info {
-        background-color: rgba(13, 202, 240, 0.1);
-        border-color: rgba(13, 202, 240, 0.2);
-        color: #0dcaf0;
-    }
-    
-    /* Card header styling */
-    .card-header {
-        background-color: #fff;
-        border-bottom: 1px solid #e9ecef;
-        padding: 1rem 1.25rem;
-    }
-    
-    /* Button styling */
-    .btn {
-        padding: 0.5rem 1rem;
-        font-weight: 500;
-        border-radius: 0.375rem;
-        transition: all 0.2s ease;
-    }
-    
-    .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Modal styling */
-    .modal-content {
-        border-radius: 0.5rem;
-        border: none;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .modal-header {
-        background-color: #f9fafc;
-        border-bottom: 1px solid #e9ecef;
-        padding: 1rem 1.5rem;
-    }
-    
-    .modal-body {
-        padding: 1.5rem;
-    }
-    
-    .modal-footer {
-        border-top: 1px solid #e9ecef;
-        padding: 1rem 1.5rem;
-    }
-    
-    /* File input styling */
-    .form-control[type="file"] {
-        padding: 0.375rem 0.75rem;
-        border-radius: 0.375rem;
-        border: 1px solid #e9ecef;
-    }
-    
-    .form-control[type="file"]:focus {
-        border-color: #3a7bd5;
-        box-shadow: 0 0 0 0.2rem rgba(58, 123, 213, 0.25);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .modal-dialog {
-            margin: 0.5rem;
-        }
-        
-        .table-responsive {
-            font-size: 0.8125rem;
-        }
-        
-        .btn {
-            padding: 0.375rem 0.75rem;
-            font-size: 0.875rem;
-        }
-    }
+.rent-upload-page{--ru-green:#087f5b;--ru-deep:#07543f;--ru-border:#d9eee3;color:#183b31}
+.rent-upload-page .ru-hero{background:linear-gradient(110deg,#07543f,#0b8a61 65%,#38a77d);border-radius:16px;padding:24px 28px;color:#fff;box-shadow:0 10px 28px rgba(7,84,63,.19)}
+.rent-upload-page .ru-hero h1{font-size:24px;font-weight:800;color:#fff;margin:5px 0}
+.rent-upload-page .ru-hero p{color:#d8f7e8;margin:0;font-size:13px}
+.rent-upload-page .ru-eyebrow{color:#c5f5da;font-size:11px;letter-spacing:1.4px;font-weight:800}
+.rent-upload-page .ru-pill{border-radius:100px;padding:8px 13px;border:1px solid #ffffff55;background:#ffffff22;font-size:12px;font-weight:700}
+.rent-upload-page .ru-panel{border:1px solid var(--ru-border);border-radius:16px;overflow:hidden;background:white;box-shadow:0 5px 18px rgba(8,84,57,.07)}
+.rent-upload-page .ru-panel-header{background:#f6fcf8;border-bottom:1px solid var(--ru-border);padding:17px 21px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rent-upload-page .ru-title{font-size:15px;font-weight:800;color:var(--ru-deep);margin:0}
+.rent-upload-page .ru-subtitle{font-size:12px;color:#6b8878;margin:4px 0 0}
+.rent-upload-page .ru-icon{width:38px;height:38px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:#e6f7ed;color:var(--ru-green);font-size:20px}
+.rent-upload-page .ru-panel-body{padding:22px}
+.rent-upload-page .ru-section-label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#0b805c;margin-bottom:14px}
+.rent-upload-page .ru-select-box{background:#f7fcf9;border:1px solid #e0eee5;border-radius:12px;padding:17px}
+.rent-upload-page .form-label{font-size:12px;font-weight:750;color:#315b45;margin-bottom:7px}
+.rent-upload-page .form-select,.rent-upload-page .form-control{border:1px solid #cfe5d8;border-radius:10px;min-height:43px;font-size:13px}
+.rent-upload-page .form-select:focus,.rent-upload-page .form-control:focus{border-color:#16a34a;box-shadow:0 0 0 .2rem rgba(22,163,74,.13)}
+.rent-upload-page .ru-action{border-radius:10px;padding:12px 18px;font-size:13px;font-weight:800;border:1px solid transparent;transition:transform .15s,box-shadow .15s}
+.rent-upload-page .ru-action:hover{transform:translateY(-1px);box-shadow:0 5px 15px #087f5b22}
+.rent-upload-page .ru-upload-btn{background:#e6f7ed;color:#07543f;border-color:#a9ddc1}
+.rent-upload-page .ru-upload-btn:hover{background:#d5f2e2;color:#07543f}
+.rent-upload-page .ru-process-btn{background:#087f5b;color:white}
+.rent-upload-page .ru-process-btn:hover{background:#07543f;color:white}
+.rent-upload-page .ru-summary{display:flex;gap:8px;align-items:center;background:#eaf8ef;color:#087f5b;border-radius:100px;padding:7px 13px;font-size:12px;font-weight:800}
+.rent-upload-page .ru-table-scroll{overflow-x:auto}
+.rent-upload-page #bulk_rent_data_list_dataTable_smd{width:100%!important;border-collapse:separate;border-spacing:0;font-size:12px}
+.rent-upload-page #bulk_rent_data_list_dataTable_smd thead th{background:linear-gradient(110deg,#07543f,#0b8a61)!important;color:#fff!important;padding:13px 11px;white-space:nowrap;font-size:11px;font-weight:800;border:0!important}
+.rent-upload-page #bulk_rent_data_list_dataTable_smd tbody td{padding:12px 10px;white-space:nowrap;color:#334b3d;border-bottom:1px solid #e7f1e9}
+.rent-upload-page #bulk_rent_data_list_dataTable_smd tbody tr:nth-child(even){background:#f6fbf7}
+.rent-upload-page #bulk_rent_data_list_dataTable_smd tbody tr:hover{background:#e6f7ec}
+.rent-upload-page .dataTables_wrapper .dataTables_filter input,.rent-upload-page .dataTables_wrapper .dataTables_length select{border:1px solid #cfe5d8;border-radius:8px;padding:6px 9px}
+.rent-upload-page .dataTables_wrapper .paginate_button.current{background:#087f5b!important;color:white!important;border-color:#087f5b!important}
+#fileRentUploadModal .modal-content{border:0;border-radius:17px;overflow:hidden;box-shadow:0 22px 65px rgba(9,65,42,.25)}
+#fileRentUploadModal .modal-header{background:linear-gradient(110deg,#07543f,#0b8a61 65%,#38a77d);padding:20px 24px;color:white}
+#fileRentUploadModal .modal-title{color:white;font-weight:800}
+#fileRentUploadModal .btn-close{filter:invert(1) grayscale(1);opacity:.95}
+#fileRentUploadModal .modal-body{padding:26px}
+#fileRentUploadModal .modal-footer{background:#f4fbf6;border-top:1px solid #d9eee3;padding:16px 24px}
+#fileRentUploadModal .ru-confirm-btn{background:#087f5b;border:1px solid #087f5b;color:white;border-radius:9px;font-weight:800;padding:9px 18px}
+#fileRentUploadModal .ru-confirm-btn:hover{background:#07543f}
+#fileRentUploadModal .form-control{border-color:#cfe5d8;border-radius:9px}
+@media(max-width:767px){.rent-upload-page .ru-hero{padding:19px}.rent-upload-page .ru-panel-body{padding:14px}.rent-upload-page .ru-panel-header{padding:14px}.rent-upload-page .ru-hero h1{font-size:21px}}
 </style>
-<!-- JavaScript -->
+
+<div class="main-content app-content rent-upload-page">
+ <div class="container-fluid page-container">
+  <div class="ru-hero mb-4"><div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+   <div><div class="ru-eyebrow"><i class="ri-government-line me-1"></i> ELIS / GROUND RENT MANAGEMENT</div><h1><i class="ri-upload-cloud-2-line me-2"></i>Bulk Rent Data Upload</h1><p>Import, review and process government estate rent records <c:if test="${not empty fullname}">for <c:out value="${fullname}" /></c:if>.</p></div>
+   <div class="ru-pill"><i class="ri-file-list-3-line me-1"></i> CSV Import Workspace</div>
+  </div></div>
+
+  <div class="ru-panel mb-3">
+   <div class="ru-panel-header"><div class="d-flex align-items-center gap-2"><span class="ru-icon"><i class="ri-settings-3-line"></i></span><div><h2 class="ru-title">Upload Configuration</h2><p class="ru-subtitle">Choose the office region and estate before processing</p></div></div>
+    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBulkRent" aria-expanded="true" aria-controls="collapseBulkRent"><i class="ri-arrow-down-s-line"></i></button>
+   </div>
+   <div class="collapse show" id="collapseBulkRent"><div class="ru-panel-body">
+    <div class="ru-section-label"><i class="ri-map-pin-line me-1"></i> Target Location</div>
+    <div class="ru-select-box mb-3"><div class="row g-3">
+     <div class="col-md-6"><label class="form-label" for="rnt_upload_office_region">Office Region</label><select class="form-select" id="rnt_upload_office_region" required><option value="" disabled selected>Select Office Region</option><c:forEach items="${officeregionlist}" var="region"><option value="<c:out value='${region.ord_region_code}' />"><c:out value="${region.ord_region_name}" /></option></c:forEach></select></div>
+     <div class="col-md-6"><label class="form-label" for="rnt_upload_estate">Government Estate</label><select class="form-select" id="rnt_upload_estate" required><option value="" disabled selected>Select Estate</option><c:forEach items="${estate_list}" var="estate"><option value="<c:out value='${estate.ge_id}' />"><c:out value="${estate.ge_location_name}" /></option></c:forEach></select></div>
+    </div></div>
+    <div class="row g-3"><div class="col-md-6"><button type="button" class="btn ru-action ru-upload-btn w-100" id="btn_upload_rent_by_csv" data-bs-toggle="modal" data-bs-target="#fileRentUploadModal"><i class="ri-upload-cloud-2-line me-2"></i>Upload CSV File</button></div>
+     <div class="col-md-6"><button type="button" class="btn ru-action ru-process-btn w-100" id="btn_process_rent_data_by_csv"><i class="ri-cpu-line me-2"></i>Process Rent Data</button></div></div>
+    <div id="uploadAlert" class="alert d-none mt-3" role="alert"></div>
+   </div></div>
+  </div>
+
+  <div class="ru-panel mb-4">
+   <div class="ru-panel-header"><div class="d-flex align-items-center gap-2"><span class="ru-icon"><i class="ri-table-2"></i></span><div><h2 class="ru-title">Rent Records Preview</h2><p class="ru-subtitle">Verify the uploaded entries before processing</p></div></div><span class="ru-summary"><i class="ri-file-list-3-line"></i><span id="rentUploadRecordCount">0</span> Records</span></div>
+   <div class="ru-panel-body"><div class="ru-table-scroll"><table class="table table-hover align-middle mb-0" id="bulk_rent_data_list_dataTable_smd"><thead><tr>
+    <th>Owner's Name</th><th>Address</th><th>File No.</th><th>Ledger</th><th>Folio</th><th>Plot No.</th><th>Plot Size</th><th>Covenanted User</th><th>LS Number</th><th>Nature of Instrument</th><th>Comm. Date</th><th>Term</th><th>Consent Date</th><th>Rent Review</th><th>Rent Passing</th><th>Arrears</th><th>Out. Rent</th>
+   </tr></thead><tbody></tbody></table></div></div>
+  </div>
+ </div>
+</div>
+
+<div class="modal fade" id="fileRentUploadModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+ <div class="modal-header"><h5 class="modal-title"><i class="ri-file-excel-2-line me-2"></i>Upload Rent CSV</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+ <div class="modal-body"><form id="csvUploadForm" enctype="multipart/form-data"><label for="csvFile" class="form-label fw-semibold">Select CSV File</label><input class="form-control" type="file" id="csvFile" name="csvFile" accept=".csv,text/csv" required><div class="form-text mt-2"><i class="ri-information-line me-1"></i>CSV files only. Maximum file size: 10 MB. The first row should contain column headings.</div></form></div>
+ <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button type="button" class="ru-confirm-btn" id="btnConfirmUpload"><i class="ri-upload-cloud-2-line me-1"></i>Upload</button></div>
+</div></div></div>
+
 <script>
-$(document).ready(function () {
-    const $table = $('#bulk_rent_data_list_dataTable_smd').DataTable({
-        responsive: true,
-        pageLength: 25,
-        order: [[0, 'asc']],
-        columnDefs: [{ targets: '_all', className: 'text-center' }]
+$(function () {
+    'use strict';
+    const table = $('#bulk_rent_data_list_dataTable_smd').DataTable({
+        responsive: false, scrollX: true, pageLength: 25, order: [[0, 'asc']],
+        columnDefs: [{ targets: '_all', className: 'text-start' }]
     });
-
-    // Populate modal with selected region & estate
-    $('#btn_upload_rent_by_csv').on('click', function () {
-        const regionText = $('#rnt_upload_office_region option:selected').text();
-        const estateText = $('#rnt_upload_estate option:selected').text();
-        $('#uploadRegion').val(regionText);
-        $('#uploadEstate').val(estateText);
-    });
-
-    function cleanNumeric(value) {
-    if (!value || value === 'null' || value.trim() === '') {
-        return '';
+    function updateCount() { $('#rentUploadRecordCount').text(table.rows().count()); }
+    function showAlert(message, type) {
+        const alert = $('#uploadAlert');
+        alert.stop(true, true).removeClass('d-none alert-success alert-danger alert-warning alert-info')
+            .addClass('alert-' + type).text(message).show();
     }
-    return value.replace(/,/g, ''); // Remove commas
-}
-
-    // Handle CSV upload and client-side parsing
-    $('#btnConfirmUpload').on('click', function () {
-        const fileInput = $('#csvFile')[0];
-        const region = $('#rnt_upload_office_region').val();
-        const estate = $('#rnt_upload_estate').val();
-
-        if (!fileInput.files[0]) {
-            showAlert('Please select a CSV file.', 'warning');
-            return;
-        }
-        // if (!region || !estate) {
-        //     showAlert('Please select Office Region and Estate.', 'warning');
-        //     return;
-        // }
-
-        const file = fileInput.files[0];
-        if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-            showAlert('Please upload a valid CSV file.', 'danger');
-            return;
-        }
-        
-
-        // Read and parse CSV file
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const text = e.target.result;
-            try {
-                // Split text into lines
-                const lines = text.split('\n').filter(line => line.trim() !== '');
-                if (lines.length < 1) {
-                    showAlert('CSV file is empty.', 'danger');
-                    return;
-                }
-
-                // Get headers from first line
-                const headers = lines[0].split(';').map(header => header.trim());
-                const expectedHeaders = [
-                    "Owner's Name", "Address", "File No.", "Ledger", "Folio", 
-                    "Plot No.", "Plot Size", "Covenanted User", "LS Number", 
-                    "Nature of Instrument", "Comm. Date", 
-                    "Term", "Consent Date", "Rent Review", "Rent Passing", 
-                    "Arrears", "Out. Rent"
-                ];
-
-                // // Validate headers
-                // if (headers.length !== expectedHeaders.length || !headers.every((h, i) => h === expectedHeaders[i])) {
-                //     showAlert('CSV headers do not match expected format.', 'danger');
-                //     return;
-                // }
-
-                // Clear existing table data
-                $table.clear();
-
-                // Parse data rows (skip header line)
-                for (let i = 1; i < lines.length; i++) {
-                    const row = lines[i].split(';').map(cell => cell.trim());
-                    if (row.length === headers.length) {
-                        $table.row.add([
-                            row[0] || '',  // Owner's Name
-                            row[1] || '',  // Address
-                            row[2] || '',  // File No.
-                            row[3] || '',  // Ledger
-                            row[4] || '',  // Folio
-                            row[5] || '',  // Plot No.
-                            row[6] || '0',  // Plot Size
-                            row[7] || '',  // Covenanted User
-                          //  row[8] || '',  // Current Use
-                             row[8] || '', // LS Number
-                            row[9] || '',  // Nature of Intrumrnt
-                         
-                          
-                            row[10] || 'null', // Comm. Date
-                            row[11] || '0', // Term
-                            row[12] || 'null', // Consent Date
-                            row[13] || '0', // Rent Review
-                            row[14] || '0', // Rent Passing
-                            row[15] || '0', // Arrears
-                            row[16] || '0'  // Prev. Review
-                        ]);
-                    }
-                }
-
-                // Draw the table
-                $table.draw();
-                showAlert('CSV data loaded successfully!', 'success');
-                $('#fileRentUploadModal').modal('hide');
-                $('#csvUploadForm')[0].reset();
-            } catch (error) {
-                showAlert('Error parsing CSV: ' + error.message, 'danger');
-            }
-        };
-        reader.onerror = function () {
-            showAlert('Error reading file.', 'danger');
-        };
-        reader.readAsText(file);
-    });
-
- // Process Rent Data and Export to JSON
-    $('#btn_process_rent_data_by_csv').on('click', function () {
-        var region = $('#rnt_upload_office_region').val();
-        var estate = $('#rnt_upload_estate').val();
-
-        if (!region || !estate) {
-            showAlert('Please select Office Region and Estate.', 'warning');
-            return;
-        }
-
-         region =  region.replace(".0", "");
-          estate =  estate.replace(".0", "");
-
-          // Function to parse and format dates
+    function cleanNumeric(value) {
+        const text = String(value == null ? '' : value).trim();
+        return !text || text.toLowerCase() === 'null' ? '' : text.replace(/,/g, '');
+    }
     function formatDate(value) {
-        if (!value || value === 'null' || value.trim() === '') {
-            return 'null';
+        const text = String(value == null ? '' : value).trim();
+        if (!text || text.toLowerCase() === 'null') return 'null';
+        const m = text.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+        if (m) {
+            const day = +m[1], month = +m[2], year = +m[3];
+            const d = new Date(Date.UTC(year, month - 1, day));
+            return d.getUTCFullYear() === year && d.getUTCMonth() === month - 1 && d.getUTCDate() === day
+                ? d.toISOString().slice(0, 10) : 'null';
         }
-        // Try parsing DD/MM/YYYY or DD-MM-YYYY
-        const ddmmyyyyMatch = value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
-        if (ddmmyyyyMatch) {
-            const day = parseInt(ddmmyyyyMatch[1], 10);
-            const month = parseInt(ddmmyyyyMatch[2], 10) - 1; // JavaScript months are 0-based
-            const year = parseInt(ddmmyyyyMatch[3], 10);
-            const date = new Date(year, month, day);
-            if (!isNaN(date.getTime()) && date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
-                return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-            }
+        const iso = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (iso) {
+            const year = +iso[1], month = +iso[2], day = +iso[3];
+            const d = new Date(Date.UTC(year, month - 1, day));
+            return d.getUTCFullYear() === year && d.getUTCMonth() === month - 1 && d.getUTCDate() === day ? text : 'null';
         }
-        // Try standard JavaScript Date parsing (for YYYY-MM-DD or other formats)
-        const date = new Date(value);
-        if (!isNaN(date.getTime())) {
-            return date.toISOString().split('T')[0];
-        }
-        // Log warning and return "null" for invalid dates
-        console.warn(`Invalid date format: ${value}`);
         return 'null';
     }
-
-        // Export DataTable to JSON
-        const jsonData = [];
-        const columnKeys = [
-            'owners_name', 'address', 'file_number', 'ledger', 'folio', 
-            'plot_number', 'plot_size', 'covenanted_user', 'ls_number', 'nature_of_instrument', 'comm_date', 
-            'term', 'consent_date', 'rent_review_clause', 'rent_passing', 
-            'period_in_arrears', 'rent_outstanding'
-        ];
-
-      $table.rows().every(function (rowIdx) {
-        const rowData = this.data();
-        const rowObject = {
-            region: region,
-            estate: estate
-        };
-        columnKeys.forEach((key, index) => {
-            let value = rowData[index] || '';
-            if (key === 'comm_date' || key === 'consent_date') {
-                value = formatDate(value);
-            }else if (key === 'rent_passing' || key === 'term' || key === 'period_in_arrears') {
-                value = cleanNumeric(value); // Clean numeric fields
-            }
-            rowObject[key] = value;
-        });
-        jsonData.push(rowObject);
-    });
-
-    if (jsonData.length === 0) {
-        showAlert('No data to process.', 'warning');
-        return;
+    // Handles semicolon-delimited CSV and quoted delimiters/newlines.
+    function parseCSV(text, delimiter) {
+        const records = []; let row = [], field = '', quoted = false;
+        text = text.replace(/^\uFEFF/, '');
+        for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            if (ch === '"') {
+                if (quoted && text[i + 1] === '"') { field += '"'; i++; }
+                else quoted = !quoted;
+            } else if (ch === delimiter && !quoted) { row.push(field.trim()); field = ''; }
+            else if ((ch === '\n' || ch === '\r') && !quoted) {
+                if (ch === '\r' && text[i + 1] === '\n') i++;
+                row.push(field.trim()); field = '';
+                if (row.some(x => x !== '')) records.push(row);
+                row = [];
+            } else field += ch;
+        }
+        if (quoted) throw new Error('Unclosed quoted field in CSV.');
+        row.push(field.trim());
+        if (row.some(x => x !== '')) records.push(row);
+        return records;
     }
-
-        // Log JSON to console (for testing)
-        console.log('Exported JSON:', JSON.stringify(jsonData, null, 2));
-
-      var json_array_to_upload = JSON.stringify(jsonData, null, 2);
-
-        // Existing AJAX call for server-side processing
-        $.ajax({
-            url: 'rent_mgt_serv',
-            type: 'POST',
-            data: { 
-                request_type: 'upload_bulk_rent_ledger', 
-                rent_data_upload_list:json_array_to_upload,
-                jsonData: JSON.stringify(jsonData) // Optionally send JSON to server
-            },
-            beforeSend: function () {
-                $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
-            },
-            success: function (response) {
-            // Parse response if it's a string (in case the server returns JSON as text)
-          
-          console.log(response)
-            let responseObj;
+    $('#btnConfirmUpload').on('click', function () {
+        const input = $('#csvFile')[0], file = input.files && input.files[0];
+        if (!file) return showAlert('Please select a CSV file.', 'warning');
+        if (!/\.csv$/i.test(file.name)) return showAlert('Please upload a valid .csv file.', 'danger');
+        if (file.size > 10 * 1024 * 1024) return showAlert('CSV file must not exceed 10 MB.', 'danger');
+        const reader = new FileReader();
+        reader.onload = function (event) {
             try {
-                responseObj = typeof response === 'string' ? JSON.parse(response) : response;
-            } catch (e) {
-                showAlert('Invalid server response format.', 'danger');
-                return;
-            }
-
-            // Handle success or failure based on response
-            if (responseObj.success) {
-                showAlert(responseObj.msg || 'Rent data processed and exported successfully!', 'success');
-               // loadRentData(); // Reload DataTable on success
-            } else {
-                showAlert(responseObj.msg || 'Failed to process rent data.', 'danger');
-            }
-        },
-            error: function (xhr) {
-                showAlert('Processing failed: ' + (xhr.responseText || 'Server error'), 'danger');
+                const text = event.target.result;
+                const firstLine = text.split(/\r?\n/, 1)[0] || '';
+                const delimiter = (firstLine.match(/;/g) || []).length >= (firstLine.match(/,/g) || []).length ? ';' : ',';
+                const records = parseCSV(text, delimiter);
+                if (records.length < 2) throw new Error('The CSV has no data rows.');
+                const rows = [];
+                for (let i = 1; i < records.length; i++) {
+                    if (records[i].length !== 17) throw new Error('Row ' + (i + 1) + ' has ' + records[i].length + ' columns; expected 17.');
+                    rows.push(records[i]);
+                }
+                table.clear();
+                // DataTables escapes cell text by default only with a renderer: ensure CSV is never interpreted as HTML.
+                rows.forEach(row => table.row.add(row.map(value => $('<div>').text(value).html())));
+                table.draw(); updateCount();
+                showAlert(rows.length + ' rent records loaded. Review the preview before processing.', 'success');
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('fileRentUploadModal')).hide();
+                $('#csvUploadForm')[0].reset();
+            } catch (error) { showAlert('CSV error: ' + error.message, 'danger'); }
+        };
+        reader.onerror = function () { showAlert('Unable to read CSV file.', 'danger'); };
+        reader.readAsText(file);
+    });
+    $('#btn_process_rent_data_by_csv').on('click', function () {
+        const button = $(this);
+        let region = String($('#rnt_upload_office_region').val() || '').replace(/\.0$/, '');
+        let estate = String($('#rnt_upload_estate').val() || '').replace(/\.0$/, '');
+        if (!region || !estate) return showAlert('Please select Office Region and Estate.', 'warning');
+        const keys = ['owners_name','address','file_number','ledger','folio','plot_number','plot_size','covenanted_user','ls_number','nature_of_instrument','comm_date','term','consent_date','rent_review_clause','rent_passing','period_in_arrears','rent_outstanding'];
+        const jsonData = [];
+        table.rows().every(function () {
+            const row = this.data(), obj = {region:region,estate:estate};
+            keys.forEach((key, index) => {
+                // Decode the escaped preview text before sending original values.
+                let value = $('<textarea>').html(row[index] || '').text();
+                if (key === 'comm_date' || key === 'consent_date') value = formatDate(value);
+                else if (['rent_passing','term','period_in_arrears'].includes(key)) value = cleanNumeric(value);
+                obj[key] = value;
+            });
+            jsonData.push(obj);
+        });
+        if (!jsonData.length) return showAlert('Upload a CSV file before processing.', 'warning');
+        const json = JSON.stringify(jsonData);
+        button.prop('disabled', true).html('<i class="ri-loader-4-line me-1"></i>Processing...');
+        $.ajax({
+            url:'rent_mgt_serv', type:'POST', dataType:'json',
+            data:{request_type:'upload_bulk_rent_ledger',rent_data_upload_list:json,jsonData:json},
+            success:function (response) {
+                if (typeof response === 'string') { try { response = JSON.parse(response); } catch (_) {} }
+                if (response && response.success) showAlert(response.msg || 'Rent data processed successfully.', 'success');
+                else showAlert((response && response.msg) || 'Failed to process rent data.', 'danger');
             },
-            complete: function () {
-                $(this).prop('disabled', false).html('<i class="fas fa-cogs"></i> Process Rent Data');
-            }
+            error:function (xhr) { showAlert('Processing failed: ' + (xhr.responseJSON && xhr.responseJSON.msg ? xhr.responseJSON.msg : 'Server error (' + xhr.status + ')'), 'danger'); },
+            complete:function () { button.prop('disabled', false).html('<i class="ri-cpu-line me-2"></i>Process Rent Data'); }
         });
     });
-
-
-    // Function to parse a CSV line, handling quoted fields with commas
-function parseCsvLine(line) {
-    const result = [];
-    let currentField = '';
-    let inQuotes = false;
-    let i = 0;
-
-    while (i < line.length) {
-        const char = line[i];
-
-        if (char === '"') {
-            if (inQuotes && i + 1 < line.length && line[i + 1] === '"') {
-                // Handle escaped quotes ("")
-                currentField += '"';
-                i += 2;
-            } else {
-                // Toggle quote state
-                inQuotes = !inQuotes;
-                i++;
-            }
-        } else if (char === ',' && !inQuotes) {
-            // End of field (outside quotes)
-            result.push(currentField.trim());
-            currentField = '';
-            i++;
-        } else {
-            // Add character to current field
-            currentField += char;
-            i++;
-        }
-    }
-    // Push the last field
-    result.push(currentField.trim());
-
-    // Remove surrounding quotes from quoted fields
-    return result.map(field => {
-        if (field.startsWith('"') && field.endsWith('"')) {
-            return field.slice(1, -1).replace(/""/g, '"'); // Remove quotes and handle escaped quotes
-        }
-        return field;
-    });
-}
-    // Load data into DataTable (server-side data fetch if needed)
-    function loadRentData() {
-        const region = $('#rnt_upload_office_region').val();
-        const estate = $('#rnt_upload_estate').val();
-
-        if (!region || !estate) return;
-
-        $.get('${pageContext.request.contextPath}/getBulkRentData', { region, estate }, function (data) {
-            $table.clear();
-            if (data && data.length > 0) {
-                data.forEach(row => {
-                    $table.row.add([
-                        row.owners_name || '',
-                        row.address || '',
-                        row.file_number || '',
-                        row.ledger || '',
-                        row.folio || '',
-                        row.plot_number || '',
-                        row.plot_size || '',
-                        row.covenanted_user || '',
-                        
-                        row.nature_of_devt || '',
-                        row.ls_number || '',
-                        row.nature_of_instrument || '',
-                        row.comm_date || '',
-                        row.term || '',
-                        row.consent_date || '',
-                        row.rent_review_clause || '',
-                        row.rent_passing || '',
-                        row.period_in_arrears || '',
-                        row.rent_outstanding || '0'
-                    ]);
-                });
-            }
-            $table.draw();
-        }).fail(function () {
-            showAlert('Failed to load data.', 'danger');
-        });
-    }
-
-    // Show alert
-    function showAlert(message, type) {
-        const $alert = $('#uploadAlert');
-        $alert.removeClass('d-none alert-success alert-danger alert-warning')
-              .addClass('alert-' + type)
-              .html('<strong>' + (type === 'danger' ? 'Error!' : type === 'warning' ? 'Warning!' : 'Success!') + '</strong> ' + message)
-              .fadeIn()
-              .delay(5000).fadeOut();
-    }
-
-    // Auto-load on region/estate change
-    $('#rnt_upload_office_region, #rnt_upload_estate').on('change', function () {
-       // loadRentData();
-    });
+    updateCount();
 });
 </script>
-
-<!-- Required JS (ensure in _footer.jsp or here) -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>

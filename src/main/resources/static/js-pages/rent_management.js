@@ -3811,12 +3811,12 @@ function saveLeaseDetails() {
         ls_number: $("#rt_e_ls_number").val(),
         comm_date: $("#rt_e_commencement_date").val(),
         term: $("#rt_e_term").val(),
-        estate: $('#rt_e_estate').val().replace('.0', ''),
+       // estate: $('#rt_e_estate').val().replace('.0', ''),
         nature_of_instrument: $("#rt_e_nature_of_instrument").val(),
         rent_category: $("#rt_e_rent_category").val(),
         rent_review_clause: $("#rt_e_rent_review_clause").val(),
         rent_passing: $("#rt_e_rent_passing").val(),
-        location_rate: $("#rt_e_location_rate").val(),
+       // location_rate: $("#rt_e_location_rate").val(),
         last_payment_date: $("#rt_e_last_payment_date").val(),
         last_payment_period: $("#rt_e_last_payment_period").val(),
         rent_outstanding: $("#rt_e_rent_outstanding").val(),
@@ -4102,7 +4102,7 @@ $(document).on('blur', '#rt_e_rent_passing, #rt_e_location_rate, #rt_e_rent_outs
 });
 
 // Format numeric inputs
-// $(document).on('blur', '#rt_e_plot_size, #rt_e_term, #rt_e_rent_review_clause', function () {
+//$(document).on('blur', '#rt_e_plot_size, #rt_e_term, #rt_e_rent_review_clause', function () {
 $(document).on('blur', '#rt_e_term, #rt_e_rent_review_clause', function () {
     const value = parseFloat($(this).val()) || 0;
     $(this).val(value.toFixed(1));
@@ -4343,12 +4343,17 @@ $("#btn_upload_rent_data_file")
             // Array of required field IDs with labels
             let requiredFields = [
                 { id: "#rth_lessee_name", label: "Lessee Name" },
+                { id: "#rth_grantor_name", label: "Grantor's Name" },
                 { id: "#rth_lessee_address", label: "Address" },
+
+              
+
                 { id: "#rth_mobile_phone_1", label: "Mobile Phone" },
                 { id: "#rth_plot_number", label: "Plot Number" },
                 { id: "#rth_plot_size", label: "Plot Size" },
                 { id: "#rth_nature_of_instrument", label: "Nature of Instrument" },
                 { id: "#rth_term", label: "Term" }
+               // ,{ id: "#rth_comm_date", label: "Commencement Date" }
             ];
 
             // Loop through required fields and validate
@@ -4406,6 +4411,9 @@ $("#btn_upload_rent_data_file")
                         rent_id: $("#rth_rent_id").val(),
                         account_number: $("#rth_account_number").val(),
                         lessee_name: $("#rth_lessee_name").val(),
+                        grantor_name: $("#rth_grantor_name").val(),
+
+
                         address: $("#rth_lessee_address").val(),
                         mobile_1: $("#rth_mobile_phone_2").val(),
                         mobile: $("#rth_mobile_phone_1").val(),
@@ -4726,7 +4734,7 @@ $("#btn_upload_rent_data_file")
             $("#rht_is_edit").val(1);
 
             $.ajax({
-                url: "rent_mgt_serv", // Change this to your Laravel/PHP route
+                url: "rent_mgt_serv", 
                 type: "POST",
                 data: {
                     t_id: t_id,
@@ -4743,6 +4751,7 @@ $("#btn_upload_rent_data_file")
                             $("#rth_rent_id").val(data.id);
                             $("#rth_account_number").val(data.account_number);
                             $("#rth_lessee_name").val(data.lessee_name);
+                            $("#rth_grantor_name").val(data.grantor_name);
                             $("#rth_lessee_address").val(data.address);
                             $("#rth_mobile_phone_1").val(data.mobile);
                             $("#rth_mobile_phone_2").val(data.mobile_1);
