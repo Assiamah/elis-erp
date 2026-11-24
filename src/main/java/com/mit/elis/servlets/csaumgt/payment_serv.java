@@ -176,6 +176,16 @@ public class payment_serv {
 
 
 
+			if (request_type.equals("lc_payment_verification_for_bill_v1")) {
+				String ref_number = request.getParameter("ref_number");
+				JSONObject obj_d = new JSONObject();
+				obj_d.put("ref_number", ref_number);
+				web_service_response = csaupayment_cl.lc_payment_verification_for_bill_v1(
+						cls_url_config.getWeb_service_url_ser(),
+						cls_url_config.getWeb_service_url_ser_api_key(), obj_d.toString());
+				return web_service_response;
+			}
+
 			if (request_type.equals("lc_payment_verification_for_bill")) {
 				String ref_number = request.getParameter("ref_number");
 				// //System.out.println(ref_number);
