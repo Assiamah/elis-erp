@@ -2570,7 +2570,7 @@ public class GenerateCaseReports {
 
 			try {
 
-				if  (business_process_sub_name.equals("APPLICATION FOR OFFICIAL SEARCH (CONSOLIDATED)")) {
+				if  (business_process_sub_name.equals("APPLICATION FOR OFFICIAL SEARCH (CONSOLIDATED)") || business_process_sub_name.equals("APPLICATION FOR CONSOLIDATED SEARCH KTC")) {
 					//System.out.println("contextPath-0");
 					buffer = case_reports_cl.create_search_report_lc_consolidated_search(cls_url_config.getWeb_service_url_ser(),
 							cls_url_config.getWeb_service_url_ser_api_key(), cls_url_config.getDoc_mgt_api(), cls_url_config.getDoc_mgt_api_key(),cls_url_config.getSoftfile_location(),
